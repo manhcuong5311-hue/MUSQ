@@ -5,7 +5,7 @@ sys.path.insert(0, "/Users/sammanhcuong/Desktop/GymWorkout/Tools/model-pipeline"
 from framer import LONGEST, CENTER, D, TAN
 from pxr import Usd, UsdSkel, UsdGeom
 import numpy as np
-ASPECT = 382 / 705
+ASPECT = 382 / 655   # trainer viewport since the setup drawer (was 382/705)
 M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
 PI = math.pi
 JOBS = {

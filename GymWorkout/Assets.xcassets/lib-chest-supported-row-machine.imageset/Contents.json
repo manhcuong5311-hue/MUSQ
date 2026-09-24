@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-chest-supported-row-machine.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

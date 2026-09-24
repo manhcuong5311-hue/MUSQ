@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-glute-bridge.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

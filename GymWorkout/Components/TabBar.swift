@@ -12,9 +12,9 @@
 import SwiftUI
 
 enum AppTab: String, CaseIterable, Identifiable {
-    case home = "Home"
+    case train = "Train"
     case exercises = "Exercises"
-    case saved = "Saved"
+    case muscles = "Muscles"
     case profile = "Profile"
 
     var id: String { rawValue }

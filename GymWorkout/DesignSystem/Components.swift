@@ -64,7 +64,7 @@ struct CircleIconButton<Content: View>: View {
     }
 }
 
-/// Squared glass control that sits inside a viewport (muscles worked).
+/// Squared glass control that sits inside a viewport (muscles worked, key tips).
 struct GlassSquareButton<Content: View>: View {
     var side: CGFloat = 32
     var action: () -> Void

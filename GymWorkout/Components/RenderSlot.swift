@@ -66,6 +66,8 @@ struct Viewport<Overlay: View>: View {
     var framing: ModelFraming = .standing
     /// Playback rate for that model.
     var speed: Float = 1
+    /// Holds the model's clip at this many seconds in, for still renders.
+    var still: TimeInterval? = nil
     var inner: Color = DS.viewportInner
     var outer: Color = DS.viewportOuter
     var rx: CGFloat = 1.20
@@ -89,7 +91,7 @@ struct Viewport<Overlay: View>: View {
 
                 if let model {
                     USDZViewport(resource: model, framing: framing, speed: speed,
-                                 tracker: tracker)
+                                 still: still, tracker: tracker)
                 } else {
                     RenderSlot(id: slot)
                 }

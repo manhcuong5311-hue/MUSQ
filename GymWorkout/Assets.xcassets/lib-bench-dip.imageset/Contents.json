@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-bench-dip.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

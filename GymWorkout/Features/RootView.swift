@@ -11,24 +11,22 @@
 import SwiftUI
 
 struct RootView: View {
-    @State private var tab: AppTab = .home
+    @State private var tab: AppTab = .train
     @State private var libraryFilter: MuscleGroupName = .all
+    /// Workout history, shared by Train and Muscles and saved on every change.
+    @State private var store = WorkoutStore()
 
     var body: some View {
         ZStack {
             DS.ink.ignoresSafeArea()
 
             switch tab {
-            case .home:
-                HomeView(tab: $tab, libraryFilter: $libraryFilter)
+            case .train:
+                TrainView(tab: $tab)
             case .exercises:
                 ExerciseLibraryView(tab: $tab, initialFilter: libraryFilter)
-            case .saved:
-                UnbuiltTabView(
-                    tab: $tab,
-                    title: "Saved",
-                    caption: "Exercises you bookmark will collect here."
-                )
+            case .muscles:
+                MuscleProgressView(tab: $tab)
             case .profile:
                 UnbuiltTabView(
                     tab: $tab,
@@ -37,6 +35,7 @@ struct RootView: View {
                 )
             }
         }
+        .environment(store)
     }
 }
 

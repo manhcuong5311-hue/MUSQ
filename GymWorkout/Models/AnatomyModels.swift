@@ -160,6 +160,10 @@ struct ExerciseContent {
     /// `activation`, named in the note under the muscle list. Lower case,
     /// e.g. `rotator cuff`. Empty hides the note.
     let stabilisers: [String]
+    /// How to get into position, as short imperative steps written for this
+    /// exercise's own model (bench angle, stance, grip, attachment). Shown in
+    /// the trainer's swipe-up setup drawer.
+    let setup: [String]
     let comparison: FormComparisonCopy
     /// Activation signature painted over the render.
     let glows: [ActivationGlowLayer.Glow]

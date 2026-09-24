@@ -1,6 +1,7 @@
 import json, sys
 sys.path.insert(0, ".")
 from spec import SPEC
+from setup import SETUP
 J = json.load(open("joints.json"))
 SLOTS = [0.14, 0.32, 0.50, 0.68, 0.86]
 EDGE = 0.035
@@ -11,8 +12,9 @@ def width(text):
 def covered(x0, x1, y, dots):
     return sum(1 for u, v in dots if x0 - 0.01 <= u <= x1 + 0.01 and abs(v - y) <= 0.035)
 
-def layout(name, anns, overrides=None):
+def layout(name, anns, overrides=None, slots=None):
     overrides = overrides or {}
+    slots = slots or SLOTS
     pts, dots = [], []
     for cue, label, joint in anns:
         samples = [(min(max(u, 0.04), 0.96), min(max(v, 0.04), 0.96)) for u, v in J[name][joint]]
@@ -27,7 +29,7 @@ def layout(name, anns, overrides=None):
             w = width(label)
             x = EDGE + w if side == "leading" else 1 - EDGE - w
             placed[i] = (round(x, 3), y, side, ux, uy)
-    free = [y for y in SLOTS if y not in {v[1] for v in placed.values()}]
+    free = [y for y in slots if y not in {v[1] for v in placed.values()}]
     order = sorted((i for i in range(len(pts)) if i not in placed), key=lambda i: pts[i][4])
     for slot, i in zip(free, order):
         cue, label, joint, ux, uy = pts[i]
@@ -52,7 +54,7 @@ def emit(e):
     out.append(f"    static let {e['var']}Content = ExerciseContent(")
     out.append("        annotations: [")
     rows = []
-    for (cue, label, joint), (x, y, side, jx, jy) in layout(e["name"], e["annotations"], e.get("overrides")):
+    for (cue, label, joint), (x, y, side, jx, jy) in layout(e["name"], e["annotations"], e.get("overrides"), e.get("slots")):
         side_arg = "" if side == "leading" else "\n                          labelSide: .trailing,"
         rows.append(f"            CueAnnotation(cueID: {s(cue)}, label: {s(label)},\n"
                     f"                          labelPoint: CGPoint(x: {x:.3f}, y: {y:.2f}),{side_arg}"
@@ -82,6 +84,7 @@ def emit(e):
     out.append(",\n".join(acts))
     out.append("        ],")
     out.append("        stabilisers: [" + ", ".join(s(x) for x in e["stabilisers"]) + "],")
+    out.append("        setup: [\n" + ",\n".join("            " + s(x) for x in SETUP[e["name"]]) + "\n        ],")
     badge, ccue, mcue, cnote, mnote = e["comparison"]
     out.append("        comparison: FormComparisonCopy(")
     out.append('            correctBadge: "CORRECT FORM",')
@@ -107,5 +110,5 @@ if __name__ == "__main__":
     json.dump({g: "\n\n".join(v) for g, v in groups.items()}, open("generated.json", "w"))
     for e in SPEC:
         print(e["name"])
-        for (cue, label, joint), (x, y, side, jx, jy) in layout(e["name"], e["annotations"], e.get("overrides")):
+        for (cue, label, joint), (x, y, side, jx, jy) in layout(e["name"], e["annotations"], e.get("overrides"), e.get("slots")):
             print(f"   {label:32s} {side:8s} x={x:.3f} y={y:.2f}  joint {joint:26s} at ({jx:.2f},{jy:.2f})")

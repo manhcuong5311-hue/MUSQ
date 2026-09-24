@@ -4,7 +4,9 @@
 //
 //  Screen 1c — the primary Exercise 3D View, plus the two states the design
 //  models on top of it: the muscle activation panel (1d) and the technique-cue
-//  sheet with its "common mistake" overlay (1e).
+//  sheet with its "common mistake" overlay (1e). Beyond the design: a toggle
+//  that hides the key tips to watch the bare movement, and the swipe-up
+//  setup drawer under the viewport.
 //
 //  Everything on this screen is driven by the exercise's `ExerciseContent`.
 //  An exercise without one is gated (see `TrainerUnavailableView`) rather than
@@ -24,6 +26,10 @@ struct Exercise3DView: View {
     @State private var favourite = false
     @State private var showsGuides = true
     @State private var showsComparison = false
+    @State private var setupExpanded = false
+    /// Off shows the lift with nothing over it. Remembered across exercises,
+    /// so someone who prefers the clean view doesn't have to ask every time.
+    @AppStorage("trainer.showsKeyTips") private var showsKeyTips = true
     /// Screen points of the joints the cue callouts point at.
     @State private var tracker: JointTracker
 
@@ -50,10 +56,15 @@ struct Exercise3DView: View {
 
                 if let content {
                     viewport(content)
-                        .padding(.bottom, 18)
+                        .padding(.bottom, SetupDrawer.peekHeight + 8)
                 } else {
                     TrainerUnavailableView(exercise: exercise)
                 }
+            }
+
+            if let content {
+                SetupDrawer(steps: content.setup, isExpanded: $setupExpanded)
+                    .frame(maxHeight: .infinity, alignment: .bottom)
             }
 
             if showingMistake, let content {
@@ -142,35 +153,17 @@ struct Exercise3DView: View {
             // would stay put while the lifter is turned out from under it.
             glows: SampleData.model(for: exercise) == nil ? content.glows : [],
             pulses: true,
-            showsGuides: showsGuides,
+            // The clean view drops the embed guides along with the tips.
+            showsGuides: showsGuides && showsKeyTips,
             tracker: SampleData.model(for: exercise) == nil ? nil : tracker
         ) {
             GeometryReader { geo in
                 ZStack(alignment: .topLeading) {
                     Color.clear
 
-                    ForEach(content.annotations) { annotation in
-                        let label = CGPoint(
-                            x: annotation.labelPoint.x * geo.size.width,
-                            y: annotation.labelPoint.y * geo.size.height
-                        )
-                        TrackedCallout(
-                            text: annotation.label,
-                            labelPoint: label,
-                            labelSide: annotation.labelSide,
-                            dot: dotPoint(annotation, label: label),
-                            borderColor: isSelected(annotation.cueID)
-                                ? DS.silver.opacity(0.5)
-                                : DS.silver.opacity(0.16)
-                        ) {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                cueID = annotation.cueID
-                                cueMode = .correct
-                                sheet = .cue
-                            }
-                        }
-                        .accessibilityElement(children: .combine)
-                        .accessibilityLabel("Technique cue: \(annotation.label)")
+                    if showsKeyTips {
+                        callouts(content, in: geo.size)
+                            .transition(.opacity)
                     }
 
                     if showingMistake {
@@ -188,14 +181,27 @@ struct Exercise3DView: View {
                 .frame(width: geo.size.width, height: geo.size.height)
             }
 
-            GlassSquareButton(action: {
-                withAnimation(.easeOut(duration: 0.2)) {
-                    sheet = sheet == .muscles ? nil : .muscles
+            VStack(spacing: 8) {
+                GlassSquareButton(action: {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        sheet = sheet == .muscles ? nil : .muscles
+                    }
+                }) {
+                    MuscleTargetIcon()
                 }
-            }) {
-                MuscleTargetIcon()
+                .accessibilityLabel("Muscles worked")
+
+                GlassSquareButton(action: {
+                    withAnimation(.easeOut(duration: 0.2)) { showsKeyTips.toggle() }
+                }) {
+                    Image(systemName: showsKeyTips ? "eye" : "eye.slash")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(DS.silver.opacity(showsKeyTips ? 1 : 0.55))
+                        .contentTransition(.symbolEffect(.replace))
+                }
+                .accessibilityLabel("Key tips")
+                .accessibilityValue(showsKeyTips ? "Shown" : "Hidden")
             }
-            .accessibilityLabel("Muscles worked")
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             .padding(12)
 
@@ -205,6 +211,34 @@ struct Exercise3DView: View {
         }
         .frame(maxHeight: .infinity)
         .padding(.horizontal, DS.Metric.viewportInset)
+    }
+
+    /// The key tips: one tappable label per cue, its leader running to the
+    /// joint it describes.
+    private func callouts(_ content: ExerciseContent, in size: CGSize) -> some View {
+        ForEach(content.annotations) { annotation in
+            let label = CGPoint(
+                x: annotation.labelPoint.x * size.width,
+                y: annotation.labelPoint.y * size.height
+            )
+            TrackedCallout(
+                text: annotation.label,
+                labelPoint: label,
+                labelSide: annotation.labelSide,
+                dot: dotPoint(annotation, label: label),
+                borderColor: isSelected(annotation.cueID)
+                    ? DS.silver.opacity(0.5)
+                    : DS.silver.opacity(0.16)
+            ) {
+                withAnimation(.easeOut(duration: 0.2)) {
+                    cueID = annotation.cueID
+                    cueMode = .correct
+                    sheet = .cue
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Technique cue: \(annotation.label)")
+        }
     }
 
     private func isSelected(_ id: String) -> Bool {

@@ -53,6 +53,38 @@ JOBS = {
     "Legs/25_chest_supported_row_machine": "Back/ChestSupportedRowMachine",
     "Legs/26_high_row_machine": "Back/HighRowMachine",
     "Legs/27_back_extension": "Back/BackExtension",
+    # Legs2 batch (2026-09-24): hamstrings/glutes/abductors 072-082, plus the
+    # re-exports of the four legacy models that were cropped out of frame.
+    # 079 is identical to Single-Leg_Glute_Bridge, so only one is converted.
+    "Legs2/072_dumbbell_romanian_deadlift": "Legs/DumbbellRomanianDeadlift",
+    "Legs2/073_stiff_leg_deadlift": "Legs/StiffLegDeadlift",
+    "Legs2/074_lying_leg_curl": "Legs/LyingLegCurl",
+    "Legs2/075_seated_leg_curl": "Legs/SeatedLegCurl",
+    "Legs2/076_single_leg_curl": "Legs/SingleLegCurl",
+    "Legs2/078_glute_bridge": "Legs/GluteBridge",
+    "Legs2/Single-Leg_Glute_Bridge": "Legs/SingleLegGluteBridge",
+    "Legs2/080_cable_glute_kickback": "Legs/CableGluteKickback",
+    "Legs2/080b_cable_side_kick": "Legs/CableSideKick",
+    "Legs2/081_hip_abduction_machine": "Legs/HipAbductionMachine",
+    "Legs2/081_hip_abduction_machine(Lean)": "Legs/HipAbductionMachineLean",
+    "Legs2/082_cable_hip_abduction": "Legs/CableHipAbduction",
+    "Legs2/Step-Up": "Legs/StepUp",
+    "Legs2/Push-Up": "Chest/pushup",
+    "Legs2/Plank": "Abs/Plank",
+    # Abs batch (2026-09-24), 088-099. 095 has the same pose as the Legs2
+    # Plank and replaces it as the numbered source.
+    "Abdoment/088_crunch": "Abs/Crunch",
+    "Abdoment/089_cable_crunch": "Abs/CableCrunch",
+    "Abdoment/090_decline_crunch": "Abs/DeclineCrunch",
+    "Abdoment/091_hanging_knee_raise": "Abs/HangingKneeRaise",
+    "Abdoment/092_hanging_leg_raise": "Abs/HangingLegRaise",
+    "Abdoment/093_captain_s_chair_leg_raise": "Abs/CaptainsChairLegRaise",
+    "Abdoment/094_reverse_crunch": "Abs/ReverseCrunch",
+    "Abdoment/095_plank": "Abs/Plank",
+    "Abdoment/096_side_plank": "Abs/SidePlank",
+    "Abdoment/097_ab_wheel_rollout": "Abs/AbWheelRollout",
+    "Abdoment/098_russian_twist": "Abs/RussianTwist",
+    "Abdoment/099_cable_wood_chop": "Abs/CableWoodChop",
 }
 
 ONLY = sys.argv[1:]

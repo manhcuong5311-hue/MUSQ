@@ -77,13 +77,13 @@ enum BodyRegion {
 
 // MARK: - Figure
 
-/// One view of the body, with the given muscles lit by rank.
-struct BodyMapFigure: View {
+/// One view of the body with any regions filled. Unlisted regions draw idle.
+struct BodyMapCanvas: View {
     var side: BodySide
-    var muscles: [MuscleActivation]
+    var fills: [BodyRegion: Color]
+    var lineWidth: CGFloat = 0.75
 
     var body: some View {
-        let lit = litRegions
         Canvas { ctx, size in
             let box = BodyMapPaths.contentBox
             let scale = min(size.width / box.width, size.height / box.height)
@@ -92,18 +92,29 @@ struct BodyMapFigure: View {
             ctx.scaleBy(x: scale, y: scale)
 
             for (region, path) in BodyMapShapes.regions(side) {
-                ctx.fill(path, with: .color(lit[region]?.rank.barColor ?? Self.idle(region)))
+                ctx.fill(path, with: .color(fills[region] ?? Self.idle(region)))
             }
             ctx.stroke(BodyMapShapes.outline(side),
                        with: .color(DS.silver.opacity(0.2)),
-                       lineWidth: 0.75 / scale)
+                       lineWidth: lineWidth / scale)
         }
-        .accessibilityElement()
-        .accessibilityLabel(accessibilityText(lit))
     }
 
-    private static func idle(_ region: BodyRegion) -> Color {
+    static func idle(_ region: BodyRegion) -> Color {
         DS.silver.opacity(region.isMuscle ? 0.13 : 0.06)
+    }
+}
+
+/// One view of the body, with the given muscles lit by rank.
+struct BodyMapFigure: View {
+    var side: BodySide
+    var muscles: [MuscleActivation]
+
+    var body: some View {
+        let lit = litRegions
+        BodyMapCanvas(side: side, fills: lit.mapValues { $0.rank.barColor })
+            .accessibilityElement()
+            .accessibilityLabel(accessibilityText(lit))
     }
 
     /// The strongest muscle landing on each region of this view: primary over
@@ -186,5 +197,36 @@ private enum BodyMapShapes {
         }
         emit()
         return path
+    }
+}
+
+// MARK: - Training muscle groups on the map
+
+extension MuscleGroup {
+    /// Where the group is drawn. Regions missing from a view simply don't draw
+    /// there (e.g. the lats only exist on the back view).
+    var bodyRegions: [BodyRegion] {
+        switch self {
+        case .chest: return [.chest]
+        case .back: return [.upperBack, .lowerBack, .trapezius]
+        case .shoulders: return [.deltoids]
+        case .biceps: return [.biceps]
+        case .triceps: return [.triceps]
+        case .forearms: return [.forearm]
+        case .abs: return [.abs, .obliques]
+        case .glutes: return [.gluteal]
+        case .quads: return [.quadriceps]
+        case .hamstrings: return [.hamstring]
+        case .calves: return [.calves]
+        case .adductors: return [.adductors]
+        }
+    }
+
+    /// The view the group is most visible from, for small single-figure art.
+    var preferredSide: BodySide {
+        switch self {
+        case .back, .triceps, .glutes, .hamstrings, .calves: return .back
+        default: return .front
+        }
     }
 }

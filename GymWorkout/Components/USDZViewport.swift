@@ -46,6 +46,9 @@ struct USDZViewport: View {
     var framing: ModelFraming = .standing
     /// Playback rate applied to every clip.
     var speed: Float = 1
+    /// When set, every clip is held still at this many seconds in, instead of
+    /// playing — for rendering a fixed moment of the rep as a still image.
+    var still: TimeInterval? = nil
     /// Joints to project to screen for overlays, if any.
     var tracker: JointTracker? = nil
     /// Camera distance in model units.
@@ -150,6 +153,10 @@ struct USDZViewport: View {
                     clip.repeat(), transitionDuration: 0, startsPaused: false
                 )
                 controller.speed = speed
+                if let still {
+                    controller.time = still
+                    controller.pause()
+                }
             }
             for child in entity.children { walk(child) }
         }

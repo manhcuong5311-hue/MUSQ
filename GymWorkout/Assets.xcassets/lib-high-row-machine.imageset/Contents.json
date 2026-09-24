@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-high-row-machine.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
