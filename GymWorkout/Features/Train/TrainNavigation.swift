@@ -120,3 +120,13 @@ enum RecoveryText {
         }
     }
 }
+
+/// A logged set in a few characters, the same everywhere it is listed.
+enum SetText {
+    /// "60 kg × 10", "12 reps" without a load, "45s" for a hold.
+    static func short(_ set: WorkoutSet, measure: SetMeasure, unit: WeightUnit) -> String {
+        if measure == .time { return SetMeasure.clock(set.reps) }
+        guard let weight = set.weight, weight > 0 else { return measure.value(set.reps) }
+        return "\(unit.format(weight)) × \(set.reps)"
+    }
+}

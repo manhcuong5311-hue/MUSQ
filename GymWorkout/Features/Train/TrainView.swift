@@ -75,35 +75,11 @@ struct TrainView: View {
     // MARK: - Header
 
     private var header: some View {
-        @Bindable var store = store
-        return HStack(alignment: .firstTextBaseline) {
-            Text("Train")
-                .font(.ui(28, .semibold))
-                .tracking(-0.7)
-                .foregroundStyle(DS.silver)
-            Spacer()
-            Menu {
-                Picker("Recovery estimates for", selection: $store.experience) {
-                    ForEach(TrainingExperience.allCases) { level in
-                        Text(level.title).tag(level)
-                    }
-                }
-            } label: {
-                HStack(spacing: 5) {
-                    Text(store.experience.title.uppercased())
-                        .font(.mono(9.5, .semibold))
-                        .trackingEm(0.08, size: 9.5)
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 8, weight: .bold))
-                }
-                .foregroundStyle(DS.silver.opacity(0.7))
-                .padding(.horizontal, 10)
-                .padding(.vertical, 7)
-                .background(Capsule().fill(DS.silver.opacity(0.07)))
-            }
-            .accessibilityLabel("Training experience, \(store.experience.title)")
-        }
-        .padding(.horizontal, DS.Metric.gutter)
+        Text("Train")
+            .font(.ui(28, .semibold))
+            .tracking(-0.7)
+            .foregroundStyle(DS.silver)
+            .padding(.horizontal, DS.Metric.gutter)
     }
 
     private var dayHeading: some View {

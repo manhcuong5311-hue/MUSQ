@@ -96,6 +96,17 @@ enum ExerciseCatalog {
         contributions(for: exercise).first { $0.muscle == group }?.role
     }
 
+    /// Whether sets of the exercise count reps or seconds held.
+    static func measure(forExerciseNamed name: String) -> SetMeasure {
+        timedExercises.contains(name) ? .time : .reps
+    }
+
+    /// No external load unless the user adds some (a vest, a plate).
+    static func isBodyweight(_ name: String) -> Bool {
+        guard let exercise = exercise(named: name) else { return false }
+        return ["BODYWEIGHT", "BENCH"].contains(exercise.equipment)
+    }
+
     /// Step-by-step setup, from the exercise's trainer content.
     static func setupSteps(for exercise: Exercise) -> [String] {
         SampleData.content(for: exercise)?.setup ?? []
@@ -107,6 +118,9 @@ enum ExerciseCatalog {
     }
 
     // MARK: - Storage
+
+    /// Holds, logged in seconds rather than reps.
+    private static let timedExercises: Set<String> = ["Plank", "Side Plank"]
 
     private static let byName: [String: Exercise] =
         Dictionary(SampleData.exercises.map { ($0.name, $0) }, uniquingKeysWith: { first, _ in first })

@@ -75,6 +75,7 @@ struct MusclePresetView: View {
         }
         .toolbar(.hidden, for: .navigationBar)
         .navigationBarBackButtonHidden()
+        .restTimerInset()
         .onAppear(perform: load)
         .sheet(item: $picker) { mode in
             ExercisePickerView(
@@ -208,7 +209,7 @@ struct MusclePresetView: View {
 
             if !editMode.isEditing {
                 Menu {
-                    Button("Edit Sets & Reps", systemImage: "slider.horizontal.3") {
+                    Button(exercise.isTimed ? "Edit Sets & Time" : "Edit Sets & Reps", systemImage: "slider.horizontal.3") {
                         editingTarget = exercise
                     }
                     Button("Replace", systemImage: "arrow.left.arrow.right") {
@@ -363,7 +364,7 @@ struct PresetExerciseRow: View {
                     .foregroundStyle(DS.silver)
                     .multilineTextAlignment(.leading)
                 HStack(spacing: 8) {
-                    Text("\(exercise.sets.count) × \(exercise.repRange.label)")
+                    Text(exercise.targetLabel)
                         .font(.mono(11, .semibold))
                         .foregroundStyle(DS.silver.opacity(0.7))
                     if exercise.isCompleted || (done > 0 && done == exercise.sets.count) {
@@ -407,7 +408,7 @@ struct PresetExerciseRow: View {
         )
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(exercise.exerciseName), \(exercise.sets.count) sets of \(exercise.repRange.label) reps, \(done) done"
+        .accessibilityLabel("\(exercise.exerciseName), \(exercise.sets.count) sets of \(exercise.repRange.label) \(exercise.isTimed ? "seconds" : "reps"), \(done) done"
                             + (caution.map { ", \($0.lowercased())" } ?? ""))
     }
 }
@@ -448,7 +449,7 @@ struct TargetEditorSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             MetaLine(text: exercise.exerciseName.uppercased(), em: 0.10)
-            Text("Sets & Reps")
+            Text(exercise.isTimed ? "Sets & Time" : "Sets & Reps")
                 .font(.ui(22, .semibold))
                 .tracking(-0.45)
                 .foregroundStyle(DS.silver)
@@ -456,12 +457,17 @@ struct TargetEditorSheet: View {
 
             VStack(spacing: 4) {
                 stepper("Sets", value: $sets, range: max(1, exercise.completedSets.count)...10)
-                stepper("Reps from", value: $lower, range: 1...50)
-                stepper("Reps up to", value: $upper, range: lower...50)
+                if exercise.isTimed {
+                    stepper("Seconds from", value: $lower, range: 5...300, step: 5)
+                    stepper("Seconds up to", value: $upper, range: lower...300, step: 5)
+                } else {
+                    stepper("Reps from", value: $lower, range: 1...50)
+                    stepper("Reps up to", value: $upper, range: lower...50)
+                }
             }
             .padding(.top, 18)
 
-            Text("Target: \(sets) × \(RepRange(lower, upper).label)")
+            Text("Target: \(sets) × \(exercise.setMeasure.label(RepRange(lower, upper)))")
                 .font(.mono(11, .semibold))
                 .foregroundStyle(DS.silver.opacity(0.5))
                 .padding(.top, 12)
@@ -481,8 +487,9 @@ struct TargetEditorSheet: View {
         .presentationCornerRadius(DS.Metric.sheetRadius)
     }
 
-    private func stepper(_ title: String, value: Binding<Int>, range: ClosedRange<Int>) -> some View {
-        Stepper(value: value, in: range) {
+    private func stepper(_ title: String, value: Binding<Int>, range: ClosedRange<Int>,
+                         step: Int = 1) -> some View {
+        Stepper(value: value, in: range, step: step) {
             HStack {
                 Text(title)
                     .font(.ui(15))

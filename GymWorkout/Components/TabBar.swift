@@ -36,6 +36,15 @@ struct TabBarView: View {
     var style: Style = .chrome
 
     var body: some View {
+        VStack(spacing: 0) {
+            // Every tab root carries the bar, so the running rest rides on it
+            // and stays visible whichever tab is open.
+            RestTimerBar()
+            bar
+        }
+    }
+
+    private var bar: some View {
         HStack(spacing: 0) {
             ForEach(AppTab.allCases) { tab in
                 let isOn = tab == selection

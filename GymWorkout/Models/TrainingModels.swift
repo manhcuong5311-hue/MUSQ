@@ -175,6 +175,7 @@ enum PresetLevel: String, Codable, CaseIterable, Hashable {
     var title: String { rawValue.uppercased() }
 }
 
+/// A set target: reps, or seconds for a timed exercise (see `SetMeasure`).
 struct RepRange: Codable, Hashable {
     var lower: Int
     var upper: Int
@@ -185,6 +186,40 @@ struct RepRange: Codable, Hashable {
     }
 
     var label: String { lower == upper ? "\(lower)" : "\(lower)–\(upper)" }
+}
+
+/// What a set counts. Most exercises count reps; holds such as Plank count
+/// seconds. A timed exercise keeps the same fields — its `RepRange` and each
+/// set's `reps` hold seconds — so planning, editing and logging need no
+/// second path.
+enum SetMeasure: String, Codable, Hashable {
+    case reps, time
+
+    /// Default target when an exercise is added by hand.
+    var defaultTarget: RepRange {
+        switch self {
+        case .reps: return RepRange(10, 12)
+        case .time: return RepRange(30, 45)
+        }
+    }
+
+    /// One tap of a set's stepper.
+    var step: Int { self == .time ? 5 : 1 }
+
+    /// "10–12" or "30–45s".
+    func label(_ range: RepRange) -> String {
+        self == .time ? "\(range.label)s" : range.label
+    }
+
+    /// "10 reps", or a held time: "45s", "1:05".
+    func value(_ count: Int) -> String {
+        self == .time ? Self.clock(count) : "\(count) \(count == 1 ? "rep" : "reps")"
+    }
+
+    /// "45s" under a minute, "1:05" from a minute on.
+    static func clock(_ seconds: Int) -> String {
+        seconds < 60 ? "\(seconds)s" : String(format: "%d:%02d", seconds / 60, seconds % 60)
+    }
 }
 
 struct PresetItem: Hashable {
@@ -203,7 +238,10 @@ struct ExercisePreset: Hashable {
 
 struct WorkoutSet: Identifiable, Codable, Hashable {
     var id = UUID()
+    /// Reps done — or seconds held, for a timed exercise.
     var reps: Int
+    /// Load in kilograms, whatever unit the user sees. Nil means none was
+    /// entered: bodyweight, or not logged.
     var weight: Double? = nil
     var isCompleted = false
     /// When the set was marked done — what recovery times are measured from.
@@ -225,8 +263,22 @@ struct WorkoutExercise: Identifiable, Codable, Hashable {
     /// before parts existed; recovery then looks the exercise up again.
     var partContributions: [MusclePartContribution]? = nil
     var isCompleted = false
+    /// Reps or time. Nil in history saved before timed sets existed, which
+    /// was all reps.
+    var measure: SetMeasure? = nil
 
     var completedSets: [WorkoutSet] { sets.filter(\.isCompleted) }
+    var isTimed: Bool { measure == .time }
+    var setMeasure: SetMeasure { measure ?? .reps }
+    /// "3 × 10–12" or "3 × 30–45s".
+    var targetLabel: String { "\(sets.count) × \(setMeasure.label(repRange))" }
+
+    /// Weight × reps over completed sets, in kilograms. Timed sets carry no
+    /// volume.
+    var volume: Double {
+        guard !isTimed else { return 0 }
+        return completedSets.reduce(0) { $0 + ($1.weight ?? 0) * Double($1.reps) }
+    }
 }
 
 struct WorkoutSession: Identifiable, Codable, Hashable {
@@ -248,6 +300,9 @@ struct WorkoutSession: Identifiable, Codable, Hashable {
     }
 
     var hasCompletedSets: Bool { exercises.contains { !$0.completedSets.isEmpty } }
+    var completedSetCount: Int { exercises.reduce(0) { $0 + $1.completedSets.count } }
+    /// Weight × reps over completed sets, in kilograms.
+    var volume: Double { exercises.reduce(0) { $0 + $1.volume } }
 }
 
 // MARK: - Recovery
@@ -257,6 +312,85 @@ enum TrainingExperience: String, Codable, CaseIterable, Identifiable {
 
     var id: String { rawValue }
     var title: String { rawValue.capitalized }
+}
+
+// MARK: - Settings
+
+/// The unit weights are shown and typed in. Storage is always kilograms, so
+/// switching never rewrites history.
+enum WeightUnit: String, Codable, CaseIterable, Identifiable {
+    case kg, lb
+
+    var id: String { rawValue }
+    var symbol: String { rawValue }
+
+    private static let kilogramsPerPound = 0.45359237
+
+    func fromKilograms(_ kg: Double) -> Double {
+        self == .kg ? kg : kg / Self.kilogramsPerPound
+    }
+
+    func toKilograms(_ value: Double) -> Double {
+        self == .kg ? value : value * Self.kilogramsPerPound
+    }
+
+    /// A set's weight as typed: "62.5", "135". Kilograms keep quarter-plate
+    /// precision; pounds round to a tenth so converted values stay clean.
+    func number(_ kg: Double) -> String {
+        fromKilograms(kg).formatted(.number.precision(.fractionLength(0...(self == .kg ? 2 : 1))).grouping(.never))
+    }
+
+    /// "62.5 kg".
+    func format(_ kg: Double) -> String { "\(number(kg)) \(symbol)" }
+
+    /// A total, rounded to a whole number and grouped: "3,240 kg".
+    func total(_ kg: Double) -> String {
+        "\(Int(fromKilograms(kg).rounded()).formatted()) \(symbol)"
+    }
+
+    /// Reads what the user typed, accepting either decimal separator.
+    /// Returns kilograms; nil for an empty or unreadable entry.
+    func parse(_ text: String) -> Double? {
+        let cleaned = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: ",", with: ".")
+        guard let value = Double(cleaned), value >= 0, value < 10_000 else { return nil }
+        return toKilograms(value)
+    }
+}
+
+/// How long the rest timer runs after a set is marked done.
+enum RestSetting: String, Codable, CaseIterable, Identifiable {
+    case auto, off, s60, s90, s120, s180
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .auto: return "Auto"
+        case .off: return "Off"
+        case .s60: return "1:00"
+        case .s90: return "1:30"
+        case .s120: return "2:00"
+        case .s180: return "3:00"
+        }
+    }
+
+    /// Seconds of rest after a set of `exercise`; nil when the timer is off.
+    /// Auto rests longer for heavier, lower-rep targets: 3 min up to 6 reps,
+    /// 2 min up to 9, 90 s above that, and a minute after a timed hold.
+    func seconds(after exercise: WorkoutExercise) -> Int? {
+        switch self {
+        case .off: return nil
+        case .s60: return 60
+        case .s90: return 90
+        case .s120: return 120
+        case .s180: return 180
+        case .auto:
+            if exercise.isTimed { return 60 }
+            if exercise.repRange.lower <= 6 { return 180 }
+            if exercise.repRange.lower <= 9 { return 120 }
+            return 90
+        }
+    }
 }
 
 enum RecoveryStatus: Hashable {

@@ -18,12 +18,12 @@ enum PresetProvider {
 
     /// Groups the library can actually train today. Forearms, Calves and
     /// Adductors have no dedicated exercise in the library yet, so they are
-    /// tracked but not offered as presets. Abs presets leave out Plank and
-    /// Side Plank: they are timed holds, which sets × reps cannot express.
+    /// tracked but not offered as presets.
     static var trainableGroups: [MuscleGroup] {
         MuscleGroup.allCases.filter { preset(for: $0, level: .basic) != nil }
     }
 
+    /// `lower`/`upper` are reps, or seconds for a timed exercise.
     private static func item(_ name: String, _ sets: Int, _ lower: Int, _ upper: Int) -> PresetItem {
         PresetItem(exerciseName: name, sets: sets, reps: RepRange(lower, upper))
     }
@@ -137,13 +137,15 @@ enum PresetProvider {
             .basic: [
                 item("Crunch", 3, 15, 20),
                 item("Reverse Crunch", 3, 12, 15),
-                item("Captain's Chair Leg Raise", 3, 10, 12)
+                item("Captain's Chair Leg Raise", 3, 10, 12),
+                item("Plank", 3, 30, 45)
             ],
             .advanced: [
                 item("Cable Crunch", 3, 10, 15),
                 item("Hanging Leg Raise", 3, 8, 12),
                 item("Ab Wheel Rollout", 3, 8, 10),
-                item("Cable Wood Chop", 3, 10, 12)
+                item("Cable Wood Chop", 3, 10, 12),
+                item("Side Plank", 3, 30, 45)
             ]
         ]
     ]

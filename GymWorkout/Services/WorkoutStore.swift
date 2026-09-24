@@ -18,6 +18,12 @@ final class WorkoutStore {
     var experience: TrainingExperience = .beginner {
         didSet { if experience != oldValue && !isLoading { save() } }
     }
+    var unit: WeightUnit = .kg {
+        didSet { if unit != oldValue && !isLoading { save() } }
+    }
+    var rest: RestSetting = .auto {
+        didSet { if rest != oldValue && !isLoading { save() } }
+    }
 
     @ObservationIgnored private var isLoading = false
     @ObservationIgnored private let fileURL: URL
@@ -52,6 +58,13 @@ final class WorkoutStore {
 
     func day(ofExercise id: UUID) -> Date? {
         sessions.first { $0.exercises.contains { $0.id == id } }?.day
+    }
+
+    /// The exercise's sets the last earlier day it was done — what this
+    /// session is trying to beat.
+    func previousPerformance(forExercise id: UUID) -> PreviousPerformance? {
+        guard let item = exercise(id: id), let day = day(ofExercise: id) else { return nil }
+        return PerformanceHistory.previous(of: item.exerciseName, before: day, in: sessions)
     }
 
     /// Days with at least one completed set — the calendar's markers.
@@ -118,7 +131,8 @@ final class WorkoutStore {
     // MARK: - Editing the plan
 
     func addExercise(named name: String, to group: MuscleGroup, on day: Date) {
-        guard let exercise = makeExercise(name, group: group, sets: 3, reps: RepRange(10, 12)) else { return }
+        let target = ExerciseCatalog.measure(forExerciseNamed: name).defaultTarget
+        guard let exercise = makeExercise(name, group: group, sets: 3, reps: target) else { return }
         mutateSession(on: day) { session in
             session.exercises.append(exercise)
             session.completedAt = nil
@@ -129,14 +143,19 @@ final class WorkoutStore {
         mutateExercises { $0.removeAll { $0.id == id } }
     }
 
-    /// Swaps in another exercise with the same sets and rep target.
+    /// Swaps in another exercise with the same sets and target. Swapping
+    /// between reps and a timed hold takes the new kind's default target.
     func replaceExercise(id: UUID, with name: String) {
         mutateExercise(id: id) { exercise in
+            let measure = ExerciseCatalog.measure(forExerciseNamed: name)
+            let target = measure == exercise.setMeasure ? exercise.repRange : measure.defaultTarget
             guard let replacement = makeExercise(name, group: exercise.group,
-                                                 sets: exercise.sets.count, reps: exercise.repRange) else { return }
+                                                 sets: exercise.sets.count, reps: target) else { return }
             exercise.exerciseName = replacement.exerciseName
             exercise.contributions = replacement.contributions
             exercise.partContributions = replacement.partContributions
+            exercise.measure = replacement.measure
+            exercise.repRange = replacement.repRange
             exercise.sets = replacement.sets
             exercise.isCompleted = false
         }
@@ -176,13 +195,21 @@ final class WorkoutStore {
 
     // MARK: - Logging sets
 
+    /// Marks a set done or not done. A set marked done with no weight entered
+    /// takes the weight shown as its placeholder — the same set last time —
+    /// so repeating last session's load is a single tap.
     func toggleSet(exerciseID: UUID, setID: UUID) {
         guard let day = day(ofExercise: exerciseID) else { return }
         let stamp = completionTime(on: day)
+        let previous = previousPerformance(forExercise: exerciseID)
         mutateExercise(id: exerciseID) { exercise in
             guard let index = exercise.sets.firstIndex(where: { $0.id == setID }) else { return }
             exercise.sets[index].isCompleted.toggle()
             exercise.sets[index].completedAt = exercise.sets[index].isCompleted ? stamp : nil
+            if exercise.sets[index].isCompleted, exercise.sets[index].weight == nil, !exercise.isTimed,
+               previous?.measure == exercise.setMeasure {
+                exercise.sets[index].weight = previous?.set(at: index)?.weight
+            }
             if !exercise.sets[index].isCompleted { exercise.isCompleted = false }
         }
     }
@@ -191,6 +218,30 @@ final class WorkoutStore {
         mutateExercise(id: exerciseID) { exercise in
             guard let index = exercise.sets.firstIndex(where: { $0.id == setID }) else { return }
             exercise.sets[index].reps = max(1, reps)
+        }
+    }
+
+    /// Sets a set's weight, in kilograms (nil clears it). Later sets not yet
+    /// done and still blank take the same weight, so a working weight is
+    /// typed once.
+    func setWeight(_ kg: Double?, exerciseID: UUID, setID: UUID) {
+        mutateExercise(id: exerciseID) { exercise in
+            guard let index = exercise.sets.firstIndex(where: { $0.id == setID }),
+                  exercise.sets[index].weight != kg else { return }
+            exercise.sets[index].weight = kg
+            guard kg != nil else { return }
+            for later in exercise.sets.indices where later > index
+                && !exercise.sets[later].isCompleted && exercise.sets[later].weight == nil {
+                exercise.sets[later].weight = kg
+            }
+        }
+    }
+
+    /// Saves a timed hold's length and marks the set done.
+    func completeHold(seconds: Int, exerciseID: UUID, setID: UUID) {
+        setReps(seconds, exerciseID: exerciseID, setID: setID)
+        if exercise(id: exerciseID)?.sets.first(where: { $0.id == setID })?.isCompleted == false {
+            toggleSet(exerciseID: exerciseID, setID: setID)
         }
     }
 
@@ -244,7 +295,8 @@ final class WorkoutStore {
             repRange: reps,
             sets: (0..<max(1, sets)).map { _ in WorkoutSet(reps: reps.lower) },
             contributions: ExerciseCatalog.contributions(forExerciseNamed: name),
-            partContributions: ExerciseCatalog.partContributions(forExerciseNamed: name)
+            partContributions: ExerciseCatalog.partContributions(forExerciseNamed: name),
+            measure: ExerciseCatalog.measure(forExerciseNamed: name)
         )
     }
 
@@ -304,6 +356,9 @@ final class WorkoutStore {
     private struct Snapshot: Codable {
         var version = 1
         var experience: TrainingExperience
+        /// Nil in files saved before the setting existed.
+        var unit: WeightUnit?
+        var rest: RestSetting?
         var sessions: [WorkoutSession]
     }
 
@@ -319,11 +374,13 @@ final class WorkoutStore {
         isLoading = true
         sessions = snapshot.sessions.sorted { $0.day < $1.day }
         experience = snapshot.experience
+        unit = snapshot.unit ?? .kg
+        rest = snapshot.rest ?? .auto
         isLoading = false
     }
 
     private func save() {
-        let snapshot = Snapshot(experience: experience, sessions: sessions)
+        let snapshot = Snapshot(experience: experience, unit: unit, rest: rest, sessions: sessions)
         do {
             try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(),
                                                     withIntermediateDirectories: true)

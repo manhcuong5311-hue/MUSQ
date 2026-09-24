@@ -13,8 +13,11 @@ import SwiftUI
 struct RootView: View {
     @State private var tab: AppTab = .train
     @State private var libraryFilter: MuscleGroupName = .all
-    /// Workout history, shared by Train and Muscles and saved on every change.
+    /// Workout history, shared by Train, Muscles and Profile and saved on
+    /// every change.
     @State private var store = WorkoutStore()
+    /// One rest timer for the app, so a rest keeps running across tabs.
+    @State private var restTimer = RestTimer()
 
     var body: some View {
         ZStack {
@@ -28,65 +31,11 @@ struct RootView: View {
             case .muscles:
                 MuscleProgressView(tab: $tab)
             case .profile:
-                UnbuiltTabView(
-                    tab: $tab,
-                    title: "Profile",
-                    caption: "Training history, units and render quality."
-                )
+                ProfileView(tab: $tab)
             }
         }
         .environment(store)
-    }
-}
-
-/// Saved and Profile are named in the tab bar but were never designed — the
-/// design doc lists them under "try next". This is a holding screen in the
-/// system's own language, not an invented design.
-struct UnbuiltTabView: View {
-    @Binding var tab: AppTab
-    var title: String
-    var caption: String
-
-    var body: some View {
-        ZStack {
-            DS.ink.ignoresSafeArea()
-
-            VStack(alignment: .leading, spacing: 0) {
-                Text(title)
-                    .font(.ui(28, .semibold))
-                    .tracking(-0.7)
-                    .foregroundStyle(DS.silver)
-                    .padding(.horizontal, DS.Metric.gutter)
-                    .padding(.top, 22)
-
-                Spacer()
-
-                VStack(spacing: 10) {
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .strokeBorder(
-                            DS.silver.opacity(0.12),
-                            style: StrokeStyle(lineWidth: 1, dash: [4, 4])
-                        )
-                        .frame(width: 60, height: 60)
-
-                    SectionEyebrow(text: "NOT BUILT YET")
-
-                    Text(caption)
-                        .font(.ui(13))
-                        .cssLineHeight(13, 1.5)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(DS.silver.opacity(0.42))
-                        .frame(maxWidth: 240)
-                }
-                .frame(maxWidth: .infinity)
-
-                Spacer()
-                Spacer()
-            }
-        }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            TabBarView(selection: $tab)
-        }
+        .environment(restTimer)
     }
 }
 
