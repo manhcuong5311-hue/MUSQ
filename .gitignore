@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+
+# Raw Blender exports (hundreds of MB) — the app ships the converted
+# models in GymWorkout/Resources/Models instead.
+SourceExports/
+
+# Python
+__pycache__/
+*.pyc

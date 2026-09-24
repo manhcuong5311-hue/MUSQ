@@ -1,0 +1,219 @@
+//
+//  USDZViewport.swift
+//  GymWorkout
+//
+//  A RealityKit-backed 3D slot — the real thing behind the design's
+//  "REALITYKIT VIEWPORT — replaceable" regions.
+//
+//  Source models are exported from Blender straight to a Y-up, ARKit-valid USD
+//  (Convert Orientation on; lights and cameras excluded), then packaged with
+//  `usdzip`. Lighting is rebuilt here because the usdz profile rejects the
+//  DCC scene's DiskLight/DomeLight rig.
+//
+//  These meshes are deliberately near-black (0.0075 linear, ~sRGB 28) with the
+//  worked muscles carrying a hot emissive red. Readability therefore comes
+//  from rim light and specular, not from a bright key — a conventional key
+//  just crushes the whole figure into one silhouette.
+//
+
+import SwiftUI
+import RealityKit
+
+struct USDZViewport: View {
+    /// Resource name without extension, e.g. `SquatPose`.
+    var resource: String
+    /// How the model is presented: view angle, zoom and vertical nudge.
+    var framing: ModelFraming = .standing
+    /// Playback rate applied to every clip.
+    var speed: Float = 1
+    /// Camera distance in model units.
+    var distance: Float = 2.05
+    var fieldOfView: Float = 32
+
+    @State private var pivot = Entity()
+    @State private var yaw: Double = 0
+    @State private var dragStartYaw: Double = 0
+    @State private var status: Status = .loading
+
+    private enum Status: Equatable {
+        case loading
+        case ready
+        case failed(String)
+    }
+
+    var body: some View {
+        GeometryReader { geo in
+            viewport(width: geo.size.width)
+        }
+    }
+
+    private func viewport(width: CGFloat) -> some View {
+        ZStack {
+            RealityView { content in
+                content.camera = .virtual
+
+                let camera = PerspectiveCamera()
+                camera.camera.fieldOfViewInDegrees = fieldOfView
+                camera.position = [0, 0, distance]
+                content.add(camera)
+
+                content.add(pivot)
+                addLighting(to: content)
+
+                do {
+                    let model = try await Entity(named: resource, in: .main)
+                    hideStudioProps(in: model)
+                    pivot.addChild(model)
+                    playAnimations(in: model)
+                    await settleFraming(model)
+                    status = .ready
+                } catch {
+                    status = .failed(error.localizedDescription)
+                }
+            } update: { _ in
+                // TEMP HARNESS — remove
+                let hYaw = ProcessInfo.processInfo.environment["H_YAW"].flatMap(Float.init)
+                pivot.transform.rotation =
+                    simd_quatf(angle: Float(yaw) + (hYaw ?? framing.yaw), axis: [0, 1, 0])
+            }
+            .opacity(status == .ready ? 1 : 0)
+
+            switch status {
+            case .loading:
+                ProgressView()
+                    .tint(.white.opacity(0.4))
+            case .failed(let message):
+                VStack(spacing: 8) {
+                    SectionEyebrow(text: "MODEL FAILED TO LOAD", size: 9, em: 0.11)
+                    Text(message)
+                        .font(.ui(11))
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white.opacity(0.4))
+                }
+                .padding(24)
+            case .ready:
+                EmptyView()
+            }
+        }
+        // The drag lives on the container, not on the RealityView: a hit-
+        // testable shape over the whole viewport receives every swipe
+        // regardless of how RealityView routes touches internally.
+        //
+        // A swipe the full width of the viewport is exactly one turn. The old
+        // fixed 0.01 rad/pt needed ~630pt for 360° — wider than any iPhone —
+        // so a single swipe could never bring the model all the way around.
+        .contentShape(Rectangle())
+        .gesture(
+            DragGesture(minimumDistance: 2)
+                .onChanged { value in
+                    let turns = Double(value.translation.width / max(width, 1))
+                    yaw = dragStartYaw + turns * 2 * .pi
+                }
+                .onEnded { _ in dragStartYaw = yaw }
+        )
+    }
+
+    /// Plays every skeletal clip the file carries, looping.
+    ///
+    /// Blender writes the whole scene's animation as one clip per animated
+    /// entity, so this walks the hierarchy rather than assuming it sits on the
+    /// root.
+    private func playAnimations(in root: Entity) {
+        func walk(_ entity: Entity) {
+            if let clip = entity.availableAnimations.first {
+                let controller = entity.playAnimation(
+                    clip.repeat(), transitionDuration: 0, startsPaused: false
+                )
+                controller.speed = speed
+            }
+            for child in entity.children { walk(child) }
+        }
+        walk(root)
+    }
+
+    /// Hides the DCC studio floor: the viewport draws its own ground, and a
+    /// matte plane sitting in it reads as a seam.
+    private func hideStudioProps(in root: Entity) {
+        let hidden: Set<String> = ["DARK_Floor"]
+        func walk(_ entity: Entity) {
+            if hidden.contains(entity.name) { entity.isEnabled = false }
+            for child in entity.children { walk(child) }
+        }
+        walk(root)
+    }
+
+    /// Normalises the model to one unit tall and centres it on the pivot, so
+    /// framing does not depend on the DCC scene's scale or origin.
+    ///
+    /// Framing is driven by height, not the largest dimension: these scenes
+    /// include equipment (a barbell is wider than the lifter is tall), and
+    /// normalising by width would shrink the figure into the middle of a
+    /// portrait viewport.
+    /// Frames the model against the pose it actually holds while playing.
+    ///
+    /// Measuring at load is useless here: every exercise shares one rig, so
+    /// `visualBounds` reports the same standing box for a squat and a push-up
+    /// alike — the pose only exists once the clip is running. So sample the
+    /// bounds across the first second of playback and fit the union, which
+    /// also keeps the framing stable as the lifter moves through the rep.
+    private func settleFraming(_ model: Entity) async {
+        let subject = model.findEntity(named: Self.rigEntityName) ?? model
+        var union: BoundingBox?
+
+        for _ in 0..<2 {
+            try? await Task.sleep(for: .milliseconds(80))
+            let sample = subject.visualBounds(recursive: true, relativeTo: nil)
+            union = union.map { $0.union(sample) } ?? sample
+        }
+
+        guard let bounds = union else { return }
+        let longest = max(bounds.extents.x, max(bounds.extents.y, bounds.extents.z))
+        guard longest > 0 else { return }
+
+        // TEMP HARNESS — remove
+        let env = ProcessInfo.processInfo.environment
+        let zoom = env["H_ZOOM"].flatMap(Float.init) ?? framing.zoom
+        var offset = framing.offset
+        if let x = env["H_OFFX"].flatMap(Float.init) { offset.x = x }
+        if let y = env["H_OFFY"].flatMap(Float.init) { offset.y = y }
+        if let z = env["H_OFFZ"].flatMap(Float.init) { offset.z = z }
+        print("HARNESS bounds \(resource) center \(bounds.center.x) \(bounds.center.y) \(bounds.center.z) extents \(bounds.extents.x) \(bounds.extents.y) \(bounds.extents.z)")
+        Task { @MainActor in
+            for _ in 0..<12 {
+                print("HARNESS yawState \(yaw)")
+                try? await Task.sleep(for: .seconds(1))
+            }
+        }
+        let scale = zoom / longest
+        model.scale = SIMD3(repeating: scale)
+        model.position = -bounds.center * scale + offset
+    }
+
+    /// SkelRoot written by the Blender rig.
+    private static let rigEntityName = "Anatomy_MasterRig"
+
+    /// Key / fill / rim, echoing the design's studio: one bright source high
+    /// and to the left, a dim fill, and two rims to separate the figure from a
+    /// near-black ground.
+    private func addLighting(to content: RealityViewCameraContent) {
+        func light(
+            intensity: Float, from: SIMD3<Float>, colour: UIColor = .white
+        ) -> DirectionalLight {
+            let entity = DirectionalLight()
+            entity.light.intensity = intensity
+            entity.light.color = colour
+            entity.position = from
+            entity.look(at: .zero, from: from, relativeTo: nil)
+            return entity
+        }
+
+        // Rim-led: the back pair does most of the work of separating a
+        // near-black figure from a near-black ground, while the key stays low
+        // enough that the emissive worked muscles still read as the brightest
+        // thing on screen.
+        content.add(light(intensity: 3_200, from: [-1.4, 1.6, 1.8]))
+        content.add(light(intensity: 900, from: [1.8, 0.4, 1.2]))
+        content.add(light(intensity: 6_500, from: [1.7, 0.9, -1.6]))
+        content.add(light(intensity: 5_200, from: [-1.7, 0.7, -1.5]))
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-incline-dumbbell-press.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

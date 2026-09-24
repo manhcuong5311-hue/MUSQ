@@ -1,0 +1,28 @@
+//
+//  ContentView.swift
+//  GymWorkout
+//
+//  Created by Sam Manh Cuong on 13/9/26.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        // TEMP HARNESS — remove
+        if let name = ProcessInfo.processInfo.environment["HARNESS_EXERCISE"],
+           let ex = SampleData.exercises.first(where: { $0.name == name }) {
+            NavigationStack { Exercise3DView(exercise: ex) }
+                .preferredColorScheme(.dark)
+        } else if ProcessInfo.processInfo.environment["HARNESS_LIBRARY"] != nil {
+            ExerciseLibraryView(tab: .constant(.exercises))
+                .preferredColorScheme(.dark)
+        } else {
+            RootView()
+        }
+    }
+}
+
+#Preview {
+    ContentView()
+}
