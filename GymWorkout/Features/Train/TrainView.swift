@@ -62,7 +62,7 @@ struct TrainView: View {
                     record: record,
                     onViewExercises: { router.push(.preset(group, day: selectedDay)) },
                     onTrainAnyway: {
-                        let level = store.level(for: group, on: selectedDay) ?? .basic
+                        let level = store.level(for: group, on: selectedDay) ?? store.suggestedLevel
                         store.ensurePlan(group, on: selectedDay, level: level,
                                          planned: store.preview(group, level: level))
                         router.push(.preset(group, day: selectedDay))
@@ -100,7 +100,8 @@ struct TrainView: View {
         let session = store.session(on: selectedDay)
         let records = store.recoveryRecords(at: referenceTime)
         let planned = session?.groups ?? []
-        let trainable = PresetProvider.trainableGroups.filter { !planned.contains($0) }
+        let trainable = ProgramAdvisor.ordered(PresetProvider.trainableGroups, for: store.profile)
+            .filter { !planned.contains($0) }
 
         if let session, !session.exercises.isEmpty {
             workoutSection(session)
@@ -110,7 +111,8 @@ struct TrainView: View {
         if isPast {
             groupSection("LOG A WORKOUT", groups: trainable, records: records)
         } else {
-            let recommended = TrainingPlanner(records: records, now: referenceTime)
+            let recommended = TrainingPlanner(records: records, now: referenceTime,
+                                              rotation: ProgramAdvisor.rotation(for: store.profile))
                 .recommended(planned: planned).filter { !planned.contains($0) }
             let recent = trainable
                 .filter { !recommended.contains($0) && (records[$0].map { $0.status != .ready } ?? false) }
@@ -211,6 +213,13 @@ struct TrainView: View {
                     .foregroundStyle(DS.silver.opacity(0.7))
                     .frame(maxWidth: .infinity)
                     .padding(.top, 6)
+
+                    if isToday, let walk = store.walkSuggestion {
+                        WalkCard(walk: walk, isDone: session.walkDone == true) { done in
+                            withAnimation(.easeOut(duration: 0.2)) { store.setWalkDone(done, on: selectedDay) }
+                        }
+                        .padding(.top, 8)
+                    }
                 } else {
                     WideButton(title: "Complete Workout", prominent: session.hasCompletedSets) {
                         withAnimation(.easeOut(duration: 0.2)) { store.completeWorkout(on: selectedDay) }

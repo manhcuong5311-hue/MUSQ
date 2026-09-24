@@ -12,7 +12,6 @@ import SwiftUI
 
 struct RootView: View {
     @State private var tab: AppTab = .train
-    @State private var libraryFilter: MuscleGroupName = .all
     /// Workout history, shared by Train, Muscles and Profile and saved on
     /// every change.
     @State private var store = WorkoutStore()
@@ -23,17 +22,25 @@ struct RootView: View {
         ZStack {
             DS.ink.ignoresSafeArea()
 
-            switch tab {
-            case .train:
-                TrainView(tab: $tab)
-            case .exercises:
-                ExerciseLibraryView(tab: $tab, initialFilter: libraryFilter)
-            case .muscles:
-                MuscleProgressView(tab: $tab)
-            case .profile:
-                ProfileView(tab: $tab)
+            // Onboarding runs until its answers are saved, then hands over
+            // to the tabs.
+            if store.profile == nil {
+                OnboardingView()
+                    .transition(.opacity)
+            } else {
+                switch tab {
+                case .train:
+                    TrainView(tab: $tab)
+                case .exercises:
+                    ExerciseLibraryView(tab: $tab)
+                case .muscles:
+                    MuscleProgressView(tab: $tab)
+                case .profile:
+                    ProfileView(tab: $tab)
+                }
             }
         }
+        .animation(.easeInOut(duration: 0.35), value: store.profile == nil)
         .environment(store)
         .environment(restTimer)
     }

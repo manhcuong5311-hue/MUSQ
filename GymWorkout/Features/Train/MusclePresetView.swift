@@ -187,9 +187,10 @@ struct MusclePresetView: View {
                 fillsWidth: true
             )
 
-            Text(level == .basic
-                 ? "Machines and supported positions — a good place to start."
-                 : "Free-weight compounds that need more balance and bracing.")
+            Text((level == .basic
+                  ? "Machines and supported positions — a good place to start."
+                  : "Free-weight compounds that need more balance and bracing.")
+                 + (store.profile != nil && level == store.suggestedLevel ? " Suggested for you." : ""))
                 .font(.ui(12.5))
                 .foregroundStyle(DS.silver.opacity(0.5))
         }
@@ -298,7 +299,7 @@ struct MusclePresetView: View {
     private func load() {
         guard !didLoad else { return }
         didLoad = true
-        level = store.level(for: group, on: day) ?? .basic
+        level = store.level(for: group, on: day) ?? store.suggestedLevel
         preview = store.preview(group, level: level)
     }
 

@@ -292,6 +292,9 @@ struct WorkoutSession: Identifiable, Codable, Hashable {
     /// Effective completed sets per muscle, keyed by `MuscleGroup.rawValue`,
     /// saved when the workout is completed.
     var effectiveSets: [String: Double] = [:]
+    /// The walk suggested after a weight-loss workout was done. Nil when
+    /// none was logged.
+    var walkDone: Bool? = nil
 
     var groups: [MuscleGroup] {
         var seen: [MuscleGroup] = []
@@ -312,6 +315,52 @@ enum TrainingExperience: String, Codable, CaseIterable, Identifiable {
 
     var id: String { rawValue }
     var title: String { rawValue.capitalized }
+}
+
+// MARK: - Profile
+
+/// Asked during onboarding to shape suggestions — never to limit what can be
+/// trained.
+enum Sex: String, Codable, CaseIterable, Identifiable {
+    case female, male, unspecified
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .female: return "Female"
+        case .male: return "Male"
+        case .unspecified: return "Prefer not to say"
+        }
+    }
+}
+
+enum FitnessGoal: String, Codable, CaseIterable, Identifiable {
+    case loseWeight, buildMuscle, getFit
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .loseWeight: return "Lose weight"
+        case .buildMuscle: return "Build muscle"
+        case .getFit: return "Get fit"
+        }
+    }
+}
+
+/// The onboarding answers. Experience lives on the store next to it, since
+/// recovery reads it on its own.
+struct UserProfile: Codable, Hashable {
+    var sex: Sex
+    var goal: FitnessGoal
+    var heightCm: Double
+    var weightKg: Double
+
+    var bmi: Double {
+        let metres = heightCm / 100
+        return metres > 0 ? weightKg / (metres * metres) : 0
+    }
 }
 
 // MARK: - Settings
@@ -346,6 +395,14 @@ enum WeightUnit: String, Codable, CaseIterable, Identifiable {
     /// A total, rounded to a whole number and grouped: "3,240 kg".
     func total(_ kg: Double) -> String {
         "\(Int(fromKilograms(kg).rounded()).formatted()) \(symbol)"
+    }
+
+    /// Height in the system that goes with the unit: "172 cm", or "5′ 8″"
+    /// alongside pounds.
+    func height(_ cm: Double) -> String {
+        guard self == .lb else { return "\(Int(cm.rounded())) cm" }
+        let inches = Int((cm / 2.54).rounded())
+        return "\(inches / 12)′ \(inches % 12)″"
     }
 
     /// Reads what the user typed, accepting either decimal separator.

@@ -2,9 +2,10 @@
 //  TrainingPlanner.swift
 //  GymWorkout
 //
-//  Picks today's suggested muscle groups. The default program is a simple
-//  push / pull / legs rotation; the planner suggests whichever day of it is
-//  most recovered, breaking ties by what was trained longest ago. It only
+//  Picks today's suggested muscle groups from a rotation — push / pull /
+//  legs by default, lower / upper for a lower-body focus (see
+//  `ProgramAdvisor`). The planner suggests whichever day of it is most
+//  recovered, breaking ties by what was trained longest ago. It only
 //  suggests — any group can be trained at any time.
 //
 
@@ -12,15 +13,10 @@ import Foundation
 
 struct TrainingPlanner {
 
-    static let rotation: [[MuscleGroup]] = [
-        [.chest, .shoulders, .triceps],
-        [.back, .biceps],
-        [.quads, .hamstrings, .glutes]
-    ]
-
     var records: [MuscleGroup: MuscleTrainingRecord]
     /// The moment being planned for — today, or a day picked on the calendar.
     var now: Date = Date()
+    var rotation: [[MuscleGroup]] = ProgramAdvisor.standardRotation
 
     /// The suggested groups, leaving out any that are still recovering.
     ///
@@ -30,7 +26,7 @@ struct TrainingPlanner {
     /// just because the planned group is now recovering.
     func recommended(planned: [MuscleGroup] = []) -> [MuscleGroup] {
         let trainable = Set(PresetProvider.trainableGroups)
-        let days = Self.rotation.map { $0.filter(trainable.contains) }.filter { !$0.isEmpty }
+        let days = rotation.map { $0.filter(trainable.contains) }.filter { !$0.isEmpty }
         guard var best = days.first else { return [] }
         if !planned.isEmpty {
             let overlap = { (day: [MuscleGroup]) in day.filter(planned.contains).count }

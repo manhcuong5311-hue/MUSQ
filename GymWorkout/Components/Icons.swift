@@ -57,12 +57,8 @@ struct MoreDotsIcon: View {
     }
 }
 
-/// Tab-bar glyph.
-///
-/// NOTE: the design ships a single rounded-square outline for all five tabs —
-/// an explicit placeholder, not five identical icons by intent. Swap `symbol`
-/// in `AppTab` for real SF Symbols when the icon set is decided; the layout
-/// below already accommodates either.
+/// Tab-bar glyph: the tab's SF Symbol (see `AppTab.symbol(selected:)`), or
+/// the design's rounded-square placeholder when none is given.
 struct TabGlyph: View {
     var color: Color
     var symbol: String?
@@ -71,7 +67,7 @@ struct TabGlyph: View {
         Group {
             if let symbol {
                 Image(systemName: symbol)
-                    .font(.system(size: 17, weight: .regular))
+                    .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(color)
             } else {
                 RoundedRectangle(cornerRadius: 7, style: .continuous)

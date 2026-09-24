@@ -2,9 +2,10 @@
 //  ProfileView.swift
 //  GymWorkout
 //
-//  Tab 4. The totals, the settings that shape every other tab (units,
-//  experience for recovery estimates, rest timer), personal records, and the
-//  workout history they come from. Only completed sets count.
+//  Tab 4. The totals, the onboarding answers and the plan they add up to,
+//  the settings that shape every other tab (units, experience for recovery
+//  estimates, rest timer), personal records, and the workout history they
+//  come from. Only completed sets count.
 //
 
 import SwiftUI
@@ -21,6 +22,7 @@ struct ProfileView: View {
     @State private var path: [ProfileRoute] = []
     @State private var showsAllRecords = false
     @State private var historyLimit = ProfileView.historyPage
+    @State private var editsProfile = false
 
     private static let recordPreview = 5
     private static let historyPage = 8
@@ -39,6 +41,8 @@ struct ProfileView: View {
 
                         stats
                             .padding(.top, 18)
+                        aboutYou
+                            .padding(.top, 28)
                         settings
                             .padding(.top, 28)
                         records
@@ -63,6 +67,10 @@ struct ProfileView: View {
             .toolbar(.hidden, for: .navigationBar)
         }
         .tint(DS.silver)
+        .fullScreenCover(isPresented: $editsProfile) {
+            OnboardingView(isEditing: true, onClose: { editsProfile = false })
+                .environment(store)
+        }
     }
 
     private var loggedSessions: [WorkoutSession] {
@@ -83,6 +91,63 @@ struct ProfileView: View {
                      value: StatTile.compact(store.unit.fromKilograms(volume)),
                      unit: store.unit.symbol)
         }
+    }
+
+    // MARK: - About you
+
+    @ViewBuilder
+    private var aboutYou: some View {
+        if let profile = store.profile {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .firstTextBaseline) {
+                    SectionEyebrow(text: "ABOUT YOU")
+                    Spacer()
+                    Button("Edit") { editsProfile = true }
+                        .font(.ui(13, .semibold))
+                        .foregroundStyle(DS.silver)
+                        .buttonStyle(.plain)
+                }
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack(spacing: 8) {
+                        fact("GOAL", profile.goal.title)
+                        fact("SEX", profile.sex == .unspecified ? "–" : profile.sex.title)
+                    }
+                    HStack(spacing: 8) {
+                        fact("HEIGHT", store.unit.height(profile.heightCm))
+                        fact("WEIGHT", store.unit.total(profile.weightKg))
+                    }
+                    Hairline(opacity: 0.06)
+                    Text(planSummary(profile))
+                        .font(.ui(12.5))
+                        .cssLineHeight(12.5, 1.45)
+                        .foregroundStyle(DS.silver.opacity(0.55))
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(14)
+                .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
+            }
+        }
+    }
+
+    private func fact(_ label: String, _ value: String) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            MetaLine(text: label, size: 8.5)
+            Text(value)
+                .font(.ui(15, .semibold))
+                .foregroundStyle(DS.silver)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+    }
+
+    /// "Lower-body focus · Basic presets · walk 3,000 steps after workouts."
+    private func planSummary(_ profile: UserProfile) -> String {
+        var parts = [ProgramAdvisor.isLowerFocused(profile) ? "Lower-body focus" : "Push, pull and legs",
+                     "\(store.suggestedLevel.title.capitalized) presets"]
+        if let walk = store.walkSuggestion {
+            parts.append("walk \(walk.steps.formatted()) steps after workouts")
+        }
+        return parts.joined(separator: " · ") + "."
     }
 
     // MARK: - Settings

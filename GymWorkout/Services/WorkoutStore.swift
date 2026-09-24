@@ -24,6 +24,12 @@ final class WorkoutStore {
     var rest: RestSetting = .auto {
         didSet { if rest != oldValue && !isLoading { save() } }
     }
+    /// The onboarding answers; nil until onboarding is finished.
+    var profile: UserProfile? {
+        didSet { if profile != oldValue && !isLoading { save() } }
+    }
+    /// Exercises saved with the heart, by name.
+    private(set) var saved: Set<String> = []
 
     @ObservationIgnored private var isLoading = false
     @ObservationIgnored private let fileURL: URL
@@ -74,6 +80,17 @@ final class WorkoutStore {
 
     var recoverySettings: RecoverySettings { RecoverySettings(experience: experience) }
 
+    /// The preset level a group opens on when the day doesn't have one yet.
+    var suggestedLevel: PresetLevel {
+        ProgramAdvisor.suggestedLevel(for: profile, experience: experience)
+    }
+
+    /// The walk to suggest after a workout, for a weight-loss goal only.
+    var walkSuggestion: WalkSuggestion? {
+        guard let profile, profile.goal == .loseWeight else { return nil }
+        return ProgramAdvisor.walk(for: profile, experience: experience)
+    }
+
     func recoveryRecords(at date: Date = Date()) -> [MuscleGroup: MuscleTrainingRecord] {
         RecoveryCalculator(settings: recoverySettings).records(from: sessions, now: date)
     }
@@ -114,10 +131,10 @@ final class WorkoutStore {
         }
     }
 
-    /// "Add to Today" from the Muscles tab: the Basic preset, unless the group
-    /// is already planned today.
+    /// "Add to Today" from the Muscles tab: the suggested preset, unless the
+    /// group is already planned today.
     func addToToday(_ group: MuscleGroup) {
-        let level = self.level(for: group, on: Date()) ?? .basic
+        let level = self.level(for: group, on: Date()) ?? suggestedLevel
         ensurePlan(group, on: Date(), level: level, planned: preview(group, level: level))
     }
 
@@ -280,6 +297,48 @@ final class WorkoutStore {
         return totals
     }
 
+    func setWalkDone(_ done: Bool, on day: Date) {
+        mutateSession(on: day) { $0.walkDone = done ? true : nil }
+    }
+
+    // MARK: - Saved exercises
+
+    func isSaved(_ name: String) -> Bool { saved.contains(name) }
+
+    func toggleSaved(_ name: String) {
+        if saved.contains(name) { saved.remove(name) } else { saved.insert(name) }
+        save()
+    }
+
+    // MARK: - From the library
+
+    /// The group an exercise is planned under when added from the library:
+    /// the group of its library label (a deadlift's "posterior chain" is back
+    /// work), else its first primary muscle.
+    static func planningGroup(forExerciseNamed name: String) -> MuscleGroup? {
+        if let exercise = ExerciseCatalog.exercise(named: name),
+           let part = MusclePart(muscleName: exercise.primaryMuscle) {
+            return part.group
+        }
+        return ExerciseCatalog.contributions(forExerciseNamed: name).first { $0.role == .primary }?.muscle
+    }
+
+    func isInToday(_ name: String) -> Bool {
+        session(on: Date())?.exercises.contains { $0.exerciseName == name } ?? false
+    }
+
+    /// Adds the exercise to today's workout under its planning group, unless
+    /// it is already there. Returns the group it lives under today.
+    @discardableResult
+    func addToToday(exerciseNamed name: String) -> MuscleGroup? {
+        if let existing = session(on: Date())?.exercises.first(where: { $0.exerciseName == name }) {
+            return existing.group
+        }
+        guard let group = Self.planningGroup(forExerciseNamed: name) else { return nil }
+        addExercise(named: name, to: group, on: Date())
+        return group
+    }
+
     /// Future days can be planned but not logged.
     func canLog(on day: Date) -> Bool {
         calendar.startOfDay(for: day) <= calendar.startOfDay(for: Date())
@@ -359,6 +418,8 @@ final class WorkoutStore {
         /// Nil in files saved before the setting existed.
         var unit: WeightUnit?
         var rest: RestSetting?
+        var profile: UserProfile?
+        var saved: [String]?
         var sessions: [WorkoutSession]
     }
 
@@ -376,11 +437,14 @@ final class WorkoutStore {
         experience = snapshot.experience
         unit = snapshot.unit ?? .kg
         rest = snapshot.rest ?? .auto
+        profile = snapshot.profile
+        saved = Set(snapshot.saved ?? [])
         isLoading = false
     }
 
     private func save() {
-        let snapshot = Snapshot(experience: experience, unit: unit, rest: rest, sessions: sessions)
+        let snapshot = Snapshot(experience: experience, unit: unit, rest: rest, profile: profile,
+                                saved: saved.sorted(), sessions: sessions)
         do {
             try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(),
                                                     withIntermediateDirectories: true)
