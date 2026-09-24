@@ -2,27 +2,31 @@
 //  ExerciseLibraryView.swift
 //  GymWorkout
 //
-//  Screen 1b — Exercise Library. The category filter is live.
+//  Screen 1b — Exercise Library. The category filter is live, plus a Saved
+//  filter for the exercises hearted in the 3D view.
 //
 
 import SwiftUI
 
 struct ExerciseLibraryView: View {
     @Binding var tab: AppTab
-    /// Pre-selects a category when arriving from a muscle group tile.
-    var initialFilter: MuscleGroupName = .all
 
+    @Environment(WorkoutStore.self) private var store
     @State private var filter: MuscleGroupName = .all
+    /// Only exercises saved with the heart; replaces the category filter.
+    @State private var savedOnly = false
     @State private var query = ""
     @State private var path: [Exercise] = []
 
     private var visible: [Exercise] {
         SampleData.exercises.filter { exercise in
-            let matchesCategory = filter == .all || exercise.category == filter
+            let matchesFilter = savedOnly
+                ? store.isSaved(exercise.name)
+                : filter == .all || exercise.category == filter
             let matchesQuery = query.isEmpty
                 || exercise.name.localizedCaseInsensitiveContains(query)
                 || exercise.meta.localizedCaseInsensitiveContains(query)
-            return matchesCategory && matchesQuery
+            return matchesFilter && matchesQuery
         }
     }
 
@@ -55,7 +59,6 @@ struct ExerciseLibraryView: View {
             .toolbar(.hidden, for: .navigationBar)
         }
         .tint(DS.silver)
-        .onAppear { filter = initialFilter }
     }
 
     // MARK: - Search
@@ -97,8 +100,17 @@ struct ExerciseLibraryView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 7) {
                 ForEach(MuscleGroupName.allCases) { group in
-                    FilterChip(title: group.rawValue, selected: group == filter) {
-                        withAnimation(.easeOut(duration: 0.18)) { filter = group }
+                    FilterChip(title: group.rawValue, selected: !savedOnly && group == filter) {
+                        withAnimation(.easeOut(duration: 0.18)) {
+                            savedOnly = false
+                            filter = group
+                        }
+                    }
+                    if group == .all {
+                        FilterChip(title: store.saved.isEmpty ? "Saved" : "Saved · \(store.saved.count)",
+                                   selected: savedOnly) {
+                            withAnimation(.easeOut(duration: 0.18)) { savedOnly = true }
+                        }
                     }
                 }
             }
@@ -115,9 +127,18 @@ struct ExerciseLibraryView: View {
                     Button {
                         path.append(exercise)
                     } label: {
-                        ExerciseRow(exercise: exercise)
+                        ExerciseRow(exercise: exercise, isSaved: store.isSaved(exercise.name))
                     }
                     .buttonStyle(.plain)
+                }
+                if visible.isEmpty {
+                    Text(savedOnly && query.isEmpty
+                         ? "Tap the heart on any exercise to save it here."
+                         : "No exercises match.")
+                        .font(.ui(13))
+                        .foregroundStyle(DS.silver.opacity(0.5))
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 40)
                 }
             }
             .padding(.horizontal, DS.Metric.gutter)
@@ -130,6 +151,7 @@ struct ExerciseLibraryView: View {
 
 struct ExerciseRow: View {
     var exercise: Exercise
+    var isSaved = false
 
     var body: some View {
         HStack(spacing: 13) {
@@ -174,6 +196,12 @@ struct ExerciseRow: View {
                                 RoundedRectangle(cornerRadius: 5, style: .continuous)
                                     .fill(DS.silver.opacity(0.08))
                             )
+                    }
+                    if isSaved {
+                        Image(systemName: "heart.fill")
+                            .font(.system(size: 9, weight: .semibold))
+                            .foregroundStyle(DS.silver.opacity(0.6))
+                            .accessibilityLabel("Saved")
                     }
                 }
                 .padding(.top, 8)

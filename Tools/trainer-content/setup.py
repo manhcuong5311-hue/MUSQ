@@ -447,4 +447,26 @@ SETUP = {
         "Take a wide stance and hold the handle with both hands.",
         "Start with straight arms reaching up toward the pulley.",
     ],
+    # Gated exercises re-exported, plus the lean lunge (2026-09-24)
+    "Biceps Curl": [
+        "Hold a dumbbell in each hand, palms facing forward.",
+        "Stand tall, feet hip-width, arms straight by your sides.",
+        "Draw your shoulders back and keep your elbows by your ribs.",
+    ],
+    "Squat": [
+        "Stand with your feet a little wider than hip-width.",
+        "Turn your toes slightly out.",
+        "Raise your arms straight in front to shoulder height.",
+        "Brace your core and lift your chest.",
+    ],
+    "Lunge": [
+        "Stand tall with your hands on your hips.",
+        "Step one foot forward about a stride's length.",
+        "Lift your back heel and square your hips to the front.",
+    ],
+    "Lunge (Lean)": [
+        "Stand tall with your hands on your hips.",
+        "Step one foot forward about a stride's length and lift your back heel.",
+        "Tilt your torso about 30° forward from the hips, back flat.",
+    ],
 }

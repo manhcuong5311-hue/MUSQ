@@ -13,6 +13,9 @@ import SwiftUI
 struct SetupDrawer: View {
     var steps: [String]
     @Binding var isExpanded: Bool
+    /// A control on the right of the bar, e.g. "Add to Today". Sits over the
+    /// bar rather than inside its button, so its taps stay its own.
+    var accessory: AnyView? = nil
 
     /// Height of the bar the drawer rests as. The viewport leaves exactly
     /// this much room below itself.
@@ -74,6 +77,11 @@ struct SetupDrawer: View {
                         .rotationEffect(.degrees(180 * progress))
                 }
                 .padding(.top, 12)
+                .overlay(alignment: .trailing) {
+                    if let accessory {
+                        accessory.padding(.trailing, 26)
+                    }
+                }
 
                 Spacer(minLength: 0)
             }

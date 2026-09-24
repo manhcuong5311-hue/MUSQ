@@ -38,6 +38,15 @@ JOBS = {
  "Single-Leg Glute Bridge": ("Legs/SingleLegGluteBridge", PI/2, 0.62, (0,0.52,0)),
  "Push-Up": ("Chest/pushup", PI/2, 0.62, (0,0.30,0)),
  "Plank": ("Abs/Plank", PI/2, 0.62, (0,0.52,0)),
+ # The three gated exercises re-exported, plus the lean lunge (2026-09-24).
+ # "Squat" and "Lunge" above were the legacy models; these replace them.
+ "Biceps Curl": ("Biceps/BicepsCurl", -0.4, 0.885, (0.023,0.026,-0.010)),
+ "Squat": ("Legs/Squat", -0.5, 0.883, (0.070,0.026,-0.038)),
+ "Lunge": ("Legs/Lunge", -1.3, 0.824, (0.051,0.054,-0.183)),
+ "Lunge (Lean)": ("Legs/LungeLean", -1.3, 0.823, (0.051,0.074,-0.183)),
+ # Back Squat after its barbell was grafted back on (graft_bar.py): framed
+ # three-quarter so the 2.2 m bar stops cropping and depth reads.
+ "Back Squat": ("Legs/BackSquat", -1.0, 0.828, (-0.021,0.019,0.033)),
 }
 JOINTS = ["support_TrapeziusUpper_L","support_TrapeziusUpper_R","head","neck","chest","spine","pelvis","scapula_L","upper_arm_L","forearm_L","hand_L",
           "scapula_R","upper_arm_R","forearm_R","hand_R","thigh_L","patella_L","shin_L","foot_L","thigh_R","patella_R","shin_R","foot_R"]
@@ -50,9 +59,12 @@ def proj(p, yaw, zoom, off):
     dz = D - z
     return ((x/(dz*TAN*ASPECT))+1)/2, (1-(y/(dz*TAN)))/2, dz
 
-only = [n for n in JOBS if n not in ("Squat","Step-Up","Single-Leg Glute Bridge","Push-Up","Plank")]
+# Names after the output path limit the run; the output then merges into an
+# existing file instead of replacing it.
+only = sys.argv[2:] or [n for n in JOBS if n not in ("Squat","Step-Up","Single-Leg Glute Bridge","Push-Up","Plank")]
 fr = [0.0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]
-out = {}
+import os
+out = json.load(open(sys.argv[1])) if sys.argv[2:] and os.path.exists(sys.argv[1]) else {}
 for name in only:
     res, yaw, zoom, off = JOBS[name]
     st = Usd.Stage.Open(M + res + ".usdc")

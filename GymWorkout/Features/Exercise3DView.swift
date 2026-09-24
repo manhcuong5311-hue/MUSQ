@@ -8,6 +8,10 @@
 //  that hides the key tips to watch the bare movement, and the swipe-up
 //  setup drawer under the viewport.
 //
+//  The heart saves the exercise, and "Add to Today" on the setup bar puts it
+//  in today's workout, so the library is a way into training, not only
+//  reading.
+//
 //  Everything on this screen is driven by the exercise's `ExerciseContent`.
 //  An exercise without one is gated (see `TrainerUnavailableView`) rather than
 //  borrowing another lift's cues and activation.
@@ -23,8 +27,12 @@ struct Exercise3DView: View {
     @State private var sheet: SheetKind?
     @State private var cueID: String
     @State private var cueMode: FormMode = .correct
-    @State private var favourite = false
-    @State private var showsGuides = true
+    @Environment(WorkoutStore.self) private var store
+    /// A short confirmation after adding to today, e.g. "Added to today · Chest".
+    @State private var toast: String?
+    /// The dashed "replaceable viewport" marker — a build-time aid, off
+    /// for users and only offered in the menu of debug builds.
+    @State private var showsGuides = false
     @State private var showsComparison = false
     @State private var setupExpanded = false
     /// Off shows the lift with nothing over it. Remembered across exercises,
@@ -63,7 +71,8 @@ struct Exercise3DView: View {
             }
 
             if let content {
-                SetupDrawer(steps: content.setup, isExpanded: $setupExpanded)
+                SetupDrawer(steps: content.setup, isExpanded: $setupExpanded,
+                            accessory: AnyView(addToTodayButton))
                     .frame(maxHeight: .infinity, alignment: .bottom)
             }
 
@@ -80,7 +89,28 @@ struct Exercise3DView: View {
             if let content {
                 sheetLayer(content)
             }
+
+            if let toast {
+                VStack {
+                    HStack(spacing: 7) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 13, weight: .semibold))
+                        Text(toast)
+                            .font(.ui(13, .semibold))
+                    }
+                    .foregroundStyle(DS.ink)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 9)
+                    .background(Capsule().fill(DS.silver))
+                    .padding(.top, 62)
+                    Spacer()
+                }
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .allowsHitTesting(false)
+                .accessibilityElement(children: .combine)
+            }
         }
+        .animation(.easeOut(duration: 0.22), value: toast)
         .toolbar(.hidden, for: .navigationBar)
         .navigationBarBackButtonHidden()
         .navigationDestination(isPresented: $showsComparison) {
@@ -88,6 +118,40 @@ struct Exercise3DView: View {
                 FormComparisonView(exercise: exercise, copy: content.comparison,
                                    glows: content.glows)
             }
+        }
+    }
+
+    // MARK: - Actions
+
+    private var addToTodayButton: some View {
+        let inToday = store.isInToday(exercise.name)
+        return Button(action: addToToday) {
+            HStack(spacing: 5) {
+                Image(systemName: inToday ? "checkmark" : "plus")
+                    .font(.system(size: 10, weight: .bold))
+                Text(inToday ? "In Today" : "Add to Today")
+                    .font(.ui(12.5, .semibold))
+            }
+            .foregroundStyle(inToday ? DS.silver : DS.ink)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(Capsule().fill(inToday ? DS.silver.opacity(0.08) : DS.silver))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(inToday ? "In today's workout" : "Add to today's workout")
+    }
+
+    private func addToToday() {
+        let alreadyThere = store.isInToday(exercise.name)
+        guard let group = store.addToToday(exerciseNamed: exercise.name) else { return }
+        showToast(alreadyThere ? "Already in today's \(group.title) workout" : "Added to today · \(group.title)")
+    }
+
+    private func showToast(_ text: String) {
+        toast = text
+        Task {
+            try? await Task.sleep(for: .seconds(2.2))
+            if toast == text { toast = nil }
         }
     }
 
@@ -114,17 +178,22 @@ struct Exercise3DView: View {
 
             Spacer(minLength: 0)
 
-            CircleIconButton(action: { favourite.toggle() }) {
-                Image(systemName: favourite ? "heart.fill" : "heart")
+            let isSaved = store.isSaved(exercise.name)
+            CircleIconButton(action: { store.toggleSaved(exercise.name) }) {
+                Image(systemName: isSaved ? "heart.fill" : "heart")
                     .font(.system(size: 13, weight: .regular))
                     .foregroundStyle(DS.silver)
+                    .contentTransition(.symbolEffect(.replace))
             }
-            .accessibilityLabel(favourite ? "Remove from saved" : "Save exercise")
+            .sensoryFeedback(.selection, trigger: isSaved)
+            .accessibilityLabel(isSaved ? "Remove from saved" : "Save exercise")
 
             if content != nil {
                 Menu {
                     Button("Form Comparison") { showsComparison = true }
+                    #if DEBUG
                     Toggle("Viewport Guides", isOn: $showsGuides)
+                    #endif
                 } label: {
                     ZStack {
                         Circle().fill(DS.silver.opacity(0.08))

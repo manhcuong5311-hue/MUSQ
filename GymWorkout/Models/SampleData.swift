@@ -47,10 +47,13 @@ enum SampleData {
                  primaryMuscle: "UPPER PECTORALIS", equipment: "CABLE",
                  difficulty: .intermediate),
         Exercise(name: "Squat", category: .legs,
-                 primaryMuscle: "QUADRICEPS", equipment: "BARBELL",
-                 difficulty: .intermediate),
+                 primaryMuscle: "QUADRICEPS", equipment: "BODYWEIGHT",
+                 difficulty: .beginner),
         Exercise(name: "Lunge", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "BODYWEIGHT",
+                 difficulty: .beginner),
+        Exercise(name: "Lunge (Lean)", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BODYWEIGHT",
                  difficulty: .beginner),
         Exercise(name: "Bulgarian Split Squat", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "BENCH",
@@ -282,20 +285,14 @@ enum SampleData {
                  difficulty: .intermediate)
     ]
 
-    static var benchPress: Exercise {
-        exercises.first { $0.name == "Barbell Bench Press" } ?? exercises[0]
-    }
-
     // MARK: - Trainer content (the gate)
 
     /// Trainer content keyed by exercise name.
     ///
-    /// Chest, Back, Legs, Shoulders and Arms are authored (2026-09-24). Still
-    /// gated, rather than shown another lift's cues and activation under
-    /// their own name: `Squat` (its model is a cross-arm bodyweight squat,
-    /// not the barbell lift the library lists), `Lunge` (its legacy model is
-    /// turned away from its own skeleton, so tracked cue dots float off the
-    /// body) and `Biceps Curl` (no model).
+    /// Every library exercise with a model is authored (2026-09-24). `Squat`,
+    /// `Lunge` and `Biceps Curl` were gated until their re-exports replaced a
+    /// mismatched or missing model; `Squat` is now listed as the bodyweight
+    /// squat its model shows.
     /// Add an entry here to unlock an exercise; nothing else needs to change.
     private static let contentByExercise: [String: ExerciseContent] = [
         "Barbell Bench Press": benchPressContent,
@@ -358,6 +355,10 @@ enum SampleData {
         "Assisted Dip": assistedDipContent,
         "Bulgarian Split Squat": bulgarianSplitSquatContent,
         "Bulgarian Split Squat (Lean)": bulgarianSplitSquatLeanContent,
+        "Squat": squatContent,
+        "Lunge": lungeContent,
+        "Lunge (Lean)": lungeLeanContent,
+        "Biceps Curl": bicepsCurlContent,
         "Dumbbell Romanian Deadlift": dumbbellRomanianDeadliftContent,
         "Stiff-Leg Deadlift": stiffLegDeadliftContent,
         "Lying Leg Curl": lyingLegCurlContent,
@@ -405,8 +406,16 @@ enum SampleData {
     }
 
     private static let modelByExercise: [String: ExerciseModel] = [
-        "Squat":   ExerciseModel(resource: "Squat",  framing: .standing),
-        "Lunge":   ExerciseModel(resource: "Lunge",  framing: .standing),
+        // Re-exported 2026-09-24 and framed like the lifts below, left side to
+        // the camera: the squat three-quarter so depth and knee tracking read
+        // together, the lunges nearly side-on so the split stance and the
+        // lean read.
+        "Squat":                 ExerciseModel(resource: "Squat",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.883, offset: [0.070, 0.026, -0.038])),
+        "Lunge":                 ExerciseModel(resource: "Lunge",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.824, offset: [0.051, 0.054, -0.183])),
+        "Lunge (Lean)":          ExerciseModel(resource: "LungeLean",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.823, offset: [0.051, 0.074, -0.183])),
         "Bulgarian Split Squat":        ExerciseModel(resource: "BulgarianSplitSquatUpright", framing: .standing),
         "Bulgarian Split Squat (Lean)": ExerciseModel(resource: "BulgarianSplitSquatLean",    framing: .standing),
         // Framing below was fitted offline the same way as the back lifts:
@@ -418,8 +427,10 @@ enum SampleData {
         // turned three-quarter so the pressing motion actually reads, and
         // their machines are allowed to crop rather than shrinking the
         // lifter to fit the whole rig in frame.
+        // The bar was grafted back onto this model (graft_bar.py); three-quarter
+        // so the 2.2 m bar fits and depth reads.
         "Back Squat":            ExerciseModel(resource: "BackSquat",
-                                        framing: ModelFraming(yaw: 0, zoom: 0.890, offset: [0, 0.025, 0])),
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.828, offset: [-0.021, 0.019, 0.033])),
         "Front Squat":           ExerciseModel(resource: "FrontSquat",
                                         framing: ModelFraming(yaw: 0, zoom: 0.603, offset: [0, 0.021, 0])),
         "Goblet Squat":          ExerciseModel(resource: "GobletSquat",
@@ -514,6 +525,8 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -2.8, zoom: 0.689, offset: [-0.104, -0.005, -0.037])),
         "Barbell Curl":                       ExerciseModel(resource: "BarbellCurl",
                                         framing: ModelFraming(yaw: -0.4, zoom: 0.615, offset: [0.004, 0.019, -0.002])),
+        "Biceps Curl":                        ExerciseModel(resource: "BicepsCurl",
+                                        framing: ModelFraming(yaw: -0.4, zoom: 0.885, offset: [0.023, 0.026, -0.010])),
         "Triceps Pushdown":                   ExerciseModel(resource: "CableTricepsPushdown",
                                         framing: ModelFraming(yaw: -0.6, zoom: 0.884, offset: [0.031, 0.028, -0.021])),
         "Rope Pushdown":                       ExerciseModel(resource: "RopePushdown",
@@ -1723,7 +1736,11 @@ enum SampleData {
             MuscleActivation(name: "Gluteus Maximus", rank: .primary,
                              activation: "HIGH ACTIVATION", fraction: 0.76),
             MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62)
+                             activation: "MODERATE ACTIVATION", fraction: 0.62),
+            // The knees extend as the bar breaks the floor; conventional pulls
+            // show substantial quadriceps activity (Escamilla et al. 2002).
+            MuscleActivation(name: "Quadriceps", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.50)
         ],
         stabilisers: ["latissimus dorsi", "upper trapezius", "forearms", "core"],
         setup: [
@@ -2852,22 +2869,25 @@ enum SampleData {
     // machines, so their labels are bespoke to that camera angle.
 
     static let backSquatContent = ExerciseContent(
+        // Relaid 2026-09-24 for the three-quarter framing once the bar was
+        // grafted back on: the plates sweep the upper half of the frame through
+        // the rep, so the bar label sits above them and the rest below.
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.22, y: 0.14),
-                          labelSide: .trailing, leaderLength: 58, joint: "chest"),
+                          labelPoint: CGPoint(x: 0.406, y: 0.07),
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "brace", label: "Brace your core",
-                          labelPoint: CGPoint(x: 0.78, y: 0.32),
-                          leaderLength: 46, joint: "spine"),
-            CueAnnotation(cueID: "knee", label: "Knees track over toes",
-                          labelPoint: CGPoint(x: 0.86, y: 0.50),
-                          leaderLength: 42, joint: "patella_L"),
-            CueAnnotation(cueID: "depth", label: "Hip crease below the knee",
-                          labelPoint: CGPoint(x: 0.14, y: 0.68),
-                          labelSide: .trailing, leaderLength: 46, joint: "pelvis"),
-            CueAnnotation(cueID: "drive", label: "Drive through the whole foot",
-                          labelPoint: CGPoint(x: 0.50, y: 0.87),
-                          labelSide: .trailing, leaderLength: 38, joint: "foot_L")
+                          labelPoint: CGPoint(x: 0.682, y: 0.64),
+                          labelSide: .trailing, leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "knee", label: "Knees over toes",
+                          labelPoint: CGPoint(x: 0.318, y: 0.56),
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "depth", label: "Hip crease below knee",
+                          labelPoint: CGPoint(x: 0.594, y: 0.76),
+                          labelSide: .trailing, leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "drive", label: "Whole foot planted",
+                          labelPoint: CGPoint(x: 0.638, y: 0.88),
+                          labelSide: .trailing, leaderLength: 40, joint: "foot_L")
         ],
         cues: [
             TechniqueCue(
@@ -4273,12 +4293,12 @@ enum SampleData {
         activation: [
             MuscleActivation(name: "Lateral Deltoid", rank: .primary,
                              activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.48),
             MuscleActivation(name: "Upper Trapezius", rank: .secondary,
                              activation: "MODERATE ACTIVATION", fraction: 0.45)
         ],
-        stabilisers: ["rotator cuff", "serratus anterior", "core"],
+        stabilisers: ["posterior deltoid", "rotator cuff", "serratus anterior", "core"],
         setup: [
             "Stand tall with a dumbbell in each hand at your sides.",
             "Feet hip-width, knees soft.",
@@ -4364,12 +4384,12 @@ enum SampleData {
         activation: [
             MuscleActivation(name: "Lateral Deltoid", rank: .primary,
                              activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.44),
             MuscleActivation(name: "Upper Trapezius", rank: .secondary,
                              activation: "MODERATE ACTIVATION", fraction: 0.42)
         ],
-        stabilisers: ["rotator cuff", "obliques", "core"],
+        stabilisers: ["posterior deltoid", "rotator cuff", "obliques", "core"],
         setup: [
             "Set the pulley at its lowest position.",
             "Stand side-on and take the handle in the far hand.",
@@ -8316,26 +8336,350 @@ enum SampleData {
         ]
     )
 
-    // MARK: - Home
+    // MARK: - Gated exercises and lean lunge (2026-09-24)
 
-    static let userName = "Alex"
+    // Biceps Curl, Squat and Lunge from their re-exports, plus Lunge (Lean).
+    // Generated by Tools/trainer-content/gen.py from spec_gated.py, which
+    // cites the sources behind the activation levels (Oliveira 2009,
+    // Kleiber 2015, Escamilla 2001, Schoenfeld 2010, Farrokhi 2008).
 
-    static let muscleGroups: [MuscleGroupTileModel] = [
-        MuscleGroupTileModel(name: "Chest", count: "24 EXERCISES"),
-        MuscleGroupTileModel(name: "Back", count: "31 EXERCISES"),
-        MuscleGroupTileModel(name: "Shoulders", count: "22 EXERCISES"),
-        MuscleGroupTileModel(name: "Arms", count: "28 EXERCISES"),
-        MuscleGroupTileModel(name: "Legs", count: "26 EXERCISES"),
-        MuscleGroupTileModel(name: "Core", count: "18 EXERCISES")
-    ]
+    static let bicepsCurlContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "shoulder", label: "Shoulders down and back",
+                          labelPoint: CGPoint(x: 0.565, y: 0.14),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "elbow", label: "Elbows by your ribs",
+                          labelPoint: CGPoint(x: 0.376, y: 0.55),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "wrist", label: "Palms up, wrists flat",
+                          labelPoint: CGPoint(x: 0.406, y: 0.14),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "core", label: "No body swing",
+                          labelPoint: CGPoint(x: 0.712, y: 0.55),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "The upper arms hang from set, quiet shoulders.",
+                why: "When the shoulders shrug or roll forward, the upper traps and front deltoids start lifting the dumbbells and the biceps do less of the work.",
+                mistake: "Shrugging the shoulders up or letting them roll forward at the top of each curl.",
+                correct: "Draw the shoulders gently down and back before the first rep and keep them there as the dumbbells rise."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "Only the forearms move; the elbows stay put.",
+                why: "With the elbows fixed by the sides, bending the elbow is the only motion, so the biceps brachii and brachialis lift the weight through the whole range.",
+                mistake: "Elbows drifting forward and up as the dumbbells rise, which turns the top of the rep into a front raise.",
+                correct: "Keep the elbows close to the ribs and slightly in front of the hips, and stop the curl when the forearms are about vertical."
+            ),
+            TechniqueCue(
+                id: "wrist",
+                title: "Grip and Wrists",
+                intro: "The palms face up for the whole curl.",
+                why: "The biceps both bends the elbow and turns the palm up, so it works hardest with the forearm fully supinated; a straight wrist keeps the forearm muscles from taking over.",
+                mistake: "Letting the wrists curl in toward the forearms, or the palms turn inward as the weight comes up.",
+                correct: "Hold the dumbbells palms-up with a firm grip and keep the knuckles in line with the forearms from bottom to top."
+            ),
+            TechniqueCue(
+                id: "core",
+                title: "Body Swing",
+                intro: "The legs and back stay out of it.",
+                why: "Rocking the torso borrows momentum from the hips and lower back, which skips the hardest part of the curl and loads the spine.",
+                mistake: "Leaning back and pushing the hips forward to get the dumbbells moving.",
+                correct: "Stand tall with soft knees, brace the core and lower the dumbbells over two to three seconds so each rep starts from straight arms."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Biceps Brachii", rank: .primary,
+                             activation: "HIGH ACTIVATION", fraction: 0.88),
+            MuscleActivation(name: "Brachialis", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.68),
+            MuscleActivation(name: "Brachioradialis", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+        ],
+        stabilisers: ["anterior deltoid", "forearm flexors", "core"],
+        setup: [
+            "Hold a dumbbell in each hand, palms facing forward.",
+            "Stand tall, feet hip-width, arms straight by your sides.",
+            "Draw your shoulders back and keep your elbows by your ribs."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS DRIFTING FORWARD",
+            correctCue: "Elbows fixed at the sides",
+            mistakeCue: "Elbows swing forward and up",
+            correctNote: "With the elbows fixed at the sides, the biceps and brachialis lift the dumbbells through the whole range.",
+            mistakeNote: "When the elbows travel forward, the front deltoids finish the rep and the biceps lose tension exactly where the curl is hardest."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.07, cx: 0.70, cy: 0.30),
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.07, cx: 0.39, cy: 0.31)
+        ]
+    )
 
-    static let popular: [(name: String, meta: String)] = [
-        ("Squat", "QUADRICEPS"),
-        ("Deadlift", "POSTERIOR CHAIN")
-    ]
+    static let squatContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "arms", label: "Arms reach forward",
+                          labelPoint: CGPoint(x: 0.362, y: 0.14),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "torso", label: "Chest up",
+                          labelPoint: CGPoint(x: 0.785, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knees over toes",
+                          labelPoint: CGPoint(x: 0.318, y: 0.68),
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "foot", label: "Heels stay down",
+                          labelPoint: CGPoint(x: 0.318, y: 0.86),
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms are a counterweight, not part of the lift.",
+                why: "Reaching the arms forward moves the centre of mass ahead as the hips go back, so you can sit deeper with the chest up and the heels down.",
+                mistake: "Letting the arms drop at the bottom, with the chest falling after them.",
+                correct: "Hold the arms straight out at shoulder height, palms down, and keep them there from the first rep to the last."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso and Hips",
+                intro: "Chest up, spine long, hips back and down.",
+                why: "A braced trunk with a neutral spine lets the hips and knees share the work, and sitting the hips back brings the glutes in to help the quadriceps.",
+                mistake: "Rounding the lower back or dropping the chest toward the knees as you reach depth.",
+                correct: "Brace the core, bend the hips and knees together and lower until the thighs are about parallel, letting the torso tilt only as far as the hips travel back."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Tracking",
+                intro: "The knees point where the toes point.",
+                why: "Knees that follow the line of the feet spread the load evenly through the joint; knees caving inward twist it.",
+                mistake: "Knees collapsing inward, most often on the way up.",
+                correct: "Push the knees gently out so they stay over the second and third toes, going down and standing up."
+            ),
+            TechniqueCue(
+                id: "foot",
+                title: "Foot Pressure",
+                intro: "The whole foot stays on the floor.",
+                why: "Pressure through the heel and mid-foot keeps you balanced and lets the glutes and quadriceps drive you up.",
+                mistake: "Rising onto the toes at the bottom as the weight shifts forward.",
+                correct: "Stand a little wider than hip-width with the toes turned slightly out, and push the floor away through the whole foot."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary,
+                             activation: "HIGH ACTIVATION", fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.56),
+            MuscleActivation(name: "Adductor Magnus", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+        ],
+        stabilisers: ["hamstrings", "erector spinae", "core", "anterior deltoid"],
+        setup: [
+            "Stand with your feet a little wider than hip-width.",
+            "Turn your toes slightly out.",
+            "Raise your arms straight in front to shoulder height.",
+            "Brace your core and lift your chest."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "KNEES CAVING IN",
+            correctCue: "Knees over toes, heels down",
+            mistakeCue: "Knees collapse inward",
+            correctNote: "With the knees following the toes and the heels down, the quadriceps and glutes of both legs share the load evenly.",
+            mistakeNote: "When the knees cave in, the load twists through the knee joint and the glutes stop helping drive you up."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.09, ry: 0.07, cx: 0.71, cy: 0.62),
+            .init(DS.activation.opacity(0.50), rx: 0.09, ry: 0.07, cx: 0.50, cy: 0.63)
+        ]
+    )
 
-    static let recentlyViewed: [RecentExercise] = [
-        RecentExercise(name: "Lat Pulldown", meta: "LATS · CABLE"),
-        RecentExercise(name: "Lateral Raise", meta: "LAT. DELTOID · DUMBBELL")
-    ]
+    static let lungeContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "posture", label: "Torso upright",
+                          labelPoint: CGPoint(x: 0.712, y: 0.36),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "hips", label: "Hips level and square",
+                          labelPoint: CGPoint(x: 0.594, y: 0.52),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "front", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.52),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "rear", label: "Back knee drops down",
+                          labelPoint: CGPoint(x: 0.609, y: 0.84),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "foot", label: "Front foot flat",
+                          labelPoint: CGPoint(x: 0.318, y: 0.86),
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "posture",
+                title: "Torso Position",
+                intro: "Stand tall over the hips.",
+                why: "An upright torso keeps the load on the front leg's quadriceps, which is what the standard lunge trains most.",
+                mistake: "Leaning forward over the front thigh, or arching the lower back.",
+                correct: "Keep the chest up, the shoulders over the hips and the eyes forward for every rep."
+            ),
+            TechniqueCue(
+                id: "hips",
+                title: "Hip Position",
+                intro: "The pelvis stays level and faces forward.",
+                why: "Level, square hips keep the load even through the front leg and stop the lower back twisting under it.",
+                mistake: "Letting the back hip drop or the pelvis turn toward the front leg.",
+                correct: "Brace the core, rest the hands on the hips as a guide and keep both hip bones pointing straight ahead."
+            ),
+            TechniqueCue(
+                id: "front",
+                title: "Front Knee",
+                intro: "The front knee travels forward in line with the toes.",
+                why: "Some forward knee travel is normal in a lunge and is what loads the quadriceps; keeping the knee in line with the toes stops it twisting under that load.",
+                mistake: "The front knee caving inward, or the front heel lifting as the knee drives forward.",
+                correct: "Keep the front knee pointing the same way as the foot and the whole front foot on the floor as you lower."
+            ),
+            TechniqueCue(
+                id: "rear",
+                title: "Back Knee",
+                intro: "The rep goes down, not forward.",
+                why: "Dropping the back knee straight down lets both knees reach about 90° and keeps the depth coming from the legs.",
+                mistake: "Stopping halfway, or pushing the hips forward instead of down.",
+                correct: "Keep the back heel up and lower until the back knee is just above the floor, then press back up."
+            ),
+            TechniqueCue(
+                id: "foot",
+                title: "Front Foot",
+                intro: "Drive through the heel and mid-foot.",
+                why: "Pushing through the whole front foot keeps you balanced and uses the glutes as well as the quadriceps to stand up.",
+                mistake: "Rising onto the ball of the front foot, which shifts the load onto the knee.",
+                correct: "Keep the front foot flat, push the floor away through the heel as you rise, and do the same reps on the other leg."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary,
+                             activation: "HIGH ACTIVATION", fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.58),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+        ],
+        stabilisers: ["adductors", "hamstrings", "calves", "core"],
+        setup: [
+            "Stand tall with your hands on your hips.",
+            "Step one foot forward about a stride's length.",
+            "Lift your back heel and square your hips to the front."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "FRONT KNEE CAVING IN",
+            correctCue: "Front knee in line with the toes",
+            mistakeCue: "Front knee collapses inward",
+            correctNote: "With the front knee in line with the toes and the foot flat, the quadriceps and glutes of the front leg drive the rep.",
+            mistakeNote: "When the front knee caves in, the hip stops controlling the leg and the knee takes a twisting load."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.36, cy: 0.59),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.07, cx: 0.49, cy: 0.55)
+        ]
+    )
+
+    static let lungeLeanContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "lean", label: "Lean ~30° from the hips",
+                          labelPoint: CGPoint(x: 0.565, y: 0.36),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "core", label: "Back flat, core braced",
+                          labelPoint: CGPoint(x: 0.580, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "front", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.52),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "rear", label: "Back knee drops down",
+                          labelPoint: CGPoint(x: 0.609, y: 0.84),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "foot", label: "Drive through the heel",
+                          labelPoint: CGPoint(x: 0.420, y: 0.86),
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "lean",
+                title: "Torso Lean",
+                intro: "The lean is what moves this lunge toward the glutes.",
+                why: "Tilting the trunk forward shifts the load toward the hip, so the front leg's gluteus maximus and hamstrings work harder than in an upright lunge.",
+                mistake: "Rounding the back or dropping the head to get the chest lower.",
+                correct: "Keep the spine long, tilt the torso about 30° forward from the hips and hold that angle for the whole rep."
+            ),
+            TechniqueCue(
+                id: "core",
+                title: "Trunk Brace",
+                intro: "The lean comes from the hips and is held by a braced trunk.",
+                why: "Bracing keeps the spine neutral while the torso tilts, so the extra load goes to the glutes and hamstrings rather than the lower back.",
+                mistake: "Letting the lower back round or sag as you go down and come back up.",
+                correct: "Breathe in, brace as if about to be pushed, and hold the same flat-back angle for the whole rep."
+            ),
+            TechniqueCue(
+                id: "front",
+                title: "Front Knee",
+                intro: "The front knee follows the line of the toes.",
+                why: "With the torso leaning, the hip takes more of the work; a knee that tracks over the toes keeps the joint aligned while it does.",
+                mistake: "The front knee caving inward as you push back up.",
+                correct: "Keep the front knee pointing the same way as the foot and the front heel down as you lower."
+            ),
+            TechniqueCue(
+                id: "rear",
+                title: "Back Leg",
+                intro: "The back leg is there for balance.",
+                why: "Dropping the back knee straight down keeps nearly all the load on the front leg.",
+                mistake: "Pushing off the back toes to help the front leg stand up.",
+                correct: "Keep the back heel up, lower the back knee to just above the floor and let the front leg do the lifting."
+            ),
+            TechniqueCue(
+                id: "foot",
+                title: "Front Foot",
+                intro: "Drive through the heel.",
+                why: "Pushing through the heel and mid-foot keeps the load on the glutes and hamstrings the lean is meant to target.",
+                mistake: "Rising onto the ball of the front foot, which shifts the work back to the quadriceps and the knee.",
+                correct: "Keep the whole front foot planted, push the floor away through the heel, and do the same reps on the other leg."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
+                             activation: "HIGH ACTIVATION", fraction: 0.80),
+            MuscleActivation(name: "Quadriceps", rank: .primary,
+                             activation: "HIGH ACTIVATION", fraction: 0.76),
+            MuscleActivation(name: "Hamstrings", rank: .secondary,
+                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+        ],
+        stabilisers: ["gluteus medius", "adductors", "erector spinae", "core"],
+        setup: [
+            "Stand tall with your hands on your hips.",
+            "Step one foot forward about a stride's length and lift your back heel.",
+            "Tilt your torso about 30° forward from the hips, back flat."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ROUNDED BACK",
+            correctCue: "Lean from the hips, spine long",
+            mistakeCue: "Back rounds instead of hinging",
+            correctNote: "Leaning from the hips with a long spine lets the front leg's glutes and hamstrings take more of the load.",
+            mistakeNote: "Rounding the back to fake the lean loads the lower back and leaves the glutes working no harder than in an upright lunge."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.09, ry: 0.08, cx: 0.50, cy: 0.52),
+            .init(DS.activation.opacity(0.50), rx: 0.12, ry: 0.06, cx: 0.36, cy: 0.58)
+        ]
+    )
 }

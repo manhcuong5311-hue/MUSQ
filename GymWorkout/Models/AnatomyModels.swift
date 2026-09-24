@@ -190,18 +190,6 @@ enum FormMode {
 
 // MARK: - Home
 
-struct MuscleGroupTileModel: Identifiable, Hashable {
-    let id = UUID()
-    let name: String
-    let count: String
-}
-
-struct RecentExercise: Identifiable, Hashable {
-    let id = UUID()
-    let name: String
-    let meta: String
-}
-
 // MARK: - Model framing
 
 /// How an exercise's model is presented in the viewport.

@@ -118,18 +118,3 @@ struct ActivationGlowLayer: View {
         }
     }
 }
-
-extension ActivationGlowLayer {
-    /// The bench-press activation signature used by the primary 3D view:
-    /// a hot pectoral mass plus two cooler secondary lobes.
-    static func benchPress(pulses: Bool = false) -> ActivationGlowLayer {
-        ActivationGlowLayer(
-            glows: [
-                Glow(DS.activation.opacity(0.58), rx: 0.26, ry: 0.15, cx: 0.46, cy: 0.40),
-                Glow(DS.activationSoft.opacity(0.32), rx: 0.13, ry: 0.09, cx: 0.66, cy: 0.52),
-                Glow(DS.activationSoft.opacity(0.32), rx: 0.11, ry: 0.08, cx: 0.33, cy: 0.33)
-            ],
-            pulses: pulses
-        )
-    }
-}

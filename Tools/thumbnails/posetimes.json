@@ -1,13 +1,13 @@
 {
  "Squat": {
-  "time": 6.67,
-  "disp": 4.32,
-  "length": 7.48
+  "time": 1.33,
+  "disp": 3.62,
+  "length": 7.96
  },
  "Lunge": {
-  "time": 2.0,
-  "disp": 2.6,
-  "length": 5.33
+  "time": 1.33,
+  "disp": 2.12,
+  "length": 7.96
  },
  "Bulgarian Split Squat": {
   "time": 1.33,
@@ -437,6 +437,16 @@
  "Cable Wood Chop": {
   "time": 1.33,
   "disp": 2.19,
+  "length": 7.96
+ },
+ "Lunge (Lean)": {
+  "time": 1.33,
+  "disp": 2.12,
+  "length": 7.96
+ },
+ "Biceps Curl": {
+  "time": 1.33,
+  "disp": 0.83,
   "length": 7.96
  }
 }

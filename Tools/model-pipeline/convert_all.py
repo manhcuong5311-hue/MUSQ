@@ -85,6 +85,14 @@ JOBS = {
     "Abdoment/097_ab_wheel_rollout": "Abs/AbWheelRollout",
     "Abdoment/098_russian_twist": "Abs/RussianTwist",
     "Abdoment/099_cable_wood_chop": "Abs/CableWoodChop",
+    # The three gated exercises plus a lean variant (2026-09-24). Squat and
+    # Lunge overwrite the legacy models: this Squat is the arms-forward
+    # bodyweight squat, the Lunge a stationary split-stance lunge, left leg
+    # forward, and Lunge_Lean the same with a ~30° forward torso lean.
+    "3 bai thieu/Biceps_Curl": "Biceps/BicepsCurl",
+    "3 bai thieu/Squat": "Legs/Squat",
+    "3 bai thieu/Lunge": "Legs/Lunge",
+    "3 bai thieu/Lunge_Lean": "Legs/LungeLean",
 }
 
 ONLY = sys.argv[1:]

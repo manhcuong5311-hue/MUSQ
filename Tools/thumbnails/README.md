@@ -2,7 +2,8 @@
 
 White-background stills for every exercise with a model, installed as
 `Assets.xcassets/lib-<slug>.imageset` (the `Exercise.slotID` name, 400px,
-1x-only universal). 77 of 78 library exercises; `Biceps Curl` has no model.
+1x-only universal). All 90 library exercises (Biceps Curl, Squat, Lunge and
+Lunge (Lean) were shot on 2026-09-24 after their re-export).
 
 Run the Python steps with Blender's Python (`pxr`), from this folder:
 
@@ -41,3 +42,6 @@ what makes the pose deterministic instead of whatever frame the load lands on.
 `posetime.py` and `thumbsolve.py` both take exercise names to limit a run to
 new exercises (posetime merges into the existing `posetimes.json`). Cable
 Crunch joins Leg Press in always showing the whole machine.
+
+To shoot only some exercises, filter the generated script, e.g.
+`python3 make_shoot.py | grep -E '^#!|^U=|HARNESS_PHOTO="(Squat|Lunge)"' > shoot.sh`.

@@ -36,3 +36,13 @@ Abs batch (2026-09-24): `spec_abs.py` holds the 11 core exercises from
 Its header lists the sources (Escamilla 2006/2010, ACE/SDSU, Youdas 2008/2014,
 McGill 1996/2010). "Hip Flexors" and "Quadratus Lumborum" are shown in the
 legend but have no `MusclePart`, so recovery ignores them.
+
+Gated batch (2026-09-24): `spec_gated.py` holds Biceps Curl, Squat and Lunge
+(re-exported from `SourceExports/3 bai thieu`, which replaced a missing or
+mismatched model) plus the new Lunge (Lean). Its header lists what each model
+shows and the sources. `probe.py` now takes names after the output path and
+merges into that file, e.g. `probe.py joints.json "Squat" "Lunge"`. The lunges
+are seen nearly side-on (yaw -1.3); labels are pinned with `overrides`, and
+some cues track the far-side joint (`hand_R`, `patella_R`) so leaders don't
+cross the body. The generated Swift lives under
+`// MARK: - Gated exercises and lean lunge` in SampleData.
