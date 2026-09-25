@@ -332,6 +332,307 @@ enum FaultPoses {
         moves: [.shift(["foot_*", "foot_*.tip"], outward: -0.1), .straighten(["shin_*"])]
     )
 
+    /// Decline bench, bounced: the bar sinks into the chest at the bottom.
+    private static let barBounced = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [
+            .shift(["hand_*", "hand_*.tip"], forward: -0.1),
+            .shift(["forearm_*"], forward: -0.06)
+        ],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Decline bench: feet slipping out of the pads, the hips sliding up it.
+    private static let declineFeetSlipping = FaultPose(
+        chains: [legs, hips],
+        moves: [
+            .shift(["foot_*", "foot_*.tip"], forward: 0.1, up: 0.14),
+            .shift(["shin_*"], forward: 0.06, up: 0.14),
+            .shift(["thigh_*"], up: 0.12)
+        ]
+    )
+
+    /// Dumbbells pressed straight up and apart, out over the shoulders.
+    private static let dumbbellsWide = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip", "forearm_*"], outward: 0.12)]
+    )
+
+    /// Seated press: handles gripped too high, the hands and elbows riding up.
+    private static let handsHigh = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], up: 0.14), .shift(["forearm_*"], up: 0.1)]
+    )
+
+    /// Seated press: the back arched off the pad, the heels up.
+    private static let seatedArched = FaultPose(
+        chains: [["pelvis", "spine", "chest", "neck"], legs],
+        moves: [
+            .shift(["spine"], forward: 0.07),
+            .shift(["chest", "neck"], forward: 0.1),
+            .shift(["foot_*"], up: 0.07)
+        ]
+    )
+
+    /// Standing cable fly: the elbows bending in, the hands folding toward
+    /// the chest. Seen head-on, so the moves stay in the plane the camera sees.
+    private static let flyFolded = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], forward: 0.08, outward: -0.14),
+                .shift(["forearm_*"], up: -0.05, outward: -0.06)]
+    )
+
+    /// Standing cable fly turned into a press: the elbows tuck in and drive
+    /// forward.
+    private static let flyPressed = FaultPose(
+        chains: [arms],
+        moves: [.shift(["forearm_*"], forward: 0.12, up: -0.04, outward: -0.12)]
+    )
+
+    /// Standing: the shoulders rolled forward and in.
+    private static let shouldersRolledIn = FaultPose(
+        chains: [arms, ["upper_arm_L", "upper_arm_R"]],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], forward: 0.1, up: 0.03, outward: -0.08)]
+    )
+
+    /// Lying on the floor: the hips bridging up to drive the weight, the
+    /// feet left where they were.
+    private static let hipsBridged = FaultPose(
+        chains: [spine, ["pelvis", "thigh_L"], ["pelvis", "thigh_R"], legs],
+        moves: [.shift(["pelvis", "thigh_*"], forward: 0.16), .shift(["spine"], forward: 0.07), .resolve(["shin_*"])]
+    )
+
+    /// The trunk turning about its own length, the left shoulder coming
+    /// forward: rolling off a bench, or twisting to push one arm.
+    private static func twisted(_ degrees: Float, about pivot: String = "pelvis") -> FaultPose {
+        FaultPose(chains: [spine, shoulders, arms],
+                  moves: [.turn(pivot: pivot, points: ["spine", "chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*"],
+                                axis: .up, degrees: degrees)])
+    }
+
+    /// The single-arm lifts work the left arm.
+    private static let leftArm = ["upper_arm_L", "forearm_L", "hand_L"]
+    private static let leftArmToGrip = ["upper_arm_L", "forearm_L", "hand_L", "hand_L.tip"]
+
+    private static let leftWristBentBack = FaultPose(
+        chains: [["forearm_L", "hand_L", "hand_L.tip"]],
+        moves: [.turn(pivot: "hand_L", points: ["hand_L.tip"], axis: .lateral, degrees: 48)]
+    )
+
+    private static func leftElbowFlared(_ degrees: Float = 38, strength: FaultStrength = .always) -> FaultPose {
+        FaultPose(chains: [leftArm],
+                  moves: [.turn(pivot: "upper_arm_L", points: ["forearm_L"], axis: .forward, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// A pullover's stretch: the hands this far from the pelvis, in torso
+    /// lengths, from arms over the chest (~1.3) to overhead (~1.8).
+    private static let pulloverStretch = FaultStrength.between("hand_L", "pelvis", from: 1.4, to: 1.7)
+
+    /// Pullover: the elbows bending at the stretch, the weight dropping
+    /// behind the head.
+    private static func pulloverElbowsBent(withBar: Bool) -> FaultPose {
+        FaultPose(chains: [armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: 40)],
+                  strength: pulloverStretch)
+    }
+
+    /// Pullover: the arms carried on past the line of the torso, below the
+    /// bench.
+    private static func pulloverTooDeep(withBar: Bool) -> FaultPose {
+        FaultPose(chains: [armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: 25)],
+                  strength: pulloverStretch)
+    }
+
+    /// Push-ups, flat or hands raised on a bench.
+    private static let pushUpFaults: [String: FaultPose] = [
+        "body": hipsSagging,
+        "hands": handsForward,
+        "elbow": elbowsFlared(),
+        // Short reps: the chest stays high at the bottom.
+        "depth": FaultPose(
+            chains: [spine, arms],
+            moves: [
+                .shift(["head", "neck", "chest", "upper_arm_*"], forward: -0.2),
+                .shift(["spine"], forward: -0.15),
+                .shift(["pelvis"], forward: -0.1),
+                .shift(["forearm_*"], forward: -0.1)
+            ],
+            strength: .withBend("forearm_L")
+        ),
+        // Feet sliding back along the floor.
+        "feet": FaultPose(chains: [legs],
+                          moves: [.shift(["foot_*", "foot_*.tip"], up: -0.14), .shift(["shin_*"], up: -0.06)])
+    ]
+
+    // MARK: Batch 133-160 pieces (2026-09-25)
+
+    /// Push-up: the hands placed forward, toward the head.
+    private static let handsForward = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], up: 0.26), .shift(["forearm_*"], up: 0.12)]
+    )
+
+    /// Hanging face-up under a bar: the hips sagging toward the floor.
+    private static let hipsSaggingUnderBar = FaultPose(
+        chains: [spine, ["pelvis", "thigh_L"], ["pelvis", "thigh_R"], ["thigh_*", "shin_*", "foot_*"]],
+        moves: [
+            .shift(["spine"], forward: -0.08),
+            .shift(["pelvis", "thigh_*"], forward: -0.16),
+            .shift(["shin_*"], forward: -0.07)
+        ]
+    )
+
+    /// Pulls from the floor: the hips shooting up first and the knees locking,
+    /// a stiff-legged good morning.
+    private static let hipsShotUp = FaultPose(
+        chains: [spine, legs, hips],
+        moves: [.shift(["pelvis", "thigh_*"], rise: 0.14), .shift(["spine"], rise: 0.07), .straighten(["shin_*"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// The bar drifting out in front of the legs.
+    private static func barDrifting(_ hands: Float, _ forearms: Float, withBar: Bool = true,
+                                    strength: FaultStrength = .always) -> FaultPose {
+        FaultPose(chains: [armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.shift(["hand_*", "hand_*.tip"], ahead: hands), .shift(["forearm_*"], ahead: forearms)],
+                  strength: strength)
+    }
+
+    /// Leaning back past upright at the top of a pull, once the hips are
+    /// straight.
+    private static func leanedBackAtLockout(withBar: Bool) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 16)],
+                  strength: .whenStraight("thigh_L"))
+    }
+
+    /// A row that only moves a few inches: the hands stay low.
+    private static let rowedShort = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], forward: 0.14), .shift(["forearm_*"], forward: 0.07)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Stopping before the squeeze: the elbows never pass the trunk.
+    private static let squeezeSkipped = FaultPose(
+        chains: [arms, ["upper_arm_L", "upper_arm_R"]],
+        moves: [.shift(["upper_arm_*"], forward: 0.07), .shift(["forearm_*"], forward: 0.1)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// One-arm rows (the left arm works): the elbow winging out.
+    private static let leftElbowWinged = FaultPose(
+        chains: [["upper_arm_L", "forearm_L", "hand_L"]],
+        moves: [.shift(["forearm_L"], outward: 0.14)], strength: .withBend("forearm_L")
+    )
+
+    /// One-arm rows: the trunk twisting open to heave the weight.
+    private static let leftTwistedOpen = FaultPose(
+        chains: [spine, shoulders, ["upper_arm_L", "forearm_L", "hand_L"]],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .up, degrees: -20)]
+    )
+
+    /// One-arm rows: the working shoulder left rounded forward.
+    private static let leftShoulderForward = FaultPose(
+        chains: [["upper_arm_L", "forearm_L", "hand_L"], ["upper_arm_L", "upper_arm_R"]],
+        moves: [.shift(["upper_arm_L", "forearm_L", "hand_L"], forward: 0.11)]
+    )
+
+    /// Inverted rows, flat, feet-elevated or underhand.
+    private static let invertedRowFaults: [String: FaultPose] = [
+        "body": hipsSaggingUnderBar,
+        "grip": gripTooWide(withBar: false),
+        "elbow": elbowsWinged,
+        // Short reps: the chest stays well below the bar.
+        "barpath": FaultPose(
+            chains: [spine, arms],
+            moves: [
+                .shift(["head", "neck", "chest", "upper_arm_*"], forward: -0.18),
+                .shift(["spine"], forward: -0.13),
+                .shift(["pelvis"], forward: -0.08),
+                .shift(["forearm_*"], forward: -0.09)
+            ],
+            strength: .withBend("forearm_L")
+        ),
+        "scapula": shrugged
+    ]
+
+    // MARK: Batch 161-190 pieces (2026-09-25)
+
+    /// Hanging pulls: the elbows drifting forward, curling the body up.
+    private static let elbowsForward = FaultPose(
+        chains: [arms], moves: [.shift(["forearm_*"], forward: 0.15)], strength: .withBend("forearm_L")
+    )
+
+    /// Hanging pulls: craning the chin up and over while the body stays low.
+    private static let chinCraned = FaultPose(
+        chains: [["chest", "neck", "head"]],
+        moves: [.shift(["neck"], forward: 0.06, up: 0.03), .shift(["head"], forward: 0.14, up: 0.06)]
+    )
+
+    /// Hanging pulls, short reps: the body stops well below the bar.
+    private static let hangingShort = FaultPose(
+        chains: [spine, arms],
+        moves: [.shift(["pelvis", "spine", "chest", "neck", "head", "upper_arm_*"], up: -0.16),
+                .shift(["forearm_*"], up: -0.08)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Pulldowns: the bar pulled down behind the neck.
+    private static let pulledBehindNeck = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], forward: -0.2, up: 0.05), .shift(["forearm_*"], forward: -0.1)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Pulldowns: the handle pulled down past the chest.
+    private static let pulledPastChest = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], up: -0.15), .shift(["forearm_*"], forward: -0.05, up: -0.05)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Pulldowns, short reps: the hands stop well above the chest.
+    private static let pulldownShort = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], up: 0.14), .shift(["forearm_*"], up: 0.06)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Rows: the handle pulled low, toward the belly, instead of the chest.
+    private static func rowedLow(withBar: Bool) -> FaultPose {
+        FaultPose(chains: [armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: -0.14), .shift(["forearm_*"], up: -0.06, outward: -0.06)],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Hands drawn in toward each other on a wide grip.
+    private static func gripTooNarrow(withBar: Bool) -> FaultPose {
+        FaultPose(chains: [armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.14), .shift(["forearm_*"], outward: -0.08)])
+    }
+
+    /// Both-hands rows: the trunk twisting toward one side.
+    private static let trunkTwisted = FaultPose(
+        chains: [spine, shoulders, arms],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .up, degrees: -20)]
+    )
+
+    /// One-arm pulls: the working hand stopping short, high.
+    private static let leftPullShort = FaultPose(
+        chains: [["upper_arm_L", "forearm_L", "hand_L", "hand_L.tip"]],
+        moves: [.shift(["hand_L", "hand_L.tip"], up: 0.14), .shift(["forearm_L"], up: 0.06)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// One-arm pulls: the working shoulder shrugging up.
+    private static let leftShrugged = FaultPose(
+        chains: [shoulders, ["upper_arm_L", "forearm_L", "hand_L"]],
+        moves: [.shift(["upper_arm_L", "forearm_L", "hand_L"], up: 0.12)]
+    )
+
     // MARK: Back pieces
 
     /// Everything above the pelvis, for turning the whole trunk.
@@ -767,24 +1068,8 @@ enum FaultPoses {
         "Decline Barbell Bench Press": [
             "wrist": wristBentBack(withBar: true),
             "elbow": elbowsFlared(),
-            // Bounced: the bar sinks into the chest at the bottom.
-            "barpath": FaultPose(
-                chains: [armsToGrip, bar],
-                moves: [
-                    .shift(["hand_*", "hand_*.tip"], forward: -0.1),
-                    .shift(["forearm_*"], forward: -0.06)
-                ],
-                strength: .withBend("forearm_L")
-            ),
-            // Feet slipping out of the pads, the hips sliding up the bench.
-            "feet": FaultPose(
-                chains: [legs, hips],
-                moves: [
-                    .shift(["foot_*", "foot_*.tip"], forward: 0.1, up: 0.14),
-                    .shift(["shin_*"], forward: 0.06, up: 0.14),
-                    .shift(["thigh_*"], up: 0.12)
-                ]
-            ),
+            "barpath": barBounced,
+            "feet": declineFeetSlipping,
             "scapula": benchShoulders
         ],
         "Dumbbell Bench Press": [
@@ -793,8 +1078,7 @@ enum FaultPoses {
             "elbow": FaultPose(chains: [arms], moves: [.shift(["forearm_*"], forward: -0.12)],
                                strength: .withBend("forearm_L")),
             // Pressed straight up like a barbell: the dumbbells never meet.
-            "barpath": FaultPose(chains: [armsToGrip],
-                                 moves: [.shift(["hand_*", "hand_*.tip", "forearm_*"], outward: 0.12)]),
+            "barpath": dumbbellsWide,
             "feet": benchFeet,
             "scapula": benchShoulders
         ],
@@ -824,23 +1108,13 @@ enum FaultPoses {
             "scapula": benchShoulders
         ],
         "Chest Press Machine": [
-            // Handles gripped too high: hands and elbows ride up.
-            "wrist": FaultPose(chains: [armsToGrip],
-                               moves: [.shift(["hand_*", "hand_*.tip"], up: 0.14), .shift(["forearm_*"], up: 0.1)]),
+            "wrist": handsHigh,
             "elbow": elbowsFlared(34),
             // Short reps: the hands stop well short of full extension.
             "barpath": FaultPose(chains: [armsToGrip],
                                  moves: [.shift(["hand_*", "hand_*.tip"], forward: -0.16),
                                          .shift(["forearm_*"], forward: -0.08)]),
-            // Back arched off the pad, heels up.
-            "feet": FaultPose(
-                chains: [["pelvis", "spine", "chest", "neck"], legs],
-                moves: [
-                    .shift(["spine"], forward: 0.07),
-                    .shift(["chest", "neck"], forward: 0.1),
-                    .shift(["foot_*"], up: 0.07)
-                ]
-            ),
+            "feet": seatedArched,
             "scapula": shrugged
         ],
         "Pec Deck Fly": [
@@ -866,18 +1140,10 @@ enum FaultPoses {
             // Hands meeting too high.
             "wrist": FaultPose(chains: [armsToGrip],
                                moves: [.shift(["hand_*", "hand_*.tip"], up: 0.18), .shift(["forearm_*"], up: 0.08)]),
-            // Elbows bending in: the hands fold toward the chest. Seen head-on,
-            // so the moves stay in the plane the camera sees.
-            "elbow": FaultPose(chains: [armsToGrip],
-                               moves: [.shift(["hand_*", "hand_*.tip"], forward: 0.08, outward: -0.14),
-                                       .shift(["forearm_*"], up: -0.05, outward: -0.06)]),
-            // Pressing: the elbows tuck in and drive forward.
-            "barpath": FaultPose(chains: [arms],
-                                 moves: [.shift(["forearm_*"], forward: 0.12, up: -0.04, outward: -0.12)]),
+            "elbow": flyFolded,
+            "barpath": flyPressed,
             "feet": squareLockedStance,
-            // Shoulders rolled forward and in.
-            "scapula": FaultPose(chains: [arms, ["upper_arm_L", "upper_arm_R"]],
-                                 moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], forward: 0.1, up: 0.03, outward: -0.08)])
+            "scapula": shouldersRolledIn
         ],
         "Low-to-High Cable Fly": [
             // Hands pulled up past the head.
@@ -892,34 +1158,641 @@ enum FaultPoses {
             "feet": squareLockedStance,
             "scapula": shrugged
         ],
-        "Push-Up": [
-            // Hips sagging toward the floor.
-            "body": FaultPose(
-                chains: [spine, ["pelvis", "thigh_L"], ["pelvis", "thigh_R"], ["thigh_*", "shin_*", "foot_*"]],
-                moves: [
-                    .shift(["spine"], forward: 0.08),
-                    .shift(["pelvis", "thigh_*"], forward: 0.16),
-                    .shift(["shin_*"], forward: 0.07)
-                ]
-            ),
-            // Hands placed forward, toward the head.
-            "hands": FaultPose(chains: [armsToGrip],
-                               moves: [.shift(["hand_*", "hand_*.tip"], up: 0.26), .shift(["forearm_*"], up: 0.12)]),
+        "Push-Up": pushUpFaults,
+
+        // MARK: Chest batch 101-131 (2026-09-25)
+        "Barbell Floor Press": [
+            "wrist": wristBentBack(withBar: true),
             "elbow": elbowsFlared(),
-            // Short reps: the chest stays high at the bottom.
-            "depth": FaultPose(
-                chains: [spine, arms],
-                moves: [
-                    .shift(["head", "neck", "chest", "upper_arm_*"], forward: -0.2),
-                    .shift(["spine"], forward: -0.15),
-                    .shift(["pelvis"], forward: -0.1),
-                    .shift(["forearm_*"], forward: -0.1)
-                ],
-                strength: .withBend("forearm_L")
-            ),
-            // Feet sliding back along the floor.
+            // Bar drifting toward the neck.
+            "barpath": pressedHigh(0.22, withBar: true),
+            "feet": hipsBridged,
+            "scapula": benchShoulders
+        ],
+        "Smith Machine Bench Press": [
+            "wrist": wristBentBack(withBar: true),
+            "elbow": elbowsFlared(),
+            // Bench set too far back: the bar lands high, near the neck.
+            "barpath": pressedHigh(0.26, withBar: true),
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Smith Machine Incline Press": [
+            "wrist": wristBentBack(withBar: true),
+            "elbow": elbowsFlared(),
+            "barpath": pressedHigh(0.2, withBar: true),
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Smith Machine Decline Press": [
+            "wrist": wristBentBack(withBar: true),
+            "elbow": elbowsFlared(),
+            "barpath": barBounced,
+            "feet": declineFeetSlipping,
+            "scapula": benchShoulders
+        ],
+        "Dumbbell Floor Press": [
+            "wrist": wristBentBack(withBar: false),
+            "elbow": elbowsFlared(),
+            "barpath": dumbbellsWide,
+            "feet": hipsBridged,
+            "scapula": benchShoulders
+        ],
+        "Single-Arm Dumbbell Bench Press": [
+            "wrist": leftWristBentBack,
+            "elbow": leftElbowFlared(),
+            // Rolling toward the free side, the working shoulder off the bench.
+            "core": twisted(16, about: "spine"),
+            "feet": benchFeet,
+            "scapula": FaultPose(chains: [leftArm, ["upper_arm_L", "upper_arm_R"]],
+                                 moves: [.shift(leftArm, forward: 0.12, outward: -0.04)])
+        ],
+        "Alternating Dumbbell Bench Press": [
+            "wrist": wristBentBack(withBar: false),
+            // The waiting (right) elbow sagging below the bench; it fades
+            // out when that arm takes its turn to press.
+            "elbow": FaultPose(chains: [["upper_arm_R", "forearm_R", "hand_R"]],
+                               moves: [.shift(["forearm_R"], forward: -0.12)],
+                               strength: .withBend("forearm_R")),
+            // Rocking from side to side as the arms switch.
+            "alternate": twisted(14, about: "spine"),
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Neutral-Grip Dumbbell Press": [
+            "wrist": wristBentBack(withBar: false),
+            "elbow": elbowsFlared(34),
+            "barpath": dumbbellsWide,
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Dumbbell Squeeze Press": [
+            // Dumbbells drifting apart.
+            "wrist": FaultPose(chains: [armsToGrip],
+                               moves: [.shift(["hand_*", "hand_*.tip"], outward: 0.1)]),
+            "elbow": elbowsFlared(34),
+            // Lowered toward the neck.
+            "barpath": pressedHigh(0.2, withBar: false),
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Incline Dumbbell Squeeze Press": [
+            "wrist": FaultPose(chains: [armsToGrip],
+                               moves: [.shift(["hand_*", "hand_*.tip"], outward: 0.1)]),
+            "elbow": elbowsFlared(34),
+            "barpath": pressedHigh(0.18, withBar: false),
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Dumbbell Pullover": [
+            "grip": wristBentBack(withBar: false),
+            "elbow": pulloverElbowsBent(withBar: false),
+            "arc": pulloverTooDeep(withBar: false),
+            "ribs": lowerBackArched(0.1, pulloverStretch),
+            "feet": benchFeet
+        ],
+        "Barbell Pullover": [
+            "grip": wristBentBack(withBar: true),
+            "elbow": pulloverElbowsBent(withBar: true),
+            "arc": pulloverTooDeep(withBar: true),
+            "ribs": lowerBackArched(0.1, pulloverStretch),
+            "feet": benchFeet
+        ],
+        "Iso-Lateral Chest Press": [
+            "wrist": handsHigh,
+            "elbow": elbowsFlared(34),
+            "barpath": rangeCutShort,
+            "feet": seatedArched,
+            "scapula": shrugged
+        ],
+        "Incline Chest Press Machine": [
+            "wrist": handsHigh,
+            "elbow": elbowsFlared(34),
+            "barpath": rangeCutShort,
+            "feet": seatedArched,
+            "scapula": shrugged
+        ],
+        "Decline Chest Press Machine": [
+            "wrist": handsHigh,
+            "elbow": elbowsFlared(34),
+            "barpath": rangeCutShort,
+            "feet": seatedArched,
+            "scapula": shrugged
+        ],
+        "Plate-Loaded Chest Press": [
+            "wrist": handsHigh,
+            "elbow": elbowsFlared(34),
+            "barpath": rangeCutShort,
+            "feet": seatedArched,
+            "scapula": shrugged
+        ],
+        "Wide-Grip Chest Press Machine": [
+            "wrist": wristBentBack(withBar: false),
+            // Elbows riding up to shoulder height at the back of the rep.
+            "elbow": FaultPose(chains: [arms], moves: [.shift(["forearm_*"], up: 0.12)],
+                               strength: .withBend("forearm_L")),
+            "barpath": rangeCutShort,
+            "feet": seatedArched,
+            "scapula": shrugged
+        ],
+        "Cable Chest Press": [
+            "wrist": handsHigh,
+            "elbow": elbowsFlared(34),
+            "barpath": rangeCutShort,
+            "feet": squareLockedStance,
+            "scapula": shrugged
+        ],
+        "Single-Arm Cable Chest Press": [
+            "wrist": FaultPose(chains: [leftArmToGrip],
+                               moves: [.shift(["hand_L", "hand_L.tip"], up: 0.14), .shift(["forearm_L"], up: 0.1)]),
+            "elbow": leftElbowFlared(34),
+            // Twisting to push: the working shoulder reaches forward.
+            "core": twisted(20),
+            "feet": squareLockedStance,
+            "scapula": FaultPose(chains: [shoulders, leftArm], moves: [.shift(leftArm, up: 0.12)])
+        ],
+        "Incline Cable Press": [
+            "wrist": wristBentBack(withBar: false),
+            "elbow": elbowsFlared(34),
+            // Pressing toward the face.
+            "barpath": pressedHigh(0.2, withBar: false),
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Decline Cable Press": [
+            "wrist": wristBentBack(withBar: false),
+            "elbow": elbowsFlared(),
+            "barpath": pressedHigh(0.2, withBar: false),
+            "feet": declineFeetSlipping,
+            "scapula": benchShoulders
+        ],
+        "High-to-Low Cable Fly": [
+            // Hands pulled right down to the hips.
+            "wrist": FaultPose(chains: [armsToGrip],
+                               moves: [.shift(["hand_*", "hand_*.tip"], up: -0.22), .shift(["forearm_*"], up: -0.1)]),
+            "elbow": flyFolded,
+            "barpath": flyPressed,
+            "feet": squareLockedStance,
+            "scapula": shouldersRolledIn
+        ],
+        "Single-Arm Cable Fly": [
+            // Hand hauled across the body, past the other shoulder.
+            "wrist": FaultPose(chains: [leftArmToGrip],
+                               moves: [.shift(["hand_L", "hand_L.tip"], outward: -0.22), .shift(["forearm_L"], outward: -0.08)]),
+            "elbow": FaultPose(chains: [leftArmToGrip],
+                               moves: [.shift(["hand_L", "hand_L.tip"], forward: 0.08, outward: -0.14),
+                                       .shift(["forearm_L"], up: -0.05, outward: -0.06)]),
+            // Twisting to swing the hand across; turned so the twist shows.
+            "core": twisted(20).seen(-0.6),
+            "feet": squareLockedStance,
+            "scapula": FaultPose(chains: [leftArm, ["upper_arm_L", "upper_arm_R"]],
+                                 moves: [.shift(leftArm, forward: 0.1, up: 0.03, outward: -0.08)])
+        ],
+        "Incline Cable Fly": [
+            // Stopping with the hands still apart.
+            "wrist": FaultPose(chains: [armsToGrip],
+                               moves: [.shift(["hand_*", "hand_*.tip"], outward: 0.1)]),
+            "elbow": flyBentIntoPress,
+            "barpath": flyTooDeep,
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Decline Cable Fly": [
+            "wrist": FaultPose(chains: [armsToGrip],
+                               moves: [.shift(["hand_*", "hand_*.tip"], outward: 0.1)]),
+            "elbow": flyBentIntoPress,
+            "barpath": flyTooDeep,
+            "feet": declineFeetSlipping,
+            "scapula": benchShoulders
+        ],
+        "Cable Crossover": [
+            // Hands meeting high, in front of the face.
+            "wrist": FaultPose(chains: [armsToGrip],
+                               moves: [.shift(["hand_*", "hand_*.tip"], up: 0.2), .shift(["forearm_*"], up: 0.09)]),
+            "elbow": flyFolded,
+            "barpath": flyPressed,
+            "feet": squareLockedStance,
+            "scapula": shouldersRolledIn
+        ],
+        "Single-Arm Landmine Press": [
+            "grip": leftWristBentBack,
+            "elbow": leftElbowFlared(40, strength: .withBend("forearm_L")),
+            // Stopping short: the arm still bent at the top.
+            "barpath": FaultPose(chains: [leftArmToGrip],
+                                 moves: [.shift(["hand_L", "hand_L.tip"], forward: -0.14, up: -0.1),
+                                         .shift(["forearm_L"], forward: -0.05, up: -0.04)],
+                                 strength: .whenStraight("forearm_L")),
+            // Leaning back to press, turned side-on so the lean shows.
+            "core": FaultPose(chains: [spine, leftArmToGrip],
+                              moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 14),
+                                      .shift(["spine"], forward: 0.05)],
+                              view: -0.9),
+            "feet": squareLockedStance
+        ],
+        "Incline Push-Up": pushUpFaults,
+
+        // MARK: Batch 133-160 (2026-09-25)
+        "Diamond Push-Up": pushUpFaults,
+        "Wide-Grip Push-Up": pushUpFaults,
+        "Archer Push-Up": pushUpFaults,
+        "Medicine Ball Push-Up": pushUpFaults,
+        "Pause Bench Press": [
+            "wrist": wristBentBack(withBar: true),
+            "elbow": elbowsFlared(),
+            // Bounced instead of paused.
+            "pause": barBounced,
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Larsen Press": [
+            "wrist": wristBentBack(withBar: true),
+            "elbow": elbowsFlared(),
+            "barpath": pressedHigh(0.26, withBar: true),
+            // Feet dropped to find the floor, the knees bending over the end
+            // of the bench and the lower back arching.
+            "legs": FaultPose(chains: [spine, legs, hips],
+                              moves: [.shift(["foot_*", "foot_*.tip"], forward: -0.65, up: 0.12), .shift(["shin_*"], forward: -0.05),
+                                      .shift(["spine"], forward: 0.08)]),
+            "scapula": benchShoulders
+        ],
+        "Reverse-Grip Bench Press": [
+            "wrist": wristBentBack(withBar: true),
+            "elbow": elbowsFlared(30),
+            "barpath": pressedHigh(0.2, withBar: true),
+            "feet": benchFeet,
+            "scapula": benchShoulders
+        ],
+        "Rack Pull": [
+            "spine": backRounded(.withBend("thigh_L")),
+            "hips": hipsShotUp,
+            "grip": gripTooWide(withBar: true),
+            "barpath": barDrifting(0.13, 0.07),
+            "lockout": leanedBackAtLockout(withBar: true)
+        ],
+        "Block Pull": [
+            "spine": backRounded(.withBend("thigh_L")),
+            "hips": hipsShotUp,
+            "grip": gripTooWide(withBar: true),
+            "barpath": barDrifting(0.13, 0.07),
+            "lockout": leanedBackAtLockout(withBar: true)
+        ],
+        "Sumo Deadlift": [
+            // Feet drawn in to a narrow stance.
+            "feet": FaultPose(chains: [legs, hips],
+                              moves: [.shift(["foot_*", "foot_*.tip"], outward: -0.2), .resolve(["shin_*"])]),
+            "knees": kneesIn(),
+            "grip": gripTooWide(withBar: true),
+            "spine": backRounded(.withBend("shin_L")),
+            "hips": hipsShotUp
+        ],
+        "Trap Bar Deadlift": [
+            // Rocking onto the toes.
+            "feet": heelsUp(),
+            "knees": kneesIn(),
+            "spine": backRounded(.withBend("shin_L")),
+            "hips": hipsShotUp,
+            "lockout": leanedBackAtLockout(withBar: false)
+        ],
+        "Snatch-Grip Deadlift": [
+            // Hands drawn in toward a normal deadlift grip.
+            "grip": FaultPose(chains: [armsToGrip, bar],
+                              moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.16), .shift(["forearm_*"], outward: -0.08)]),
+            // The upper back rounding, the shoulders dragged forward by the grip.
+            "spine": FaultPose(chains: [spine, arms],
+                               moves: [.shift(["chest"], forward: -0.06), .shift(["neck"], forward: 0.06), .shift(["head"], forward: 0.16),
+                                       .shift(["upper_arm_*", "forearm_*", "hand_*"], forward: 0.08)],
+                               strength: .withBend("shin_L")),
+            "hips": hipsShotUp,
+            "barpath": barDrifting(0.13, 0.07),
+            // Starting with the bar over the toes.
+            "feet": barDrifting(0.15, 0.08, strength: .withBend("shin_L"))
+        ],
+        "Deficit Deadlift": [
+            "feet": barDrifting(0.15, 0.08, strength: .withBend("shin_L")),
+            "spine": backRounded(.withBend("shin_L")),
+            "hips": hipsShotUp,
+            "grip": gripTooWide(withBar: true),
+            "barpath": barDrifting(0.13, 0.07)
+        ],
+        "Barbell Yates Row": [
+            "elbow": elbowsWinged,
+            "barpath": rowedHigh(withBar: true),
+            "grip": gripTooWide(withBar: true),
+            "feet": trunkLifted(20),
+            "scapula": shouldersForward
+        ],
+        "Reverse-Grip Barbell Row": [
+            "elbow": elbowsWinged,
+            "barpath": rowedHigh(withBar: true),
+            "grip": gripTooWide(withBar: true),
+            "feet": trunkLifted(24),
+            "scapula": shouldersForward
+        ],
+        "Wide-Grip Barbell Row": [
+            // Elbows tucked in to the sides.
+            "elbow": FaultPose(chains: [arms], moves: [.shift(["forearm_*"], outward: -0.12)],
+                               strength: .withBend("forearm_L")),
+            "barpath": rowedLow(withBar: true),
+            // Grip creeping in toward shoulder-width.
+            "grip": FaultPose(chains: [armsToGrip, bar],
+                              moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.14), .shift(["forearm_*"], outward: -0.08)]),
+            "feet": trunkLifted(24),
+            "scapula": shouldersForward
+        ],
+        "Seal Row": [
+            "elbow": elbowsWinged,
+            "barpath": rangeCutShort,
+            "grip": gripTooWide(withBar: true),
+            "pad": chestOffPad,
+            "scapula": shrugged
+        ],
+        "Meadows Row": [
+            "grip": leftWristBentBack,
+            "elbow": leftElbowWinged,
+            "brace": leftTwistedOpen,
+            "feet": trunkLifted(20),
+            "scapula": leftShoulderForward
+        ],
+        "Single-Arm Landmine Row": [
+            "grip": leftWristBentBack,
+            "elbow": leftElbowWinged,
+            "brace": leftTwistedOpen,
+            "feet": trunkLifted(20),
+            "scapula": leftShoulderForward
+        ],
+        "Kettlebell Row": [
+            "grip": leftWristBentBack,
+            "elbow": leftElbowWinged,
+            "brace": leftTwistedOpen,
+            "feet": trunkLifted(20),
+            "scapula": leftShoulderForward
+        ],
+        "Landmine Row": [
+            "elbow": elbowsWinged,
+            "barpath": rowedShort,
+            // Reaching for the handle with rounded shoulders.
+            "grip": shouldersForward,
+            "feet": backRounded(),
+            "scapula": squeezeSkipped
+        ],
+        "Dumbbell Bent-Over Row": [
+            "elbow": elbowsWinged,
+            "barpath": rowedHigh(withBar: false),
+            // Dumbbells drifting out to the sides.
+            "grip": FaultPose(chains: [armsToGrip], moves: [.shift(["hand_*", "hand_*.tip"], outward: 0.13)]),
+            "feet": trunkLifted(24),
+            "scapula": shouldersForward
+        ],
+        "Renegade Row": [
+            "body": hipsSagging,
+            "hands": handsForward,
+            "elbow": elbowsWinged,
+            // The hips and legs twisting open under the rowing side.
+            "hips": FaultPose(chains: [spine, hips, legs],
+                              moves: [.turn(pivot: "chest", points: ["spine", "pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip"],
+                                            axis: .up, degrees: 18)]),
+            // Feet drawn together.
             "feet": FaultPose(chains: [legs],
-                              moves: [.shift(["foot_*", "foot_*.tip"], up: -0.14), .shift(["shin_*"], up: -0.06)])
+                              moves: [.shift(["foot_*", "foot_*.tip"], outward: -0.14), .shift(["shin_*"], outward: -0.07)])
+        ],
+        "Gorilla Row": [
+            "feet": squareLockedStance,
+            "spine": backRounded(),
+            "elbow": elbowsWinged,
+            // Twisting to swing each bell up.
+            "alternate": FaultPose(chains: [spine, shoulders, arms],
+                                   moves: [.turn(pivot: "pelvis", points: trunk, axis: .up, degrees: -20)]),
+            "scapula": shouldersForward
+        ],
+        "Inverted Row": invertedRowFaults,
+        "Feet-Elevated Inverted Row": invertedRowFaults,
+        "Underhand Inverted Row": invertedRowFaults,
+
+        // MARK: Batch 161-190 (2026-09-25)
+        "Wide-Grip Pull-Up": [
+            "scapula": shrugged,
+            "elbow": elbowsForward,
+            "grip": gripTooWide(withBar: false),
+            "barpath": chinCraned,
+            "feet": kipping
+        ],
+        "Neutral-Grip Pull-Up": [
+            "scapula": shrugged,
+            "elbow": elbowsForward,
+            "grip": wristBentBack(withBar: false),
+            "barpath": chinCraned,
+            "feet": kipping
+        ],
+        "Archer Pull-Up": [
+            "scapula": shrugged,
+            "elbow": elbowsForward,
+            "grip": gripTooNarrow(withBar: false),
+            "barpath": hangingShort,
+            "feet": kipping
+        ],
+        "Weighted Pull-Up": [
+            "scapula": shrugged,
+            "elbow": elbowsForward,
+            "grip": gripTooWide(withBar: false),
+            "barpath": chinCraned,
+            "feet": kipping
+        ],
+        "Assisted Pull-Up": [
+            "scapula": shrugged,
+            "elbow": elbowsForward,
+            "grip": gripTooNarrow(withBar: false),
+            "barpath": chinCraned,
+            // Pushing through the knees: the whole body pressed up off the pad.
+            "feet": FaultPose(chains: [spine, legs],
+                              moves: [.shift(["pelvis", "spine", "chest", "neck", "head", "thigh_*", "shin_*", "foot_*", "foot_*.tip"], up: 0.12)])
+        ],
+        "Machine Pull-Up": [
+            "scapula": shrugged,
+            "elbow": elbowsForward,
+            "grip": gripTooNarrow(withBar: false),
+            "barpath": chinCraned,
+            // Knees bending to push off the platform.
+            "feet": FaultPose(chains: [legs, hips], moves: [.shift(["shin_*"], forward: 0.14)])
+        ],
+        "Neutral-Grip Chin-Up": [
+            "scapula": shrugged,
+            "elbow": elbowsForward,
+            "grip": wristBentBack(withBar: false),
+            "barpath": hangingShort,
+            "feet": kipping
+        ],
+        "Weighted Chin-Up": [
+            "scapula": shrugged,
+            "elbow": elbowsForward,
+            "grip": gripTooWide(withBar: false),
+            "barpath": hangingShort,
+            "feet": kipping
+        ],
+        "Wide-Grip Lat Pulldown": [
+            "spine": trunkLifted(26),
+            "elbow": pulldownFlared,
+            "grip": gripTooWide(withBar: true),
+            "barpath": pulledBehindNeck,
+            "feet": slidForward
+        ],
+        "Reverse-Grip Lat Pulldown": [
+            "spine": trunkLifted(26),
+            "elbow": pulldownFlared,
+            "grip": gripTooWide(withBar: true),
+            "barpath": pulldownShort,
+            "feet": slidForward
+        ],
+        "Neutral-Grip Lat Pulldown": [
+            "spine": trunkLifted(26),
+            "elbow": pulldownFlared,
+            "grip": wristBentBack(withBar: false),
+            "barpath": pulledBehindNeck,
+            "feet": slidForward
+        ],
+        "V-Bar Lat Pulldown": [
+            "spine": trunkLifted(26),
+            "elbow": pulldownFlared,
+            "grip": wristBentBack(withBar: false),
+            "barpath": pulledPastChest,
+            "feet": slidForward
+        ],
+        "Kneeling Lat Pulldown": [
+            "spine": trunkLifted(20),
+            "elbow": pulldownFlared,
+            "grip": gripTooWide(withBar: true),
+            "barpath": pulledBehindNeck,
+            // Sitting back toward the heels.
+            "feet": FaultPose(chains: [spine, hips, legs],
+                              moves: [.shift(["pelvis", "thigh_*"], forward: -0.14, up: -0.08), .shift(["spine"], forward: -0.07)])
+        ],
+        "Rope Lat Pulldown": [
+            "spine": trunkLifted(26),
+            "elbow": pulldownFlared,
+            "grip": wristBentBack(withBar: false),
+            // The hands kept together instead of splitting the rope.
+            "barpath": FaultPose(chains: [armsToGrip],
+                                 moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.1), .shift(["forearm_*"], outward: -0.05)],
+                                 strength: .withBend("forearm_L")),
+            "feet": slidForward
+        ],
+        "Machine Lat Pulldown": [
+            "spine": trunkLifted(26),
+            "elbow": pulldownFlared,
+            "grip": shrugged,
+            "barpath": pulldownShort,
+            "feet": slidForward
+        ],
+        "Iso-Lateral Lat Pulldown": [
+            "spine": trunkLifted(26),
+            "elbow": pulldownFlared,
+            "grip": shrugged,
+            // Leaning over to the working side.
+            "barpath": FaultPose(chains: [spine, shoulders],
+                                 moves: [.turn(pivot: "pelvis", points: trunk, axis: .forward, degrees: -12)]),
+            "feet": slidForward
+        ],
+        "Single-Arm Lat Pulldown": [
+            "core": leftTwistedOpen,
+            "elbow": leftElbowWinged,
+            "grip": leftWristBentBack,
+            "barpath": leftPullShort,
+            "feet": slidForward
+        ],
+        "Wide-Grip Seated Cable Row": [
+            "scapula": shouldersForward,
+            "elbow": elbowsWinged,
+            "grip": gripTooNarrow(withBar: true),
+            "barpath": rowedLow(withBar: true),
+            "torso": trunkLifted(18)
+        ],
+        "Close-Grip Seated Cable Row": [
+            "scapula": shouldersForward,
+            "elbow": elbowsWinged,
+            "grip": wristBentBack(withBar: false),
+            "barpath": rowedHigh(withBar: false),
+            "torso": trunkLifted(18)
+        ],
+        "High Cable Row": [
+            "scapula": shouldersForward,
+            "elbow": elbowsWinged,
+            "grip": wristBentBack(withBar: false),
+            "barpath": rowedLow(withBar: false),
+            "torso": trunkLifted(18)
+        ],
+        "Low Cable Row": [
+            "scapula": shouldersForward,
+            "elbow": elbowsWinged,
+            "grip": backRounded(),
+            "barpath": rowedHigh(withBar: false),
+            "torso": trunkLifted(18)
+        ],
+        "Standing Cable Row": [
+            "scapula": shouldersForward,
+            "elbow": elbowsWinged,
+            "grip": wristBentBack(withBar: false),
+            "barpath": rowedShort,
+            "torso": squareLockedStance
+        ],
+        "Single-Arm Cable Row": [
+            "scapula": leftShoulderForward,
+            "elbow": leftElbowWinged,
+            "grip": leftWristBentBack,
+            "core": leftTwistedOpen,
+            "torso": trunkLifted(18)
+        ],
+        "Half-Kneeling Cable Row": [
+            "scapula": leftShoulderForward,
+            "elbow": leftElbowWinged,
+            "grip": leftWristBentBack,
+            "core": leftTwistedOpen,
+            "stance": lowerBackArched(0.1)
+        ],
+        "Machine Seated Row": [
+            "pad": chestOffPad,
+            "elbow": elbowsWinged,
+            "grip": shouldersForward,
+            "barpath": rowedShort,
+            "scapula": shrugged
+        ],
+        "Iso-Lateral Row Machine": [
+            "pad": chestOffPad,
+            "elbow": elbowsWinged,
+            "grip": shouldersForward,
+            "barpath": trunkTwisted,
+            "scapula": shrugged
+        ],
+        "Single-Arm Machine Row": [
+            "pad": chestOffPad,
+            "elbow": leftElbowWinged,
+            "grip": leftShoulderForward,
+            "brace": leftTwistedOpen,
+            "scapula": leftShrugged
+        ],
+        "Reverse-Grip T-Bar Row": [
+            "elbow": elbowsWinged,
+            "barpath": rowedShort,
+            "grip": shouldersForward,
+            "feet": backRounded(),
+            "scapula": squeezeSkipped
+        ],
+        "Dumbbell Pullover Row": [
+            "grip": wristBentBack(withBar: false),
+            "elbow": pulloverElbowsBent(withBar: false),
+            "arc": pulloverTooDeep(withBar: false),
+            "ribs": lowerBackArched(0.1, pulloverStretch),
+            "feet": benchFeet
+        ],
+        "Machine Pullover": [
+            // Pulling with the hands: the elbows bend further.
+            "elbow": FaultPose(chains: [armsToGrip],
+                               moves: [.turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: 40)]),
+            "grip": wristBentBack(withBar: false),
+            // Starting short of the stretch: the arms held lower overhead.
+            "arc": FaultPose(chains: [armsToGrip],
+                             moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -25)],
+                             strength: .between("hand_L", "pelvis", from: 1.0, to: 1.5)),
+            "spine": lowerBackArched(0.1),
+            "scapula": shrugged
         ],
 
         // MARK: Back
@@ -927,12 +1800,7 @@ enum FaultPoses {
             // Bar drifting out in front of the shins.
             "barpath": FaultPose(chains: [armsToGrip, bar],
                                  moves: [.shift(["hand_*", "hand_*.tip"], ahead: 0.13), .shift(["forearm_*"], ahead: 0.07)]),
-            // Hips shooting up first, knees locking: a stiff-legged good morning.
-            "hips": FaultPose(
-                chains: [spine, legs, hips],
-                moves: [.shift(["pelvis", "thigh_*"], rise: 0.14), .shift(["spine"], rise: 0.07), .straighten(["shin_*"])],
-                strength: .withBend("shin_L")
-            ),
+            "hips": hipsShotUp,
             // Starting with the bar over the toes.
             "feet": FaultPose(chains: [armsToGrip, bar],
                               moves: [.shift(["hand_*", "hand_*.tip"], ahead: 0.15), .shift(["forearm_*"], ahead: 0.08)],
@@ -978,34 +1846,22 @@ enum FaultPoses {
             "scapula": shrugged
         ],
         "Pull-Up": [
-            // Elbows drifting forward, curling the body up.
-            "elbow": FaultPose(chains: [arms], moves: [.shift(["forearm_*"], forward: 0.15)], strength: .withBend("forearm_L")),
-            // Craning the chin up and over while the body stays low.
-            "barpath": FaultPose(chains: [["chest", "neck", "head"]],
-                                 moves: [.shift(["neck"], forward: 0.06, up: 0.03), .shift(["head"], forward: 0.14, up: 0.06)]),
+            "elbow": elbowsForward,
+            "barpath": chinCraned,
             "grip": gripTooWide(withBar: false),
             "feet": kipping,
             "scapula": shrugged
         ],
         "Chin-Up": [
             "elbow": elbowsWinged,
-            // Short reps: the body stops well below the bar.
-            "barpath": FaultPose(
-                chains: [spine, arms],
-                moves: [.shift(["pelvis", "spine", "chest", "neck", "head", "upper_arm_*"], up: -0.16),
-                        .shift(["forearm_*"], up: -0.08)],
-                strength: .withBend("forearm_L")
-            ),
+            "barpath": hangingShort,
             "grip": gripTooWide(withBar: false),
             "feet": kipping,
             "scapula": shrugged
         ],
         "Lat Pulldown": [
             "elbow": pulldownFlared,
-            // Bar pulled down behind the neck.
-            "barpath": FaultPose(chains: [armsToGrip, bar],
-                                 moves: [.shift(["hand_*", "hand_*.tip"], forward: -0.2, up: 0.05), .shift(["forearm_*"], forward: -0.1)],
-                                 strength: .withBend("forearm_L")),
+            "barpath": pulledBehindNeck,
             "grip": gripTooWide(withBar: true),
             "feet": slidForward,
             // Rocking far back on every rep.
@@ -1013,10 +1869,7 @@ enum FaultPoses {
         ],
         "Close-Grip Lat Pulldown": [
             "elbow": pulldownFlared,
-            // Handle pulled down past the chest.
-            "barpath": FaultPose(chains: [armsToGrip],
-                                 moves: [.shift(["hand_*", "hand_*.tip"], up: -0.15), .shift(["forearm_*"], forward: -0.05, up: -0.05)],
-                                 strength: .withBend("forearm_L")),
+            "barpath": pulledPastChest,
             "grip": gripTooWide(withBar: false),
             // Rising off the seat.
             "feet": FaultPose(chains: [spine, legs],
@@ -1049,17 +1902,11 @@ enum FaultPoses {
         ],
         "T-Bar Row": [
             "elbow": elbowsWinged,
-            // Only a few inches of pull: the hands stay low.
-            "barpath": FaultPose(chains: [armsToGrip],
-                                 moves: [.shift(["hand_*", "hand_*.tip"], forward: 0.14), .shift(["forearm_*"], forward: 0.07)],
-                                 strength: .withBend("forearm_L")),
+            "barpath": rowedShort,
             // Reaching for the handles with rounded shoulders.
             "grip": shouldersForward,
             "feet": backRounded(),
-            // Stopping before the squeeze: the elbows never pass the trunk.
-            "scapula": FaultPose(chains: [arms, ["upper_arm_L", "upper_arm_R"]],
-                                 moves: [.shift(["upper_arm_*"], forward: 0.07), .shift(["forearm_*"], forward: 0.1)],
-                                 strength: .withBend("forearm_L"))
+            "scapula": squeezeSkipped
         ],
         "Chest-Supported Row Machine": [
             "elbow": elbowsWinged,

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-dumbbell-pullover.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

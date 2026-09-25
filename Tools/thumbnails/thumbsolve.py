@@ -8,6 +8,8 @@ SRC = open("/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Models/SampleData.
 M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
 PRESET = {"standing": 0.0, "bench": -1.0, "chestPress": -0.7, "pecDeck": 0.0, "cableStation": 0.0}
 HELD = ("Barbell", "Dumbbell", "Lat_Bar", "Handle", "TGrip", "TBar_Plate", "LandmineBar", "Rope", "Mat", "AnkleCuff", "CuffAttachment", "Step")
+BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Grip Lat Pulldown",
+             "V-Bar Lat Pulldown", "Single-Arm Lat Pulldown", "Rope Lat Pulldown"}
 block = SRC[SRC.index("modelByExercise: [String: ExerciseModel] = ["):SRC.index("static func model(for")]
 jobs = {}
 for m in re.finditer(r'"([^"]+)":\s*ExerciseModel\(resource: "([^"]+)",\s*framing: (?:\.(\w+)|ModelFraming\(yaw: ([-\d.]+))', block):
@@ -26,7 +28,10 @@ for name, (path, yaw) in jobs.items():
     zb, offb = solve(core, yaw, 1.0, mx=0.84, my_top=0.84, my_bot=0.84)
     allp = np.vstack([core] + big) if big else core
     za, offa = solve(allp, yaw, 1.0, mx=0.92, my_top=0.92, my_bot=0.92) or (0, None)
-    if za >= zb: z, off = zb, offb
+    # Cable pulldowns (2026-09-25): the 2.3 m tower shrinks the lifter to a
+    # sliver, so frame the lifter and let the tower crop.
+    if name in BODY_ONLY: z, off = zb, offb
+    elif za >= zb: z, off = zb, offb
     elif za >= 0.6 * zb or name in ("Leg Press", "Cable Crunch"): z, off = za, offa
     else: z, off = zb, offb
     out[name] = dict(yaw=yaw, zoom=round(z, 3), off=[round(float(v), 3) for v in off])

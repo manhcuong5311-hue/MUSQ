@@ -45,3 +45,20 @@ Crunch joins Leg Press in always showing the whole machine.
 
 To shoot only some exercises, filter the generated script, e.g.
 `python3 make_shoot.py | grep -E '^#!|^U=|HARNESS_PHOTO="(Squat|Lunge)"' > shoot.sh`.
+
+Chest batch 101-131 (2026-09-25): the 28 new chest exercises were added with
+`posetime.py <names…>` and `thumbsolve.py thumbs.json <names…>`, shot and
+installed the same way; the library now has 118 exercises, all with a
+thumbnail.
+
+Batch 133-160 (2026-09-25): the 27 new exercises were added the same way; the
+library now has 145 exercises, all with a thumbnail. The six new pulls (rack,
+block, sumo, trap bar, snatch-grip, deficit) are shot at the start of the pull
+(`posetimes.json` time 0) instead of the furthest pose, which is lockout: at
+lockout they all look the same, at the start the stance and grip tell them apart.
+
+Batch 161-190 (2026-09-25): the 30 new back exercises were added the same way;
+the library now has 175 exercises, all with a thumbnail. The six cable
+pulldowns are in `thumbsolve.py`'s `BODY_ONLY` set: framed on the lifter with
+the 2.3 m tower allowed to crop, since fitting the tower left the lifter a
+sliver.

@@ -40,3 +40,26 @@ the feet clear the mistake bar; the stills include both.
 
 Faults that are about speed or force rather than a position (tempo, bouncing,
 pulling on pads) have no ghost and fall back to the red ring.
+
+Chest batch 101-131 (2026-09-25): every new chest exercise has a ghost for
+each cue. `bottoms.py` treats the new cable flies as flys and the pullovers
+by the overhead stretch (hands furthest from the pelvis); the landmine
+press's short-lockout fault is read at lockout. Pieces shared with the
+original chest lifts (decline feet, bounced bar, seated arch, cable-fly
+folds) were pulled out of their entries unchanged. The single-arm lifts work
+the left arm, so their ghosts move only `_L` joints; Incline Push-Up reuses
+the push-up's faults.
+
+Batch 133-160 (2026-09-25): every new exercise has a ghost for each cue. The
+new pulls from the floor, pins and blocks bottom out by the knee rule, and
+their lockout faults (`Rack Pull|lockout`, `Block Pull|lockout`,
+`Trap Bar Deadlift|lockout`) are read at the top. The push-up variants reuse
+the push-up's faults and the three inverted rows share one set, so
+`make_shoot.py` (which reads inline entries) skips them; shoot them by hand.
+
+Batch 161-190 (2026-09-25): every new exercise has a ghost for each cue. The
+pull-up, chin-up and pulldown pieces (`elbowsForward`, `chinCraned`,
+`hangingShort`, `pulledBehindNeck`, `pulledPastChest`) and `rowedLow` were
+pulled out of the Pull-Up, Chin-Up, Lat Pulldown and Wide-Grip Barbell Row
+entries unchanged; `bottoms.py` treats the two new pullovers by the overhead
+stretch.

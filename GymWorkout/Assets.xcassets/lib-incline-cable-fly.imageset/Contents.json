@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-incline-cable-fly.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

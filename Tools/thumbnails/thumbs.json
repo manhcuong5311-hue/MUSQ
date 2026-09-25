@@ -808,5 +808,770 @@
    0.027,
    -0.011
   ]
+ },
+ "Barbell Floor Press": {
+  "yaw": -1.0,
+  "zoom": 0.718,
+  "off": [
+   -0.019,
+   0.178,
+   0.029
+  ]
+ },
+ "Smith Machine Bench Press": {
+  "yaw": -1.0,
+  "zoom": 0.786,
+  "off": [
+   -0.083,
+   -0.044,
+   0.129
+  ]
+ },
+ "Smith Machine Incline Press": {
+  "yaw": -1.0,
+  "zoom": 0.78,
+  "off": [
+   -0.069,
+   -0.043,
+   0.107
+  ]
+ },
+ "Smith Machine Decline Press": {
+  "yaw": -1.0,
+  "zoom": 0.785,
+  "off": [
+   -0.061,
+   -0.044,
+   0.095
+  ]
+ },
+ "Dumbbell Floor Press": {
+  "yaw": -1.0,
+  "zoom": 0.719,
+  "off": [
+   -0.019,
+   0.206,
+   0.029
+  ]
+ },
+ "Single-Arm Dumbbell Bench Press": {
+  "yaw": -1.0,
+  "zoom": 1.186,
+  "off": [
+   -0.022,
+   0.204,
+   0.035
+  ]
+ },
+ "Alternating Dumbbell Bench Press": {
+  "yaw": -1.0,
+  "zoom": 1.186,
+  "off": [
+   -0.022,
+   0.204,
+   0.035
+  ]
+ },
+ "Neutral-Grip Dumbbell Press": {
+  "yaw": -1.0,
+  "zoom": 1.193,
+  "off": [
+   -0.022,
+   0.209,
+   0.035
+  ]
+ },
+ "Dumbbell Squeeze Press": {
+  "yaw": -1.0,
+  "zoom": 1.225,
+  "off": [
+   -0.023,
+   0.227,
+   0.035
+  ]
+ },
+ "Incline Dumbbell Squeeze Press": {
+  "yaw": -1.0,
+  "zoom": 1.031,
+  "off": [
+   -0.009,
+   0.113,
+   0.014
+  ]
+ },
+ "Dumbbell Pullover": {
+  "yaw": -1.3,
+  "zoom": 1.241,
+  "off": [
+   -0.031,
+   0.228,
+   0.113
+  ]
+ },
+ "Barbell Pullover": {
+  "yaw": -1.3,
+  "zoom": 1.021,
+  "off": [
+   -0.039,
+   0.094,
+   0.139
+  ]
+ },
+ "Iso-Lateral Chest Press": {
+  "yaw": -0.7,
+  "zoom": 0.906,
+  "off": [
+   -0.003,
+   -0.006,
+   0.002
+  ]
+ },
+ "Incline Chest Press Machine": {
+  "yaw": -0.7,
+  "zoom": 0.96,
+  "off": [
+   -0.087,
+   0.026,
+   0.074
+  ]
+ },
+ "Decline Chest Press Machine": {
+  "yaw": -0.7,
+  "zoom": 0.884,
+  "off": [
+   0.005,
+   -0.019,
+   -0.005
+  ]
+ },
+ "Plate-Loaded Chest Press": {
+  "yaw": -0.7,
+  "zoom": 0.904,
+  "off": [
+   -0.026,
+   -0.007,
+   0.022
+  ]
+ },
+ "Wide-Grip Chest Press Machine": {
+  "yaw": -0.7,
+  "zoom": 0.896,
+  "off": [
+   -0.034,
+   -0.012,
+   0.028
+  ]
+ },
+ "Cable Chest Press": {
+  "yaw": -0.7,
+  "zoom": 0.819,
+  "off": [
+   -0.153,
+   -0.042,
+   0.129
+  ]
+ },
+ "Single-Arm Cable Chest Press": {
+  "yaw": -0.7,
+  "zoom": 0.867,
+  "off": [
+   -0.219,
+   -0.044,
+   0.184
+  ]
+ },
+ "Incline Cable Press": {
+  "yaw": -1.0,
+  "zoom": 0.793,
+  "off": [
+   -0.117,
+   -0.045,
+   0.182
+  ]
+ },
+ "Decline Cable Press": {
+  "yaw": -1.0,
+  "zoom": 0.775,
+  "off": [
+   -0.083,
+   -0.045,
+   0.13
+  ]
+ },
+ "High-to-Low Cable Fly": {
+  "yaw": 0.0,
+  "zoom": 0.81,
+  "off": [
+   0.0,
+   -0.015,
+   0.0
+  ]
+ },
+ "Single-Arm Cable Fly": {
+  "yaw": 0.0,
+  "zoom": 0.947,
+  "off": [
+   -0.21,
+   -0.014,
+   0.0
+  ]
+ },
+ "Incline Cable Fly": {
+  "yaw": -1.0,
+  "zoom": 0.775,
+  "off": [
+   -0.096,
+   -0.044,
+   0.149
+  ]
+ },
+ "Decline Cable Fly": {
+  "yaw": -1.0,
+  "zoom": 0.775,
+  "off": [
+   -0.076,
+   -0.044,
+   0.119
+  ]
+ },
+ "Cable Crossover": {
+  "yaw": 0.0,
+  "zoom": 0.81,
+  "off": [
+   0.0,
+   -0.015,
+   0.0
+  ]
+ },
+ "Single-Arm Landmine Press": {
+  "yaw": -0.6,
+  "zoom": 0.76,
+  "off": [
+   0.19,
+   0.053,
+   -0.13
+  ]
+ },
+ "Incline Push-Up": {
+  "yaw": -1.35,
+  "zoom": 0.984,
+  "off": [
+   0.012,
+   0.235,
+   -0.055
+  ]
+ },
+ "Diamond Push-Up": {
+  "yaw": -1.2,
+  "zoom": 0.926,
+  "off": [
+   0.001,
+   0.356,
+   -0.003
+  ]
+ },
+ "Wide-Grip Push-Up": {
+  "yaw": -0.8,
+  "zoom": 1.098,
+  "off": [
+   0.03,
+   0.428,
+   -0.03
+  ]
+ },
+ "Archer Push-Up": {
+  "yaw": -0.8,
+  "zoom": 1.077,
+  "off": [
+   0.052,
+   0.423,
+   -0.053
+  ]
+ },
+ "Medicine Ball Push-Up": {
+  "yaw": -1.2,
+  "zoom": 0.94,
+  "off": [
+   -0.001,
+   0.321,
+   0.004
+  ]
+ },
+ "Pause Bench Press": {
+  "yaw": -1.0,
+  "zoom": 0.981,
+  "off": [
+   -0.084,
+   0.113,
+   0.131
+  ]
+ },
+ "Larsen Press": {
+  "yaw": -1.0,
+  "zoom": 0.804,
+  "off": [
+   -0.021,
+   0.089,
+   0.033
+  ]
+ },
+ "Reverse-Grip Bench Press": {
+  "yaw": -1.0,
+  "zoom": 0.981,
+  "off": [
+   -0.084,
+   0.113,
+   0.131
+  ]
+ },
+ "Rack Pull": {
+  "yaw": -2.5,
+  "zoom": 0.952,
+  "off": [
+   -0.041,
+   0.053,
+   -0.03
+  ]
+ },
+ "Block Pull": {
+  "yaw": -2.0,
+  "zoom": 1.339,
+  "off": [
+   -0.042,
+   0.283,
+   -0.091
+  ]
+ },
+ "Sumo Deadlift": {
+  "yaw": -2.0,
+  "zoom": 1.442,
+  "off": [
+   -0.056,
+   0.359,
+   -0.123
+  ]
+ },
+ "Trap Bar Deadlift": {
+  "yaw": -2.0,
+  "zoom": 1.504,
+  "off": [
+   0.051,
+   0.378,
+   0.111
+  ]
+ },
+ "Snatch-Grip Deadlift": {
+  "yaw": -2.0,
+  "zoom": 1.387,
+  "off": [
+   -0.041,
+   0.392,
+   -0.09
+  ]
+ },
+ "Deficit Deadlift": {
+  "yaw": -2.0,
+  "zoom": 1.391,
+  "off": [
+   -0.042,
+   0.359,
+   -0.092
+  ]
+ },
+ "Barbell Yates Row": {
+  "yaw": -2.0,
+  "zoom": 1.06,
+  "off": [
+   -0.035,
+   0.121,
+   -0.076
+  ]
+ },
+ "Reverse-Grip Barbell Row": {
+  "yaw": -2.0,
+  "zoom": 1.211,
+  "off": [
+   -0.045,
+   0.208,
+   -0.099
+  ]
+ },
+ "Wide-Grip Barbell Row": {
+  "yaw": -2.0,
+  "zoom": 1.246,
+  "off": [
+   -0.067,
+   0.229,
+   -0.146
+  ]
+ },
+ "Seal Row": {
+  "yaw": -1.4,
+  "zoom": 0.914,
+  "off": [
+   -0.015,
+   0.143,
+   0.086
+  ]
+ },
+ "Meadows Row": {
+  "yaw": 2.71,
+  "zoom": 0.956,
+  "off": [
+   -0.099,
+   0.253,
+   0.046
+  ]
+ },
+ "Single-Arm Landmine Row": {
+  "yaw": -2.0,
+  "zoom": 0.832,
+  "off": [
+   0.06,
+   0.149,
+   0.132
+  ]
+ },
+ "Kettlebell Row": {
+  "yaw": -2.0,
+  "zoom": 1.15,
+  "off": [
+   -0.021,
+   0.173,
+   -0.046
+  ]
+ },
+ "Landmine Row": {
+  "yaw": -2.0,
+  "zoom": 0.907,
+  "off": [
+   0.111,
+   0.148,
+   0.243
+  ]
+ },
+ "Dumbbell Bent-Over Row": {
+  "yaw": -2.0,
+  "zoom": 1.166,
+  "off": [
+   -0.021,
+   0.182,
+   -0.047
+  ]
+ },
+ "Renegade Row": {
+  "yaw": -1.3,
+  "zoom": 0.934,
+  "off": [
+   -0.015,
+   0.256,
+   0.053
+  ]
+ },
+ "Gorilla Row": {
+  "yaw": -2.0,
+  "zoom": 1.505,
+  "off": [
+   -0.033,
+   0.379,
+   -0.072
+  ]
+ },
+ "Inverted Row": {
+  "yaw": -1.35,
+  "zoom": 1.102,
+  "off": [
+   0.033,
+   0.25,
+   -0.148
+  ]
+ },
+ "Feet-Elevated Inverted Row": {
+  "yaw": -1.35,
+  "zoom": 0.997,
+  "off": [
+   0.024,
+   0.122,
+   -0.109
+  ]
+ },
+ "Underhand Inverted Row": {
+  "yaw": -1.35,
+  "zoom": 1.102,
+  "off": [
+   0.033,
+   0.25,
+   -0.148
+  ]
+ },
+ "Wide-Grip Pull-Up": {
+  "yaw": -2.6,
+  "zoom": 0.658,
+  "off": [
+   -0.003,
+   -0.108,
+   -0.002
+  ]
+ },
+ "Neutral-Grip Pull-Up": {
+  "yaw": -2.6,
+  "zoom": 0.658,
+  "off": [
+   -0.001,
+   -0.108,
+   -0.0
+  ]
+ },
+ "Archer Pull-Up": {
+  "yaw": -2.6,
+  "zoom": 0.66,
+  "off": [
+   0.002,
+   -0.107,
+   0.001
+  ]
+ },
+ "Weighted Pull-Up": {
+  "yaw": -2.6,
+  "zoom": 0.658,
+  "off": [
+   -0.001,
+   -0.108,
+   -0.0
+  ]
+ },
+ "Assisted Pull-Up": {
+  "yaw": -2.6,
+  "zoom": 0.661,
+  "off": [
+   0.004,
+   -0.106,
+   0.003
+  ]
+ },
+ "Neutral-Grip Chin-Up": {
+  "yaw": -2.6,
+  "zoom": 0.658,
+  "off": [
+   0.007,
+   -0.108,
+   0.004
+  ]
+ },
+ "Weighted Chin-Up": {
+  "yaw": -2.6,
+  "zoom": 0.658,
+  "off": [
+   0.008,
+   -0.108,
+   0.005
+  ]
+ },
+ "Machine Pull-Up": {
+  "yaw": -2.6,
+  "zoom": 0.661,
+  "off": [
+   -0.008,
+   -0.106,
+   -0.005
+  ]
+ },
+ "Wide-Grip Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 1.054,
+  "off": [
+   0.024,
+   0.124,
+   0.015
+  ]
+ },
+ "Reverse-Grip Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 1.054,
+  "off": [
+   0.019,
+   0.124,
+   0.011
+  ]
+ },
+ "Neutral-Grip Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 1.054,
+  "off": [
+   0.029,
+   0.125,
+   0.018
+  ]
+ },
+ "V-Bar Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 1.054,
+  "off": [
+   0.015,
+   0.125,
+   0.009
+  ]
+ },
+ "Kneeling Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 1.077,
+  "off": [
+   0.039,
+   0.138,
+   0.024
+  ]
+ },
+ "Rope Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 1.057,
+  "off": [
+   0.016,
+   0.126,
+   0.01
+  ]
+ },
+ "Machine Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 0.91,
+  "off": [
+   0.076,
+   0.052,
+   0.046
+  ]
+ },
+ "Iso-Lateral Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 0.91,
+  "off": [
+   0.069,
+   0.052,
+   0.042
+  ]
+ },
+ "Single-Arm Lat Pulldown": {
+  "yaw": -2.6,
+  "zoom": 1.054,
+  "off": [
+   0.027,
+   0.125,
+   0.016
+  ]
+ },
+ "Wide-Grip Seated Cable Row": {
+  "yaw": -2.2,
+  "zoom": 0.882,
+  "off": [
+   -0.138,
+   -0.024,
+   -0.189
+  ]
+ },
+ "Close-Grip Seated Cable Row": {
+  "yaw": -2.2,
+  "zoom": 0.882,
+  "off": [
+   -0.142,
+   -0.024,
+   -0.196
+  ]
+ },
+ "High Cable Row": {
+  "yaw": -2.2,
+  "zoom": 0.882,
+  "off": [
+   -0.142,
+   -0.024,
+   -0.196
+  ]
+ },
+ "Low Cable Row": {
+  "yaw": -2.2,
+  "zoom": 0.882,
+  "off": [
+   -0.142,
+   -0.024,
+   -0.196
+  ]
+ },
+ "Standing Cable Row": {
+  "yaw": -2.2,
+  "zoom": 0.882,
+  "off": [
+   -0.155,
+   -0.024,
+   -0.213
+  ]
+ },
+ "Single-Arm Cable Row": {
+  "yaw": -2.2,
+  "zoom": 0.882,
+  "off": [
+   -0.142,
+   -0.024,
+   -0.196
+  ]
+ },
+ "Half-Kneeling Cable Row": {
+  "yaw": -2.2,
+  "zoom": 0.833,
+  "off": [
+   -0.095,
+   -0.017,
+   -0.13
+  ]
+ },
+ "Machine Seated Row": {
+  "yaw": -2.4,
+  "zoom": 1.065,
+  "off": [
+   -0.0,
+   0.13,
+   -0.0
+  ]
+ },
+ "Iso-Lateral Row Machine": {
+  "yaw": -2.4,
+  "zoom": 1.065,
+  "off": [
+   -0.034,
+   0.13,
+   -0.031
+  ]
+ },
+ "Single-Arm Machine Row": {
+  "yaw": -2.4,
+  "zoom": 1.065,
+  "off": [
+   -0.024,
+   0.13,
+   -0.022
+  ]
+ },
+ "Reverse-Grip T-Bar Row": {
+  "yaw": -2.0,
+  "zoom": 0.895,
+  "off": [
+   0.107,
+   0.145,
+   0.234
+  ]
+ },
+ "Dumbbell Pullover Row": {
+  "yaw": -1.3,
+  "zoom": 1.173,
+  "off": [
+   -0.029,
+   0.182,
+   0.104
+  ]
+ },
+ "Machine Pullover": {
+  "yaw": -0.9,
+  "zoom": 1.103,
+  "off": [
+   -0.095,
+   0.114,
+   0.12
+  ]
  }
 }

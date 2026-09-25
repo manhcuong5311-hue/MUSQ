@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-weighted-pull-up.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

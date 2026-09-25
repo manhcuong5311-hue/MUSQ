@@ -11,11 +11,17 @@ M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
 # furthest apart; everything else bottoms out where the elbow bends most.
 # Extend with a knee rule when lower-body faults are authored.
 FLY = {"Dumbbell Fly", "Incline Dumbbell Fly", "Pec Deck Fly", "Cable Fly", "Low-to-High Cable Fly",
-       "Reverse Dumbbell Fly", "Reverse Pec Deck", "Cable Rear Delt Fly"}
+       "Reverse Dumbbell Fly", "Reverse Pec Deck", "Cable Rear Delt Fly",
+       "High-to-Low Cable Fly", "Single-Arm Cable Fly", "Incline Cable Fly", "Decline Cable Fly",
+       "Cable Crossover"}
+# Pullovers hold the elbows fixed too; their bottom is the overhead stretch,
+# with the hands furthest from the pelvis.
+PULLOVER = {"Dumbbell Pullover", "Barbell Pullover", "Dumbbell Pullover Row", "Machine Pullover"}
 # Pulls from the floor bottom out with the knees most bent, the straight-arm
 # pulldown starts with the hands highest, and the back extension's faults
 # read at the top, with the trunk most upright.
-KNEE = {"Deadlift"}
+KNEE = {"Deadlift", "Sumo Deadlift", "Trap Bar Deadlift", "Snatch-Grip Deadlift", "Deficit Deadlift",
+        "Rack Pull", "Block Pull"}
 HANDS_HIGH = {"Straight-Arm Pulldown", "Dumbbell Lateral Raise", "Cable Lateral Raise", "Machine Lateral Raise",
               "Dumbbell Front Raise"}
 UPRIGHT = {"Back Extension"}
@@ -38,12 +44,14 @@ FEET_APART = {"Cable Glute Kickback", "Cable Side Kick", "Cable Hip Abduction"}
 KNEES_APART = {"Hip Abduction Machine", "Hip Abduction Machine (Lean)"}
 # Faults of the other end of the rep, stored as "Exercise|cue".
 AT_TOP = {("Leg Press", "lockout"), ("Hack Squat", "lockout"), ("Step-Up", "hips"),
-          ("Seated Leg Curl", "curl")}
+          ("Seated Leg Curl", "curl"),
+          ("Rack Pull", "lockout"), ("Block Pull", "lockout"), ("Trap Bar Deadlift", "lockout")}
 # Faults of a press's lockout, with the elbows straightest.
 AT_LOCKOUT = {("Barbell Overhead Press", "barpath"), ("Barbell Overhead Press", "head"),
               ("Arnold Press", "finish"), ("Dumbbell Shoulder Press", "path"),
               ("Triceps Pushdown", "lockout"), ("Rope Pushdown", "split"), ("Single-Arm Cable Pushdown", "lockout"),
-              ("Skull Crusher", "upperarm"), ("Assisted Dip", "lockout"), ("Barbell Curl", "range")}
+              ("Skull Crusher", "upperarm"), ("Assisted Dip", "lockout"), ("Barbell Curl", "range"),
+              ("Single-Arm Landmine Press", "barpath")}
 def ang(a, b, c):
     u = (a - b).GetNormalized(); v = (c - b).GetNormalized()
     return math.degrees(math.acos(max(-1, min(1, Gf.Dot(u, v)))))
@@ -67,6 +75,8 @@ for n in names:
             return ang(P("thigh_" + side), P("shin_" + side), P("foot_" + side))
         if n in FLY:
             score = (P("hand_L") - P("hand_R")).GetLength()
+        elif n in PULLOVER:
+            score = (P("hand_L") - P("pelvis")).GetLength()
         elif n in KNEE:
             score = -knee("L")
         elif n in LEG_KNEE:

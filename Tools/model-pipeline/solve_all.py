@@ -4,7 +4,7 @@ from framer import gather, solve, project
 import numpy as np
 M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
 HELD = ("Barbell", "Dumbbell", "Lat_Bar", "Handle", "TGrip", "TBar_Plate", "LandmineBar", "Rope")
-ASPECT = 0.74
+ASPECT = float(__import__("os").environ.get("ASPECT", 0.74))  # 382/655 for the trainer since the setup drawer
 JOBS = json.loads(sys.argv[2])
 out = {}
 for name, (res, yaw) in JOBS.items():

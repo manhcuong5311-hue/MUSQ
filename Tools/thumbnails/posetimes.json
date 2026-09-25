@@ -448,5 +448,430 @@
   "time": 1.33,
   "disp": 0.83,
   "length": 7.96
+ },
+ "Barbell Floor Press": {
+  "time": 1.33,
+  "disp": 1.5,
+  "length": 7.96
+ },
+ "Smith Machine Bench Press": {
+  "time": 1.33,
+  "disp": 1.34,
+  "length": 7.96
+ },
+ "Smith Machine Incline Press": {
+  "time": 1.33,
+  "disp": 1.35,
+  "length": 7.96
+ },
+ "Smith Machine Decline Press": {
+  "time": 1.33,
+  "disp": 1.34,
+  "length": 7.96
+ },
+ "Dumbbell Floor Press": {
+  "time": 1.33,
+  "disp": 1.52,
+  "length": 7.96
+ },
+ "Single-Arm Dumbbell Bench Press": {
+  "time": 1.33,
+  "disp": 0.82,
+  "length": 7.96
+ },
+ "Alternating Dumbbell Bench Press": {
+  "time": 1.33,
+  "disp": 0.82,
+  "length": 7.96
+ },
+ "Neutral-Grip Dumbbell Press": {
+  "time": 1.33,
+  "disp": 1.63,
+  "length": 7.96
+ },
+ "Dumbbell Squeeze Press": {
+  "time": 1.33,
+  "disp": 1.49,
+  "length": 7.96
+ },
+ "Incline Dumbbell Squeeze Press": {
+  "time": 1.33,
+  "disp": 1.52,
+  "length": 7.96
+ },
+ "Dumbbell Pullover": {
+  "time": 1.33,
+  "disp": 2.21,
+  "length": 7.96
+ },
+ "Barbell Pullover": {
+  "time": 1.33,
+  "disp": 2.02,
+  "length": 7.96
+ },
+ "Iso-Lateral Chest Press": {
+  "time": 5.33,
+  "disp": 0.51,
+  "length": 7.96
+ },
+ "Incline Chest Press Machine": {
+  "time": 1.33,
+  "disp": 1.01,
+  "length": 7.96
+ },
+ "Decline Chest Press Machine": {
+  "time": 1.33,
+  "disp": 1.01,
+  "length": 7.96
+ },
+ "Plate-Loaded Chest Press": {
+  "time": 1.33,
+  "disp": 1.01,
+  "length": 7.96
+ },
+ "Wide-Grip Chest Press Machine": {
+  "time": 1.33,
+  "disp": 0.78,
+  "length": 7.96
+ },
+ "Cable Chest Press": {
+  "time": 1.33,
+  "disp": 1.56,
+  "length": 7.96
+ },
+ "Single-Arm Cable Chest Press": {
+  "time": 1.33,
+  "disp": 0.78,
+  "length": 7.96
+ },
+ "Incline Cable Press": {
+  "time": 1.33,
+  "disp": 1.56,
+  "length": 7.96
+ },
+ "Decline Cable Press": {
+  "time": 1.33,
+  "disp": 1.56,
+  "length": 7.96
+ },
+ "High-to-Low Cable Fly": {
+  "time": 1.33,
+  "disp": 2.16,
+  "length": 7.96
+ },
+ "Single-Arm Cable Fly": {
+  "time": 1.33,
+  "disp": 1.09,
+  "length": 7.96
+ },
+ "Incline Cable Fly": {
+  "time": 1.33,
+  "disp": 2.18,
+  "length": 7.96
+ },
+ "Decline Cable Fly": {
+  "time": 1.33,
+  "disp": 2.18,
+  "length": 7.96
+ },
+ "Cable Crossover": {
+  "time": 1.33,
+  "disp": 2.32,
+  "length": 7.96
+ },
+ "Single-Arm Landmine Press": {
+  "time": 1.33,
+  "disp": 1.11,
+  "length": 7.96
+ },
+ "Incline Push-Up": {
+  "time": 1.33,
+  "disp": 0.91,
+  "length": 7.96
+ },
+ "Diamond Push-Up": {
+  "time": 1.33,
+  "disp": 0.82,
+  "length": 7.96
+ },
+ "Wide-Grip Push-Up": {
+  "time": 1.33,
+  "disp": 0.53,
+  "length": 7.96
+ },
+ "Archer Push-Up": {
+  "time": 5.33,
+  "disp": 0.89,
+  "length": 7.96
+ },
+ "Medicine Ball Push-Up": {
+  "time": 1.33,
+  "disp": 1.18,
+  "length": 7.96
+ },
+ "Pause Bench Press": {
+  "time": 1.83,
+  "disp": 1.73,
+  "length": 7.96
+ },
+ "Larsen Press": {
+  "time": 1.33,
+  "disp": 1.73,
+  "length": 7.96
+ },
+ "Reverse-Grip Bench Press": {
+  "time": 1.33,
+  "disp": 1.71,
+  "length": 7.96
+ },
+ "Rack Pull": {
+  "time": 0.0,
+  "disp": 2.79,
+  "length": 7.96
+ },
+ "Block Pull": {
+  "time": 0.0,
+  "disp": 2.82,
+  "length": 7.96
+ },
+ "Sumo Deadlift": {
+  "time": 0.0,
+  "disp": 3.66,
+  "length": 7.96
+ },
+ "Trap Bar Deadlift": {
+  "time": 0.0,
+  "disp": 3.84,
+  "length": 7.96
+ },
+ "Snatch-Grip Deadlift": {
+  "time": 0.0,
+  "disp": 4.34,
+  "length": 7.96
+ },
+ "Deficit Deadlift": {
+  "time": 0.0,
+  "disp": 4.5,
+  "length": 7.96
+ },
+ "Barbell Yates Row": {
+  "time": 1.33,
+  "disp": 0.99,
+  "length": 7.96
+ },
+ "Reverse-Grip Barbell Row": {
+  "time": 1.33,
+  "disp": 1.31,
+  "length": 7.96
+ },
+ "Wide-Grip Barbell Row": {
+  "time": 1.33,
+  "disp": 1.34,
+  "length": 7.96
+ },
+ "Seal Row": {
+  "time": 1.33,
+  "disp": 1.26,
+  "length": 7.96
+ },
+ "Meadows Row": {
+  "time": 1.33,
+  "disp": 0.65,
+  "length": 7.96
+ },
+ "Single-Arm Landmine Row": {
+  "time": 1.33,
+  "disp": 0.59,
+  "length": 7.96
+ },
+ "Kettlebell Row": {
+  "time": 1.33,
+  "disp": 0.78,
+  "length": 7.96
+ },
+ "Landmine Row": {
+  "time": 1.33,
+  "disp": 0.93,
+  "length": 7.96
+ },
+ "Dumbbell Bent-Over Row": {
+  "time": 1.33,
+  "disp": 1.52,
+  "length": 7.96
+ },
+ "Renegade Row": {
+  "time": 5.33,
+  "disp": 0.94,
+  "length": 7.96
+ },
+ "Gorilla Row": {
+  "time": 5.33,
+  "disp": 0.64,
+  "length": 7.96
+ },
+ "Inverted Row": {
+  "time": 1.33,
+  "disp": 1.1,
+  "length": 7.96
+ },
+ "Feet-Elevated Inverted Row": {
+  "time": 1.33,
+  "disp": 1.1,
+  "length": 7.96
+ },
+ "Underhand Inverted Row": {
+  "time": 1.33,
+  "disp": 1.24,
+  "length": 7.96
+ },
+ "Wide-Grip Pull-Up": {
+  "time": 1.33,
+  "disp": 2.62,
+  "length": 7.96
+ },
+ "Neutral-Grip Pull-Up": {
+  "time": 1.33,
+  "disp": 2.68,
+  "length": 7.96
+ },
+ "Archer Pull-Up": {
+  "time": 5.33,
+  "disp": 2.41,
+  "length": 7.96
+ },
+ "Weighted Pull-Up": {
+  "time": 1.33,
+  "disp": 2.99,
+  "length": 7.96
+ },
+ "Assisted Pull-Up": {
+  "time": 1.33,
+  "disp": 3.05,
+  "length": 7.96
+ },
+ "Neutral-Grip Chin-Up": {
+  "time": 1.33,
+  "disp": 2.72,
+  "length": 7.96
+ },
+ "Weighted Chin-Up": {
+  "time": 1.33,
+  "disp": 2.91,
+  "length": 7.96
+ },
+ "Machine Pull-Up": {
+  "time": 1.33,
+  "disp": 3.05,
+  "length": 7.96
+ },
+ "Wide-Grip Lat Pulldown": {
+  "time": 1.33,
+  "disp": 1.99,
+  "length": 7.96
+ },
+ "Reverse-Grip Lat Pulldown": {
+  "time": 1.33,
+  "disp": 2.36,
+  "length": 7.96
+ },
+ "Neutral-Grip Lat Pulldown": {
+  "time": 1.33,
+  "disp": 2.25,
+  "length": 7.96
+ },
+ "V-Bar Lat Pulldown": {
+  "time": 1.33,
+  "disp": 2.26,
+  "length": 7.96
+ },
+ "Kneeling Lat Pulldown": {
+  "time": 1.33,
+  "disp": 2.35,
+  "length": 7.96
+ },
+ "Rope Lat Pulldown": {
+  "time": 1.33,
+  "disp": 2.39,
+  "length": 7.96
+ },
+ "Machine Lat Pulldown": {
+  "time": 1.33,
+  "disp": 2.2,
+  "length": 7.96
+ },
+ "Iso-Lateral Lat Pulldown": {
+  "time": 1.33,
+  "disp": 1.11,
+  "length": 7.96
+ },
+ "Single-Arm Lat Pulldown": {
+  "time": 1.33,
+  "disp": 1.15,
+  "length": 7.96
+ },
+ "Wide-Grip Seated Cable Row": {
+  "time": 1.33,
+  "disp": 1.41,
+  "length": 7.96
+ },
+ "Close-Grip Seated Cable Row": {
+  "time": 1.33,
+  "disp": 1.5,
+  "length": 7.96
+ },
+ "High Cable Row": {
+  "time": 1.33,
+  "disp": 1.94,
+  "length": 7.96
+ },
+ "Low Cable Row": {
+  "time": 1.33,
+  "disp": 1.06,
+  "length": 7.96
+ },
+ "Standing Cable Row": {
+  "time": 1.33,
+  "disp": 1.18,
+  "length": 7.96
+ },
+ "Single-Arm Cable Row": {
+  "time": 1.33,
+  "disp": 0.87,
+  "length": 7.96
+ },
+ "Half-Kneeling Cable Row": {
+  "time": 1.33,
+  "disp": 0.76,
+  "length": 7.96
+ },
+ "Machine Seated Row": {
+  "time": 1.33,
+  "disp": 1.27,
+  "length": 7.96
+ },
+ "Iso-Lateral Row Machine": {
+  "time": 1.33,
+  "disp": 0.64,
+  "length": 7.96
+ },
+ "Single-Arm Machine Row": {
+  "time": 1.33,
+  "disp": 0.64,
+  "length": 7.96
+ },
+ "Reverse-Grip T-Bar Row": {
+  "time": 1.33,
+  "disp": 1.03,
+  "length": 7.96
+ },
+ "Dumbbell Pullover Row": {
+  "time": 1.33,
+  "disp": 1.98,
+  "length": 7.96
+ },
+ "Machine Pullover": {
+  "time": 1.33,
+  "disp": 2.5,
+  "length": 7.96
  }
 }
