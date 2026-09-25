@@ -175,3 +175,57 @@ struct CueSheet: View {
         }
     }
 }
+
+// MARK: - Common mistake (compact)
+
+/// The cue sheet folded down while its mistake plays, so the whole lifter —
+/// and the yellow ghost of the mistake — stays in view.
+struct MistakeBar: View {
+    var cue: TechniqueCue
+    /// A yellow ghost is drawn over the model; the key says what it is.
+    var drawsGhost: Bool
+    var onShowCorrect: () -> Void
+    var onDone: () -> Void
+
+    var body: some View {
+        SheetScaffold(bottomPadding: 26, grabberBottomSpacing: 12) {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("COMMON MISTAKE")
+                        .font(.mono(9.5, .semibold))
+                        .trackingEm(0.11, size: 9.5)
+                        .foregroundStyle(DS.activationText)
+                    Spacer(minLength: 8)
+                    Button("Done", action: onDone)
+                        .font(.ui(13, .semibold))
+                        .foregroundStyle(DS.silver)
+                        .buttonStyle(.plain)
+                }
+
+                Text(cue.mistake)
+                    .font(.ui(14))
+                    .cssLineHeight(14, 1.5)
+                    .foregroundStyle(DS.silver.opacity(0.8))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 8)
+
+                if drawsGhost {
+                    HStack(spacing: 8) {
+                        Capsule()
+                            .fill(DS.fault)
+                            .overlay(Capsule().strokeBorder(DS.faultShade, lineWidth: 0.5))
+                            .frame(width: 18, height: 4)
+                        Text("Yellow shows the mistake · the model shows correct form")
+                            .font(.ui(12))
+                            .foregroundStyle(DS.silver.opacity(0.5))
+                    }
+                    .padding(.top, 10)
+                    .accessibilityElement(children: .combine)
+                }
+
+                WideButton(title: "Show Correct Form", prominent: true, action: onShowCorrect)
+                    .padding(.top, 14)
+            }
+        }
+    }
+}

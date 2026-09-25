@@ -188,8 +188,6 @@ enum FormMode {
     case mistake
 }
 
-// MARK: - Home
-
 // MARK: - Model framing
 
 /// How an exercise's model is presented in the viewport.

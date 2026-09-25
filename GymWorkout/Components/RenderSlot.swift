@@ -68,6 +68,12 @@ struct Viewport<Overlay: View>: View {
     var speed: Float = 1
     /// Holds the model's clip at this many seconds in, for still renders.
     var still: TimeInterval? = nil
+    /// Extra turn of that model about the vertical, in radians; changes
+    /// animate.
+    var turn: Float = 0
+    /// Share of the viewport's height a panel covers at the bottom, for the
+    /// model to rise clear of.
+    var roomBelow: Float = 0
     var inner: Color = DS.viewportInner
     var outer: Color = DS.viewportOuter
     var rx: CGFloat = 1.20
@@ -91,7 +97,8 @@ struct Viewport<Overlay: View>: View {
 
                 if let model {
                     USDZViewport(resource: model, framing: framing, speed: speed,
-                                 still: still, tracker: tracker)
+                                 still: still, turn: turn, roomBelow: roomBelow,
+                                 tracker: tracker)
                 } else {
                     RenderSlot(id: slot)
                 }

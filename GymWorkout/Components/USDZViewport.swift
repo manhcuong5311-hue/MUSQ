@@ -30,9 +30,16 @@ final class JointTracker {
     /// Viewport-space position of each tracked joint, in points. A joint is
     /// absent until the model has loaded, and while it is behind the camera.
     var points: [String: CGPoint] = [:]
+    /// World transform of each tracked joint, for overlays that pose limbs of
+    /// their own (the fault ghost). Position in the last column, the bone's
+    /// head-to-tail direction in the second.
+    var transforms: [String: simd_float4x4] = [:]
     /// Size of the viewport the points are measured in; kept current by the
     /// viewport itself.
     @ObservationIgnored var viewSize: CGSize = .zero
+    /// World point to viewport point through the viewport's camera; set once
+    /// the model has loaded.
+    @ObservationIgnored var projector: ((SIMD3<Float>) -> CGPoint?)?
 
     init(joints: [String]) {
         self.joints = joints
@@ -49,6 +56,13 @@ struct USDZViewport: View {
     /// When set, every clip is held still at this many seconds in, instead of
     /// playing — for rendering a fixed moment of the rep as a still image.
     var still: TimeInterval? = nil
+    /// An extra turn about the vertical, in radians, on top of the framing and
+    /// the viewer's drag — for showing something from a better side. Changes
+    /// animate; the first value applies at once.
+    var turn: Float = 0
+    /// Fraction of the viewport's height a panel covers at the bottom: the
+    /// model shrinks a little and rises to stay clear of it. Changes animate.
+    var roomBelow: Float = 0
     /// Joints to project to screen for overlays, if any.
     var tracker: JointTracker? = nil
     /// Camera distance in model units.
@@ -60,6 +74,16 @@ struct USDZViewport: View {
     @State private var dragStartYaw: Double = 0
     @State private var status: Status = .loading
     @State private var tracking: EventSubscription?
+    /// `turn` and `roomBelow` as shown so far while they animate; nil until
+    /// either first changes.
+    @State private var shown: Staging?
+    @State private var staging: Task<Void, Never>?
+
+    /// The extra turn and room, eased between as one.
+    private struct Staging: Equatable {
+        var turn: Float
+        var room: Float
+    }
 
     private enum Status: Equatable {
         case loading
@@ -100,8 +124,14 @@ struct USDZViewport: View {
                     status = .failed(error.localizedDescription)
                 }
             } update: { _ in
+                let stage = shown ?? Staging(turn: turn, room: roomBelow)
                 pivot.transform.rotation =
-                    simd_quatf(angle: Float(yaw) + framing.yaw, axis: [0, 1, 0])
+                    simd_quatf(angle: Float(yaw) + framing.yaw + stage.turn, axis: [0, 1, 0])
+                // Scaled about the middle of the view, then lifted by a share
+                // of its height at the model's depth.
+                let height = 2 * distance * tan(fieldOfView * .pi / 360)
+                pivot.transform.scale = SIMD3(repeating: 1 - 0.25 * stage.room)
+                pivot.transform.translation = [0, 0.35 * stage.room * height, 0]
             }
             .opacity(status == .ready ? 1 : 0)
 
@@ -131,6 +161,7 @@ struct USDZViewport: View {
         // so a single swipe could never bring the model all the way around.
         .contentShape(Rectangle())
         .onGeometryChange(for: CGSize.self, of: \.size) { tracker?.viewSize = $0 }
+        .onChange(of: Staging(turn: turn, room: roomBelow)) { old, new in stage(from: shown ?? old, to: new) }
         .gesture(
             DragGesture(minimumDistance: 2)
                 .onChanged { value in
@@ -139,6 +170,22 @@ struct USDZViewport: View {
                 }
                 .onEnded { _ in dragStartYaw = yaw }
         )
+    }
+
+    /// Eases the model to a new turn and room over about half a second.
+    private func stage(from start: Staging, to end: Staging) {
+        staging?.cancel()
+        staging = Task {
+            let steps = 30
+            for step in 1...steps {
+                try? await Task.sleep(for: .milliseconds(16))
+                guard !Task.isCancelled else { return }
+                let t = Float(step) / Float(steps)
+                let eased = t * t * (3 - 2 * t)
+                shown = Staging(turn: start.turn + (end.turn - start.turn) * eased,
+                                room: start.room + (end.room - start.room) * eased)
+            }
+        }
     }
 
     /// Plays every skeletal clip the file carries, looping.
@@ -233,6 +280,12 @@ struct USDZViewport: View {
         }
         guard !targets.isEmpty else { return nil }
 
+        let distance = distance, fieldOfView = fieldOfView
+        tracker.projector = { [weak tracker] p in
+            guard let tracker else { return nil }
+            return Self.project(p, in: tracker.viewSize, distance: distance, fieldOfView: fieldOfView)
+        }
+
         return content.subscribe(to: SceneEvents.Update.self) { _ in
             let local = skin.jointTransforms
             var resolved: [Int: simd_float4x4] = [:]
@@ -245,20 +298,26 @@ struct USDZViewport: View {
             }
             let toWorld = skin.transformMatrix(relativeTo: nil)
             var points: [String: CGPoint] = [:]
+            var transforms: [String: simd_float4x4] = [:]
             for target in targets {
-                let p = toWorld * meshSpace(target.index).columns.3
-                if let screen = project([p.x, p.y, p.z], in: tracker.viewSize) {
+                let world = toWorld * meshSpace(target.index)
+                transforms[target.name] = world
+                let p = world.columns.3
+                if let screen = Self.project([p.x, p.y, p.z], in: tracker.viewSize,
+                                             distance: distance, fieldOfView: fieldOfView) {
                     points[target.name] = screen
                 }
             }
             tracker.points = points
+            tracker.transforms = transforms
         }
     }
 
     /// World point to viewport point, for the fixed camera this view sets up:
     /// at `[0, 0, distance]`, looking down -Z, `fieldOfView` measured
     /// vertically.
-    private func project(_ p: SIMD3<Float>, in size: CGSize) -> CGPoint? {
+    private static func project(_ p: SIMD3<Float>, in size: CGSize,
+                                distance: Float, fieldOfView: Float) -> CGPoint? {
         let v = p - [0, 0, distance]
         guard v.z < -0.01, size.width > 0, size.height > 0 else { return nil }
         let t = tan(fieldOfView * .pi / 360)

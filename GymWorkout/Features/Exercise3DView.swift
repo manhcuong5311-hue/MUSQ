@@ -21,6 +21,9 @@ import SwiftUI
 
 struct Exercise3DView: View {
     var exercise: Exercise
+    /// Holds the clip at this many seconds in, for reviewing a moment of the
+    /// rep (the fault review stills); nil plays it.
+    var still: TimeInterval? = nil
 
     @Environment(\.dismiss) private var dismiss
 
@@ -43,17 +46,26 @@ struct Exercise3DView: View {
 
     private enum SheetKind { case muscles, cue }
 
-    init(exercise: Exercise) {
+    /// `cue` and `showingMistake` open straight onto one cue's common mistake.
+    init(exercise: Exercise, cue: String? = nil, showingMistake: Bool = false, still: TimeInterval? = nil) {
         self.exercise = exercise
+        self.still = still
         let content = SampleData.content(for: exercise)
-        _cueID = State(initialValue: content?.cues.first?.id ?? "")
-        _tracker = State(initialValue: JointTracker(
-            joints: content?.annotations.compactMap(\.joint) ?? []
-        ))
+        _cueID = State(initialValue: cue ?? content?.cues.first?.id ?? "")
+        if showingMistake {
+            _sheet = State(initialValue: .cue)
+            _cueMode = State(initialValue: .mistake)
+        }
+        // The cue dots, plus whatever the exercise's fault ghosts pose.
+        let joints = (content?.annotations.compactMap(\.joint) ?? [])
+            + FaultPoses.joints(for: exercise.name)
+        _tracker = State(initialValue: JointTracker(joints: Array(Set(joints)).sorted()))
     }
 
     private var content: ExerciseContent? { SampleData.content(for: exercise) }
     private var showingMistake: Bool { sheet == .cue && cueMode == .mistake }
+    /// The selected cue's mistake as limbs to draw, when one is authored.
+    private var fault: FaultPose? { FaultPoses.fault(exercise: exercise.name, cue: cueID) }
 
     var body: some View {
         ZStack {
@@ -78,8 +90,8 @@ struct Exercise3DView: View {
 
             if showingMistake, let content {
                 VStack {
-                    MistakeBanner(text: "SHOWING COMMON MISTAKE · \(content.comparison.mistakeBadge)")
-                        .padding(.top, 46)
+                    MistakeBanner(text: "COMMON MISTAKE · \(content.cue(cueID).title.uppercased())")
+                        .padding(.top, 72)
                     Spacer()
                 }
                 .transition(.opacity)
@@ -217,6 +229,11 @@ struct Exercise3DView: View {
             model: SampleData.modelName(for: exercise),
             framing: SampleData.model(for: exercise)?.framing ?? .standing,
             speed: SampleData.model(for: exercise)?.speed ?? 1,
+            still: still,
+            // A mistake is turned to the side it shows best from.
+            turn: showingMistake ? (fault?.view ?? 0) : 0,
+            // Clear of the mistake bar, which covers the feet otherwise.
+            roomBelow: showingMistake ? 0.26 : 0,
             // The glow stands in for activation on a flat render. A live model
             // carries activation in its own materials, and a screen-space glow
             // would stay put while the lifter is turned out from under it.
@@ -236,15 +253,21 @@ struct Exercise3DView: View {
                     }
 
                     if showingMistake {
-                        // On the fault itself when the cue tracks a joint.
-                        let fault = content.annotations
-                            .first { $0.cueID == cueID }
-                            .flatMap { $0.joint }
-                            .flatMap { tracker.points[$0] }
-                        FaultRing(diameter: 100)
-                            .position(fault ?? CGPoint(x: geo.size.width * 0.56,
-                                                       y: geo.size.height * 0.44))
-                            .allowsHitTesting(false)
+                        if let fault {
+                            // The mistake drawn over the lifter as yellow limbs.
+                            FaultGhost(fault: fault, tracker: tracker)
+                                .transition(.opacity)
+                        } else {
+                            // On the fault itself when the cue tracks a joint.
+                            let spot = content.annotations
+                                .first { $0.cueID == cueID }
+                                .flatMap { $0.joint }
+                                .flatMap { tracker.points[$0] }
+                            FaultRing(diameter: 100)
+                                .position(spot ?? CGPoint(x: geo.size.width * 0.56,
+                                                          y: geo.size.height * 0.44))
+                                .allowsHitTesting(false)
+                        }
                     }
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
@@ -285,7 +308,8 @@ struct Exercise3DView: View {
     /// The key tips: one tappable label per cue, its leader running to the
     /// joint it describes.
     private func callouts(_ content: ExerciseContent, in size: CGSize) -> some View {
-        ForEach(content.annotations) { annotation in
+        // While a mistake is shown, only its own cue stays labelled.
+        ForEach(content.annotations.filter { !showingMistake || $0.cueID == cueID }) { annotation in
             let label = CGPoint(
                 x: annotation.labelPoint.x * size.width,
                 y: annotation.labelPoint.y * size.height
@@ -374,7 +398,8 @@ struct Exercise3DView: View {
 
     @ViewBuilder
     private func sheetLayer(_ content: ExerciseContent) -> some View {
-        if sheet != nil {
+        // A mistake needs the whole lifter in view, so it gets no scrim.
+        if sheet != nil && !showingMistake {
             Color.black.opacity(0.6)
                 .ignoresSafeArea()
                 .onTapGesture { closeSheet() }
@@ -389,6 +414,16 @@ struct Exercise3DView: View {
                     exerciseName: exercise.name.uppercased(),
                     muscles: content.activation,
                     stabilisers: content.stabilisers,
+                    onDone: closeSheet
+                )
+                .transition(.move(edge: .bottom))
+            case .cue where cueMode == .mistake:
+                MistakeBar(
+                    cue: content.cue(cueID),
+                    drawsGhost: fault != nil,
+                    onShowCorrect: {
+                        withAnimation(.easeOut(duration: 0.2)) { cueMode = .correct }
+                    },
                     onDone: closeSheet
                 )
                 .transition(.move(edge: .bottom))

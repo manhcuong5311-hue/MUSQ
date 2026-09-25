@@ -87,6 +87,15 @@ enum DS {
     /// Intermediate difficulty dot.
     static let difficultyMid = Color(hex: 0xFF9A6B)
 
+    // MARK: - Form faults (never interactive)
+
+    /// The yellow "ghost" limbs that draw a common mistake over the model.
+    /// Kept apart from `activation` so a mistake never reads as a worked
+    /// muscle.
+    static let fault = Color(hex: 0xFFC61A)
+    /// Underlay that keeps `fault` lines legible on the light ground.
+    static let faultShade = Color(hex: 0x5C3D00, opacity: 0.45)
+
     // MARK: - Metrics
 
     enum Metric {
