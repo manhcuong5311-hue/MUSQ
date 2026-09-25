@@ -2,9 +2,10 @@
 //  OnboardingView.swift
 //  GymWorkout
 //
-//  First launch: four questions — experience, sex, goal, height and weight
-//  — then the plan they add up to. The same screens edit the answers later
-//  from Profile. Answers only shape suggestions (see `ProgramAdvisor`).
+//  First launch: six questions — experience, sex, goal, days a week, how to
+//  split them, height and weight — then the plan they add up to. The same
+//  screens edit the answers later from Profile. Answers only shape
+//  suggestions (see `ProgramAdvisor`).
 //
 
 import SwiftUI
@@ -22,6 +23,8 @@ struct OnboardingView: View {
     @State private var experience: TrainingExperience?
     @State private var sex: Sex?
     @State private var goal: FitnessGoal?
+    @State private var daysPerWeek: Int?
+    @State private var split: TrainingSplit?
     @State private var unit: WeightUnit = .kg
     @State private var heightCm: Double = 170
     @State private var weightKg: Double = 70
@@ -31,9 +34,9 @@ struct OnboardingView: View {
     @State private var didLoad = false
 
     enum Step: Int, CaseIterable {
-        case welcome, experience, sex, goal, body, plan
+        case welcome, experience, sex, goal, days, split, body, plan
 
-        static let questions: [Step] = [.experience, .sex, .goal, .body]
+        static let questions: [Step] = [.experience, .sex, .goal, .days, .split, .body]
     }
 
     var body: some View {
@@ -100,7 +103,7 @@ struct OnboardingView: View {
         case .welcome:
             VStack(spacing: 10) {
                 WideButton(title: "Get Started", prominent: true, fontSize: 15, verticalPadding: 15) { advance() }
-                Text("Four quick questions · under a minute")
+                Text("Six quick questions · about a minute")
                     .font(.ui(12))
                     .foregroundStyle(DS.silver.opacity(0.45))
             }
@@ -119,6 +122,8 @@ struct OnboardingView: View {
         case .experience: return experience != nil
         case .sex: return sex != nil
         case .goal: return goal != nil
+        case .days: return daysPerWeek != nil
+        case .split: return split != nil
         default: return true
         }
     }
@@ -132,6 +137,8 @@ struct OnboardingView: View {
         case .experience: experiencePage
         case .sex: sexPage
         case .goal: goalPage
+        case .days: daysPage
+        case .split: splitPage
         case .body: bodyPage
         case .plan: planPage
         }
@@ -157,7 +164,7 @@ struct OnboardingView: View {
                 .tracking(-0.8)
                 .foregroundStyle(DS.silver)
                 .padding(.top, 8)
-            Text("Tell us about your experience, goal and body, and we'll shape the muscle groups, presets and recovery estimates around you.")
+            Text("Tell us about your experience, goal, week and body, and we'll shape your split, presets and recovery estimates around you.")
                 .font(.ui(15))
                 .cssLineHeight(15, 1.45)
                 .foregroundStyle(DS.silver.opacity(0.6))
@@ -198,14 +205,14 @@ struct OnboardingView: View {
         QuestionPage(
             eyebrow: "ABOUT YOU",
             title: "What's your sex?",
-            caption: "Female plans bring more lower-body days — glutes, hamstrings and quads — into the rotation. Any muscle can still be trained any day."
+            caption: "Female plans bring more lower-body work — glutes, hamstrings and quads — into your split. Any muscle can still be trained any day."
         ) {
             option(.female, in: $sex, symbol: "figure.stand.dress", title: "Female",
                    detail: "Lower-body focus: legs and glutes twice in each rotation.")
             option(.male, in: $sex, symbol: "figure.stand", title: "Male",
-                   detail: "Push, pull and legs in turn.")
+                   detail: "An even split of upper and lower body.")
             option(.unspecified, in: $sex, symbol: "person.fill.questionmark", title: "Prefer not to say",
-                   detail: "Push, pull and legs in turn.")
+                   detail: "An even split of upper and lower body.")
         }
     }
 
@@ -222,6 +229,67 @@ struct OnboardingView: View {
             option(.getFit, in: $goal, symbol: "heart", title: "Get fit",
                    detail: "A balanced mix to feel stronger day to day.")
         }
+    }
+
+    private var daysPage: some View {
+        QuestionPage(
+            eyebrow: "SCHEDULE",
+            title: "How many days a week can you train?",
+            caption: "Sets how your week is split. Train suggests the most recovered day each time, so a missed day never breaks the plan."
+        ) {
+            ForEach(ProgramAdvisor.daysPerWeekOptions, id: \.self) { days in
+                let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
+                OptionCard(symbol: "calendar", title: "\(days) days a week",
+                           detail: "\(suggested.title) · every muscle \(frequency(suggested, days)).",
+                           isSelected: daysPerWeek == days) {
+                    withAnimation(.easeOut(duration: 0.15)) {
+                        // A new schedule brings its own split; the next
+                        // question can still change it.
+                        if daysPerWeek != days { split = suggested }
+                        daysPerWeek = days
+                    }
+                }
+            }
+        }
+    }
+
+    private var splitPage: some View {
+        let days = daysPerWeek ?? 3
+        let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
+        return QuestionPage(
+            eyebrow: "SPLIT",
+            title: "How do you want to split your week?",
+            caption: "\(suggested.title) suits \(days) days a week best: \(ProgramAdvisor.recommendationReason(daysPerWeek: days))"
+        ) {
+            ForEach(TrainingSplit.allCases) { option in
+                OptionCard(symbol: Self.symbol(option), title: option.title,
+                           detail: "\(Self.summary(option)) Every muscle \(frequency(option, days)).",
+                           badge: option == suggested ? "BEST FIT" : nil,
+                           isSelected: split == option) {
+                    withAnimation(.easeOut(duration: 0.15)) { split = option }
+                }
+            }
+        }
+    }
+
+    private static func symbol(_ split: TrainingSplit) -> String {
+        switch split {
+        case .upperLower: return "arrow.up.arrow.down"
+        case .frontBack: return "arrow.left.arrow.right"
+        case .pushPullLegs: return "arrow.triangle.2.circlepath"
+        }
+    }
+
+    private static func summary(_ split: TrainingSplit) -> String {
+        switch split {
+        case .upperLower: return "Upper body one day, lower body the next."
+        case .frontBack: return "Chest, shoulders, quads and biceps one day; back, hamstrings, glutes and triceps the next."
+        case .pushPullLegs: return "Chest, shoulders and triceps; then back and biceps; then legs."
+        }
+    }
+
+    private func frequency(_ split: TrainingSplit, _ days: Int) -> String {
+        ProgramAdvisor.frequencyText(ProgramAdvisor.timesPerWeek(split, lowerFocus: sex == .female, daysPerWeek: days))
     }
 
     private var bodyPage: some View {
@@ -264,9 +332,11 @@ struct OnboardingView: View {
 
     private var planPage: some View {
         let profile = draftProfile
-        let rotation = ProgramAdvisor.rotation(for: profile)
-            .map { $0.filter(PresetProvider.trainableGroups.contains) }
-            .filter { !$0.isEmpty }
+        let rotation = ProgramAdvisor.days(for: profile)
+            .map { ProgramAdvisor.SplitDay(name: $0.name, groups: $0.groups.filter(PresetProvider.trainableGroups.contains)) }
+            .filter { !$0.groups.isEmpty }
+        let chosen = ProgramAdvisor.split(for: profile)
+        let days = daysPerWeek ?? 3
         let level = ProgramAdvisor.suggestedLevel(for: profile, experience: experience ?? .beginner)
         return ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
@@ -278,19 +348,18 @@ struct OnboardingView: View {
                     .padding(.top, 8)
 
                 VStack(spacing: 10) {
-                    PlanCard(symbol: "arrow.triangle.2.circlepath", title: "Rotation",
-                             detail: ProgramAdvisor.isLowerFocused(profile)
-                                ? "Lower-body focus. Train suggests the most recovered day."
-                                : "Train suggests the most recovered day.") {
+                    PlanCard(symbol: Self.symbol(chosen), title: "\(chosen.title), \(days) days a week",
+                             detail: (ProgramAdvisor.isLowerFocused(profile) ? "Lower-body focus. " : "")
+                                + "Every muscle \(frequency(chosen, days)). Train suggests the most recovered day.") {
                         VStack(alignment: .leading, spacing: 7) {
                             ForEach(Array(rotation.enumerated()), id: \.offset) { index, day in
                                 HStack(alignment: .firstTextBaseline, spacing: 10) {
-                                    Text("DAY \(index + 1)")
+                                    Text(day.name.uppercased())
                                         .font(.mono(9, .semibold))
                                         .trackingEm(0.08, size: 9)
                                         .foregroundStyle(DS.silver.opacity(0.4))
-                                        .frame(width: 44, alignment: .leading)
-                                    Text(day.map(\.title).joined(separator: " · "))
+                                        .frame(width: 52, alignment: .leading)
+                                    Text(day.groups.map(\.title).joined(separator: " · "))
                                         .font(.ui(13.5, .semibold))
                                         .foregroundStyle(DS.silver)
                                 }
@@ -367,7 +436,8 @@ struct OnboardingView: View {
 
     private var draftProfile: UserProfile? {
         guard let sex, let goal else { return nil }
-        return UserProfile(sex: sex, goal: goal, heightCm: heightCm, weightKg: weightKg)
+        return UserProfile(sex: sex, goal: goal, heightCm: heightCm, weightKg: weightKg,
+                           daysPerWeek: daysPerWeek, split: split)
     }
 
     // MARK: - Actions
@@ -380,6 +450,10 @@ struct OnboardingView: View {
             experience = store.experience
             sex = profile.sex
             goal = profile.goal
+            // Nil for profiles from before the schedule question, which then
+            // have to answer it; picking the days suggests the split.
+            daysPerWeek = profile.daysPerWeek
+            split = profile.split
             heightCm = profile.heightCm
             weightKg = profile.weightKg
             bodyTouched = true
@@ -457,6 +531,8 @@ struct OptionCard: View {
     var symbol: String
     var title: String
     var detail: String
+    /// A short tag beside the title, e.g. "BEST FIT".
+    var badge: String? = nil
     var isSelected: Bool
     var action: () -> Void
 
@@ -472,9 +548,20 @@ struct OptionCard: View {
                             .fill(isSelected ? DS.silver : DS.silver.opacity(0.07))
                     )
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(title)
-                        .font(.ui(15.5, .semibold))
-                        .foregroundStyle(DS.silver)
+                    HStack(spacing: 7) {
+                        Text(title)
+                            .font(.ui(15.5, .semibold))
+                            .foregroundStyle(DS.silver)
+                        if let badge {
+                            Text(badge)
+                                .font(.mono(8.5, .semibold))
+                                .trackingEm(0.08, size: 8.5)
+                                .foregroundStyle(DS.silver.opacity(0.75))
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 3)
+                                .background(Capsule().fill(DS.silver.opacity(0.08)))
+                        }
+                    }
                     Text(detail)
                         .font(.ui(12.5))
                         .cssLineHeight(12.5, 1.4)

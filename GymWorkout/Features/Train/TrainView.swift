@@ -120,7 +120,12 @@ struct TrainView: View {
             let others = trainable.filter { !recommended.contains($0) && !recent.contains($0) }
 
             if !recommended.isEmpty {
-                groupSection(isToday ? "RECOMMENDED TODAY" : "RECOMMENDED", groups: recommended, records: records)
+                // Name the split's day: the one the suggestion comes from.
+                let day = ProgramAdvisor.days(for: store.profile)
+                    .max { $0.groups.filter(recommended.contains).count < $1.groups.filter(recommended.contains).count }
+                let title = isToday ? "RECOMMENDED TODAY" : "RECOMMENDED"
+                groupSection(day.map { "\(title) · \($0.name.uppercased())" } ?? title,
+                             groups: recommended, records: records)
             } else if planned.isEmpty {
                 Text("Everything in the rotation was trained recently. Pick any group below — recovery times are only estimates.")
                     .font(.ui(13))

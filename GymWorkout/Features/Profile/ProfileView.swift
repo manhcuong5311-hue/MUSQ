@@ -140,10 +140,13 @@ struct ProfileView: View {
         .accessibilityElement(children: .combine)
     }
 
-    /// "Lower-body focus · Basic presets · walk 3,000 steps after workouts."
+    /// "Front / Back, 3 days a week · Lower-body focus · Basic presets · walk
+    /// 3,000 steps after workouts."
     private func planSummary(_ profile: UserProfile) -> String {
-        var parts = [ProgramAdvisor.isLowerFocused(profile) ? "Lower-body focus" : "Push, pull and legs",
-                     "\(store.suggestedLevel.title.capitalized) presets"]
+        let split = ProgramAdvisor.split(for: profile).title
+        var parts = [profile.daysPerWeek.map { "\(split), \($0) days a week" } ?? split]
+        if ProgramAdvisor.isLowerFocused(profile) { parts.append("Lower-body focus") }
+        parts.append("\(store.suggestedLevel.title.capitalized) presets")
         if let walk = store.walkSuggestion {
             parts.append("walk \(walk.steps.formatted()) steps after workouts")
         }

@@ -2,8 +2,8 @@
 //  TrainingPlanner.swift
 //  GymWorkout
 //
-//  Picks today's suggested muscle groups from a rotation — push / pull /
-//  legs by default, lower / upper for a lower-body focus (see
+//  Picks today's suggested muscle groups from a rotation — the days of the
+//  profile's split (upper / lower, front / back or push / pull / legs; see
 //  `ProgramAdvisor`). The planner suggests whichever day of it is most
 //  recovered, breaking ties by what was trained longest ago. It only
 //  suggests — any group can be trained at any time.

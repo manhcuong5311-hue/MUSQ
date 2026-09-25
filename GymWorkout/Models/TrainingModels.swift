@@ -351,11 +351,32 @@ enum FitnessGoal: String, Codable, CaseIterable, Identifiable {
 
 /// The onboarding answers. Experience lives on the store next to it, since
 /// recovery reads it on its own.
+/// How the week's sessions divide the body.
+enum TrainingSplit: String, Codable, CaseIterable, Identifiable {
+    case upperLower, frontBack, pushPullLegs
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .upperLower: return "Upper / Lower"
+        case .frontBack: return "Front / Back"
+        case .pushPullLegs: return "Push / Pull / Legs"
+        }
+    }
+}
+
 struct UserProfile: Codable, Hashable {
     var sex: Sex
     var goal: FitnessGoal
     var heightCm: Double
     var weightKg: Double
+    /// Sessions a week the lifter plans on. Nil in profiles saved before the
+    /// question existed.
+    var daysPerWeek: Int? = nil
+    /// Nil in profiles saved before the question existed, which keep the
+    /// rotation they had (see `ProgramAdvisor.split(for:)`).
+    var split: TrainingSplit? = nil
 
     var bmi: Double {
         let metres = heightCm / 100
