@@ -1,0 +1,139 @@
+// MARK: PIECES
+    // MARK: Batch 191-240 curl pieces (2026-09-26)
+
+    /// Curls: the wrist curling in toward the forearm as the weight comes up,
+    /// the fingers tipping toward the shoulder — the Biceps Curl's wrist fault
+    /// for one side or both, strongest at the top of the rep. With the palm
+    /// up (or turned up by the top), a positive turn about `.lateral` folds the
+    /// hand toward the palm. `degrees` is raised where the lifter is framed
+    /// small (the Spider Curl), so the fold reads at a glance.
+    private static func curlWristsCurled(_ side: String = "*", withBar: Bool = false,
+                                         degrees: Float = 50) -> FaultPose {
+        FaultPose(chains: [["forearm_\(side)", "hand_\(side)", "hand_\(side).tip"]] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "hand_\(side)", points: ["hand_\(side).tip"], axis: .lateral, degrees: degrees)],
+                  strength: .withBend(elbow(side)))
+    }
+
+    /// Preacher pad or curl machine: the upper arms lifting off the pad as the
+    /// weight rises (`elbowsForward`'s turn), drawn to the wrists only: at the
+    /// top of the curl a hand tip would reach up into the mistake pill.
+    private static func curlArmsOffPad(_ degrees: Float, side: String = "*") -> FaultPose {
+        FaultPose(chains: [["upper_arm_\(side)", "forearm_\(side)", "hand_\(side)"]],
+                  moves: [.turn(pivot: "upper_arm_\(side)", points: ["forearm_\(side)", "hand_\(side)"],
+                                axis: .lateral, degrees: degrees)],
+                  strength: .withBend(elbow(side)))
+    }
+
+    /// Curls cut short at the bottom: the elbows stay bent where the arms
+    /// should be (nearly) straight, shown only near full extension. `from`…`to`
+    /// is shoulder-to-wrist in torso lengths, read on the left arm (or `side`),
+    /// as in `pushdownShort`.
+    private static func curlBottomCut(_ side: String = "*", from: Float, to: Float) -> FaultPose {
+        let s = side == "*" ? "L" : side
+        return elbowsFolded(.lateral, 45, side: side,
+                            strength: .between("upper_arm_\(s)", "hand_\(s)", from: from, to: to))
+    }
+
+    /// Seated curls on a preacher pad or curl machine: the trunk rocking back
+    /// from the hips as the weight comes up, the arms carried off the pad.
+    /// Both models sit 12° forward, so the turn must pass 12° for the ghost
+    /// to lean back rather than sit tall (22° ends ~10° behind vertical).
+    /// `side` is the arm drawn, to the wrist (a hand tip at the top would
+    /// reach the mistake pill): `*` for both, `L` for the one-arm preacher.
+    private static func curlSeatedSwungBack(_ degrees: Float, side: String = "*") -> FaultPose {
+        FaultPose(chains: [spine, ["upper_arm_\(side)", "forearm_\(side)", "hand_\(side)"]],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)],
+                  strength: .withBend(elbow(side)))
+    }
+
+    /// Preacher bench, seat too low: the body sinks 0.2 torso lengths while
+    /// the arms stay hooked over the pad, so the shoulders ride up toward the
+    /// ears (the neck ends ~5 cm below the shoulder line, the head ~12 cm
+    /// lower) and the knees bend further (124° to ~101°). The toes never move,
+    /// so the legs are drawn to the ankles only.
+    private static let preacherSatLow = FaultPose(
+        chains: [spine, shoulders, ["thigh_*", "shin_*", "foot_*"], hips],
+        moves: [.shift(["pelvis", "thigh_*"] + torso, rise: -0.2), .resolve(["shin_*"])]
+    )
+
+    /// Curl machine, seat too low: the body and upper arms sit lower while the
+    /// hands stay on the handle, so the elbows drop below the lever's pivot.
+    private static let curlMachineSatLow = FaultPose(
+        chains: [spine, arms, legs, hips],
+        moves: [.shift(["pelvis", "thigh_*", "upper_arm_*"] + torso, rise: -0.1), .resolve(["forearm_*", "shin_*"])]
+    )
+
+// MARK: TABLE
+        // MARK: Batch 191-240 curls (2026-09-26)
+        // Standing, framed at yaw -0.4 like the Biceps Curl. The LEFT arm curls
+        // first (0-4 s) and turns palm-up as it rises; the elbow, turn and range
+        // faults read the left elbow, so they show during the left curl and fade
+        // while the right arm works; the body swing shows on either curl.
+        // Sagittal faults turn to the left side (total -1.3).
+        "Alternating Dumbbell Curl": [
+            // Both shoulders hunched up and forward (the label points at the
+            // right shoulder, which is on the open side of the frame).
+            "shoulder": hunched().seen(-0.6),
+            "elbow": elbowsForward(35, side: "L").seen(-0.9),
+            // Wrist curled in at the top instead of the palm turning up.
+            "turn": curlWristsCurled("L").seen(-0.9),
+            // The resting (right) arm left half-bent (elbow ~112°) while the
+            // left arm curls; turned to the right side (total +1.1) so the
+            // forearm shows swinging forward, not folding across the hips.
+            "range": elbowsFolded(.lateral, 60, side: "R", strength: .withBend("forearm_L")).seen(1.5),
+            // Either arm's curl: bodySwung's moves, shown as the hands spread
+            // apart while one dumbbell rises (0.79 torso lengths hanging, 1.07
+            // at the top of either curl).
+            "torso": FaultPose(chains: [spine, armsToGrip, hips],
+                               moves: [.shift(["pelvis", "thigh_*"], ahead: 0.06),
+                                       .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 15)],
+                               strength: .between("hand_L", "hand_R", from: 0.85, to: 1.0)).seen(-0.9)
+        ],
+        // Kneeling on an incline bench, seen from behind on the left (yaw
+        // -2.0); +0.45 brings it to a true left side view.
+        "Spider Curl": [
+            // Chest and shoulders heaving up off the pad: the trunk rocks up
+            // from the hips (48° to 30° forward of vertical), opening a wedge
+            // between the ghost back and the pad; the arms ride with it.
+            "pad": trunkLifted(18).seen(0.45),
+            // Shoulders shrugging up the pad toward the ears (10.6 cm, ending
+            // above the neck); the back view shows it best. Only the girdle
+            // and upper arms are drawn, so no forearms cross the shoulder line.
+            "shoulder": FaultPose(chains: [shoulders, ["upper_arm_*", "forearm_*"]],
+                                  moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], up: 0.18)]),
+            // Upper arms swinging from vertical toward the head as the bar rises.
+            "elbow": elbowsForward(30, withBar: true).seen(0.45),
+            // Framed small: a deeper fold, the fingers tipping past vertical.
+            "grip": curlWristsCurled(withBar: true, degrees: 65).seen(0.45),
+            // Half reps: shoulder-to-wrist 0.90 torso lengths at the bottom
+            // (170°), 0.78 at 120°.
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(0.45)
+        ],
+        // Seated, framed at yaw -1.1; -0.4 turns to a true left side view of
+        // the pad. Only the LEFT arm curls; the right rests on the pad.
+        "Dumbbell Preacher Curl": [
+            // The upper arm lifting off the pad as the dumbbell rises.
+            "pad": curlArmsOffPad(25, side: "L").seen(-0.4),
+            // Half reps: 0.896 torso lengths at the model's bottom (162°),
+            // 0.78 at 120°.
+            "range": curlBottomCut("L", from: 0.8, to: 0.885).seen(-0.4),
+            "wrist": curlWristsCurled("L").seen(-0.4),
+            // Rocking back past upright to swing the dumbbell, the working arm
+            // coming off the pad (only the left arm is drawn).
+            "torso": curlSeatedSwungBack(22, side: "L").seen(-0.4),
+            // Seat too low: turned toward the front (total -0.6) so the
+            // shoulder line spreads and the neck shows sinking between the
+            // shoulders; read at the bottom, with the dumbbell away from the head.
+            "seat": preacherSatLow.seen(0.5)
+        ],
+        // Seated, framed at yaw -1.0; -0.5 turns to a true left side view, where
+        // the elbows line up with the lever's side pivot.
+        "Machine Biceps Curl": [
+            "pivot": curlMachineSatLow.seen(-0.5),
+            // Upper arms lifting off the pad at the top.
+            "pad": curlArmsOffPad(25).seen(-0.5),
+            "grip": curlWristsCurled().seen(-0.5),
+            "range": curlBottomCut(from: 0.8, to: 0.885).seen(-0.5),
+            // Rocking back past upright, the arms carried off the pad.
+            "torso": curlSeatedSwungBack(22).seen(-0.5)
+        ],

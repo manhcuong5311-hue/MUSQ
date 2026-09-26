@@ -1,0 +1,162 @@
+// MARK: PIECES
+
+    // MARK: Batch 191-240 dumbbell and cable press pieces (2026-09-26)
+
+    /// Dumbbell push press: how far into the dip the lifter is. None standing
+    /// (pelvis ~1.42 torso lengths from the left ankle), all of it at the
+    /// bottom of the ~8 cm dip (~1.29), so dip faults fade out as the knees
+    /// straighten and never show while the dumbbells are lowered. The same
+    /// numbers as the barbell family's `pushPressDip`; either can stand in.
+    private static let dumbbellPushPressDip = FaultStrength.between("pelvis", "foot_L", from: 1.40, to: 1.30)
+
+    /// Overhead presses: the elbows (`*`, or the left one, `L`) pulled back
+    /// behind the shoulders at the bottom, out of the scapular plane, the
+    /// weight drifting back with them. The elbow's shift is large because the
+    /// re-seat pulls most of it back toward the real pose: on the rig it ends
+    /// ~3 cm behind the shoulder joint (the real one is ~9 cm in front), the
+    /// hand ~7 cm back. Turned side-on so the drift back shows.
+    private static func pressElbowsDraggedBack(_ side: String) -> FaultPose {
+        FaultPose(chains: [arm(side)],
+                  moves: [.shift(["forearm_\(side)"], forward: -0.25, outward: 0.06),
+                          .shift(["hand_\(side)", "hand_\(side).tip"], forward: -0.12),
+                          .resolve(["forearm_\(side)"])],
+                  strength: .withBend(elbow(side)), view: -1.0)
+    }
+
+    /// Overhead presses: stopping short of lockout, the hands (`*`, or the left
+    /// one, `L`) held low with the elbows still bent. Shown near lockout. The
+    /// elbow is nudged out to the side first so the re-seat bends it in the
+    /// frontal plane, across the screen: a soft lockout bows the left elbow
+    /// toward the camera, where the bend hid. On the rig the elbow ends ~12 cm
+    /// out at ~108°, the hand ~9 cm lower.
+    private static func pressLockoutBent(_ side: String) -> FaultPose {
+        FaultPose(chains: [arm(side)],
+                  moves: [.shift(["forearm_\(side)"], outward: 0.12),
+                          .shift(["hand_\(side)", "hand_\(side).tip"], up: -0.2),
+                          .resolve(["forearm_\(side)"])],
+                  strength: .whenStraight(elbow(side)))
+    }
+
+    /// Seated presses: the feet pulled back under the seat and up on the toes,
+    /// further than the shared `feetTucked` (whose shins only reach vertical):
+    /// on the rig the toes go ~18 cm back and the ankles end behind the knees.
+    private static let pressFeetTucked = FaultPose(
+        chains: [legs],
+        moves: [.shift(["foot_*", "foot_*.tip"], ahead: -0.3),
+                .turn(pivot: "foot_*.tip", points: ["foot_*"], axis: .lateral, degrees: -25),
+                .resolve(["shin_*"])]
+    )
+
+    /// Cable presses: the feet drawn together, the ankles about touching (~10
+    /// cm apart against the real 34 and the hips' 18), and the knees locked.
+    /// The shared `squareLockedStance` only brings them to about hip width.
+    private static let cableFeetTogetherLocked = FaultPose(
+        chains: [legs],
+        moves: [.shift(["foot_*", "foot_*.tip"], outward: -0.2), .straighten(["shin_*"])]
+    )
+
+    /// One-arm overhead presses (the left arm works): the trunk bending over
+    /// to the right, away from the working arm, with everything it carries.
+    private static let pressLeanedAway = FaultPose(
+        chains: [spine, shoulders, armsToGrip],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .forward, degrees: 12)]
+    )
+
+    /// Strict standing presses: the knees dipping to drive the weight, the
+    /// hips and all they carry sinking. Shown while the arms are bent, turned
+    /// so the knees show.
+    private static let pressKneesDipped = FaultPose(
+        chains: [spine, legs, hips, armsToGrip],
+        moves: [.shift(carried, rise: -0.1), .resolve(["shin_*"])],
+        strength: .withBend("forearm_L"), view: -0.6
+    )
+
+    /// Neutral-grip presses: the wrists bent back. With the palms facing in,
+    /// the backs of the hands face out, so the hands tip outward (about the
+    /// chest's axis, not the side-to-side one `wristBentBack` turns about).
+    private static let palmsInWristsBentBack = FaultPose(
+        chains: [["forearm_*", "hand_*", "hand_*.tip"]],
+        moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .forward, degrees: -40)]
+    )
+
+// MARK: TABLE
+
+        // MARK: Batch 191-240 dumbbell and cable presses (2026-09-26)
+        "Dumbbell Push Press": [
+            // The chest tipping forward in the dip, turned side-on so the lean shows.
+            "dip": leanedForward(14, strength: dumbbellPushPressDip).seen(-0.8),
+            // Sinking into a half squat: the hips drop ~12 cm below the real dip,
+            // the knees close from ~122° to ~94°.
+            "depth": FaultPose(chains: [spine, legs, hips, armsToGrip],
+                               moves: [.shift(carried, rise: -0.2), .resolve(["shin_*"])],
+                               strength: dumbbellPushPressDip, view: -0.6),
+            // Up on the toes in the dip.
+            "heels": FaultPose(chains: [legs],
+                               moves: [.turn(pivot: "foot_*.tip", points: ["foot_*"], axis: .lateral, degrees: -24),
+                                       .resolve(["shin_*"])],
+                               strength: dumbbellPushPressDip, view: -0.8),
+            // Elbows dropped back behind the dumbbells (and the shoulders) in the rack.
+            "elbow": pressElbowsDraggedBack("*"),
+            // Finished in front of the face, the arms angled forward.
+            "lockout": armsTurned(.lateral, -18, strength: .whenStraight("forearm_L")).seen(-0.8)
+        ],
+        "Standing Dumbbell Press": [
+            "elbow": pressElbowsDraggedBack("*"),
+            "lockout": pressLockoutBent("*"),
+            "brace": leanedBack(12, arch: 0.08).seen(-0.8),
+            "wrist": wristBentBack(withBar: false).seen(-0.8),
+            "stance": pressKneesDipped
+        ],
+        "Seated Dumbbell Press": [
+            "elbow": pressElbowsDraggedBack("*"),
+            // Drifting wide at the top: the hands ~74 cm apart against the real
+            // 47, the arms tilting ~19° out in a clear V. The hands sink ~2 cm
+            // as they swing out, so the arms keep their length (elbows ~167°).
+            "path": FaultPose(chains: [armsToGrip],
+                              moves: [.shift(["hand_*", "hand_*.tip"], up: -0.05, outward: 0.28), .resolve(["forearm_*"])],
+                              strength: .whenStraight("forearm_L")),
+            // Short reps: the dumbbells turn round at forehead height.
+            "depth": FaultPose(chains: [armsToGrip],
+                               moves: [.shift(["hand_*", "hand_*.tip"], up: 0.16), .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L")),
+            // Leaning back toward the pad, the lower back arched.
+            "torso": leanedBack(12, arch: 0.08).seen(-1.0),
+            "feet": pressFeetTucked.seen(-1.0)
+        ],
+        "Neutral-Grip Dumbbell Shoulder Press": [
+            "grip": palmsInWristsBentBack,
+            // The elbows flaring out to the sides while the palms stay in.
+            "elbow": FaultPose(chains: [armsToGrip],
+                               moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*"], axis: .forward, degrees: 40),
+                                       .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L")),
+            // Stopped with the dumbbells in front of the face.
+            "lockout": armsTurned(.lateral, -20, strength: .whenStraight("forearm_L")).seen(-0.8),
+            // Arched off the pad.
+            "back": lowerBackArched(0.12).seen(-0.9),
+            "feet": pressFeetTucked.seen(-0.9)
+        ],
+        "Single-Arm Dumbbell Shoulder Press": [
+            "core": pressLeanedAway,
+            "elbow": pressElbowsDraggedBack("L"),
+            "lockout": pressLockoutBent("L"),
+            "brace": leanedBack(12, arch: 0.08).seen(-0.8),
+            "stance": pressKneesDipped
+        ],
+        "Cable Shoulder Press": [
+            // The cables dragging the elbows back behind the shoulders.
+            "elbow": pressElbowsDraggedBack("*"),
+            // The cables pulling the arms back behind the head at lockout.
+            "lockout": armsTurned(.lateral, 14, strength: .whenStraight("forearm_L")).seen(-0.8),
+            "brace": leanedBack(12, arch: 0.08).seen(-0.8),
+            "stance": cableFeetTogetherLocked,
+            "wrist": wristBentBack(withBar: false).seen(-0.8)
+        ],
+        "Single-Arm Cable Shoulder Press": [
+            "core": pressLeanedAway,
+            "elbow": pressElbowsDraggedBack("L"),
+            // The cable pulling the arm back behind the head at lockout.
+            "lockout": armsTurned(.lateral, 14, side: "L", strength: .whenStraight("forearm_L")).seen(-0.8),
+            "brace": leanedBack(12, arch: 0.08).seen(-0.8),
+            "stance": cableFeetTogetherLocked
+        ],

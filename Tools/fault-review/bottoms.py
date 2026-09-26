@@ -1,6 +1,8 @@
 # Seconds into each clip where the rep bottoms out, so fault stills show the
 # moment most faults are about. Run with Blender's Python:
 #   python3 bottoms.py "Barbell Bench Press" "Push-Up" ...   -> bottoms.json
+import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
 import json, math, glob, re
 from pxr import Usd, UsdSkel, UsdGeom, Gf
 S = open("/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Models/SampleData.swift").read()
@@ -23,7 +25,18 @@ PULLOVER = {"Dumbbell Pullover", "Barbell Pullover", "Dumbbell Pullover Row", "M
 KNEE = {"Deadlift", "Sumo Deadlift", "Trap Bar Deadlift", "Snatch-Grip Deadlift", "Deficit Deadlift",
         "Rack Pull", "Block Pull"}
 HANDS_HIGH = {"Straight-Arm Pulldown", "Dumbbell Lateral Raise", "Cable Lateral Raise", "Machine Lateral Raise",
-              "Dumbbell Front Raise"}
+              "Dumbbell Front Raise",
+              # Batch 191-240 raises (2026-09-26).
+              "Leaning Lateral Raise", "Incline Lateral Raise", "Chest-Supported Lateral Raise", "Y-Raise",
+              "Cable Y-Raise", "Lu Raise", "Plate Front Raise", "Barbell Front Raise", "Cable Front Raise",
+              "Alternating Dumbbell Front Raise", "Powell Raise"}
+# Shrugs read at the top, with the shoulders highest over the hips; the cable
+# rotations at the end of the turn, the forearm furthest out (external) or
+# across the body (internal); carries mid-stride (FEET_APART).
+SHRUG = {"Dumbbell Shrug", "Barbell Shrug", "Smith Machine Shrug", "Cable Shrug", "Trap Bar Shrug",
+         "Behind-the-Back Barbell Shrug"}
+TURN_OUT = {"Cable External Rotation"}
+TURN_IN = {"Cable Internal Rotation"}
 UPRIGHT = {"Back Extension"}
 # Legs: squats, lunges, step-ups and curls at the most bent knee (either
 # side); the leg extension at the straightest; hinges with the trunk most
@@ -40,7 +53,8 @@ HIPS_LOW = {"Lunge", "Lunge (Lean)", "Bulgarian Split Squat", "Bulgarian Split S
 LEG_STRAIGHT = {"Leg Extension"}
 HINGE = {"Romanian Deadlift", "Dumbbell Romanian Deadlift", "Stiff-Leg Deadlift"}
 HIPS_HIGH = {"Glute Bridge", "Single-Leg Glute Bridge"}
-FEET_APART = {"Cable Glute Kickback", "Cable Side Kick", "Cable Hip Abduction"}
+FEET_APART = {"Cable Glute Kickback", "Cable Side Kick", "Cable Hip Abduction",
+              "Farmer's Carry", "Suitcase Carry", "Overhead Carry"}
 KNEES_APART = {"Hip Abduction Machine", "Hip Abduction Machine (Lean)"}
 # Faults of the other end of the rep, stored as "Exercise|cue".
 AT_TOP = {("Leg Press", "lockout"), ("Hack Squat", "lockout"), ("Step-Up", "hips"),
@@ -95,6 +109,12 @@ for n in names:
             score = (P("shin_L") - P("shin_R")).GetLength()
         elif n in HANDS_HIGH:
             score = P("hand_L")[1] + P("hand_R")[1]
+        elif n in SHRUG:
+            score = P("upper_arm_L")[1] + P("upper_arm_R")[1] - 2 * P("pelvis")[1]
+        elif n in TURN_OUT:
+            score = P("hand_L")[0] - P("forearm_L")[0]
+        elif n in TURN_IN:
+            score = P("forearm_L")[0] - P("hand_L")[0]
         elif n in UPRIGHT:
             score = (P("neck") - P("pelvis")).GetNormalized()[1]
         else:

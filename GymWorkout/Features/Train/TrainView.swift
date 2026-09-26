@@ -62,7 +62,7 @@ struct TrainView: View {
                     record: record,
                     onViewExercises: { router.push(.preset(group, day: selectedDay)) },
                     onTrainAnyway: {
-                        let level = store.level(for: group, on: selectedDay) ?? store.suggestedLevel
+                        let level = store.level(for: group, on: selectedDay) ?? store.defaultLevel(for: group)
                         store.ensurePlan(group, on: selectedDay, level: level,
                                          planned: store.preview(group, level: level))
                         router.push(.preset(group, day: selectedDay))
@@ -159,7 +159,8 @@ struct TrainView: View {
 
     private func card(_ group: MuscleGroup, record: MuscleTrainingRecord?) -> some View {
         let state = isPast ? MuscleCardState.ready : MuscleCardState(record?.status)
-        let exerciseCount = PresetProvider.preset(for: group, level: .basic)?.items.count ?? 0
+        // What the group opens on: the user's own list, else the preset.
+        let exerciseCount = store.preview(group, level: store.defaultLevel(for: group)).count
         let detail: String
         var secondary: String? = nil
         if let record, state == .partlyReady {

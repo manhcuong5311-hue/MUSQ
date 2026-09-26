@@ -105,10 +105,18 @@ struct MuscleActivation: Identifiable, Hashable {
     let id = UUID()
     let name: String
     let rank: ActivationRank
-    /// e.g. `HIGH ACTIVATION`.
-    let activation: String
     /// 0…1 — EMG-relative contribution across the full range of motion.
     let fraction: Double
+
+    /// e.g. `HIGH ACTIVATION`. Read off `fraction` so the same share always
+    /// gets the same word, whichever exercise it appears in.
+    var activation: String {
+        switch fraction {
+        case 0.70...: return "HIGH ACTIVATION"
+        case 0.40..<0.70: return "MODERATE ACTIVATION"
+        default: return "LOW ACTIVATION"
+        }
+    }
 
     var percentLabel: String { "\(Int((fraction * 100).rounded()))%" }
 }
@@ -133,7 +141,9 @@ struct CueAnnotation: Identifiable, Hashable {
     var labelSide: HorizontalEdge = .leading
     let leaderLength: CGFloat
     /// Skeleton joint the dot follows, matched on the last component of the
-    /// rig's joint path, e.g. `hand_L`.
+    /// rig's joint path, e.g. `hand_L`. For lifts that alternate legs,
+    /// `_front` / `_back` in place of `_L` / `_R` follow the leading or
+    /// trailing leg, e.g. `patella_front`.
     var joint: String? = nil
 }
 

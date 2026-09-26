@@ -62,3 +62,21 @@ the library now has 175 exercises, all with a thumbnail. The six cable
 pulldowns are in `thumbsolve.py`'s `BODY_ONLY` set: framed on the lifter with
 the 2.3 m tower allowed to crop, since fitting the tower left the lifter a
 sliver.
+
+Batch 191-240 (2026-09-26): the 46 new exercises were added the same way
+(`posetime.py` / `thumbsolve.py` with their names); the library now has 221
+exercises, all with a thumbnail. The plate, straight cable bar and trap bar
+count as held; the landmine bar is left to crop. Four cable lifts, the cable
+external rotation and the rear-delt machine joined `BODY_ONLY`, where the
+tower or machine left the lifter a corner of the tile.
+
+Legs 300-350 (2026-09-26): the 11 new leg exercises were added with
+`posetime.py <names…>` and `thumbsolve.py thumbs.json <names…>` and shot on a
+separate harness simulator. The Smith lifts and the rear-foot-elevated split
+squat show their machine or bench (showing it cost the lifter under 40%).
+
+Late additions (2026-09-27): the four new exercises (Seated Dumbbell Lateral
+Raise, Cable Rear Delt Row, Dumbbell Upright Row, Barbell Hip Thrust) got a
+pose time and a framing, and the fifteen re-exported models (knee and toe-out
+fixes, the rebuilt 191/199 presses, the upright abduction machine) were
+re-solved and re-shot; the library now has 236 exercises, all with a thumbnail.

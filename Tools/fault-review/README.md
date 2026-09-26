@@ -63,3 +63,24 @@ pull-up, chin-up and pulldown pieces (`elbowsForward`, `chinCraned`,
 pulled out of the Pull-Up, Chin-Up, Lat Pulldown and Wide-Grip Barbell Row
 entries unchanged; `bottoms.py` treats the two new pullovers by the overhead
 stretch.
+
+Batch 191-240 (2026-09-26): every new exercise has a ghost for each cue,
+written per family in `faults_191_240_<family>.swift.txt` (a PIECES and a
+TABLE section) and pasted under `// MARK: Batch 191-240 pieces` and at the
+end of the table. `fault_times.py <fault_moments.json>` sets each fault's
+still from the families' notes (bottom / top / lockout / any), read by the
+kind of lift: the top of a press is lockout, of a raise the hands highest,
+of a curl or row the elbows most bent, of a shrug the shoulders highest.
+`bottoms.py` also gained rules for the new raises, shrugs, cable rotations
+and carries.
+
+Legs 300-350 (2026-09-26): `fault_times.py` classes lunges and split squats as
+`legs`: bottom = lowest pelvis, top = highest. The ghosts are in
+`faults_300_350_{splitsquat,lunge}.swift.txt` (integrated under
+`// MARK: Legs 300-350` in FaultPoses.swift); the alternating lunges use the
+`_front` / `_back` leg tokens like the Walking Lunge.
+
+Late additions (2026-09-27): `fault_times.py` classes hip thrusts as `legs`
+too (top = highest pelvis, which is lockout). Ghosts in
+`faults_0927_{shoulders,hipthrust}.swift.txt`, integrated under
+`// MARK: Late additions` in FaultPoses.swift.

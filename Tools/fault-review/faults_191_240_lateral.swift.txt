@@ -1,0 +1,205 @@
+// MARK: PIECES
+
+    // MARK: Batch 191-240 lateral and cuff pieces (2026-09-26)
+
+    /// One-arm lifts (the left arm works): the trunk tipping sideways about
+    /// the pelvis with the left arm carried along, positive to the lifter's
+    /// right, negative to the left. The right arm is left out of the ghost,
+    /// since its hand stays on a support or the hip.
+    private static func leftArmTrunkTipped(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, arm("L")],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"] + arm("L").dropFirst(),
+                                axis: .forward, degrees: degrees)])
+    }
+
+    /// One-arm raises: the left arm left hanging out from the side instead of
+    /// coming all the way down. None once the hand is 0.9 torso lengths from
+    /// the hip (mid-rep), all of it at the bottom (~0.45).
+    private static let leftRaiseShortAtBottom = armsTurned(.forward, 30, side: "L",
+                                                           strength: .between("hand_L", "thigh_L", from: 0.9, to: 0.45))
+
+    /// One-arm lifts: the trunk twisting the other way from
+    /// `leftTwistedOpen`, the left shoulder coming forward to carry the hand
+    /// across the body.
+    private static let leftTwistedIn = FaultPose(
+        chains: [spine, shoulders, ["upper_arm_L", "forearm_L", "hand_L"]],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .up, degrees: 20)]
+    )
+
+    /// Overhead raises (Y, cable Y): the arms stopping well short of the top,
+    /// lowered out to the sides to about shoulder level, a T instead of a Y,
+    /// so both arms stay in the trunk's plane and show from behind. None
+    /// until the hands are 1.5 torso lengths from the pelvis, all of it at
+    /// the top (~1.8).
+    private static let overheadShort = armsTurned(.forward, -50, strength: .between("hand_L", "pelvis", from: 1.5, to: 1.8))
+
+    /// Chest-supported raises: the shoulders shrugged toward the ears, the
+    /// arms lifted with them, and the head drawn so the closing gap shows.
+    /// Bigger than `shrugged` and seen from the rear-left, since from behind
+    /// a shrug runs into the screen.
+    private static let proneShrugged = FaultPose(
+        chains: [["head", "neck"], shoulders, arms],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], up: 0.2)]
+    ).seen(0.9)
+
+    /// Side-lying raises: the top (left) shoulder hiked toward the ear, with
+    /// the head drawn so the closing gap shows; the shoulder line is
+    /// otherwise one straight line with the raised arm.
+    private static let leftShruggedLying = FaultPose(
+        chains: [["head", "neck"], shoulders, ["upper_arm_L", "forearm_L", "hand_L"]],
+        moves: [.shift(["upper_arm_L", "forearm_L", "hand_L"], up: 0.2)]
+    )
+
+    /// Side-lying raises: the chest rolling back toward the ceiling about
+    /// the trunk's long axis, the working arm carried along. Turned further
+    /// than `leftTwistedOpen` so the shoulder line visibly turns, not only
+    /// the arm.
+    private static func leftRolledBack(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, ["upper_arm_L", "forearm_L", "hand_L"]],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .up, degrees: -degrees)])
+    }
+
+// MARK: TABLE
+
+        // MARK: Batch 191-240 lateral and cuff (2026-09-26)
+        "Leaning Lateral Raise": [
+            // Standing up out of the lean: the trunk back upright over the hips.
+            "lean": leftArmTrunkTipped(-14),
+            "traps": leftShrugged,
+            // Bending the elbow as the dumbbell rises; none at the bottom
+            // (hand_L to thigh_L ~0.38 there, ~1.4 at the top).
+            "elbow": elbowsFolded(.forward, -60, side: "L", strength: .between("hand_L", "thigh_L", from: 0.6, to: 1.0)),
+            "range": leftRaiseShortAtBottom,
+            // Hauling on the upright: the trunk tips further toward it, the
+            // rack arm bends, and the dumbbell arm is carried up with the
+            // trunk, the swing.
+            "support": FaultPose(chains: [spine, shoulders, ["upper_arm_R", "forearm_R", "hand_R"], arm("L")],
+                                 moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"] + arm("L").dropFirst(),
+                                               axis: .forward, degrees: 12),
+                                         .shift(["forearm_R"], forward: -0.04, up: -0.08),
+                                         .resolve(["forearm_R"])]),
+        ],
+        "Incline Lateral Raise": [
+            // Rolling back off the pad, seen along the body: the shoulder
+            // line turns ~0.19 torso lengths at each end, so the trunk roll
+            // shows and not only the arm sweep of the path ghost.
+            "body": leftRolledBack(35).seen(-0.8),
+            "traps": leftShruggedLying,
+            // Bending the elbow as the dumbbell rises; none at the bottom.
+            "elbow": elbowsFolded(.forward, -60, side: "L", strength: .between("hand_L", "thigh_L", from: 0.6, to: 1.0)),
+            "range": leftRaiseShortAtBottom,
+            // The arm swept back behind the body.
+            "path": armsTurned(.up, -25, side: "L").seen(-0.8),
+        ],
+        "Chest-Supported Lateral Raise": [
+            // The trunk rising off the pad about the hips, a wedge opening
+            // between chest and pad (neck 0.26, head 0.31 torso lengths).
+            "pad": leanedBack(15).seen(1.2),
+            // Shrugging toward the ears, big enough to read against the pad
+            // and seen from the pad's side, where the neck-to-shoulder gap closes.
+            "traps": FaultPose(chains: [["head", "neck"], shoulders, arms],
+                               moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], up: 0.3)]).seen(1.2),
+            // Elbows bending, the dumbbells hanging below them: a row. Shown as
+            // the arms rise (hand_L to pelvis ~0.98 hanging, ~1.56 level).
+            "elbow": elbowsFolded(.up, 60, strength: .between("hand_L", "pelvis", from: 1.1, to: 1.4)),
+            // Arms pulled back toward the ceiling, behind the shoulders. Shown
+            // as the arms rise: hanging, the same turn swings them out to the
+            // sides, which is the correct path. Seen from the rear-left: from
+            // straight behind, back toward the ceiling runs up the screen like
+            // the height ghost; here the hands go up and toward the hips, the
+            // height ghost's up and toward the head.
+            "path": armsTurned(.up, -25, strength: .between("hand_L", "pelvis", from: 1.1, to: 1.4)).seen(0.9),
+            // Swung above shoulder level, shown near the top.
+            "height": armsTurned(.forward, 40, strength: .between("hand_L", "pelvis", from: 1.3, to: 1.55)),
+        ],
+        "Y-Raise": [
+            // The chest and head lifting off the pad, the lower back arching
+            // toward it and the arms rising with the trunk. Nearer behind than
+            // side-on, so the overhead arms stay in frame.
+            "pad": leanedBack(15, arch: 0.06).seen(0.6),
+            "traps": proneShrugged.seen(0.6),
+            // Craning the head up off the line of the spine. `head.tip` draws
+            // the head itself (the head bone runs to the crown), so the crown
+            // moves ~0.25 torso lengths rather than the skull base's 0.12.
+            "neck": FaultPose(chains: [["chest", "neck", "head", "head.tip"]],
+                              moves: [.turn(pivot: "neck", points: ["head", "head.tip"], axis: .lateral, degrees: 40)]).seen(0.9),
+            // Elbows bending, the hands dropping toward the floor; shown as
+            // the arms rise (hand_L to pelvis ~0.91 hanging, ~1.84 at the top).
+            "elbow": elbowsFolded(.lateral, -50, strength: .between("hand_L", "pelvis", from: 1.2, to: 1.6)),
+            "height": overheadShort,
+        ],
+        "Cable Y-Raise": [
+            // Leaning back 20° with the lower back arched, seen rear-left at
+            // about -2.0 in all: from the true side the near tower hides the
+            // upper body and the lean.
+            "torso": leanedBack(20, arch: 0.1).seen(0.95),
+            // A bigger shrug than `shrugged`: with the arms overhead the
+            // shoulders have to rise clearly above the neck point to read.
+            "traps": FaultPose(chains: [shoulders, arms], moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], up: 0.18)]),
+            // Elbows bending as the hands rise; none with the hands crossed at
+            // the hips (hand_L to pelvis ~0.22 there, ~1.82 at the top).
+            "elbow": elbowsFolded(.lateral, -50, strength: .between("hand_L", "pelvis", from: 0.7, to: 1.4)),
+            "height": overheadShort,
+            // Handles taken uncrossed: the hands start at the sides, shown at
+            // the bottom only.
+            "cross": armsTurned(.forward, 20, strength: .between("hand_L", "pelvis", from: 0.6, to: 0.25)),
+        ],
+        "Lu Raise": [
+            // Shrugging before the arms leave the sides; fades out overhead,
+            // where the shoulders are meant to rise.
+            "traps": FaultPose(chains: [shoulders, arms], moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], up: 0.12)],
+                               strength: .between("hand_L", "head", from: 0.95, to: 1.25)),
+            // Elbows bending as the arms go overhead, the hands folding in over
+            // the head like a press. None below shoulder height.
+            "elbow": elbowsFolded(.forward, 40, strength: .between("hand_L", "head", from: 1.25, to: 0.95)),
+            "torso": leanedBack(12, arch: 0.08).seen(-1.2),
+            // Stopping at shoulder height, shown overhead.
+            "height": armsTurned(.forward, -70, strength: .between("hand_L", "head", from: 1.15, to: 0.85)),
+            // Swinging forward into a front raise.
+            "path": armsTurned(.up, 30).seen(-1.2),
+        ],
+        "Cable External Rotation": [
+            // The elbow drifting out from the side.
+            "elbow": armsTurned(.forward, 25, side: "L"),
+            // The elbow opening, the hand dropping.
+            "angle": elbowsFolded(.lateral, -35, side: "L"),
+            "shoulder": leftShrugged,
+            "torso": leftTwistedOpen.seen(-1.1),
+            // Leaning away from the stack (on the right).
+            "stance": leftArmTrunkTipped(-12),
+        ],
+        "Cable Internal Rotation": [
+            // The elbow drifting forward off the side. A front-left
+            // three-quarter, where the pulley housing clears the shoulder.
+            "elbow": armsTurned(.lateral, 25, side: "L").seen(-0.9),
+            "angle": elbowsFolded(.lateral, -35, side: "L"),
+            // The shoulder rolling forward: the neck-to-shoulder segment tips
+            // forward past the neck, not just the arm moving.
+            "shoulder": FaultPose(chains: [["neck", "upper_arm_L", "forearm_L", "hand_L"], ["upper_arm_L", "upper_arm_R"]],
+                                  moves: [.shift(["upper_arm_L", "forearm_L", "hand_L"], forward: 0.16)]).seen(-0.9),
+            // Seen with the real shoulders edge-on, so the twist fans them out
+            // (left forward, right back) instead of folding them onto the spine.
+            "torso": leftTwistedIn.seen(-1.2),
+            // Leaning away from the stack (on the left).
+            "stance": leftArmTrunkTipped(12),
+        ],
+        "Powell Raise": [
+            // Rolling back to throw the weight up, seen from the feet at a
+            // three-quarter (fully end-on the lifter is a blob): the shoulder
+            // line turns ~0.15 torso lengths at each end.
+            "body": leftRolledBack(30).seen(-0.3),
+            // The shoulder hiked toward the ear, along the bench, ending
+            // between the neck and head points.
+            "scapula": leftShruggedLying.seen(0.6),
+            "elbow": elbowsFolded(.up, 50, side: "L").seen(-0.6),
+            // The arm drifting toward the hip instead of staying at right
+            // angles to the body: swung in the trunk's plane at full length
+            // (hand ~0.34 torso lengths at the top, almost none at the bottom
+            // where the arm points forward).
+            "path": armsTurned(.forward, -22, side: "L").seen(0.6),
+            // Short at the bottom: the arm stops about level with the shoulder
+            // instead of angling down in front of the chest. None once the
+            // hands are 1.2 torso lengths apart, all of it at the bottom
+            // (~0.85).
+            "range": armsTurned(.up, -30, side: "L", strength: .between("hand_L", "hand_R", from: 1.2, to: 0.85)),
+        ],

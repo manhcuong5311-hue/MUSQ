@@ -146,7 +146,7 @@ enum SampleData {
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BODYWEIGHT",
                  difficulty: .beginner),
         Exercise(name: "Bulgarian Split Squat", category: .legs,
-                 primaryMuscle: "QUADRICEPS", equipment: "BENCH",
+                 primaryMuscle: "QUADRICEPS", equipment: "DUMBBELL",
                  difficulty: .intermediate),
         Exercise(name: "Bulgarian Split Squat (Lean)", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BENCH",
@@ -166,6 +166,39 @@ enum SampleData {
         Exercise(name: "Reverse Lunge", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "DUMBBELL",
                  difficulty: .beginner),
+        Exercise(name: "Forward Lunge", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "BODYWEIGHT",
+                 difficulty: .beginner),
+        Exercise(name: "Barbell Lunge", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "BARBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Smith Machine Reverse Lunge", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Curtsy Lunge", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "BODYWEIGHT",
+                 difficulty: .beginner),
+        Exercise(name: "Barbell Split Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "BARBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Dumbbell Split Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Smith Machine Split Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Front-Foot-Elevated Split Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Rear-Foot-Elevated Split Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Barbell Bulgarian Split Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "BARBELL",
+                 difficulty: .advanced),
+        Exercise(name: "Smith Machine Bulgarian Split Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
+                 difficulty: .intermediate),
         Exercise(name: "Hack Squat", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
                  difficulty: .intermediate),
@@ -376,6 +409,24 @@ enum SampleData {
         Exercise(name: "Back Extension", category: .back,
                  primaryMuscle: "ERECTOR SPINAE", equipment: "BODYWEIGHT",
                  difficulty: .beginner),
+        Exercise(name: "Dumbbell Shrug", category: .back,
+                 primaryMuscle: "UPPER TRAPEZIUS", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Barbell Shrug", category: .back,
+                 primaryMuscle: "UPPER TRAPEZIUS", equipment: "BARBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Smith Machine Shrug", category: .back,
+                 primaryMuscle: "UPPER TRAPEZIUS", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Cable Shrug", category: .back,
+                 primaryMuscle: "UPPER TRAPEZIUS", equipment: "CABLE",
+                 difficulty: .beginner),
+        Exercise(name: "Trap Bar Shrug", category: .back,
+                 primaryMuscle: "UPPER TRAPEZIUS", equipment: "TRAP BAR",
+                 difficulty: .beginner),
+        Exercise(name: "Behind-the-Back Barbell Shrug", category: .back,
+                 primaryMuscle: "UPPER TRAPEZIUS", equipment: "BARBELL",
+                 difficulty: .intermediate),
         Exercise(name: "Barbell Overhead Press", category: .shoulders,
                  primaryMuscle: "ANT. + LAT. DELTOID", equipment: "BARBELL",
                  difficulty: .intermediate),
@@ -412,11 +463,131 @@ enum SampleData {
         Exercise(name: "Cable Rear Delt Fly", category: .shoulders,
                  primaryMuscle: "POSTERIOR DELTOID", equipment: "CABLE",
                  difficulty: .intermediate),
+        Exercise(name: "Seated Barbell Overhead Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "BARBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Behind-the-Neck Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "BARBELL",
+                 difficulty: .advanced),
+        Exercise(name: "Push Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "BARBELL",
+                 difficulty: .advanced),
+        Exercise(name: "Dumbbell Push Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Standing Dumbbell Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Seated Dumbbell Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Neutral-Grip Dumbbell Shoulder Press", category: .shoulders,
+                 primaryMuscle: "ANTERIOR DELTOID", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Single-Arm Dumbbell Shoulder Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Z Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "BARBELL",
+                 difficulty: .advanced),
+        Exercise(name: "Landmine Shoulder Press", category: .shoulders,
+                 primaryMuscle: "ANTERIOR DELTOID", equipment: "LANDMINE",
+                 difficulty: .beginner),
+        Exercise(name: "Half-Kneeling Landmine Press", category: .shoulders,
+                 primaryMuscle: "ANTERIOR DELTOID", equipment: "LANDMINE",
+                 difficulty: .intermediate),
+        Exercise(name: "Cable Shoulder Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "CABLE",
+                 difficulty: .intermediate),
+        Exercise(name: "Single-Arm Cable Shoulder Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "CABLE",
+                 difficulty: .intermediate),
+        Exercise(name: "Smith Machine Shoulder Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Viking Press", category: .shoulders,
+                 primaryMuscle: "ANT. + LAT. DELTOID", equipment: "LANDMINE",
+                 difficulty: .intermediate),
+        Exercise(name: "Leaning Lateral Raise", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Incline Lateral Raise", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Chest-Supported Lateral Raise", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Seated Dumbbell Lateral Raise", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Y-Raise", category: .shoulders,
+                 primaryMuscle: "LOWER TRAPEZIUS", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Cable Y-Raise", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "CABLE",
+                 difficulty: .intermediate),
+        Exercise(name: "Lu Raise", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Plate Front Raise", category: .shoulders,
+                 primaryMuscle: "ANTERIOR DELTOID", equipment: "PLATE",
+                 difficulty: .beginner),
+        Exercise(name: "Barbell Front Raise", category: .shoulders,
+                 primaryMuscle: "ANTERIOR DELTOID", equipment: "BARBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Cable Front Raise", category: .shoulders,
+                 primaryMuscle: "ANTERIOR DELTOID", equipment: "CABLE",
+                 difficulty: .beginner),
+        Exercise(name: "Alternating Dumbbell Front Raise", category: .shoulders,
+                 primaryMuscle: "ANTERIOR DELTOID", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Cable External Rotation", category: .shoulders,
+                 primaryMuscle: "ROTATOR CUFF", equipment: "CABLE",
+                 difficulty: .beginner),
+        Exercise(name: "Cable Internal Rotation", category: .shoulders,
+                 primaryMuscle: "ROTATOR CUFF", equipment: "CABLE",
+                 difficulty: .beginner),
+        Exercise(name: "Powell Raise", category: .shoulders,
+                 primaryMuscle: "POSTERIOR DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Rear Delt Row", category: .shoulders,
+                 primaryMuscle: "POSTERIOR DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Machine Rear Delt Row", category: .shoulders,
+                 primaryMuscle: "POSTERIOR DELTOID", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Cable Rear Delt Row", category: .shoulders,
+                 primaryMuscle: "POSTERIOR DELTOID", equipment: "CABLE",
+                 difficulty: .intermediate),
+        Exercise(name: "Barbell Upright Row", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "BARBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Dumbbell Upright Row", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Cable Upright Row", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "CABLE",
+                 difficulty: .intermediate),
+        Exercise(name: "Smith Machine Upright Row", category: .shoulders,
+                 primaryMuscle: "LATERAL DELTOID", equipment: "MACHINE",
+                 difficulty: .intermediate),
         Exercise(name: "Biceps Curl", category: .arms,
                  primaryMuscle: "BICEPS BRACHII", equipment: "DUMBBELL",
                  difficulty: .beginner),
         Exercise(name: "Barbell Curl", category: .arms,
                  primaryMuscle: "BICEPS BRACHII", equipment: "BARBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Alternating Dumbbell Curl", category: .arms,
+                 primaryMuscle: "BICEPS BRACHII", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Spider Curl", category: .arms,
+                 primaryMuscle: "BICEPS BRACHII", equipment: "BARBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Dumbbell Preacher Curl", category: .arms,
+                 primaryMuscle: "BICEPS BRACHII", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Machine Biceps Curl", category: .arms,
+                 primaryMuscle: "BICEPS BRACHII", equipment: "MACHINE",
                  difficulty: .beginner),
         Exercise(name: "Triceps Pushdown", category: .arms,
                  primaryMuscle: "TRICEPS BRACHII", equipment: "CABLE",
@@ -468,6 +639,9 @@ enum SampleData {
                  difficulty: .beginner),
         Exercise(name: "Single-Leg Glute Bridge", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BODYWEIGHT",
+                 difficulty: .intermediate),
+        Exercise(name: "Barbell Hip Thrust", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BARBELL",
                  difficulty: .intermediate),
         Exercise(name: "Cable Glute Kickback", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
@@ -537,6 +711,15 @@ enum SampleData {
                  difficulty: .beginner),
         Exercise(name: "Cable Wood Chop", category: .core,
                  primaryMuscle: "OBLIQUES", equipment: "CABLE",
+                 difficulty: .intermediate),
+        Exercise(name: "Farmer's Carry", category: .core,
+                 primaryMuscle: "GRIP + CORE", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Suitcase Carry", category: .core,
+                 primaryMuscle: "OBLIQUES", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        Exercise(name: "Overhead Carry", category: .core,
+                 primaryMuscle: "SHOULDERS + CORE", equipment: "DUMBBELL",
                  difficulty: .intermediate)
     ]
 
@@ -724,7 +907,70 @@ enum SampleData {
         "Single-Arm Machine Row": singleArmMachineRowContent,
         "Reverse-Grip T-Bar Row": reverseGripTBarRowContent,
         "Dumbbell Pullover Row": dumbbellPulloverRowContent,
-        "Machine Pullover": machinePulloverContent
+        "Machine Pullover": machinePulloverContent,
+        "Seated Barbell Overhead Press": seatedBarbellOverheadPressContent,
+        "Behind-the-Neck Press": behindTheNeckPressContent,
+        "Push Press": pushPressContent,
+        "Dumbbell Push Press": dumbbellPushPressContent,
+        "Standing Dumbbell Press": standingDumbbellPressContent,
+        "Seated Dumbbell Press": seatedDumbbellPressContent,
+        "Neutral-Grip Dumbbell Shoulder Press": neutralGripDumbbellShoulderPressContent,
+        "Single-Arm Dumbbell Shoulder Press": singleArmDumbbellShoulderPressContent,
+        "Z Press": zPressContent,
+        "Landmine Shoulder Press": landmineShoulderPressContent,
+        "Half-Kneeling Landmine Press": halfKneelingLandminePressContent,
+        "Cable Shoulder Press": cableShoulderPressContent,
+        "Single-Arm Cable Shoulder Press": singleArmCableShoulderPressContent,
+        "Smith Machine Shoulder Press": smithMachineShoulderPressContent,
+        "Viking Press": vikingPressContent,
+        "Leaning Lateral Raise": leaningLateralRaiseContent,
+        "Incline Lateral Raise": inclineLateralRaiseContent,
+        "Chest-Supported Lateral Raise": chestSupportedLateralRaiseContent,
+        "Y-Raise": yRaiseContent,
+        "Cable Y-Raise": cableYRaiseContent,
+        "Lu Raise": luRaiseContent,
+        "Plate Front Raise": plateFrontRaiseContent,
+        "Barbell Front Raise": barbellFrontRaiseContent,
+        "Cable Front Raise": cableFrontRaiseContent,
+        "Alternating Dumbbell Front Raise": alternatingDumbbellFrontRaiseContent,
+        "Cable External Rotation": cableExternalRotationContent,
+        "Cable Internal Rotation": cableInternalRotationContent,
+        "Powell Raise": powellRaiseContent,
+        "Rear Delt Row": rearDeltRowContent,
+        "Machine Rear Delt Row": machineRearDeltRowContent,
+        "Barbell Upright Row": barbellUprightRowContent,
+        "Cable Upright Row": cableUprightRowContent,
+        "Smith Machine Upright Row": smithMachineUprightRowContent,
+        "Dumbbell Shrug": dumbbellShrugContent,
+        "Barbell Shrug": barbellShrugContent,
+        "Smith Machine Shrug": smithMachineShrugContent,
+        "Cable Shrug": cableShrugContent,
+        "Trap Bar Shrug": trapBarShrugContent,
+        "Behind-the-Back Barbell Shrug": behindTheBackBarbellShrugContent,
+        "Alternating Dumbbell Curl": alternatingDumbbellCurlContent,
+        "Spider Curl": spiderCurlContent,
+        "Dumbbell Preacher Curl": dumbbellPreacherCurlContent,
+        "Machine Biceps Curl": machineBicepsCurlContent,
+        "Farmer's Carry": farmersCarryContent,
+        "Suitcase Carry": suitcaseCarryContent,
+        "Overhead Carry": overheadCarryContent,
+        // Legs 300-350 (2026-09-26)
+        "Forward Lunge": forwardLungeContent,
+        "Barbell Lunge": barbellLungeContent,
+        "Smith Machine Reverse Lunge": smithMachineReverseLungeContent,
+        "Curtsy Lunge": curtsyLungeContent,
+        "Barbell Split Squat": barbellSplitSquatContent,
+        "Dumbbell Split Squat": dumbbellSplitSquatContent,
+        "Smith Machine Split Squat": smithMachineSplitSquatContent,
+        "Front-Foot-Elevated Split Squat": frontFootElevatedSplitSquatContent,
+        "Rear-Foot-Elevated Split Squat": rearFootElevatedSplitSquatContent,
+        "Barbell Bulgarian Split Squat": barbellBulgarianSplitSquatContent,
+        "Smith Machine Bulgarian Split Squat": smithMachineBulgarianSplitSquatContent,
+        // Late additions (2026-09-27)
+        "Seated Dumbbell Lateral Raise": seatedDumbbellLateralRaiseContent,
+        "Cable Rear Delt Row": cableRearDeltRowContent,
+        "Dumbbell Upright Row": dumbbellUprightRowContent,
+        "Barbell Hip Thrust": barbellHipThrustContent
     ]
 
     static func content(for exercise: Exercise) -> ExerciseContent? {
@@ -1132,7 +1378,151 @@ enum SampleData {
         "Dumbbell Pullover Row":               ExerciseModel(resource: "DumbbellPulloverRow",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.580, offset: [-0.029, 0.087, 0.106])),
         "Machine Pullover":                    ExerciseModel(resource: "MachinePullover",
-                                        framing: ModelFraming(yaw: -0.9, zoom: 0.947, offset: [-0.017, 0.069, 0.021]))
+                                        framing: ModelFraming(yaw: -0.9, zoom: 0.947, offset: [-0.017, 0.069, 0.021])),
+        // Batch 191-240 (2026-09-26), solved at 382×655. Presses, raises, upright
+        // rows, shrugs and curls from the front-left like the older shoulder and
+        // arm lifts; barbell lifts a little more side-on (-0.8) so the 2.2 m bar
+        // stops shrinking the lifter; landmine presses and the Z press from the
+        // left side; bent-over and chest-supported lifts from behind-left like
+        // the Reverse Dumbbell Fly; the side-lying raises from the chest side
+        // (+0.8 to +1.0); the cable upright row and the rear-delt machine from the
+        // side away from their stacks. The carries walk in place (inplace.py).
+        "Seated Barbell Overhead Press":      ExerciseModel(resource: "SeatedBarbellOverheadPress",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.634, offset: [-0.029, -0.024, 0.030])),
+        "Behind-the-Neck Press":              ExerciseModel(resource: "BehindTheNeckPress",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.664, offset: [-0.056, -0.079, 0.058])),
+        "Push Press":                         ExerciseModel(resource: "PushPress",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.628, offset: [-0.014, -0.076, 0.015])),
+        "Dumbbell Push Press":                ExerciseModel(resource: "DumbbellPushPress",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.742, offset: [0.013, -0.053, -0.007])),
+        "Standing Dumbbell Press":            ExerciseModel(resource: "StandingDumbbellPress",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.742, offset: [0.013, -0.053, -0.007])),
+        "Seated Dumbbell Press":              ExerciseModel(resource: "SeatedDumbbellPress",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.833, offset: [-0.001, 0.016, 0.000])),
+        "Neutral-Grip Dumbbell Shoulder Press": ExerciseModel(resource: "NeutralGripDumbbellShoulderPress",
+                                        framing: ModelFraming(yaw: -0.6, zoom: 0.821, offset: [-0.012, 0.056, 0.008])),
+        "Single-Arm Dumbbell Shoulder Press": ExerciseModel(resource: "SingleArmDumbbellShoulderPress",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.742, offset: [-0.025, -0.053, 0.014])),
+        "Z Press":                            ExerciseModel(resource: "ZPress",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.721, offset: [0.014, 0.052, -0.049])),
+        "Landmine Shoulder Press":            ExerciseModel(resource: "LandmineShoulderPress",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.830, offset: [-0.004, 0.001, 0.006])),
+        "Half-Kneeling Landmine Press":       ExerciseModel(resource: "KneelingLandminePress",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.898, offset: [0.009, 0.081, -0.013])),
+        "Cable Shoulder Press":               ExerciseModel(resource: "CableShoulderPress",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.679, offset: [-0.089, -0.032, 0.049])),
+        "Single-Arm Cable Shoulder Press":    ExerciseModel(resource: "SingleArmCableShoulderPress",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.760, offset: [-0.026, -0.043, 0.014])),
+        "Smith Machine Shoulder Press":       ExerciseModel(resource: "SmithMachineShoulderPress",
+                                        framing: ModelFraming(yaw: -0.6, zoom: 0.843, offset: [0.031, 0.061, -0.021])),
+        "Viking Press":                       ExerciseModel(resource: "VikingPress",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.791, offset: [0.013, -0.009, -0.021])),
+        "Leaning Lateral Raise":              ExerciseModel(resource: "LeaningLateralRaise",
+                                        framing: ModelFraming(yaw: -0.3, zoom: 0.726, offset: [-0.015, 0.038, 0.005])),
+        "Incline Lateral Raise":              ExerciseModel(resource: "InclineLateralRaise",
+                                        framing: ModelFraming(yaw: 1.0, zoom: 0.779, offset: [0.064, 0.033, 0.100])),
+        "Chest-Supported Lateral Raise":      ExerciseModel(resource: "ChestSupportedLateralRaise",
+                                        framing: ModelFraming(yaw: -2.8, zoom: 0.664, offset: [-0.072, 0.111, -0.025])),
+        "Y-Raise":                            ExerciseModel(resource: "YRaise",
+                                        framing: ModelFraming(yaw: -2.8, zoom: 0.752, offset: [-0.060, 0.069, -0.021])),
+        "Cable Y-Raise":                      ExerciseModel(resource: "CableYRaise",
+                                        framing: ModelFraming(yaw: -2.95, zoom: 0.812, offset: [-0.028, 0.004, -0.006])),
+        "Lu Raise":                           ExerciseModel(resource: "LuRaise",
+                                        framing: ModelFraming(yaw: -0.25, zoom: 0.620, offset: [-0.012, -0.040, 0.003])),
+        "Plate Front Raise":                  ExerciseModel(resource: "PlateFrontRaise",
+                                        framing: ModelFraming(yaw: -0.55, zoom: 0.884, offset: [0.042, 0.039, -0.026])),
+        "Barbell Front Raise":                ExerciseModel(resource: "BarbellFrontRaise",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.613, offset: [0.024, 0.016, -0.038])),
+        "Cable Front Raise":                  ExerciseModel(resource: "CableFrontRaise",
+                                        framing: ModelFraming(yaw: -0.55, zoom: 0.882, offset: [0.064, 0.040, -0.039])),
+        "Alternating Dumbbell Front Raise":   ExerciseModel(resource: "AlternatingDumbbellFrontRaise",
+                                        framing: ModelFraming(yaw: -0.55, zoom: 0.884, offset: [0.056, 0.039, -0.034])),
+        "Cable External Rotation":            ExerciseModel(resource: "CableExternalRotation",
+                                        framing: ModelFraming(yaw: -0.3, zoom: 0.891, offset: [-0.053, 0.038, 0.016])),
+        "Cable Internal Rotation":            ExerciseModel(resource: "CableInternalRotation",
+                                        framing: ModelFraming(yaw: -0.3, zoom: 0.891, offset: [-0.053, 0.038, 0.016])),
+        "Powell Raise":                       ExerciseModel(resource: "PowellRaise",
+                                        framing: ModelFraming(yaw: 0.8, zoom: 0.672, offset: [0.075, 0.071, 0.077])),
+        "Rear Delt Row":                      ExerciseModel(resource: "RearDeltRow",
+                                        framing: ModelFraming(yaw: -2.3, zoom: 1.024, offset: [-0.047, 0.127, -0.053])),
+        "Machine Rear Delt Row":              ExerciseModel(resource: "MachineRearDeltRow",
+                                        framing: ModelFraming(yaw: 2.4, zoom: 0.866, offset: [0.019, 0.102, -0.017])),
+        "Barbell Upright Row":                ExerciseModel(resource: "BarbellUprightRow",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.652, offset: [-0.006, 0.027, 0.006])),
+        "Cable Upright Row":                  ExerciseModel(resource: "CableUprightRow",
+                                        framing: ModelFraming(yaw: 0.6, zoom: 0.882, offset: [0.012, 0.040, 0.008])),
+        "Smith Machine Upright Row":          ExerciseModel(resource: "SmithMachineUprightRow",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.885, offset: [-0.010, 0.039, 0.005])),
+        "Dumbbell Shrug":                     ExerciseModel(resource: "DumbbellShrug",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.885, offset: [-0.024, 0.040, 0.013])),
+        "Barbell Shrug":                      ExerciseModel(resource: "BarbellShrug",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.671, offset: [-0.023, 0.028, 0.024])),
+        "Smith Machine Shrug":                ExerciseModel(resource: "SmithMachineShrug",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.885, offset: [0.003, 0.040, -0.002])),
+        "Cable Shrug":                        ExerciseModel(resource: "CableShrug",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.885, offset: [-0.026, 0.040, 0.014])),
+        "Trap Bar Shrug":                     ExerciseModel(resource: "TrapBarShrug",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.878, offset: [-0.024, 0.040, 0.024])),
+        "Behind-the-Back Barbell Shrug":      ExerciseModel(resource: "BehindTheBackBarbellShrug",
+                                        framing: ModelFraming(yaw: -2.4, zoom: 0.617, offset: [0.020, 0.023, 0.018])),
+        "Farmer's Carry":                     ExerciseModel(resource: "FarmersCarry",
+                                        framing: ModelFraming(yaw: -0.6, zoom: 0.888, offset: [-0.002, 0.030, 0.001])),
+        "Suitcase Carry":                     ExerciseModel(resource: "SuitcaseCarry",
+                                        framing: ModelFraming(yaw: -0.3, zoom: 0.883, offset: [-0.023, 0.039, 0.007])),
+        "Overhead Carry":                     ExerciseModel(resource: "OverheadCarry",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.712, offset: [-0.029, -0.056, 0.045])),
+        "Alternating Dumbbell Curl":          ExerciseModel(resource: "AlternatingDumbbellCurl",
+                                        framing: ModelFraming(yaw: -0.4, zoom: 0.888, offset: [0.029, 0.039, -0.012])),
+        "Spider Curl":                        ExerciseModel(resource: "SpiderCurl",
+                                        framing: ModelFraming(yaw: -2.0, zoom: 0.499, offset: [-0.036, 0.057, -0.078])),
+        "Dumbbell Preacher Curl":             ExerciseModel(resource: "DumbbellPreacherCurl",
+                                        framing: ModelFraming(yaw: -1.1, zoom: 0.994, offset: [-0.024, 0.119, 0.048])),
+        "Machine Biceps Curl":                ExerciseModel(resource: "MachineBicepsCurl",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 1.032, offset: [-0.025, 0.142, 0.038])),
+        // Legs 300-350 (2026-09-26), solved at 382×655. Split squats and lunges
+        // nearly side-on like the Lunge so the split stance and knee angles read;
+        // barbell and Smith lifts turned a little toward the front so the bar's
+        // plates and the rails stay off the lifter; the curtsy lunge from the
+        // front-left so the crossing step reads. The rear-foot-elevated split
+        // squat lets the far end of its bench crop.
+        "Forward Lunge":                      ExerciseModel(resource: "ForwardLunge",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.703, offset: [0.042, 0.037, -0.151])),
+        // Three-quarter from the front: side-on the near plate hid the head; the
+        // outer ends of the bar may crop so the lifter stays large.
+        "Barbell Lunge":                      ExerciseModel(resource: "BarbellLunge",
+                                        framing: ModelFraming(yaw: -0.6, zoom: 0.690, offset: [0.057, 0.057, -0.039])),
+        "Smith Machine Reverse Lunge":        ExerciseModel(resource: "SmithMachineReverseLunge",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.885, offset: [-0.095, 0.042, 0.148])),
+        "Curtsy Lunge":                       ExerciseModel(resource: "CurtsyLunge",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.892, offset: [0.008, 0.031, -0.004])),
+        "Barbell Split Squat":                ExerciseModel(resource: "BarbellSplitSquat",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.861, offset: [-0.014, 0.050, 0.051])),
+        "Dumbbell Split Squat":               ExerciseModel(resource: "DumbbellSplitSquat",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.893, offset: [-0.012, 0.067, 0.042])),
+        "Smith Machine Split Squat":          ExerciseModel(resource: "SmithMachineSplitSquat",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.903, offset: [-0.017, 0.075, 0.026])),
+        "Front-Foot-Elevated Split Squat":    ExerciseModel(resource: "FrontFootElevatedSplitSquat",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.905, offset: [-0.020, 0.044, 0.071])),
+        "Rear-Foot-Elevated Split Squat":     ExerciseModel(resource: "RearFootElevatedSplitSquat",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.834, offset: [-0.006, 0.063, 0.023])),
+        "Barbell Bulgarian Split Squat":      ExerciseModel(resource: "BarbellBulgarianSplitSquat",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.793, offset: [-0.032, 0.057, 0.051])),
+        "Smith Machine Bulgarian Split Squat": ExerciseModel(resource: "SmithMachineBulgarianSplitSquat",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.897, offset: [-0.007, 0.076, 0.011])),
+        // Late additions (2026-09-27), solved at 382×655: the seated lateral
+        // raise and dumbbell upright row from the front-left like their
+        // neighbours, the cable rear-delt row from behind-left so both elbows
+        // and the squeeze read (the cable tower crops), the hip thrust
+        // three-quarter from the feet so the hips read between the plates
+        // (the bar ends may crop).
+        "Seated Dumbbell Lateral Raise":      ExerciseModel(resource: "SeatedDumbbellLateralRaise",
+                                        framing: ModelFraming(yaw: -0.6, zoom: 0.653, offset: [0.035, 0.097, -0.024])),
+        "Cable Rear Delt Row":                ExerciseModel(resource: "CableRearDeltRow",
+                                        framing: ModelFraming(yaw: -2.6, zoom: 0.867, offset: [0.007, 0.114, 0.004])),
+        "Dumbbell Upright Row":               ExerciseModel(resource: "DumbbellUprightRow",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.885, offset: [0.003, 0.039, -0.002])),
+        "Barbell Hip Thrust":                 ExerciseModel(resource: "BarbellHipThrust",
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.879, offset: [0.002, 0.274, -0.002]))
     ]
 
     static func model(for exercise: Exercise) -> ExerciseModel? {
@@ -1224,12 +1614,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.92),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.51)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.51)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "core"],
         setup: [
@@ -1335,12 +1722,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.85),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.45)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.85),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "core"],
         setup: [
@@ -1426,12 +1810,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lower Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.93),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.55),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.38)
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.93),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["latissimus dorsi", "rotator cuff", "core"],
         setup: [
@@ -1517,12 +1898,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.53),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.53),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii"],
         setup: [
@@ -1608,12 +1986,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.83),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.83),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii"],
         setup: [
@@ -1699,10 +2074,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["biceps brachii", "rotator cuff", "serratus anterior"],
         setup: [
@@ -1786,10 +2159,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["biceps brachii", "rotator cuff", "serratus anterior"],
         setup: [
@@ -1876,12 +2247,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.87),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.87),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["serratus anterior", "rotator cuff"],
         setup: [
@@ -1966,10 +2334,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.35)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.35)
         ],
         stabilisers: ["serratus anterior", "rotator cuff"],
         setup: [
@@ -2054,10 +2420,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["biceps brachii", "serratus anterior", "core"],
         setup: [
@@ -2142,10 +2506,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["biceps brachii", "serratus anterior", "core"],
         setup: [
@@ -2213,7 +2575,7 @@ enum SampleData {
             backAnnotation("barpath", "Bar close to shins", "forearm_L", slot: backSlotElbow, leader: 50),
             backAnnotation("hips", "Hips hinge back", "pelvis", slot: backSlotPath, leader: 44),
             backAnnotation("grip", "Hook or double grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
-            backAnnotation("feet", "Bar over mid-foot", "foot_L", slot: backSlotBase, side: .trailing, leader: 40),
+            backAnnotation("feet", "Bar over mid-foot", "foot_L", slot: (x: 95.0 / 382.0, y: 473.0 / 567.0), side: .trailing, leader: 40),
             backAnnotation("spine", "Neutral spine", "spine", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
         cues: [
@@ -2259,16 +2621,12 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Erector Spinae", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.85),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.85),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.62),
             // The knees extend as the bar breaks the floor; conventional pulls
             // show substantial quadriceps activity (Escamilla et al. 2002).
-            MuscleActivation(name: "Quadriceps", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["latissimus dorsi", "upper trapezius", "forearms", "core"],
         setup: [
@@ -2296,7 +2654,7 @@ enum SampleData {
             backAnnotation("elbow", "Elbows drive back", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "Bar to lower ribs", "attachment_LatissimusDorsi_L", slot: backSlotPath, leader: 44),
             backAnnotation("grip", "Shoulder-width grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
-            backAnnotation("feet", "Hips back", "foot_L", slot: backSlotBase, side: .trailing, leader: 40),
+            backAnnotation("feet", "Hips back", "pelvis", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("scapula", "Squeeze the blades", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
         cues: [
@@ -2342,12 +2700,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.45)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -2374,7 +2729,7 @@ enum SampleData {
             backAnnotation("elbow", "Elbows track to hip", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "Row to the hip", "attachment_LatissimusDorsi_L", slot: backSlotPath, leader: 44),
             backAnnotation("grip", "Neutral grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
-            backAnnotation("feet", "Flat back, hinged", "foot_L", slot: backSlotBase, side: .trailing, leader: 40),
+            backAnnotation("feet", "Flat back", "spine", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("scapula", "Squeeze the blades", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
         cues: [
@@ -2420,12 +2775,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.74),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -2452,7 +2804,7 @@ enum SampleData {
             backAnnotation("elbow", "Elbow stays close", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "Row to hip pocket", "attachment_LatissimusDorsi_L", slot: backSlotPath, leader: 44),
             backAnnotation("grip", "Neutral grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
-            backAnnotation("feet", "Torso stays flat", "foot_L", slot: backSlotBase, side: .trailing, leader: 40),
+            backAnnotation("feet", "Torso stays flat", "spine", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("scapula", "Blade pulls back", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
         cues: [
@@ -2498,12 +2850,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.87),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.55),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.45)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.87),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["obliques", "rotator cuff", "forearms"],
         setup: [
@@ -2530,8 +2879,8 @@ enum SampleData {
             backAnnotation("elbow", "Elbows drive back", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "Row to the hip", "attachment_LatissimusDorsi_L", slot: backSlotPath, leader: 44),
             backAnnotation("grip", "Neutral grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
-            backAnnotation("feet", "Chest pinned", "foot_L", slot: backSlotBase, side: .trailing, leader: 40),
-            backAnnotation("scapula", "No momentum", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
+            backAnnotation("feet", "Chest pinned", "chest", slot: backSlotBase, side: .trailing, leader: 40),
+            backAnnotation("scapula", "No shrugging", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
         cues: [
             TechniqueCue(
@@ -2576,12 +2925,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
@@ -2607,7 +2953,7 @@ enum SampleData {
         annotations: [
             backAnnotation("elbow", "Elbows down and back", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "Chest to the bar", "chest", slot: backSlotPath, leader: 44),
-            backAnnotation("grip", "Wide overhand grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
+            backAnnotation("grip", "Slightly wide overhand", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
             backAnnotation("feet", "No kipping", "pelvis", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("scapula", "Set blades first", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
@@ -2654,12 +3000,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.55),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -2732,10 +3075,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.85),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.68)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.85),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.68)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -2808,12 +3149,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.85),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.85),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -2886,10 +3224,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.87),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.55)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.87),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.55)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -2916,7 +3252,7 @@ enum SampleData {
             backAnnotation("elbow", "Elbows drive back", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "Handle to the abdomen", "attachment_LatissimusDorsi_L", slot: backSlotPath, leader: 44),
             backAnnotation("grip", "Neutral grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
-            backAnnotation("feet", "Knees soft", "foot_L", slot: backSlotBase, side: .trailing, leader: 40),
+            backAnnotation("feet", "Knees soft", "patella_L", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("scapula", "Set blades first", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
         cues: [
@@ -2962,12 +3298,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.74),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["erector spinae", "forearms", "core"],
         setup: [
@@ -3040,10 +3373,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.85),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.35)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.85),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.35)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -3070,7 +3401,7 @@ enum SampleData {
             backAnnotation("elbow", "Elbows tuck in", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "Bar to lower chest", "attachment_LatissimusDorsi_L", slot: backSlotPath, leader: 44),
             backAnnotation("grip", "Neutral grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
-            backAnnotation("feet", "Hips hinged", "foot_L", slot: backSlotBase, side: .trailing, leader: 40),
+            backAnnotation("feet", "Hips hinged", "pelvis", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("scapula", "Squeeze at the top", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
         cues: [
@@ -3116,12 +3447,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.45)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -3147,7 +3475,7 @@ enum SampleData {
         annotations: [
             backAnnotation("elbow", "Elbows drive back", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "Handles to the ribs", "attachment_LatissimusDorsi_L", slot: backSlotPath, leader: 44),
-            backAnnotation("grip", "Chest pinned", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
+            backAnnotation("grip", "Chest pinned", "chest", slot: backSlotGrip, side: .trailing, leader: 34),
             backAnnotation("feet", "No leg drive", "foot_L", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("scapula", "Squeeze the blades", "scapula_L", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
@@ -3194,14 +3522,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.38)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
@@ -3228,7 +3552,7 @@ enum SampleData {
             backAnnotation("elbow", "Elbows down and back", "forearm_L", slot: backSlotElbow, leader: 52),
             backAnnotation("barpath", "To the upper chest", "chest", slot: backSlotPath, leader: 44),
             backAnnotation("grip", "Wide overhand grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
-            backAnnotation("feet", "Chest on the pad", "thigh_L", slot: backSlotBase, side: .trailing, leader: 40),
+            backAnnotation("feet", "Legs locked in", "thigh_L", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("spine", "No leaning back", "spine", slot: backSlotScapula, side: .trailing, leader: 46)
         ],
         cues: [
@@ -3274,12 +3598,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.55),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -3352,12 +3673,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Erector Spinae", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.85),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.65),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.85),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.65),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["adductors", "core"],
         setup: [
@@ -3460,12 +3778,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.45)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["adductors", "hamstrings", "calves", "core"],
         setup: [
@@ -3494,7 +3809,7 @@ enum SampleData {
                           leaderLength: 55, joint: "hand_L"),
             CueAnnotation(cueID: "elbow", label: "Elbows driven up high",
                           labelPoint: CGPoint(x: 0.20, y: 0.32),
-                          labelSide: .trailing, leaderLength: 55, joint: "hand_R"),
+                          labelSide: .trailing, leaderLength: 55, joint: "forearm_R"),
             CueAnnotation(cueID: "torso", label: "Torso stays upright",
                           labelPoint: CGPoint(x: 0.80, y: 0.50),
                           leaderLength: 40, joint: "chest"),
@@ -3548,12 +3863,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.94),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.94),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["upper back", "adductors", "core"],
         setup: [
@@ -3582,7 +3894,7 @@ enum SampleData {
                           leaderLength: 42, joint: "hand_L"),
             CueAnnotation(cueID: "elbow", label: "Elbows inside the knees",
                           labelPoint: CGPoint(x: 0.22, y: 0.32),
-                          labelSide: .trailing, leaderLength: 42, joint: "hand_R"),
+                          labelSide: .trailing, leaderLength: 42, joint: "forearm_R"),
             CueAnnotation(cueID: "torso", label: "Chest lifted, torso tall",
                           labelPoint: CGPoint(x: 0.30, y: 0.50),
                           labelSide: .trailing, leaderLength: 50, joint: "chest"),
@@ -3636,12 +3948,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.85),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.32)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.85),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.32)
         ],
         stabilisers: ["adductors", "upper back", "forearms"],
         setup: [
@@ -3665,6 +3974,8 @@ enum SampleData {
 
     static let walkingLungeContent = ExerciseContent(
         annotations: [
+            // The lunge walks, so the legs swap every step: `_front` and `_back`
+            // follow whichever leg leads in the current frame.
             CueAnnotation(cueID: "torso", label: "Torso stays tall",
                           labelPoint: CGPoint(x: 0.24, y: 0.14),
                           labelSide: .trailing, leaderLength: 46, joint: "chest"),
@@ -3673,13 +3984,13 @@ enum SampleData {
                           leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "knee", label: "Knee stacks over the ankle",
                           labelPoint: CGPoint(x: 0.86, y: 0.50),
-                          leaderLength: 38, joint: "patella_L"),
+                          leaderLength: 38, joint: "patella_front"),
             CueAnnotation(cueID: "balance", label: "Tap the back knee, don't bounce",
                           labelPoint: CGPoint(x: 0.16, y: 0.68),
-                          labelSide: .trailing, leaderLength: 40, joint: "thigh_R"),
+                          labelSide: .trailing, leaderLength: 40, joint: "patella_back"),
             CueAnnotation(cueID: "drive", label: "Drive through the front heel",
                           labelPoint: CGPoint(x: 0.16, y: 0.86),
-                          labelSide: .trailing, leaderLength: 42, joint: "foot_L")
+                          labelSide: .trailing, leaderLength: 42, joint: "foot_front")
         ],
         cues: [
             TechniqueCue(
@@ -3724,12 +4035,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.83),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.35)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.83),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.35)
         ],
         stabilisers: ["gluteus medius", "adductors", "calves", "core"],
         setup: [
@@ -3756,16 +4064,18 @@ enum SampleData {
             CueAnnotation(cueID: "torso", label: "Torso stays tall",
                           labelPoint: CGPoint(x: 0.24, y: 0.14),
                           labelSide: .trailing, leaderLength: 46, joint: "chest"),
+            // The right leg is the one that steps back (see FaultPoses), so
+            // the front-leg cues follow the left leg.
             CueAnnotation(cueID: "load", label: "Weight stays on the front leg",
                           labelPoint: CGPoint(x: 0.16, y: 0.32),
-                          labelSide: .trailing, leaderLength: 40, joint: "thigh_R"),
+                          labelSide: .trailing, leaderLength: 40, joint: "thigh_L"),
             CueAnnotation(cueID: "knee", label: "Front knee stacks over ankle",
                           labelPoint: CGPoint(x: 0.84, y: 0.50),
-                          leaderLength: 38, joint: "pelvis"),
-            CueAnnotation(cueID: "drive", label: "Drive up through the front heel",
+                          leaderLength: 38, joint: "patella_L"),
+            CueAnnotation(cueID: "step", label: "Step straight back",
                           labelPoint: CGPoint(x: 0.16, y: 0.68),
                           labelSide: .trailing, leaderLength: 42, joint: "foot_R"),
-            CueAnnotation(cueID: "step", label: "Step straight back",
+            CueAnnotation(cueID: "drive", label: "Drive up through the front heel",
                           labelPoint: CGPoint(x: 0.84, y: 0.86),
                           leaderLength: 40, joint: "foot_L")
         ],
@@ -3812,12 +4122,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.65),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.32)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.65),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.32)
         ],
         stabilisers: ["gluteus medius", "adductors", "core"],
         setup: [
@@ -3900,10 +4207,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.87),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.87),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["hamstrings", "adductors", "calves"],
         setup: [
@@ -3929,7 +4234,7 @@ enum SampleData {
         annotations: [
             CueAnnotation(cueID: "lockout", label: "Stop just short of lockout",
                           labelPoint: CGPoint(x: 0.86, y: 0.14),
-                          leaderLength: 46, joint: "hand_L"),
+                          leaderLength: 46, joint: "shin_L"),
             CueAnnotation(cueID: "pad", label: "Back stays on the pad",
                           labelPoint: CGPoint(x: 0.82, y: 0.32),
                           leaderLength: 44, joint: "chest"),
@@ -3986,10 +4291,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.89),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.89),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["hamstrings", "adductors", "calves"],
         setup: [
@@ -4027,7 +4330,7 @@ enum SampleData {
                           leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "negative", label: "Control the full lowering",
                           labelPoint: CGPoint(x: 0.86, y: 0.20),
-                          leaderLength: 44, joint: "hand_L")
+                          leaderLength: 44, joint: "shin_R")
         ],
         cues: [
             TechniqueCue(
@@ -4072,8 +4375,7 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.91)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.91)
         ],
         stabilisers: [],
         setup: [
@@ -4156,12 +4458,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.30)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["hamstrings", "adductors", "calves", "core"],
         setup: [
@@ -4244,10 +4543,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.30)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["hip flexors", "calves"],
         setup: [
@@ -4330,12 +4627,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Hamstrings", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["latissimus dorsi", "upper trapezius", "forearms", "core"],
         setup: [
@@ -4455,12 +4749,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.74),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "core", "glutes"],
         setup: [
@@ -4546,12 +4837,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.72),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii"],
         setup: [
@@ -4638,12 +4926,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.64),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii"],
         setup: [
@@ -4729,12 +5014,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -4819,12 +5101,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.45)
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["posterior deltoid", "rotator cuff", "serratus anterior", "core"],
         setup: [
@@ -4910,12 +5189,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["posterior deltoid", "rotator cuff", "obliques", "core"],
         setup: [
@@ -5001,12 +5277,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.38)
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -5093,12 +5366,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.38)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "core"],
         setup: [
@@ -5185,12 +5455,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Posterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms"],
         setup: [
@@ -5276,12 +5543,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Posterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["rotator cuff", "lower trapezius", "forearms"],
         setup: [
@@ -5367,12 +5631,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Posterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Rotator Cuff", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Rotator Cuff", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["lower trapezius", "biceps brachii", "core"],
         setup: [
@@ -5457,12 +5718,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Posterior Deltoid", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["rotator cuff", "lower trapezius", "core"],
         setup: [
@@ -5567,12 +5825,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Biceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Brachialis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.66),
-            MuscleActivation(name: "Brachioradialis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["anterior deltoid", "forearm flexors", "core"],
         setup: [
@@ -5659,8 +5914,7 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.86)
         ],
         stabilisers: ["latissimus dorsi", "forearms", "core"],
         setup: [
@@ -5746,8 +6000,7 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.88)
         ],
         stabilisers: ["latissimus dorsi", "forearms", "core"],
         setup: [
@@ -5832,8 +6085,7 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.86)
         ],
         stabilisers: ["obliques", "latissimus dorsi", "forearms"],
         setup: [
@@ -5920,8 +6172,7 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.88)
         ],
         stabilisers: ["core", "rotator cuff", "serratus anterior"],
         setup: [
@@ -6007,8 +6258,7 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.88)
         ],
         stabilisers: ["core", "rotator cuff", "forearms"],
         setup: [
@@ -6093,8 +6343,7 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.86)
         ],
         stabilisers: ["latissimus dorsi", "forearms", "rotator cuff"],
         setup: [
@@ -6178,10 +6427,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["pectoralis major", "serratus anterior", "core"],
         setup: [
@@ -6267,12 +6514,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Pectoralis Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["serratus anterior", "latissimus dorsi", "rotator cuff"],
         setup: [
@@ -6374,12 +6618,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["adductors", "hamstrings", "forearms", "core"],
         setup: [
@@ -6465,12 +6706,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.74),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["gluteus medius", "adductors", "erector spinae", "core"],
         setup: [
@@ -6568,12 +6806,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Hamstrings", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["forearms", "lats", "core", "adductors"],
         setup: [
@@ -6660,12 +6895,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Hamstrings", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58)
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.58)
         ],
         stabilisers: ["forearms", "lats", "trapezius", "core"],
         setup: [
@@ -6752,10 +6984,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Hamstrings", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Gastrocnemius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["gluteus maximus", "core"],
         setup: [
@@ -6842,10 +7072,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Hamstrings", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.92),
-            MuscleActivation(name: "Gastrocnemius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["hip flexors", "core"],
         setup: [
@@ -6933,10 +7161,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Hamstrings", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Gastrocnemius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["gluteus maximus", "core", "obliques"],
         setup: [
@@ -7021,12 +7247,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.36)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["gluteus medius", "adductors", "core"],
         setup: [
@@ -7110,12 +7333,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["adductors", "obliques", "erector spinae"],
         setup: [
@@ -7200,12 +7420,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["standing-leg glutes", "core", "erector spinae"],
         setup: [
@@ -7290,10 +7507,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Medius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["standing-leg gluteus medius", "obliques", "adductors"],
         setup: [
@@ -7379,10 +7594,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Medius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["standing-leg gluteus medius", "obliques", "core"],
         setup: [
@@ -7470,10 +7683,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Medius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "hip flexors"],
         setup: [
@@ -7561,10 +7772,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Medius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.66)
         ],
         stabilisers: ["erector spinae", "core"],
         setup: [
@@ -7650,12 +7859,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.64),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["hamstrings", "adductors", "forearms", "core"],
         setup: [
@@ -7739,12 +7945,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["serratus anterior", "rectus abdominis", "gluteus maximus"],
         setup: [
@@ -7828,12 +8031,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.36)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["transverse abdominis", "serratus anterior", "quadriceps", "shoulders"],
         setup: [
@@ -7931,10 +8131,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.45)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["transverse abdominis", "neck flexors"],
         setup: [
@@ -8020,12 +8218,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Hip Flexors", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["transverse abdominis"],
         setup: [
@@ -8111,12 +8306,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48),
-            MuscleActivation(name: "Hip Flexors", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["transverse abdominis", "quadriceps"],
         setup: [
@@ -8201,10 +8393,8 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["latissimus dorsi", "transverse abdominis"],
         setup: [
@@ -8290,12 +8480,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Hip Flexors", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.64)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.64)
         ],
         stabilisers: ["forearms", "latissimus dorsi", "shoulders"],
         setup: [
@@ -8379,12 +8566,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Hip Flexors", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.62)
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.62)
         ],
         stabilisers: ["forearms", "latissimus dorsi", "quadriceps"],
         setup: [
@@ -8471,12 +8655,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Hip Flexors", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.66)
         ],
         stabilisers: ["shoulders", "triceps", "quadriceps"],
         setup: [
@@ -8562,12 +8743,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Rectus Abdominis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.68),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["triceps", "shoulders", "gluteus maximus"],
         setup: [
@@ -8654,12 +8832,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Obliques", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Quadratus Lumborum", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Quadratus Lumborum", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["transverse abdominis", "rectus abdominis", "shoulders"],
         setup: [
@@ -8746,12 +8921,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Obliques", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52),
-            MuscleActivation(name: "Hip Flexors", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.38)
+            MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["transverse abdominis", "erector spinae"],
         setup: [
@@ -8837,12 +9009,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Obliques", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44),
-            MuscleActivation(name: "Transverse Abdominis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Transverse Abdominis", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["gluteus maximus", "latissimus dorsi", "shoulders"],
         setup: [
@@ -8923,12 +9092,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Biceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Brachialis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.68),
-            MuscleActivation(name: "Brachioradialis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["anterior deltoid", "forearm flexors", "core"],
         setup: [
@@ -9001,12 +9167,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Adductor Magnus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Adductor Magnus", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["hamstrings", "erector spinae", "core", "anterior deltoid"],
         setup: [
@@ -9093,12 +9256,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["adductors", "hamstrings", "calves", "core"],
         setup: [
@@ -9184,12 +9344,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["gluteus medius", "adductors", "erector spinae", "core"],
         setup: [
@@ -9282,12 +9439,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "core"],
         setup: [
@@ -9375,12 +9529,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -9468,12 +9619,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -9562,12 +9710,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lower Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.92),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.34)
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["latissimus dorsi", "rotator cuff", "core"],
         setup: [
@@ -9655,12 +9800,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["rotator cuff", "biceps brachii", "serratus anterior"],
         setup: [
@@ -9748,14 +9890,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.30)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["rotator cuff", "quadratus lumborum", "serratus anterior"],
         setup: [
@@ -9842,12 +9980,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "obliques", "biceps brachii"],
         setup: [
@@ -9934,12 +10069,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii"],
         setup: [
@@ -10026,12 +10158,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -10119,12 +10248,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -10211,12 +10337,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.55),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["serratus anterior", "teres major", "core"],
         setup: [
@@ -10303,12 +10426,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["serratus anterior", "teres major", "core"],
         setup: [
@@ -10395,12 +10515,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["rotator cuff", "obliques"],
         setup: [
@@ -10487,12 +10604,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -10579,12 +10693,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lower Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.36)
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -10671,12 +10782,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -10764,12 +10872,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -10855,12 +10960,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["core", "serratus anterior", "rotator cuff"],
         setup: [
@@ -10946,14 +11048,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["transversus abdominis", "rotator cuff", "serratus anterior"],
         setup: [
@@ -11040,12 +11138,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -11133,12 +11228,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lower Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.34)
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["latissimus dorsi", "rotator cuff", "core"],
         setup: [
@@ -11179,7 +11271,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.668, y: 0.86),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "Chest up, shoulders back",
+            CueAnnotation(cueID: "scapula", label: "Shoulders back",
                           labelPoint: CGPoint(x: 0.450, y: 0.14),
                           leaderLength: 40, joint: "scapula_R")
         ],
@@ -11226,12 +11318,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lower Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.34),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.28)
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.28)
         ],
         stabilisers: ["core", "serratus anterior", "biceps brachii"],
         setup: [
@@ -11319,12 +11408,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.28)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.28)
         ],
         stabilisers: ["core", "biceps brachii", "rotator cuff"],
         setup: [
@@ -11412,12 +11498,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.24)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -11504,12 +11587,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lower Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.34),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.24)
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["rotator cuff", "latissimus dorsi", "core"],
         setup: [
@@ -11549,7 +11629,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.668, y: 0.86),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "Chest up, shoulders back",
+            CueAnnotation(cueID: "scapula", label: "Shoulders back",
                           labelPoint: CGPoint(x: 0.450, y: 0.14),
                           leaderLength: 40, joint: "scapula_R")
         ],
@@ -11596,12 +11676,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.24)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["core", "serratus anterior", "rotator cuff"],
         setup: [
@@ -11686,14 +11763,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.68),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.30)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "glutes"],
         setup: [
@@ -11779,12 +11852,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["serratus anterior", "core", "glutes"],
         setup: [
@@ -11878,12 +11948,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["serratus anterior", "core", "glutes"],
         setup: [
@@ -11971,12 +12038,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["serratus anterior", "core", "glutes"],
         setup: [
@@ -12064,12 +12128,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["serratus anterior", "obliques", "glutes"],
         setup: [
@@ -12155,12 +12216,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Triceps Brachii", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "core"],
         setup: [
@@ -12247,12 +12305,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.92),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "core"],
         setup: [
@@ -12341,12 +12396,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "rotator cuff", "serratus anterior"],
         setup: [
@@ -12434,14 +12486,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.24)
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["rotator cuff", "forearm flexors", "core"],
         setup: [
@@ -12529,14 +12577,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Erector Spinae", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["latissimus dorsi", "forearms", "core"],
         setup: [
@@ -12623,14 +12667,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Erector Spinae", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["latissimus dorsi", "forearms", "core"],
         setup: [
@@ -12719,14 +12759,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.72),
-            MuscleActivation(name: "Adductors", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.58)
         ],
         stabilisers: ["hamstrings", "trapezius", "forearms", "core"],
         setup: [
@@ -12815,14 +12851,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["trapezius", "forearms", "core"],
         setup: [
@@ -12910,14 +12942,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Erector Spinae", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.68),
-            MuscleActivation(name: "Quadriceps", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["rhomboids", "latissimus dorsi", "forearms", "core"],
         setup: [
@@ -13005,14 +13033,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Erector Spinae", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Quadriceps", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Hamstrings", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["latissimus dorsi", "trapezius", "forearms", "core"],
         setup: [
@@ -13101,12 +13125,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.58)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -13194,12 +13215,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.58)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -13286,14 +13304,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Rhomboids", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -13377,14 +13391,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Rhomboids", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.64),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.54)
         ],
         stabilisers: ["posterior deltoid", "rotator cuff", "forearms"],
         setup: [
@@ -13470,14 +13480,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["obliques", "erector spinae", "forearms", "rotator cuff"],
         setup: [
@@ -13565,12 +13571,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["obliques", "erector spinae", "forearms", "rotator cuff"],
         setup: [
@@ -13658,12 +13661,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["obliques", "erector spinae", "forearms", "rotator cuff"],
         setup: [
@@ -13750,12 +13750,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.54)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -13842,12 +13839,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.74),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -13932,14 +13926,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["serratus anterior", "triceps brachii", "glutes", "shoulders"],
         setup: [
@@ -14025,12 +14015,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["erector spinae", "glutes", "obliques", "forearms"],
         setup: [
@@ -14118,14 +14105,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.74),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["glutes", "core", "rear deltoid", "forearms"],
         setup: [
@@ -14213,14 +14196,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.54)
         ],
         stabilisers: ["glutes", "core", "rear deltoid", "forearms"],
         setup: [
@@ -14308,12 +14287,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.62)
         ],
         stabilisers: ["glutes", "core", "rear deltoid", "forearms"],
         setup: [
@@ -14408,12 +14384,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Teres Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -14500,12 +14473,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Brachialis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -14592,12 +14562,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.92),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Teres Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -14629,7 +14596,7 @@ enum SampleData {
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
                           labelPoint: CGPoint(x: 0.362, y: 0.50),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
+            CueAnnotation(cueID: "grip", label: "Slightly wide overhand",
                           labelPoint: CGPoint(x: 0.450, y: 0.14),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "barpath", label: "Chin over the bar",
@@ -14684,12 +14651,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.92),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.52)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -14721,7 +14685,7 @@ enum SampleData {
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
                           labelPoint: CGPoint(x: 0.362, y: 0.50),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
+            CueAnnotation(cueID: "grip", label: "Slightly wide overhand",
                           labelPoint: CGPoint(x: 0.450, y: 0.14),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "barpath", label: "Chin over the bar",
@@ -14731,7 +14695,7 @@ enum SampleData {
             CueAnnotation(cueID: "feet", label: "Knees on the pad",
                           labelPoint: CGPoint(x: 0.668, y: 0.86),
                           labelSide: .trailing,
-                          leaderLength: 40, joint: "foot_L")
+                          leaderLength: 40, joint: "patella_L")
         ],
         cues: [
             TechniqueCue(
@@ -14776,12 +14740,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -14868,12 +14829,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66),
-            MuscleActivation(name: "Brachialis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -14960,12 +14918,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.90),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.70),
-            MuscleActivation(name: "Pectoralis Major", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.34)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.70),
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -14997,7 +14952,7 @@ enum SampleData {
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
                           labelPoint: CGPoint(x: 0.362, y: 0.50),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
+            CueAnnotation(cueID: "grip", label: "Slightly wide overhand",
                           labelPoint: CGPoint(x: 0.450, y: 0.14),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "barpath", label: "Chin over the bar",
@@ -15051,12 +15006,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["lower trapezius", "forearms", "core"],
         setup: [
@@ -15142,12 +15094,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Teres Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -15233,12 +15182,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -15325,12 +15271,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Brachialis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -15416,12 +15359,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -15464,7 +15404,7 @@ enum SampleData {
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Hips forward, glutes tight",
                           labelPoint: CGPoint(x: 0.479, y: 0.86),
-                          leaderLength: 40, joint: "patella_L")
+                          leaderLength: 40, joint: "pelvis")
         ],
         cues: [
             TechniqueCue(
@@ -15509,12 +15449,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.40)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -15601,12 +15538,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Teres Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -15694,12 +15628,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -15787,12 +15718,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.30)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
@@ -15878,14 +15806,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Teres Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.30)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "core"],
         setup: [
@@ -15972,14 +15896,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Rhomboids", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.54)
         ],
         stabilisers: ["erector spinae", "forearms", "core"],
         setup: [
@@ -16066,12 +15986,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["erector spinae", "forearms", "core"],
         setup: [
@@ -16156,14 +16073,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary,
-                             activation: "HIGH ACTIVATION", fraction: 0.66),
-            MuscleActivation(name: "Rhomboids", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["erector spinae", "forearms", "core"],
         setup: [
@@ -16250,12 +16163,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["erector spinae", "forearms", "core"],
         setup: [
@@ -16298,7 +16208,7 @@ enum SampleData {
             CueAnnotation(cueID: "torso", label: "Staggered stance, knees soft",
                           labelPoint: CGPoint(x: 0.492, y: 0.86),
                           labelSide: .trailing,
-                          leaderLength: 40, joint: "spine")
+                          leaderLength: 40, joint: "foot_L")
         ],
         cues: [
             TechniqueCue(
@@ -16343,12 +16253,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.74),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["glutes", "core", "erector spinae"],
         setup: [
@@ -16435,14 +16342,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.56),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "LOW ACTIVATION", fraction: 0.30)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["erector spinae", "forearms", "core"],
         setup: [
@@ -16528,14 +16431,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Obliques", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.50),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.44)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["glutes", "transversus abdominis", "forearms"],
         setup: [
@@ -16622,12 +16521,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.82),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.76),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
@@ -16714,12 +16610,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Middle Trapezius", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.78),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
@@ -16805,12 +16698,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.84),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.46)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
@@ -16897,12 +16787,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.86),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.62),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.58)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.58)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms", "core"],
         setup: [
@@ -16988,14 +16875,10 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.80),
-            MuscleActivation(name: "Pectoralis Major", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.74),
-            MuscleActivation(name: "Teres Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.54),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.42)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["serratus anterior", "core", "rotator cuff"],
         setup: [
@@ -17082,12 +16965,9 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary,
-                             activation: "HIGH ACTIVATION", fraction: 0.88),
-            MuscleActivation(name: "Teres Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.60),
-            MuscleActivation(name: "Pectoralis Major", rank: .secondary,
-                             activation: "MODERATE ACTIVATION", fraction: 0.48)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["serratus anterior", "core", "rotator cuff"],
         setup: [
@@ -17107,6 +16987,5517 @@ enum SampleData {
             .init(DS.activation.opacity(0.58), rx: 0.14, ry: 0.09, cx: 0.61, cy: 0.47),
             .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.07, cx: 0.63, cy: 0.36),
             .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.06, cx: 0.69, cy: 0.35)
+        ]
+    )
+
+    // MARK: - Batch 191-240 (2026-09-26)
+    //
+    // From the HIKSEMI drive's "190-240" exports (SourceExports/190-240).
+    // Generated by `Tools/trainer-content/gen.py` from `spec_191_240.py`;
+    // each family file's header lists what its models show and its
+    // sources, and `notes_191_240_*.md` maps the copy's claims to them.
+    // Label rows were laid out from the probed joints (`probe.py`) and
+    // checked on simulator screenshots. One-arm models work the left arm;
+    // the three carries walk in place and are logged in seconds.
+
+    static let seatedBarbellOverheadPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "torso", label: "Sit tall, ribs down",
+                          labelPoint: CGPoint(x: 0.624, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "barpath", label: "Bar close to the face",
+                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "grip", label: "Wrists over elbows",
+                          labelPoint: CGPoint(x: 0.638, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "depth", label: "Lower to chin height",
+                          labelPoint: CGPoint(x: 0.609, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "feet", label: "Feet flat, wide base",
+                          labelPoint: CGPoint(x: 0.391, y: 0.80),
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "torso",
+                title: "Trunk Position",
+                intro: "The torso stays upright over the hips.",
+                why: "Sitting tall with the ribs down keeps the press vertical; leaning back turns it into a steep incline press and loads the lower back in extension.",
+                mistake: "Leaning back and arching the lower back to get the bar up.",
+                correct: "Sit tall, brace the abs and keep the ribs stacked over the pelvis for every rep."
+            ),
+            TechniqueCue(
+                id: "barpath",
+                title: "Bar Path",
+                intro: "The bar travels straight up, close to the face.",
+                why: "A vertical path keeps the load over the shoulders; a bar that drifts forward lengthens the lever on the shoulders and lower back.",
+                mistake: "Pressing the bar out and around the face so it locks out in front of the head.",
+                correct: "Keep the bar close as it passes the face and finish with it over the top of the head, arms beside the ears."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip & Wrists",
+                intro: "Hands a hand's width outside the shoulders, wrists over the elbows.",
+                why: "Stacked wrists push straight up into the bar. Grip width also shifts the load: narrower grips lift more through a longer range, wider ones ease the elbows.",
+                mistake: "The bar rolling back into the fingers, bending the wrists back under the load.",
+                correct: "Hold the bar low in the palm, knuckles up, wrists straight and stacked over the elbows."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Range of Motion",
+                intro: "Each rep comes down to about chin height.",
+                why: "Lowering to at least chin height and pressing to straight arms trains the whole press; in a seated press study, reps pressed to full elbow extension drew more deltoid and triceps activity than reps stopped short of it.",
+                mistake: "Short reps that stop with the bar at nose height.",
+                correct: "Lower under control until the bar is at least level with the chin, then press back up to arms' length over the head."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Base",
+                intro: "The feet anchor the seated body.",
+                why: "Flat feet set wider than the hips give a stable base, so balancing the bar does not pull the hips around.",
+                mistake: "Feet tucked under the bench or up on the toes, so the hips shift with each rep.",
+                correct: "Plant both feet flat, a little wider than the hips, and keep them still for the set."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.34)
+        ],
+        stabilisers: ["rotator cuff", "serratus anterior", "erector spinae"],
+        setup: [
+            "Sit on a bench with your torso upright and feet flat, wider than your hips.",
+            "Take the bar in front of your chin, hands a hand's width outside your shoulders.",
+            "Wrists straight, forearms vertical under the bar.",
+            "Brace your core and sit tall."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Sit tall, bar over the head",
+            mistakeCue: "Lower back arches to press",
+            correctNote: "Sitting tall with the ribs down lets the deltoids and triceps press the bar straight up over the hips.",
+            mistakeNote: "Leaning back turns the press into a steep incline press and loads the lower back in extension."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.07, cx: 0.48, cy: 0.44),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.56, cy: 0.43),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.36, cy: 0.43)
+        ]
+    )
+
+    static let behindTheNeckPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Forearms vertical",
+                          labelPoint: CGPoint(x: 0.653, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "depth", label: "Bar to base of skull",
+                          labelPoint: CGPoint(x: 0.609, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "head", label: "Chest up, head level",
+                          labelPoint: CGPoint(x: 0.391, y: 0.48),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "brace", label: "Ribs down, glutes tight",
+                          labelPoint: CGPoint(x: 0.565, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "lockout", label: "Lock out over the neck",
+                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Grip & Forearms",
+                intro: "Hands wide enough to keep the forearms vertical.",
+                why: "A grip that stands the forearms straight up at the bottom lets the bar pass behind the head without the shoulders turning back further than they need to.",
+                mistake: "A narrow grip, which folds the elbows and makes the shoulders rotate further to get the bar behind the head.",
+                correct: "Grip overhand about a hand's width outside the shoulders, so the forearms stand straight up under the bar at the bottom."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Range of Motion",
+                intro: "The bar comes down behind the head to about the base of the skull.",
+                why: "Behind the head the shoulders turn out near the end of their range, and in one study male lifters went past their passive outward rotation; lowering only as far as the chest stays up and the forearms stay vertical keeps that rotation within your own range.",
+                mistake: "Forcing the bar further down the back of the neck than the shoulders comfortably allow.",
+                correct: "Lower under control to about the base of the skull, or only as far as your shoulders comfortably allow, then press straight back up."
+            ),
+            TechniqueCue(
+                id: "head",
+                title: "Head & Upper Back",
+                intro: "The chest stays up while the bar passes behind the head.",
+                why: "An upright upper back gives the shoulders their full overhead range; slouching tilts the shoulder blades forward and costs overhead range, so getting the bar behind the head asks more of the shoulder joint.",
+                mistake: "Rounding the upper back and pushing the head forward and down to let the bar pass.",
+                correct: "Keep the chest up and the head level, eyes forward, the head just slightly forward so the bar can pass behind it."
+            ),
+            TechniqueCue(
+                id: "brace",
+                title: "Trunk Bracing",
+                intro: "Standing overhead, the trunk has to stay rigid.",
+                why: "Squeezing the glutes and keeping the ribs down stops the lower back arching to chase the bar.",
+                mistake: "Arching the lower back and pushing the hips forward as the bar goes up.",
+                correct: "Brace the abs, squeeze the glutes and keep the ribs stacked over the pelvis for every rep."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "The bar finishes straight above the back of the neck.",
+                why: "Locking out with the bar over the neck stacks it over the shoulders, hips and heels, so the arms hold it without the lower back compensating.",
+                mistake: "Pressing the bar forward so it locks out in front of the face.",
+                correct: "Press straight up until the elbows are fully straight, the bar just behind the ears and over the heels."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.38)
+        ],
+        stabilisers: ["rotator cuff", "serratus anterior", "core"],
+        setup: [
+            "Set the bar in a rack at shoulder height.",
+            "Grip it overhand, a hand's width outside your shoulders.",
+            "Duck under, take it behind your neck on your upper traps and step back.",
+            "Stand with your feet hip-width, glutes tight and core braced."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "FORCED DEPTH",
+            correctCue: "Lower within your range",
+            mistakeCue: "Bar forced down the neck",
+            correctNote: "Lowering only as far as the chest stays up and the forearms stay vertical keeps the shoulders inside the rotation they control while the deltoids press.",
+            mistakeNote: "Forcing the bar lower than the shoulders allow turns them further out at the bottom; behind-the-neck pressing has been associated with signs of anterior shoulder instability in weight trainers."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.07, cx: 0.42, cy: 0.40),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.55, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.32, cy: 0.40)
+        ]
+    )
+
+    static let pushPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "rack", label: "Arms still in the dip",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "lockout", label: "Lock out over the head",
+                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "brace", label: "Ribs down, glutes tight",
+                          labelPoint: CGPoint(x: 0.565, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "dip", label: "Dip straight down",
+                          labelPoint: CGPoint(x: 0.347, y: 0.64),
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "heels", label: "Heels down in the dip",
+                          labelPoint: CGPoint(x: 0.594, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "rack",
+                title: "Start Position",
+                intro: "The bar starts in front of the chin and the arms stay still through the dip.",
+                why: "Holding the arms still until the legs have driven lets the legs launch the bar, so the arms only finish the press; pressing early wastes the leg drive. Most lifters start with the bar resting on the front of the shoulders; the same rule applies.",
+                mistake: "Starting to press with the arms during the dip, so the bar rises before the legs drive.",
+                correct: "Hold the bar in front of the chin, wrists straight and forearms under it, and keep the arms still until the legs have driven."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "The bar finishes straight overhead.",
+                why: "Locking out with the bar over the head and mid-foot stacks the load over the base, so the arms hold it without the lower back compensating.",
+                mistake: "Driving the bar forward so it locks out in front of the face.",
+                correct: "Drive the bar straight up close to the face and finish at arms' length, the bar over the head and the arms beside the ears."
+            ),
+            TechniqueCue(
+                id: "brace",
+                title: "Trunk Bracing",
+                intro: "The trunk carries the leg drive into the bar.",
+                why: "A braced, upright trunk passes the force of the legs into the bar; a soft or arched one leaks it and loads the lower back.",
+                mistake: "Leaning back and arching the lower back as the bar goes overhead.",
+                correct: "Brace the abs and squeeze the glutes before the dip, and keep the ribs down over the pelvis as the bar goes up."
+            ),
+            TechniqueCue(
+                id: "dip",
+                title: "Dip",
+                intro: "A short dip straight down, torso upright.",
+                why: "A quick dip of a few inches loads the legs to drive; keeping it vertical is what sends that drive up through the bar instead of out in front of it.",
+                mistake: "The chest tipping forward in the dip instead of the body sinking straight down.",
+                correct: "Bend the knees straight down a few inches, torso upright and hips under the shoulders, then drive up without pausing."
+            ),
+            TechniqueCue(
+                id: "heels",
+                title: "Foot Pressure",
+                intro: "The heels stay down through the dip.",
+                why: "Flat feet let the legs push straight up through the bar; rising onto the toes in the dip tips the body forward before the drive.",
+                mistake: "Rocking onto the toes as the knees bend, the heels lifting off the floor.",
+                correct: "Keep the whole foot on the floor and the heels down through the dip; if they rise at all, it is only as the legs finish the drive."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.44)
+        ],
+        stabilisers: ["core", "glutes", "rotator cuff", "serratus anterior"],
+        setup: [
+            "Hold the bar in front of your chin, hands a hand's width outside your shoulders.",
+            "Stand with your feet hip-width, knees soft, weight over mid-foot.",
+            "Wrists straight, forearms under the bar.",
+            "Brace your core and squeeze your glutes."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "CHEST DROPS IN THE DIP",
+            correctCue: "Dip straight down",
+            mistakeCue: "Chest tips forward",
+            correctNote: "A short, upright dip drives the legs straight up through the bar, so it rises fast and in line.",
+            mistakeNote: "Tipping forward in the dip sends the drive out in front, so the bar drifts forward and the arms have to chase it."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.07, cx: 0.48, cy: 0.41),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.56, cy: 0.40),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.46, cy: 0.63)
+        ]
+    )
+
+    static let dumbbellPushPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "dip", label: "Dip straight down",
+                          labelPoint: CGPoint(x: 0.347, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "depth", label: "Quarter-squat dip",
+                          labelPoint: CGPoint(x: 0.653, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "heels", label: "Heels down in the dip",
+                          labelPoint: CGPoint(x: 0.406, y: 0.80),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "elbow", label: "Elbows under dumbbells",
+                          labelPoint: CGPoint(x: 0.580, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "lockout", label: "Lock out over shoulders",
+                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "dip",
+                title: "Dip",
+                intro: "The dip is a short, straight drop of the hips and knees.",
+                why: "A vertical trunk lets the legs drive straight up through it into the dumbbells; a chest that tips forward sends the drive forward, away from the shoulders.",
+                mistake: "The chest tipping forward as the knees bend.",
+                correct: "Keep the trunk upright, the hips under the shoulders and the weight over mid-foot, and bend the knees and hips a few inches."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Dip Depth",
+                intro: "The dip goes no deeper than a quarter squat.",
+                why: "The legs drive the push press much as they drive a jump: a short dip reversed at once keeps that drive quick, while sinking lower slows the turnaround and lets the trunk fold.",
+                mistake: "Sinking into a half squat before driving up.",
+                correct: "Dip a few inches with the knees over the toes, then reverse straight into the drive without a pause."
+            ),
+            TechniqueCue(
+                id: "heels",
+                title: "Foot Pressure",
+                intro: "The heels stay down through the dip and the start of the drive.",
+                why: "Pushing through flat feet lets the hips and knees straighten directly under the dumbbells.",
+                mistake: "Rocking forward onto the toes as the knees bend.",
+                correct: "Keep the heels down and the weight over mid-foot in the dip, then drive the floor away until the legs are straight."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Rack Position",
+                intro: "The dumbbells wait at the shoulders while the legs dip.",
+                why: "With the elbows under the dumbbells, the drive from the legs goes straight up into them instead of tipping them forward.",
+                mistake: "Elbows dropping back behind the dumbbells, so the drive pushes them out in front.",
+                correct: "Hold the dumbbells just above the shoulders, palms forward, forearms vertical and elbows slightly in front of the body."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "The dumbbells finish over the shoulders, arms straight.",
+                why: "Stacking the dumbbells over the shoulders and hips lets the straight arms hold the weight at the top instead of the front of the shoulders.",
+                mistake: "Finishing with the dumbbells in front of the face, arms angled forward.",
+                correct: "Press through to straight arms with the biceps beside the ears, then lower the dumbbells back to the shoulders under control."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.45)
+        ],
+        stabilisers: ["glutes", "core", "upper trapezius", "rotator cuff"],
+        setup: [
+            "Stand with your feet hip-width, a dumbbell in each hand.",
+            "Hold the dumbbells just above your shoulders, palms forward.",
+            "Elbows under your wrists, slightly in front of your body.",
+            "Brace your core, weight over mid-foot."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "CHEST DROPS IN THE DIP",
+            correctCue: "Upright dip, straight drive",
+            mistakeCue: "Chest tips forward in the dip",
+            correctNote: "Dipping with the trunk vertical sends the leg drive straight up through the body into the dumbbells.",
+            mistakeNote: "Tipping forward in the dip sends the drive forward, so the dumbbells travel out in front and the shoulders have to save them."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.06, cx: 0.53, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.67, cy: 0.35),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.12, ry: 0.07, cx: 0.51, cy: 0.62)
+        ]
+    )
+
+    static let standingDumbbellPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Elbows slightly forward",
+                          labelPoint: CGPoint(x: 0.565, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "lockout", label: "Press to straight arms",
+                          labelPoint: CGPoint(x: 0.580, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "brace", label: "Ribs down, glutes tight",
+                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "wrist", label: "Wrists straight",
+                          labelPoint: CGPoint(x: 0.318, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "stance", label: "Knees soft, no dip",
+                          labelPoint: CGPoint(x: 0.362, y: 0.64),
+                          leaderLength: 40, joint: "patella_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The elbows sit under the dumbbells and a little in front of the body.",
+                why: "Pressing with the upper arms about 30° forward of the sides keeps the shoulder in the scapular plane, away from the turned-out, pulled-back position that stresses the front of the joint.",
+                mistake: "Elbows flared straight out to the sides and pulled back behind the shoulders at the bottom.",
+                correct: "Keep the forearms vertical under the dumbbells and the elbows slightly forward, from the bottom to lockout."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "Every rep finishes with the arms straight overhead.",
+                why: "Pressing all the way to straight elbows works the deltoids, triceps and upper traps harder than stopping partway.",
+                mistake: "Stopping with the elbows still clearly bent, the dumbbells a few inches short of the top.",
+                correct: "Press until the elbows are straight, without snapping them, then lower under control to the shoulders."
+            ),
+            TechniqueCue(
+                id: "brace",
+                title: "Trunk Bracing",
+                intro: "Standing, the trunk is the base the press pushes from.",
+                why: "Standing makes the abs work far harder than sitting; braced abs and tight glutes keep the ribs over the pelvis, so the shoulders press straight up instead of the lower back arching into an incline press.",
+                mistake: "Leaning back from the hips with the lower back arched to get the weight up.",
+                correct: "Brace the abs, squeeze the glutes and keep the ribs stacked over the pelvis on every rep."
+            ),
+            TechniqueCue(
+                id: "wrist",
+                title: "Wrist Position",
+                intro: "Each wrist stays straight under its load.",
+                why: "A straight wrist sends the weight down the middle of the forearm, so the press is not limited by a joint bent back under it.",
+                mistake: "Wrists bending back so the weight tips behind the forearms.",
+                correct: "Hold the handle low in the palm, knuckles up, and keep the wrist straight as you press."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Base",
+                intro: "A strict press gets no help from the legs.",
+                why: "Hip-width feet and soft, still knees give a steady base and keep the work on the shoulders and triceps.",
+                mistake: "Dipping the knees and driving with the legs, which turns the lift into a push press.",
+                correct: "Stand with the feet about hip-width, knees soft but still, weight over the middle of the feet for the whole set."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["rotator cuff", "serratus anterior", "upper trapezius", "glutes"],
+        setup: [
+            "Stand with your feet hip-width and your knees soft.",
+            "Hold the dumbbells just above your shoulders, palms forward.",
+            "Elbows under your wrists, slightly in front of your body.",
+            "Squeeze your glutes and brace your core."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Ribs down, glutes tight",
+            mistakeCue: "Lower back arches to press",
+            correctNote: "Keeping the ribs over the pelvis holds the trunk vertical, so the deltoids and triceps press the dumbbells straight up.",
+            mistakeNote: "Leaning back turns the press into a steep incline press and loads the lower back in extension."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.06, cx: 0.53, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.67, cy: 0.34),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.06, ry: 0.07, cx: 0.37, cy: 0.35)
+        ]
+    )
+
+    static let seatedDumbbellPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Elbows slightly forward",
+                          labelPoint: CGPoint(x: 0.565, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "path", label: "Press up and slightly in",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "depth", label: "Lower to the shoulders",
+                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "torso", label: "Sit tall, trunk upright",
+                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "feet", label: "Feet flat and wide",
+                          labelPoint: CGPoint(x: 0.638, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The elbows sit under the dumbbells and a little in front of the body.",
+                why: "Pressing with the upper arms about 30° forward of the sides keeps the shoulder in the scapular plane, away from the turned-out, pulled-back position that stresses the front of the joint.",
+                mistake: "Elbows flared straight out to the sides and pulled back behind the shoulders at the bottom.",
+                correct: "Keep the forearms vertical under the dumbbells and the elbows slightly forward, from the bottom to lockout."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Press Path",
+                intro: "The dumbbells travel up and slightly in.",
+                why: "Finishing with the dumbbells over the shoulders keeps the load over the joints the deltoids are moving, so the arms can straighten without the weight pulling them apart.",
+                mistake: "Letting the dumbbells drift wide at the top, or clanging them together overhead.",
+                correct: "Press up and slightly in until the arms are straight and the dumbbells sit over the shoulders, just short of touching."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Range of Motion",
+                intro: "Each rep starts with the dumbbells just above the shoulders, about chin height.",
+                why: "Lowering until the dumbbells are just above the shoulders uses the press's full range; turning round higher leaves the bottom of it untrained.",
+                mistake: "Short reps that turn round with the dumbbells at forehead height.",
+                correct: "Lower under control until the dumbbells are just above the shoulders, about chin height, elbows below the wrists, then press."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The short back pad stops at the shoulder blades, and the lifter sits tall in front of it without leaning on it.",
+                why: "An upright trunk keeps the press vertical over the shoulders; leaning back tilts it toward an incline press and loads the lower back.",
+                mistake: "Leaning back toward the pad with the lower back arched.",
+                correct: "Sit tall in the middle of the seat with the ribs down, and keep the trunk upright over the hips for every rep."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Foot Position",
+                intro: "The feet anchor the seated body.",
+                why: "Flat feet set wide give a stable base, so balancing two dumbbells does not pull the hips around.",
+                mistake: "Feet tucked under the seat or up on the toes, so the hips shift with every rep.",
+                correct: "Plant both feet flat, wider than the hips and a little in front of the knees, and keep them still."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.36)
+        ],
+        stabilisers: ["rotator cuff", "serratus anterior", "core"],
+        setup: [
+            "Sit tall in the middle of a low-backed seat.",
+            "Plant your feet flat and wider than your hips.",
+            "Kick the dumbbells up to shoulder height, palms forward.",
+            "Elbows under your wrists, ribs down."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Trunk upright over the hips",
+            mistakeCue: "Leaning back toward the pad",
+            correctNote: "An upright trunk keeps the press vertical, the deltoids moving the dumbbells straight up over the shoulders.",
+            mistakeNote: "Leaning back from the hips arches the lower back and turns the lift into an incline press; clear of the pad, only the braced trunk keeps the lifter upright."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.06, cx: 0.54, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.69, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.06, ry: 0.07, cx: 0.36, cy: 0.37)
+        ]
+    )
+
+    static let neutralGripDumbbellShoulderPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Palms in, wrists firm",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "elbow", label: "Elbows forward, not out",
+                          labelPoint: CGPoint(x: 0.565, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "lockout", label: "Lock out by the ears",
+                          labelPoint: CGPoint(x: 0.391, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "back", label: "Back on the pad",
+                          labelPoint: CGPoint(x: 0.318, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "feet", label: "Feet flat on the floor",
+                          labelPoint: CGPoint(x: 0.420, y: 0.80),
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Grip and Wrists",
+                intro: "The palms face each other for the whole rep.",
+                why: "A straight wrist stacks each dumbbell over its forearm, so the weight goes straight down the arm.",
+                mistake: "Wrists bending back so the dumbbells tip out past the forearms.",
+                correct: "Hold each handle in the middle, palms in, knuckles up and wrists straight."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Path",
+                intro: "The elbows start low by the sides, a little forward, and rise forward, not out to the sides.",
+                why: "With the palms in, the upper arms rise in front of the body, which keeps the shoulder out of the turned-out, pulled-back position that stresses its front; pressing in front of the head also works the upper chest more and the side deltoid less than pressing behind it.",
+                mistake: "Flaring the elbows out to the sides as the dumbbells rise.",
+                correct: "Keep the elbows under the dumbbells and a little in front of the shoulders from the bottom to lockout."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "The dumbbells finish overhead, close together.",
+                why: "Pressing all the way to straight arms beside the ears finishes the range where the deltoids and triceps complete the press.",
+                mistake: "Stopping with the dumbbells in front of the face, arms still angled forward.",
+                correct: "Press until the arms are straight beside the ears with the dumbbells close together, then lower them to the front of the shoulders."
+            ),
+            TechniqueCue(
+                id: "back",
+                title: "Back Support",
+                intro: "The bench is upright or one notch back, and the back stays on it.",
+                why: "With the back on the pad, the shoulders do the pressing; arching away from it tilts the press toward an incline and loads the lower back.",
+                mistake: "Arching the lower back off the pad to push heavier dumbbells.",
+                correct: "Sit with the hips back and the whole back against the pad for the whole set."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Foot Position",
+                intro: "The feet anchor the body on the bench.",
+                why: "Flat feet stop the hips sliding and the back arching as the dumbbells go up.",
+                mistake: "Feet tucked under the bench or up on the toes.",
+                correct: "Plant both feet flat on the floor, about hip-width, and keep them still."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.42),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["rotator cuff", "serratus anterior", "upper trapezius"],
+        setup: [
+            "Set the bench upright or one notch back and sit with your back on the pad.",
+            "Plant your feet flat on the floor.",
+            "Hold the dumbbells at the front of your shoulders, palms facing each other.",
+            "Keep your elbows low, by your sides and a little forward."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS FLARED OUT",
+            correctCue: "Elbows forward, palms in",
+            mistakeCue: "Elbows flared to the sides",
+            correctNote: "Keeping the elbows a little in front of the shoulders lets the front deltoids and upper chest press with the shoulder out of the turned-out, pulled-back position.",
+            mistakeNote: "Flaring the elbows out while the palms stay in pulls the forearms off vertical and gives up the in-front path that keeps the shoulder out of the turned-out, pulled-back position."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.06, cx: 0.55, cy: 0.38),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.67, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.06, ry: 0.07, cx: 0.40, cy: 0.37)
+        ]
+    )
+
+    static let singleArmDumbbellShoulderPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "core", label: "Stay tall, no side lean",
+                          labelPoint: CGPoint(x: 0.565, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "elbow", label: "Elbow under the dumbbell",
+                          labelPoint: CGPoint(x: 0.550, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "lockout", label: "Press to a straight arm",
+                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "brace", label: "Ribs down, glutes tight",
+                          labelPoint: CGPoint(x: 0.565, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "stance", label: "Knees soft, no dip",
+                          labelPoint: CGPoint(x: 0.362, y: 0.80),
+                          leaderLength: 40, joint: "patella_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "core",
+                title: "Anti-Lean",
+                intro: "With the dumbbell on one side, the trunk has to stay upright on its own.",
+                why: "Pressing with one arm makes the obliques work much harder than pressing with two, because they stop the trunk bending to the side; a big lean away lets the trunk tilt the weight up instead of the shoulder pressing it.",
+                mistake: "Leaning well away from the working arm so the trunk, not the shoulder, lifts the weight.",
+                correct: "Brace, keep the shoulders and hips level, and press straight up beside the head."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The working elbow sits under the dumbbell and a little in front of the body.",
+                why: "Pressing with the upper arm about 30° forward of the side keeps the shoulder in the scapular plane, away from the turned-out, pulled-back position that stresses the front of the joint.",
+                mistake: "The elbow flaring out to the side and back behind the shoulder at the bottom.",
+                correct: "Keep the forearm vertical under the dumbbell and the elbow slightly forward, from the bottom to lockout."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "Every rep finishes with the arm straight overhead.",
+                why: "Pressing all the way to straight elbows works the deltoids, triceps and upper traps harder than stopping partway.",
+                mistake: "Stopping with the elbow still clearly bent, the dumbbell a few inches short of the top.",
+                correct: "Press until the elbow are straight, without snapping them, then lower under control to the shoulders."
+            ),
+            TechniqueCue(
+                id: "brace",
+                title: "Trunk Bracing",
+                intro: "Standing, the trunk is the base the press pushes from.",
+                why: "Standing makes the abs work far harder than sitting; braced abs and tight glutes keep the ribs over the pelvis, so the shoulders press straight up instead of the lower back arching into an incline press.",
+                mistake: "Leaning back from the hips with the lower back arched to get the weight up.",
+                correct: "Brace the abs, squeeze the glutes and keep the ribs stacked over the pelvis on every rep."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Base",
+                intro: "A strict press gets no help from the legs.",
+                why: "Hip-width feet and soft, still knees give a steady base and keep the work on the shoulders and triceps.",
+                mistake: "Dipping the knees and driving with the legs, which turns the lift into a push press.",
+                correct: "Stand with the feet about hip-width, knees soft but still, weight over the middle of the feet for the whole set."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.42)
+        ],
+        stabilisers: ["quadratus lumborum", "rotator cuff", "serratus anterior", "glutes"],
+        setup: [
+            "Stand with your feet hip-width and your knees soft.",
+            "Hold one dumbbell just above your shoulder, palm forward.",
+            "Let your free arm hang by your side.",
+            "Brace your core and squeeze your glutes."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING AWAY",
+            correctCue: "Tall trunk, straight press",
+            mistakeCue: "Trunk leans away from the weight",
+            correctNote: "Staying tall makes the obliques hold the trunk still while one shoulder presses the dumbbell.",
+            mistakeNote: "A big lean away tilts the dumbbell up with the trunk, so the shoulder presses less and the obliques stop holding the trunk still."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.57, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.60, cy: 0.34),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.06, cx: 0.47, cy: 0.52)
+        ]
+    )
+
+    static let zPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "torso", label: "Sit tall, legs straight",
+                          labelPoint: CGPoint(x: 0.565, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "brace", label: "Don't lean back",
+                          labelPoint: CGPoint(x: 0.318, y: 0.64),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "barpath", label: "Bar close to the face",
+                          labelPoint: CGPoint(x: 0.406, y: 0.32),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "grip", label: "Wrists over elbows",
+                          labelPoint: CGPoint(x: 0.362, y: 0.48),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "depth", label: "Lower to chin height",
+                          labelPoint: CGPoint(x: 0.609, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "torso",
+                title: "Sitting Position",
+                intro: "Sit tall on the sit bones, legs straight out in front.",
+                why: "With no seat back and no leg drive, the trunk has to hold itself upright; sitting tall keeps the bar stacked over the hips.",
+                mistake: "The lower back rounding and the chest sinking as the pelvis rolls back.",
+                correct: "Sit with the legs straight and apart, pull the chest up over the hips and hold that position for every rep."
+            ),
+            TechniqueCue(
+                id: "brace",
+                title: "Trunk Bracing",
+                intro: "The torso stays still over the hips.",
+                why: "With nothing behind you, leaning back to get the bar past the face moves the load behind the hips; the abs have to hold the ribs down.",
+                mistake: "Leaning back from the hips to press the bar past the face.",
+                correct: "Brace the abs, keep the ribs down and the torso upright as the bar goes up and comes down."
+            ),
+            TechniqueCue(
+                id: "barpath",
+                title: "Bar Path",
+                intro: "The bar travels straight up, close to the face.",
+                why: "A vertical path keeps the load over the shoulders; a bar that drifts forward lengthens the lever on the shoulders and lower back.",
+                mistake: "Pressing the bar out and around the face so it locks out in front of the head.",
+                correct: "Keep the bar close as it passes the face and finish with it over the top of the head, arms beside the ears."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip & Wrists",
+                intro: "Hands a hand's width outside the shoulders, wrists over the elbows.",
+                why: "Stacked wrists push straight up into the bar. Grip width also shifts the load: narrower grips lift more through a longer range, wider ones ease the elbows.",
+                mistake: "The bar rolling back into the fingers, bending the wrists back under the load.",
+                correct: "Hold the bar low in the palm, knuckles up, wrists straight and stacked over the elbows."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Range of Motion",
+                intro: "Each rep comes down to about chin height.",
+                why: "Lowering to at least chin height and pressing to straight arms trains the whole press; in a seated press study, reps pressed to full elbow extension drew more deltoid and triceps activity than reps stopped short of it.",
+                mistake: "Short reps that stop with the bar at nose height.",
+                correct: "Lower under control until the bar is at least level with the chin, then press back up to arms' length over the head."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.32)
+        ],
+        stabilisers: ["core", "hip flexors", "serratus anterior"],
+        setup: [
+            "Sit on the floor with your legs straight and apart.",
+            "Set the rack's safeties just below chin height and sit under the bar.",
+            "Grip the bar a hand's width outside your shoulders, wrists straight.",
+            "Sit tall on your sit bones and brace your core."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ROUNDED LOWER BACK",
+            correctCue: "Sit tall over the hips",
+            mistakeCue: "Lower back rounds, chest sinks",
+            correctNote: "Sitting tall stacks the bar over the hips, so the shoulders press it straight up with the trunk still.",
+            mistakeNote: "A rounded lower back lets the chest sink and the bar drift forward, so the shoulders fight a longer lever."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.07, cx: 0.64, cy: 0.52),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.56, cy: 0.50)
+        ]
+    )
+
+    static let landmineShoulderPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Elbow tucked in",
+                          labelPoint: CGPoint(x: 0.682, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "path", label: "Press up and forward",
+                          labelPoint: CGPoint(x: 0.609, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "core", label: "Ribs down, no lean back",
+                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "twist", label: "Shoulders stay square",
+                          labelPoint: CGPoint(x: 0.406, y: 0.32),
+                          leaderLength: 40, joint: "upper_arm_R"),
+            CueAnnotation(cueID: "stance", label: "Staggered stance",
+                          labelPoint: CGPoint(x: 0.332, y: 0.64),
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The elbow starts low and close to the side.",
+                why: "Starting with the elbow pointing down, close to the ribs, sets the up-and-forward path the landmine is built on.",
+                mistake: "Starting with the elbow flared high out to the side.",
+                correct: "Start with the bar end at the front of the shoulder and the elbow pointing down close to the ribs, then drive it forward as you press."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Press Path",
+                intro: "The bar end travels up and forward along its arc.",
+                why: "The landmine's arc sits between a bench press and an overhead press, so the front deltoid drives it with the upper chest helping, without the arm going straight overhead.",
+                mistake: "Pushing the bar across the body toward the midline instead of straight up and out.",
+                correct: "Press up and forward in line with the shoulder until the arm is straight, then lower back to the shoulder."
+            ),
+            TechniqueCue(
+                id: "core",
+                title: "Trunk Position",
+                intro: "The body stays tall; only the arm moves.",
+                why: "A braced trunk stops the one-sided load from bending you back; leaning back tips the press toward a flatter, chest-led push off an arched lower back.",
+                mistake: "Leaning back from the hips to push the bar up.",
+                correct: "Brace the core, keep the ribs down over the hips and squeeze the glutes before each press."
+            ),
+            TechniqueCue(
+                id: "twist",
+                title: "Anti-Rotation",
+                intro: "The shoulders and hips stay square while one arm presses.",
+                why: "A one-arm press tries to turn the trunk, so the obliques work to hold it still; one-arm presses bring in far more oblique activity than two-arm presses.",
+                mistake: "Twisting the pressing shoulder forward to push the bar out.",
+                correct: "Keep both shoulders facing the bar and the free hand on the hip, and let only the arm move."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "A split stance, the foot opposite the pressing arm forward.",
+                why: "With one foot ahead of the other, the split stance gives a long base front to back, so the body can press forward into the bar without rocking.",
+                mistake: "Letting the feet drift together out of the split, so the body rocks back with every press.",
+                correct: "Step the foot opposite the pressing arm a stride forward, back knee soft and heel slightly up, weight through both feet."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.32)
+        ],
+        stabilisers: ["serratus anterior", "rotator cuff", "glutes"],
+        setup: [
+            "Wedge one end of a bar in a landmine and load the other end.",
+            "Stand at the loaded end facing the landmine, the foot opposite your pressing arm forward.",
+            "Hold the end of the bar at the front of your shoulder in one hand.",
+            "Rest your free hand on your hip and brace your core."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Tall and braced",
+            mistakeCue: "Leaning back to press",
+            correctNote: "Standing tall keeps the press on the landmine's up-and-forward arc, where the front deltoid drives it.",
+            mistakeNote: "Leaning back tips the press toward a flatter, chest-led push off an arched lower back and cuts the shoulder's share."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.09, ry: 0.07, cx: 0.60, cy: 0.30),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.05, cx: 0.50, cy: 0.30)
+        ]
+    )
+
+    static let halfKneelingLandminePressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Elbow tucked in",
+                          labelPoint: CGPoint(x: 0.682, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "path", label: "Press up and forward",
+                          labelPoint: CGPoint(x: 0.609, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "core", label: "Ribs down, no lean back",
+                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "twist", label: "Shoulders stay square",
+                          labelPoint: CGPoint(x: 0.406, y: 0.32),
+                          leaderLength: 40, joint: "upper_arm_R"),
+            CueAnnotation(cueID: "stance", label: "Down knee under the hip",
+                          labelPoint: CGPoint(x: 0.565, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The elbow starts low and close to the side.",
+                why: "Starting with the elbow pointing down, close to the ribs, sets the up-and-forward path the landmine is built on.",
+                mistake: "Starting with the elbow flared high out to the side.",
+                correct: "Start with the bar end at the front of the shoulder and the elbow pointing down close to the ribs, then drive it forward as you press."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Press Path",
+                intro: "The bar end travels up and forward along its arc.",
+                why: "The landmine's arc sits between a bench press and an overhead press, so the front deltoid drives it with the upper chest helping, without the arm going straight overhead.",
+                mistake: "Pushing the bar across the body toward the midline instead of straight up and out.",
+                correct: "Press up and forward in line with the shoulder until the arm is straight, then lower back to the shoulder."
+            ),
+            TechniqueCue(
+                id: "core",
+                title: "Trunk Position",
+                intro: "The body stays tall; only the arm moves.",
+                why: "A braced trunk stops the one-sided load from bending you back; leaning back tips the press toward a flatter, chest-led push off an arched lower back.",
+                mistake: "Leaning back from the hips to push the bar up.",
+                correct: "Brace the core, keep the ribs down over the hips and squeeze the glutes before each press."
+            ),
+            TechniqueCue(
+                id: "twist",
+                title: "Anti-Rotation",
+                intro: "The shoulders and hips stay square while one arm presses.",
+                why: "A one-arm press tries to turn the trunk, so the obliques work to hold it still; one-arm presses bring in far more oblique activity than two-arm presses.",
+                mistake: "Twisting the pressing shoulder forward to push the bar out.",
+                correct: "Keep both shoulders facing the bar and the free hand on the hip, and let only the arm move."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Half-Kneeling Base",
+                intro: "Knee down on the pressing side, the other foot flat ahead.",
+                why: "Kneeling tall with the hip straight and the glute squeezed locks the pelvis, so the trunk, not the legs, holds the press steady.",
+                mistake: "Sitting the hips back toward the back heel, so the body bends at the hip.",
+                correct: "Kneel with the down knee under the hip and the front shin vertical, squeeze the glute of the down leg and stay tall."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.32)
+        ],
+        stabilisers: ["glutes", "serratus anterior", "rotator cuff"],
+        setup: [
+            "Wedge one end of a bar in a landmine and load the other end.",
+            "Kneel at the loaded end facing the landmine, pressing-side knee down, other foot flat ahead.",
+            "Hold the end of the bar at the front of your shoulder in one hand.",
+            "Rest your free hand on your hip and squeeze the glute of the down leg."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Tall kneel, ribs down",
+            mistakeCue: "Leaning back to press",
+            correctNote: "Kneeling tall with the glute squeezed keeps the press on its up-and-forward arc while the trunk holds still.",
+            mistakeNote: "Leaning back arches the lower back over the kneeling hip and tips the press toward a flatter, chest-led push."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.09, ry: 0.07, cx: 0.67, cy: 0.37),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.05, cx: 0.56, cy: 0.37)
+        ]
+    )
+
+    static let cableShoulderPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Elbows under the handles",
+                          labelPoint: CGPoint(x: 0.550, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "lockout", label: "Handles over shoulders",
+                          labelPoint: CGPoint(x: 0.580, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "brace", label: "Ribs down, glutes tight",
+                          labelPoint: CGPoint(x: 0.565, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "stance", label: "Hip-width, knees soft",
+                          labelPoint: CGPoint(x: 0.594, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "wrist", label: "Wrists straight",
+                          labelPoint: CGPoint(x: 0.318, y: 0.16),
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The elbows stay under the handles while the cables pull back.",
+                why: "The cables run down and back to the low pulleys, so they pull the handles back as well as down; elbows under the handles and a little forward keep the press in the scapular plane.",
+                mistake: "Letting the cables pull the elbows back behind the shoulders at the bottom.",
+                correct: "Hold the handles at the shoulders with the forearms vertical and the elbows slightly in front of the body."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "The handles finish over the shoulders, not behind the head.",
+                why: "Because the cables pull down and back, they draw the arms behind the head at the top; holding the handles over the shoulders keeps the arms in line with the trunk instead of the shoulders and lower back arching back to follow the cables.",
+                mistake: "The arms drifting back behind the head at lockout.",
+                correct: "Press up and slightly in until the arms are straight, the handles over the shoulders and the biceps beside the ears."
+            ),
+            TechniqueCue(
+                id: "brace",
+                title: "Trunk Bracing",
+                intro: "The cables pull back as well as down, so the trunk stays braced.",
+                why: "Braced abs and tight glutes keep the ribs over the pelvis; with the pull coming from behind, a loose trunk is drawn into a lean with the lower back arched.",
+                mistake: "Leaning back with the lower back arched as the handles go up.",
+                correct: "Brace the abs, squeeze the glutes and keep the ribs stacked over the pelvis on every rep."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "Stand centred between the pulleys, a small step in front of them.",
+                why: "Hip-width feet and soft knees give a steady base against the cables' backward pull.",
+                mistake: "Feet drawn together and knees locked, so the cables rock the body back.",
+                correct: "Stand with the feet hip-width, knees soft and the weight over the middle of the feet, centred between the pulleys."
+            ),
+            TechniqueCue(
+                id: "wrist",
+                title: "Wrist Position",
+                intro: "Each wrist stays straight under its load.",
+                why: "A straight wrist sends the weight down the middle of the forearm, so the press is not limited by a joint bent back under it.",
+                mistake: "Wrists bending back so the weight tips behind the forearms.",
+                correct: "Hold the handle low in the palm, knuckles up, and keep the wrist straight as you press."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["rotator cuff", "serratus anterior", "upper trapezius", "glutes"],
+        setup: [
+            "Set both pulleys at the bottom and attach a handle to each.",
+            "Stand centred between them, a small step in front.",
+            "Bring the handles up to your shoulders, palms forward.",
+            "Brace your core, knees soft."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Ribs down, handles overhead",
+            mistakeCue: "Leaning back into the cables",
+            correctNote: "Staying braced and upright keeps the handles rising over the shoulders against the cables' backward pull.",
+            mistakeNote: "Leaning back lets the cables pull the body into an arch and turns the press into a steep incline press."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.06, cx: 0.36, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.48, cy: 0.34),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.06, ry: 0.07, cx: 0.22, cy: 0.34)
+        ]
+    )
+
+    static let singleArmCableShoulderPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "core", label: "Stay tall, no side lean",
+                          labelPoint: CGPoint(x: 0.565, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "elbow", label: "Elbow under the handle",
+                          labelPoint: CGPoint(x: 0.580, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "lockout", label: "Handle over the shoulder",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "brace", label: "Ribs down, glutes tight",
+                          labelPoint: CGPoint(x: 0.565, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "stance", label: "Hip-width, knees soft",
+                          labelPoint: CGPoint(x: 0.406, y: 0.80),
+                          leaderLength: 40, joint: "patella_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "core",
+                title: "Anti-Lean",
+                intro: "With the cable on one side, the trunk has to stay upright on its own.",
+                why: "Pressing with one arm makes the obliques work much harder than pressing with two, because they stop the trunk bending to the side; a big lean away lets the trunk tilt the weight up instead of the shoulder pressing it.",
+                mistake: "Leaning well away from the working arm so the trunk, not the shoulder, lifts the weight.",
+                correct: "Brace, keep the shoulders and hips level, and press straight up beside the head."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The working elbow stays under the handle while the cable pulls back.",
+                why: "The cable runs down and back to the low pulley, so it pulls the handle back as well as down; the elbow under the handle and a little forward keeps the press in the scapular plane.",
+                mistake: "Letting the cable pull the elbow back behind the shoulder at the bottom.",
+                correct: "Hold the handle at the shoulder with the forearm vertical and the elbow slightly in front of the body."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "The handle finishes over the shoulder, not behind the head.",
+                why: "Because the cable pulls down and back, it draws the arm behind the head at the top; holding the handle over the shoulder keeps the arm in line with the trunk instead of the shoulder and lower back arching back to follow the cable.",
+                mistake: "The arm drifting back behind the head at lockout.",
+                correct: "Press up until the arm is straight, the handle over the shoulder and the biceps beside the ear."
+            ),
+            TechniqueCue(
+                id: "brace",
+                title: "Trunk Bracing",
+                intro: "Standing, the trunk is the base the press pushes from.",
+                why: "Standing makes the abs work far harder than sitting; braced abs and tight glutes keep the ribs over the pelvis, so the shoulders press straight up instead of the lower back arching into an incline press.",
+                mistake: "Leaning back from the hips with the lower back arched to get the weight up.",
+                correct: "Brace the abs, squeeze the glutes and keep the ribs stacked over the pelvis on every rep."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "Stand a small step in front of the pulley, feet hip-width.",
+                why: "Hip-width feet and soft knees give a steady base against the cable's pull down and back on one side.",
+                mistake: "Feet drawn together and knees locked, so the cable rocks the body.",
+                correct: "Stand with the feet hip-width, knees soft and the weight over the middle of the feet."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.42)
+        ],
+        stabilisers: ["quadratus lumborum", "rotator cuff", "serratus anterior", "glutes"],
+        setup: [
+            "Set one pulley at the bottom and attach a handle.",
+            "Stand beside it, a small step in front, feet hip-width.",
+            "Bring the handle to the near shoulder, palm forward.",
+            "Let your free arm hang by your side and brace."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING AWAY",
+            correctCue: "Tall trunk, handle overhead",
+            mistakeCue: "Trunk leans away from the cable",
+            correctNote: "Staying tall makes the obliques hold the trunk still while one shoulder presses the handle.",
+            mistakeNote: "A big lean away tilts the handle up with the trunk, so the shoulder presses less and the obliques stop holding the trunk still."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.57, cy: 0.34),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.60, cy: 0.32),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.06, cx: 0.47, cy: 0.52)
+        ]
+    )
+
+    static let smithMachineShoulderPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "bench", label: "Bench under bar",
+                          labelPoint: CGPoint(x: 0.318, y: 0.32),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "back", label: "Back flat on the pad",
+                          labelPoint: CGPoint(x: 0.609, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "elbow", label: "Elbows under the bar",
+                          labelPoint: CGPoint(x: 0.609, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "depth", label: "Lower to collarbones",
+                          labelPoint: CGPoint(x: 0.391, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "feet", label: "Feet flat, wide base",
+                          labelPoint: CGPoint(x: 0.391, y: 0.80),
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "bench",
+                title: "Bench Position",
+                intro: "The bench sits so the bar runs down just in front of the face.",
+                why: "The Smith bar only moves straight up and down, so where the bench sits decides where the bar meets the body and how far forward the arms reach.",
+                mistake: "The bench set too far back, so the arms reach forward to the bar and the press turns into a steep incline press.",
+                correct: "Set the bench just short of upright under the bar so it passes just in front of the nose and comes down to the collarbones."
+            ),
+            TechniqueCue(
+                id: "back",
+                title: "Back Support",
+                intro: "The pad takes the trunk out of the lift.",
+                why: "With the back flat on the pad the deltoids and triceps move the bar; arching away from it turns the press into an incline press and loads the lower back.",
+                mistake: "Arching the lower back off the pad to push more weight.",
+                correct: "Sit with the hips back and the back flat on the pad for the whole set."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The forearms stand straight up under the bar.",
+                why: "Elbows under the bar send the load straight up the forearms; elbows flared out and back behind it push the bar at an angle and turn the shoulders further out at the bottom.",
+                mistake: "Elbows flared out and back behind the bar at the bottom.",
+                correct: "Keep the elbows under the bar, forearms close to vertical, all the way down and up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Range of Motion",
+                intro: "Each rep comes down to the collarbones.",
+                why: "Lowering to the collarbones and pressing to straight arms trains the whole press; in a seated press study, reps pressed to full elbow extension drew more deltoid and triceps activity than reps stopped short of it.",
+                mistake: "Short reps that stop with the bar at chin height.",
+                correct: "Lower under control until the bar is just above the collarbones, then press back to straight arms."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Base",
+                intro: "The feet anchor the seated body.",
+                why: "Flat feet set wider than the hips give a stable base, so balancing the bar does not pull the hips around.",
+                mistake: "Feet tucked under the bench or up on the toes, so the hips shift with each rep.",
+                correct: "Plant both feet flat, a little wider than the hips, and keep them still for the set."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.28)
+        ],
+        stabilisers: ["rotator cuff", "serratus anterior"],
+        setup: [
+            "Set a bench under the Smith bar with the back pad just short of upright.",
+            "Place it so the bar runs just in front of your face.",
+            "Sit with your back on the pad and your feet flat and wide.",
+            "Grip the bar just outside your shoulders, then unhook it."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "BACK OFF THE PAD",
+            correctCue: "Back flat on the pad",
+            mistakeCue: "Lower back arches off the pad",
+            correctNote: "With the back on the pad and the bar on its fixed track, the deltoids and triceps do the pressing.",
+            mistakeNote: "Arching off the pad leans the trunk back under the fixed bar, turning the lift into an incline press and loading the lower back."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.07, cx: 0.62, cy: 0.37),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.74, cy: 0.37),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.46, cy: 0.38)
+        ]
+    )
+
+    static let vikingPressContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Palms in, wrists neutral",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "elbow", label: "Elbows tucked",
+                          labelPoint: CGPoint(x: 0.712, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "path", label: "Press to full reach",
+                          labelPoint: CGPoint(x: 0.376, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "core", label: "Ribs down, no lean back",
+                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "feet", label: "Legs straight, no dip",
+                          labelPoint: CGPoint(x: 0.406, y: 0.64),
+                          leaderLength: 40, joint: "patella_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "Palms face each other on the handles.",
+                why: "Neutral handles let the elbows start tucked in under them, so the arms drive along the bar's arc.",
+                mistake: "The wrists bending back under the handles, the backs of the hands tipping out.",
+                correct: "Hold both handles deep in the palms, wrists straight."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The elbows start tucked in at the sides, under the handles.",
+                why: "Forearms stacked under the handles push straight along the arc; elbows flared wide at the bottom push the handles sideways, off that line.",
+                mistake: "Elbows flaring out to the sides at the bottom of the press.",
+                correct: "Start with the handles at the front of the shoulders, elbows down and tucked in at the sides, then drive them up and forward as you press."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Finish",
+                intro: "Every rep finishes at full reach, up and forward.",
+                why: "The top of the arc is where the triceps finish the press; stopping short leaves part of every rep undone.",
+                mistake: "Stopping with the elbows still well bent and the handles short of the top.",
+                correct: "Press up and forward until the arms reach full length, the handles up in front of the head, then lower to the front of the shoulders."
+            ),
+            TechniqueCue(
+                id: "core",
+                title: "Trunk Position",
+                intro: "The body stays tall under the handles.",
+                why: "Keeping the ribs down makes the shoulders move the load; leaning back tips the press toward a flatter, chest-led push off an arched lower back.",
+                mistake: "Leaning back and arching the lower back to push the handles up.",
+                correct: "Brace the core, squeeze the glutes and keep the ribs stacked over the hips as you press."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Base",
+                intro: "A strict press gets no help from the legs.",
+                why: "Straight legs and a hip-width stance keep the work on the shoulders and triceps; dipping the knees turns it into a push press.",
+                mistake: "Dipping the knees to drive the handles up.",
+                correct: "Stand with the feet about hip-width, facing the landmine, knees straight and weight over mid-foot."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.36)
+        ],
+        stabilisers: ["core", "serratus anterior", "rotator cuff"],
+        setup: [
+            "Fit a Viking press handle to a landmine bar and load it.",
+            "Stand facing the landmine, feet hip-width, knees straight.",
+            "Hold both handles at the front of your shoulders, palms facing each other.",
+            "Brace your core and squeeze your glutes."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Tall, ribs down",
+            mistakeCue: "Leaning back to press",
+            correctNote: "Standing tall keeps the handles on their arc, so the shoulders and triceps do the pressing.",
+            mistakeNote: "Leaning back hands part of the press to the lower back and chest, tipping it toward a flatter push."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.60, cy: 0.31),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.47, cy: 0.33)
+        ]
+    )
+
+    static let leaningLateralRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "lean", label: "Torso tilted to the rack",
+                          labelPoint: CGPoint(x: 0.450, y: 0.64),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "traps", label: "Shoulder down, no shrug",
+                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "elbow", label: "Soft, fixed elbow",
+                          labelPoint: CGPoint(x: 0.653, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "range", label: "Lower all the way down",
+                          labelPoint: CGPoint(x: 0.580, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "support", label: "Hold the rack lightly",
+                          labelPoint: CGPoint(x: 0.406, y: 0.48),
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "lean",
+                title: "Torso Lean",
+                intro: "The torso tilts toward the rack, away from the dumbbell.",
+                why: "Tilting away from the working arm sets the dumbbell out from the shoulder at the bottom, so it already has leverage there and the side delt works from the start of the rep instead of mostly near the top.",
+                mistake: "Straightening up out of the lean as the dumbbell rises.",
+                correct: "Hold the rack, tilt the torso about 15° toward it and keep that angle fixed for the whole set."
+            ),
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The working shoulder stays down while the arm rises.",
+                why: "Keeping the shoulder blade down keeps the lateral deltoid lifting the arm instead of the upper trapezius hiking it.",
+                mistake: "Shrugging the working shoulder up toward the ear as the dumbbell rises.",
+                correct: "Keep the shoulder down and the neck long, and lead the raise with the elbow."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Bend",
+                intro: "The arm is a fixed lever for the whole raise.",
+                why: "A slight, constant elbow bend keeps the load on the deltoid; bending further as you lift shortens the lever and turns the raise into a pull.",
+                mistake: "Bending the elbow more as the dumbbell rises.",
+                correct: "Set a soft bend at the bottom and hold exactly that angle up and down."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "The arm travels from your side to shoulder height.",
+                why: "The lean loads the bottom of the raise, where an upright raise is almost weightless; stopping short there throws away the reason for leaning.",
+                mistake: "Stopping the dumbbell halfway down, or resting it against the thigh between reps.",
+                correct: "Lower until the arm is by your side without letting the dumbbell rest, then raise to about shoulder height."
+            ),
+            TechniqueCue(
+                id: "support",
+                title: "Support Arm",
+                intro: "The rack hand holds you in place; it does not pull.",
+                why: "A still support arm keeps the lean fixed, so the side delt lifts the dumbbell instead of the body rocking it up.",
+                mistake: "Pulling on the rack to rock the torso and swing the dumbbell up.",
+                correct: "Hold the upright with a light, steady grip and keep the torso still while only the working arm moves."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["obliques", "rotator cuff", "serratus anterior"],
+        setup: [
+            "Stand side-on to a rack upright, about an arm's length away.",
+            "Hold the upright at chest height with the near hand.",
+            "Tilt your torso about 15° toward the rack, feet close together.",
+            "Let the dumbbell hang in the far hand, palm facing in."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LOSING THE LEAN",
+            correctCue: "Torso tilted, arm to 90°",
+            mistakeCue: "Torso straightens up",
+            correctNote: "Holding the tilt keeps the dumbbell's leverage at the bottom, so the side delt works through the whole arc.",
+            mistakeNote: "Standing up out of the lean turns it back into an ordinary raise and lets the body help swing the weight."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.56, cy: 0.30),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.04, cx: 0.47, cy: 0.28)
+        ]
+    )
+
+    static let inclineLateralRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "body", label: "Stay stacked, no rolling",
+                          labelPoint: CGPoint(x: 0.550, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "traps", label: "Shoulder down, no shrug",
+                          labelPoint: CGPoint(x: 0.435, y: 0.64),
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "elbow", label: "Soft, fixed elbow",
+                          labelPoint: CGPoint(x: 0.347, y: 0.16),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "range", label: "Start low by your hip",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "path", label: "Arm slightly in front",
+                          labelPoint: CGPoint(x: 0.406, y: 0.32),
+                          leaderLength: 40, joint: "upper_arm_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "body",
+                title: "Body Position",
+                intro: "You lie on one side, hips and shoulders stacked.",
+                why: "Staying stacked on the pad keeps the arm rising in the side plane and stops the trunk from helping it up.",
+                mistake: "Rolling the chest back toward the ceiling to swing the dumbbell up.",
+                correct: "Keep the bottom hip on the seat and the top shoulder directly over the bottom one for every rep."
+            ),
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The working shoulder stays down while the arm rises.",
+                why: "Keeping the shoulder blade down keeps the lateral deltoid lifting the arm instead of the upper trapezius hiking it.",
+                mistake: "Shrugging the working shoulder up toward the ear as the dumbbell rises.",
+                correct: "Keep the shoulder down and the neck long, and lead the raise with the elbow."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Bend",
+                intro: "The arm is a fixed lever for the whole raise.",
+                why: "A slight, constant elbow bend keeps the load on the deltoid; bending further as you lift shortens the lever and turns the raise into a pull.",
+                mistake: "Bending the elbow more as the dumbbell rises.",
+                correct: "Set a soft bend at the bottom and hold exactly that angle up and down."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each rep starts with the arm down by the hip.",
+                why: "Lying on the incline turns the resistance curve round: the dumbbell pulls hardest in the lower half, where a standing raise is light, and least near the top.",
+                mistake: "Cutting the bottom short and pumping the top half, where the load is lightest.",
+                correct: "Lower until the dumbbell is back in front of the hip, then raise until the arm is at right angles to your body."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Arm Path",
+                intro: "The arm rises a little in front of the body.",
+                why: "A path slightly in front of the body lines the raise up with the shoulder blade and keeps the joint comfortable.",
+                mistake: "Sweeping the arm back behind the body at the top.",
+                correct: "Keep the dumbbell a little in front of the shoulder all the way up, leading with the elbow."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["rotator cuff", "serratus anterior", "lower trapezius"],
+        setup: [
+            "Set an incline bench to about 30°.",
+            "Lie on your side against the backrest, bottom hip on the seat.",
+            "Rest your bottom arm along the top of the bench, bottom foot on the floor.",
+            "Start with the dumbbell in front of your hip, palm facing in."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "CUTTING THE BOTTOM SHORT",
+            correctCue: "Full arc from the hip",
+            mistakeCue: "Pumping the top half",
+            correctNote: "Starting every rep from the hip trains the side delt where this raise loads it most.",
+            mistakeNote: "Short reps near the top skip the part of the arc the incline makes hardest."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.49, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.04, cx: 0.43, cy: 0.40)
+        ]
+    )
+
+    static let chestSupportedLateralRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "pad", label: "Chest stays on the pad",
+                          labelPoint: CGPoint(x: 0.580, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "traps", label: "Shoulders down, no shrug",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
+                          labelPoint: CGPoint(x: 0.638, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "path", label: "Arms out to the sides",
+                          labelPoint: CGPoint(x: 0.594, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "height", label: "Stop at shoulder level",
+                          labelPoint: CGPoint(x: 0.420, y: 0.64),
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "pad",
+                title: "Chest Contact",
+                intro: "The chest stays on the pad for every rep.",
+                why: "The pad takes the legs and lower back out of the raise, so no swing can start the dumbbells moving.",
+                mistake: "Lifting the chest off the pad to heave the dumbbells up.",
+                correct: "Rest the chest on the pad with the chin just over its top edge, and keep it there as the arms move."
+            ),
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down while the arms rise.",
+                why: "Keeping the shoulder blades down keeps the lateral deltoids lifting the arms instead of the upper trapezius shrugging them up.",
+                mistake: "Shrugging the shoulders up toward the ears as the dumbbells rise.",
+                correct: "Keep the shoulder blades down and the neck long, and lead with the elbows."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Bend",
+                intro: "The arms stay long as they rise.",
+                why: "A soft, fixed elbow bend keeps a long lever on the deltoids; bending further turns the raise into a row for the mid-back.",
+                mistake: "Bending the elbows so the dumbbells hang below them, turning the raise into a row.",
+                correct: "Set a slight bend at the bottom and hold that exact angle through the rep."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Arm Path",
+                intro: "The arms travel straight out to the sides.",
+                why: "Raising out to the sides keeps the side delts leading, with the rear delts sharing the work because of the lean; pulling the arms back behind the line of the shoulders turns the lift into a rear-delt fly.",
+                mistake: "Pulling the arms back toward the ceiling at the top, behind the line of the shoulders.",
+                correct: "Raise the dumbbells straight out from the shoulders, in line with the body, not behind it."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The dumbbells rise until the arms are level with the shoulders.",
+                why: "With the chest supported, the load peaks as the arms reach level; above that the dumbbells lose leverage and more of the effort goes to the traps rotating the shoulder blades up.",
+                mistake: "Swinging the dumbbells up above the level of the shoulders.",
+                correct: "Raise until the arms are about level with the floor, pause briefly, then lower until they hang straight down."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.34)
+        ],
+        stabilisers: ["rotator cuff", "lower trapezius", "forearms"],
+        setup: [
+            "Set an incline bench to about 35°.",
+            "Kneel on the seat and rest your chest on the pad.",
+            "Let the dumbbells hang straight down, palms facing in.",
+            "Keep your chin just over the top of the pad."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ROWING THE WEIGHT",
+            correctCue: "Long arms, out to the sides",
+            mistakeCue: "Elbows bend into a row",
+            correctNote: "Long arms sweeping out to the sides keep the lateral deltoid as the prime mover.",
+            mistakeNote: "Bending the elbows and pulling up turns the raise into a row, handing the work to the rear delts and mid-back."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.41, cy: 0.34),
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.61, cy: 0.34),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.05, cx: 0.52, cy: 0.34)
+        ]
+    )
+
+    static let yRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "pad", label: "Chest stays on the pad",
+                          labelPoint: CGPoint(x: 0.580, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "traps", label: "Shoulders down and back",
+                          labelPoint: CGPoint(x: 0.565, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "scapula_R"),
+            CueAnnotation(cueID: "neck", label: "Chin tucked, neck long",
+                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "elbow", label: "Arms long, elbows soft",
+                          labelPoint: CGPoint(x: 0.580, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "height", label: "Up to a Y, thumbs up",
+                          labelPoint: CGPoint(x: 0.391, y: 0.64),
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "pad",
+                title: "Chest Contact",
+                intro: "The chest stays on the pad as the arms go overhead.",
+                why: "The pad stops the lower back arching to fake height, so the shoulder blades and shoulders have to do the lifting.",
+                mistake: "Arching the lower back and lifting the chest off the pad to get the arms higher.",
+                correct: "Keep the chest and stomach on the pad and let the arms stop where the shoulders run out of range."
+            ),
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Blades",
+                intro: "The shoulder blades move down and back, not up.",
+                why: "Drawing the shoulder blades down and back as the arms rise brings in the lower trapezius the Y is aimed at; shrugging hands the lift to the upper trapezius.",
+                mistake: "Shrugging the shoulders up toward the ears as the arms rise.",
+                correct: "Set the shoulder blades down and back before each rep, then raise the arms without letting the shoulders creep up."
+            ),
+            TechniqueCue(
+                id: "neck",
+                title: "Head Position",
+                intro: "The head stays in line with the spine.",
+                why: "A neutral neck stops the neck muscles joining in, so the effort stays on the shoulder blades and shoulders.",
+                mistake: "Craning the head up to watch the dumbbells.",
+                correct: "Keep the chin slightly tucked and look at the floor just beyond the bench."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Bend",
+                intro: "The arms stay nearly straight.",
+                why: "Long arms make a long lever, so light dumbbells are enough; bending the elbows lets the hands drop and shortens the reach of the Y.",
+                mistake: "Bending the elbows so the dumbbells drop toward the floor at the top.",
+                correct: "Keep a slight bend in the elbows and reach long through the thumbs."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Arm Path",
+                intro: "The arms rise into a Y, thumbs up, until the elbows are level with the ears.",
+                why: "Raising the arms overhead face down, in line with the lower trapezius fibres, gave the most lower trapezius activity in one EMG study, though another ranked the prone row and prone cobra higher.",
+                mistake: "Stopping short with the arms still well below the head.",
+                correct: "Lead with the thumbs and raise the arms up and out, about 35° from the head, until the elbows are level with the ears; pause, then lower under control."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lower Trapezius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.70),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.46)
+        ],
+        stabilisers: ["serratus anterior", "rotator cuff", "rhomboids"],
+        setup: [
+            "Set an incline bench to about 35°.",
+            "Kneel on the seat and rest your chest on the pad.",
+            "Let light dumbbells hang straight down, palms facing in.",
+            "Keep your chin just over the top of the pad."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SHRUGGING UP",
+            correctCue: "Shoulders down, arms in a Y",
+            mistakeCue: "Shoulders shrug to the ears",
+            correctNote: "Drawing the shoulder blades down as the arms rise keeps the lower trapezius doing the lifting.",
+            mistakeNote: "Shrugging lets the upper trapezius take over, the opposite of what the Y is meant to train."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.50, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.08, ry: 0.06, cx: 0.37, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.08, ry: 0.06, cx: 0.60, cy: 0.36)
+        ]
+    )
+
+    static let cableYRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "torso", label: "Ribs down, no lean back",
+                          labelPoint: CGPoint(x: 0.565, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "traps", label: "Shoulders away from ears",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "elbow", label: "Arms long, elbows soft",
+                          labelPoint: CGPoint(x: 0.420, y: 0.48),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "height", label: "Up and out into a Y",
+                          labelPoint: CGPoint(x: 0.376, y: 0.32),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "cross", label: "Cables crossed at the hips",
+                          labelPoint: CGPoint(x: 0.479, y: 0.64),
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "A slight forward lean, held still.",
+                why: "A fixed torso makes the shoulders carry the arms overhead; leaning back and arching lets the lower back fake the top of the Y.",
+                mistake: "Leaning back and arching the lower back as the hands go overhead.",
+                correct: "Tilt forward a little from the hips, brace, keep the ribs down and hold that angle for the set."
+            ),
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The shoulders stay away from the ears.",
+                why: "The shoulder blades should rotate up as the arms pass shoulder height, but hiking them to the ears hands the lift to the upper trapezius.",
+                mistake: "Shrugging the shoulders up to the ears to finish the rep.",
+                correct: "Keep the neck long and the shoulders down, even with the hands overhead."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Bend",
+                intro: "The arms stay long from start to finish.",
+                why: "A slight, fixed elbow bend keeps the cables pulling on the shoulders; bending the elbows turns the Y into a pull toward the face.",
+                mistake: "Bending the elbows as the hands rise, so the hands drop in front of the face.",
+                correct: "Hold a soft bend in the elbows and keep the arms long as they sweep up."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Arm Path",
+                intro: "The hands sweep up and out into a Y above the head.",
+                why: "Carrying on past shoulder height into the Y makes the shoulder blades rotate up, so the serratus anterior and lower trapezius join the side delts, and the cables keep pulling all the way to the top.",
+                mistake: "Stopping at shoulder height, which turns the Y into a lateral raise.",
+                correct: "Raise the arms up and out, thumbs leading, until the elbows are about level with the ears, then lower under control to the hips."
+            ),
+            TechniqueCue(
+                id: "cross",
+                title: "Cable Setup",
+                intro: "The cables cross in front of you.",
+                why: "Crossing the cables makes each one pull its hand down and across the body, so the shoulders are loaded from the very bottom of the rep.",
+                mistake: "Taking the handles uncrossed, so the hands start at the sides and the bottom of the rep goes slack.",
+                correct: "Take each handle from the opposite pulley and start with the hands crossed in front of the hips."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Serratus Anterior", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Lower Trapezius", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.46)
+        ],
+        stabilisers: ["rotator cuff", "core", "erector spinae"],
+        setup: [
+            "Set both pulleys of a cable crossover at the bottom.",
+            "Take the right pulley's handle in your left hand and the left one in your right.",
+            "Stand between the pulleys facing the machine, feet hip-width.",
+            "Lean forward slightly, hands crossed in front of your hips."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Ribs down, arms into a Y",
+            mistakeCue: "Back arches to reach overhead",
+            correctNote: "A still, slightly forward torso makes the shoulders raise the cables overhead.",
+            mistakeNote: "Arching back lets the lower back finish the Y and loads the spine instead of the shoulders."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.41, cy: 0.30),
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.69, cy: 0.30),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.56, cy: 0.36)
+        ]
+    )
+
+    static let luRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "traps", label: "Shoulders down to start",
+                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "elbow", label: "Arms long, elbows soft",
+                          labelPoint: CGPoint(x: 0.580, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "torso", label: "Ribs down, no arching",
+                          labelPoint: CGPoint(x: 0.406, y: 0.80),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "height", label: "All the way overhead",
+                          labelPoint: CGPoint(x: 0.609, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "path", label: "Out to the sides",
+                          labelPoint: CGPoint(x: 0.332, y: 0.64),
+                          leaderLength: 40, joint: "forearm_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down until the arms pass shoulder height.",
+                why: "The shoulder blades rotate up more and more as the arms rise, and overhead the traps and serratus rightly work hard; hiking the shoulders from the first inch takes the start of the lift away from the side delts.",
+                mistake: "Shrugging the shoulders up before the arms have left the sides.",
+                correct: "Start with the shoulders down, lift out to the sides, and let the shoulders rise only as the arms go overhead."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Bend",
+                intro: "Long arms, from the sides to overhead.",
+                why: "Nearly straight arms keep the load on the shoulders through the whole arc; bending them shortens the lever and turns the top into a press.",
+                mistake: "Bending the elbows as the dumbbells go overhead.",
+                correct: "Keep a slight, fixed bend in the elbows and reach long all the way up."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The ribs stay down as the arms go overhead.",
+                why: "Getting overhead takes full shoulder mobility; arching the lower back fakes the last part of the range with the spine.",
+                mistake: "Leaning back and arching the lower back to get the dumbbells overhead.",
+                correct: "Brace, squeeze the glutes, keep the ribs down and stop where the shoulders run out of range."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The dumbbells go all the way overhead.",
+                why: "A Lu raise carries on past shoulder height into a full overhead arc, training the side delts together with the muscles that rotate the shoulder blade up.",
+                mistake: "Stopping at shoulder height, which leaves an ordinary lateral raise.",
+                correct: "Raise out to the sides past shoulder height until the arms are nearly vertical, pause, then lower slowly to the sides."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Arm Path",
+                intro: "The arms travel out to the sides, turning as they rise.",
+                why: "The upper arm naturally turns outward, about 55° over a full raise, as it goes overhead, so letting the palms turn forward and in at the top keeps the movement smooth.",
+                mistake: "Swinging the dumbbells forward, turning the top half into a front raise.",
+                correct: "Raise the arms out to the sides, a little in front of the body, letting the palms turn from facing in to facing forward and in overhead."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Serratus Anterior", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.54)
+        ],
+        stabilisers: ["lower trapezius", "rotator cuff", "core"],
+        setup: [
+            "Stand tall, feet hip-width, a light dumbbell in each hand.",
+            "Let the arms hang at your sides, palms facing in.",
+            "Keep a slight bend in the elbows.",
+            "Brace your core and squeeze your glutes."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ARCHING BACK",
+            correctCue: "Ribs down, arms overhead",
+            mistakeCue: "Lower back arches to finish",
+            correctNote: "Holding the ribs down makes the shoulders carry the dumbbells through the whole overhead arc.",
+            mistakeNote: "Arching the back fakes the top of the range with the spine and loads the lower back."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.60, cy: 0.39),
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.39, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.03, cx: 0.50, cy: 0.36)
+        ]
+    )
+
+    static let plateFrontRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "height", label: "Plate to face height",
+                          labelPoint: CGPoint(x: 0.391, y: 0.64),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "shoulder", label: "Shoulders stay down",
+                          labelPoint: CGPoint(x: 0.624, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
+                          labelPoint: CGPoint(x: 0.362, y: 0.16),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "grip", label: "Grip at 3 and 9 o'clock",
+                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "torso", label: "No backward lean",
+                          labelPoint: CGPoint(x: 0.668, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The plate rises from the thighs to about face height.",
+                why: "Lifting until the arms are just past parallel works the anterior deltoid through its working range; heaving the plate overhead hands more of the lift to the traps and serratus, which rotate the shoulder blade up.",
+                mistake: "Swinging the plate up above the head at the top of each rep.",
+                correct: "Raise until the arms are just above parallel and the plate is in front of the face, pause, then lower to the thighs under control."
+            ),
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down while the arms rise.",
+                why: "Shrugging lets the upper trapezius hoist the shoulders and the weight with them; keeping the shoulder blades set leaves the front deltoids to raise the arms.",
+                mistake: "Shoulders hunching up and forward as the weight rises.",
+                correct: "Set the shoulders down and back before the first rep and keep the neck long."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Arm Position",
+                intro: "The arms stay long with a slight bend.",
+                why: "A soft, fixed elbow holds the weight far from the shoulder, so the front deltoid works a long lever; bending further as the weight rises shortens it and invites a swing.",
+                mistake: "Bending the elbows as the weight rises, curling it in toward the face.",
+                correct: "Set a slight bend in the elbows at the bottom and hold exactly that angle up and down."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "Hands on the rim at 3 and 9 o'clock, palms facing.",
+                why: "Holding the plate at its sides centres it between the hands, so both arms lift the same load with the wrists straight.",
+                mistake: "Wrists bending as the plate rises, so it tilts back toward the face.",
+                correct: "Squeeze the rim at the sides with the palms facing, wrists in line with the forearms and the plate upright."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "Only the arms move.",
+                why: "Leaning back lets the hips swing the weight up and arches the lower back; a still torso leaves the front deltoids to lift it without help from momentum.",
+                mistake: "Rocking the torso back to heave the weight up.",
+                correct: "Brace the core, squeeze the glutes and keep the torso vertical from the first rep to the last."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["serratus anterior", "upper trapezius", "forearms", "core"],
+        setup: [
+            "Stand with your feet hip-width apart, knees soft.",
+            "Hold a plate at 3 and 9 o'clock, palms facing each other.",
+            "Let it hang in front of your thighs, elbows slightly bent.",
+            "Brace your core and set your shoulders down."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SWINGING THE PLATE",
+            correctCue: "Strict raise to face height",
+            mistakeCue: "Hips swing the plate up",
+            correctNote: "A controlled raise with a still torso keeps the front deltoids lifting the whole plate.",
+            mistakeNote: "Leaning back and swinging moves the plate with momentum and loads the lower back instead of the shoulders."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.73, cy: 0.24),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.49, cy: 0.25),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.05, cx: 0.59, cy: 0.27)
+        ]
+    )
+
+    static let barbellFrontRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "height", label: "Bar to shoulder level",
+                          labelPoint: CGPoint(x: 0.406, y: 0.48),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
+                          labelPoint: CGPoint(x: 0.450, y: 0.64),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "elbow", label: "Arms long, elbows soft",
+                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "shoulder", label: "Shoulders down, no shrug",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "torso", label: "No backward lean",
+                          labelPoint: CGPoint(x: 0.668, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The bar rises from the thighs to shoulder height.",
+                why: "Raising to about shoulder level loads the anterior deltoid where the weight pulls hardest on the shoulder; swinging much higher hands more of the lift to the traps and serratus, which rotate the shoulder blade up.",
+                mistake: "Swinging the bar up above the head.",
+                correct: "Lift until the arms are level with the floor or just above, pause, and lower the bar to the thighs slowly."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "Overhand, hands about shoulder-width.",
+                why: "With the hands about shoulder-width each arm rises straight in front of its own shoulder and the bar stays level; bunching the hands together angles the arms in across the chest and makes the bar harder to balance.",
+                mistake: "Hands bunched together in the middle of the bar.",
+                correct: "Hold the bar overhand with the hands about shoulder-width, thumbs around it and wrists straight."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Arm Position",
+                intro: "The arms stay long with a slight bend.",
+                why: "A soft, fixed elbow holds the weight far from the shoulder, so the front deltoid works a long lever; bending further as the weight rises shortens it and invites a swing.",
+                mistake: "Bending the elbows as the weight rises, curling it in toward the face.",
+                correct: "Set a slight bend in the elbows at the bottom and hold exactly that angle up and down."
+            ),
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down while the arms rise.",
+                why: "Shrugging lets the upper trapezius hoist the shoulders and the weight with them; keeping the shoulder blades set leaves the front deltoids to raise the arms.",
+                mistake: "Shoulders hunching up and forward as the weight rises.",
+                correct: "Set the shoulders down and back before the first rep and keep the neck long."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "Only the arms move.",
+                why: "Leaning back lets the hips swing the weight up and arches the lower back; a still torso leaves the front deltoids to lift it without help from momentum.",
+                mistake: "Rocking the torso back to heave the weight up.",
+                correct: "Brace the core, squeeze the glutes and keep the torso vertical from the first rep to the last."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["serratus anterior", "upper trapezius", "wrist extensors", "core"],
+        setup: [
+            "Stand with your feet hip-width apart, knees soft.",
+            "Hold the bar overhand, hands about shoulder-width.",
+            "Let it rest against your thighs, arms long.",
+            "Brace your core and set your shoulders down."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Upright, bar to shoulder height",
+            mistakeCue: "Torso leans back to lift",
+            correctNote: "Standing tall makes the front deltoids raise the bar through the whole arc.",
+            mistakeNote: "Leaning back swings the bar up with the hips and arches the lower back."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.67, cy: 0.33),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.56, cy: 0.34),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.05, cx: 0.58, cy: 0.36)
+        ]
+    )
+
+    static let cableFrontRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "height", label: "Bar to shoulder level",
+                          labelPoint: CGPoint(x: 0.406, y: 0.48),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "shoulder", label: "Shoulders down, no shrug",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
+                          labelPoint: CGPoint(x: 0.362, y: 0.16),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "torso", label: "Slight lean, held still",
+                          labelPoint: CGPoint(x: 0.435, y: 0.64),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "stance", label: "Cable between the feet",
+                          labelPoint: CGPoint(x: 0.420, y: 0.80),
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The bar rises from the thighs to shoulder height.",
+                why: "Pulling from behind and below, the cable resists the raise from the very first centimetre, where a dumbbell barely loads the front deltoid; stopping at shoulder level keeps the work on the deltoid.",
+                mistake: "Swinging the bar up above the head.",
+                correct: "Lift until the hands are level with the shoulders, pause, and let the bar return to the thighs slowly."
+            ),
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down while the arms rise.",
+                why: "Shrugging lets the upper trapezius hoist the shoulders and the weight with them; keeping the shoulder blades set leaves the front deltoids to raise the arms.",
+                mistake: "Shoulders hunching up and forward as the weight rises.",
+                correct: "Set the shoulders down and back before the first rep and keep the neck long."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Arm Position",
+                intro: "The arms stay long with a slight bend.",
+                why: "A soft, fixed elbow holds the weight far from the shoulder, so the front deltoid works a long lever; bending further as the weight rises shortens it and invites a swing.",
+                mistake: "Bending the elbows as the weight rises, curling it in toward the face.",
+                correct: "Set a slight bend in the elbows at the bottom and hold exactly that angle up and down."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "A slight forward lean, held for the whole set.",
+                why: "Leaning a little forward from the hips counters the cable pulling back, so the trunk stays still while the front deltoids lift.",
+                mistake: "Rocking back upright, or past it, to swing the bar up.",
+                correct: "Hinge about 15° forward from the hips, brace, and hold that angle as the bar rises and lowers."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Base",
+                intro: "Back to the stack, feet a little wider than the hips.",
+                why: "A wide, balanced base with the cable running between the feet lets you lean slightly into its pull without being tipped back toward the stack.",
+                mistake: "Feet close together and knees locked, so the cable pulls the body back as the bar rises.",
+                correct: "Stand a step in front of the pulley, feet a little wider than hip-width with the cable between them, knees soft."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["serratus anterior", "upper trapezius", "erector spinae", "core"],
+        setup: [
+            "Attach a straight bar to a low pulley.",
+            "Stand with your back to the stack, the cable between your feet.",
+            "Hold the bar overhand, hands about shoulder-width.",
+            "Lean slightly forward from the hips, arms long."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Slight lean held, bar to shoulders",
+            mistakeCue: "Torso rocks back to lift",
+            correctNote: "Holding a slight forward lean keeps the trunk still, so the front deltoids raise the bar against the cable.",
+            mistakeNote: "Rocking back lets the stack pull the body and swings the bar up with the hips."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.74, cy: 0.25),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.50, cy: 0.26),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.05, cx: 0.59, cy: 0.28)
+        ]
+    )
+
+    static let alternatingDumbbellFrontRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "height", label: "Stop at shoulder height",
+                          labelPoint: CGPoint(x: 0.565, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "shoulder", label: "Shoulders down, no shrug",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
+                          labelPoint: CGPoint(x: 0.362, y: 0.32),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "alternate", label: "Chest square, no twist",
+                          labelPoint: CGPoint(x: 0.420, y: 0.48),
+                          leaderLength: 40, joint: "upper_arm_R"),
+            CueAnnotation(cueID: "torso", label: "No lean or sway",
+                          labelPoint: CGPoint(x: 0.682, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "Each dumbbell rises from the thigh to shoulder height.",
+                why: "Raising to about shoulder level loads the anterior deltoid where the dumbbell pulls hardest on the shoulder; swinging higher hands more of the lift to the traps and serratus.",
+                mistake: "Swinging the dumbbell up above the head.",
+                correct: "Raise one arm until it is level with the floor, pause, and lower it to the thigh before the other arm starts."
+            ),
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "Both shoulders stay down while the arms take turns.",
+                why: "Keeping the shoulder blades set stops the upper trapezius hiking the dumbbell up, so the front deltoid does the lifting.",
+                mistake: "Shoulders hiking toward the ears as each dumbbell rises.",
+                correct: "Keep both shoulders down and level, the neck long, as each arm lifts."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Arm Position",
+                intro: "Both arms stay long with a slight bend.",
+                why: "A soft, fixed elbow keeps a long lever on the front deltoid and the stress off the elbow joint.",
+                mistake: "Bending the elbows, curling the dumbbells in toward the body.",
+                correct: "Hold a slight bend in both elbows, working and resting, and keep it constant up and down."
+            ),
+            TechniqueCue(
+                id: "alternate",
+                title: "Trunk Control",
+                intro: "The chest stays square while the arms take turns.",
+                why: "With one dumbbell out in front and the other at the thigh the load is off-centre, pulling the trunk forward and toward the working side; holding it square and still makes each front deltoid lift its own dumbbell instead of the trunk throwing it up.",
+                mistake: "Twisting the trunk so the working shoulder swings forward to throw the dumbbell up.",
+                correct: "Brace the core, keep the chest and hips facing forward, and let only the working arm move."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "No lean back and no rocking side to side.",
+                why: "Rocking the body to start each rep swings the dumbbell up with momentum and arches the lower back.",
+                mistake: "Leaning back to heave the dumbbell up.",
+                correct: "Stand tall with the glutes and core tight, and keep the torso still as the arms alternate."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["serratus anterior", "obliques", "upper trapezius", "core"],
+        setup: [
+            "Stand with a dumbbell in each hand in front of your thighs.",
+            "Palms facing your body, elbows softly bent.",
+            "Feet hip-width, core braced.",
+            "Raise one arm at a time; the other rests at your thigh."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "TWISTING TO LIFT",
+            correctCue: "Chest square, one arm lifts",
+            mistakeCue: "Shoulder swings forward",
+            correctNote: "Holding the trunk square makes each front deltoid raise its dumbbell on its own.",
+            mistakeNote: "Swinging the working shoulder forward throws the dumbbell up with the trunk and takes load off the front deltoid."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.76, cy: 0.24),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.52, cy: 0.25),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.05, cx: 0.61, cy: 0.27)
+        ]
+    )
+
+    static let cableExternalRotationContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Elbow pinned to side",
+                          labelPoint: CGPoint(x: 0.609, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "angle", label: "Forearm level, elbow 90°",
+                          labelPoint: CGPoint(x: 0.550, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "shoulder", label: "Shoulder down, no shrug",
+                          labelPoint: CGPoint(x: 0.565, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "torso", label: "Torso square, no twist",
+                          labelPoint: CGPoint(x: 0.420, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "stance", label: "Stand tall, no lean",
+                          labelPoint: CGPoint(x: 0.624, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The elbow stays pinned to your side.",
+                why: "With the upper arm fixed, the only way to move the handle is to rotate the shoulder outward, which is the infraspinatus and teres minor's job.",
+                mistake: "Letting the elbow drift out from the side as the hand swings out.",
+                correct: "Keep the elbow against the ribs for the whole set; a small rolled towel there helps if you have one."
+            ),
+            TechniqueCue(
+                id: "angle",
+                title: "Elbow Angle",
+                intro: "The elbow stays bent at 90°.",
+                why: "A fixed right angle keeps the forearm as the lever the shoulder turns; letting it open lets the arm swing the handle instead.",
+                mistake: "The elbow opening and the hand dropping as the handle moves.",
+                correct: "Hold the forearm level and the elbow at a right angle from the first rep to the last."
+            ),
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "The shoulder stays down and back.",
+                why: "A settled shoulder lets the rotator cuff turn the arm; hiking it up brings in the upper trapezius.",
+                mistake: "Shrugging the working shoulder up as the handle moves out.",
+                correct: "Keep the shoulder down, the chest up and the neck long."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The chest and hips face forward.",
+                why: "The turn has to come from the shoulder; rotating the trunk carries the handle without the rotator cuff doing the work.",
+                mistake: "Twisting the trunk to carry the hand along.",
+                correct: "Keep the hips and chest square to the front and move only the forearm."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "Stand tall, far enough from the stack.",
+                why: "Standing far enough away keeps the cable tight at the start, and standing tall stops you leaning away to drag the handle out.",
+                mistake: "Leaning the body away from the stack to pull the handle out.",
+                correct: "Stand side-on, feet hip-width, where the cable is tight with the hand across the stomach, and stay upright."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Infraspinatus", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Teres Minor", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.26)
+        ],
+        stabilisers: ["supraspinatus", "middle trapezius", "core"],
+        setup: [
+            "Set a single handle at elbow height.",
+            "Stand side-on to the stack and take the handle in your far hand.",
+            "Elbow bent to 90° against your side, forearm across your stomach.",
+            "Rest your free hand on your hip."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOW LEAVING THE SIDE",
+            correctCue: "Elbow pinned, forearm turns",
+            mistakeCue: "Elbow swings out",
+            correctNote: "With the elbow fixed at the side, the infraspinatus and teres minor turn the arm out.",
+            mistakeNote: "Letting the elbow leave the side swings the handle out with the deltoid and cuts the rotation short."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.56, cy: 0.26),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.04, cx: 0.59, cy: 0.28)
+        ]
+    )
+
+    static let cableInternalRotationContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Elbow pinned to side",
+                          labelPoint: CGPoint(x: 0.609, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "angle", label: "Forearm level, elbow 90°",
+                          labelPoint: CGPoint(x: 0.550, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "shoulder", label: "Shoulder back, chest up",
+                          labelPoint: CGPoint(x: 0.565, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "torso", label: "Torso square, no twist",
+                          labelPoint: CGPoint(x: 0.420, y: 0.48),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "stance", label: "Stand tall, no lean",
+                          labelPoint: CGPoint(x: 0.624, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The elbow stays pinned to your side.",
+                why: "With the upper arm fixed, the handle can only move by the shoulder turning inward, led by the subscapularis with the chest and lats assisting, instead of the arm swinging across the body.",
+                mistake: "Letting the elbow drift forward off the side as the hand comes in.",
+                correct: "Keep the elbow against the ribs for the whole set."
+            ),
+            TechniqueCue(
+                id: "angle",
+                title: "Elbow Angle",
+                intro: "The elbow stays bent at 90°.",
+                why: "A fixed right angle keeps the forearm as the lever the shoulder turns; letting it open lets the arm swing the handle instead.",
+                mistake: "The elbow opening and the hand dropping as the handle moves.",
+                correct: "Hold the forearm level and the elbow at a right angle from the first rep to the last."
+            ),
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "The shoulder stays back as the hand comes in.",
+                why: "Rolling the shoulder forward lets the shoulder blade carry the hand across, so the hand travels further while the shoulder itself turns less.",
+                mistake: "The working shoulder rolling forward as the handle reaches the stomach.",
+                correct: "Keep the chest up and the shoulder blade set back, and stop when the hand reaches the stomach."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The chest and hips face forward.",
+                why: "The turn has to come from the shoulder; rotating the trunk carries the handle without the rotator cuff doing the work.",
+                mistake: "Twisting the trunk to carry the hand along.",
+                correct: "Keep the hips and chest square to the front and move only the forearm."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "Stand tall, far enough from the stack.",
+                why: "Enough distance keeps the cable tight with the hand turned out, and standing tall stops you leaning away to drag the handle in.",
+                mistake: "Leaning the body away from the stack to pull the handle in.",
+                correct: "Stand side-on, feet hip-width, where the cable is tight at the start, and stay upright."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Subscapularis", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.36)
+        ],
+        stabilisers: ["rotator cuff", "middle trapezius", "core"],
+        setup: [
+            "Set a single handle at elbow height.",
+            "Stand side-on to the stack and take the handle in your near hand.",
+            "Elbow bent to 90° against your side, forearm pointing out.",
+            "Rest your free hand on your hip."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOW LEAVING THE SIDE",
+            correctCue: "Elbow pinned, forearm turns",
+            mistakeCue: "Elbow drifts forward",
+            correctNote: "With the elbow fixed at the side, the subscapularis leads the turn inward.",
+            mistakeNote: "Letting the elbow drift forward turns the rotation into a chest-led swing across the body and takes work off the cuff."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.06, ry: 0.05, cx: 0.52, cy: 0.26),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.05, cx: 0.42, cy: 0.27)
+        ]
+    )
+
+    static let powellRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "body", label: "Stay on your side",
+                          labelPoint: CGPoint(x: 0.653, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "scapula", label: "Blade back, not up",
+                          labelPoint: CGPoint(x: 0.638, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "scapula_L"),
+            CueAnnotation(cueID: "elbow", label: "Arm long, elbow soft",
+                          labelPoint: CGPoint(x: 0.609, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "path", label: "Arm level with shoulder",
+                          labelPoint: CGPoint(x: 0.435, y: 0.64),
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "range", label: "Low to straight up",
+                          labelPoint: CGPoint(x: 0.362, y: 0.16),
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "body",
+                title: "Body Position",
+                intro: "You stay on your side, the trunk still.",
+                why: "A still, stacked trunk makes the back of the shoulder lift the dumbbell instead of the body rolling it up.",
+                mistake: "Rolling the chest back toward the ceiling to swing the dumbbell up.",
+                correct: "Keep the top shoulder directly over the bottom one and the knees stacked, and let only the arm move."
+            ),
+            TechniqueCue(
+                id: "scapula",
+                title: "Shoulder Blade",
+                intro: "The shoulder blade draws back as the arm rises.",
+                why: "Starting the lift by drawing the shoulder blade toward the spine brings in the middle trapezius and keeps the upper trapezius from hiking the shoulder.",
+                mistake: "Hiking the shoulder up toward the ear as the arm rises.",
+                correct: "Draw the shoulder blade back and down, then lift the arm, keeping the shoulder away from the ear."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Bend",
+                intro: "The arm stays long.",
+                why: "A long arm keeps the lever on the back of the shoulder; bending the elbow shortens it and lets the arm curl the weight up.",
+                mistake: "Bending the elbow and pulling the dumbbell up toward the chest.",
+                correct: "Keep the elbow almost straight, with the same slight bend from bottom to top."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Arm Path",
+                intro: "The arm stays level with the shoulder.",
+                why: "Lifting with the arm at right angles to the body keeps the work on the rear deltoid and posterior cuff; letting it drift toward the hip turns the lift into a side-lying lateral raise.",
+                mistake: "Letting the arm drift down toward the hip as it rises.",
+                correct: "Keep the arm in line with the shoulder, at right angles to the body, from the bottom of the rep to the top."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "The arm travels from angled down in front of the chest to pointing at the ceiling.",
+                why: "Lying on the side, the dumbbell pulls hardest while the arm points forward and not at all once it points at the ceiling, so the lower half of the arc is where the work is.",
+                mistake: "Cutting the bottom short and pumping the arm near the top.",
+                correct: "Lower until the arm angles well below shoulder level in front of the chest, raise it until it points at the ceiling, pause, and lower slowly."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Infraspinatus", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.48)
+        ],
+        stabilisers: ["rotator cuff", "lower trapezius", "core"],
+        setup: [
+            "Lie on one side along a flat bench, knees bent and stacked.",
+            "Stretch your bottom arm out under your head.",
+            "Hold the dumbbell with the arm angled down in front of your chest.",
+            "Keep the elbow almost straight, palm facing your feet."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ROLLING BACK",
+            correctCue: "Still trunk, arm to the ceiling",
+            mistakeCue: "Body rolls to swing it up",
+            correctNote: "Staying stacked on your side makes the back of the shoulder lift the dumbbell.",
+            mistakeNote: "Rolling back throws the weight up with the trunk and takes the rear delt and cuff out of the lift."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.06, cx: 0.38, cy: 0.44),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.05, cx: 0.45, cy: 0.48)
+        ]
+    )
+
+    static let rearDeltRowContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Elbows out wide",
+                          labelPoint: CGPoint(x: 0.318, y: 0.48),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "height", label: "Elbows up to back level",
+                          labelPoint: CGPoint(x: 0.435, y: 0.64),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "hinge", label: "Stay hinged forward",
+                          labelPoint: CGPoint(x: 0.376, y: 0.80),
+                          leaderLength: 40, joint: "thigh_R"),
+            CueAnnotation(cueID: "traps", label: "Shoulders away from ears",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "back", label: "Flat back",
+                          labelPoint: CGPoint(x: 0.230, y: 0.16),
+                          leaderLength: 40, joint: "chest")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Path",
+                intro: "The elbows flare out, the upper arms square to the torso.",
+                why: "Rowing with the upper arms at about 90° from the body moves the work from the lats to the rear deltoids and mid-back; tucking the elbows turns it back into a lat row.",
+                mistake: "Tucking the elbows in toward the ribs and rowing to the hips.",
+                correct: "Pull the elbows up and out to the sides, the upper arms at right angles to the torso."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The elbows rise until they line up with the back.",
+                why: "The dumbbells pull hardest on the rear deltoids as the upper arms come level with the back, near the end of their shortening; stopping well below that skips the hardest part of the rep.",
+                mistake: "Short reps that stop with the elbows well below the back.",
+                correct: "Row until the upper arms line up with the back, pause, then lower to straight arms."
+            ),
+            TechniqueCue(
+                id: "hinge",
+                title: "Torso Angle",
+                intro: "The torso stays well forward.",
+                why: "The flatter the torso, the more directly the dumbbells pull against the rear deltoids; standing taller turns the pull toward an upright row for the side delts and traps.",
+                mistake: "Standing up taller as the set goes on.",
+                correct: "Push the hips back with soft knees until the torso is past halfway to parallel, flatter if your hamstrings allow, and hold that angle for the set."
+            ),
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The shoulders stay away from the ears.",
+                why: "Shrugging hands the top of the row to the upper trapezius instead of the rear deltoids and mid-back.",
+                mistake: "Shrugging the shoulders toward the ears as the dumbbells rise.",
+                correct: "Keep the neck long and draw the shoulder blades back, not up."
+            ),
+            TechniqueCue(
+                id: "back",
+                title: "Back Position",
+                intro: "A flat back from the hips to the head.",
+                why: "A neutral spine lets the hips hold the hinge; a rounded back puts the load on the spine and lets the shoulders roll forward.",
+                mistake: "Rounding the upper back with the head dropping.",
+                correct: "Brace, keep the chest proud and the neck in line with the spine, eyes on the floor ahead of the feet."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.45)
+        ],
+        stabilisers: ["erector spinae", "hamstrings", "biceps brachii", "forearms"],
+        setup: [
+            "Hold a dumbbell in each hand with an overhand grip.",
+            "Hinge forward from the hips, knees soft, back flat.",
+            "Let the dumbbells hang under your shoulders.",
+            "Turn the handles so they line up with your shoulders."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS TUCKED",
+            correctCue: "Elbows out wide, arms at 90°",
+            mistakeCue: "Elbows tuck to the ribs",
+            correctNote: "Flaring the elbows so the upper arms stay square to the torso keeps the rear deltoids pulling.",
+            mistakeNote: "Tucking the elbows turns the pull into a lat row and moves the work away from the rear deltoids."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.37, cy: 0.23),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.58, cy: 0.25),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.09, ry: 0.06, cx: 0.51, cy: 0.23)
+        ]
+    )
+
+    static let machineRearDeltRowContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "seat", label: "Handles at shoulder height",
+                          labelPoint: CGPoint(x: 0.521, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "elbow", label: "Elbows high and wide",
+                          labelPoint: CGPoint(x: 0.391, y: 0.48),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "range", label: "Full reach, full squeeze",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "traps", label: "Shoulders down",
+                          labelPoint: CGPoint(x: 0.303, y: 0.16),
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "chest", label: "Chest on the pad",
+                          labelPoint: CGPoint(x: 0.668, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "seat",
+                title: "Seat Height",
+                intro: "The handles sit level with the shoulders.",
+                why: "With the handles at shoulder height the elbows travel level with the shoulders, where the rear deltoids pull the arms back.",
+                mistake: "Sitting so high that the arms slope down to the handles and the elbows drop.",
+                correct: "Adjust the seat so the handles line up with your shoulders when you hold them."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Height",
+                intro: "The elbows stay high and wide, level with the shoulders.",
+                why: "With the upper arms out at about 90° from the body, the row pulls through the rear deltoids and mid-back; low, tucked elbows hand it to the lats.",
+                mistake: "Elbows dropping and tucking toward the ribs as the handles come back.",
+                correct: "Lead with the elbows, keeping them level with the shoulders and out to the sides for the whole pull."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "From a full forward reach until the elbows are in line with the torso.",
+                why: "Letting the shoulders reach forward and then drawing the elbows back past the torso works the rear delts and mid-back through their full range.",
+                mistake: "Short reps that stop with the elbows still in front of the body.",
+                correct: "Let the arms reach forward, then pull until the elbows are in line with the torso and squeeze the shoulder blades together."
+            ),
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down as the elbows travel back.",
+                why: "Shrugging hands the finish to the upper trapezius and cuts the rear deltoids' range short.",
+                mistake: "Shrugging the shoulders up toward the ears at the end of each rep.",
+                correct: "Keep the shoulder blades down and the neck long; squeeze them together, not up."
+            ),
+            TechniqueCue(
+                id: "chest",
+                title: "Body Position",
+                intro: "The chest stays on the pad.",
+                why: "The pad takes the trunk out of the lift, so the rear deltoids have to move the handles without help from a body swing.",
+                mistake: "Leaning back off the pad to heave the handles.",
+                correct: "Keep the chest against the pad and the torso still for the whole set."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.70),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.45)
+        ],
+        stabilisers: ["rotator cuff", "lower trapezius", "forearms"],
+        setup: [
+            "Set the seat so the handles line up with your shoulders.",
+            "Sit with your chest on the pad, feet flat on the floor.",
+            "Take the wide handles with an overhand grip.",
+            "Start with your arms reaching forward, elbows soft."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS DROPPING",
+            correctCue: "Elbows level with the shoulders",
+            mistakeCue: "Elbows drop toward the ribs",
+            correctNote: "Rowing with the elbows at shoulder height keeps the rear deltoids and mid-back pulling.",
+            mistakeNote: "Dropping the elbows turns it into an ordinary seated row and hands the work to the lats."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.31, cy: 0.31),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.51, cy: 0.30),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.09, ry: 0.06, cx: 0.39, cy: 0.31)
+        ]
+    )
+
+    static let barbellUprightRowContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
+                          labelPoint: CGPoint(x: 0.450, y: 0.64),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "elbow", label: "Elbows lead the bar",
+                          labelPoint: CGPoint(x: 0.624, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "height", label: "Stop near shoulder level",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "barpath", label: "Bar close to the body",
+                          labelPoint: CGPoint(x: 0.594, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "torso", label: "Torso still, no swing",
+                          labelPoint: CGPoint(x: 0.594, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "Overhand, hands about shoulder-width.",
+                why: "In EMG testing, side-delt and trap activity rose as the grip widened, most clearly at about twice shoulder-width, while biceps activity fell; a very narrow grip gives more of the pull to the arms.",
+                mistake: "Hands close together in the middle of the bar.",
+                correct: "Hold the bar overhand with the hands about shoulder-width or a little wider, thumbs around the bar."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Path",
+                intro: "The elbows lead and stay higher than the hands.",
+                why: "Pulling through the elbows rather than the wrists keeps the load on the deltoids and traps instead of the forearms and biceps.",
+                mistake: "Leading with the hands, curling the bar up with the elbows trailing low.",
+                correct: "Drive the elbows up and out to the sides, letting the wrists bend as the bar rises."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The bar rises to the upper chest, the elbows to around shoulder height.",
+                why: "Raising the arms well above shoulder height while they are turned in narrows the space under the point of the shoulder that the rotator cuff tendons pass through, which can irritate sensitive shoulders; stopping around shoulder level keeps the side delts and traps working while limiting that squeeze.",
+                mistake: "Hauling the bar up to the chin with the elbows high above the shoulders.",
+                correct: "Pull until the bar reaches the upper chest with the elbows around shoulder height and no higher, then lower under control; stop lower if the shoulder pinches."
+            ),
+            TechniqueCue(
+                id: "barpath",
+                title: "Bar Path",
+                intro: "The bar rises in a straight line close to the body.",
+                why: "Keeping the bar close keeps the pull on the side delts and upper traps; a bar that drifts out adds load to the front of the shoulder and the lower back.",
+                mistake: "Letting the bar drift out in front, away from the stomach and chest.",
+                correct: "Keep the bar almost brushing the body from the thighs to the upper chest, and lower it the same way."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "Only the arms and shoulders move.",
+                why: "Leaning back and thrusting the hips swings the bar up with the body, taking load off the shoulders and putting it on the lower back.",
+                mistake: "Leaning back and driving the hips forward to start the bar moving.",
+                correct: "Stand tall with soft knees, brace the core and lift without any swing."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["levator scapulae", "rotator cuff", "forearms", "core"],
+        setup: [
+            "Stand with your feet hip-width apart, knees soft.",
+            "Hold the bar overhand, hands about shoulder-width.",
+            "Let it hang at arm's length against your thighs.",
+            "Brace your core and keep your chest up."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS TOO HIGH",
+            correctCue: "Elbows near shoulder height",
+            mistakeCue: "Bar hauled to the chin",
+            correctNote: "Stopping with the elbows around shoulder height keeps the side delts and traps working without raising the arms any higher while they are turned in.",
+            mistakeNote: "Hauling the bar to the chin lifts the arms high while they are turned in, which narrows the space for the rotator cuff tendons and can pinch them in some lifters."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.60, cy: 0.31),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.46, cy: 0.32),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.05, cx: 0.54, cy: 0.29)
+        ]
+    )
+
+    static let cableUprightRowContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
+                          labelPoint: CGPoint(x: 0.450, y: 0.64),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "elbow", label: "Elbows lead the bar",
+                          labelPoint: CGPoint(x: 0.376, y: 0.16),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "height", label: "Stop near shoulder level",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "stance", label: "Stand close to the pulley",
+                          labelPoint: CGPoint(x: 0.464, y: 0.80),
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "torso", label: "Upright, no lean back",
+                          labelPoint: CGPoint(x: 0.594, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "Overhand, hands about shoulder-width.",
+                why: "In EMG testing, side-delt and trap activity rose as the grip widened, most clearly at about twice shoulder-width, while biceps activity fell; a very narrow grip gives more of the pull to the arms.",
+                mistake: "Hands close together in the middle of the bar.",
+                correct: "Hold the bar overhand with the hands about shoulder-width or a little wider, thumbs around the bar."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Path",
+                intro: "The elbows lead and stay higher than the hands.",
+                why: "Pulling through the elbows rather than the wrists keeps the load on the deltoids and traps instead of the forearms and biceps.",
+                mistake: "Leading with the hands, curling the bar up with the elbows trailing low.",
+                correct: "Drive the elbows up and out to the sides, letting the wrists bend as the bar rises."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The bar rises to the upper chest, the elbows to around shoulder height.",
+                why: "Raising the arms well above shoulder height while they are turned in narrows the space under the point of the shoulder that the rotator cuff tendons pass through, which can irritate sensitive shoulders; stopping around shoulder level keeps the side delts and traps working while limiting that squeeze.",
+                mistake: "Hauling the bar up to the chin with the elbows high above the shoulders.",
+                correct: "Pull until the bar reaches the upper chest with the elbows around shoulder height and no higher, then lower under control; stop lower if the shoulder pinches."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Setup",
+                intro: "Stand close to the low pulley, facing it.",
+                why: "The cable pulls toward the pulley; standing close makes it pull mostly downward, so the bar can rise close to the body as it would with a barbell.",
+                mistake: "Standing a big step back, so the cable drags the bar out in front.",
+                correct: "Stand a short step from the pulley, feet hip-width, with the cable running down in front of the thighs."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "The body stays upright against the cable.",
+                why: "The cable pulls forward toward the stack, so leaning back to fight it is tempting; it turns the lift into a swing and arches the lower back.",
+                mistake: "Leaning back away from the stack to pull the bar up.",
+                correct: "Stand tall with soft knees, brace the core and let only the arms and shoulders move."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["levator scapulae", "rotator cuff", "forearms", "core"],
+        setup: [
+            "Attach a straight bar to a low pulley.",
+            "Face the stack a short step away, feet hip-width.",
+            "Hold the bar overhand, hands about shoulder-width.",
+            "Stand tall, arms long, bar in front of your thighs."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS TOO HIGH",
+            correctCue: "Elbows near shoulder height",
+            mistakeCue: "Bar hauled to the chin",
+            correctNote: "Stopping with the elbows around shoulder height keeps the side delts and traps working without raising the arms any higher while they are turned in.",
+            mistakeNote: "Hauling the bar to the chin lifts the arms high while they are turned in, which narrows the space for the rotator cuff tendons and can pinch them in some lifters."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.59, cy: 0.25),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.36, cy: 0.24),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.05, cx: 0.47, cy: 0.22)
+        ]
+    )
+
+    static let smithMachineUprightRowContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
+                          labelPoint: CGPoint(x: 0.450, y: 0.48),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "elbow", label: "Elbows lead the bar",
+                          labelPoint: CGPoint(x: 0.624, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "height", label: "Stop near shoulder level",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "stance", label: "Stand close to the bar",
+                          labelPoint: CGPoint(x: 0.420, y: 0.80),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "torso", label: "Torso still, no swing",
+                          labelPoint: CGPoint(x: 0.594, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "Overhand, hands about shoulder-width.",
+                why: "In EMG testing, side-delt and trap activity rose as the grip widened, most clearly at about twice shoulder-width, while biceps activity fell; a very narrow grip gives more of the pull to the arms.",
+                mistake: "Hands close together in the middle of the bar.",
+                correct: "Hold the bar overhand with the hands about shoulder-width or a little wider, thumbs around the bar."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Path",
+                intro: "The elbows lead and stay higher than the hands.",
+                why: "Pulling through the elbows rather than the wrists keeps the load on the deltoids and traps instead of the forearms and biceps.",
+                mistake: "Leading with the hands, curling the bar up with the elbows trailing low.",
+                correct: "Drive the elbows up and out to the sides, letting the wrists bend as the bar rises."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The bar rises to the upper chest, the elbows to around shoulder height.",
+                why: "Raising the arms well above shoulder height while they are turned in narrows the space under the point of the shoulder that the rotator cuff tendons pass through, which can irritate sensitive shoulders; stopping around shoulder level keeps the side delts and traps working while limiting that squeeze.",
+                mistake: "Hauling the bar up to the chin with the elbows high above the shoulders.",
+                correct: "Pull until the bar reaches the upper chest with the elbows around shoulder height and no higher, then lower under control; stop lower if the shoulder pinches."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Setup",
+                intro: "Stand close, the bar just in front of the thighs.",
+                why: "A Smith bar only moves straight up and down, so where you stand sets the bar path; stand too far back and it rises out in front of you on every rep.",
+                mistake: "Standing back from the bar, so it rises away from the body.",
+                correct: "Stand close enough that the bar almost brushes the thighs and stomach on the way up."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "Only the arms and shoulders move.",
+                why: "The rails guide the bar, not the body; leaning back to start each rep swings the bar up with the hips.",
+                mistake: "Leaning back to heave the bar up the rails.",
+                correct: "Stand tall with soft knees, brace, and lift without any swing."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["levator scapulae", "rotator cuff", "forearms", "core"],
+        setup: [
+            "Set the Smith bar at the top of your thighs.",
+            "Stand close, the bar just in front of your thighs.",
+            "Grip it overhand, hands about shoulder-width.",
+            "Unrack the bar and stand tall, arms long."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS TOO HIGH",
+            correctCue: "Elbows near shoulder height",
+            mistakeCue: "Bar hauled to the chin",
+            correctNote: "Stopping with the elbows around shoulder height keeps the side delts and traps working without raising the arms any higher while they are turned in.",
+            mistakeNote: "Hauling the bar to the chin lifts the arms high while they are turned in, which narrows the space for the rotator cuff tendons and can pinch them in some lifters."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.65, cy: 0.24),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.40, cy: 0.25),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.05, cx: 0.53, cy: 0.22)
+        ]
+    )
+
+    static let dumbbellShrugContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "path", label: "Straight up, no rolling",
+                          labelPoint: CGPoint(x: 0.435, y: 0.32),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "head", label: "Chin level, neck long",
+                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "arms", label: "Arms straight",
+                          labelPoint: CGPoint(x: 0.712, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "grip", label: "Dumbbells at your sides",
+                          labelPoint: CGPoint(x: 0.435, y: 0.52),
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each rep lifts the shoulders as high as they will go.",
+                why: "The shrug is among the exercises that work the upper trapezius hardest, but its range is short; dropping the shoulders fully and lifting them right up to the ears, with a brief hold, gives the traps all of it.",
+                mistake: "Short, bouncing reps where the shoulders barely rise.",
+                correct: "Let the shoulders drop fully, lift them straight up toward the ears, hold for a moment, then lower under control."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Shoulder Path",
+                intro: "The shoulders move straight up and straight down.",
+                why: "The upper trapezius and levator scapulae lift the shoulder blades vertically; rolling the shoulders adds no lift and drags them forward under the load.",
+                mistake: "Rolling the shoulders forward and round in a circle at the top.",
+                correct: "Lift the tips of the shoulders straight toward the ears, then lower them along the same line."
+            ),
+            TechniqueCue(
+                id: "head",
+                title: "Head and Neck",
+                intro: "The head stays level and still.",
+                why: "A neutral neck lets the traps lift the shoulders without the head joining in; poking the chin forward does not raise the shoulders any higher.",
+                mistake: "Poking the chin forward as the shoulders rise.",
+                correct: "Keep the chin level and the back of the neck long, eyes straight ahead, for the whole set."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms are straps that hold the weight.",
+                why: "Straight, relaxed arms keep the lift in the shoulder girdle; bending the elbows turns the top of the rep into a curl or an upright row and hands it to the biceps and deltoids.",
+                mistake: "Bending the elbows to pull the weight up.",
+                correct: "Keep the elbows straight and the arms relaxed; only the shoulders move."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Dumbbell Position",
+                intro: "The dumbbells hang at your sides, palms in.",
+                why: "Beside the thighs, the weights hang straight down from the shoulders, so they pull against the traps instead of dragging the shoulders forward.",
+                mistake: "Letting the dumbbells drift in front of the thighs.",
+                correct: "Hold the dumbbells at your sides with a neutral grip, palms facing the thighs, wrists straight."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["core", "erector spinae", "rhomboids"],
+        setup: [
+            "Stand tall with your feet hip-width, knees soft.",
+            "Hold a dumbbell at each side, palms facing your thighs.",
+            "Let your arms hang straight and your shoulders drop."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ROLLING THE SHOULDERS",
+            correctCue: "Straight up, straight down",
+            mistakeCue: "Shoulders roll in a circle",
+            correctNote: "Lifting straight up to the ears keeps the load on the upper traps for the whole rep.",
+            mistakeNote: "Rolling adds no lift for the traps and drags the shoulders forward under the load."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.05, cx: 0.51, cy: 0.21),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.67, cy: 0.40),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.33, cy: 0.41)
+        ]
+    )
+
+    static let barbellShrugContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "path", label: "Straight up, no rolling",
+                          labelPoint: CGPoint(x: 0.435, y: 0.32),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "head", label: "Chin level, neck long",
+                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "arms", label: "Arms straight",
+                          labelPoint: CGPoint(x: 0.712, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "grip", label: "Bar against the thighs",
+                          labelPoint: CGPoint(x: 0.420, y: 0.64),
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each rep lifts the shoulders as high as they will go.",
+                why: "The shrug is among the exercises that work the upper trapezius hardest, but its range is short; dropping the shoulders fully and lifting them right up to the ears, with a brief hold, gives the traps all of it.",
+                mistake: "Short, bouncing reps where the shoulders barely rise.",
+                correct: "Let the shoulders drop fully, lift them straight up toward the ears, hold for a moment, then lower under control."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Shoulder Path",
+                intro: "The shoulders move straight up and straight down.",
+                why: "The upper trapezius and levator scapulae lift the shoulder blades vertically; rolling the shoulders adds no lift and drags them forward under the load.",
+                mistake: "Rolling the shoulders forward and round in a circle at the top.",
+                correct: "Lift the tips of the shoulders straight toward the ears, then lower them along the same line."
+            ),
+            TechniqueCue(
+                id: "head",
+                title: "Head and Neck",
+                intro: "The head stays level and still.",
+                why: "A neutral neck lets the traps lift the shoulders without the head joining in; poking the chin forward does not raise the shoulders any higher.",
+                mistake: "Poking the chin forward as the shoulders rise.",
+                correct: "Keep the chin level and the back of the neck long, eyes straight ahead, for the whole set."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms are straps that hold the weight.",
+                why: "Straight, relaxed arms keep the lift in the shoulder girdle; bending the elbows turns the top of the rep into a curl or an upright row and hands it to the biceps and deltoids.",
+                mistake: "Bending the elbows to pull the weight up.",
+                correct: "Keep the elbows straight and the arms relaxed; only the shoulders move."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip and Bar Position",
+                intro: "Overhand, about shoulder-width, the bar against the thighs.",
+                why: "A shoulder-width grip lets the arms hang straight down, and a bar kept brushing the thighs pulls the shoulders forward less than one hanging away from them.",
+                mistake: "Letting the bar hang away from the thighs, pulling the shoulders round.",
+                correct: "Grip overhand at about shoulder-width, thumbs around the bar, and keep it brushing the thighs."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["core", "erector spinae", "rhomboids"],
+        setup: [
+            "Stand with your feet hip-width, the bar in front of your thighs.",
+            "Grip it overhand at about shoulder-width, thumbs around.",
+            "Stand tall, arms straight, and let your shoulders drop."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SHORT, BOUNCING REPS",
+            correctCue: "Full lift, brief hold",
+            mistakeCue: "Shoulders barely rise",
+            correctNote: "Dropping fully and lifting to the ears, with a brief hold, works the traps through their whole range.",
+            mistakeNote: "Heavy, bouncing half reps barely move the bar and leave most of the traps' range untrained."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.05, cx: 0.51, cy: 0.28),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.55, cy: 0.42),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.37, cy: 0.43)
+        ]
+    )
+
+    static let smithMachineShrugContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "path", label: "Straight up, no rolling",
+                          labelPoint: CGPoint(x: 0.435, y: 0.32),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "head", label: "Chin level, neck long",
+                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "arms", label: "Arms straight",
+                          labelPoint: CGPoint(x: 0.712, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "bar", label: "Stand close to the bar",
+                          labelPoint: CGPoint(x: 0.420, y: 0.55),
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each rep lifts the shoulders as high as they will go.",
+                why: "The shrug is among the exercises that work the upper trapezius hardest, but its range is short; dropping the shoulders fully and lifting them right up to the ears, with a brief hold, gives the traps all of it.",
+                mistake: "Short, bouncing reps where the shoulders barely rise.",
+                correct: "Let the shoulders drop fully, lift them straight up toward the ears, hold for a moment, then lower under control."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Shoulder Path",
+                intro: "The shoulders move straight up and straight down.",
+                why: "The upper trapezius and levator scapulae lift the shoulder blades vertically; rolling the shoulders adds no lift and drags them forward under the load.",
+                mistake: "Rolling the shoulders forward and round in a circle at the top.",
+                correct: "Lift the tips of the shoulders straight toward the ears, then lower them along the same line."
+            ),
+            TechniqueCue(
+                id: "head",
+                title: "Head and Neck",
+                intro: "The head stays level and still.",
+                why: "A neutral neck lets the traps lift the shoulders without the head joining in; poking the chin forward does not raise the shoulders any higher.",
+                mistake: "Poking the chin forward as the shoulders rise.",
+                correct: "Keep the chin level and the back of the neck long, eyes straight ahead, for the whole set."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms are straps that hold the weight.",
+                why: "Straight, relaxed arms keep the lift in the shoulder girdle; bending the elbows turns the top of the rep into a curl or an upright row and hands it to the biceps and deltoids.",
+                mistake: "Bending the elbows to pull the weight up.",
+                correct: "Keep the elbows straight and the arms relaxed; only the shoulders move."
+            ),
+            TechniqueCue(
+                id: "bar",
+                title: "Bar Position",
+                intro: "Stand close enough that the bar brushes the thighs.",
+                why: "The Smith bar runs on fixed rails, so where you stand decides where that path sits against your body; standing back makes the body lean to the bar and pulls the shoulders forward instead of up.",
+                mistake: "Standing too far back, so the body leans forward to the bar.",
+                correct: "Step in until the bar touches the thighs, stand tall, and keep that spot so the bar slides straight up and down."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["core", "erector spinae", "rhomboids"],
+        setup: [
+            "Set the bar on the hooks at about mid-thigh height.",
+            "Stand close, feet hip-width, the bar against your thighs.",
+            "Grip it overhand at about shoulder-width.",
+            "Twist the bar off the hooks and stand tall, arms straight."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING INTO THE BAR",
+            correctCue: "Bar on the thighs, torso tall",
+            mistakeCue: "Standing back, leaning in",
+            correctNote: "Standing close lets the bar run straight up the rails with the body upright.",
+            mistakeNote: "Standing back makes the body lean to the bar, so the shoulders are pulled forward instead of straight up."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.05, cx: 0.55, cy: 0.21),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.66, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.36, cy: 0.40)
+        ]
+    )
+
+    static let cableShrugContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "path", label: "Straight up, no rolling",
+                          labelPoint: CGPoint(x: 0.435, y: 0.32),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "head", label: "Chin level, neck long",
+                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "arms", label: "Arms straight",
+                          labelPoint: CGPoint(x: 0.712, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "stance", label: "Centred, knees soft",
+                          labelPoint: CGPoint(x: 0.376, y: 0.64),
+                          leaderLength: 40, joint: "patella_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each rep lifts the shoulders as high as they will go.",
+                why: "The shrug is among the exercises that work the upper trapezius hardest, but its range is short; dropping the shoulders fully and lifting them right up to the ears, with a brief hold, gives the traps all of it.",
+                mistake: "Short, bouncing reps where the shoulders barely rise.",
+                correct: "Let the shoulders drop fully, lift them straight up toward the ears, hold for a moment, then lower under control."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Shoulder Path",
+                intro: "The shoulders move straight up and straight down.",
+                why: "The upper trapezius and levator scapulae lift the shoulder blades vertically; rolling the shoulders adds no lift and drags them forward under the load.",
+                mistake: "Rolling the shoulders forward and round in a circle at the top.",
+                correct: "Lift the tips of the shoulders straight toward the ears, then lower them along the same line."
+            ),
+            TechniqueCue(
+                id: "head",
+                title: "Head and Neck",
+                intro: "The head stays level and still.",
+                why: "A neutral neck lets the traps lift the shoulders without the head joining in; poking the chin forward does not raise the shoulders any higher.",
+                mistake: "Poking the chin forward as the shoulders rise.",
+                correct: "Keep the chin level and the back of the neck long, eyes straight ahead, for the whole set."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms are straps that hold the weight.",
+                why: "Straight, relaxed arms keep the lift in the shoulder girdle; bending the elbows turns the top of the rep into a curl or an upright row and hands it to the biceps and deltoids.",
+                mistake: "Bending the elbows to pull the weight up.",
+                correct: "Keep the elbows straight and the arms relaxed; only the shoulders move."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "Stand centred between the pulleys, feet hip-width.",
+                why: "The two low cables pull down and slightly out; a centred, hip-width stance with soft knees keeps them pulling evenly, so the body stays still and the traps do the lifting.",
+                mistake: "Standing with the feet together and the knees locked, rocking with the cables.",
+                correct: "Stand midway between the stacks, feet hip-width, knees soft, torso still."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["core", "latissimus dorsi", "rhomboids"],
+        setup: [
+            "Set both pulleys at the bottom and take a handle in each hand.",
+            "Stand centred between the stacks, feet hip-width, knees soft.",
+            "Let the handles hang by your thighs, palms in, arms straight."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "PULLING WITH THE ARMS",
+            correctCue: "Arms straight, shoulders lift",
+            mistakeCue: "Elbows bend to pull it up",
+            correctNote: "With straight arms, the traps lift the handles through the whole shrug.",
+            mistakeNote: "Bending the elbows hands the top of the rep to the biceps and deltoids and shortens the traps' work."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.05, cx: 0.51, cy: 0.21),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.67, cy: 0.40),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.33, cy: 0.41)
+        ]
+    )
+
+    static let trapBarShrugContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "path", label: "Straight up, no rolling",
+                          labelPoint: CGPoint(x: 0.435, y: 0.32),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "head", label: "Chin level, neck long",
+                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "arms", label: "Arms straight",
+                          labelPoint: CGPoint(x: 0.712, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "posture", label: "Stand tall, no lean back",
+                          labelPoint: CGPoint(x: 0.450, y: 0.57),
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each rep lifts the shoulders as high as they will go.",
+                why: "The shrug is among the exercises that work the upper trapezius hardest, but its range is short; dropping the shoulders fully and lifting them right up to the ears, with a brief hold, gives the traps all of it.",
+                mistake: "Short, bouncing reps where the shoulders barely rise.",
+                correct: "Let the shoulders drop fully, lift them straight up toward the ears, hold for a moment, then lower under control."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Shoulder Path",
+                intro: "The shoulders move straight up and straight down.",
+                why: "The upper trapezius and levator scapulae lift the shoulder blades vertically; rolling the shoulders adds no lift and drags them forward under the load.",
+                mistake: "Rolling the shoulders forward and round in a circle at the top.",
+                correct: "Lift the tips of the shoulders straight toward the ears, then lower them along the same line."
+            ),
+            TechniqueCue(
+                id: "head",
+                title: "Head and Neck",
+                intro: "The head stays level and still.",
+                why: "A neutral neck lets the traps lift the shoulders without the head joining in; poking the chin forward does not raise the shoulders any higher.",
+                mistake: "Poking the chin forward as the shoulders rise.",
+                correct: "Keep the chin level and the back of the neck long, eyes straight ahead, for the whole set."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms are straps that hold the weight.",
+                why: "Straight, relaxed arms keep the lift in the shoulder girdle; bending the elbows turns the top of the rep into a curl or an upright row and hands it to the biceps and deltoids.",
+                mistake: "Bending the elbows to pull the weight up.",
+                correct: "Keep the elbows straight and the arms relaxed; only the shoulders move."
+            ),
+            TechniqueCue(
+                id: "posture",
+                title: "Posture",
+                intro: "The body stays tall and still; only the shoulders move.",
+                why: "The trap bar puts the handles beside the body and takes a heavy load well; standing tall with soft knees keeps that load hanging from the shoulders, while leaning back borrows momentum and loads the lower back.",
+                mistake: "Leaning back and rocking the hips forward to heave the bar up.",
+                correct: "Stand tall in the centre of the frame, brace, and keep the hips and torso still as the shoulders rise."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["core", "erector spinae", "rhomboids"],
+        setup: [
+            "Stand in the centre of the trap bar, feet hip-width.",
+            "Grip the middle of the side handles, palms in.",
+            "Lift the bar with a flat back and stand tall, arms straight."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING BACK",
+            correctCue: "Tall and still, shoulders lift",
+            mistakeCue: "Body leans back to heave",
+            correctNote: "Standing tall and still makes the traps lift the heavy bar on their own.",
+            mistakeNote: "Leaning back and rocking the hips throws the bar up with momentum and loads the lower back instead of the traps."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.05, cx: 0.52, cy: 0.21),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.64, cy: 0.40),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.38, cy: 0.41)
+        ]
+    )
+
+    static let behindTheBackBarbellShrugContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "path", label: "Straight up, no rolling",
+                          labelPoint: CGPoint(x: 0.565, y: 0.25),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "head", label: "Chin level, neck long",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "arms", label: "Arms straight",
+                          labelPoint: CGPoint(x: 0.288, y: 0.32),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "bar", label: "Bar against the legs",
+                          labelPoint: CGPoint(x: 0.609, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each rep lifts the shoulders as high as they will go.",
+                why: "The shrug is among the exercises that work the upper trapezius hardest, but its range is short; dropping the shoulders fully and lifting them right up to the ears, with a brief hold, gives the traps all of it.",
+                mistake: "Short, bouncing reps where the shoulders barely rise.",
+                correct: "Let the shoulders drop fully, lift them straight up toward the ears, hold for a moment, then lower under control."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Shoulder Path",
+                intro: "The shoulders move straight up and straight down.",
+                why: "The upper trapezius and levator scapulae lift the shoulder blades vertically; with the bar behind, rolling the shoulders back at the top adds no lift and only pinches them together under the load.",
+                mistake: "Rolling the shoulders up and back in a circle at the top.",
+                correct: "Lift the tips of the shoulders straight toward the ears, then lower them along the same line."
+            ),
+            TechniqueCue(
+                id: "head",
+                title: "Head and Neck",
+                intro: "The head stays level and still.",
+                why: "A neutral neck lets the traps lift the shoulders without the head joining in; poking the chin forward does not raise the shoulders any higher.",
+                mistake: "Poking the chin forward as the shoulders rise.",
+                correct: "Keep the chin level and the back of the neck long, eyes straight ahead, for the whole set."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms are straps that hold the weight.",
+                why: "Straight, relaxed arms keep the lift in the shoulder girdle; bending the elbows turns the top of the rep into a curl or an upright row and hands it to the biceps and deltoids.",
+                mistake: "Bending the elbows to pull the weight up.",
+                correct: "Keep the elbows straight and the arms relaxed; only the shoulders move."
+            ),
+            TechniqueCue(
+                id: "bar",
+                title: "Bar Position",
+                intro: "The bar hangs behind you, against the backs of the thighs.",
+                why: "Behind the body, the bar keeps the arms hanging slightly back, so it cannot pull the shoulders forward; it just slides up the backs of the legs.",
+                mistake: "Letting the bar drift away from the backs of the legs.",
+                correct: "Grip overhand at about shoulder-width behind you and keep the bar brushing the backs of the thighs as it rises."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["core", "erector spinae", "rhomboids"],
+        setup: [
+            "Set the bar in a rack just below hip height.",
+            "Stand with your back to it and grip it overhand at about shoulder-width.",
+            "Lift it off and step forward, the bar against the backs of your thighs.",
+            "Stand tall, arms straight, and let your shoulders drop."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ROLLING THE SHOULDERS",
+            correctCue: "Straight up, straight down",
+            mistakeCue: "Shoulders roll back",
+            correctNote: "Lifting straight up to the ears keeps the load on the upper traps for the whole rep.",
+            mistakeNote: "Rolling the shoulders back at the top adds no lift for the traps and only pinches the shoulder blades together under the bar."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.05, cx: 0.51, cy: 0.29),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.44, cy: 0.43),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.62, cy: 0.43)
+        ]
+    )
+
+    static let alternatingDumbbellCurlContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "shoulder", label: "Shoulders down and back",
+                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          leaderLength: 40, joint: "upper_arm_R"),
+            CueAnnotation(cueID: "elbow", label: "Elbow by your side",
+                          labelPoint: CGPoint(x: 0.638, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "turn", label: "Turn the palm up",
+                          labelPoint: CGPoint(x: 0.668, y: 0.53),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "range", label: "Lower to a straight arm",
+                          labelPoint: CGPoint(x: 0.435, y: 0.57),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "torso", label: "Torso still, no swing",
+                          labelPoint: CGPoint(x: 0.594, y: 0.69),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "The shoulders stay set while the arms take turns.",
+                why: "Shrugging or rolling the shoulders forward lets the upper traps and front deltoids help lift the dumbbell, taking work away from the biceps and brachialis.",
+                mistake: "Shoulders shrugging up and rolling forward as each dumbbell comes up.",
+                correct: "Draw the shoulders down and back before the first rep and keep them level and still for the whole set."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Position",
+                intro: "The working elbow stays by your side.",
+                why: "With the elbow fixed, bending it is the only motion, so the elbow flexors lift the weight. If the elbow drifts forward, the front deltoid joins in and the forearm reaches vertical early, where the dumbbell stops loading the elbow.",
+                mistake: "The working elbow drifting forward and up as the dumbbell rises, turning the top of the curl into a front raise.",
+                correct: "Keep the elbow close to the ribs and curl until the dumbbell is in front of the shoulder, palm turned up toward it, without bringing the elbow forward."
+            ),
+            TechniqueCue(
+                id: "turn",
+                title: "Forearm Turn",
+                intro: "Start palm-in and turn the palm up as the dumbbell rises.",
+                why: "The biceps turns the palm up as well as bending the elbow, and in trained lifters palm-up curls have worked it harder than palm-in or palm-down curls, so the turn finishes each rep where the biceps is strongest.",
+                mistake: "Curling the wrist in toward the forearm at the top instead of turning the palm up.",
+                correct: "Turn the palm up as the dumbbell leaves the thigh, finish with it facing the shoulder, and keep the knuckles in line with the forearm."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each curl starts from a straight arm.",
+                why: "Lowering all the way works the elbow flexors through their whole length, and full-range curl training has built more strength than partial reps.",
+                mistake: "Leaving the resting arm half-bent at the bottom and starting its next curl from there.",
+                correct: "Lower each dumbbell until the arm hangs straight by your side, palm facing in, before the other arm starts."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Body Swing",
+                intro: "The legs and back stay out of it.",
+                why: "Rocking the torso or pushing the hips forward borrows momentum from the hips and lower back, which skips the hardest part of each curl and loads the spine.",
+                mistake: "Leaning back and pushing the hips forward to swing each dumbbell up.",
+                correct: "Stand tall with soft knees, brace the core and lower each dumbbell over two to three seconds so the next rep starts from a still body."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.46)
+        ],
+        stabilisers: ["anterior deltoid", "forearm flexors", "core"],
+        setup: [
+            "Hold a dumbbell in each hand, palms facing your thighs.",
+            "Stand tall, feet hip-width, arms straight by your sides.",
+            "Shoulders down and back, elbows by your ribs.",
+            "Curl one arm at a time, turning the palm up as it rises."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SWINGING THE DUMBBELL",
+            correctCue: "Torso still, elbow at the side",
+            mistakeCue: "Body swings each dumbbell up",
+            correctNote: "With the torso still and the elbow at the side, the biceps lifts each dumbbell through the whole range.",
+            mistakeNote: "Swinging uses the hips and lower back to start each rep, so the biceps skips the hardest part and the spine takes the strain."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.06, ry: 0.07, cx: 0.71, cy: 0.30),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.44, cy: 0.31),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.04, ry: 0.05, cx: 0.71, cy: 0.36)
+        ]
+    )
+
+    static let spiderCurlContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "pad", label: "Chest stays on the pad",
+                          labelPoint: CGPoint(x: 0.580, y: 0.30),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "shoulder", label: "Shoulders down",
+                          labelPoint: CGPoint(x: 0.697, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "scapula_R"),
+            CueAnnotation(cueID: "elbow", label: "Upper arms hang still",
+                          labelPoint: CGPoint(x: 0.406, y: 0.23),
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "grip", label: "Wrists straight",
+                          labelPoint: CGPoint(x: 0.318, y: 0.53),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "range", label: "Lower to straight arms",
+                          labelPoint: CGPoint(x: 0.420, y: 0.66),
+                          leaderLength: 40, joint: "forearm_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "pad",
+                title: "Chest Support",
+                intro: "The incline pad holds the body still.",
+                why: "With the chest pressed into the pad the torso cannot rock, so the elbow flexors have to lift the whole load; that bracing is what makes the spider curl strict.",
+                mistake: "Lifting the chest and shoulders off the pad to heave the bar up.",
+                correct: "Kneel on the seat, keep the chest and stomach on the pad for every rep, and drop the weight if the bar only moves when the chest lifts."
+            ),
+            TechniqueCue(
+                id: "shoulder",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down, away from the ears.",
+                why: "Shrugging brings the upper traps into the lift and moves the shoulders off their fixed place over the pad, so the curl stops being an elbow-only movement.",
+                mistake: "Shoulders shrugging up toward the ears as the bar rises.",
+                correct: "Let the shoulder blades settle down over the top of the pad and keep the neck long as you curl."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Upper Arm Position",
+                intro: "The upper arms hang straight down and stay there.",
+                why: "With the upper arms vertical, the bar hangs almost straight under the elbows at the bottom and swings out in front of them as it rises, so the curl gets harder as the bar rises, is heaviest with the forearms level and stays heavy to the top. Letting the elbows swing toward the head brings the front deltoids in and tips the bar back over the elbows, which takes the load off the elbow flexors.",
+                mistake: "The elbows drifting forward toward the head as the bar comes up.",
+                correct: "Keep the elbows under the shoulders, move only the forearms, and curl until the elbows are fully bent."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip and Wrists",
+                intro: "An underhand grip at shoulder-width, wrists straight.",
+                why: "A shoulder-width underhand grip keeps the forearms turned palm-up, the position in which the biceps works hardest. Curling the wrists in pulls the bar back toward the elbows, which eases the top of the rep and puts needless load on the wrists.",
+                mistake: "Curling the wrists in toward the forearms at the top of each rep.",
+                correct: "Hold the bar with the hands about shoulder-width apart, thumbs around it, and keep the knuckles in line with the forearms from bottom to top."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Every rep starts from straight arms.",
+                why: "Lowering until the arms hang straight works the elbow flexors through their whole length, and full-range curl training has built more strength than partial reps.",
+                mistake: "Short reps that stop with the elbows still bent at the bottom.",
+                correct: "Lower the bar under control until the arms hang straight below the shoulders, then curl again without bouncing."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.46)
+        ],
+        stabilisers: ["anterior deltoid", "forearm flexors", "middle trapezius", "rhomboids"],
+        setup: [
+            "Set an incline bench to about 45°.",
+            "Kneel on the seat, chest on the pad, shoulders just over the top.",
+            "Take the barbell underhand, hands shoulder-width apart.",
+            "Let your arms hang straight down."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS DRIFTING FORWARD",
+            correctCue: "Upper arms hang straight down",
+            mistakeCue: "Elbows swing toward the head",
+            correctNote: "With the upper arms hanging still, the bar swings out in front of the elbows as it rises and stays there, so the biceps is loaded all the way to the top.",
+            mistakeNote: "When the elbows swing forward, the front deltoids help lift and the bar tips back over the elbows, taking the load off the elbow flexors at the top."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.05, cx: 0.39, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.04, ry: 0.04, cx: 0.39, cy: 0.42)
+        ]
+    )
+
+    static let dumbbellPreacherCurlContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "pad", label: "Arm on the pad",
+                          labelPoint: CGPoint(x: 0.697, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "range", label: "Lower to almost straight",
+                          labelPoint: CGPoint(x: 0.450, y: 0.48),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "wrist", label: "Palm up, wrist straight",
+                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "torso", label: "Chest stays on the pad",
+                          labelPoint: CGPoint(x: 0.580, y: 0.43),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "seat", label: "Seat set, feet flat",
+                          labelPoint: CGPoint(x: 0.624, y: 0.59),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "pad",
+                title: "Arm on the Pad",
+                intro: "The armpit sits at the top of the pad and the back of the arm stays on it.",
+                why: "The pad holds the upper arm at about 45°, so bending the elbow is the only motion and the shoulder cannot help lift.",
+                mistake: "The elbow and upper arm lifting off the pad as the dumbbell comes up.",
+                correct: "Rest the armpit near the top edge, lay the back of the upper arm flat along the pad and keep it pressed there for the whole set."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "The bottom half is where the preacher curl works hardest.",
+                why: "With the upper arm on a 45° slope, the dumbbell pulls hardest on the elbow in the bottom half and hardly at all once the forearm is upright, and biceps activity follows that; training the bottom half has built more strength, and at least as much muscle, as training the top half.",
+                mistake: "Stopping halfway down, so the arm never gets near straight.",
+                correct: "Lower under control until the arm is almost straight, without letting the elbow snap straight, then curl again."
+            ),
+            TechniqueCue(
+                id: "wrist",
+                title: "Grip and Wrist",
+                intro: "The palm faces up for the whole rep.",
+                why: "With the palm up the biceps works in its strongest position. Curling the wrist in pulls the dumbbell back toward the elbow, which eases the top of the rep and puts needless load on the wrist.",
+                mistake: "Curling the wrist in toward the forearm at the top of the rep.",
+                correct: "Hold the dumbbell palm-up with a firm grip, knuckles in line with the forearm, from the bottom to the top."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The chest stays against the pad.",
+                why: "Rocking back uses the body's weight to start the lift and pulls the arms off the pad, so the elbow flexors skip the hardest part of the rep.",
+                mistake: "Leaning back from the hips to swing the weight up, the arms coming off the pad with the chest.",
+                correct: "Sit tall with the chest against the back of the pad and keep the torso still; only the working forearm moves."
+            ),
+            TechniqueCue(
+                id: "seat",
+                title: "Seat Height",
+                intro: "Set the seat before the first rep.",
+                why: "At the right height the armpit rests over the top of the pad with the shoulders relaxed; too low, the shoulders hunch up to hook the arm over it.",
+                mistake: "The seat set too low, so the shoulders ride up toward the ears to reach over the pad.",
+                correct: "Raise or lower the seat until the armpit rests near the top of the pad with the shoulders down, then plant both feet flat."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.36)
+        ],
+        stabilisers: ["forearm flexors", "rotator cuff", "core"],
+        setup: [
+            "Set the seat so your armpit rests at the top of the pad.",
+            "Hold a dumbbell in one hand, palm up.",
+            "Lay the back of that arm flat on the pad, the other arm resting beside it.",
+            "Sit tall, chest to the pad, feet flat."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "STOPPING SHORT AT THE BOTTOM",
+            correctCue: "Lower to almost straight",
+            mistakeCue: "Rep stops halfway down",
+            correctNote: "Lowering until the arm is almost straight trains the bottom half, where the preacher curl loads the biceps most.",
+            mistakeNote: "Stopping halfway keeps every rep in the top half, where the dumbbell moves in over the elbow and the load on the biceps falls away."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.64, cy: 0.30),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.05, ry: 0.04, cx: 0.56, cy: 0.34)
+        ]
+    )
+
+    static let machineBicepsCurlContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "pivot", label: "Elbows level with pivot",
+                          labelPoint: CGPoint(x: 0.565, y: 0.43),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "pad", label: "Arms on the pad",
+                          labelPoint: CGPoint(x: 0.682, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "grip", label: "Underhand, wrists flat",
+                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "range", label: "Lower to almost straight",
+                          labelPoint: CGPoint(x: 0.450, y: 0.53),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "torso", label: "Sit tall, no rocking",
+                          labelPoint: CGPoint(x: 0.609, y: 0.59),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "pivot",
+                title: "Seat and Pivot",
+                intro: "The elbows line up with the machine's pivot.",
+                why: "With the elbows on the lever's axis, the handle travels the same arc as the forearms, so the resistance stays square to them through the whole rep.",
+                mistake: "The seat set too low, so the elbows sit below the pivot and the handle drags along the forearms.",
+                correct: "Adjust the seat until the backs of the arms rest on the pad and the elbows sit level with the pivot on each side."
+            ),
+            TechniqueCue(
+                id: "pad",
+                title: "Arm Position",
+                intro: "The backs of the upper arms stay on the pad.",
+                why: "The pad fixes the upper arms, so bending the elbows is the only motion and the shoulders cannot help.",
+                mistake: "The elbows lifting off the pad as the handle rises, so the shoulders help finish the rep.",
+                correct: "Press the backs of the arms into the pad and move only the forearms."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip and Wrists",
+                intro: "An underhand grip, wrists straight.",
+                why: "With the palms turned up the biceps works in its strongest position. Curling the wrists in moves the handle with the wrists instead of the elbows and puts needless load on them.",
+                mistake: "Curling the wrists in toward the forearms at the top of each rep.",
+                correct: "Hold the handles underhand about shoulder-width apart and keep the knuckles in line with the forearms from bottom to top."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "Each rep starts from almost straight arms.",
+                why: "On preacher-style curls, training the lower, stretched part of the range has built more strength, and at least as much muscle, as training only the top part, so short reps at the top leave that part out.",
+                mistake: "Short reps that stop with the elbows well bent, the plates never lowering far.",
+                correct: "Lower until the arms are almost straight, stopping before the weight stack touches down, then curl again without bouncing."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The chest stays against the pad.",
+                why: "Rocking back uses the body's weight to start the lift and pulls the arms off the pad, so the body, not the elbow flexors, gets the handle moving.",
+                mistake: "Leaning back from the hips to swing the weight up, the arms coming off the pad with the chest.",
+                correct: "Sit tall with the chest against the back of the pad and keep the torso still; only the forearms move."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.38)
+        ],
+        stabilisers: ["forearm flexors", "rotator cuff", "core"],
+        setup: [
+            "Set the seat so your elbows line up with the machine's pivot.",
+            "Sit with your chest to the pad, backs of the arms flat on it.",
+            "Take the handles underhand, hands shoulder-width apart.",
+            "Start with the arms almost straight."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS LIFTING OFF THE PAD",
+            correctCue: "Arms flat on the pad",
+            mistakeCue: "Elbows lift as the handle rises",
+            correctNote: "With the backs of the arms on the pad, the elbow flexors move the handle through its whole arc.",
+            mistakeNote: "Lifting the elbows lets the shoulders help finish each rep and moves the elbows off the lever's pivot."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.06, ry: 0.05, cx: 0.67, cy: 0.32),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.05, cx: 0.50, cy: 0.33),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.04, ry: 0.04, cx: 0.61, cy: 0.37)
+        ]
+    )
+
+    static let farmersCarryContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "head", label: "Eyes ahead, chin level",
+                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "shoulders", label: "Shoulders back, no slump",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "posture", label: "Walk tall, brace",
+                          labelPoint: CGPoint(x: 0.332, y: 0.32),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "grip", label: "Crush the handles",
+                          labelPoint: CGPoint(x: 0.653, y: 0.55),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "steps", label: "Short, controlled steps",
+                          labelPoint: CGPoint(x: 0.435, y: 0.80),
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "head",
+                title: "Head Position",
+                intro: "Eyes ahead, chin level.",
+                why: "Looking ahead keeps the neck and upper back in line with the braced trunk; looking down pulls the head and shoulders forward over the weights.",
+                mistake: "Looking down at the feet, the head and upper back dropping.",
+                correct: "Fix the eyes on a point ahead at head height and keep the chin level."
+            ),
+            TechniqueCue(
+                id: "shoulders",
+                title: "Shoulder Position",
+                intro: "The shoulders stay back and level under the load.",
+                why: "Holding the shoulders set makes the traps and upper back resist the weights pulling down and forward, instead of letting the upper back round.",
+                mistake: "Shoulders dragged forward and down, the upper back rounding.",
+                correct: "Draw the shoulders gently back, chest up, and hold them there without shrugging."
+            ),
+            TechniqueCue(
+                id: "posture",
+                title: "Posture",
+                intro: "Walk tall, stacked from head to hips.",
+                why: "An upright, braced trunk lets the core and hips carry the load with every step; leaning forward over the weights hands it to the lower back.",
+                mistake: "Leaning forward over the weights as the set goes on.",
+                correct: "Brace the abs, stand tall with the ribs over the hips, and keep that height for the whole set."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "Crush the handles, weights still by your sides.",
+                why: "The whole load hangs from the hands for the full set, so grip is often the limit on a heavy carry; a hard grip in the middle of each handle keeps the dumbbells level and quiet, so they do not swing into the legs.",
+                mistake: "A loose grip that lets the dumbbells swing forward and back.",
+                correct: "Grip each handle in the middle, squeeze hard, and let the dumbbells hang still beside the thighs, palms in."
+            ),
+            TechniqueCue(
+                id: "steps",
+                title: "Steps",
+                intro: "Short, controlled steps.",
+                why: "Loaded walking is done with shorter strides than normal walking; short, controlled steps keep the weights steady and the pelvis supported on each leg.",
+                mistake: "Long, reaching strides that let the body sway.",
+                correct: "Take short, even steps at a slow, steady pace for the whole set time."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Forearm Flexors", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.35)
+        ],
+        stabilisers: ["erector spinae", "quadratus lumborum", "rectus abdominis"],
+        setup: [
+            "Stand between two dumbbells, feet hip-width.",
+            "Squat down with a flat back and grip them in the middle, palms in.",
+            "Stand tall, shoulders back, arms straight at your sides.",
+            "Walk with short, steady steps for the set time."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SHOULDERS ROUNDED",
+            correctCue: "Tall, shoulders back",
+            mistakeCue: "Shoulders slump forward",
+            correctNote: "Standing tall with the shoulders set lets the grip, traps and core hold the weights still.",
+            mistakeNote: "Letting the weights drag the shoulders forward rounds the upper back and turns the carry into a slump."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.07, cx: 0.67, cy: 0.43),
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.07, cx: 0.36, cy: 0.43),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.10, ry: 0.04, cx: 0.52, cy: 0.23)
+        ]
+    )
+
+    static let suitcaseCarryContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "level", label: "Shoulders level",
+                          labelPoint: CGPoint(x: 0.682, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "twist", label: "Chest square, no twist",
+                          labelPoint: CGPoint(x: 0.420, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "grip", label: "Crush the handle",
+                          labelPoint: CGPoint(x: 0.668, y: 0.59),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "free", label: "Free arm relaxed",
+                          labelPoint: CGPoint(x: 0.332, y: 0.59),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "steps", label: "Short, even steps",
+                          labelPoint: CGPoint(x: 0.347, y: 0.80),
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "level",
+                title: "Shoulders Level",
+                intro: "The loaded side stays as tall as the free side.",
+                why: "A one-sided load tries to bend the trunk toward it; the obliques and quadratus lumborum on the other side resist that, which is what the suitcase carry trains.",
+                mistake: "Leaning toward the dumbbell, the loaded shoulder dropping.",
+                correct: "Stand tall with both shoulders level and the ribs stacked over the hips, as if there were no weight."
+            ),
+            TechniqueCue(
+                id: "twist",
+                title: "Trunk Rotation",
+                intro: "The chest faces straight ahead.",
+                why: "A one-sided load pulls the trunk sideways and can also turn it as you walk; keeping the chest square makes the core resist rotation as well as the side bend.",
+                mistake: "Twisting the shoulders with each step, one shoulder swinging forward.",
+                correct: "Brace and keep both shoulders facing forward, the hips square under them."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "The dumbbell hangs still beside the thigh.",
+                why: "A firm grip keeps the dumbbell from swinging, so the trunk resists a steady sideways pull rather than a moving one.",
+                mistake: "Letting the dumbbell swing forward and back with each step.",
+                correct: "Grip the handle in the middle, squeeze hard, and keep the dumbbell beside the thigh, palm in."
+            ),
+            TechniqueCue(
+                id: "free",
+                title: "Free Arm",
+                intro: "The free arm hangs relaxed at the side.",
+                why: "Held out wide, the free arm shifts a little weight to the free side and eases the side bend the trunk is meant to resist; it can help balance at first, but once you can stay tall let it hang or swing.",
+                mistake: "Holding the free arm out wide as a counterweight.",
+                correct: "Let the free arm hang or swing naturally by the side, hand relaxed."
+            ),
+            TechniqueCue(
+                id: "steps",
+                title: "Steps",
+                intro: "Short, even steps.",
+                why: "Short, even steps keep the load steady and the pelvis level; with the weight on one side, the hip muscles of the other leg work hardest to hold the pelvis up each time that leg takes the weight.",
+                mistake: "Long, reaching strides that let the body sway toward the weight.",
+                correct: "Take short, even steps at a steady pace for the set time, then switch hands."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.42)
+        ],
+        stabilisers: ["quadratus lumborum", "rectus abdominis", "upper trapezius"],
+        setup: [
+            "Stand beside one dumbbell, feet hip-width.",
+            "Squat down with a flat back and grip it in one hand, palm in.",
+            "Stand tall with the shoulders level, free arm relaxed.",
+            "Walk with short, even steps for the set time; switch hands next set."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LEANING TOWARD THE WEIGHT",
+            correctCue: "Shoulders level, trunk tall",
+            mistakeCue: "Trunk bends to the dumbbell",
+            correctNote: "Standing tall against the one-sided load makes the obliques and hip muscles on the other side do the work.",
+            mistakeNote: "Leaning toward the weight lets it bend the spine sideways and skips the work the carry is for."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.07, cx: 0.42, cy: 0.42),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.67, cy: 0.44),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.05, cx: 0.40, cy: 0.51)
+        ]
+    )
+
+    static let overheadCarryContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "wrist", label: "Wrists stacked",
+                          labelPoint: CGPoint(x: 0.697, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "lockout", label: "Arms locked by the ears",
+                          labelPoint: CGPoint(x: 0.565, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "shoulders", label: "Reach up into the weight",
+                          labelPoint: CGPoint(x: 0.450, y: 0.43),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
+            CueAnnotation(cueID: "ribs", label: "Ribs down, no arch",
+                          labelPoint: CGPoint(x: 0.362, y: 0.52),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "steps", label: "Short, steady steps",
+                          labelPoint: CGPoint(x: 0.624, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "wrist",
+                title: "Wrists",
+                intro: "Wrists straight, knuckles to the ceiling.",
+                why: "A stacked wrist sends the weight straight down the forearm; a wrist bent back puts the load on the joint and lets the dumbbell tip.",
+                mistake: "Wrists bent back under the dumbbells.",
+                correct: "Grip the handles hard and keep each wrist straight, the dumbbell over the forearm."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Arm Position",
+                intro: "Arms locked straight, upper arms beside the ears.",
+                why: "Straight arms stacked over the shoulders and hips keep each dumbbell almost directly above the shoulder joint, so the shoulder muscles hold it on a very short lever; weights drifting forward act on a longer lever and are harder to hold.",
+                mistake: "The arms drifting forward, the dumbbells ending up in front of the head.",
+                correct: "Lock the elbows and keep the dumbbells directly over the shoulders, upper arms beside the ears."
+            ),
+            TechniqueCue(
+                id: "shoulders",
+                title: "Shoulder Position",
+                intro: "Reach up into the weights.",
+                why: "Pushing up actively keeps the shoulder blades rotated up under the arms, the job of the trapezius and serratus anterior, and gives the weights a stable base.",
+                mistake: "Letting the shoulders sink so the weights sag toward the head.",
+                correct: "Push the dumbbells toward the ceiling as if trying to get taller, and keep reaching for the whole set."
+            ),
+            TechniqueCue(
+                id: "ribs",
+                title: "Trunk Position",
+                intro: "Ribs down, glutes tight, no arch.",
+                why: "With weight overhead, arching the lower back and flaring the ribs is the easy way to hold the arms up; bracing keeps the spine neutral and the work in the shoulders and core.",
+                mistake: "Lower back arching and ribs flaring to hold the arms up.",
+                correct: "Brace the abs, squeeze the glutes and keep the ribs pulled down over the hips as you walk."
+            ),
+            TechniqueCue(
+                id: "steps",
+                title: "Steps",
+                intro: "Short, steady steps.",
+                why: "Short, controlled steps keep the dumbbells still overhead; long strides make the body bob and sway, and the shoulders and trunk have to chase the weights.",
+                mistake: "Long, bouncing strides that make the weights sway.",
+                correct: "Take short, even steps at a steady pace for the whole set time, the weights quiet overhead."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Serratus Anterior", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.36)
+        ],
+        stabilisers: ["anterior deltoid", "rotator cuff", "triceps", "rectus abdominis"],
+        setup: [
+            "Clean a dumbbell to each shoulder and press them overhead.",
+            "Lock the elbows, palms forward, upper arms beside your ears.",
+            "Brace with the ribs down and the glutes tight.",
+            "Walk with short, steady steps for the set time."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "RIBS FLARED, BACK ARCHED",
+            correctCue: "Ribs down, arms by the ears",
+            mistakeCue: "Lower back arches",
+            correctNote: "Bracing with the ribs down keeps the spine neutral while the shoulders hold the weights overhead.",
+            mistakeNote: "Arching the lower back leans the body away from the weights and puts the load on the spine instead of the shoulders and core."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.05, cx: 0.47, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.04, ry: 0.06, cx: 0.51, cy: 0.43),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.07, cx: 0.48, cy: 0.53)
+        ]
+    )
+
+    // MARK: - Legs 300-350 (2026-09-26)
+    //
+    // From the HIKSEMI drive's "300-350" exports (SourceExports/300-350): the
+    // quads series 316-325 and the Curtsy Lunge. Generated by
+    // `Tools/trainer-content/gen.py` from `spec_300_350.py`; each family
+    // file's header lists what its models show and its sources, and
+    // `notes_300_350_*.md` maps the copy's claims to them. Label rows were
+    // laid out from the probed joints (`probe.py`) and checked on simulator
+    // screenshots. The split squats keep the left leg in front for both reps;
+    // the four lunges switch legs between reps.
+
+    static let forwardLungeContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "step", label: "Take a long step",
+                          labelPoint: CGPoint(x: 0.332, y: 0.80),
+                          leaderLength: 40, joint: "foot_front"),
+            CueAnnotation(cueID: "torso", label: "Chest up, torso tall",
+                          labelPoint: CGPoint(x: 0.609, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          leaderLength: 40, joint: "patella_front"),
+            CueAnnotation(cueID: "depth", label: "Knees to 90°",
+                          labelPoint: CGPoint(x: 0.726, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_back"),
+            CueAnnotation(cueID: "drive", label: "Push back",
+                          labelPoint: CGPoint(x: 0.230, y: 0.32),
+                          leaderLength: 40, joint: "pelvis")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "step",
+                title: "Step Length",
+                intro: "Each rep starts with one long step forward.",
+                why: "A step long enough for both knees to reach about 90° keeps the front shin close to upright; in a lunge study, a short step put more load on the front of the knee near the bottom than a long step did. A fully upright shin shifts some of that load to the back knee, so aim for 90° at both knees, not the longest step you can take.",
+                mistake: "Taking a short step, so the front knee has to travel well past the toes to reach depth.",
+                correct: "Step further than a normal walking stride, land heel first and let the whole foot settle before you lower."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "Stay tall as you step out and lower.",
+                why: "An upright torso keeps the weight between the feet, so the front leg's quadriceps and glutes share the work; folding forward to catch the landing shifts the load toward the hips and lower back and the weight onto the front toes.",
+                mistake: "Leaning the chest forward over the front thigh as you lower.",
+                correct: "Keep the chest up, the shoulders over the hips and the eyes forward, hands resting on the hips."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Alignment",
+                intro: "The front knee points the same way as the toes.",
+                why: "Some forward knee travel is normal and is part of what loads the quadriceps; what matters is that the knee stays in line with the foot. A knee that caves inward often shows the hip or foot losing control of the leg, and twists the knee under load.",
+                mistake: "The front knee caving inward toward the other leg as you lower or push back.",
+                correct: "Keep the front knee over the middle toes and the foot pointing ahead, toes turned out only slightly, all the way down and back up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Depth",
+                intro: "Both knees bend to about 90° at the bottom.",
+                why: "Lowering until the back knee hovers just above the floor takes the front leg through its full range; stopping short, or letting the hips drift forward instead of down, leaves out the bottom of the rep.",
+                mistake: "Stopping halfway down, with the hips pushed forward over the front foot.",
+                correct: "Drop the back knee straight down until it is just above the floor, both knees near 90°, then drive up."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Push Back",
+                intro: "The front leg pushes you all the way back to the start.",
+                why: "Pressing through the whole front foot makes the front leg's hip and knee extensors do the return; in a joint-moment study of the forward lunge the hip extensors supplied the largest share of the effort, though the knee bends most. Rocking onto the toes tips the weight forward and makes the step back hard to control.",
+                mistake: "Rising onto the ball of the front foot, the heel lifting, to push back.",
+                correct: "Keep the front foot flat, press through the heel and mid-foot and step back until the feet are together, then lunge with the other leg."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.24)
+        ],
+        stabilisers: ["adductors", "calves", "core"],
+        setup: [
+            "Stand tall with your feet hip-width apart.",
+            "Rest your hands on your hips.",
+            "Clear room in front of you for a long step.",
+            "Brace your core before each step."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SHORT STEP",
+            correctCue: "Long step, shin near upright",
+            mistakeCue: "Short step, knee crowds forward",
+            correctNote: "A long step lets both knees reach 90° with the front shin close to upright, so the quadriceps and glutes share the work.",
+            mistakeNote: "A short step makes the front knee travel well past the toes to reach depth, which raises the load on the front of the knee near the bottom."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.39, cy: 0.57),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.51, cy: 0.54)
+        ]
+    )
+
+    static let barbellLungeContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "step", label: "Take a long step",
+                          labelPoint: CGPoint(x: 0.668, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "toe_front"),
+            CueAnnotation(cueID: "torso", label: "Chest up, tall",
+                          labelPoint: CGPoint(x: 0.697, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "track", label: "Feet hip-width",
+                          labelPoint: CGPoint(x: 0.697, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_back"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.52),
+                          leaderLength: 40, joint: "patella_front"),
+            CueAnnotation(cueID: "drive", label: "Push back",
+                          labelPoint: CGPoint(x: 0.770, y: 0.52),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "step",
+                title: "Step Length",
+                intro: "Each rep starts with one long step forward, the bar riding with you.",
+                why: "A step long enough for both knees to reach about 90° keeps the front shin near upright and the bar over the middle of the stance; in a lunge study, a short step loaded the front of the knee more near the bottom. A fully upright shin shifts some load to the back knee, so aim for 90° at both knees, not the longest step.",
+                mistake: "Taking a short step, so the front knee has to travel well past the toes to reach depth.",
+                correct: "Step further than a normal walking stride, land heel first and let the whole foot settle before you lower."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "Stay tall under the bar.",
+                why: "With the bar on the upper back, an upright torso keeps it over the middle of the stance; letting the chest drop tips the bar forward, loads the lower back and pushes the weight onto the front toes.",
+                mistake: "The chest dropping and the upper back rounding under the bar as you lower.",
+                correct: "Keep the chest up, the elbows down under the bar and the upper back tight, eyes forward."
+            ),
+            TechniqueCue(
+                id: "track",
+                title: "Foot Width",
+                intro: "Each foot keeps its own track, about hip-width apart.",
+                why: "Hip-width tracks give a stable base under the bar; stepping onto the back foot's line, like walking a tightrope, narrows it. In a barbell lunge study, feet at half hip-width let the weight sway about a quarter more from side to side over the front foot.",
+                mistake: "Stepping the front foot in line with, or across, the back foot.",
+                correct: "Step straight forward from the hip so the feet land about hip-width apart, as if on two rails."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Alignment",
+                intro: "The front knee points the same way as the toes.",
+                why: "Some forward knee travel is normal and is part of what loads the quadriceps; what matters is that the knee stays in line with the foot. A knee that caves inward often shows the hip or foot losing control of the leg, and twists the knee under load.",
+                mistake: "The front knee caving inward toward the other leg as you lower or push back.",
+                correct: "Keep the front knee over the middle toes and the foot pointing ahead, toes turned out only slightly, all the way down and back up."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Push Back",
+                intro: "The front leg pushes you and the bar back to the start.",
+                why: "Pressing through the whole front foot keeps the bar over a stable base and makes the front leg's hip and knee extensors do the return; in a joint-moment study of the forward lunge the hip extensors supplied the largest share of the effort, though the knee bends most. Rocking onto the toes tips the bar forward.",
+                mistake: "Rising onto the ball of the front foot, the heel lifting, to push back.",
+                correct: "Keep the front foot flat, press through the heel and mid-foot and step back until the feet are together under the bar, then lunge with the other leg."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.28)
+        ],
+        stabilisers: ["adductors", "erector spinae", "calves", "core"],
+        setup: [
+            "Set the bar in a rack just below shoulder height.",
+            "Step under it and rest it on your upper traps, hands about a hand's width outside your shoulders.",
+            "Stand up, step back and set your feet hip-width apart.",
+            "Clear room in front of you for a long step."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "FEET IN LINE",
+            correctCue: "Feet about hip-width apart",
+            mistakeCue: "Front foot lands in line",
+            correctNote: "Landing each foot on its own track keeps a wide base, so the bar stays balanced over the stance.",
+            mistakeNote: "Stepping onto the back foot's line narrows the base, so the bar and hips sway more from side to side and each rep is harder to balance."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.07, cx: 0.38, cy: 0.56),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.52, cy: 0.53)
+        ]
+    )
+
+    static let smithMachineReverseLungeContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "stance", label: "Feet ahead of bar",
+                          labelPoint: CGPoint(x: 0.653, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "step", label: "Step back",
+                          labelPoint: CGPoint(x: 0.770, y: 0.65),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_back"),
+            CueAnnotation(cueID: "lean", label: "Hinge ~20°, back flat",
+                          labelPoint: CGPoint(x: 0.594, y: 0.52),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee in line",
+                          labelPoint: CGPoint(x: 0.274, y: 0.48),
+                          leaderLength: 40, joint: "patella_front"),
+            CueAnnotation(cueID: "drive", label: "Front leg drives",
+                          labelPoint: CGPoint(x: 0.668, y: 0.59),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "stance",
+                title: "Foot Position",
+                intro: "Set the feet a little ahead of the bar before you unhook it.",
+                why: "The Smith bar only moves straight up and down, so foot placement decides where you end up under it. With the feet a little ahead of it, the hips sit back behind the bar, which stays just behind the front foot, and the knee stays over the foot. Feet right under the bar send the front knee much further forward, which suits some lifters but tips others onto their toes.",
+                mistake: "Standing with the front foot under or behind the bar, so at the bottom the front heel peels up or the chest folds over the knee to reach depth.",
+                correct: "Stand with the feet hip-width, heels about half a foot's length in front of the bar, and keep the planted foot there on every rep."
+            ),
+            TechniqueCue(
+                id: "step",
+                title: "Step Back",
+                intro: "One foot steps straight back, well behind the bar.",
+                why: "A long step back lets the back knee drop under the hip and both knees reach about 90°; a short step crowds the stance under the fixed bar, so the back knee meets the floor early or the front knee travels further.",
+                mistake: "Stepping back only a short way, so the feet end up cramped under the bar.",
+                correct: "Step straight back about a stride, land on the ball of the foot and keep the feet hip-width apart."
+            ),
+            TechniqueCue(
+                id: "lean",
+                title: "Hip Hinge",
+                intro: "In this version the torso tips about 20° forward from the hips as the foot goes back.",
+                why: "Tipping forward from the hips with a flat back lets the hips sit back behind the fixed bar. In a forward-lunge study a forward trunk raised the hip extensors' share of the effort and, modestly, glute and hamstring activity; in a loaded lunge study it mainly raised lower-back activity. Keep the lean moderate and the spine long; a more upright torso is also fine.",
+                mistake: "Rounding the back under the bar instead of hinging at the hips.",
+                correct: "Keep the spine long and the chest proud, tip forward from the hips about 20° as you lower, then stand tall at the top."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Alignment",
+                intro: "The front knee points the same way as the toes.",
+                why: "Some forward knee travel is normal and is part of what loads the quadriceps; what matters is that the knee stays in line with the foot. A knee that caves inward often shows the hip or foot losing control of the leg, and twists the knee under load.",
+                mistake: "The front knee caving inward toward the other leg as you lower or push back.",
+                correct: "Keep the front knee over the middle toes and the foot pointing ahead, toes turned out only slightly, all the way down and back up."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Front-Leg Drive",
+                intro: "The planted front leg lifts you and the bar.",
+                why: "Both legs work: in a reverse lunge study the planted leg's gluteus medius was the more active, and the stepping leg's front thigh worked hard as the lifter rose. Driving mainly through the front foot keeps the front leg doing its share; shoving off the back foot shifts the lift onto the back leg.",
+                mistake: "Pushing up off the back foot, the back knee straightening first.",
+                correct: "Keep the back foot light, press through the whole front foot and stand up on the front leg, then step the back foot in beside it."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.42),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["adductors", "erector spinae", "core"],
+        setup: [
+            "Set the Smith bar just below shoulder height.",
+            "Step under it and rest it on your upper traps, hands about a hand's width outside your shoulders.",
+            "Stand with your feet hip-width, heels about half a foot's length in front of the bar.",
+            "Turn the bar to unhook it and brace your core."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "FRONT FOOT UNDER THE BAR",
+            correctCue: "Front foot ahead of the bar",
+            mistakeCue: "Front foot under the bar",
+            correctNote: "With the front foot a little ahead of the fixed bar, the hips can sit back as you step back and the bar stays between the feet, just behind the front foot.",
+            mistakeNote: "With the front foot under the bar, the rails keep the bar over it, so reaching depth tips the weight onto the front toes or folds the chest over the knee."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.07, cx: 0.39, cy: 0.59),
+            .init(DS.activationSoft.opacity(0.35), rx: 0.07, ry: 0.06, cx: 0.53, cy: 0.54)
+        ]
+    )
+
+    static let curtsyLungeContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hips", label: "Hips square",
+                          labelPoint: CGPoint(x: 0.741, y: 0.56),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "cross", label: "Cross behind",
+                          labelPoint: CGPoint(x: 0.726, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_back"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.56),
+                          leaderLength: 40, joint: "patella_front"),
+            CueAnnotation(cueID: "torso", label: "Chest up, hands clasped",
+                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "drive", label: "Front heel down",
+                          labelPoint: CGPoint(x: 0.318, y: 0.80),
+                          leaderLength: 40, joint: "foot_front")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hips",
+                title: "Hip Position",
+                intro: "The hips keep facing forward while one leg steps behind.",
+                why: "Keeping the pelvis square is what gives the curtsy its angle: the standing hip has to hold the pelvis level and facing forward while the other leg reaches across behind it, which asks more of the muscles on the side of that hip. Letting the hips turn makes it an ordinary reverse lunge with a twist.",
+                mistake: "The hips and chest turning toward the back leg as it crosses behind.",
+                correct: "Keep both hip bones and the chest pointing straight ahead, and let the back leg reach across under a still pelvis."
+            ),
+            TechniqueCue(
+                id: "cross",
+                title: "Crossing Step",
+                intro: "The back foot steps diagonally behind and across the front foot.",
+                why: "A modest cross, the back foot landing just past the line of the front foot, sets the angle; swinging it far across twists the pelvis toward the back leg and makes the rep harder to balance and the front knee harder to hold in line.",
+                mistake: "Swinging the back foot far across behind the body, well past the front foot.",
+                correct: "Step back and across so the back foot lands just outside the front heel's line, on the ball of the foot, heel up."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Front Knee",
+                intro: "The front knee follows the front toes.",
+                why: "With both feet on the same side of the body, the front leg has to control the sideways load as well, and a knee that drifts inward often shows the hip or foot losing that control. The knee may travel forward past the toes, which is normal while the heel stays down.",
+                mistake: "The front knee collapsing inward over the arch as you lower.",
+                correct: "Keep the front knee over the middle toes and the foot pointing ahead, toes turned out only slightly, as you lower and rise."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The chest stays up, hands clasped in front of it.",
+                why: "A tall torso with only a slight forward lean keeps the weight over the front foot, where the front leg can drive; folding forward over the front thigh shifts the load onto the toes and the lower back.",
+                mistake: "Folding the chest forward over the front thigh at the bottom.",
+                correct: "Keep the chest up and the hands clasped in front of it, with no more than a slight forward lean at the bottom."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Front-Leg Drive",
+                intro: "Push back up through the whole front foot.",
+                why: "The front leg carries the body down and back up while the back foot rests high on its toes; a planted front heel gives a stable base to push through. Rising onto the toes tips the weight forward onto the front knee.",
+                mistake: "The front heel lifting as you push back up, the weight rolling onto the toes.",
+                correct: "Keep the front heel down, press through the heel and mid-foot and bring the back foot back beside the front one, then switch sides."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Adductor Magnus", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["gluteus minimus", "calves", "core"],
+        setup: [
+            "Stand tall with your feet a little wider than hip-width.",
+            "Clasp your hands in front of your chest, elbows out.",
+            "Soften your knees and face straight ahead.",
+            "Brace your core before each step."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "HIPS TURNING OPEN",
+            correctCue: "Hips square to the front",
+            mistakeCue: "Hips turn toward the back leg",
+            correctNote: "With the pelvis square, the standing hip has to hold the pelvis steady while the front thigh lowers and lifts you.",
+            mistakeNote: "When the hips open toward the back leg, the cross disappears: the rep turns into a twisted reverse lunge and loses the angle that makes the curtsy different."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.07, cx: 0.49, cy: 0.63),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.06, cx: 0.65, cy: 0.57),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.06, cx: 0.43, cy: 0.57)
+        ]
+    )
+
+    static let barbellSplitSquatContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "bar", label: "Bar high on the traps",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "torso", label: "Stay tall",
+                          labelPoint: CGPoint(x: 0.230, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "depth", label: "Back knee down",
+                          labelPoint: CGPoint(x: 0.697, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "heel", label: "Heel down",
+                          labelPoint: CGPoint(x: 0.230, y: 0.75),
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "bar",
+                title: "Bar Position",
+                intro: "The bar sits high across the upper traps.",
+                why: "A high bar keeps the torso upright over the split stance, which suits this quadriceps-led lift; in back squats a lower bar brings more forward lean.",
+                mistake: "The bar sliding down onto the back of the shoulders, the chest tipping forward to balance it.",
+                correct: "Set the bar across the upper traps just below the neck, hands wider than the shoulders, and keep the chest tall under it."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The torso stays tall under the bar.",
+                why: "Upright, the bar stays over the middle of the stance and the legs do the work. Leaning forward with a bar on the back lengthens the lever on the lower back and makes the load hard to balance on a narrow split stance.",
+                mistake: "The chest tipping forward at the bottom, taking the bar out in front of the hips.",
+                correct: "Brace, keep the chest up and the shoulders over the hips, and let the bar travel straight down and up."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Tracking",
+                intro: "The front knee travels in line with the front foot.",
+                why: "Some forward knee travel is normal and loads the quadriceps. A knee that caves inward often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
+                mistake: "The front knee caving inward toward the back leg at the bottom or on the way up.",
+                correct: "Keep the front knee pointing over the middle toes, in line with the foot, all the way down and up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Depth",
+                intro: "Each rep sinks straight down until the back knee is just off the floor.",
+                why: "Lowering until the front thigh is about parallel takes the front leg's quadriceps and glutes through a long range. Letting the hips drift forward instead of down shortens the rep and leaves the back knee high.",
+                mistake: "Stopping halfway, the hips drifting forward instead of sinking, so the back knee stays well off the floor.",
+                correct: "Lower the back knee straight down until it is just above the floor and the front thigh is about parallel, then drive up through the front foot."
+            ),
+            TechniqueCue(
+                id: "heel",
+                title: "Front Foot",
+                intro: "The whole front foot stays planted.",
+                why: "Pressure through the heel and mid-foot keeps you balanced over the front leg so the quadriceps and glutes can drive the rep. Forward knee travel is fine; a heel that lifts tips the load onto the toes.",
+                mistake: "The front heel peeling off the floor as the knee drives forward, usually from a stance that is too short.",
+                correct: "Set a long enough stance, keep the front heel down and push the floor away through the heel and mid-foot."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["adductors", "erector spinae", "calves", "core"],
+        setup: [
+            "Set the bar in a rack at upper-chest height and take it high across your upper traps.",
+            "Grip it wider than your shoulders and step back from the rack.",
+            "Step one foot a long stride forward, feet hip-width apart.",
+            "Rise onto the ball of the back foot and brace, chest tall."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "TORSO TIPS FORWARD",
+            correctCue: "Chest up, bar over mid-stance",
+            mistakeCue: "Chest tips forward under the bar",
+            correctNote: "Staying tall keeps the bar over the middle of the stance, so the front leg's quadriceps and glutes drive the rep.",
+            mistakeNote: "Tipping forward takes the bar out in front of the hips, lengthening the lever on the lower back and making the narrow stance hard to balance."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.40, cy: 0.59),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.54, cy: 0.55)
+        ]
+    )
+
+    static let dumbbellSplitSquatContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Dumbbells at sides",
+                          labelPoint: CGPoint(x: 0.638, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "torso", label: "Stay tall",
+                          labelPoint: CGPoint(x: 0.230, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "depth", label: "Back knee down",
+                          labelPoint: CGPoint(x: 0.697, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "heel", label: "Heel down",
+                          labelPoint: CGPoint(x: 0.230, y: 0.75),
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Load Position",
+                intro: "The dumbbells hang straight down at your sides.",
+                why: "Hanging at arm's length beside the hips, the weights keep the centre of mass low, which steadies the split stance and lets the torso stay upright while the front leg does the work. In lunges, barbell and dumbbell loading have drawn similar thigh and calf muscle activity.",
+                mistake: "The dumbbells swinging forward in front of the thighs at the bottom instead of hanging at the sides.",
+                correct: "Hold the dumbbells with the palms facing in, arms long and shoulders down, and let them travel straight down and up beside the hips."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The torso stays tall, shoulders over the hips.",
+                why: "Upright, the load stays over the front leg, where the quadriceps and glutes share the work. A deliberate forward lean adds work for the glutes and hamstrings, as lunge and Bulgarian split squat studies with the trunk tipped forward have shown, but folding over at the bottom also asks the lower back to hold the trunk and is harder to balance on a split stance.",
+                mistake: "The chest folding forward over the front thigh at the bottom of the rep without meaning to.",
+                correct: "Keep the chest up and the shoulders stacked over the hips from the top of the rep to the bottom."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Tracking",
+                intro: "The front knee travels in line with the front foot.",
+                why: "Some forward knee travel is normal and loads the quadriceps. A knee that caves inward often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
+                mistake: "The front knee caving inward toward the back leg at the bottom or on the way up.",
+                correct: "Keep the front knee pointing over the middle toes, in line with the foot, all the way down and up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Depth",
+                intro: "Each rep sinks straight down until the back knee is just off the floor.",
+                why: "Lowering until the front thigh is about parallel takes the front leg's quadriceps and glutes through a long range. Letting the hips drift forward instead of down shortens the rep and leaves the back knee high.",
+                mistake: "Stopping halfway, the hips drifting forward instead of sinking, so the back knee stays well off the floor.",
+                correct: "Lower the back knee straight down until it is just above the floor and the front thigh is about parallel, then drive up through the front foot."
+            ),
+            TechniqueCue(
+                id: "heel",
+                title: "Front Foot",
+                intro: "The whole front foot stays planted.",
+                why: "Pressure through the heel and mid-foot keeps you balanced over the front leg so the quadriceps and glutes can drive the rep. Forward knee travel is fine; a heel that lifts tips the load onto the toes.",
+                mistake: "The front heel peeling off the floor as the knee drives forward, usually from a stance that is too short.",
+                correct: "Set a long enough stance, keep the front heel down and push the floor away through the heel and mid-foot."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["adductors", "calves", "forearms", "core"],
+        setup: [
+            "Hold a dumbbell in each hand at your sides, palms facing in.",
+            "Step one foot a long stride forward, feet hip-width apart.",
+            "Rise onto the ball of the back foot.",
+            "Stand tall with your shoulders over your hips."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "FRONT KNEE CAVING IN",
+            correctCue: "Knee in line with the foot",
+            mistakeCue: "Front knee collapses inward",
+            correctNote: "With the knee over the middle toes, the front leg's quadriceps and glutes drive the rep straight up.",
+            mistakeNote: "When the front knee caves in, the hip is often losing control of the thigh and the knee takes the load at an angle."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.41, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.56, cy: 0.54)
+        ]
+    )
+
+    static let smithMachineSplitSquatContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "bar", label: "Bar high on the traps",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "torso", label: "Chest up, hips under",
+                          labelPoint: CGPoint(x: 0.391, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "depth", label: "Back knee down",
+                          labelPoint: CGPoint(x: 0.697, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "stance", label: "Long stance",
+                          labelPoint: CGPoint(x: 0.259, y: 0.75),
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "bar",
+                title: "Bar Position",
+                intro: "The bar rests high on the upper traps and runs on a fixed track.",
+                why: "The rails hold the bar's line, so the body has to stay stacked under it. With the bar high on the traps the torso can stay upright while the legs do the work.",
+                mistake: "Setting the bar low on the back of the shoulders, so the chest tips forward and the hips slide back under the fixed bar.",
+                correct: "Rest the bar across the upper traps, hands wider than the shoulders, brace, then turn the bar to unhook it."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The hips stay under the fixed bar, the torso close to upright.",
+                why: "The bar can only move straight up and down, so leaning forward means the hips slide back behind it and the chest folds toward the thigh, shifting work from the front knee to the hips and lower back.",
+                mistake: "The hips sliding back behind the bar and the chest folding forward under it at the bottom.",
+                correct: "Keep the hips under the bar and the chest up, and sink straight down along the bar's track."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Tracking",
+                intro: "The front knee travels in line with the front foot.",
+                why: "Some forward knee travel is normal and loads the quadriceps. A knee that caves inward often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
+                mistake: "The front knee caving inward toward the back leg at the bottom or on the way up.",
+                correct: "Keep the front knee pointing over the middle toes, in line with the foot, all the way down and up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Depth",
+                intro: "Each rep sinks straight down the bar's track until the back knee is just off the floor.",
+                why: "Lowering until the front thigh is about parallel takes the front leg's quadriceps and glutes through a long range. The rails fix the bar's path, so how far you lower is the main thing left to control.",
+                mistake: "Stopping halfway down the track, the hips high and the back knee well off the floor.",
+                correct: "Lower the back knee straight down until it is just above the floor and the front thigh is about parallel, then drive up through the front foot."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "The feet split so the bar runs over the middle of the stance.",
+                why: "The Smith bar only moves straight up and down, so where the front foot sits decides how the work is shared: closer under the bar, the knee travels further forward and the quadriceps work harder; further ahead, the glutes and hamstrings do more. Forward knee travel is fine; the problem is a foot so close that the heel cannot stay down.",
+                mistake: "Setting the front foot so close under the bar that the front heel peels up as the knee drives forward at the bottom.",
+                correct: "Step the front foot far enough ahead of the bar that the whole foot stays flat at the bottom, the back foot behind it, hip-width apart, so the bar runs over the middle of the stance."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.34),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.32)
+        ],
+        stabilisers: ["adductors", "calves", "core"],
+        setup: [
+            "Set the Smith bar at upper-chest height and step under it.",
+            "Rest it high across your upper traps, hands wider than your shoulders.",
+            "Split your feet a long stride apart, the bar over the middle of your stance.",
+            "Rise onto the ball of the back foot, then turn the bar to unhook it."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "FRONT FOOT TOO CLOSE",
+            correctCue: "Foot ahead of the bar, heel down",
+            mistakeCue: "Foot under the bar, heel lifts",
+            correctNote: "With the front foot ahead of the bar, the whole foot stays planted and the fixed bar travels over the middle of the stance.",
+            mistakeNote: "Tucked under the fixed bar, the front knee has to travel well forward and the heel peels up, tipping the load onto the toes."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.46, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.58, cy: 0.53)
+        ]
+    )
+
+    static let frontFootElevatedSplitSquatContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Dumbbells at sides",
+                          labelPoint: CGPoint(x: 0.638, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "torso", label: "Stay tall",
+                          labelPoint: CGPoint(x: 0.230, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "depth", label: "Back knee down",
+                          labelPoint: CGPoint(x: 0.697, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "step", label: "Heel down",
+                          labelPoint: CGPoint(x: 0.230, y: 0.75),
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Load Position",
+                intro: "The dumbbells hang straight down at your sides.",
+                why: "Hanging at arm's length beside the hips, the weights keep the centre of mass low, which steadies the split stance and lets the torso stay upright while the front leg does the work. In lunges, barbell and dumbbell loading have drawn similar thigh and calf muscle activity.",
+                mistake: "The dumbbells swinging forward in front of the thighs at the bottom instead of hanging at the sides.",
+                correct: "Hold the dumbbells with the palms facing in, arms long and shoulders down, and let them travel straight down and up beside the hips."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The torso stays tall, shoulders over the hips.",
+                why: "Upright, the load stays over the front leg, where the quadriceps and glutes share the work. A deliberate forward lean adds work for the glutes and hamstrings, as lunge and Bulgarian split squat studies with the trunk tipped forward have shown, but folding over at the bottom also asks the lower back to hold the trunk and is harder to balance on a split stance.",
+                mistake: "The chest folding forward over the front thigh at the bottom of the rep without meaning to.",
+                correct: "Keep the chest up and the shoulders stacked over the hips from the top of the rep to the bottom."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Tracking",
+                intro: "The front knee travels in line with the front foot.",
+                why: "Some forward knee travel is normal and loads the quadriceps. A knee that caves inward often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
+                mistake: "The front knee caving inward toward the back leg at the bottom or on the way up.",
+                correct: "Keep the front knee pointing over the middle toes, in line with the foot, all the way down and up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Depth",
+                intro: "The step lets the back knee sink almost to the floor.",
+                why: "Raising the front foot adds range: the front hip and knee bend further than in a flat split squat. In squat studies, going deeper brought the glutes in more, and full squat training built more glute and adductor muscle than half squats.",
+                mistake: "Stopping at flat split squat depth, the hips high and the back knee well off the floor.",
+                correct: "Sink until the back knee is just above the floor and the front thigh is just below parallel, then drive up through the whole front foot. If your knees are sensitive, build up to the depth gradually."
+            ),
+            TechniqueCue(
+                id: "step",
+                title: "Front Foot on the Step",
+                intro: "The whole front foot stays flat on the step.",
+                why: "With the heel on the step, the extra depth comes from the hip and knee and the load goes through the heel and mid-foot. At this depth the knee travels well forward, to about over the toes, which is expected as long as the heel stays down.",
+                mistake: "The front heel lifting off the step as the knee drives forward at the bottom.",
+                correct: "Place the whole front foot on the step, keep the heel down and push through the heel and mid-foot to stand."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["adductors", "calves", "forearms", "core"],
+        setup: [
+            "Place a low step, about 10 cm high, in front of you.",
+            "Hold a dumbbell in each hand at your sides, palms facing in.",
+            "Put your whole front foot on the step, a long stride ahead of the back foot.",
+            "Rise onto the ball of the back foot, feet hip-width apart."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "STOPPING SHORT",
+            correctCue: "Back knee almost to the floor",
+            mistakeCue: "Hips stop high, back knee up",
+            correctNote: "Using the range the step adds takes the front hip and knee deeper, the range where squat studies found the glutes working harder.",
+            mistakeNote: "Stopping at flat split squat depth wastes the step: the front leg never reaches the deeper range the variation is for."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.41, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.57, cy: 0.55)
+        ]
+    )
+
+    static let rearFootElevatedSplitSquatContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Dumbbells at sides",
+                          labelPoint: CGPoint(x: 0.638, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "torso", label: "Stay tall",
+                          labelPoint: CGPoint(x: 0.230, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "depth", label: "Back knee down",
+                          labelPoint: CGPoint(x: 0.697, y: 0.75),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "rear", label: "Laces on bench",
+                          labelPoint: CGPoint(x: 0.697, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Load Position",
+                intro: "The dumbbells hang straight down at your sides.",
+                why: "Hanging at arm's length beside the hips, the weights keep the centre of mass low, which steadies the split stance and lets the torso stay upright while the front leg does the work. In lunges, barbell and dumbbell loading have drawn similar thigh and calf muscle activity.",
+                mistake: "The dumbbells swinging forward in front of the thighs at the bottom instead of hanging at the sides.",
+                correct: "Hold the dumbbells with the palms facing in, arms long and shoulders down, and let them travel straight down and up beside the hips."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The torso stays tall, shoulders over the hips.",
+                why: "Upright, the load stays over the front leg, where the quadriceps and glutes share the work. A deliberate forward lean adds work for the glutes and hamstrings, as lunge and Bulgarian split squat studies with the trunk tipped forward have shown, but folding over at the bottom also asks the lower back to hold the trunk and is harder to balance on a split stance.",
+                mistake: "The chest folding forward over the front thigh at the bottom of the rep without meaning to.",
+                correct: "Keep the chest up and the shoulders stacked over the hips from the top of the rep to the bottom."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Tracking",
+                intro: "The front knee travels in line with the front foot.",
+                why: "Some forward knee travel is normal and loads the quadriceps. A knee that caves inward often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
+                mistake: "The front knee caving inward toward the back leg at the bottom or on the way up.",
+                correct: "Keep the front knee pointing over the middle toes, in line with the foot, all the way down and up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Depth",
+                intro: "Sink straight down until the back knee is a hand's width off the floor.",
+                why: "In the rear-foot-elevated split squat the glutes, hamstrings and quadriceps are most active in the bottom third of the rep, so stopping short skips the part that works them hardest. With the back foot up, the front leg also carries more of the load than in a flat split squat.",
+                mistake: "Stopping halfway, the hips drifting forward instead of down, so the back knee stays high.",
+                correct: "Lower the back knee straight toward the floor until the front thigh is about parallel, then drive up through the whole front foot."
+            ),
+            TechniqueCue(
+                id: "rear",
+                title: "Rear Foot",
+                intro: "The laces of the back foot rest on the bench.",
+                why: "With the top of the foot on the bench and the ankle pointed, the back foot has a stable contact. The back leg steadies you and takes only a small share of the load, so the front leg does most of the work. Perching on the tips of the toes with the ankle bent makes that support less stable.",
+                mistake: "Perching the back foot on the tips of the toes on the bench, the ankle bent and the heel up.",
+                correct: "Rest the laces flat on a bench about knee height, ankle pointed, and let the back leg steady you while the front leg does the work."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44)
+        ],
+        stabilisers: ["adductors", "calves", "forearms", "core"],
+        setup: [
+            "Hold a dumbbell in each hand at your sides, palms facing in.",
+            "Stand a long stride in front of a knee-height bench.",
+            "Reach one foot back and rest its laces on the bench.",
+            "Set your front foot flat, hip-width from the back foot."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "FRONT KNEE CAVING IN",
+            correctCue: "Knee in line with the foot",
+            mistakeCue: "Front knee collapses inward",
+            correctNote: "With the knee in line with the foot, the front leg's quadriceps and glutes drive the rep while the hip holds the thigh steady.",
+            mistakeNote: "On one working leg the hip has to keep the knee in line; when it caves in, the knee takes the load at an angle."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.36, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.51, cy: 0.55)
+        ]
+    )
+
+    static let barbellBulgarianSplitSquatContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "bar", label: "Bar high on the traps",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "torso", label: "Stay tall",
+                          labelPoint: CGPoint(x: 0.230, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "depth", label: "Back knee down",
+                          labelPoint: CGPoint(x: 0.697, y: 0.75),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "rear", label: "Laces on bench",
+                          labelPoint: CGPoint(x: 0.697, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "bar",
+                title: "Bar Position",
+                intro: "The bar sits high across the upper traps.",
+                why: "A high bar keeps the torso upright over the split stance, which suits this quadriceps-led lift; in back squats a lower bar brings more forward lean.",
+                mistake: "The bar sliding down onto the back of the shoulders, the chest tipping forward to balance it.",
+                correct: "Set the bar across the upper traps just below the neck, hands wider than the shoulders, and keep the chest tall under it."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The torso stays tall under the bar.",
+                why: "Upright, the bar stays over the middle of the stance and the legs do the work. Leaning forward with a bar on the back lengthens the lever on the lower back and makes the load hard to balance on a narrow split stance.",
+                mistake: "The chest tipping forward at the bottom, taking the bar out in front of the hips.",
+                correct: "Brace, keep the chest up and the shoulders over the hips, and let the bar travel straight down and up."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Tracking",
+                intro: "The front knee travels in line with the front foot.",
+                why: "Some forward knee travel is normal and loads the quadriceps. A knee that caves inward often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
+                mistake: "The front knee caving inward toward the back leg at the bottom or on the way up.",
+                correct: "Keep the front knee pointing over the middle toes, in line with the foot, all the way down and up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Depth",
+                intro: "Sink straight down until the back knee is a hand's width off the floor.",
+                why: "In the rear-foot-elevated split squat the glutes, hamstrings and quadriceps are most active in the bottom third of the rep, so stopping short skips the part that works them hardest. With the back foot up, the front leg also carries more of the load than in a flat split squat.",
+                mistake: "Stopping halfway, the hips drifting forward instead of down, so the back knee stays high.",
+                correct: "Lower the back knee straight toward the floor until the front thigh is about parallel, then drive up through the whole front foot."
+            ),
+            TechniqueCue(
+                id: "rear",
+                title: "Rear Foot",
+                intro: "The laces of the back foot rest on the bench.",
+                why: "With the top of the foot on the bench and the ankle pointed, the back foot has a stable contact. The back leg steadies you and takes only a small share of the load, so the front leg does most of the work. Perching on the tips of the toes with the ankle bent makes that support less stable.",
+                mistake: "Perching the back foot on the tips of the toes on the bench, the ankle bent and the heel up.",
+                correct: "Rest the laces flat on a bench about knee height, ankle pointed, and let the back leg steady you while the front leg does the work."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44)
+        ],
+        stabilisers: ["erector spinae", "adductors", "calves", "core"],
+        setup: [
+            "Put a knee-height bench in a rack, safety bars just under the bar's lowest point.",
+            "Take the bar high across your upper traps, hands wider than your shoulders.",
+            "Stand a long stride in front of the bench and rest the laces of your back foot on it.",
+            "Set your front foot flat, feet hip-width apart, and brace."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "TORSO TIPS FORWARD",
+            correctCue: "Tall, bar straight down",
+            mistakeCue: "Chest folds toward the thigh",
+            correctNote: "Staying tall lets the bar travel straight down and up, so the front leg does the lifting under a load the trunk can hold.",
+            mistakeNote: "Leaning forward with a bar on the back is hard to control on one leg and loads the lower back; technique guides advise against it with a loaded bar."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.35, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.46, cy: 0.55)
+        ]
+    )
+
+    static let smithMachineBulgarianSplitSquatContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "bar", label: "Bar high on the traps",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "torso", label: "Stay tall",
+                          labelPoint: CGPoint(x: 0.230, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
+                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "depth", label: "Back knee down",
+                          labelPoint: CGPoint(x: 0.697, y: 0.75),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "rear", label: "Laces on bench",
+                          labelPoint: CGPoint(x: 0.697, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "bar",
+                title: "Bar Position",
+                intro: "The bar rests high on the upper traps and runs on a fixed track.",
+                why: "The rails hold the bar's line, so the body has to stay stacked under it. With the bar high on the traps the torso can stay upright while the legs do the work.",
+                mistake: "Setting the bar low on the back of the shoulders, so the chest tips forward and the hips slide back under the fixed bar.",
+                correct: "Rest the bar across the upper traps, hands wider than the shoulders, brace, then turn the bar to unhook it."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The hips stay under the fixed bar, the torso close to upright.",
+                why: "The bar can only move straight up and down, so leaning forward means the hips slide back behind it and the chest folds toward the thigh, shifting work from the front knee to the hips and lower back.",
+                mistake: "The hips sliding back behind the bar and the chest folding forward under it at the bottom.",
+                correct: "Keep the hips under the bar and the chest up, and sink straight down along the bar's track."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knee Tracking",
+                intro: "The front knee travels in line with the front foot.",
+                why: "Some forward knee travel is normal and loads the quadriceps. A knee that caves inward often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
+                mistake: "The front knee caving inward toward the back leg at the bottom or on the way up.",
+                correct: "Keep the front knee pointing over the middle toes, in line with the foot, all the way down and up."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Depth",
+                intro: "Sink straight down the bar's track until the back knee is a hand's width off the floor.",
+                why: "In the rear-foot-elevated split squat the glutes, hamstrings and quadriceps are most active in the bottom third of the rep, so stopping short skips the part that works them hardest. With the back foot up, the front leg also carries more of the load than in a flat split squat.",
+                mistake: "Stopping halfway down the track, the hips high and the back knee well off the floor.",
+                correct: "Lower the back knee straight toward the floor until the front thigh is about parallel, then drive up through the whole front foot."
+            ),
+            TechniqueCue(
+                id: "rear",
+                title: "Rear Foot",
+                intro: "The laces of the back foot rest on the bench.",
+                why: "With the top of the foot on the bench and the ankle pointed, the back foot has a stable contact. The back leg steadies you and takes only a small share of the load, so the front leg does most of the work. Perching on the tips of the toes with the ankle bent makes that support less stable.",
+                mistake: "Perching the back foot on the tips of the toes on the bench, the ankle bent and the heel up.",
+                correct: "Rest the laces flat on a bench about knee height, ankle pointed, and let the back leg steady you while the front leg does the work."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.42),
+            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.34)
+        ],
+        stabilisers: ["adductors", "calves", "core"],
+        setup: [
+            "Set the Smith bar at upper-chest height, a knee-height bench a short step behind it.",
+            "Rest the bar high across your upper traps, hands wider than your shoulders.",
+            "Stand a long stride in front of the bench and rest the laces of your back foot on it.",
+            "Set your front foot flat, then turn the bar to unhook it."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "STOPPING SHORT",
+            correctCue: "Back knee toward the floor",
+            mistakeCue: "Hips stop halfway down",
+            correctNote: "Sinking until the front thigh is about parallel takes the front leg through a long range while the rails keep the bar steady.",
+            mistakeNote: "Half reps skip the bottom third of the rep, where the glutes, hamstrings and quadriceps work hardest in this lift."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.41, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.54, cy: 0.54)
+        ]
+    )
+
+    // MARK: - Late additions (2026-09-27)
+    //
+    // Seated Dumbbell Lateral Raise (207), Cable Rear Delt Row (222) and
+    // Dumbbell Upright Row (224, top lowered to 90 deg) from the HIKSEMI
+    // drive's 190-240 exports, and Barbell Hip Thrust (077) from the fixed
+    // 03_Dui_sau_Mong legs. Generated by `Tools/trainer-content/gen.py` from
+    // `spec_0927.py`; each family file's header lists what its models show
+    // and its sources, and `notes_0927_*.md` maps the copy's claims to them.
+
+    static let seatedDumbbellLateralRaiseContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "traps", label: "Shoulders down, no shrug",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "height", label: "Stop at shoulder height",
+                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
+                          labelPoint: CGPoint(x: 0.362, y: 0.64),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "plane", label: "Arms slightly forward",
+                          labelPoint: CGPoint(x: 0.594, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "torso", label: "Sit tall, no swing",
+                          labelPoint: CGPoint(x: 0.362, y: 0.80),
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down while the arms rise.",
+                why: "Keeping the shoulder blades down keeps the lateral deltoids lifting the arms instead of the upper trapezius shrugging them up.",
+                mistake: "Shrugging the shoulders up toward the ears as the dumbbells rise.",
+                correct: "Keep the shoulder blades down and the neck long, and lead the raise with the elbows."
+            ),
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The arms rise from your sides to shoulder height.",
+                why: "The dumbbells pull hardest on the side delts as the arms come level; above that the shoulder blades rotate up further and the traps and serratus take a bigger share.",
+                mistake: "Swinging the dumbbells up above shoulder height.",
+                correct: "Raise until the elbows are level with the shoulders, pause briefly, then lower slowly until the arms hang by your sides."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Bend",
+                intro: "The arms are long levers with a slight, fixed bend.",
+                why: "In an EMG study of seated lateral raises the side delts worked harder with the elbows nearly straight than bent to 90°; bending as you lift shortens the lever and lets the hands drop below the elbows.",
+                mistake: "Bending the elbows more as the dumbbells rise, so the hands drop below the elbows.",
+                correct: "Set a slight bend as the dumbbells leave your sides and hold that angle up and down, the elbows level with or a little above the wrists."
+            ),
+            TechniqueCue(
+                id: "plane",
+                title: "Arm Path",
+                intro: "The arms rise a little in front of the body, hands level.",
+                why: "Raising slightly forward of the shoulders follows the line of the shoulder blade, a path often advised for comfort; in seated raises, thumbs forward worked the side delts about as hard on the way up as tipping the thumbs down, without the extra rear-delt and upper-trap activity that thumbs down brought.",
+                mistake: "Pulling the arms back behind the line of the shoulders at the top.",
+                correct: "Keep the dumbbells a little in front of the shoulders all the way up, hands level and thumbs forward; turn the thumbs slightly up if the shoulder pinches."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "You sit tall and still; only the arms move.",
+                why: "Sitting takes the legs out of the lift, but rocking the torso back can still swing the dumbbells up and arches the lower back.",
+                mistake: "Leaning back and rocking the torso to heave the dumbbells up.",
+                correct: "Sit tall on the end of the bench with the feet flat, brace the core and keep the torso upright for every rep."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42)
+        ],
+        stabilisers: ["upper trapezius", "serratus anterior", "rotator cuff", "wrist extensors"],
+        setup: [
+            "Sit tall on the end of a flat bench, feet flat and apart.",
+            "Hold a dumbbell in each hand beside your thighs.",
+            "Palms facing in, arms long by your sides.",
+            "Brace your core and set your shoulders down."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ROCKING BACK",
+            correctCue: "Sitting tall, arms to 90°",
+            mistakeCue: "Torso rocks back to lift",
+            correctNote: "Sitting tall and still makes the side delts raise the dumbbells through the whole arc.",
+            mistakeNote: "Rocking back swings the dumbbells up with the trunk, takes load off the shoulders and arches the lower back."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.63, cy: 0.35),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.42, cy: 0.35)
+        ]
+    )
+
+    static let cableRearDeltRowContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "grip", label: "Wide overhand grip",
+                          labelPoint: CGPoint(x: 0.362, y: 0.16),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "traps", label: "Shoulders down, no shrug",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "elbow", label: "Elbows high and wide",
+                          labelPoint: CGPoint(x: 0.391, y: 0.48),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "range", label: "Elbows past the back",
+                          labelPoint: CGPoint(x: 0.609, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "torso", label: "Sit tall, no leaning back",
+                          labelPoint: CGPoint(x: 0.464, y: 0.64),
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "Overhand, hands well outside the shoulders.",
+                why: "A wide grip lets the elbows travel out to the sides; in an EMG study a wide-grip seated row worked the traps and side delts more and the lats less than a close-grip row, with similar rear-delt activity.",
+                mistake: "Taking the bar with the hands about shoulder-width or closer.",
+                correct: "Hold the bar overhand with the hands well outside shoulder-width, thumbs around it."
+            ),
+            TechniqueCue(
+                id: "traps",
+                title: "Shoulder Position",
+                intro: "The shoulders stay down as the elbows travel back.",
+                why: "Shrugging shifts the finish of the pull toward the upper trapezius and away from the rear delts and mid-back.",
+                mistake: "Shrugging the shoulders up toward the ears at the end of each rep.",
+                correct: "Keep the neck long and the shoulders down, away from the ears, as the elbows travel back."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Height",
+                intro: "The elbows stay high and wide as the bar comes in.",
+                why: "In EMG testing of the seated cable row, rear-delt and trap activity rose as the elbows were raised out to the sides, and lat activity was higher with them near the ribs.",
+                mistake: "Elbows dropping and tucking toward the ribs, so the bar comes in low.",
+                correct: "Lead with the elbows, keep them out to the sides and close to shoulder height, and pull the bar to the top of the chest."
+            ),
+            TechniqueCue(
+                id: "range",
+                title: "Range of Motion",
+                intro: "From a full forward reach until the elbows pass just behind the back.",
+                why: "Reaching the arms forward until they are nearly straight and then drawing the elbows back past the body works the rear delts and mid-back through their whole range.",
+                mistake: "Short reps that stop with the elbows still in front of the body.",
+                correct: "Let the arms reach forward until they are nearly straight, then pull until the bar meets the top of the chest and the elbows sit just behind the back."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "The torso stays upright and still.",
+                why: "Leaning back swings the weight with the body and hands part of the pull to the hips and lower back; a still, upright torso leaves the rear delts to move the bar.",
+                mistake: "Leaning back behind upright to drag the bar in.",
+                correct: "Sit tall with the knees slightly bent, brace the core and keep the torso upright from the first rep to the last."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.50)
+        ],
+        stabilisers: ["rhomboids", "infraspinatus", "lower trapezius", "erector spinae"],
+        setup: [
+            "Set the pulley at seated shoulder height with a straight bar.",
+            "Sit tall facing the stack, knees slightly bent, feet flat.",
+            "Take the bar overhand, hands well outside your shoulders.",
+            "Start with your arms reaching forward at shoulder height."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS DROPPING",
+            correctCue: "Elbows high, bar to the chest",
+            mistakeCue: "Elbows drop to the ribs",
+            correctNote: "Pulling with the elbows high and wide keeps the rear delts and mid-back doing the work.",
+            mistakeNote: "Dropping the elbows turns it into an ordinary wide-grip row: the lats join in and the rear delts and mid-back do less."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.06, cx: 0.41, cy: 0.32),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.65, cy: 0.32),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.08, ry: 0.05, cx: 0.55, cy: 0.36)
+        ]
+    )
+
+    static let dumbbellUprightRowContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "height", label: "Stop near shoulder level",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "elbow", label: "Elbows lead the dumbbells",
+                          labelPoint: CGPoint(x: 0.536, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "path", label: "Dumbbells close to body",
+                          labelPoint: CGPoint(x: 0.565, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "width", label: "Hands shoulder-width",
+                          labelPoint: CGPoint(x: 0.391, y: 0.51),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "torso", label: "Torso still, no swing",
+                          labelPoint: CGPoint(x: 0.406, y: 0.64),
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "height",
+                title: "Range of Motion",
+                intro: "The dumbbells rise to chest height, the elbows to shoulder height.",
+                why: "With the arms turned in, the space under the point of the shoulder that the rotator cuff tendons pass through narrows as the elbows come up toward shoulder height and beyond, which can irritate sensitive shoulders; stopping at or just below shoulder level, as most guidance advises, keeps the side delts and traps working while limiting that squeeze.",
+                mistake: "Hauling the dumbbells up to the chin with the elbows high above the shoulders.",
+                correct: "Pull until the elbows reach shoulder height at most, then lower under control; stop lower if the shoulder pinches."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Elbow Path",
+                intro: "The elbows lead and stay higher than the hands.",
+                why: "Pulling through the elbows rather than the wrists keeps the most work at the shoulder, on the side delts and traps; leading with the hands turns the start of the lift into a curl.",
+                mistake: "Leading with the hands, curling the dumbbells up with the elbows trailing low.",
+                correct: "Drive the elbows up and out, higher than the hands, letting the wrists bend as the dumbbells rise."
+            ),
+            TechniqueCue(
+                id: "path",
+                title: "Dumbbell Path",
+                intro: "The dumbbells rise close in front of the body.",
+                why: "Keeping them close keeps the pull on the side delts and upper traps; dumbbells that drift out in front add load to the front of the shoulder and the lower back.",
+                mistake: "Letting the dumbbells swing out in front, away from the stomach and chest.",
+                correct: "Keep the dumbbells just in front of the body from the thighs to the chest, and lower them the same way."
+            ),
+            TechniqueCue(
+                id: "width",
+                title: "Hand Position",
+                intro: "The hands stay about shoulder-width apart, one in front of each shoulder.",
+                why: "In EMG testing of the barbell upright row, side-delt and trap activity rose as the grip widened, most clearly at twice shoulder-width, and on the way down it was higher with the hands shoulder-width apart than half that; dumbbells have not been tested.",
+                mistake: "Bringing the hands in close together in the middle, narrower than the shoulders.",
+                correct: "Hold the handles across, overhand, one hand in front of each shoulder, and keep that spacing up and down."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "Only the arms and shoulders move.",
+                why: "Leaning back and thrusting the hips swings the dumbbells up with the body, taking load off the shoulders and putting it on the lower back.",
+                mistake: "Leaning back and driving the hips forward to start the dumbbells moving.",
+                correct: "Stand tall with soft knees, brace the core and lift without any swing."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["levator scapulae", "rotator cuff", "forearms", "core"],
+        setup: [
+            "Stand with your feet hip-width apart, knees soft.",
+            "Hold the dumbbells overhand in front of your thighs.",
+            "Handles across, hands about shoulder-width apart.",
+            "Brace your core and keep your chest up."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS TOO HIGH",
+            correctCue: "Elbows no higher than the shoulders",
+            mistakeCue: "Dumbbells hauled to the chin",
+            correctNote: "Stopping with the elbows at or just below shoulder height keeps the side delts and traps working without raising the arms any higher while they are turned in.",
+            mistakeNote: "Hauling the dumbbells to the chin lifts the arms high while they are turned in, which narrows the space for the rotator cuff tendons and can pinch them in some lifters."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.69, cy: 0.24),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.06, cx: 0.40, cy: 0.25),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.04, cx: 0.55, cy: 0.22)
+        ]
+    )
+
+    static let barbellHipThrustContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hips", label: "Hips up to a level torso",
+                          labelPoint: CGPoint(x: 0.450, y: 0.27),
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "ribs", label: "Ribs down, spine neutral",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "support_PectoralisMajor_Abdominal_R"),
+            CueAnnotation(cueID: "feet", label: "Shins vertical at the top",
+                          labelPoint: CGPoint(x: 0.464, y: 0.80),
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "bench", label: "Back pivots on the bench",
+                          labelPoint: CGPoint(x: 0.550, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "scapula_L"),
+            CueAnnotation(cueID: "bar", label: "Padded bar in hip crease",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hips",
+                title: "Hip Extension",
+                intro: "The hips rise until the torso is level with the floor.",
+                why: "The gluteus maximus is the main hip extensor in this lift, and a rep only ends when the hips are straight; stopping short leaves out the end of the range, where the glutes are at their shortest.",
+                mistake: "Stopping short of lockout, with the hips hanging below the line of the knees and shoulders.",
+                correct: "Drive through the whole foot until knees, hips and shoulders line up, hold for a one-count, then lower under control."
+            ),
+            TechniqueCue(
+                id: "ribs",
+                title: "Spine Position",
+                intro: "The height comes from the hips, not the lower back.",
+                why: "With the ribs down and the pelvis near neutral, the hips lift the bar; arching the lower back adds height through the spine instead of the hips, and a big arch under load can add stress to the lower back.",
+                mistake: "Flaring the ribs and arching the lower back at the top, so the lower back bows up above the line of the hips and shoulders.",
+                correct: "Brace before each rep, keep the ribs down and the head in line with the spine, and stop when the torso is level."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Foot Position",
+                intro: "Set the feet so the shins are vertical at the top.",
+                why: "With the knees near 90 degrees at lockout the hamstrings are shortened at the knee and can help less, so the glutes take more of the hip extension; in one small study, moving the feet further out raised hamstring activity and lowered quadriceps activity with no gain in glute activity.",
+                mistake: "Setting the feet too far out, so the shins slope away and the knees open well past 90 degrees at the top.",
+                correct: "Plant the feet flat about shoulder-width apart, toes turned out a little, close enough that the shins stand vertical at lockout."
+            ),
+            TechniqueCue(
+                id: "bench",
+                title: "Bench Contact",
+                intro: "The upper back pivots on the edge of the bench.",
+                why: "Hinging on one spot lets the hips rise around a fixed point; sliding along the bench moves the hips away from the feet and changes the knee angle mid-rep.",
+                mistake: "Sliding the back up the bench as the hips rise, until the edge sits near the bottom of the shoulder blades.",
+                correct: "Rest the upper back across the bench edge near the top of the shoulder blades and let the torso rock over that spot without sliding."
+            ),
+            TechniqueCue(
+                id: "bar",
+                title: "Bar Position",
+                intro: "A padded bar sits in the crease of the hips.",
+                why: "Over the hip crease the bar loads hip extension directly, and a thick pad spreads the pressure on the pelvis; the hands only keep it from rolling toward the stomach.",
+                mistake: "Letting the bar roll off the hip crease and up onto the stomach near the top.",
+                correct: "Roll the bar into the hip crease over a thick pad and steady it with both hands just outside the pad."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.40)
+        ],
+        stabilisers: ["adductors", "gluteus medius", "core"],
+        setup: [
+            "Sit on the floor with your upper back against the long side of a low bench, secured so it cannot slide.",
+            "Roll a padded barbell over your thighs until it rests in the crease of your hips.",
+            "Plant your feet flat, about shoulder-width apart and close enough that your shins will be vertical at the top, toes turned out a little.",
+            "Lean back so the bench edge sits near the top of your shoulder blades and hold the bar either side of the pad."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ARCHING THE LOWER BACK",
+            correctCue: "Hips straight, torso level",
+            mistakeCue: "Lower back arches at the top",
+            correctNote: "Stopping with knees, hips and shoulders in line keeps the finish at the hips, where the glutes do the work.",
+            mistakeNote: "Arching the lower back pushes the bar higher without more hip extension, so the extra height comes from the spine, not the glutes."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.08, cx: 0.55, cy: 0.51),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.05, cx: 0.48, cy: 0.50)
         ]
     )
 }

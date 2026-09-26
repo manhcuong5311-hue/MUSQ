@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-barbell-lunge.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

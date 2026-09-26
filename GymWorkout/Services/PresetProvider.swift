@@ -23,6 +23,17 @@ enum PresetProvider {
         MuscleGroup.allCases.filter { preset(for: $0, level: .basic) != nil }
     }
 
+    /// The target an exercise has in the presets that list it (the first
+    /// one found), for when a swap brings it into a list.
+    static func target(forExerciseNamed name: String) -> RepRange? {
+        for group in MuscleGroup.allCases {
+            for level in [PresetLevel.basic, .advanced] {
+                if let item = table[group]?[level]?.first(where: { $0.exerciseName == name }) { return item.reps }
+            }
+        }
+        return nil
+    }
+
     /// `lower`/`upper` are reps, or seconds for a timed exercise.
     private static func item(_ name: String, _ sets: Int, _ lower: Int, _ upper: Int) -> PresetItem {
         PresetItem(exerciseName: name, sets: sets, reps: RepRange(lower, upper))

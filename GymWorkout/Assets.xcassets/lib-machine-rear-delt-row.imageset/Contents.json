@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-machine-rear-delt-row.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

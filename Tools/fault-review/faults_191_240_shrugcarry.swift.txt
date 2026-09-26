@@ -1,0 +1,203 @@
+// MARK: PIECES
+
+    // MARK: Batch 191-240 pieces: shrugs and loaded carries (2026-09-26)
+
+    /// Shrugs: none of the fault with the shoulders dropped, all of it at
+    /// the top. Every shrug model lifts the left shoulder from 0.95 to 1.03
+    /// torso lengths above the pelvis.
+    private static let shrugTop = FaultStrength.between("upper_arm_L", "pelvis", from: 0.96, to: 1.02)
+
+    /// The shoulders held lower than the lifter's, the arms and grip lowered
+    /// with them: a shrug stopped short (with `shrugTop`), or shoulders
+    /// sinking under weights held overhead.
+    private static func shouldersLowered(_ amount: Float, withBar: Bool = false,
+                                         strength: FaultStrength = .always) -> FaultPose {
+        FaultPose(chains: [shoulders, armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], up: -amount)],
+                  strength: strength)
+    }
+
+    /// A shrug rolled at the top: the shoulders come forward (positive) or
+    /// go back, the arms and grip carried with them.
+    private static func shrugRolled(_ forward: Float, withBar: Bool = false) -> FaultPose {
+        FaultPose(chains: [shoulders, armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], forward: forward)],
+                  strength: shrugTop)
+    }
+
+    /// A shrug rolled forward on a Smith bar, which cannot leave its rails:
+    /// at the top the shoulders come forward (as far as `shrugRolled(0.14)`)
+    /// while the hands stay on the track, sinking about 1.5 cm so the
+    /// straight arms keep their length (the elbows re-seat at 175° against
+    /// the lifter's 178° at the top, about 170° while it fades).
+    private static let shrugRolledOnTrack = FaultPose(
+        chains: [shoulders, armsToGrip, bar],
+        moves: [.shift(["upper_arm_*"], forward: 0.14),
+                .shift(["hand_*", "hand_*.tip"], up: -0.025),
+                .resolve(["forearm_*"])],
+        strength: shrugTop
+    )
+
+    /// A shrug finished with the arms: at the top the elbows bend and the
+    /// hands curl up and forward. For loads that are free to swing forward
+    /// (dumbbells, cable handles, a trap bar, a free bar in front).
+    private static func shrugCurled(withBar: Bool) -> FaultPose {
+        FaultPose(chains: [armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: 40)],
+                  strength: shrugTop)
+    }
+
+    /// A shrug finished with the arms on a bar that cannot swing forward (a
+    /// Smith track, or a bar behind the legs): at the top the elbows drive
+    /// back `back`° and bend `bend`°, the bar riding straight up close to the
+    /// body. Pick `back` so the grip keeps its distance ahead of or behind
+    /// the pelvis.
+    private static func shrugRowed(back: Float, bend: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -back),
+                          .turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: bend)],
+                  strength: shrugTop)
+    }
+
+    /// Carries walked in place: a long, reaching stride that opens at both
+    /// ends, the leading foot planted further ahead and the trailing foot
+    /// further behind, the hips dropping a little as the stride opens (the
+    /// bob of a long stride) so the straight trailing leg still reaches; both
+    /// knees re-seated. `from`…`to` is the gap between the ankles in torso
+    /// lengths, so the ghost fades out as the feet pass each other, where the
+    /// leading side swaps.
+    private static func longStride(from: Float, to: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["thigh_*"], up: -0.05),
+                          .shift(["foot_front", "foot_front.tip"], forward: 0.2),
+                          .shift(["foot_back", "foot_back.tip"], forward: -0.14),
+                          .resolve(["shin_front", "shin_back"])],
+                  strength: .between("foot_L", "foot_R", from: from, to: to))
+    }
+
+    /// One-sided carries (the weight in the left hand): the trunk bending
+    /// over toward the weight, the loaded shoulder dropping.
+    private static let leanedToLoad = FaultPose(
+        chains: [spine, shoulders, armsToGrip],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .forward, degrees: -10)]
+    )
+
+// MARK: TABLE
+
+        // MARK: Batch 191-240: shrugs and loaded carries (2026-09-26)
+        // Framed front-on (yaw -0.5, the barbell -0.8): faults along the
+        // lifter's forward axis turn toward a left-side view. The Smith and
+        // cable shrugs stop at -1.1 in total so the rails and columns stay
+        // clear of the lifter.
+        "Dumbbell Shrug": [
+            // Stopping short: the shoulders still low at the top.
+            "range": shouldersLowered(0.07, strength: shrugTop),
+            // Rolled forward at the top (8 cm, so it reads clear of the
+            // lifter's arms side-on).
+            "path": shrugRolled(0.14).seen(-0.8),
+            "head": chinCraned.seen(-0.8),
+            "arms": shrugCurled(withBar: false).seen(-0.8),
+            // Dumbbells drifting in front of the thighs.
+            "grip": armsSwungForward(14).seen(-0.8)
+        ],
+        "Barbell Shrug": [
+            "range": shouldersLowered(0.07, withBar: true, strength: shrugTop),
+            "path": shrugRolled(0.14, withBar: true).seen(-0.6),
+            "head": chinCraned.seen(-0.6),
+            "arms": shrugCurled(withBar: true).seen(-0.6),
+            // The bar hanging away from the thighs.
+            "grip": armsSwungForward(14, withBar: true).seen(-0.6)
+        ],
+        "Smith Machine Shrug": [
+            "range": shouldersLowered(0.07, withBar: true, strength: shrugTop),
+            // Rolled forward at the top, the bar held on its track.
+            "path": shrugRolledOnTrack.seen(-0.6),
+            "head": chinCraned.seen(-0.6),
+            // The bar stays on its track: the elbows go back instead (the
+            // grip moves under 1 cm fore-aft and rises 6.6 cm at the top).
+            "arms": shrugRowed(back: 27, bend: 50).seen(-0.6),
+            // Standing back from the rails: the trunk leans in to the bar.
+            "bar": leanedForward(10, withBar: true, strength: .always).seen(-0.6)
+        ],
+        "Cable Shrug": [
+            "range": shouldersLowered(0.07, strength: shrugTop),
+            "path": shrugRolled(0.14).seen(-0.6),
+            "head": chinCraned.seen(-0.6),
+            "arms": shrugCurled(withBar: false).seen(-0.6),
+            // Feet together (ankles about 8 cm apart), knees locked: the
+            // straight legs converge from the hips.
+            "stance": FaultPose(chains: [legs, hips],
+                                moves: [.shift(["foot_*", "foot_*.tip"], outward: -0.2), .straighten(["shin_*"])])
+        ],
+        "Trap Bar Shrug": [
+            "range": shouldersLowered(0.07, strength: shrugTop),
+            "path": shrugRolled(0.14).seen(-0.8),
+            "head": chinCraned.seen(-0.8),
+            "arms": shrugCurled(withBar: false).seen(-0.8),
+            // Leaning back and rocking the hips forward to heave the bar
+            // (`bodySwung`'s moves, shown throughout: its elbow-bend strength
+            // is zero with this model's straight arms). The legs are drawn so
+            // the thighs slant up to the forward hips: the banana shape.
+            "posture": FaultPose(chains: [spine, armsToGrip, hips, legs],
+                                 moves: [.shift(["pelvis", "thigh_*"], ahead: 0.09),
+                                         .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 12),
+                                         .resolve(["shin_*"])]).seen(-0.8)
+        ],
+        // Framed from behind-left (yaw -2.4): +0.9 turns it to a left-side view.
+        "Behind-the-Back Barbell Shrug": [
+            "range": shouldersLowered(0.07, withBar: true, strength: shrugTop),
+            // Rolled back at the top. Seen from a touch behind the left side
+            // (-1.7 in total) so the shoulders, rolled back toward the
+            // "Straight up, no rolling" pill, stay clear of it.
+            "path": shrugRolled(-0.14, withBar: true).seen(0.7),
+            "head": chinCraned.seen(0.9),
+            // A curl would swing the bar forward through the hips: the
+            // elbows drive back and the bar rides up behind the legs (the
+            // grip stays 0.17 m behind the pelvis and rises 6.5 cm).
+            "arms": shrugRowed(back: 30, bend: 50).seen(0.9),
+            // The bar swinging away from the backs of the legs.
+            "bar": armsSwungForward(-14, withBar: true).seen(0.9)
+        ],
+        // The carries walk in place; framed at -0.6, -0.3 and -1.0.
+        "Farmer's Carry": [
+            // Looking down: the upper back rounds and the head bows forward
+            // and down about the neck (its length kept), the head point
+            // about 0.2 forward and 0.1 lower.
+            "head": FaultPose(chains: [spine],
+                              moves: [.shift(["chest"], forward: -0.06),
+                                      .shift(["neck", "head"], forward: 0.07, up: -0.03),
+                                      .turn(pivot: "neck", points: ["head"], axis: .lateral, degrees: -55)]).seen(-0.8),
+            // Shoulders dragged forward and down, the upper back rounding
+            // (`backRounded`'s chest-back, head-forward idiom); the girdle is
+            // drawn from the neck so the drop reads as a slump.
+            "shoulders": FaultPose(chains: [spine, arms, shoulders],
+                                   moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], forward: 0.13, up: -0.06, outward: -0.03),
+                                           .shift(["chest"], forward: -0.07),
+                                           .shift(["neck", "head"], forward: 0.09, up: -0.03)]).seen(-0.8),
+            "posture": leanedForward(10, strength: .always).seen(-0.8),
+            // A loose grip: the dumbbells swinging forward.
+            "grip": armsSwungForward(15).seen(-0.8),
+            "steps": longStride(from: 0.6, to: 0.76).seen(-0.8)
+        ],
+        "Suitcase Carry": [
+            "level": leanedToLoad,
+            // The right shoulder swinging forward, seen near side-on (-1.3 in
+            // total, as the grip): the upper body opens toward the camera
+            // over the side-on hips, the right arm ahead of the chest. A left
+            // shoulder forward from this side would fold both arms together.
+            "twist": twisted(-22).seen(-1.0),
+            // The dumbbell swinging forward.
+            "grip": armsTurned(.lateral, 15, side: "L").seen(-1.0),
+            // The free arm held out as a counterweight.
+            "free": armsTurned(.forward, 35, side: "R"),
+            "steps": longStride(from: 0.52, to: 0.68).seen(-1.0)
+        ],
+        "Overhead Carry": [
+            "wrist": wristBentBack(withBar: false).seen(-0.4),
+            // Arms drifting forward of the head.
+            "lockout": armsTurned(.lateral, -18).seen(-0.4),
+            // The shoulders sinking under the weights.
+            "shoulders": shouldersLowered(0.16),
+            "ribs": leanedBack(10, arch: 0.08).seen(-0.4),
+            "steps": longStride(from: 0.52, to: 0.68).seen(-0.4)
+        ],

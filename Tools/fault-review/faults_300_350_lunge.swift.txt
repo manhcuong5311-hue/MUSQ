@@ -1,0 +1,141 @@
+// MARK: PIECES
+
+    // MARK: Legs 300-350 lunge pieces (2026-09-26)
+
+    /// An alternating lunge's front foot planted `by` torso lengths nearer
+    /// the back foot along the floor, the front knee re-seated further
+    /// forward over it: a short step, or a front foot set too far back
+    /// under a Smith bar. `heelUp` degrees also rock the foot up onto its
+    /// toes, for a foot so far back that the heel peels off the floor at the
+    /// bottom. Grows as the front knee bends.
+    private static func lungeStepShort(_ by: Float, heelUp: Float = 0) -> FaultPose {
+        let lift: [FaultMove] = heelUp > 0
+            ? [.turn(pivot: "foot_front.tip", points: ["foot_front"], axis: .lateral, degrees: -heelUp)]
+            : []
+        return FaultPose(chains: [leg("front"), hips],
+                         moves: [.shift(["foot_front", "foot_front.tip"], ahead: -by)] + lift + [.resolve(["shin_front"])],
+                         strength: .withBend("shin_front"))
+    }
+
+    /// An alternating lunge's front foot landing on the back foot's line (a
+    /// tightrope stance): moved `by` torso lengths in toward the midline, the
+    /// front knee following it in.
+    private static func lungeStepInLine(_ by: Float) -> FaultPose {
+        FaultPose(chains: [leg("front"), hips],
+                  moves: [.shift(["foot_front", "foot_front.tip"], outward: -by), .resolve(["shin_front"])],
+                  strength: .withBend("shin_front"))
+    }
+
+    /// A lunge's back leg from hip to ankle. Its heel is up, so the foot's
+    /// `.tip`, drawn a fixed length along the foot, would run ~5 cm through
+    /// the floor; these ghosts stop the back leg at the ankle.
+    private static let lungeBackLeg = ["thigh_back", "shin_back", "foot_back"]
+
+    /// A lunge stopping high: `shallow` with the back leg drawn only to the
+    /// ankle.
+    private static func lungeShallow(_ rise: Float, ahead: Float = 0) -> FaultPose {
+        FaultPose(chains: [spine, leg("front"), lungeBackLeg, hips, armsToGrip],
+                  moves: [.shift(carried, ahead: ahead, rise: rise), .resolve(["shin_*"])],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// A lunge's back leg pushing the body up, its knee straightening:
+    /// `rearLegPushing` with the back leg drawn only to the ankle.
+    private static func lungeBackLegPushing(strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [lungeBackLeg, hips], moves: [.straighten(["shin_back"])], strength: strength)
+    }
+
+    /// A curtsy lunge's hips opening: the pelvis and everything above it turn
+    /// about the front hip toward the leg that crosses behind, the back hip
+    /// swinging back and the back knee re-seated over the planted back foot.
+    /// The pivot is the front hip, so a positive turn opens toward whichever
+    /// leg is behind (an `_R` pivot mirrors it).
+    private static func curtsyHipsOpened(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, arms, ["thigh_front", "pelvis", "thigh_back"], leg("back")],
+                  moves: [.turn(pivot: "thigh_front", points: ["pelvis", "thigh_back"] + trunk, axis: .up, degrees: degrees),
+                          .resolve(["shin_back"])],
+                  strength: .withBend("shin_front"))
+    }
+
+    /// A curtsy lunge's back foot swung far across behind the front one:
+    /// moved `by` torso lengths further toward the front leg's side (it
+    /// already sits past the midline, so that is inward for its own side),
+    /// the back knee re-seated.
+    private static func curtsyCrossedFar(_ by: Float) -> FaultPose {
+        FaultPose(chains: [leg("back"), hips],
+                  moves: [.shift(["foot_back", "foot_back.tip"], outward: -by), .resolve(["shin_back"])],
+                  strength: .withBend("shin_front"))
+    }
+
+// MARK: TABLE
+        // MARK: Legs 300-350 lunges (2026-09-26)
+        // All four alternate legs, so every fault names the `front` and
+        // `back` leg and follows whichever foot leads. Torso length is 0.59 m.
+        // Forward Lunge is framed at yaw -1.3 (near side-on), so its sagittal
+        // faults need no turn and knee caving is turned face-on (-0.2 in
+        // total). Barbell Lunge is framed at -0.6: its sagittal faults turn
+        // only to -1.05, since side-on the near plate hides the head, and its
+        // frontal ones turn face-on. Smith Machine Reverse Lunge is framed at
+        // -1.0, already showing the sagittal plane; its sagittal faults stay
+        // unturned so the rails and plates stay off the lifter, and knee
+        // caving turns face-on. Curtsy Lunge is framed at -0.5: sagittal
+        // faults turn to -1.3, frontal ones face-on, and the hips turning
+        // open (a turn about the vertical, which swings the back hip and
+        // shoulder backward) also turn to -1.3, where that swing lies across
+        // the screen instead of into it. The back foot stands on its toes,
+        // so ghosts that draw the back leg stop it at the ankle
+        // (`lungeBackLeg`). In the mistake view the model sits ~0.09 higher
+        // on screen, so two ghosts turn a little to keep their moved joints
+        // out from under the cue's own label.
+        "Forward Lunge": [
+            // A short step: the front foot lands ~21 cm nearer the back one
+            // and the knee travels ~10 cm past the toes, the shin ~39°
+            // forward.
+            "step": lungeStepShort(0.35),
+            "torso": leanedForward(22, strength: .withBend("shin_front")),
+            "knee": kneesIn("front").seen(faceOn),
+            // Stopping halfway: the hips held ~18 cm up and pushed ~6 cm
+            // forward instead of down.
+            "depth": lungeShallow(0.3, ahead: 0.1),
+            // Pushing back off the ball of the front foot.
+            "drive": heelsUp("front")
+        ],
+        "Barbell Lunge": [
+            "step": lungeStepShort(0.35).seen(-0.45),
+            // The chest dropping and the upper back rounding under the bar.
+            "torso": chestDropped(16, withBar: true, strength: .withBend("shin_front")).seen(-0.45),
+            // The front foot landing on the back foot's line, ~24 cm in.
+            "track": lungeStepInLine(0.4).seen(0.6),
+            "knee": kneesIn("front").seen(0.6),
+            "drive": heelsUp("front").seen(-0.45)
+        ],
+        "Smith Machine Reverse Lunge": [
+            // The front foot set under the bar: ~21 cm further back, where
+            // the rails keep the bar over it, so at the bottom the knee is
+            // forced past the toes and the heel peels up ~7 cm.
+            "stance": lungeStepShort(0.35, heelUp: 20),
+            // Too short a step back: the back foot lands ~15 cm nearer.
+            "step": FaultPose(chains: [lungeBackLeg, hips],
+                              moves: [.shift(["foot_back"], ahead: 0.25), .resolve(["shin_back"])],
+                              strength: .withBend("shin_front")),
+            // Rounding under the bar instead of hinging; the bar stays on its
+            // rails, so only the spine moves.
+            "lean": backRounded(.withBend("shin_front")),
+            "knee": kneesIn("front").seen(1.0),
+            // Standing up off the back leg: its knee straightens first.
+            // Turned to -0.7 so the straightened knee clears the label on
+            // the right.
+            "drive": lungeBackLegPushing(strength: .withBend("shin_front")).seen(0.3)
+        ],
+        "Curtsy Lunge": [
+            // The pelvis and trunk turning ~30° toward the leg that crosses
+            // behind: the back hip ~9 cm and that shoulder ~14 cm back.
+            "hips": curtsyHipsOpened(30).seen(-0.8),
+            // The back foot swung ~18 cm further across. Turned to +0.3,
+            // just past face-on, so in rep 1 the moved foot lands left of
+            // the label rather than under it.
+            "cross": curtsyCrossedFar(0.3).seen(0.8),
+            "knee": kneesIn("front").seen(0.5),
+            "torso": leanedForward(20, strength: .withBend("shin_front")).seen(-0.8),
+            "drive": heelsUp("front").seen(-0.8)
+        ],

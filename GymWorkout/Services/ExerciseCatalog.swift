@@ -119,8 +119,9 @@ enum ExerciseCatalog {
 
     // MARK: - Storage
 
-    /// Holds, logged in seconds rather than reps.
-    private static let timedExercises: Set<String> = ["Plank", "Side Plank"]
+    /// Holds and loaded carries, logged in seconds rather than reps.
+    private static let timedExercises: Set<String> = ["Plank", "Side Plank",
+                                                      "Farmer's Carry", "Suitcase Carry", "Overhead Carry"]
 
     private static let byName: [String: Exercise] =
         Dictionary(SampleData.exercises.map { ($0.name, $0) }, uniquingKeysWith: { first, _ in first })

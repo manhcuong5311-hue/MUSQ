@@ -1,0 +1,184 @@
+// MARK: PIECES
+
+    // MARK: Batch 191-240 barbell, Smith and landmine press pieces (2026-09-26)
+
+    /// Overhead presses: the hands, and the bar, held above where the rep
+    /// should start — a rep cut short at the bottom, or the arms pressing
+    /// early out of a push press's dip — the elbows opening under them.
+    private static func barHeldHigh(withBar: Bool, strength: FaultStrength = .withBend("forearm_L")) -> FaultPose {
+        FaultPose(chains: [armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: 0.16), .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// A push press's dip: none standing tall, all of it at the bottom of the
+    /// dip. The pelvis is this far from the left ankle, in torso lengths:
+    /// ~1.42 standing, ~1.27 at the bottom of the model's dip.
+    private static let pushPressDip = FaultStrength.between("pelvis", "foot_L", from: 1.40, to: 1.30)
+
+    /// One-arm landmine presses (the left arm works): the hand driven across
+    /// the body toward the midline near the top instead of straight up and
+    /// out, turned toward face-on so the drift shows.
+    private static let leftPressedAcross = FaultPose(
+        chains: [leftArmToGrip],
+        moves: [.shift(["hand_L", "hand_L.tip"], outward: -0.16), .shift(["forearm_L"], outward: -0.06)],
+        strength: .whenStraight("forearm_L"), view: 0.6
+    )
+
+    /// One-arm landmine presses: the trunk turning 30° to drive the pressing
+    /// (left) shoulder forward. Seen side-on (a total of about -1.5), where
+    /// square shoulders sit one behind the other and the twisted ones split
+    /// ~20 cm front to back, the pressing arm carried forward with them. The
+    /// free arm is left out: its hand stays on the hip, and drawn it only
+    /// made lines across the chest.
+    private static let leftShoulderTwistedForward = FaultPose(
+        chains: [spine, shoulders, leftArm],
+        moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*", "forearm_L", "hand_L"], axis: .up, degrees: 30)],
+        view: -0.5
+    )
+
+// MARK: TABLE
+
+        // MARK: Batch 191-240 barbell, Smith and landmine presses (2026-09-26)
+        // Framed at yaw -0.8 (seated, behind-the-neck, push press), -1.3 (Z
+        // press), -0.6 (Smith) and -1.0 (landmines, Viking): sagittal faults
+        // turn to a total of about -1.4, side-to-side ones on the landmines
+        // and Viking turn toward face-on (about -0.4); the behind-the-neck
+        // depth fault is seen from behind-left (-2.3).
+        "Seated Barbell Overhead Press": [
+            // Leaning back from the hips, the lower back arching.
+            "torso": leanedBack(12, arch: 0.08, withBar: true).seen(-0.6),
+            // Pressed out around the face: locked out in front of the head.
+            "barpath": armsTurned(.lateral, -18, withBar: true, strength: .whenStraight("forearm_L")).seen(-0.6),
+            "grip": wristBentBack(withBar: true),
+            // Short reps: the bar stops at the nose instead of the chin
+            // (0.16 torso lengths is ~9 cm on this model).
+            "depth": barHeldHigh(withBar: true),
+            "feet": feetTucked.seen(-0.6)
+        ],
+        "Behind-the-Neck Press": [
+            // A narrow grip: the hands ~12 cm further in each, the elbows
+            // left where they were, so the forearms slant in instead of
+            // standing straight up. Turned toward face-on (total -0.3).
+            "grip": FaultPose(chains: [armsToGrip, bar],
+                              moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.2), .shift(["forearm_*"], outward: -0.04)],
+                              view: 0.5),
+            // Bar forced further down the back of the neck than the
+            // shoulders allow: the hands sink lower behind it (about 8 cm
+            // down, 3.5 cm back), turning the shoulders further out. Seen
+            // from behind-left (total -2.3): the bar lies against the back
+            // of the neck, the two arms split apart and the plates sit well
+            // out to the sides, clear of the hands.
+            "depth": FaultPose(chains: [armsToGrip, bar],
+                               moves: [.shift(["hand_*", "hand_*.tip"], forward: -0.06, up: -0.14), .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L"), view: -1.5),
+            // Upper back rounding, the head pushed forward to let the bar pass.
+            "head": headDropped(.withBend("forearm_L")).seen(-0.6),
+            "brace": leanedBack(10, arch: 0.08, withBar: true).seen(-0.6),
+            // Locked out in front of the face instead of over the neck. This
+            // model locks out ~3 cm behind the shoulders, so it needs a
+            // bigger swing than the front presses: -25° puts the bar ~19 cm
+            // ahead of them, clearly in front of the face.
+            "lockout": armsTurned(.lateral, -25, withBar: true, strength: .whenStraight("forearm_L")).seen(-0.6)
+        ],
+        "Push Press": [
+            // The arms pressing during the dip: the bar rises before the legs
+            // drive. Shown only in the dip.
+            "rack": barHeldHigh(withBar: true, strength: pushPressDip),
+            "lockout": armsTurned(.lateral, -18, withBar: true, strength: .whenStraight("forearm_L")).seen(-0.6),
+            "brace": leanedBack(12, arch: 0.08, withBar: true).seen(-0.6),
+            // The chest tipping forward in the dip, the bar going with it.
+            "dip": leanedForward(16, withBar: true, strength: pushPressDip).seen(-0.6),
+            // Rocking onto the toes in the dip (heelsUp, read off the dip
+            // rather than the knee, which stays soft at ~157° standing).
+            "heels": FaultPose(chains: [legs],
+                               moves: [.turn(pivot: "foot_*.tip", points: ["foot_*"], axis: .lateral, degrees: -24),
+                                       .resolve(["shin_*"])],
+                               strength: pushPressDip, view: -0.6)
+        ],
+        "Z Press": [
+            // Slumped: the lower back rounding back, the chest sinking and
+            // the head dropping forward (a deeper `backRounded`, with the
+            // chest, neck and head also coming down). Framed side-on already.
+            "torso": FaultPose(chains: [spine],
+                               moves: [.shift(["spine"], forward: -0.10), .shift(["chest"], forward: -0.05, up: -0.05),
+                                       .shift(["neck"], forward: 0.06, up: -0.07), .shift(["head"], forward: 0.15, up: -0.09)]),
+            "brace": leanedBack(12, arch: 0.06, withBar: true),
+            "barpath": armsTurned(.lateral, -18, withBar: true, strength: .whenStraight("forearm_L")),
+            "grip": wristBentBack(withBar: true),
+            // Turned toward front three-quarter (total -0.8, as the seated
+            // press): side-on, the near plate hides the face and the real bar.
+            "depth": barHeldHigh(withBar: true).seen(0.5)
+        ],
+        "Smith Machine Shoulder Press": [
+            // Bench set too far back from the fixed bar: the body sits ~13 cm
+            // back, the hands stay on the bar (drawn as the fixed reference)
+            // and the upper arms angle forward to it. The legs are left out:
+            // they only added near-parallel lines.
+            "bench": FaultPose(chains: [spine, armsToGrip, bar],
+                               moves: [.shift(["pelvis", "thigh_*", "upper_arm_*"] + torso, ahead: -0.22),
+                                       .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L"), view: -0.8),
+            "back": lowerBackArched(0.12).seen(-0.8),
+            // Elbows flared out and back behind the bar at the bottom (~14 cm
+            // each), turned near face-on (total -0.2) so both open out alike.
+            "elbow": FaultPose(chains: [armsToGrip], moves: [.shift(["forearm_*"], forward: -0.1, outward: 0.25), .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L"), view: 0.4),
+            // Short reps: the bar stops at the chin instead of the
+            // collarbones (0.16 torso lengths is ~9 cm on this model).
+            "depth": barHeldHigh(withBar: true),
+            "feet": feetTucked.seen(-0.8)
+        ],
+        "Landmine Shoulder Press": [
+            "elbow": leftElbowFlared(40, strength: .withBend("forearm_L")).seen(0.5),
+            "path": leftPressedAcross,
+            "core": leanedBack(14, arch: 0.05).seen(-0.4),
+            // Twisting the pressing shoulder forward.
+            "twist": leftShoulderTwistedForward,
+            // Feet brought level, side by side, instead of split: each ankle
+            // sits ~0.3 m (0.5 torso lengths) ahead of or behind the hips, so
+            // this puts both under them. The legs are drawn straight between
+            // hip and ankle (re-seating the knees would squat them to ~140°).
+            // Turned to a total of -1.4, side-on, so the feet close up.
+            "stance": FaultPose(chains: [legs],
+                                moves: [.shift(["foot_R", "foot_R.tip"], ahead: -0.5),
+                                        .shift(["foot_L", "foot_L.tip"], ahead: 0.5),
+                                        .straighten(["shin_*"])],
+                                view: -0.4)
+        ],
+        "Half-Kneeling Landmine Press": [
+            "elbow": leftElbowFlared(40, strength: .withBend("forearm_L")).seen(0.5),
+            "path": leftPressedAcross,
+            "core": leanedBack(14, arch: 0.05).seen(-0.4),
+            "twist": leftShoulderTwistedForward,
+            // Sitting back toward the back heel, the trunk bending forward
+            // at the hip: the hips ~13 cm back and ~7 cm down.
+            "stance": FaultPose(chains: [spine, hips, legs],
+                                moves: [.shift(["pelvis", "thigh_*"], forward: -0.22, up: -0.12), .shift(["spine"], forward: -0.1)],
+                                view: -0.4)
+        ],
+        "Viking Press": [
+            // The wrists bent back. The palms face in on these handles, so the
+            // backs of the hands tip out, about the chest's axis; the
+            // side-to-side turn of `wristBentBack` would only tilt them within
+            // the palm. Uses the dumbbell family's `palmsInWristsBentBack`
+            // (already in FaultPoses.swift), turned toward face-on (total
+            // -0.4) so the tilt shows.
+            "grip": palmsInWristsBentBack.seen(0.6),
+            // Elbows flared out to the sides at the bottom.
+            "elbow": FaultPose(chains: [arms],
+                               moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*"], axis: .forward, degrees: 38)],
+                               strength: .withBend("forearm_L"), view: 0.6),
+            // Stopping short: the arms still bent at the top. The handles
+            // stop ~9 cm short and the elbows drop under the arms before
+            // they are re-seated, so the bend (~112° from the model's ~161°)
+            // opens downward, where the side-on view (total -1.4) shows it.
+            "path": FaultPose(chains: [armsToGrip],
+                              moves: [.shift(["hand_*", "hand_*.tip"], forward: -0.14, up: -0.12),
+                                      .shift(["forearm_*"], up: -0.14), .resolve(["forearm_*"])],
+                              strength: .whenStraight("forearm_L"), view: -0.4),
+            "core": leanedBack(14, arch: 0.06).seen(-0.4),
+            // Dipping the knees to drive the handles up.
+            "feet": FaultPose(chains: [spine, legs, hips, armsToGrip],
+                              moves: [.shift(carried, rise: -0.12), .resolve(["shin_*"])], view: -0.4)
+        ],

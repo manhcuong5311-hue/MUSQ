@@ -1,3 +1,5 @@
+import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
 import re, glob, json
 from pxr import Usd, UsdSkel, UsdGeom
 SRC = open("/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Models/SampleData.swift").read()

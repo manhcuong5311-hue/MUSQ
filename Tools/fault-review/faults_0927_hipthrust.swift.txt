@@ -1,0 +1,101 @@
+// MARK: PIECES
+
+    // MARK: Barbell hip thrust pieces (2026-09-27)
+    //
+    // Moves along the floor use the body's own `up` or the room's `rise`,
+    // never `ahead`: a hip thrust's trunk tilts up toward the head at the
+    // bottom and lies level at lockout, so `BodyFrame.ahead` points at the
+    // feet for the first ~0.6 s of each rep and at the head for the rest.
+
+    /// A hip thrust's lockout, read from hip height: the pelvis this far
+    /// from the left ankle, in torso lengths (0.86 at the bottom, 1.06 at
+    /// lockout on the rig), so a fault of the top shows fully at lockout and
+    /// not at all in the lower half of the rep. `.whenStraight("thigh_L")`
+    /// tops out near 0.6 on this lift: it reads the hip from the spine joint,
+    /// which sits only ~11 cm up the trunk from hip joints ~9 cm to either
+    /// side, so a straight hip measures ~145°.
+    private static let thrustLockout = FaultStrength.between("pelvis", "foot_L", from: 0.9, to: 1.04)
+
+    /// A bridge or hip thrust stopped short of lockout: the hips, and the bar
+    /// resting on them, hang `drop` torso lengths below the line of the knees
+    /// and shoulders. The trunk pivots on the shoulders, so the spine and
+    /// chest sink less than the pelvis; the knees and elbows re-seat. Shown
+    /// at the top: `strength` is the lift's lockout reading.
+    private static func hipsShortOfLockout(_ drop: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, armsToGrip, bar],
+                  moves: [.shift(["pelvis", "thigh_*", "hand_*", "hand_*.tip"], rise: -drop),
+                          .shift(["spine"], rise: -drop * 0.8),
+                          .shift(["chest"], rise: -drop * 0.5),
+                          .resolve(["shin_*"]),
+                          .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// A hip thrust finished with the lower back: the lumbar spine humps up
+    /// above the line of the pelvis and chest at lockout. `bridgeArched`,
+    /// larger (~7 cm at the spine joint) and read from hip height.
+    private static let thrustArched = FaultPose(
+        chains: [spine],
+        moves: [.shift(["spine"], rise: 0.12), .shift(["chest"], rise: 0.05)],
+        strength: thrustLockout
+    )
+
+    /// Hip thrust feet set too far out: the feet sit `reach` torso lengths
+    /// further from the hips along the trunk's line (level at lockout), so
+    /// the shins slope away and the knees open well past 90°. Shown only
+    /// toward lockout, where it is judged; at the bottom the tilted trunk
+    /// would push the moved feet into the floor.
+    private static func thrustFeetFar(_ reach: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["foot_*", "foot_*.tip"], up: -reach), .resolve(["shin_*"])],
+                  strength: thrustLockout)
+    }
+
+    /// Hip thrust: the back sliding up the bench as the hips rise instead of
+    /// hinging on its edge. The hips, trunk, arms and bar ride `slide` torso
+    /// lengths toward the head, the feet stay planted and the knees open
+    /// behind them; it grows as the hips rise.
+    private static func slidUpBench(_ slide: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, bar, legs, hips],
+                  moves: [.shift(carried, up: slide), .resolve(["shin_*"])],
+                  strength: thrustLockout)
+    }
+
+    /// Hip thrust: the bar rolled up off the hip crease onto the stomach as
+    /// the hips near lockout (ExRx: keep the bar from rolling back near the
+    /// top), the hands following it `roll` torso lengths toward the head and
+    /// the elbows re-seating between them and the shoulders. Read from hip
+    /// height: at the bottom the trunk slopes up toward the head, so the
+    /// crease is a valley the bar cannot roll out of.
+    private static func barRolledUp(_ roll: Float, strength: FaultStrength = .always) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: roll), .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+// MARK: TABLE
+
+        // MARK: Barbell hip thrust (2026-09-27)
+        // Framed three-quarter from the feet on the lifter's left (yaw -0.7).
+        // The hips and spine move up and down the screen in any framing, and
+        // moves along the trunk's line show at about two-thirds of their
+        // length (a 13 cm move is ~23 pt), so no fault turns the model: a turn
+        // toward side-on would put the near plate over the hips and hands.
+        // The model's knees sit ~7 cm inside the ankles at lockout, so there
+        // is no knee cue (notes_0927_hipthrust.md).
+        "Barbell Hip Thrust": [
+            // Stopping short: the hips and bar hang ~15 cm below the line of
+            // the knees and shoulders, the hips bent to ~150°.
+            "hips": hipsShortOfLockout(0.25, strength: thrustLockout),
+            // The lower back humping up above the line at the top.
+            "ribs": thrustArched,
+            // Feet ~13 cm too far out: at lockout the shins slope away and
+            // the knees open to ~110°.
+            "feet": thrustFeetFar(0.22),
+            // The back sliding ~12 cm up the bench as the hips rise, so the
+            // edge ends near the bottom of the shoulder blades.
+            "bench": slidUpBench(0.2),
+            // The bar rolled ~16 cm up onto the stomach near lockout, the
+            // hands with it.
+            "bar": barRolledUp(0.28, strength: thrustLockout),
+        ],

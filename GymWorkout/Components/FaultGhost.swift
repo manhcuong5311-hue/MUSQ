@@ -75,9 +75,8 @@ struct FaultGhost: View {
         guard let frame = BodyFrame(transforms) else { return nil }
         var fault = fault
         if fault.alternates {
-            guard let left = transforms["foot_L"], let right = transforms["foot_R"] else { return nil }
-            let lead = simd_dot(left.columns.3.xyz - right.columns.3.xyz, frame.ahead)
-            fault = fault.leading(lead >= 0 ? "L" : "R")
+            guard let side = BodyFrame.leadingSide(transforms) else { return nil }
+            fault = fault.leading(side)
         }
 
         var names = fault.joints.union(fault.chains.joined())
@@ -214,6 +213,14 @@ struct BodyFrame {
         let fallback = up - simd_dot(up, Self.rise) * Self.rise
         ahead = simd_length(level) > 0.3 ? simd_normalize(level)
             : simd_length(fallback) > 1e-5 ? simd_normalize(fallback) : forward
+    }
+
+    /// `L` or `R`, whichever foot is further ahead — the leading leg of a lift
+    /// that alternates legs. Nil until the feet and body axes are tracked.
+    static func leadingSide(_ transforms: [String: simd_float4x4]) -> String? {
+        guard let frame = BodyFrame(transforms),
+              let left = transforms["foot_L"], let right = transforms["foot_R"] else { return nil }
+        return simd_dot(left.columns.3.xyz - right.columns.3.xyz, frame.ahead) >= 0 ? "L" : "R"
     }
 
     /// The rotation axis that makes a positive turn match `FaultMove.turn`.

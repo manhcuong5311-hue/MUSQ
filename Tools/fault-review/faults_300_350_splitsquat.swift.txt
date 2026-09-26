@@ -1,0 +1,136 @@
+// MARK: PIECES
+
+    // MARK: Batch 300-350 split squat pieces (2026-09-26)
+
+    /// A back-loaded bar sliding down onto the rear delts, the chest tipping
+    /// forward to balance it: the Back Squat's bar fault with less lean, as
+    /// these split squats stay nearly upright (3-14° in the models). It grows
+    /// with the front knee's bend.
+    private static let barSlidLow = FaultPose(
+        chains: [spine, armsToGrip, bar],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -10),
+                .shift(["hand_*", "hand_*.tip"], forward: -0.03, up: -0.1),
+                .resolve(["forearm_*"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// Smith lifts: the chest folding forward under the fixed bar. The hips
+    /// and all they carry slide back by as much as the lean brings the
+    /// shoulders forward, so the bar stays over its vertical track while the
+    /// chest drops; both knees re-seat under the moved hips.
+    private static func hipsBehindFixedBar(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, legs, hips, bar],
+                  moves: [.shift(carried, ahead: -sin(degrees * .pi / 180)),
+                          .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -degrees),
+                          .resolve(["shin_*"])],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// Smith lifts: the bar set low on the back of the shoulders under the
+    /// fixed track. The hands sit ~6 cm lower on the back, the chest tips 10°
+    /// and the hips slide ~8 cm back, so the bar stays on its vertical line
+    /// (within 3 mm of it at the bottom on the rig) — unlike `barSlidLow`,
+    /// whose bar tips ~8 cm forward with the chest. Grows with the front knee.
+    private static let barLowOnTrack = FaultPose(
+        chains: [spine, armsToGrip, legs, hips, bar],
+        moves: [.shift(carried, ahead: -0.13),
+                .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -10),
+                .shift(["hand_*", "hand_*.tip"], forward: -0.03, up: -0.1),
+                .resolve(["forearm_*"]),
+                .resolve(["shin_*"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// Split squats with the left foot forward: the front foot tucked too
+    /// close under a fixed bar, so the heel cannot stay down. The foot sits
+    /// ~12 cm closer to the back foot and rocks up about the toes (the ankle
+    /// ~7 cm higher at the bottom); the knee, re-seated between the same hip
+    /// and the lifted ankle, ends about over the toes.
+    private static let frontFootTooClose = FaultPose(
+        chains: [leg("L"), hips],
+        moves: [.shift(["foot_L", "foot_L.tip"], ahead: -0.2),
+                .turn(pivot: "foot_L.tip", points: ["foot_L"], axis: .lateral, degrees: -20),
+                .resolve(["shin_L"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// Rear-foot-elevated split squats (right foot on the bench): the back
+    /// foot perched on its toes instead of lying on its laces. The ankle
+    /// swings up about the toes (~15 cm) and the knee re-seats under the hip.
+    /// The laces-down foot points backward from the ankle, so a positive turn
+    /// about `.lateral` lifts the ankle.
+    private static let rearFootOnToes = FaultPose(
+        chains: [leg("R")],
+        moves: [.turn(pivot: "foot_R.tip", points: ["foot_R"], axis: .lateral, degrees: 40),
+                .resolve(["shin_R"])]
+    )
+
+// MARK: TABLE
+
+        // MARK: Batch 300-350 split squats and Bulgarian split squats (2026-09-26)
+        // Every model keeps the LEFT foot forward for both reps and is framed
+        // from the left: yaw -1.3 (barbell, dumbbell, front-foot-elevated and
+        // rear-foot-elevated split squats) or -1.0 (the two Smith lifts and the
+        // barbell Bulgarian). Sagittal faults need no turn at -1.3 and turn -0.4
+        // (a total of -1.4) at -1.0; the front knee caving in turns toward
+        // face-on, a total of about -0.2 (faceOn at -1.3, 0.8 at -1.0).
+        "Barbell Split Squat": [
+            // The bar slid down the back, the chest tipping to balance it.
+            "bar": barSlidLow,
+            "torso": leanedForward(20, withBar: true),
+            "knee": kneesIn("L").seen(faceOn),
+            // Stopping halfway, the hips drifting forward instead of down.
+            "depth": shallow(0.18, ahead: 0.1, withBar: true),
+            "heel": heelsUp("L")
+        ],
+        "Dumbbell Split Squat": [
+            // The dumbbells swinging forward off the sides at the bottom.
+            "grip": armsSwungForward(28, strength: .withBend("shin_L")),
+            "torso": leanedForward(20),
+            "knee": kneesIn("L").seen(faceOn),
+            "depth": shallow(0.18, ahead: 0.1),
+            "heel": heelsUp("L")
+        ],
+        "Smith Machine Split Squat": [
+            // The bar low on the back, held on its track: the chest tips, the
+            // hips slide back.
+            "bar": barLowOnTrack.seen(-0.4),
+            // Hips back behind the fixed bar, the chest folding under it.
+            "torso": hipsBehindFixedBar(14).seen(-0.4),
+            "knee": kneesIn("L").seen(0.8),
+            // Stopping high on the track: straight up, the bar on its rails.
+            "depth": shallow(0.18, withBar: true).seen(-0.4),
+            // Front foot too close to the bar: the heel peels up.
+            "stance": frontFootTooClose.seen(-0.4)
+        ],
+        "Front-Foot-Elevated Split Squat": [
+            "grip": armsSwungForward(28, strength: .withBend("shin_L")),
+            "torso": leanedForward(20),
+            "knee": kneesIn("L").seen(faceOn),
+            // Stopping at flat split squat depth: the hips ~13 cm higher.
+            "depth": shallow(0.22),
+            // The front heel lifting off the step.
+            "step": heelsUp("L")
+        ],
+        "Rear-Foot-Elevated Split Squat": [
+            "grip": armsSwungForward(28, strength: .withBend("shin_L")),
+            "torso": leanedForward(20),
+            "knee": kneesIn("L").seen(faceOn),
+            "depth": shallow(0.18, ahead: 0.1),
+            // The back foot up on its toes on the bench.
+            "rear": rearFootOnToes
+        ],
+        "Barbell Bulgarian Split Squat": [
+            "bar": barSlidLow.seen(-0.4),
+            "torso": leanedForward(20, withBar: true).seen(-0.4),
+            "knee": kneesIn("L").seen(0.8),
+            "depth": shallow(0.18, ahead: 0.1, withBar: true).seen(-0.4),
+            "rear": rearFootOnToes.seen(-0.4)
+        ],
+        "Smith Machine Bulgarian Split Squat": [
+            "bar": barLowOnTrack.seen(-0.4),
+            "torso": hipsBehindFixedBar(14).seen(-0.4),
+            "knee": kneesIn("L").seen(0.8),
+            "depth": shallow(0.18, withBar: true).seen(-0.4),
+            "rear": rearFootOnToes.seen(-0.4)
+        ],

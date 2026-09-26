@@ -78,9 +78,10 @@ def emit(e):
     out.append("        ],")
     out.append("        activation: [")
     acts = []
-    for n, rank, level, frac in e["activation"]:
-        acts.append(f"            MuscleActivation(name: {s(n)}, rank: .{rank},\n"
-                    f"                             activation: {s(level)}, fraction: {frac:.2f})")
+    # The HIGH / MODERATE / LOW word is read off the fraction in the app
+    # (2026-09-26), so a level given in the spec is ignored.
+    for n, rank, *_, frac in e["activation"]:
+        acts.append(f"            MuscleActivation(name: {s(n)}, rank: .{rank}, fraction: {frac:.2f})")
     out.append(",\n".join(acts))
     out.append("        ],")
     out.append("        stabilisers: [" + ", ".join(s(x) for x in e["stabilisers"]) + "],")

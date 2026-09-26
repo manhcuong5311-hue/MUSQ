@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-dumbbell-shrug.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

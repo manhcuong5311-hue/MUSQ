@@ -21,32 +21,32 @@
  },
  "Back Squat": {
   "time": 1.33,
-  "disp": 3.55,
+  "disp": 3.49,
   "length": 7.96
  },
  "Front Squat": {
   "time": 1.33,
-  "disp": 3.48,
+  "disp": 3.46,
   "length": 7.96
  },
  "Goblet Squat": {
   "time": 1.33,
-  "disp": 3.55,
+  "disp": 3.53,
   "length": 7.96
  },
  "Walking Lunge": {
   "time": 7.83,
-  "disp": 17.02,
+  "disp": 17.03,
   "length": 7.96
  },
  "Reverse Lunge": {
   "time": 1.33,
-  "disp": 4.39,
+  "disp": 4.44,
   "length": 7.96
  },
  "Leg Press": {
   "time": 1.33,
-  "disp": 0.99,
+  "disp": 1.0,
   "length": 7.96
  },
  "Hack Squat": {
@@ -61,17 +61,17 @@
  },
  "Smith Machine Squat": {
   "time": 1.33,
-  "disp": 3.2,
+  "disp": 3.18,
   "length": 7.96
  },
  "Sissy Squat": {
   "time": 1.33,
-  "disp": 3.57,
+  "disp": 3.64,
   "length": 7.96
  },
  "Romanian Deadlift": {
   "time": 1.33,
-  "disp": 2.5,
+  "disp": 2.52,
   "length": 7.96
  },
  "Barbell Bench Press": {
@@ -311,7 +311,7 @@
  },
  "Dumbbell Romanian Deadlift": {
   "time": 1.33,
-  "disp": 2.48,
+  "disp": 2.49,
   "length": 7.96
  },
  "Stiff-Leg Deadlift": {
@@ -321,17 +321,17 @@
  },
  "Lying Leg Curl": {
   "time": 1.33,
-  "disp": 1.17,
+  "disp": 1.21,
   "length": 7.96
  },
  "Seated Leg Curl": {
   "time": 1.33,
-  "disp": 1.13,
+  "disp": 1.16,
   "length": 7.96
  },
  "Single-Leg Curl": {
   "time": 1.33,
-  "disp": 0.59,
+  "disp": 0.61,
   "length": 7.96
  },
  "Glute Bridge": {
@@ -346,7 +346,7 @@
  },
  "Cable Glute Kickback": {
   "time": 1.33,
-  "disp": 1.52,
+  "disp": 1.51,
   "length": 7.96
  },
  "Cable Side Kick": {
@@ -371,7 +371,7 @@
  },
  "Step-Up": {
   "time": 1.17,
-  "disp": 4.19,
+  "disp": 4.18,
   "length": 7.96
  },
  "Push-Up": {
@@ -872,6 +872,311 @@
  "Machine Pullover": {
   "time": 1.33,
   "disp": 2.5,
+  "length": 7.96
+ },
+ "Seated Barbell Overhead Press": {
+  "time": 1.33,
+  "disp": 1.88,
+  "length": 7.96
+ },
+ "Behind-the-Neck Press": {
+  "time": 1.67,
+  "disp": 1.96,
+  "length": 7.96
+ },
+ "Push Press": {
+  "time": 1.33,
+  "disp": 2.23,
+  "length": 7.96
+ },
+ "Dumbbell Push Press": {
+  "time": 1.33,
+  "disp": 2.02,
+  "length": 7.96
+ },
+ "Standing Dumbbell Press": {
+  "time": 1.33,
+  "disp": 2.02,
+  "length": 7.96
+ },
+ "Seated Dumbbell Press": {
+  "time": 1.33,
+  "disp": 2.02,
+  "length": 7.96
+ },
+ "Neutral-Grip Dumbbell Shoulder Press": {
+  "time": 1.67,
+  "disp": 2.29,
+  "length": 7.96
+ },
+ "Single-Arm Dumbbell Shoulder Press": {
+  "time": 1.33,
+  "disp": 1.01,
+  "length": 7.96
+ },
+ "Z Press": {
+  "time": 1.33,
+  "disp": 1.88,
+  "length": 7.96
+ },
+ "Landmine Shoulder Press": {
+  "time": 1.67,
+  "disp": 1.03,
+  "length": 7.96
+ },
+ "Half-Kneeling Landmine Press": {
+  "time": 1.67,
+  "disp": 1.04,
+  "length": 7.96
+ },
+ "Cable Shoulder Press": {
+  "time": 1.33,
+  "disp": 2.02,
+  "length": 7.96
+ },
+ "Single-Arm Cable Shoulder Press": {
+  "time": 1.33,
+  "disp": 1.01,
+  "length": 7.96
+ },
+ "Smith Machine Shoulder Press": {
+  "time": 1.67,
+  "disp": 2.16,
+  "length": 7.96
+ },
+ "Viking Press": {
+  "time": 1.67,
+  "disp": 2.03,
+  "length": 7.96
+ },
+ "Leaning Lateral Raise": {
+  "time": 1.67,
+  "disp": 1.01,
+  "length": 7.96
+ },
+ "Incline Lateral Raise": {
+  "time": 1.67,
+  "disp": 1.04,
+  "length": 7.96
+ },
+ "Chest-Supported Lateral Raise": {
+  "time": 5.83,
+  "disp": 2.15,
+  "length": 7.96
+ },
+ "Y-Raise": {
+  "time": 5.83,
+  "disp": 2.86,
+  "length": 7.96
+ },
+ "Cable Y-Raise": {
+  "time": 1.67,
+  "disp": 3.15,
+  "length": 7.96
+ },
+ "Lu Raise": {
+  "time": 1.67,
+  "disp": 3.38,
+  "length": 7.96
+ },
+ "Plate Front Raise": {
+  "time": 1.67,
+  "disp": 2.08,
+  "length": 7.96
+ },
+ "Barbell Front Raise": {
+  "time": 1.67,
+  "disp": 2.12,
+  "length": 7.96
+ },
+ "Cable Front Raise": {
+  "time": 1.67,
+  "disp": 2.14,
+  "length": 7.96
+ },
+ "Alternating Dumbbell Front Raise": {
+  "time": 5.67,
+  "disp": 1.05,
+  "length": 7.96
+ },
+ "Cable External Rotation": {
+  "time": 1.67,
+  "disp": 0.39,
+  "length": 7.96
+ },
+ "Cable Internal Rotation": {
+  "time": 1.67,
+  "disp": 0.41,
+  "length": 7.96
+ },
+ "Powell Raise": {
+  "time": 1.67,
+  "disp": 1.52,
+  "length": 7.96
+ },
+ "Rear Delt Row": {
+  "time": 2.0,
+  "disp": 1.78,
+  "length": 7.96
+ },
+ "Machine Rear Delt Row": {
+  "time": 1.67,
+  "disp": 1.31,
+  "length": 7.96
+ },
+ "Barbell Upright Row": {
+  "time": 1.67,
+  "disp": 1.4,
+  "length": 7.96
+ },
+ "Cable Upright Row": {
+  "time": 1.67,
+  "disp": 1.36,
+  "length": 7.96
+ },
+ "Smith Machine Upright Row": {
+  "time": 1.67,
+  "disp": 1.33,
+  "length": 7.96
+ },
+ "Dumbbell Shrug": {
+  "time": 1.67,
+  "disp": 0.22,
+  "length": 7.96
+ },
+ "Barbell Shrug": {
+  "time": 1.67,
+  "disp": 0.22,
+  "length": 7.96
+ },
+ "Smith Machine Shrug": {
+  "time": 1.67,
+  "disp": 0.21,
+  "length": 7.96
+ },
+ "Cable Shrug": {
+  "time": 1.67,
+  "disp": 0.22,
+  "length": 7.96
+ },
+ "Trap Bar Shrug": {
+  "time": 1.67,
+  "disp": 0.22,
+  "length": 7.96
+ },
+ "Behind-the-Back Barbell Shrug": {
+  "time": 1.67,
+  "disp": 0.22,
+  "length": 7.96
+ },
+ "Farmer's Carry": {
+  "time": 1.0,
+  "disp": 1.11,
+  "length": 7.96
+ },
+ "Suitcase Carry": {
+  "time": 3.0,
+  "disp": 1.11,
+  "length": 7.96
+ },
+ "Overhead Carry": {
+  "time": 7.0,
+  "disp": 1.11,
+  "length": 7.96
+ },
+ "Alternating Dumbbell Curl": {
+  "time": 1.67,
+  "disp": 0.51,
+  "length": 7.96
+ },
+ "Spider Curl": {
+  "time": 1.67,
+  "disp": 0.89,
+  "length": 7.96
+ },
+ "Dumbbell Preacher Curl": {
+  "time": 1.67,
+  "disp": 0.4,
+  "length": 7.96
+ },
+ "Machine Biceps Curl": {
+  "time": 1.67,
+  "disp": 0.8,
+  "length": 7.96
+ },
+ "Forward Lunge": {
+  "time": 6.0,
+  "disp": 7.23,
+  "length": 7.96
+ },
+ "Barbell Lunge": {
+  "time": 6.0,
+  "disp": 7.26,
+  "length": 7.96
+ },
+ "Smith Machine Reverse Lunge": {
+  "time": 2.0,
+  "disp": 3.71,
+  "length": 7.96
+ },
+ "Curtsy Lunge": {
+  "time": 1.67,
+  "disp": 3.69,
+  "length": 7.96
+ },
+ "Barbell Split Squat": {
+  "time": 6.0,
+  "disp": 2.34,
+  "length": 7.96
+ },
+ "Dumbbell Split Squat": {
+  "time": 6.0,
+  "disp": 2.38,
+  "length": 7.96
+ },
+ "Smith Machine Split Squat": {
+  "time": 2.0,
+  "disp": 2.35,
+  "length": 7.96
+ },
+ "Front-Foot-Elevated Split Squat": {
+  "time": 6.0,
+  "disp": 3.48,
+  "length": 7.96
+ },
+ "Rear-Foot-Elevated Split Squat": {
+  "time": 6.17,
+  "disp": 2.53,
+  "length": 7.96
+ },
+ "Barbell Bulgarian Split Squat": {
+  "time": 6.17,
+  "disp": 2.45,
+  "length": 7.96
+ },
+ "Smith Machine Bulgarian Split Squat": {
+  "time": 6.33,
+  "disp": 2.44,
+  "length": 7.96
+ },
+ "Seated Dumbbell Lateral Raise": {
+  "time": 1.67,
+  "disp": 1.85,
+  "length": 7.96
+ },
+ "Cable Rear Delt Row": {
+  "time": 1.67,
+  "disp": 1.46,
+  "length": 7.96
+ },
+ "Dumbbell Upright Row": {
+  "time": 1.67,
+  "disp": 1.32,
+  "length": 7.96
+ },
+ "Barbell Hip Thrust": {
+  "time": 1.5,
+  "disp": 1.25,
   "length": 7.96
  }
 }

@@ -307,17 +307,23 @@ struct TrackedCallout: View {
     var borderColor: Color = DS.silver.opacity(0.16)
     var action: () -> Void
 
+    /// Clear space kept between the label and the viewport's edges.
+    static let edgeMargin: CGFloat = 8
+
+    @State private var pillSize: CGSize = .zero
+
     var body: some View {
         GeometryReader { geo in
+            let anchor = anchor(in: geo.size)
             ZStack(alignment: .topLeading) {
                 Path { path in
-                    path.move(to: labelPoint)
+                    path.move(to: anchor)
                     path.addLine(to: dot)
                 }
                 .stroke(
                     LinearGradient(
                         colors: [DS.silver.opacity(0.65), DS.silver.opacity(0.2)],
-                        startPoint: unit(labelPoint, in: geo.size),
+                        startPoint: unit(anchor, in: geo.size),
                         endPoint: unit(dot, in: geo.size)
                     ),
                     lineWidth: 1
@@ -332,14 +338,32 @@ struct TrackedCallout: View {
                     CalloutPill(text: text, borderColor: borderColor)
                 }
                 .buttonStyle(.plain)
-                // Pin the label's edge-middle to `labelPoint`.
+                .onGeometryChange(for: CGSize.self) { $0.size } action: { pillSize = $0 }
+                // Pin the label's edge-middle to the anchor.
                 .alignmentGuide(.leading) { d in
-                    labelSide == .leading ? d.width - labelPoint.x : -labelPoint.x
+                    labelSide == .leading ? d.width - anchor.x : -anchor.x
                 }
-                .alignmentGuide(.top) { d in d.height / 2 - labelPoint.y }
+                .alignmentGuide(.top) { d in d.height / 2 - anchor.y }
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
         }
+    }
+
+    /// `labelPoint`, moved just far enough that the whole label stays inside
+    /// the viewport. Label points are unit fractions laid out on one device
+    /// width while the label keeps its own size, so on a narrower screen a
+    /// label near an edge would otherwise be cut off by the viewport's clip.
+    private func anchor(in size: CGSize) -> CGPoint {
+        let m = Self.edgeMargin
+        let w = pillSize.width, h = pillSize.height
+        let minX = labelSide == .leading ? m + w : m
+        let maxX = labelSide == .leading ? size.width - m : size.width - m - w
+        let minY = m + h / 2
+        let maxY = size.height - m - h / 2
+        return CGPoint(
+            x: minX <= maxX ? min(max(labelPoint.x, minX), maxX) : labelPoint.x,
+            y: minY <= maxY ? min(max(labelPoint.y, minY), maxY) : labelPoint.y
+        )
     }
 
     private func unit(_ p: CGPoint, in size: CGSize) -> UnitPoint {

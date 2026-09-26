@@ -56,9 +56,15 @@ struct Exercise3DView: View {
             _sheet = State(initialValue: .cue)
             _cueMode = State(initialValue: .mistake)
         }
-        // The cue dots, plus whatever the exercise's fault ghosts pose.
-        let joints = (content?.annotations.compactMap(\.joint) ?? [])
-            + FaultPoses.joints(for: exercise.name)
+        // The cue dots, plus whatever the exercise's fault ghosts pose. A dot
+        // on the leading or trailing leg needs both legs, and the feet and
+        // body axes that decide which one leads.
+        let cueJoints = (content?.annotations.compactMap(\.joint) ?? []).flatMap { joint -> [String] in
+            guard let cut = joint.hasSuffix("_front") ? 6 : joint.hasSuffix("_back") ? 5 : nil else { return [joint] }
+            let stem = joint.dropLast(cut)
+            return ["\(stem)_L", "\(stem)_R", "foot_L", "foot_R"] + BodyFrameJoints.all
+        }
+        let joints = cueJoints + FaultPoses.joints(for: exercise.name)
         _tracker = State(initialValue: JointTracker(joints: Array(Set(joints)).sorted()))
     }
 
@@ -262,7 +268,7 @@ struct Exercise3DView: View {
                             let spot = content.annotations
                                 .first { $0.cueID == cueID }
                                 .flatMap { $0.joint }
-                                .flatMap { tracker.points[$0] }
+                                .flatMap(trackedPoint)
                             FaultRing(diameter: 100)
                                 .position(spot ?? CGPoint(x: geo.size.width * 0.56,
                                                           y: geo.size.height * 0.44))
@@ -341,11 +347,23 @@ struct Exercise3DView: View {
     /// The tracked joint's point on the live model; without one, level with
     /// the label, `leaderLength` out from it.
     private func dotPoint(_ annotation: CueAnnotation, label: CGPoint) -> CGPoint {
-        if let joint = annotation.joint, let point = tracker.points[joint] {
+        if let joint = annotation.joint, let point = trackedPoint(joint) {
             return point
         }
         let out = annotation.labelSide == .leading ? annotation.leaderLength : -annotation.leaderLength
         return CGPoint(x: label.x + out, y: label.y)
+    }
+
+    /// A joint's point on the live model. `_front` and `_back` name the
+    /// leading and trailing leg of a lift that alternates legs, decided afresh
+    /// every frame like the fault ghosts do.
+    private func trackedPoint(_ joint: String) -> CGPoint? {
+        for (suffix, leads) in [("_front", true), ("_back", false)] where joint.hasSuffix(suffix) {
+            guard let side = BodyFrame.leadingSide(tracker.transforms) else { return nil }
+            let resolved = leads ? side : (side == "L" ? "R" : "L")
+            return tracker.points[String(joint.dropLast(suffix.count)) + "_" + resolved]
+        }
+        return tracker.points[joint]
     }
 
     /// Derived from the activation data rather than hard-coded, so the legend

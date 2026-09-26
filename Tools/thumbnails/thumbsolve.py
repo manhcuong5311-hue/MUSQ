@@ -7,9 +7,16 @@ import numpy as np
 SRC = open("/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Models/SampleData.swift").read()
 M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
 PRESET = {"standing": 0.0, "bench": -1.0, "chestPress": -0.7, "pecDeck": 0.0, "cableStation": 0.0}
-HELD = ("Barbell", "Dumbbell", "Lat_Bar", "Handle", "TGrip", "TBar_Plate", "LandmineBar", "Rope", "Mat", "AnkleCuff", "CuffAttachment", "Step")
+HELD = ("Barbell", "Dumbbell", "Lat_Bar", "Handle", "TGrip", "TBar_Plate", "LandmineBar", "Rope", "Mat", "AnkleCuff", "CuffAttachment", "Step",
+        # Batch 191-240 (2026-09-26): the plate, straight cable bar and trap bar are
+        # held; the landmine presses' 1.8 m bar is left to crop.
+        "FrontPlate", "CableStraightBar", "TrapBar")
 BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Grip Lat Pulldown",
-             "V-Bar Lat Pulldown", "Single-Arm Lat Pulldown", "Rope Lat Pulldown"}
+             "V-Bar Lat Pulldown", "Single-Arm Lat Pulldown", "Rope Lat Pulldown",
+             # Batch 191-240 (2026-09-26): cable towers and the rear-delt machine
+             # left these lifters a corner of the tile.
+             "Cable Upright Row", "Cable Y-Raise", "Cable Front Raise", "Cable Shrug",
+             "Cable External Rotation", "Machine Rear Delt Row"}
 block = SRC[SRC.index("modelByExercise: [String: ExerciseModel] = ["):SRC.index("static func model(for")]
 jobs = {}
 for m in re.finditer(r'"([^"]+)":\s*ExerciseModel\(resource: "([^"]+)",\s*framing: (?:\.(\w+)|ModelFraming\(yaw: ([-\d.]+))', block):

@@ -1,0 +1,227 @@
+// MARK: PIECES
+
+    // MARK: Batch 191-240 front raise, rear-delt row and upright row pieces (2026-09-26)
+
+    /// Front raises: how far the working hand has risen, hand to pelvis in
+    /// torso lengths — about 0.45-0.55 hanging at the thighs, 1.25-1.5 at
+    /// shoulder height in every front-raise model — so a fault of the top of
+    /// the raise grows as the arm lifts. Read on the left hand, so on the
+    /// alternating raise it shows during the left arm's rep only.
+    private static let frontRaiseRising = FaultStrength.between("hand_L", "pelvis", from: 0.9, to: 1.25)
+
+    /// Rear-delt rows: the elbows tucked in to the sides, the upper arms
+    /// swung down along the trunk toward the hips — a lat row (upper arms
+    /// about 43° from the trunk instead of 87°). Shown with the elbows bent,
+    /// at the top of the row.
+    private static let rearDeltElbowsTucked = FaultPose(
+        chains: [armsToGrip],
+        moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .forward, degrees: -50)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Upright rows hauled too high: the bar (palms) up to the chin, about
+    /// 10 cm above the shoulder joints instead of 17 cm below, the elbows
+    /// about 18 cm above the shoulders. The elbows are re-seated between the
+    /// shoulders and the raised hands. Shown with the elbows bent, at the top.
+    private static let uprightRowHigh = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], up: 0.45), .shift(["forearm_*"], up: 0.3, outward: 0.03),
+                .resolve(["forearm_*"])],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Upright rows led by the hands: the elbows trailing low and in, about
+    /// 25 cm below the shoulders and below the bar, which is curled up with
+    /// the wrists (a reverse curl). The elbows are re-seated between the
+    /// shoulders and the fixed hands; the shift only picks the direction.
+    private static let uprightRowElbowsLow = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["forearm_*"], up: -0.45, outward: -0.25), .resolve(["forearm_*"])],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Hands bunched in the middle of the bar, about 16-22 cm apart instead
+    /// of 42-48. Clearest at the bottom, where the hanging arms form a V
+    /// against the parallel grey arms.
+    private static let gripBunched = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.22), .shift(["forearm_*"], outward: -0.1)]
+    )
+
+// MARK: TABLE
+
+        // MARK: Batch 191-240 front raises, rear-delt rows and upright rows (2026-09-26)
+        // Framed at yaw -0.55 (plate, cable, alternating) or -1.0 (barbell):
+        // sagittal faults turn the left side round to about -1.35.
+        "Plate Front Raise": [
+            // Swung on past the face toward overhead, shown near the top.
+            "height": armsTurned(.lateral, 35, strength: frontRaiseRising).seen(-0.8),
+            "shoulder": hunched().seen(-0.8),
+            "elbow": elbowsFolded(.lateral, 50, strength: frontRaiseRising).seen(-0.8),
+            // Wrists bending so the plate tilts back toward the face, growing
+            // as the plate rises (wristBentBack has no strength of its own).
+            "grip": FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"]],
+                              moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .lateral, degrees: 48)],
+                              strength: frontRaiseRising, view: -0.8),
+            "torso": leanedBack(12).seen(-0.8),
+        ],
+        "Barbell Front Raise": [
+            // Swung on to about 139°, the bar well above the head. This
+            // framing leaves room above the head, unlike the plate and cable.
+            "height": armsTurned(.lateral, 50, withBar: true, strength: frontRaiseRising).seen(-0.35),
+            // Hands bunched in the middle of the bar, turned toward face-on so
+            // the width shows; read at the bottom, arms hanging in a V.
+            "grip": gripBunched.seen(0.6),
+            "elbow": elbowsFolded(.lateral, 50, strength: frontRaiseRising).seen(-0.35),
+            // Shoulders hunched up and forward, arms and bar carried along,
+            // turned toward face-on so the shoulder line rises past the neck.
+            "shoulder": FaultPose(chains: [shoulders, armsToGrip, bar],
+                                  moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], forward: 0.07, up: 0.15)],
+                                  view: 0.6),
+            "torso": leanedBack(12, withBar: true).seen(-0.35),
+        ],
+        "Cable Front Raise": [
+            "height": armsTurned(.lateral, 35, withBar: true, strength: frontRaiseRising).seen(-0.8),
+            "shoulder": hunched().seen(-0.8),
+            "elbow": elbowsFolded(.lateral, 50, strength: frontRaiseRising).seen(-0.8),
+            // Rocking back from the model's ~15° forward lean to past upright.
+            "torso": leanedBack(20, withBar: true).seen(-0.8),
+            // Feet drawn together (ankles about 15 cm apart instead of 36) and
+            // knees locked, the trunk tipped back toward the stack.
+            "stance": FaultPose(chains: [legs, spine],
+                                moves: [.shift(["foot_*", "foot_*.tip"], outward: -0.18), .straighten(["shin_*"]),
+                                        .turn(pivot: "pelvis", points: torso, axis: .lateral, degrees: 10)]),
+        ],
+        "Alternating Dumbbell Front Raise": [
+            // The left arm swung on above shoulder height; shown during the
+            // left arm's rep (the first half of the clip).
+            "height": armsTurned(.lateral, 35, side: "L", strength: frontRaiseRising).seen(-0.8),
+            "shoulder": shrugged,
+            // Both elbows folded, working and resting arm alike.
+            "elbow": elbowsFolded(.lateral, 50).seen(-0.8),
+            // Twisting the working (left) shoulder forward 24° to throw the
+            // left dumbbell up, gated to the left arm's rep so it never twists
+            // the wrong way while the right arm lifts. The hip line stays
+            // square; the default 3/4 front view shows the shoulder line
+            // turning against it and the raised hand swinging across.
+            "alternate": FaultPose(chains: [spine, shoulders, arms, hips],
+                                   moves: [.turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*"],
+                                                 axis: .up, degrees: 24)],
+                                   strength: frontRaiseRising),
+            "torso": leanedBack(12).seen(-0.8),
+        ],
+        // Framed from behind the left side (yaw -2.3): +0.75 brings the left
+        // side round for the trunk faults.
+        "Rear Delt Row": [
+            // Turned to straight behind (-3.14), where the tucked arms read
+            // against the wide grey ones.
+            "elbow": rearDeltElbowsTucked.seen(-0.84),
+            // Short reps: the elbows stop below the line of the back, still
+            // flared, the dumbbells hanging under them. rowedShort's forward
+            // points at the floor on this hinge and barely moves the arms.
+            "height": FaultPose(chains: [armsToGrip],
+                                moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*"], axis: .up, degrees: 40),
+                                        .shift(["hand_*", "hand_*.tip"], ahead: 0.15, rise: -0.25),
+                                        .resolve(["forearm_*"])],
+                                strength: .withBend("forearm_L")),
+            // Standing up out of the hinge: the trunk and head only, 20° more
+            // upright, so one line stands out against the grey back (the
+            // carried arms crossed it at the top of the row).
+            "hinge": FaultPose(chains: [spine],
+                               moves: [.turn(pivot: "pelvis", points: torso, axis: .lateral, degrees: 20)],
+                               view: 0.75),
+            // Shrugging: the shoulders slide along the back toward the ears,
+            // seen from the left side.
+            "traps": FaultPose(chains: [shoulders, arms],
+                               moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], up: 0.16)],
+                               view: 0.75),
+            // The upper back rounding (the hump at the chest joint, not the
+            // lower back) and the head dropping.
+            "back": FaultPose(chains: [spine],
+                              moves: [.shift(["spine"], forward: -0.04), .shift(["chest"], forward: -0.11),
+                                      .shift(["neck"], forward: 0.04), .shift(["head"], forward: 0.18)],
+                              view: 0.75),
+        ],
+        // Framed from behind the right side (yaw 2.4): -0.8 turns the right
+        // side square to the camera.
+        "Machine Rear Delt Row": [
+            // Seat too high: the body sits about 12 cm higher while the hands
+            // stay on the handles, so the elbows re-seat below the shoulders
+            // and the upper arms slope down to the handles.
+            "seat": FaultPose(chains: [spine, shoulders, arms],
+                              moves: [.shift(["pelvis", "thigh_*"] + torso + ["upper_arm_*"], rise: 0.2),
+                                      .resolve(["forearm_*"])]),
+            // Elbows dropped and tucked toward the ribs.
+            "elbow": FaultPose(chains: [armsToGrip], moves: [.shift(["forearm_*"], up: -0.16, outward: -0.08), .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L")),
+            // Stopping with the elbows still in front of the body: the upper
+            // arms swung forward about 30° at the same height, the hands on
+            // the handles further forward (the mid-rep position).
+            "range": FaultPose(chains: [armsToGrip],
+                               moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*"], axis: .up, degrees: 35),
+                                       .shift(["hand_*", "hand_*.tip"], forward: 0.2),
+                                       .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L"), view: -0.8),
+            // Shrugging up and back at the end of the pull: the shoulders
+            // rise about 9 cm toward the ears while the hands stay on the
+            // handles, the elbows re-seated.
+            "traps": FaultPose(chains: [shoulders, armsToGrip],
+                               moves: [.shift(["upper_arm_*"], forward: -0.06, up: 0.16), .resolve(["forearm_*"])]),
+            // Leaning back off the pad, straight from the hips on the seat:
+            // the head about 17 cm back. The hands stay at handle height and
+            // travel back with the shoulders, as the handles would.
+            "chest": FaultPose(chains: [spine, armsToGrip],
+                               moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: 14),
+                                       .shift(["forearm_*", "hand_*", "hand_*.tip"], ahead: -0.21),
+                                       .resolve(["forearm_*"])],
+                               view: -0.8),
+        ],
+        // Upright rows: yaw -0.8 (barbell), +0.6 (cable, right side toward the
+        // camera), -0.5 (Smith).
+        "Barbell Upright Row": [
+            "grip": gripBunched,
+            "elbow": uprightRowElbowsLow,
+            "height": uprightRowHigh,
+            // The bar drifting about 15 cm out in front of the body, turned to
+            // -1.0, where the near plate sits clear of the chest.
+            "barpath": barDrifting(0.25, 0.12).seen(-0.2),
+            "torso": bodySwung(withBar: true).seen(-0.2),
+        ],
+        "Cable Upright Row": [
+            "grip": gripBunched,
+            "elbow": uprightRowElbowsLow,
+            "height": uprightRowHigh,
+            // Standing a big step back: the whole body about 24 cm further
+            // from the pulley, the bar dragged out about 15 cm further in
+            // front of the chest, the elbows re-seated.
+            "stance": FaultPose(chains: [spine, legs, hips, armsToGrip, bar],
+                                moves: [.shift(["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip", "upper_arm_*"] + torso,
+                                               ahead: -0.4),
+                                        .shift(["hand_*", "hand_*.tip"], ahead: -0.15),
+                                        .resolve(["forearm_*"])],
+                                view: 0.9),
+            // Leaning back away from the stack.
+            "torso": leanedBack(14, withBar: true).seen(0.9),
+        ],
+        "Smith Machine Upright Row": [
+            "grip": gripBunched,
+            "elbow": uprightRowElbowsLow,
+            "height": uprightRowHigh,
+            // Standing back from the bar: the body stands 0.25 torso lengths
+            // (about 15 cm) further back while the hands stay on the bar,
+            // which the rails hold in place, so the arms reach forward to it
+            // (the reverse of crowdingTheStack). barDrifting would move the
+            // bar off the rails. Turned to -0.9, where the near plate sits
+            // clear of the chest.
+            "stance": FaultPose(chains: [spine, legs, hips, armsToGrip, bar],
+                                moves: [.shift(["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip", "upper_arm_*"] + torso,
+                                               ahead: -0.25),
+                                        .resolve(["forearm_*"])],
+                                view: -0.4),
+            // Leaning back while the hands stay on the bar, which the rails
+            // hold in place: the elbows open as the trunk tips back.
+            "torso": FaultPose(chains: [spine, armsToGrip, bar],
+                               moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: 12),
+                                       .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L"), view: -0.4),
+        ],

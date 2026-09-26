@@ -75,3 +75,44 @@ older entries with different models: Wide-Grip Pull-Up (Pull-Up), Wide-Grip
 Lat Pulldown (Lat Pulldown), Close-Grip Seated Cable Row (Seated Cable Row),
 Machine Seated Row (Chest-Supported Row Machine). The Dumbbell Pullover Row
 model keeps the arms nearly straight, so it is written as a lat pullover.
+
+Batch 191-240 (2026-09-26): 46 exercises from `SourceExports/190-240` —
+shoulder presses and raises, rotator-cuff work, rear-delt and upright rows,
+shrugs, loaded carries and biceps curls. Written by family on top of
+`common_191_240.py` (helpers, `validate()`), one module per family
+(`spec_191_240_{bbpress,dbpress,lateral,frontrear,shrugcarry,curls}.py`),
+each with a header listing what its models show and the sources, and
+`notes_191_240_*.md` mapping the copy's claims to them. `spec_191_240.py`
+collects them in library order; `python3 spec_191_240.py` validates all 46.
+Each family was drafted by one agent, checked by two independent reviewers
+(sources and claims; model fidelity, labels and ghosts) and revised twice.
+`gen.py` now writes `MuscleActivation(name:rank:fraction:)`: the HIGH /
+MODERATE / LOW word is read off the fraction in the app (>= 0.70 high,
+0.40-0.69 moderate). The setup steps were appended to `setup.py`, the Swift
+lives under `// MARK: - Batch 191-240 (2026-09-26)` at the end of SampleData,
+and `probe.py` gained deltoid, upper-trap and collarbone anchors. The three
+carries are logged in seconds (`ExerciseCatalog.timedExercises`).
+
+Legs 300-350 (2026-09-26): 11 exercises from `SourceExports/300-350` — flat,
+front-foot-elevated and rear-foot-elevated split squats (barbell, dumbbell,
+Smith) and the forward, barbell, Smith reverse and curtsy lunges. Written by
+family on top of `common_300_350.py` (`spec_300_350_{splitsquat,lunge}.py`,
+headers listing what each model shows and the sources, `notes_300_350_*.md`
+mapping claims to sources); `spec_300_350.py` collects them and squeezes the
+label rows into 0.16-0.80 like the 191-240 batch. Each family was drafted,
+checked by two independent reviewers and revised twice. The split squats keep
+the left leg in front; the four lunges switch legs between reps, so their
+one-leg cues name `<stem>_front` / `<stem>_back`, which the app resolves every
+frame (`Exercise3DView.trackedPoint`) and `probe.py` now writes for the lifts
+in its `ALTERNATING` set. `probe.py` also probes `toe_L/R` (skipped on rigs
+without them). The model briefs came from a leg-motion summary (knee and hip
+angles per leg, foot positions and heights, trunk lean, pelvis height every
+0.5 s). The Swift lives under `// MARK: - Legs 300-350 (2026-09-26)` at the
+end of SampleData; the setup steps were appended to `setup.py`.
+
+Late additions (2026-09-27): Seated Dumbbell Lateral Raise, Cable Rear Delt
+Row, Dumbbell Upright Row and Barbell Hip Thrust, written the same way
+(`common_0927.py`, `spec_0927_{shoulders,hipthrust}.py`, `notes_0927_*.md`;
+`python3 spec_0927.py` validates the four). The Swift lives under
+`// MARK: - Late additions (2026-09-27)`; the integration script cuts after the
+Legs 300-350 block, so the late block is always pasted after it.

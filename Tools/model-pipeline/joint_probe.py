@@ -1,6 +1,8 @@
 # Projects named joints to normalised screen space (matching USDZViewport's
 # own camera) for a given exercise + framing, at a chosen fraction of the
 # clip's timeline. Used to place CueAnnotation labelPoints without guessing.
+import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
 import sys
 sys.path.insert(0, sys.argv[1])
 from framer import project

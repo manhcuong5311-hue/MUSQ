@@ -1,0 +1,128 @@
+// MARK: PIECES
+
+    // MARK: Late additions 2026-09-27: seated lateral raise, cable rear delt row and dumbbell upright row pieces
+
+    /// Seated lateral raise: how far the left hand has risen, hand to pelvis
+    /// in torso lengths — about 0.64 with the arms hanging beside the bench,
+    /// 1.49 with the arms level in the Seated Dumbbell Lateral Raise — so a
+    /// fault of the top of the raise grows over the upper half of the lift
+    /// and is gone with the arms by the sides.
+    private static let seatedRaiseRising = FaultStrength.between("hand_L", "pelvis", from: 1.0, to: 1.4)
+
+    /// Dumbbell upright rows: how far the dumbbells have risen, left hand to
+    /// pelvis in torso lengths — about 0.51 at the thighs, 0.89 at the top in
+    /// the Dumbbell Upright Row — so a fault of the top shows only over the
+    /// last part of the pull (the elbow is already ~150° at the thighs, so
+    /// `.withBend` would draw a third of it at the bottom).
+    private static let dumbbellUprightRowTop = FaultStrength.between("hand_L", "pelvis", from: 0.7, to: 0.88)
+
+    /// Dumbbell upright rows hauled too high: `uprightRowHigh`'s moves
+    /// without the bar line, since each hand holds its own dumbbell. On the
+    /// rig the hands end ~12 cm above the shoulder joints (chin height)
+    /// instead of 14 cm below, the elbows ~14 cm above the shoulders (upper
+    /// arms ~120° instead of 90°), re-seated between the shoulders and the
+    /// raised hands. Shown near the top only.
+    private static let dumbbellUprightRowHigh = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], up: 0.45), .shift(["forearm_*"], up: 0.3, outward: 0.03),
+                .resolve(["forearm_*"])],
+        strength: dumbbellUprightRowTop
+    )
+
+    /// Dumbbell upright rows led by the hands: `uprightRowElbowsLow` without
+    /// the bar line. On the rig, at the top, the elbows trail ~27 cm below
+    /// the shoulders and ~7 cm out from them (upper arms ~20° from the
+    /// sides) while the hands stay at the chest, curled up by the wrists.
+    private static let dumbbellUprightRowElbowsLow = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["forearm_*"], up: -0.45, outward: -0.25), .resolve(["forearm_*"])],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Dumbbells held together in the middle instead of about shoulder-width:
+    /// the hands ~7 cm in on each side (~26-32 cm apart instead of 40-47),
+    /// the elbows ~3 cm in and re-seated so both bones keep their length. No
+    /// bar line.
+    private static let dumbbellsTogether = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.12), .shift(["forearm_*"], outward: -0.05),
+                .resolve(["forearm_*"])]
+    )
+
+// MARK: TABLE
+
+        // MARK: Late additions 2026-09-27: seated lateral raise, cable rear delt row and dumbbell upright row
+        // Framed from the front-left (yaw -0.6): sagittal faults turn the
+        // left side round to about -1.3 to -1.5.
+        "Seated Dumbbell Lateral Raise": [
+            "traps": shrugged,
+            // Elbows bending, the hands dropping below them (~40° more bend,
+            // the hands ~18 cm lower at the top); none below mid-raise.
+            "elbow": elbowsFolded(.forward, -60, strength: seatedRaiseRising),
+            // Swung on past level to ~118°, the hands ~24 cm higher.
+            "height": armsTurned(.forward, 30, strength: seatedRaiseRising),
+            // Arms swept back behind the line of the shoulders at the top (the
+            // hands ~27 cm back, ~3 cm behind the shoulders instead of 24 cm
+            // in front), seen from nearly side-on (total -1.3), where the
+            // sweep runs across the screen.
+            "plane": armsTurned(.up, -30, strength: seatedRaiseRising).seen(-0.7),
+            // Rocking back 12° about the hips on the bench, arms carried; the
+            // head ~14 cm back. Side-on (total -1.5).
+            "torso": leanedBack(12).seen(-0.9),
+        ],
+        // Framed from behind-left (yaw -2.6): +0.6 turns the left side
+        // toward the camera (total -2.0) for faults along the line of pull.
+        "Cable Rear Delt Row": [
+            // Hands about shoulder-width (~42 cm apart instead of 66), the
+            // elbows re-seated. Shown with the arms reaching forward: none by
+            // the time the elbows reach 90° (hand to shoulder 0.6 torso
+            // lengths; 0.89 at full reach), where re-seating the short span
+            // would fold the elbows.
+            "grip": FaultPose(chains: [armsToGrip, bar],
+                              moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.2), .resolve(["forearm_*"])],
+                              strength: .between("hand_L", "upper_arm_L", from: 0.6, to: 0.8)),
+            "traps": shruggedBack,
+            // Elbows dropping and tucking: at the finish ~22 cm below the
+            // shoulders and ~9 cm out (upper arms ~39° from the sides instead
+            // of ~66°), the bar ~12 cm lower, at the lower chest.
+            "elbow": FaultPose(chains: [armsToGrip, bar],
+                               moves: [.shift(["hand_*", "hand_*.tip"], up: -0.2),
+                                       .shift(["forearm_*"], up: -0.3, outward: -0.12),
+                                       .resolve(["forearm_*"])],
+                               strength: .withBend("forearm_L")),
+            // Short reps: at the finish the elbows stay ~13 cm in front of the
+            // shoulders (instead of ~14 cm behind) at the same height, the bar
+            // ~27 cm further forward, the elbows ~83° instead of ~31°. Shown
+            // only near the finish (hand to shoulder 0.5 -> 0.25 torso
+            // lengths; 0.89 at full reach): gated by elbow bend, the constant
+            // forward shift put the ghost's straightened arms past the bar
+            // through the reach.
+            "range": FaultPose(chains: [armsToGrip, bar],
+                               moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*"], axis: .up, degrees: 55),
+                                       .shift(["hand_*", "hand_*.tip"], forward: 0.45),
+                                       .resolve(["forearm_*"])],
+                               strength: .between("hand_L", "upper_arm_L", from: 0.5, to: 0.25), view: 0.6),
+            // Leaning back 15° behind the seat, the head ~18 cm back. The bar
+            // stays on the level cable line and pays out ~14 cm with the
+            // shoulders (as the Machine Rear Delt Row's chest fault), the
+            // elbows re-seated.
+            "torso": FaultPose(chains: [spine, armsToGrip, bar],
+                               moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: 15),
+                                       .shift(["hand_*", "hand_*.tip"], ahead: -0.23),
+                                       .resolve(["forearm_*"])],
+                               view: 0.6),
+        ],
+        // Framed from the front-left (yaw -0.5).
+        "Dumbbell Upright Row": [
+            "height": dumbbellUprightRowHigh,
+            "elbow": dumbbellUprightRowElbowsLow,
+            // The dumbbells ~15 cm further out in front of the body at the
+            // top (~4 cm at the thighs), the elbows re-seated so the arms keep
+            // their length; turned to about side-on (total -1.1).
+            "path": FaultPose(chains: [armsToGrip],
+                              moves: [.shift(["hand_*", "hand_*.tip"], ahead: 0.25), .resolve(["forearm_*"])],
+                              strength: .withBend("forearm_L"), view: -0.6),
+            // Turned toward face-on (total -0.2) so the spacing shows.
+            "width": dumbbellsTogether.seen(0.3),
+            "torso": bodySwung(withBar: false).seen(-0.6),
+        ],

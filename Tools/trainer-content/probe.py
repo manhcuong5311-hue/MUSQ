@@ -1,5 +1,7 @@
 # Projects rig joints through each exercise's framing with the app's camera
 # (vertical FOV 32deg at z=2.05, viewport aspect 382/705) — unit coords.
+import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
 import sys, math, json
 sys.path.insert(0, "/Users/sammanhcuong/Desktop/GymWorkout/Tools/model-pipeline")
 from framer import LONGEST, CENTER, D, TAN
@@ -135,13 +137,86 @@ JOBS = {
  "Reverse-Grip T-Bar Row": ("Back/ReverseGripTBarRow", -2.0, 1.051, (-0.03,0.169,-0.065)),
  "Dumbbell Pullover Row": ("Back/DumbbellPulloverRow", -1.3, 0.58, (-0.029,0.087,0.106)),
  "Machine Pullover": ("Back/MachinePullover", -0.9, 0.947, (-0.017,0.069,0.021)),
+ # Batch 191-240 (2026-09-26), solved at 382x655 (solve_all.py with ASPECT).
+ "Seated Barbell Overhead Press": ("Shoulder/SeatedBarbellOverheadPress", -0.8, 0.634, (-0.029,-0.024,0.03)),
+ "Behind-the-Neck Press": ("Shoulder/BehindTheNeckPress", -0.8, 0.664, (-0.056,-0.079,0.058)),
+ "Push Press": ("Shoulder/PushPress", -0.8, 0.628, (-0.014,-0.076,0.015)),
+ "Dumbbell Push Press": ("Shoulder/DumbbellPushPress", -0.5, 0.742, (0.013,-0.053,-0.007)),
+ "Standing Dumbbell Press": ("Shoulder/StandingDumbbellPress", -0.5, 0.742, (0.013,-0.053,-0.007)),
+ "Seated Dumbbell Press": ("Shoulder/SeatedDumbbellPress", -0.5, 0.833, (-0.001,0.016,0.0)),
+ "Neutral-Grip Dumbbell Shoulder Press": ("Shoulder/NeutralGripDumbbellShoulderPress", -0.6, 0.821, (-0.012,0.056,0.008)),
+ "Single-Arm Dumbbell Shoulder Press": ("Shoulder/SingleArmDumbbellShoulderPress", -0.5, 0.742, (-0.025,-0.053,0.014)),
+ "Z Press": ("Shoulder/ZPress", -1.3, 0.721, (0.014,0.052,-0.049)),
+ "Landmine Shoulder Press": ("Shoulder/LandmineShoulderPress", -1.0, 0.83, (-0.004,0.001,0.006)),
+ "Half-Kneeling Landmine Press": ("Shoulder/KneelingLandminePress", -1.0, 0.898, (0.009,0.081,-0.013)),
+ "Cable Shoulder Press": ("Shoulder/CableShoulderPress", -0.5, 0.679, (-0.089,-0.032,0.049)),
+ "Single-Arm Cable Shoulder Press": ("Shoulder/SingleArmCableShoulderPress", -0.5, 0.76, (-0.026,-0.043,0.014)),
+ "Smith Machine Shoulder Press": ("Shoulder/SmithMachineShoulderPress", -0.6, 0.843, (0.031,0.061,-0.021)),
+ "Viking Press": ("Shoulder/VikingPress", -1.0, 0.791, (0.013,-0.009,-0.021)),
+ "Leaning Lateral Raise": ("Shoulder/LeaningLateralRaise", -0.3, 0.726, (-0.015,0.038,0.005)),
+ "Incline Lateral Raise": ("Shoulder/InclineLateralRaise", 1.0, 0.779, (0.064,0.033,0.1)),
+ "Chest-Supported Lateral Raise": ("Shoulder/ChestSupportedLateralRaise", -2.8, 0.664, (-0.072,0.111,-0.025)),
+ "Y-Raise": ("Shoulder/YRaise", -2.8, 0.752, (-0.06,0.069,-0.021)),
+ "Cable Y-Raise": ("Shoulder/CableYRaise", -2.95, 0.812, (-0.028,0.004,-0.006)),
+ "Lu Raise": ("Shoulder/LuRaise", -0.25, 0.62, (-0.012,-0.04,0.003)),
+ "Plate Front Raise": ("Shoulder/PlateFrontRaise", -0.55, 0.884, (0.042,0.039,-0.026)),
+ "Barbell Front Raise": ("Shoulder/BarbellFrontRaise", -1.0, 0.613, (0.024,0.016,-0.038)),
+ "Cable Front Raise": ("Shoulder/CableFrontRaise", -0.55, 0.882, (0.064,0.04,-0.039)),
+ "Alternating Dumbbell Front Raise": ("Shoulder/AlternatingDumbbellFrontRaise", -0.55, 0.884, (0.056,0.039,-0.034)),
+ "Cable External Rotation": ("Shoulder/CableExternalRotation", -0.3, 0.891, (-0.053,0.038,0.016)),
+ "Cable Internal Rotation": ("Shoulder/CableInternalRotation", -0.3, 0.891, (-0.053,0.038,0.016)),
+ "Powell Raise": ("Shoulder/PowellRaise", 0.8, 0.672, (0.075,0.071,0.077)),
+ "Rear Delt Row": ("Shoulder/RearDeltRow", -2.3, 1.024, (-0.047,0.127,-0.053)),
+ "Machine Rear Delt Row": ("Shoulder/MachineRearDeltRow", 2.4, 0.866, (0.019,0.102,-0.017)),
+ "Barbell Upright Row": ("Shoulder/BarbellUprightRow", -0.8, 0.652, (-0.006,0.027,0.006)),
+ "Cable Upright Row": ("Shoulder/CableUprightRow", 0.6, 0.882, (0.012,0.04,0.008)),
+ "Smith Machine Upright Row": ("Shoulder/SmithMachineUprightRow", -0.5, 0.885, (-0.01,0.039,0.005)),
+ "Dumbbell Shrug": ("Back/DumbbellShrug", -0.5, 0.885, (-0.024,0.04,0.013)),
+ "Barbell Shrug": ("Back/BarbellShrug", -0.8, 0.671, (-0.023,0.028,0.024)),
+ "Smith Machine Shrug": ("Back/SmithMachineShrug", -0.5, 0.885, (0.003,0.04,-0.002)),
+ "Cable Shrug": ("Back/CableShrug", -0.5, 0.885, (-0.026,0.04,0.014)),
+ "Trap Bar Shrug": ("Back/TrapBarShrug", -0.8, 0.878, (-0.024,0.04,0.024)),
+ "Behind-the-Back Barbell Shrug": ("Back/BehindTheBackBarbellShrug", -2.4, 0.617, (0.02,0.023,0.018)),
+ "Farmer's Carry": ("Abs/FarmersCarry", -0.6, 0.888, (-0.002,0.03,0.001)),
+ "Suitcase Carry": ("Abs/SuitcaseCarry", -0.3, 0.883, (-0.023,0.039,0.007)),
+ "Overhead Carry": ("Abs/OverheadCarry", -1.0, 0.712, (-0.029,-0.056,0.045)),
+ "Alternating Dumbbell Curl": ("Biceps/AlternatingDumbbellCurl", -0.4, 0.888, (0.029,0.039,-0.012)),
+ "Spider Curl": ("Biceps/SpiderCurl", -2.0, 0.499, (-0.036,0.057,-0.078)),
+ "Dumbbell Preacher Curl": ("Biceps/DumbbellPreacherCurl", -1.1, 0.994, (-0.024,0.119,0.048)),
+ "Machine Biceps Curl": ("Biceps/MachineBicepsCurl", -1.0, 1.032, (-0.025,0.142,0.038)),
+ # Legs 300-350 (2026-09-26).
+ "Forward Lunge": ("Legs/ForwardLunge", -1.3, 0.703, (0.042,0.037,-0.151)),
+ "Barbell Lunge": ("Legs/BarbellLunge", -0.6, 0.690, (0.057,0.057,-0.039)),
+ "Smith Machine Reverse Lunge": ("Legs/SmithMachineReverseLunge", -1.0, 0.885, (-0.095,0.042,0.148)),
+ "Curtsy Lunge": ("Legs/CurtsyLunge", -0.5, 0.892, (0.008,0.031,-0.004)),
+ "Barbell Split Squat": ("Legs/BarbellSplitSquat", -1.3, 0.861, (-0.014,0.050,0.051)),
+ "Dumbbell Split Squat": ("Legs/DumbbellSplitSquat", -1.3, 0.893, (-0.012,0.067,0.042)),
+ "Smith Machine Split Squat": ("Legs/SmithMachineSplitSquat", -1.0, 0.903, (-0.017,0.075,0.026)),
+ "Front-Foot-Elevated Split Squat": ("Legs/FrontFootElevatedSplitSquat", -1.3, 0.905, (-0.020,0.044,0.071)),
+ "Rear-Foot-Elevated Split Squat": ("Legs/RearFootElevatedSplitSquat", -1.3, 0.834, (-0.006,0.063,0.023)),
+ "Barbell Bulgarian Split Squat": ("Legs/BarbellBulgarianSplitSquat", -1.0, 0.793, (-0.032,0.057,0.051)),
+ "Smith Machine Bulgarian Split Squat": ("Legs/SmithMachineBulgarianSplitSquat", -1.0, 0.897, (-0.007,0.076,0.011)),
+ # Late additions (2026-09-27).
+ "Seated Dumbbell Lateral Raise": ("Shoulder/SeatedDumbbellLateralRaise", -0.6, 0.653, (0.035,0.097,-0.024)),
+ "Cable Rear Delt Row": ("Shoulder/CableRearDeltRow", -2.6, 0.867, (0.007,0.114,0.004)),
+ "Dumbbell Upright Row": ("Shoulder/DumbbellUprightRow", -0.5, 0.885, (0.003,0.039,-0.002)),
+ "Barbell Hip Thrust": ("Legs/BarbellHipThrust", -0.7, 0.879, (0.002,0.274,-0.002)),
 }
 JOINTS = ["support_TrapeziusUpper_L","support_TrapeziusUpper_R","head","neck","chest","spine","pelvis","scapula_L","upper_arm_L","forearm_L","hand_L",
           "scapula_R","upper_arm_R","forearm_R","hand_R","thigh_L","patella_L","shin_L","foot_L","thigh_R","patella_R","shin_R","foot_R",
           # Chest and lat anchors for the pressing and pullover cues (2026-09-25).
           "support_PectoralisMajor_Clavicular_L","support_PectoralisMajor_Sternal_L","support_PectoralisMajor_Abdominal_L",
           "support_PectoralisMajor_Clavicular_R","support_PectoralisMajor_Sternal_R","support_PectoralisMajor_Abdominal_R",
-          "support_LatissimusDorsi_L","support_LatissimusDorsi_R"]
+          "support_LatissimusDorsi_L","support_LatissimusDorsi_R",
+          # Deltoid, upper-trap and collarbone anchors for the shoulder, shrug and carry cues (2026-09-26).
+          "deltoid_arc_clavicle_2_L","deltoid_arc_clavicle_2_R","deltoid_arc_scapula_2_L","deltoid_arc_scapula_2_R",
+          "attachment_TrapeziusUpper_L","attachment_TrapeziusUpper_R","clavicle_L","clavicle_R",
+          # Toe joints of the 300-series legs (older rigs have none; skipped there).
+          "toe_L","toe_R"]
+
+# Lifts that switch legs between reps: probe.py also writes `<stem>_front` /
+# `<stem>_back` points for their cue dots (legs 300-350, 2026-09-26).
+ALTERNATING = {"Forward Lunge", "Barbell Lunge", "Smith Machine Reverse Lunge", "Curtsy Lunge"}
 
 def proj(p, yaw, zoom, off):
     s = zoom / LONGEST
@@ -169,8 +244,28 @@ for name in only:
     for f in fr:
         w = q.ComputeJointWorldTransforms(UsdGeom.XformCache(t0 + (t1 - t0) * f))
         for j in JOINTS:
+            if j not in idx:
+                continue
             p = w[idx[j]].ExtractTranslation()
             u, v, _ = proj((p[0], p[1], p[2]), yaw, zoom, off)
             out[name][j].append((round(u, 3), round(v, 3)))
+        if name in ALTERNATING:
+            # The leading / trailing leg, chosen per sample the way the app's
+            # BodyFrame.leadingSide does (foot further ahead along the level
+            # forward from the hips, pelvis and neck), for `_front` / `_back` dots.
+            P = {j: np.array(w[idx[j]].ExtractTranslation()) for j in ("pelvis", "neck", "thigh_L", "thigh_R", "foot_L", "foot_R")}
+            up = P["neck"] - P["pelvis"]; up /= np.linalg.norm(up)
+            across = (P["thigh_L"] - P["thigh_R"]); across -= np.dot(across, up) * up
+            fwd = np.cross(across / np.linalg.norm(across), up); fwd[1] = 0; fwd /= np.linalg.norm(fwd)
+            side = "L" if np.dot(P["foot_L"] - P["foot_R"], fwd) >= 0 else "R"
+            other = "R" if side == "L" else "L"
+            for stem in ("thigh", "patella", "shin", "foot", "toe"):
+                for role, sd in (("front", side), ("back", other)):
+                    j = f"{stem}_{sd}"
+                    if j not in idx:
+                        continue
+                    p = w[idx[j]].ExtractTranslation()
+                    u, v, _ = proj((p[0], p[1], p[2]), yaw, zoom, off)
+                    out[name].setdefault(f"{stem}_{role}", []).append((round(u, 3), round(v, 3)))
 json.dump(out, open(sys.argv[1], "w"))
 print(len(out), "exercises")

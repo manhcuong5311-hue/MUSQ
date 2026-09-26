@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-leaning-lateral-raise.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

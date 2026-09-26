@@ -105,7 +105,8 @@ enum MusclePart: String, CaseIterable, Codable, Identifiable, Hashable {
         if has("biceps femoris", "hamstring", "semitendinosus", "semimembranosus") { self = .hamstrings }
         else if has("pector", "chest") { self = .chest }
         else if has("anterior deltoid", "front delt") { self = .frontDelts }
-        else if has("posterior deltoid", "rear delt", "rotator cuff", "infraspinatus", "teres minor") { self = .rearDelts }
+        else if has("posterior deltoid", "rear delt", "rotator cuff", "infraspinatus", "teres minor",
+                    "supraspinatus", "subscapularis") { self = .rearDelts }
         else if has("deltoid", "delt") { self = .sideDelts }
         else if has("latissimus", "lats", "teres") { self = .lats }
         else if has("erector", "spinae", "lower back", "posterior chain") { self = .lowerBack }
@@ -171,8 +172,12 @@ struct MusclePartContribution: Codable, Hashable {
 
 enum PresetLevel: String, Codable, CaseIterable, Hashable {
     case basic, advanced
+    /// The list the user saved for the group themselves. Never written into
+    /// `WorkoutSession.levels` (see `mineGroups`), so a file stays readable
+    /// by builds that predate it.
+    case mine
 
-    var title: String { rawValue.uppercased() }
+    var title: String { self == .mine ? "MY LIST" : rawValue.uppercased() }
 }
 
 /// A set target: reps, or seconds for a timed exercise (see `SetMeasure`).
@@ -222,7 +227,7 @@ enum SetMeasure: String, Codable, Hashable {
     }
 }
 
-struct PresetItem: Hashable {
+struct PresetItem: Codable, Hashable {
     let exerciseName: String
     let sets: Int
     let reps: RepRange
@@ -288,6 +293,10 @@ struct WorkoutSession: Identifiable, Codable, Hashable {
     var exercises: [WorkoutExercise] = []
     /// Basic/Advanced per muscle group, keyed by `MuscleGroup.rawValue`.
     var levels: [String: PresetLevel] = [:]
+    /// Groups whose plan came from the user's own list, by
+    /// `MuscleGroup.rawValue`. Kept apart from `levels` so older builds,
+    /// which don't know that level, still decode the file.
+    var mineGroups: [String]? = nil
     var completedAt: Date? = nil
     /// Effective completed sets per muscle, keyed by `MuscleGroup.rawValue`,
     /// saved when the workout is completed.

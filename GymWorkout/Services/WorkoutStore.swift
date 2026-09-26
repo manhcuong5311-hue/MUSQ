@@ -30,6 +30,8 @@ final class WorkoutStore {
     }
     /// Exercises saved with the heart, by name.
     private(set) var saved: Set<String> = []
+    /// Each group's own list ("Mine"), keyed by `MuscleGroup.rawValue`.
+    private(set) var customPresets: [String: [PresetItem]] = [:]
 
     @ObservationIgnored private var isLoading = false
     @ObservationIgnored private let fileURL: URL
@@ -52,7 +54,9 @@ final class WorkoutStore {
     }
 
     func level(for group: MuscleGroup, on day: Date) -> PresetLevel? {
-        session(on: day)?.levels[group.rawValue]
+        guard let session = session(on: day) else { return nil }
+        if session.mineGroups?.contains(group.rawValue) == true { return .mine }
+        return session.levels[group.rawValue]
     }
 
     func exercise(id: UUID) -> WorkoutExercise? {
@@ -85,6 +89,23 @@ final class WorkoutStore {
         ProgramAdvisor.suggestedLevel(for: profile, experience: experience)
     }
 
+    /// The list a group starts from: the user's own when they saved one,
+    /// else the suggested preset.
+    func defaultLevel(for group: MuscleGroup) -> PresetLevel {
+        customPresets[group.rawValue] == nil ? suggestedLevel : .mine
+    }
+
+    /// The last day each exercise had a completed set.
+    var lastDoneDates: [String: Date] {
+        var dates: [String: Date] = [:]
+        for session in sessions {
+            for exercise in session.exercises where !exercise.completedSets.isEmpty {
+                dates[exercise.exerciseName] = max(dates[exercise.exerciseName] ?? .distantPast, session.day)
+            }
+        }
+        return dates
+    }
+
     /// The walk to suggest after a workout, for a weight-loss goal only.
     var walkSuggestion: WalkSuggestion? {
         guard let profile, profile.goal == .loseWeight else { return nil }
@@ -100,7 +121,10 @@ final class WorkoutStore {
     /// The exercises a preset would add, not yet saved. Pass these back to a
     /// mutation to save them with the same ids.
     func preview(_ group: MuscleGroup, level: PresetLevel) -> [WorkoutExercise] {
-        (PresetProvider.preset(for: group, level: level)?.items ?? []).compactMap { item in
+        let items = level == .mine
+            ? customPresets[group.rawValue] ?? []
+            : PresetProvider.preset(for: group, level: level)?.items ?? []
+        return items.compactMap { item in
             makeExercise(item.exerciseName, group: group, sets: item.sets, reps: item.reps)
         }
     }
@@ -110,8 +134,10 @@ final class WorkoutStore {
     func ensurePlan(_ group: MuscleGroup, on day: Date, level: PresetLevel,
                     planned: [WorkoutExercise]) {
         mutateSession(on: day) { session in
-            session.levels[group.rawValue] = level
+            // A group already on the day keeps its level: exercises added
+            // from the library aren't the user's saved list, say.
             guard !session.exercises.contains(where: { $0.group == group }) else { return }
+            setLevel(level, for: group, in: &session)
             session.exercises.append(contentsOf: planned)
             // New work reopens a finished workout so it can be completed again.
             if !planned.isEmpty { session.completedAt = nil }
@@ -122,7 +148,7 @@ final class WorkoutStore {
     /// are replaced by the other preset.
     func switchLevel(_ group: MuscleGroup, on day: Date, to level: PresetLevel) {
         mutateSession(on: day) { session in
-            session.levels[group.rawValue] = level
+            setLevel(level, for: group, in: &session)
             let started = session.exercises.filter { $0.group == group && !$0.completedSets.isEmpty }
             let names = Set(started.map(\.exerciseName))
             session.exercises.removeAll { $0.group == group && $0.completedSets.isEmpty }
@@ -131,17 +157,24 @@ final class WorkoutStore {
         }
     }
 
-    /// "Add to Today" from the Muscles tab: the suggested preset, unless the
-    /// group is already planned today.
+    /// "Add to Today" from the Muscles tab: the user's own list or the
+    /// suggested preset, unless the group is already planned today.
     func addToToday(_ group: MuscleGroup) {
-        let level = self.level(for: group, on: Date()) ?? suggestedLevel
+        let level = self.level(for: group, on: Date()) ?? defaultLevel(for: group)
         ensurePlan(group, on: Date(), level: level, planned: preview(group, level: level))
+    }
+
+    /// Records which list a day's plan follows without touching its exercises
+    /// — after saving the plan as the user's own list, say.
+    func markLevel(_ level: PresetLevel, for group: MuscleGroup, on day: Date) {
+        mutateSession(on: day) { setLevel(level, for: group, in: &$0) }
     }
 
     func removeGroup(_ group: MuscleGroup, on day: Date) {
         mutateSession(on: day) { session in
             session.exercises.removeAll { $0.group == group }
             session.levels[group.rawValue] = nil
+            session.mineGroups?.removeAll { $0 == group.rawValue }
         }
     }
 
@@ -164,18 +197,22 @@ final class WorkoutStore {
     /// between reps and a timed hold takes the new kind's default target.
     func replaceExercise(id: UUID, with name: String) {
         mutateExercise(id: id) { exercise in
-            let measure = ExerciseCatalog.measure(forExerciseNamed: name)
-            let target = measure == exercise.setMeasure ? exercise.repRange : measure.defaultTarget
-            guard let replacement = makeExercise(name, group: exercise.group,
-                                                 sets: exercise.sets.count, reps: target) else { return }
-            exercise.exerciseName = replacement.exerciseName
-            exercise.contributions = replacement.contributions
-            exercise.partContributions = replacement.partContributions
-            exercise.measure = replacement.measure
-            exercise.repRange = replacement.repRange
-            exercise.sets = replacement.sets
-            exercise.isCompleted = false
+            if let replacement = swapped(exercise, to: name) { exercise = replacement }
         }
+    }
+
+    /// `exercise` with `name` in its place: the same id, group and set
+    /// count, no sets done. The target stays when the new exercise moves the
+    /// same way; otherwise it takes its own (a fly swapped in for a bench
+    /// press doesn't keep 6-10 reps). For lists not saved to a day yet.
+    func swapped(_ exercise: WorkoutExercise, to name: String) -> WorkoutExercise? {
+        let measure = ExerciseCatalog.measure(forExerciseNamed: name)
+        let samePattern = MovementPattern(exerciseNamed: name) == MovementPattern(exerciseNamed: exercise.exerciseName)
+        let target = measure == exercise.setMeasure && samePattern ? exercise.repRange : ExerciseRotation.target(for: name)
+        guard var replacement = makeExercise(name, group: exercise.group,
+                                             sets: exercise.sets.count, reps: target) else { return nil }
+        replacement.id = exercise.id
+        return replacement
     }
 
     /// Reorders within one group's block, leaving other groups in place.
@@ -301,6 +338,79 @@ final class WorkoutStore {
         mutateSession(on: day) { $0.walkDone = done ? true : nil }
     }
 
+    // MARK: - The user's own lists
+
+    func hasCustomPreset(for group: MuscleGroup) -> Bool {
+        customPresets[group.rawValue] != nil
+    }
+
+    /// Whether `exercises` are the group's saved list: the same exercises,
+    /// in any order, with the same sets and targets. Saved exercises no
+    /// longer in the library are left out of the comparison.
+    func matchesCustomPreset(_ exercises: [WorkoutExercise], for group: MuscleGroup) -> Bool {
+        let saved = (customPresets[group.rawValue] ?? [])
+            .filter { ExerciseCatalog.exercise(named: $0.exerciseName) != nil }
+        guard !saved.isEmpty else { return false }
+        let byName = { (a: PresetItem, b: PresetItem) in a.exerciseName < b.exerciseName }
+        return saved.sorted(by: byName) == exercises.map(Self.presetItem).sorted(by: byName)
+    }
+
+    /// The group's saved list as it is now, to hand back to
+    /// `restoreCustomPreset` for an undo.
+    func customPreset(for group: MuscleGroup) -> [PresetItem]? {
+        customPresets[group.rawValue]
+    }
+
+    /// Puts back a saved list (or its absence) captured before a change.
+    func restoreCustomPreset(_ items: [PresetItem]?, for group: MuscleGroup) {
+        customPresets[group.rawValue] = items
+        if items == nil { forgetMine(group) }
+        save()
+    }
+
+    /// Saves `exercises` as the group's own list, which the group then opens on.
+    func saveCustomPreset(_ exercises: [WorkoutExercise], for group: MuscleGroup) {
+        guard !exercises.isEmpty else { return }
+        customPresets[group.rawValue] = exercises.map(Self.presetItem)
+        save()
+    }
+
+    /// Deletes the group's own list. Days planned from it keep their
+    /// exercises and read as the suggested preset from then on.
+    func deleteCustomPreset(for group: MuscleGroup) {
+        customPresets[group.rawValue] = nil
+        forgetMine(group)
+        save()
+    }
+
+    /// Days planned from the group's own list read as the preset they fell
+    /// back to (`levels`) once the list is gone.
+    private func forgetMine(_ group: MuscleGroup) {
+        for index in sessions.indices {
+            sessions[index].mineGroups?.removeAll { $0 == group.rawValue }
+            if sessions[index].mineGroups?.isEmpty == true { sessions[index].mineGroups = nil }
+        }
+    }
+
+    /// Records a group's level: Basic and Advanced in `levels`; the user's
+    /// own list as membership of `mineGroups`, with the suggested preset in
+    /// `levels` for builds that don't know it.
+    private func setLevel(_ level: PresetLevel, for group: MuscleGroup, in session: inout WorkoutSession) {
+        var mine = session.mineGroups ?? []
+        mine.removeAll { $0 == group.rawValue }
+        if level == .mine {
+            mine.append(group.rawValue)
+            session.levels[group.rawValue] = suggestedLevel == .mine ? .basic : suggestedLevel
+        } else {
+            session.levels[group.rawValue] = level
+        }
+        session.mineGroups = mine.isEmpty ? nil : mine
+    }
+
+    private static func presetItem(_ exercise: WorkoutExercise) -> PresetItem {
+        PresetItem(exerciseName: exercise.exerciseName, sets: exercise.sets.count, reps: exercise.repRange)
+    }
+
     // MARK: - Saved exercises
 
     func isSaved(_ name: String) -> Bool { saved.contains(name) }
@@ -420,6 +530,8 @@ final class WorkoutStore {
         var rest: RestSetting?
         var profile: UserProfile?
         var saved: [String]?
+        /// Nil in files saved before the user's own lists existed.
+        var customPresets: [String: [PresetItem]]?
         var sessions: [WorkoutSession]
     }
 
@@ -439,12 +551,13 @@ final class WorkoutStore {
         rest = snapshot.rest ?? .auto
         profile = snapshot.profile
         saved = Set(snapshot.saved ?? [])
+        customPresets = snapshot.customPresets ?? [:]
         isLoading = false
     }
 
     private func save() {
         let snapshot = Snapshot(experience: experience, unit: unit, rest: rest, profile: profile,
-                                saved: saved.sorted(), sessions: sessions)
+                                saved: saved.sorted(), customPresets: customPresets, sessions: sessions)
         do {
             try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(),
                                                     withIntermediateDirectories: true)

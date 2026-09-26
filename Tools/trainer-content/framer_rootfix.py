@@ -1,5 +1,7 @@
 # Offline replica of USDZViewport's framing: model scaled by zoom/1.7923 about
 # the rig's bind-pose centre, offset, turned by yaw; camera at z=2.05, 32deg vFOV.
+import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
 import math, sys, json
 import numpy as np
 from pxr import Usd, UsdGeom, UsdSkel, Gf
