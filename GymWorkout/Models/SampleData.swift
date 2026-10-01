@@ -763,7 +763,7 @@ enum SampleData {
                  primaryMuscle: "TRICEPS BRACHII", equipment: "DUMBBELL",
                  difficulty: .beginner),
         Exercise(name: "Skull Crusher", category: .arms,
-                 primaryMuscle: "TRICEPS BRACHII", equipment: "BARBELL",
+                 primaryMuscle: "TRICEPS BRACHII", equipment: "EZ BAR",
                  difficulty: .intermediate),
         // Exercises 1-50 redone (2026-09-29)
         Exercise(name: "Close-Grip Bench Press", category: .arms,
@@ -2129,7 +2129,7 @@ enum SampleData {
 
     /// Exercises whose trainer is fully authored, in library order.
     static var trainableExercises: [Exercise] {
-        exercises.filter(hasTrainer)
+        exercises.filter { hasTrainer($0) }
     }
 
     static let benchPressContent = ExerciseContent(
@@ -2175,7 +2175,7 @@ enum SampleData {
                 title: "Elbow Position",
                 intro: "Elbow angle decides how load splits between the pecs and the shoulder joint.",
                 why: "At roughly 45° from the torso the pectoralis major stays in its strongest line of pull while the humeral head keeps clearance in the socket.",
-                mistake: "Flaring to 90° places the shoulder in full abduction and external rotation, loading the anterior capsule instead of the chest.",
+                mistake: "Flaring the upper arms out to 90° from the torso, which loads the front of the shoulder capsule instead of the chest.",
                 correct: "Tuck the upper arms toward the ribs as the bar descends, keeping forearms vertical under the wrist."
             ),
             TechniqueCue(
@@ -2273,7 +2273,7 @@ enum SampleData {
             TechniqueCue(
                 id: "scapula",
                 title: "Scapular Position",
-                intro: "A retracted shoulder blade keeps the incline press stable overhead.",
+                intro: "A retracted shoulder blade keeps the incline press stable through every rep.",
                 why: "Pulling the scapula back and down keeps the humeral head centred as the bar travels up and back over the shoulders.",
                 mistake: "Shoulders rounding forward off the bench as the incline pulls the upper back out of position.",
                 correct: "Pull the shoulder blades back and down into the bench before the first rep and hold them there."
@@ -2299,7 +2299,7 @@ enum SampleData {
                 title: "Bar Path",
                 intro: "Incline pressing lives or dies on bench angle and where the bar lands.",
                 why: "A 30° bench biases the upper chest fibres over the front shoulder; steeper angles hand the set to the deltoid instead.",
-                mistake: "Setting the bench past 45° and touching near the collarbone, which turns the lift into a shoulder press.",
+                mistake: "Setting the bench past 45° and lowering the bar high, onto the collarbones, which turns the lift into a shoulder press.",
                 correct: "Keep the bench around 30°, touch the upper chest just below the collarbone, then press up and slightly back."
             ),
             TechniqueCue(
@@ -2369,7 +2369,7 @@ enum SampleData {
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Angle",
-                intro: "The elbow angle is the same rule as any bench press, just upside down.",
+                intro: "The elbow angle is the same rule as any bench press, just head-down.",
                 why: "Roughly 45° keeps the lower pec fibres loaded without over-stressing the front of the shoulder.",
                 mistake: "Flaring the elbows to 90° under a downward-angled bar, which stacks extra stress on the shoulder.",
                 correct: "Tuck the upper arms to about 45° as the bar lowers toward the lower chest."
@@ -2377,7 +2377,7 @@ enum SampleData {
             TechniqueCue(
                 id: "wrist",
                 title: "Wrist Stacking",
-                intro: "Wrist position matters even more upside down, where it is harder to feel.",
+                intro: "Wrist position matters even more head-down, where it is harder to feel.",
                 why: "A stacked wrist keeps force running straight down the forearm instead of into a bent joint.",
                 mistake: "The bar drifting back into the fingers as the decline angle changes the pressing line.",
                 correct: "Hold the bar low in the palm with the wrist locked straight over the forearm."
@@ -2417,7 +2417,7 @@ enum SampleData {
             correctCue: "Controlled touch, lower chest",
             mistakeCue: "Bouncing the bar off the chest",
             correctNote: "Pausing briefly at the lower chest keeps tension on the pec and protects the sternum and shoulders.",
-            mistakeNote: "Bouncing the bar uses momentum instead of muscle, and repeated impact on the sternum is a well-documented cause of bench-press injuries."
+            mistakeNote: "Bouncing the bar uses momentum instead of muscle, and the repeated impact on the sternum and ribs adds needless injury risk."
         ),
         glows: [
             .init(DS.activation.opacity(0.60), rx: 0.26, ry: 0.15, cx: 0.46, cy: 0.48),
@@ -2458,7 +2458,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Angle",
                 intro: "Dumbbells let the elbow travel more freely than a barbell — that freedom has to be controlled.",
-                why: "Keeping the upper arms around 45–60° protects the shoulder; dropping the elbows below torso level externally rotates the joint under load.",
+                why: "Keeping the upper arms around 45–60° protects the shoulder; dropping the elbows below torso level stretches the front of the joint under load.",
                 mistake: "Letting the elbows drop below the line of the torso at the bottom, opening the shoulder up.",
                 correct: "Lower until the upper arm is level with the torso, elbows around 45–60° out."
             ),
@@ -2505,7 +2505,7 @@ enum SampleData {
             correctCue: "Elbows 45–60°, dumbbells stacked",
             mistakeCue: "Elbows sink below torso line",
             correctNote: "Stopping the descent when the upper arm is level with the torso keeps the shoulder supported through the deeper dumbbell range.",
-            mistakeNote: "Letting the elbows travel below the torso externally rotates the shoulder at its most loaded point — a common cause of dumbbell-press shoulder strain."
+            mistakeNote: "Letting the elbows travel below the torso stretches the front of the shoulder at its most loaded point, shifting the strain from the chest onto the joint."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.26, ry: 0.15, cx: 0.46, cy: 0.42),
@@ -2791,13 +2791,13 @@ enum SampleData {
             // `.chestPress` is a three-quarter seated shot (yaw -0.7) — label
             // points come from projecting the real joints through that
             // framing (see joint_probe.py), not the bench layout.
-            CueAnnotation(cueID: "wrist", label: "Grip ~45–60° from torso",
+            CueAnnotation(cueID: "wrist", label: "Handles at mid-chest",
                           labelPoint: CGPoint(x: 0.97, y: 0.53),
                           leaderLength: 44, joint: "hand_L"),
             CueAnnotation(cueID: "elbow", label: "Elbows in line with wrists",
                           labelPoint: CGPoint(x: 0.22, y: 0.16),
                           labelSide: .trailing, leaderLength: 50, joint: "forearm_L"),
-            CueAnnotation(cueID: "barpath", label: "Press to full extension",
+            CueAnnotation(cueID: "barpath", label: "Press to a soft lockout",
                           labelPoint: CGPoint(x: 0.22, y: 0.30),
                           labelSide: .trailing, leaderLength: 44,
                           joint: "support_PectoralisMajor_Sternal_L"),
@@ -2839,7 +2839,7 @@ enum SampleData {
                 intro: "The machine's fixed arc still needs a full, controlled range to earn its keep.",
                 why: "Extending fully without locking out hard keeps continuous tension on the chest through the whole rep.",
                 mistake: "Using short, bouncy reps that never load the chest through a full range.",
-                correct: "Press out to just short of lockout, then lower under control back to the chest."
+                correct: "Press out to just short of lockout, then return under control until the handles are just short of the chest."
             ),
             TechniqueCue(
                 id: "feet",
@@ -2881,10 +2881,10 @@ enum SampleData {
             CueAnnotation(cueID: "wrist", label: "Light grip on the handles",
                           labelPoint: CGPoint(x: 0.97, y: 0.25),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "elbow", label: "Elbows at chest height",
+            CueAnnotation(cueID: "elbow", label: "Elbows at shoulder height",
                           labelPoint: CGPoint(x: 0.18, y: 0.18),
                           labelSide: .trailing, leaderLength: 50, joint: "upper_arm_L"),
-            CueAnnotation(cueID: "barpath", label: "Squeeze pads together",
+            CueAnnotation(cueID: "barpath", label: "Squeeze handles together",
                           labelPoint: CGPoint(x: 0.18, y: 0.32),
                           labelSide: .trailing, leaderLength: 46,
                           joint: "support_PectoralisMajor_Sternal_L"),
@@ -2901,7 +2901,7 @@ enum SampleData {
                 title: "Scapular Position",
                 intro: "A seated fly still needs a stable base to squeeze against.",
                 why: "Keeping the back and shoulder blades against the pad stops the torso from helping the squeeze.",
-                mistake: "Arching or twisting off the backrest to force the pads together.",
+                mistake: "Arching or twisting off the backrest to force the handles together.",
                 correct: "Press the whole back into the pad and keep it there through every rep."
             ),
             TechniqueCue(
@@ -2925,8 +2925,8 @@ enum SampleData {
                 title: "Fly Path",
                 intro: "The pec deck trades range for a locked-in path — use the range it gives you.",
                 why: "A full squeeze at the front, held briefly, maximises time under tension for the chest.",
-                mistake: "Using momentum to swing the pads together and immediately releasing.",
-                correct: "Bring the pads together under control, squeeze the chest for a moment, then return slowly."
+                mistake: "Using momentum to swing the handles together and immediately releasing.",
+                correct: "Bring the handles together under control, squeeze the chest for a moment, then return slowly."
             ),
             TechniqueCue(
                 id: "feet",
@@ -2958,9 +2958,9 @@ enum SampleData {
             correctBadge: "CORRECT FORM",
             mistakeBadge: "MOMENTUM SWING",
             correctCue: "Controlled squeeze, brief hold",
-            mistakeCue: "Pads swung together and released",
+            mistakeCue: "Handles swung together and released",
             correctNote: "A controlled squeeze with a brief hold at the front keeps continuous tension on the chest through the whole range.",
-            mistakeNote: "Swinging the pads together with momentum and releasing immediately turns a chest isolation exercise into a fast, low-tension rep that barely touches the pec."
+            mistakeNote: "Swinging the handles together with momentum and releasing immediately turns a chest isolation exercise into a fast, low-tension rep that barely touches the pec."
         ),
         glows: [
             .init(DS.activation.opacity(0.62), rx: 0.24, ry: 0.13, cx: 0.50, cy: 0.40),
@@ -3199,7 +3199,7 @@ enum SampleData {
         annotations: [
             backAnnotation("barpath", "Bar close to shins", "forearm_L", slot: backSlotElbow, leader: 50),
             backAnnotation("hips", "Hips hinge back", "pelvis", slot: backSlotPath, leader: 44),
-            backAnnotation("grip", "Hook or double grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
+            backAnnotation("grip", "Hook or mixed grip", "hand_L", slot: backSlotGrip, side: .trailing, leader: 34),
             // The mid-foot label ends just left of the foot and the spine label
             // starts just right of it, so the foot dot shows between them.
             backAnnotation("feet", "Bar over mid-foot", "foot_L", slot: (x: 226.0 / 382.0, y: 473.0 / 567.0), leader: 40),
@@ -3209,7 +3209,7 @@ enum SampleData {
             TechniqueCue(
                 id: "spine",
                 title: "Spine Position",
-                intro: "The deadlift is safe or risky almost entirely based on what the lower back does under load.",
+                intro: "What the lower back does under load is the first thing to get right in the deadlift.",
                 why: "A neutral spine transmits force through the skeleton; a rounded one asks the lumbar discs to do a job they are poor at.",
                 mistake: "The lower back rounding as the bar leaves the floor, usually because the hips shot up too early.",
                 correct: "Take the slack out of the bar, brace the core, and keep the chest tall so the spine stays neutral throughout."
@@ -3281,7 +3281,7 @@ enum SampleData {
             correctCue: "Neutral spine, bar on the shins",
             mistakeCue: "Lower back rounds under load",
             correctNote: "A neutral spine lets the hips and legs do the lifting while the back simply transmits the force.",
-            mistakeNote: "A rounded lower back shifts load from the strong hip and leg muscles onto the lumbar discs and ligaments — the most common cause of deadlift back injuries."
+            mistakeNote: "A rounded lower back shifts load from the strong hip and leg muscles onto the lumbar discs and ligaments, which are far less suited to carrying it."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.14, ry: 0.12, cx: 0.67, cy: 0.58),
@@ -3326,7 +3326,7 @@ enum SampleData {
                 title: "Grip",
                 intro: "Grip width changes how far the bar has to travel and which fibres take the most load.",
                 why: "A shoulder-width overhand grip keeps the forearms vertical under the bar for an efficient pulling line.",
-                mistake: "A grip so wide the elbows can't track back properly, turning the pull into a shrug.",
+                mistake: "A grip so wide the elbows flare out toward shoulder height instead of tracking back.",
                 correct: "Take an overhand grip roughly shoulder-width apart."
             ),
             TechniqueCue(
@@ -3619,7 +3619,7 @@ enum SampleData {
             mistakeBadge: "CHEST LIFTS OFF THE PAD",
             correctCue: "Chest pinned, elbows drive back",
             mistakeCue: "Chest lifts off the pad",
-            correctNote: "Keeping the chest pinned to the pad removes momentum entirely, so every ounce of force comes from the back muscles.",
+            correctNote: "Keeping the chest pinned to the pad removes momentum, so the back muscles and arms do all the pulling.",
             mistakeNote: "Letting the chest lift off the pad brings the lower back and momentum back into the lift, defeating the whole point of a chest-supported row."
         ),
         glows: [
@@ -3790,7 +3790,7 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A little lean is fine; a lot is cheating.",
-                why: "A slight 5–10° backward lean keeps the pull in line with the torso without turning the exercise into a standing row.",
+                why: "A slight 5–10° backward lean keeps the pull in line with the torso without turning the exercise into a seated row.",
                 mistake: "Rocking the torso far back on every rep to use body weight instead of the lats.",
                 correct: "Keep the chest up and lean back only slightly, then hold that position for the whole set."
             ),
@@ -3814,7 +3814,7 @@ enum SampleData {
                 id: "barpath",
                 title: "Bar Path",
                 intro: "Where the bar finishes decides whether the shoulder gets a safe range or a risky one.",
-                why: "Pulling to the upper chest, above the sternum, keeps the shoulder in a strong, supported position.",
+                why: "Pulling to the upper chest, at the top of the sternum, keeps the shoulder in a strong, supported position.",
                 mistake: "Pulling the bar behind the neck, which forces the shoulder into a vulnerable, over-rotated position.",
                 correct: "Pull the bar down in front of the body to the upper chest, just below the collarbone."
             ),
@@ -3844,7 +3844,7 @@ enum SampleData {
             correctCue: "Bar to upper chest",
             mistakeCue: "Bar pulled behind the neck",
             correctNote: "Pulling to the front, to the upper chest, keeps the shoulder in a strong, naturally supported position through the whole rep.",
-            mistakeNote: "Pulling the bar behind the neck forces the shoulder into extreme, unsupported external rotation — a well-known cause of shoulder impingement."
+            mistakeNote: "Pulling the bar behind the neck forces the shoulder into extreme, unsupported external rotation — a position that stresses the front of the shoulder joint."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.18, ry: 0.22, cx: 0.52, cy: 0.38),
@@ -3881,7 +3881,7 @@ enum SampleData {
                 id: "grip",
                 title: "Grip",
                 intro: "A closer, often neutral grip is what defines this variation.",
-                why: "A neutral, shoulder-width grip lets the shoulder adduct through a longer range than a wide bar allows.",
+                why: "A neutral, shoulder-width grip lets the shoulder extend through a longer range than a wide bar allows.",
                 mistake: "A grip wide enough that it behaves like the standard wide-grip pulldown.",
                 correct: "Take a neutral or close grip, roughly shoulder-width apart."
             ),
@@ -3947,7 +3947,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "Driving with the elbows, not curling with the arms, is what keeps this a back exercise.",
-                why: "Driving the elbows straight back keeps the humerus and forearm at roughly 90° and limits how much the biceps take over.",
+                why: "Driving the elbows straight back, rather than curling the hands in, limits how much the biceps take over.",
                 mistake: "Curling the handle in with the forearms before the elbows even move.",
                 correct: "Lead the pull with the elbows, driving them straight back past the torso."
             ),
@@ -4027,7 +4027,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Lock",
                 intro: "The one rule that defines this exercise: the elbows do not bend.",
-                why: "A fixed, soft-locked elbow turns the arms into rigid levers, so the lats — not the triceps or biceps — produce all the force.",
+                why: "A fixed, soft-locked elbow turns the arms into rigid levers, so the lats do the pulling at the shoulder instead of the elbows bending.",
                 mistake: "The elbows bending as the weight gets heavy, quietly turning the pulldown into a triceps pushdown.",
                 correct: "Fix a slight, comfortable bend in the elbows and hold that exact angle for the whole set."
             ),
@@ -4042,7 +4042,7 @@ enum SampleData {
             TechniqueCue(
                 id: "barpath",
                 title: "Handle Path",
-                intro: "The handles trace a wide arc from overhead to the thighs.",
+                intro: "The handles trace a wide arc from shoulder height to the thighs.",
                 why: "Sweeping the straight arms down in an arc, finishing near the thighs, takes the lats through a long range of shoulder extension a bent-elbow pull cannot match.",
                 mistake: "Pushing the handles straight down toward the floor instead of sweeping them in an arc.",
                 correct: "Sweep the arms down and back in an arc until the hands reach the thighs."
@@ -4334,7 +4334,7 @@ enum SampleData {
             correctCue: "Chest on the pad",
             mistakeCue: "Torso leans back to move the weight",
             correctNote: "Keeping the chest against the pad isolates the lats and traps from any assistance by the lower back.",
-            mistakeNote: "Leaning back away from the pad turns the pull into a standing-row-like motion, adding momentum instead of muscle."
+            mistakeNote: "Leaning back away from the pad turns the pull into a body swing, adding momentum instead of muscle."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.18, ry: 0.22, cx: 0.52, cy: 0.40),
@@ -4548,7 +4548,7 @@ enum SampleData {
             correctCue: "Knees track over toes",
             mistakeCue: "Knees collapse inward",
             correctNote: "Pushing the knees out over the toes keeps the load centred in the joint and lets the glutes and hip abductors share the work.",
-            mistakeNote: "Letting the knees fall inward under load twists the knee joint and shifts stress onto the ACL and inner knee — one of the most common and riskiest squat faults."
+            mistakeNote: "Letting the knees fall inward under load twists the knee joint and shifts stress onto the inner knee ligaments — one of the most common squat faults."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.22, ry: 0.14, cx: 0.50, cy: 0.62),
@@ -4603,7 +4603,7 @@ enum SampleData {
                 id: "knee",
                 title: "Knee Travel",
                 intro: "The knees travel further forward here than in a back squat, and that is normal.",
-                why: "An upright torso shifts more of the work — and the knee's forward travel — onto the quadriceps, which is the point of the front-loaded position.",
+                why: "An upright torso needs more forward knee travel, which shifts more of the work onto the quadriceps — the point of the front-loaded position.",
                 mistake: "Trying to keep the shins vertical like a back squat, which just tips the torso forward and drops the bar off the rack.",
                 correct: "Let the knees track forward over the toes as the hips sink, keeping the weight balanced through the whole foot."
             ),
@@ -4769,7 +4769,7 @@ enum SampleData {
             CueAnnotation(cueID: "step", label: "Step long enough for 90°",
                           labelPoint: CGPoint(x: 0.47, y: 0.29),
                           labelSide: .trailing, leaderLength: 40, joint: "pelvis"),
-            CueAnnotation(cueID: "knee", label: "Knee stacks over the ankle",
+            CueAnnotation(cueID: "knee", label: "Front knee tracks the toes",
                           labelPoint: CGPoint(x: 0.31, y: 0.225),
                           labelSide: .trailing, leaderLength: 38, joint: "patella_front"),
             CueAnnotation(cueID: "balance", label: "Tap the back knee, don't bounce",
@@ -4792,8 +4792,8 @@ enum SampleData {
                 id: "knee",
                 title: "Front Knee Tracking",
                 intro: "The front knee is doing most of the steering in this lift.",
-                why: "Keeping the front shin close to vertical at the bottom of each step keeps the load on the quads and glutes instead of the knee joint.",
-                mistake: "Letting the front knee drive out past the toes or cave inward as fatigue sets in over the set.",
+                why: "Tracking the front knee over the foot keeps it from twisting while the quads and glutes take the load at the bottom of each step.",
+                mistake: "Letting the front knee cave inward toward the other leg as fatigue sets in over the set.",
                 correct: "Track the front knee straight ahead over the foot, stacking directly above the ankle at the bottom of each step."
             ),
             TechniqueCue(
@@ -4851,7 +4851,7 @@ enum SampleData {
             correctCue: "Front knee stacks over the ankle",
             mistakeCue: "Front knee drives past the toes",
             correctNote: "A long enough step keeps the front shin close to vertical, stacking the knee over the ankle and keeping the load on the big hip and thigh muscles.",
-            mistakeNote: "A short step forces the knee to travel well past the toes to reach depth, loading the knee joint itself instead of the muscles around it."
+            mistakeNote: "A short step makes the front knee travel well past the toes to reach depth, which raises the load on the front of the knee near the bottom."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.18, ry: 0.15, cx: 0.54, cy: 0.64),
@@ -5015,7 +5015,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Top Lockout",
                 intro: "The top of a leg press rep should stop just short of straight.",
-                why: "Leaving a slight bend in the knees at the top keeps tension on the quads and avoids resting the joint into a locked, hyperextended position under load.",
+                why: "Leaving a slight bend in the knees at the top keeps tension on the quads and stops a heavy sled from snapping the knees back past straight.",
                 mistake: "Punching the knees all the way straight and locking out at the top of every rep.",
                 correct: "Extend the legs until they are almost straight, stopping just short of a hard lockout."
             ),
@@ -5043,8 +5043,8 @@ enum SampleData {
             mistakeBadge: "KNEES LOCKING OUT",
             correctCue: "Slight bend held at the top",
             mistakeCue: "Knees punched straight",
-            correctNote: "Stopping just short of a full lockout keeps tension on the quads and keeps the knee joint out of a hyperextended, unsupported position.",
-            mistakeNote: "Locking the knees out hard at the top shifts the load off the muscles and onto the joint itself, and is a common way lifters strain the knee on a leg press."
+            correctNote: "Stopping just short of a full lockout keeps tension on the quads and keeps a heavy sled from forcing the knees past straight.",
+            mistakeNote: "Snapping the knees straight at the top rests the sled on locked joints instead of the quads, and under a heavy load risks pushing the knees past straight."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.16, ry: 0.13, cx: 0.60, cy: 0.50),
@@ -5082,7 +5082,7 @@ enum SampleData {
             TechniqueCue(
                 id: "pad",
                 title: "Pad Contact",
-                intro: "The shoulder and back pads are there to keep the spine supported through a much deeper range than a free squat allows.",
+                intro: "The shoulder and back pads are there to keep the spine supported as you sink into a deep range.",
                 why: "Staying flush against the pads keeps the sled's angle carrying the load instead of the lower back compensating for a floating torso.",
                 mistake: "Letting the hips or shoulders lift off the pads at the bottom to chase extra depth.",
                 correct: "Keep the back and shoulders pressed into the pads through the descent and the drive back up."
@@ -5098,7 +5098,7 @@ enum SampleData {
             TechniqueCue(
                 id: "depth",
                 title: "Controlled Depth",
-                intro: "The hack squat's fixed angle allows a deeper, safer range than most free squats.",
+                intro: "The hack squat's supported back lets you train a deep range with less balance demand.",
                 why: "Lowering under control until the thighs are well past parallel loads the quads through a much longer range than a partial rep would.",
                 mistake: "Bouncing off the bottom to rebound the weight back up, using momentum instead of the quads to reverse the sled.",
                 correct: "Lower under control to a deep, comfortable stretch, pause briefly, then press back up without bouncing."
@@ -5202,7 +5202,7 @@ enum SampleData {
         stabilisers: [],
         setup: [
             "Set the back pad so your knees line up with the machine's pivot.",
-            "Set the ankle pad just above your feet.",
+            "Set the shin pad just above your ankles.",
             "Sit tall and hold the side handles."
         ],
         comparison: FormComparisonCopy(
@@ -5258,8 +5258,8 @@ enum SampleData {
                 id: "knee",
                 title: "Knee Tracking",
                 intro: "Knee tracking still matters on a guided machine — the rail does not fix bad knee position.",
-                why: "Because the feet sit forward of the bar, it is easy to let the knees dive in front of the toes instead of out over them.",
-                mistake: "Knees caving inward or shooting forward past the toes as the fixed bar path removes the usual balance cues.",
+                why: "Because the rail takes away the side-to-side balancing, it is easy to miss the knees drifting inward instead of tracking out over the toes.",
+                mistake: "Knees caving inward toward each other as the fixed bar path removes the usual balance cues.",
                 correct: "Keep pushing the knees out in line with the toes for the whole rep, exactly as in a free squat."
             ),
             TechniqueCue(
@@ -5336,7 +5336,7 @@ enum SampleData {
                 title: "Body Line",
                 intro: "A sissy squat has a very particular shape — nothing else in the gym moves quite like it.",
                 why: "The body stays in a straight line from the knees through the hips to the shoulders, with the hips extended rather than folding forward like a normal squat.",
-                mistake: "Bending at the hips like a regular squat, which turns the exercise into a half-lunge and takes tension off the quads.",
+                mistake: "Bending at the hips like a regular squat, which turns the exercise into a shallow squat and takes tension off the quads.",
                 correct: "Keep the hips open and the torso, hips and knees moving as one straight line as the knees travel forward and down."
             ),
             TechniqueCue(
@@ -5380,7 +5380,7 @@ enum SampleData {
             correctCue: "Knee, hip and shoulder stay in line",
             mistakeCue: "Hips fold forward like a squat",
             correctNote: "Keeping the hips extended and in line with the knees and shoulders keeps the tension on the quads through their full stretch.",
-            mistakeNote: "Letting the hips fold forward turns the movement into a shallow lunge, pulling the load off the quads and losing the exercise's whole purpose."
+            mistakeNote: "Letting the hips fold forward turns the movement into a shallow squat, pulling the load off the quads and losing the exercise's whole purpose."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.20, ry: 0.16, cx: 0.50, cy: 0.56),
@@ -5428,7 +5428,7 @@ enum SampleData {
                 title: "Knee Angle",
                 intro: "The knees do very little bending in this lift — that job belongs to the hips.",
                 why: "A soft, fixed knee bend set at the top and held through the rep keeps the hamstrings under continuous tension across their full length.",
-                mistake: "Letting the knees bend more as the bar descends, which turns the RDL into a stiff-legged squat and shortens the hamstring stretch.",
+                mistake: "Letting the knees bend more as the bar descends, which turns the RDL into a squat and shortens the hamstring stretch.",
                 correct: "Set a slight knee bend at the top and keep that same angle through the whole rep, hinging only at the hip."
             ),
             TechniqueCue(
@@ -5739,7 +5739,7 @@ enum SampleData {
                 id: "start",
                 title: "Start Position",
                 intro: "The Arnold press begins where a curl finishes.",
-                why: "Starting with the palms facing you at chin height puts the front deltoids on stretch and under load before the press begins.",
+                why: "Starting with the palms facing you at chin height keeps the front deltoids under load from the very bottom, before the press begins.",
                 mistake: "Starting with the elbows flared and palms already forward, which makes it an ordinary shoulder press.",
                 correct: "Hold the dumbbells in front of the chin, palms toward the face and elbows tucked in front of the body."
             ),
@@ -5785,7 +5785,7 @@ enum SampleData {
             correctCue: "Rotate and press together",
             mistakeCue: "Palms turned before the press",
             correctNote: "Turning the palms while pressing blends the anterior and lateral deltoids into one continuous movement.",
-            mistakeNote: "Rotating before pressing skips the stretched start position and reduces the lift to a regular shoulder press with extra wrist twisting."
+            mistakeNote: "Rotating before pressing skips the palms-in start position and reduces the lift to a regular shoulder press with extra wrist twisting."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.20, ry: 0.08, cx: 0.50, cy: 0.30),
@@ -6027,7 +6027,7 @@ enum SampleData {
                 title: "Setup",
                 intro: "Where you stand sets the line of pull.",
                 why: "Standing side-on with the pulley low means the cable pulls straight down across the body, which is the direction the lateral deltoid resists.",
-                mistake: "Facing the stack, or standing so close that the cable pulls the arm forward instead of down.",
+                mistake: "Facing the stack, or standing so far off that the cable pulls the arm across toward the stack instead of down.",
                 correct: "Set the pulley at its lowest point and stand side-on, a step away, holding the handle in the hand farthest from the stack."
             )
         ],
@@ -6203,7 +6203,7 @@ enum SampleData {
                 id: "stance",
                 title: "Base",
                 intro: "A stable base makes a strict raise possible.",
-                why: "Soft knees and hip-width feet absorb nothing and give the arms a still platform to lift from.",
+                why: "Soft knees and hip-width feet keep the body steady and give the arms a still platform to lift from.",
                 mistake: "Locked knees and a narrow stance that tips the body back as the weights come up.",
                 correct: "Stand with the feet hip-width apart and the knees slightly bent."
             )
@@ -6403,9 +6403,9 @@ enum SampleData {
         ],
         stabilisers: ["lower trapezius", "forearms"],
         setup: [
-            "Set the handles to the rear position, at shoulder height.",
+            "Set the handles all the way to the front, at shoulder height.",
             "Sit facing the machine with your chest against the pad.",
-            "Grip the handles with straight arms."
+            "Grip the handles with a soft bend in the elbows."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -6585,7 +6585,7 @@ enum SampleData {
         setup: [
             "Set both pulleys at shoulder height.",
             "Cross the cables: left handle in your right hand, right in your left.",
-            "Step back to the middle with your arms straight in front."
+            "Step back to the middle, arms long in front, elbows soft."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -6906,7 +6906,7 @@ enum SampleData {
             TechniqueCue(
                 id: "shoulder",
                 title: "Shoulder Position",
-                intro: "The shoulders stay set so the arms can do the work.",
+                intro: "The shoulders stay set so the working arm can do the work.",
                 why: "Rolling the shoulders forward and leaning over the handle lets body weight push it down.",
                 mistake: "Hunching over the handle and shrugging the shoulders up.",
                 correct: "Keep the chest up and the shoulders down and back."
@@ -6914,18 +6914,18 @@ enum SampleData {
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Position",
-                intro: "The elbows are pinned; only the forearms move.",
-                why: "Pinned elbows make elbow extension the only motion, so the triceps move the load; elbows that drift forward bring the lats, chest and shoulders in.",
-                mistake: "Elbows lifting and flaring forward as the handle comes up.",
-                correct: "Tuck the elbows against the sides of the torso and keep them there for the whole set."
+                intro: "The working elbow is pinned; only the forearm moves.",
+                why: "A pinned elbow makes elbow extension the only motion, so the triceps move the load; an elbow that drifts forward brings the lat, chest and shoulder in.",
+                mistake: "The working elbow lifting and flaring forward as the handle comes up.",
+                correct: "Tuck the working elbow against the side of the torso and keep it there for the whole set."
             ),
             TechniqueCue(
                 id: "lockout",
                 title: "Lockout",
-                intro: "Every rep finishes with straight arms.",
+                intro: "Every rep finishes with a straight arm.",
                 why: "The triceps reach full contraction at full elbow extension, so cutting reps short skips the hardest part of the lift.",
-                mistake: "Stopping each rep with the elbows still bent.",
-                correct: "Push down until the arms are fully straight, pause briefly, then let the handle rise under control."
+                mistake: "Stopping each rep with the elbow still bent.",
+                correct: "Push down until the arm is fully straight, pause briefly, then let the handle rise under control."
             ),
             TechniqueCue(
                 id: "hips",
@@ -7749,7 +7749,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hip Hinge",
                 intro: "The hips travel back while the legs stay nearly straight.",
-                why: "With little knee bend, the hamstrings are stretched further than in a Romanian deadlift, which makes this the more hamstring-biased hinge.",
+                why: "With little knee bend, the hamstrings are stretched further than in a Romanian deadlift at the same hip angle, so the stretch comes sooner in the hinge.",
                 mistake: "Turning the rep into a toe-touch by bending only at the waist.",
                 correct: "Push the hips back, let the torso tip forward and stop at the depth your hamstrings allow with a flat back."
             ),
@@ -7840,7 +7840,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hip Position",
                 intro: "The hips stay down for the whole set.",
-                why: "Keeping the hips on the pad stops the lower back and glutes from helping, so the hamstrings do the curling.",
+                why: "Keeping the hips on the pad stops the hips bending and the lower back rocking to help, so the hamstrings do the curling.",
                 mistake: "Lifting the hips off the pad to finish the curl.",
                 correct: "Press the hips into the pad and keep them there, even on the last reps."
             ),
@@ -7893,7 +7893,7 @@ enum SampleData {
             correctCue: "Hips down, curl from the knees",
             mistakeCue: "Hips rise to finish the rep",
             correctNote: "With the hips pinned, only the knee bends, so the hamstrings take the full load through the full range.",
-            mistakeNote: "Lifting the hips shortens the hamstrings at the hip and lets momentum finish the rep, taking tension off the target."
+            mistakeNote: "Lifting the hips lets the body rock and momentum finish the rep, taking tension off the hamstrings."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.18, ry: 0.08, cx: 0.55, cy: 0.50),
@@ -8150,25 +8150,17 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-09-30 model lights the glutes and the quadriceps bright
-            // and the hamstrings faint. EMG does not support the quadriceps as a
-            // prime mover here: rectus femoris and vastus lateralis stayed at
-            // 2-4 %MVIC in two- and one-leg bridges, against 23% for the biceps
-            // femoris in the two-leg bridge (Cini and Lima 2014, Cad Educ Fis
-            // Esporte 12(2):53-59), so they are a LOW secondary, as StrengthLog
-            // lists them. The hamstrings drop to LOW: with the knees bent past
-            // 90 degrees, as here, a musculoskeletal model of the bridge moved
-            // hip extension force from the biceps femoris to the gluteus maximus
-            // (Takeshita et al. 2022, J Healthc Eng 2022:7975827). The same
-            // simulation still loaded the erector spinae (34-49 %BW across the
-            // knee angles), so they keep their LOW secondary row although the
-            // model leaves them unlit.
+            // Follows the 2026-09-30 model's paint (owner's call, 2026-10-01):
+            // the glutes and the quadriceps bright, the hamstrings faint, the
+            // erector spinae unlit (named with the stabilisers instead). EMG
+            // would rank the quadriceps lower here (2-4 %MVIC, Cini and Lima
+            // 2014, Cad Educ Fis Esporte 12(2):53-59); the paint wins so the
+            // list and the model agree.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.36),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.36),
-            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.24)
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["gluteus medius", "adductors", "core"],
+        stabilisers: ["gluteus medius", "erector spinae", "adductors", "core"],
         setup: [
             "Lie on your back on a mat, knees bent.",
             "Set your heels about a hand's length from your glutes, hip-width apart.",
@@ -8252,18 +8244,16 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-09-30 model lights the glutes and the quadriceps bright
-            // and leaves the hamstrings unlit. EMG of this position (the working
-            // knee at 90 degrees, the free leg straight) contradicts both: biceps
-            // femoris 75 %MVIC beside 51 for the gluteus maximus and 58 for the
-            // gluteus medius, the working leg's rectus femoris 6% and the raised
-            // leg's, holding it up, 20% (Lehecka et al. 2017, Int J Sports Phys
-            // Ther 12:543-549). So the hamstrings keep their secondary row and
-            // the quadriceps are a LOW secondary, as StrengthLog lists them.
+            // Follows the 2026-09-30 model's paint (owner's call, 2026-10-01):
+            // the glutes and the quadriceps bright, the hamstrings barely lit
+            // (a low secondary). EMG of this position would rank the
+            // hamstrings higher and the quadriceps lower (Lehecka et al. 2017,
+            // Int J Sports Phys Ther 12:543-549); the paint wins so the list
+            // and the model agree.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.66),
             MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.24)
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["adductors", "obliques", "erector spinae"],
         setup: [
@@ -8599,7 +8589,7 @@ enum SampleData {
                 title: "Foot Position",
                 intro: "Feet rest, they do not push.",
                 why: "Relaxed feet on the rests keep the movement coming from the hips.",
-                mistake: "Pushing the feet into the rests, which turns the lift into a leg press.",
+                mistake: "Pressing the feet into the rests to help force the pads apart.",
                 correct: "Place the feet flat on the footrests and keep them relaxed."
             ),
             TechniqueCue(
@@ -8979,7 +8969,7 @@ enum SampleData {
             correctCue: "Body straight, ribs down",
             mistakeCue: "Hips sink toward the floor",
             correctNote: "With the ribs down and glutes tight, the abs hold the trunk straight against gravity.",
-            mistakeNote: "Sagging hips hand the hold to the lower back's ligaments and the abs stop working."
+            mistakeNote: "Sagging hips hand the hold to the lower back's ligaments and the abs do less of the work."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.14, ry: 0.07, cx: 0.50, cy: 0.52),
@@ -9049,7 +9039,7 @@ enum SampleData {
                 id: "feet",
                 title: "Leg Position",
                 intro: "Bent knees take the hip flexors out of it.",
-                why: "With the knees bent and feet flat, the hip flexors are slack and cannot pull the trunk up for the abs.",
+                why: "With the feet flat and unanchored, the hip flexors have little to pull against, so the abs do the curling.",
                 mistake: "Hooking the feet under something, which lets the hip flexors turn it into a sit-up.",
                 correct: "Bend the knees to about 90° with the feet flat and free."
             ),
@@ -10077,7 +10067,7 @@ enum SampleData {
             correctCue: "Elbows fixed at the sides",
             mistakeCue: "Elbows swing forward and up",
             correctNote: "With the elbows fixed at the sides, the biceps and brachialis lift the dumbbells through the whole range.",
-            mistakeNote: "When the elbows travel forward, the front deltoids finish the rep and the biceps lose tension exactly where the curl is hardest."
+            mistakeNote: "When the elbows travel forward, the front deltoids finish the rep and the biceps lose tension at the top of the curl."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.07, cx: 0.70, cy: 0.30),
@@ -10153,7 +10143,7 @@ enum SampleData {
             correctCue: "Knees over toes, heels down",
             mistakeCue: "Knees collapse inward",
             correctNote: "With the knees following the toes and the heels down, the quadriceps and glutes of both legs share the load evenly.",
-            mistakeNote: "When the knees cave in, the load twists through the knee joint and the glutes stop helping drive you up."
+            mistakeNote: "When the knees cave in, the load twists through the knee joint and the glutes do less to help drive you up."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.09, ry: 0.07, cx: 0.71, cy: 0.62),
@@ -10491,7 +10481,7 @@ enum SampleData {
                 intro: "On a Smith machine the bar can only go straight up and down, so the bench sets where it lands.",
                 why: "With the bench placed so the bar meets the lower chest, the forearms stay vertical at the bottom; placed too far back, the bar comes down on the neck and the elbows flare.",
                 mistake: "Setting the bench so the bar lowers toward the upper chest or neck.",
-                correct: "Before loading, lower the empty bar and slide the bench until it touches the bottom of the breastbone."
+                correct: "Before loading, lower the empty bar and slide the bench until the bar meets the bottom of the breastbone."
             ),
             TechniqueCue(
                 id: "feet",
@@ -10571,9 +10561,9 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Angle",
                 intro: "Elbow angle decides how much reaches the upper chest.",
-                why: "Around 45-60° from the torso keeps the clavicular head of the pec in its strongest line without over-rotating the shoulder.",
+                why: "Around 45–60° from the torso keeps the clavicular head of the pec in its strongest line without over-rotating the shoulder.",
                 mistake: "Flaring the elbows straight out, which shifts the press onto the front delts.",
-                correct: "Keep the upper arms around 45-60° from the torso as the bar comes down."
+                correct: "Keep the upper arms around 45–60° from the torso as the bar comes down."
             ),
             TechniqueCue(
                 id: "barpath",
@@ -10709,7 +10699,7 @@ enum SampleData {
             correctCue: "Controlled touch, lower chest",
             mistakeCue: "Bar bounced off the chest",
             correctNote: "A brief pause at the lower chest keeps tension on the pec and spares the sternum.",
-            mistakeNote: "Bouncing uses momentum instead of muscle, and repeated impact on the sternum is a common cause of pressing injuries."
+            mistakeNote: "Bouncing uses momentum instead of muscle, and the repeated impact on the sternum and ribs adds needless injury risk."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.16, ry: 0.09, cx: 0.50, cy: 0.58),
@@ -11021,7 +11011,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Position",
                 intro: "A neutral grip brings the elbows in close.",
-                why: "With the upper arms around 30° from the torso the triceps take a larger share, and the shoulder stays out of full abduction.",
+                why: "With the upper arms around 30° from the torso the triceps take a larger share, and the shoulder stays out of wide abduction.",
                 mistake: "Flaring the elbows out wide, as if the palms faced forward.",
                 correct: "Keep the elbows close to the sides, about 30° out, as the dumbbells lower to the chest."
             ),
@@ -11319,23 +11309,21 @@ enum SampleData {
                 id: "feet",
                 title: "Leg Drive",
                 intro: "The feet are the lifter's contact with the floor.",
-                why: "Planted feet keep the hips on the bench and the upper back tight, so the press has a solid base.",
+                why: "Planted feet keep the hips on the bench and the upper back tight, so the arms have a solid base to move from.",
                 mistake: "Feet drifting, up on the toes or the hips lifting off the bench to finish a rep.",
                 correct: "Plant both feet flat and a little wider than the hips, and keep the glutes on the bench for every rep."
             )
         ],
         activation: [
+            // Follows the 2026-09-30 model's paint (owner's call, 2026-10-01):
+            // the pecs and the rear delts bright, the lats and triceps dim.
+            // Pullover EMG would rank the rear delts lower (about 16% MVIC,
+            // Campos et al. 2017, Rev Bras Med Esporte 23:357-360); the paint
+            // wins so the list and the model agree.
             MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.55),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.42),
-            // The 2026-09-30 model lights the rear delts bright with the pecs,
-            // but pullover EMG puts them among the least active muscles: about
-            // 16% MVIC with a dumbbell or a barbell, no more than the lats and
-            // under half the pecs and triceps (Campos et al. 2017, Rev Bras Med
-            // Esporte 23:357-360), and 14% against 29% for the lats and 76% for
-            // the pecs in a conventional barbell pullover (Washif et al. 2024,
-            // J Sport Exerc Sci 8(2):26-36). So a LOW secondary, not a primary.
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["serratus anterior", "teres major", "core"],
         setup: [
@@ -11420,19 +11408,18 @@ enum SampleData {
                 id: "feet",
                 title: "Leg Drive",
                 intro: "The feet are the lifter's contact with the floor.",
-                why: "Planted feet keep the hips on the bench and the upper back tight, so the press has a solid base.",
+                why: "Planted feet keep the hips on the bench and the upper back tight, so the arms have a solid base to move from.",
                 mistake: "Feet drifting, up on the toes or the hips lifting off the bench to finish a rep.",
                 correct: "Plant both feet flat and a little wider than the hips, and keep the glutes on the bench for every rep."
             )
         ],
         activation: [
+            // Follows the model's paint, as on the Dumbbell Pullover: the pecs
+            // and the rear delts bright, the lats and triceps dim.
             MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46),
-            // Lit bright on the 2026-09-30 model; ranked a LOW secondary on the
-            // barbell pullover EMG cited for the Dumbbell Pullover (rear delts
-            // at 14-16% MVIC, at or below the lats and far under the pecs).
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["serratus anterior", "teres major", "core"],
         setup: [
@@ -11589,9 +11576,9 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Position",
                 intro: "The elbows stay under the handles.",
-                why: "Around 45-60° from the torso keeps the upper pecs in line with the press without over-rotating the shoulder.",
+                why: "Around 45–60° from the torso keeps the upper pecs in line with the press without over-rotating the shoulder.",
                 mistake: "Flaring the elbows straight out to the sides.",
-                correct: "Keep the upper arms 45-60° from the torso as the handles come back."
+                correct: "Keep the upper arms 45–60° from the torso as the handles come back."
             ),
             TechniqueCue(
                 id: "barpath",
@@ -12008,7 +11995,7 @@ enum SampleData {
             correctCue: "Hands meet, arms straight",
             mistakeCue: "Stopping halfway",
             correctNote: "Pressing until the hands meet keeps the cables loading the pecs to the very end of the rep.",
-            mistakeNote: "Half reps skip the finish, where cables load the chest better than free weights can."
+            mistakeNote: "Half reps skip the finish, where the cables still keep the chest under load."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.16, ry: 0.09, cx: 0.53, cy: 0.28),
@@ -12139,10 +12126,10 @@ enum SampleData {
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Angle",
-                intro: "The elbows sit about 45-60° from the torso.",
+                intro: "The elbows sit about 45–60° from the torso.",
                 why: "That angle keeps the clavicular pec in its strongest line on the incline without over-rotating the shoulder.",
                 mistake: "Flaring the elbows out to 90°, handing the press to the front delts.",
-                correct: "Keep the upper arms 45-60° from the torso as the handles come down beside the chest."
+                correct: "Keep the upper arms 45–60° from the torso as the handles come down beside the chest."
             ),
             TechniqueCue(
                 id: "barpath",
@@ -12413,7 +12400,7 @@ enum SampleData {
                 id: "wrist",
                 title: "Hand Path",
                 intro: "The hand finishes in front of the middle of the chest.",
-                why: "Bringing the hand to the midline shortens the pec fully, which is where one-arm cable work outdoes dumbbells.",
+                why: "Bringing the hand to the midline shortens the pec fully, and the cable keeps it loaded there where a dumbbell goes slack.",
                 mistake: "Pulling the hand far across the body, past the other shoulder, with the torso turning.",
                 correct: "Sweep the hand in at chest height until it is in front of the sternum, then open back out under control."
             ),
@@ -12516,7 +12503,7 @@ enum SampleData {
                 intro: "A fly is a hug, not a press.",
                 why: "A fixed, slight elbow bend keeps the load on the pecs through a long arc and off the elbow joint.",
                 mistake: "Bending the elbows more as the hands come in, which turns the fly into a press.",
-                correct: "Lock in a soft bend at the elbows, about 15-20°, and keep that exact angle from the stretch to the squeeze."
+                correct: "Lock in a soft bend at the elbows, about 15–20°, and keep that exact angle from the stretch to the squeeze."
             ),
             TechniqueCue(
                 id: "barpath",
@@ -12530,7 +12517,7 @@ enum SampleData {
                 id: "feet",
                 title: "Leg Drive",
                 intro: "The feet are the lifter's contact with the floor.",
-                why: "Planted feet keep the hips on the bench and the upper back tight, so the press has a solid base.",
+                why: "Planted feet keep the hips on the bench and the upper back tight, so the fly has a solid base.",
                 mistake: "Feet drifting, up on the toes or the hips lifting off the bench to finish a rep.",
                 correct: "Plant both feet flat and a little wider than the hips, and keep the glutes on the bench for every rep."
             ),
@@ -12560,7 +12547,7 @@ enum SampleData {
             correctCue: "Arc stops level with the chest",
             mistakeCue: "Arms dropped past the bench",
             correctNote: "Stopping the arc at chest level stretches the upper pecs and keeps the shoulder in a safe range.",
-            mistakeNote: "Letting the cables drag the arms past the bench overstretches the front of the shoulder while the pec slackens."
+            mistakeNote: "Letting the cables drag the arms past the bench overstretches the front of the shoulder and shifts the load off the pec onto the joint."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.16, ry: 0.09, cx: 0.63, cy: 0.41),
@@ -12608,7 +12595,7 @@ enum SampleData {
                 intro: "A fly is a hug, not a press.",
                 why: "A fixed, slight elbow bend keeps the load on the pecs through a long arc and off the elbow joint.",
                 mistake: "Bending the elbows more as the hands come in, which turns the fly into a press.",
-                correct: "Lock in a soft bend at the elbows, about 15-20°, and keep that exact angle from the stretch to the squeeze."
+                correct: "Lock in a soft bend at the elbows, about 15–20°, and keep that exact angle from the stretch to the squeeze."
             ),
             TechniqueCue(
                 id: "barpath",
@@ -12652,7 +12639,7 @@ enum SampleData {
             correctCue: "Arc stops level with the chest",
             mistakeCue: "Arms dropped past the bench",
             correctNote: "Stopping at chest level stretches the lower pecs and keeps the shoulder in a safe range.",
-            mistakeNote: "Letting the cables drag the arms past the bench overstretches the shoulder while the pec slackens."
+            mistakeNote: "Letting the cables drag the arms past the bench overstretches the shoulder and shifts the load off the pec onto the joint."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.16, ry: 0.09, cx: 0.49, cy: 0.58),
@@ -13034,7 +13021,7 @@ enum SampleData {
             correctCue: "Elbows back along the ribs",
             mistakeCue: "Elbows flared wide",
             correctNote: "Elbows brushing the ribs keep a diamond push-up on the triceps and inner chest with the shoulders protected.",
-            mistakeNote: "Flared elbows on a narrow base twist the shoulders and wrists and take the triceps out of the lift."
+            mistakeNote: "Flared elbows on a narrow base twist the shoulders and wrists and shift some of the work from the triceps onto the shoulders."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.14, ry: 0.09, cx: 0.30, cy: 0.50),
@@ -13088,7 +13075,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The forearms stay vertical at the bottom.",
-                why: "Elbows stacked over the wrists keep the load on the chest; elbows drifting behind the hands pry the shoulder open.",
+                why: "Elbows stacked over the wrists keep the load on the chest; elbows flaring up toward the head pry the shoulder open.",
                 mistake: "Elbows flaring up toward the ears as the chest drops.",
                 correct: "Lower with the elbows directly above the wrists, pointing out and slightly back."
             ),
@@ -13642,7 +13629,7 @@ enum SampleData {
                 intro: "The bar starts on the pins, just below the knees; the back is set before it moves.",
                 why: "A shorter pull lets you handle more than a full deadlift, so the back has to be braced flat before the bar leaves its support.",
                 mistake: "Yanking the bar off the pins with the upper back rounding.",
-                correct: "Hinge to the bar with a flat back, pull the slack out until the bar just lifts against the supports, then stand."
+                correct: "Hinge to the bar with a flat back, pull the slack out until the bar is about to leave the pins, then stand."
             ),
             TechniqueCue(
                 id: "hips",
@@ -13696,7 +13683,7 @@ enum SampleData {
             correctCue: "Stand tall, hips through",
             mistakeCue: "Leaning back past upright",
             correctNote: "Finishing with the hips and knees straight and the body upright completes the pull with the glutes.",
-            mistakeNote: "Leaning back at the top compresses the lower back under a load heavier than most lifters can deadlift."
+            mistakeNote: "Leaning back at the top compresses the lower back under a load heavier than you can pull from the floor."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.14, ry: 0.09, cx: 0.60, cy: 0.49),
@@ -13732,7 +13719,7 @@ enum SampleData {
                 intro: "The bar starts on the blocks, just below the knees; the back is set before it moves.",
                 why: "A shorter pull lets you handle more than a full deadlift, so the back has to be braced flat before the bar leaves its support.",
                 mistake: "Yanking the bar off the blocks with the upper back rounding.",
-                correct: "Hinge to the bar with a flat back, pull the slack out until the bar just lifts against the supports, then stand."
+                correct: "Hinge to the bar with a flat back, pull the slack out until the bar is about to leave the blocks, then stand."
             ),
             TechniqueCue(
                 id: "hips",
@@ -13851,7 +13838,7 @@ enum SampleData {
                 title: "Spine Position",
                 intro: "The back stays flat from the first pull to lockout.",
                 why: "A neutral spine lets the hips and legs move the bar while the back holds it; a rounding back takes the load onto the spinal discs and ligaments.",
-                mistake: "The lower or upper back rounding as the bar leaves the floor or the pins.",
+                mistake: "The lower or upper back rounding as the bar leaves the floor.",
                 correct: "Brace hard before each rep, pull the slack out of the bar, and keep the chest up and the back flat as you stand."
             ),
             TechniqueCue(
@@ -13961,13 +13948,13 @@ enum SampleData {
                 title: "Spine Position",
                 intro: "The back stays flat from the first pull to lockout.",
                 why: "A neutral spine lets the hips and legs move the bar while the back holds it; a rounding back takes the load onto the spinal discs and ligaments.",
-                mistake: "The lower or upper back rounding as the bar leaves the floor or the pins.",
+                mistake: "The lower or upper back rounding as the bar leaves the floor.",
                 correct: "Brace hard before each rep, pull the slack out of the bar, and keep the chest up and the back flat as you stand."
             ),
             TechniqueCue(
                 id: "hips",
                 title: "Leg Drive",
-                intro: "It starts like a squat stand, not a hinge.",
+                intro: "It starts like a squat, not a hinge.",
                 why: "Driving through the legs with hips and shoulders rising together uses the trap bar's upright position to share the load between the hips and knees.",
                 mistake: "Hips shooting up first, knees locking, back doing the lifting.",
                 correct: "Grip the handles, sit the hips down until the arms are straight, then push the floor away so hips and chest rise together."
@@ -14159,9 +14146,9 @@ enum SampleData {
                 id: "feet",
                 title: "Foot Position",
                 intro: "Standing on a low platform lengthens the pull.",
-                why: "A 3-10 cm deficit makes the bar start lower, so the legs and back work through more range off the floor, the weak point it is used to fix.",
+                why: "A 3–10 cm deficit makes the bar start lower, so the legs and back work through more range off the floor, the weak point it is used to fix.",
                 mistake: "Using a platform so high the back cannot stay flat at the bottom.",
-                correct: "Stand on a stable 3-10 cm platform, feet hip-width, the bar over the mid-foot."
+                correct: "Stand on a stable 3–10 cm platform, feet hip-width, the bar over the mid-foot."
             ),
             TechniqueCue(
                 id: "spine",
@@ -14379,7 +14366,7 @@ enum SampleData {
                 intro: "The bar travels to the bottom of the rib cage.",
                 why: "Rowing low keeps the elbows close to the body instead of flaring them up and out.",
                 mistake: "Pulling to the chest with the elbows flaring.",
-                correct: "Row the bar to the lower ribs, elbows brushing the sides, then lower to straight arms."
+                correct: "Row the bar to the lower ribs, elbows close to the sides, then lower to straight arms."
             ),
             TechniqueCue(
                 id: "grip",
@@ -14693,7 +14680,7 @@ enum SampleData {
                 intro: "The elbow drives up and slightly out.",
                 why: "The Meadows row's angle pulls the elbow higher than a dumbbell row, working the upper back and rear delt.",
                 mistake: "Winging the elbow straight out to the side and curling the bar.",
-                correct: "Pull the elbow up and back toward the hip, forearm vertical under the bar."
+                correct: "Pull the elbow up and back, slightly out from the side, forearm vertical under the bar."
             ),
             TechniqueCue(
                 id: "brace",
@@ -14796,7 +14783,7 @@ enum SampleData {
                 intro: "The free arm braces; the trunk stays square.",
                 why: "Bracing the free hand and holding the shoulders level makes the lats row the weight instead of a twist of the trunk.",
                 mistake: "Twisting the torso open to heave the weight up.",
-                correct: "Press the free hand or forearm into the knee, brace the core and keep both shoulders level as you row."
+                correct: "Press the free hand into the thigh, brace the core and keep both shoulders level as you row."
             ),
             TechniqueCue(
                 id: "feet",
@@ -14889,7 +14876,7 @@ enum SampleData {
                 intro: "The free arm braces; the trunk stays square.",
                 why: "Bracing the free hand and holding the shoulders level makes the upper back and lat row the weight instead of a twist of the trunk.",
                 mistake: "Twisting the torso open to heave the weight up.",
-                correct: "Press the free hand or forearm into the knee, brace the core and keep both shoulders level as you row."
+                correct: "Press the free hand into the thigh, brace the core and keep both shoulders level as you row."
             ),
             TechniqueCue(
                 id: "feet",
@@ -14989,7 +14976,7 @@ enum SampleData {
                 id: "feet",
                 title: "Torso Position",
                 intro: "The torso holds its angle for the whole set.",
-                why: "A fixed, braced hinge keeps the load on the back muscles; standing up with each rep turns it into a shrug with momentum.",
+                why: "A fixed, braced hinge keeps the load on the back muscles; standing up with each rep turns it into a heave with the hips.",
                 mistake: "The torso rising toward upright to heave the weight up.",
                 correct: "Hinge from the hips with soft knees and a flat back, brace, and keep that angle from the first rep to the last."
             ),
@@ -15411,7 +15398,7 @@ enum SampleData {
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56),
             MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.52)
         ],
-        stabilisers: ["glutes", "core", "rear deltoid", "forearms"],
+        stabilisers: ["glutes", "core", "forearms"],
         setup: [
             "Set a bar at about hip height in a rack or Smith machine.",
             "Lie under it and grip overhand, a little wider than your shoulders.",
@@ -15502,7 +15489,7 @@ enum SampleData {
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.58),
             MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.54)
         ],
-        stabilisers: ["glutes", "core", "rear deltoid", "forearms"],
+        stabilisers: ["glutes", "core", "forearms"],
         setup: [
             "Set a bar at about hip height and a bench in front of it.",
             "Grip the bar overhand, a little wider than your shoulders.",
@@ -15513,7 +15500,7 @@ enum SampleData {
             mistakeBadge: "HIPS SAGGING",
             correctCue: "Rigid plank, chest to the bar",
             mistakeCue: "Hips sag, short reps",
-            correctNote: "With the feet raised the body is nearly level, so a rigid plank puts almost all of its weight on the back.",
+            correctNote: "With the feet raised the body is nearly level, so a rigid plank puts more of its weight on the back.",
             mistakeNote: "Sagging hips shorten every rep and waste the harder angle the bench provides."
         ),
         glows: [
@@ -15855,7 +15842,7 @@ enum SampleData {
                 intro: "The elbows drive down toward the ribs.",
                 why: "Pulling the elbows down and back lines the pull up with the lats instead of the biceps.",
                 mistake: "Letting the elbows drift forward in front of the body and curling up.",
-                correct: "Think of pulling the elbows into the back pockets, down and slightly back."
+                correct: "Pull the working elbow down toward the back pocket while the other arm slides out straight."
             ),
             TechniqueCue(
                 id: "grip",
@@ -15904,7 +15891,7 @@ enum SampleData {
             correctCue: "Strict pull to one hand",
             mistakeCue: "Body swings across",
             correctNote: "Pulling straight up toward one hand makes that side's lat lift most of the body.",
-            mistakeNote: "Swinging across uses momentum and hands the work back to both arms equally."
+            mistakeNote: "Swinging across uses momentum to reach the hand, so the working lat lifts less of the body."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.14, ry: 0.09, cx: 0.53, cy: 0.36),
@@ -16251,11 +16238,9 @@ enum SampleData {
             // sources as there. The lower trapezius worked less in the
             // chin-up than in the pull-up (Youdas et al. 2010), so the
             // trapezius row sits lower. The model does not light the
-            // pectoralis major; its row stays because the chin-up worked it
-            // harder than the pull-up (44-57% MVIC, ibid.).
+            // pectoralis major, so it has no row (the list follows the paint).
             MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.90),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.70),
-            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.34),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.32)
         ],
         stabilisers: ["rotator cuff", "forearms", "core"],
@@ -16495,7 +16480,7 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the bar clear the face and come to the upper chest, with the lats pulling straight down.",
+                why: "About 10-15° of lean lets the bar clear the face and come to the lower chest, with the lats pulling straight down.",
                 mistake: "Rocking back further on every rep to swing the weight down.",
                 correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
             ),
@@ -16680,7 +16665,7 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the bar clear the face and come to the upper chest, with the lats pulling straight down.",
+                why: "About 10-15° of lean lets the handle clear the face and come to the chest, with the lats pulling straight down.",
                 mistake: "Rocking back further on every rep to swing the weight down.",
                 correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
             ),
@@ -16866,7 +16851,7 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the bar clear the face and come to the upper chest, with the lats pulling straight down.",
+                why: "About 10-15° of lean lets the rope clear the face and come down to the shoulders, with the lats pulling straight down.",
                 mistake: "Rocking back further on every rep to swing the weight down.",
                 correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
             ),
@@ -16954,7 +16939,7 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the bar clear the face and come to the upper chest, with the lats pulling straight down.",
+                why: "About 10-15° of lean lets the handles clear the face and come to the shoulders, with the lats pulling straight down.",
                 mistake: "Rocking back further on every rep to swing the weight down.",
                 correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
             ),
@@ -17051,7 +17036,7 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the bar clear the face and come to the upper chest, with the lats pulling straight down.",
+                why: "About 10-15° of lean lets each handle clear the face and come to the shoulder, with the lats pulling straight down.",
                 mistake: "Rocking back further on every rep to swing the weight down.",
                 correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
             ),
@@ -17272,7 +17257,7 @@ enum SampleData {
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
                 mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit or stand tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
             )
         ],
         activation: [
@@ -17372,7 +17357,7 @@ enum SampleData {
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
                 mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit or stand tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
             )
         ],
         activation: [
@@ -17472,7 +17457,7 @@ enum SampleData {
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
                 mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit or stand tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
             )
         ],
         activation: [
@@ -17572,7 +17557,7 @@ enum SampleData {
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
                 mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit or stand tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
             )
         ],
         activation: [
@@ -17615,7 +17600,7 @@ enum SampleData {
             CueAnnotation(cueID: "elbow", label: "Elbows back past the torso",
                           labelPoint: CGPoint(x: 0.519, y: 0.20),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Handles at chest height",
+            CueAnnotation(cueID: "grip", label: "Wrists straight on the handles",
                           labelPoint: CGPoint(x: 0.435, y: 0.50),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "barpath", label: "Handles to the ribs",
@@ -17758,7 +17743,7 @@ enum SampleData {
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
                 mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit or stand tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
             )
         ],
         activation: [
@@ -18226,7 +18211,7 @@ enum SampleData {
                 intro: "Each rep starts with a reach and ends with a squeeze.",
                 why: "Letting the shoulder blades move forward at the stretch and pulling them together at the finish works the mid-back through its range.",
                 mistake: "Shoulders staying rounded forward, so only the arms move the handle.",
-                correct: "Let the shoulders reach toward the stack, then pull the shoulder blades back and together as you row."
+                correct: "Let the shoulders reach toward the weight, then pull the shoulder blades back and together as you row."
             )
         ],
         activation: [
@@ -18328,7 +18313,7 @@ enum SampleData {
             ),
             TechniqueCue(
                 id: "feet",
-                title: "Leg Drive",
+                title: "Foot Position",
                 intro: "The feet keep the body still on the bench.",
                 why: "Planted feet keep the hips down so the arc comes from the shoulders.",
                 mistake: "Feet drifting or the hips lifting off the bench.",
@@ -18422,7 +18407,7 @@ enum SampleData {
                 id: "spine",
                 title: "Back Position",
                 intro: "The back stays against the pad.",
-                why: "A flat back and down ribs keep the arc at the shoulders rather than the spine.",
+                why: "A flat back and ribs held down keep the arc at the shoulders rather than the spine.",
                 mistake: "Arching away from the pad at the top.",
                 correct: "Sit with the back flat on the pad, belt or seat set so the shoulders line up with the machine's pivot."
             ),
@@ -18524,7 +18509,7 @@ enum SampleData {
                 id: "grip",
                 title: "Grip & Wrists",
                 intro: "Hands a hand's width outside the shoulders, wrists over the elbows.",
-                why: "Stacked wrists push straight up into the bar. Grip width also shifts the load: narrower grips lift more through a longer range, wider ones ease the elbows.",
+                why: "Stacked wrists push straight up into the bar. Grip width also shifts the load: narrower grips move the bar through a longer range, wider ones shorten it and ease the elbows.",
                 mistake: "The bar rolling back into the fingers, bending the wrists back under the load.",
                 correct: "Hold the bar low in the palm, knuckles up, wrists straight and stacked over the elbows."
             ),
@@ -18631,9 +18616,9 @@ enum SampleData {
                 id: "lockout",
                 title: "Lockout",
                 intro: "The bar finishes straight above the back of the neck.",
-                why: "Locking out with the bar over the neck stacks it over the shoulders, hips and heels, so the arms hold it without the lower back compensating.",
+                why: "Locking out with the bar over the neck stacks it over the shoulders, hips and mid-foot, so the arms hold it without the lower back compensating.",
                 mistake: "Pressing the bar forward so it locks out in front of the face.",
-                correct: "Press straight up until the elbows are fully straight, the bar just behind the ears and over the heels."
+                correct: "Press straight up until the elbows are fully straight, the bar just behind the ears and over mid-foot."
             )
         ],
         activation: [
@@ -19301,7 +19286,7 @@ enum SampleData {
                 id: "grip",
                 title: "Grip & Wrists",
                 intro: "Hands a hand's width outside the shoulders, wrists over the elbows.",
-                why: "Stacked wrists push straight up into the bar. Grip width also shifts the load: narrower grips lift more through a longer range, wider ones ease the elbows.",
+                why: "Stacked wrists push straight up into the bar. Grip width also shifts the load: narrower grips move the bar through a longer range, wider ones shorten it and ease the elbows.",
                 mistake: "The bar rolling back into the fingers, bending the wrists back under the load.",
                 correct: "Hold the bar low in the palm, knuckles up, wrists straight and stacked over the elbows."
             ),
@@ -22359,7 +22344,7 @@ enum SampleData {
                 title: "Seat and Pivot",
                 intro: "The elbows line up with the machine's pivot.",
                 why: "With the elbows on the lever's axis, the handle travels the same arc as the forearms, so the resistance stays square to them through the whole rep.",
-                mistake: "The seat set too low, so the elbows sit below the pivot and the handle drags along the forearms.",
+                mistake: "The seat set too low, so the elbows sit below the pivot and the handle slides along the palms.",
                 correct: "Adjust the seat until the backs of the arms rest on the pad and the elbows sit level with the pivot on each side."
             ),
             TechniqueCue(
@@ -26435,7 +26420,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.638, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "patella_straight"),
-            CueAnnotation(cueID: "knee", label: "Knee over toes",
+            CueAnnotation(cueID: "knee", label: "Knee tracks toes",
                           labelPoint: CGPoint(x: 0.303, y: 0.80),
                           leaderLength: 40, joint: "patella_bent"),
             CueAnnotation(cueID: "heel", label: "Heel down",
@@ -26696,7 +26681,7 @@ enum SampleData {
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
                           labelPoint: CGPoint(x: 0.594, y: 0.16),
                           labelSide: .trailing,
-                          leaderLength: 40, joint: "upper_arm_L"),
+                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "torso", label: "Chest up",
                           labelPoint: CGPoint(x: 0.215, y: 0.16),
                           leaderLength: 40, joint: "chest"),
@@ -28310,7 +28295,7 @@ enum SampleData {
                 intro: "The arms reach forward as the hips sink back and down.",
                 why: "At the bottom of a pistol the hips sit back over the heel, so the arms, chest and free leg have to reach forward to keep the body's weight over the middle of the foot. A forward trunk lean is part of the lift here.",
                 mistake: "The arms dropping and the trunk rocking back at the bottom, so the weight falls behind the heel.",
-                correct: "Reach both arms straight out in front, a little below shoulder height and lower toward the free foot as you sink, and let the chest lean forward toward the knee."
+                correct: "Reach both arms straight out in front, just below shoulder height, lowering them toward the free foot as you sink, and let the chest lean forward toward the knee."
             ),
             TechniqueCue(
                 id: "depth",
@@ -29581,8 +29566,8 @@ enum SampleData {
                 id: "pull",
                 title: "Pull Height",
                 intro: "The bar rises to just under the chest, the elbows driving back past the torso.",
-                why: "Pendlay row guides teach a pull as high as you can, until the bar touches the upper stomach or chest if possible. Stopping the bar half-way, well short of the chest, makes every rep a partial that leaves out the end of the pull.",
-                mistake: "Stopping the bar about half-way up, out in front of the knees, and letting it drop again.",
+                why: "Pendlay row guides teach a pull as high as you can, until the bar touches the upper stomach or chest if possible. Stopping the bar halfway, well short of the chest, makes every rep a partial that leaves out the end of the pull.",
+                mistake: "Stopping the bar about halfway up, out in front of the knees, and letting it drop again.",
                 correct: "Drive your elbows back and up until the bar is just under your lower chest, then lower it."
             ),
             TechniqueCue(
@@ -30588,7 +30573,7 @@ enum SampleData {
                 id: "knee",
                 title: "Knee Angle",
                 intro: "The knees keep a soft, fixed bend for the whole rep.",
-                why: "A slight, fixed bend keeps the knees from locking back while the hips do the moving: in one study, good mornings done with the knees almost straight pushed the knees toward straightening. As loads get heavier, lifters tend to bend the knees further, which shortens the hamstrings: in another, the knee bend grew from about 17° to 25° as the bar went from half to 90% of the maximum.",
+                why: "A slight, fixed bend keeps the knees from locking back while the hips do the moving: in one study, good mornings done with the knees almost straight loaded the knees toward locking back. As loads get heavier, lifters tend to bend the knees further, which shortens the hamstrings: in another, the knee bend grew from about 17° to 25° as the bar went from half to 90% of the maximum.",
                 mistake: "The knees bending more and more on the way down, the hips sinking toward a squat.",
                 correct: "Unlock the knees a little before the first rep and hold that angle down and up; if they start to bend further, the load is too heavy."
             ),
