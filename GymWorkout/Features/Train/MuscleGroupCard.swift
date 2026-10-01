@@ -47,12 +47,17 @@ enum MuscleCardState: Hashable {
     }
 }
 
-struct MuscleGroupCard: View {
+struct MuscleGroupCard<Accessory: View>: View {
     var group: MuscleGroup
     var state: MuscleCardState
     var detail: String
     var secondaryDetail: String? = nil
     var action: () -> Void
+    /// A control in the bottom-right corner, kept out of the card's own
+    /// button: the presets menu on the Train tab.
+    @ViewBuilder var accessory: () -> Accessory
+
+    private var hasAccessory: Bool { Accessory.self != EmptyView.self }
 
     var body: some View {
         Button(action: action) {
@@ -83,8 +88,9 @@ struct MuscleGroupCard: View {
                     }
                 }
                 Spacer(minLength: 0)
+                // Shorter with an accessory, so the figure clears it.
                 MiniBodyMap(group: group)
-                    .frame(width: 30, height: 74)
+                    .frame(width: 30, height: hasAccessory ? 60 : 74)
             }
             .padding(12)
             .frame(maxWidth: .infinity, minHeight: 112, alignment: .topLeading)
@@ -101,6 +107,20 @@ struct MuscleGroupCard: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(group.title), \(state.label.lowercased()), \(detail)")
+        .overlay(alignment: .bottomTrailing) {
+            // Centred under the figure.
+            accessory()
+                .padding(.trailing, 5)
+                .padding(.bottom, 2)
+        }
+    }
+}
+
+extension MuscleGroupCard where Accessory == EmptyView {
+    init(group: MuscleGroup, state: MuscleCardState, detail: String, secondaryDetail: String? = nil,
+         action: @escaping () -> Void) {
+        self.init(group: group, state: state, detail: detail, secondaryDetail: secondaryDetail,
+                  action: action, accessory: { EmptyView() })
     }
 }
 

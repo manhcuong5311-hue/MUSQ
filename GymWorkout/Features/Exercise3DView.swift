@@ -16,6 +16,10 @@
 //  An exercise without one is gated (see `TrainerUnavailableView`) rather than
 //  borrowing another lift's cues and activation.
 //
+//  A free account gets the model, the setup and every key tip; the common
+//  mistakes and Form Comparison are Premium's, shown behind a lock that opens
+//  the paywall.
+//
 
 import SwiftUI
 
@@ -27,6 +31,8 @@ struct Exercise3DView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(Ads.self) private var ads
+    @Environment(Purchases.self) private var purchases
+    @Environment(Paywall.self) private var paywall
 
     @State private var sheet: SheetKind?
     @State private var cueID: String
@@ -70,7 +76,9 @@ struct Exercise3DView: View {
     }
 
     private var content: ExerciseContent? { SampleData.content(for: exercise) }
-    private var showingMistake: Bool { sheet == .cue && cueMode == .mistake }
+    /// Never true without Premium, so no ghost, ring or bar slips through.
+    private var showingMistake: Bool { sheet == .cue && cueMode == .mistake && purchases.isPremium }
+
     /// The selected cue's mistake as limbs to draw, when one is authored.
     private var fault: FaultPose? { FaultPoses.fault(exercise: exercise.name, cue: cueID) }
 
@@ -138,6 +146,14 @@ struct Exercise3DView: View {
                                    glows: content.glows)
             }
         }
+        .onAppear {
+            // Opened straight onto a mistake (`showingMistake: true`).
+            if sheet == .cue && cueMode == .mistake && !purchases.isPremium {
+                paywall.show(.mistake)
+            }
+            applyFreeLimits()
+        }
+        .onChange(of: purchases.isPremium) { applyFreeLimits() }
     }
 
     // MARK: - Actions
@@ -209,7 +225,13 @@ struct Exercise3DView: View {
 
             if content != nil {
                 Menu {
-                    Button("Form Comparison") { showsComparison = true }
+                    if purchases.isPremium {
+                        Button("Form Comparison") { showsComparison = true }
+                    } else {
+                        Button { paywall.show(.comparison) } label: {
+                            Label("Form Comparison", systemImage: "lock.fill")
+                        }
+                    }
                     #if DEBUG
                     Toggle("Viewport Guides", isOn: $showsGuides)
                     #endif
@@ -360,12 +382,15 @@ struct Exercise3DView: View {
     /// `_straight` the working and straight leg of one that shifts from side
     /// to side, decided afresh every frame like the fault ghosts do.
     private func trackedPoint(_ joint: String) -> CGPoint? {
+        // (suffix, names the side itself, decided by the leading foot rather
+        // than the bent knee)
         let roles = [
-            ("_front", true, BodyFrame.leadingSide), ("_back", false, BodyFrame.leadingSide),
-            ("_bent", true, BodyFrame.bentSide), ("_straight", false, BodyFrame.bentSide),
+            ("_front", true, true), ("_back", false, true),
+            ("_bent", true, false), ("_straight", false, false),
         ]
-        for (suffix, isSide, decide) in roles where joint.hasSuffix(suffix) {
-            guard let side = decide(tracker.transforms) else { return nil }
+        for (suffix, isSide, byLead) in roles where joint.hasSuffix(suffix) {
+            let decided = byLead ? BodyFrame.leadingSide(tracker.transforms) : BodyFrame.bentSide(tracker.transforms)
+            guard let side = decided else { return nil }
             let resolved = isSide ? side : (side == "L" ? "R" : "L")
             return tracker.points[String(joint.dropLast(suffix.count)) + "_" + resolved]
         }
@@ -441,7 +466,7 @@ struct Exercise3DView: View {
                     onDone: closeSheet
                 )
                 .transition(.move(edge: .bottom))
-            case .cue where cueMode == .mistake:
+            case .cue where showingMistake:
                 MistakeBar(
                     cue: content.cue(cueID),
                     drawsGhost: fault != nil,
@@ -456,9 +481,8 @@ struct Exercise3DView: View {
                     cue: content.cue(cueID),
                     number: content.cueNumber(cueID),
                     mode: cueMode,
-                    onSelectMode: { mode in
-                        withAnimation(.easeOut(duration: 0.2)) { cueMode = mode }
-                    },
+                    mistakeLocked: !purchases.isPremium,
+                    onSelectMode: selectMode,
                     onDone: closeSheet
                 )
                 .transition(.move(edge: .bottom))
@@ -467,6 +491,25 @@ struct Exercise3DView: View {
             }
         }
         .ignoresSafeArea(edges: .bottom)
+    }
+
+    /// A common mistake is Premium's: without it the paywall opens and the
+    /// sheet stays on the correct form.
+    private func selectMode(_ mode: FormMode) {
+        guard mode == .correct || purchases.isPremium else {
+            paywall.show(.mistake)
+            return
+        }
+        withAnimation(.easeOut(duration: 0.2)) { cueMode = mode }
+    }
+
+    /// Back to what a free account sees: every key tip, but in its correct
+    /// form and without Form Comparison. For a screen that opens on a
+    /// mistake, or Premium lapsing with one open.
+    private func applyFreeLimits() {
+        guard !purchases.isPremium else { return }
+        showsComparison = false
+        if sheet == .cue { cueMode = .correct }
     }
 
     private func closeSheet() {

@@ -67,6 +67,7 @@ struct MuscleProgressView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 TabBarView(selection: $tab)
             }
+            .statusBarScrim()
             .trainDestinations()
             .toolbar(.hidden, for: .navigationBar)
         }
@@ -209,8 +210,10 @@ struct MuscleProgressView: View {
                         Text(entry.muscle.title)
                             .font(.ui(14.5, .semibold))
                             .foregroundStyle(DS.silver)
+                        // No preset reaches these groups, so say where their
+                        // exercises are.
                         Text(!trainable.contains(entry.muscle) && entry.level == .notTrained
-                             ? "Not trained · no exercises in the library yet"
+                             ? "Not trained · add exercises from the Exercises tab"
                              : entry.level.title)
                             .font(.ui(12))
                             .foregroundStyle(DS.silver.opacity(0.5))

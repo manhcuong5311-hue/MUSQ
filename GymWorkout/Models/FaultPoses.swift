@@ -86,8 +86,8 @@ struct FaultPose {
     var view: Float = 0
 
     init(chains: [[String]], moves: [FaultMove], strength: FaultStrength = .always, view: Float = 0) {
-        self.chains = chains.flatMap(FaultPose.sides)
-        self.moves = moves.flatMap(FaultPose.sides)
+        self.chains = chains.flatMap { FaultPose.sides($0) }
+        self.moves = moves.flatMap { FaultPose.sides($0) }
         self.strength = strength
         self.view = view
     }

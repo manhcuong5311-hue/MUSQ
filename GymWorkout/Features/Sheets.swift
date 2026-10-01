@@ -125,6 +125,9 @@ struct CueSheet: View {
     var cue: TechniqueCue
     var number: Int
     var mode: FormMode
+    /// The mistake view is Premium's: the button wears a lock, and selecting
+    /// it is the caller's cue to open the paywall.
+    var mistakeLocked: Bool = false
     var onSelectMode: (FormMode) -> Void
     var onDone: () -> Void
 
@@ -167,12 +170,41 @@ struct CueSheet: View {
                 HStack(spacing: 9) {
                     WideButton(title: "Show Correct Form",
                                prominent: mode == .correct) { onSelectMode(.correct) }
-                    WideButton(title: "Show Common Mistake",
-                               prominent: mode == .mistake) { onSelectMode(.mistake) }
+                    if mistakeLocked {
+                        lockedMistakeButton
+                    } else {
+                        WideButton(title: "Show Common Mistake",
+                                   prominent: mode == .mistake) { onSelectMode(.mistake) }
+                    }
                 }
                 .padding(.top, 22)
             }
         }
+    }
+
+    /// The glass `WideButton`, with a lock ahead of its title.
+    private var lockedMistakeButton: some View {
+        Button { onSelectMode(.mistake) } label: {
+            HStack(spacing: 5) {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 10, weight: .semibold))
+                Text("Show Common Mistake")
+                    .font(.ui(13.5, .semibold))
+            }
+            .foregroundStyle(DS.silver)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 13)
+            .background(
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .fill(DS.silver.opacity(0.07))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .strokeBorder(DS.silver.opacity(0.10), lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint("Comes with Premium")
     }
 }
 

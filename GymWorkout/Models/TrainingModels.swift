@@ -109,8 +109,9 @@ enum MusclePart: String, CaseIterable, Codable, Identifiable, Hashable {
                     "supraspinatus", "subscapularis") { self = .rearDelts }
         else if has("deltoid", "delt") { self = .sideDelts }
         else if has("latissimus", "lats", "teres") { self = .lats }
-        else if has("erector", "spinae", "lower back", "posterior chain") { self = .lowerBack }
-        else if has("trapez", "rhomboid", "back") { self = .upperBack }
+        // Quadratus lumborum before the quads, which "quad" would match.
+        else if has("erector", "spinae", "lower back", "posterior chain", "quadratus lumborum") { self = .lowerBack }
+        else if has("trapez", "rhomboid", "levator scapulae", "back") { self = .upperBack }
         else if has("glute") { self = .glutes }
         else if has("quad", "rectus femoris", "vastus") { self = .quads }
         else if has("adductor") { self = .adductors }
@@ -172,12 +173,22 @@ struct MusclePartContribution: Codable, Hashable {
 
 enum PresetLevel: String, Codable, CaseIterable, Hashable {
     case basic, advanced
-    /// The list the user saved for the group themselves. Never written into
-    /// `WorkoutSession.levels` (see `mineGroups`), so a file stays readable
-    /// by builds that predate it.
-    case mine
+    /// The user's own presets for the group, Preset 1 to 3. Never written
+    /// into `WorkoutSession.levels` (see `mineGroups`), so a file stays
+    /// readable by builds that predate them. `mine` is Preset 1, the one
+    /// list earlier builds saved.
+    case mine, mine2, mine3
 
-    var title: String { self == .mine ? "MY LIST" : rawValue.uppercased() }
+    static let saved: [PresetLevel] = [.mine, .mine2, .mine3]
+
+    /// 1, 2 or 3 for a saved preset.
+    var slot: Int? { Self.saved.firstIndex(of: self).map { $0 + 1 } }
+    var isSaved: Bool { slot != nil }
+
+    /// "PRESET 2", "BASIC".
+    var title: String { slot.map { "PRESET \($0)" } ?? rawValue.uppercased() }
+    /// "Preset 2", "Basic".
+    var name: String { slot.map { "Preset \($0)" } ?? rawValue.capitalized }
 }
 
 /// A set target: reps, or seconds for a timed exercise (see `SetMeasure`).
@@ -293,9 +304,10 @@ struct WorkoutSession: Identifiable, Codable, Hashable {
     var exercises: [WorkoutExercise] = []
     /// Basic/Advanced per muscle group, keyed by `MuscleGroup.rawValue`.
     var levels: [String: PresetLevel] = [:]
-    /// Groups whose plan came from the user's own list, by
-    /// `MuscleGroup.rawValue`. Kept apart from `levels` so older builds,
-    /// which don't know that level, still decode the file.
+    /// Groups whose plan came from one of the user's presets, by
+    /// `WorkoutStore.presetKey`: `MuscleGroup.rawValue` for Preset 1,
+    /// "chest#2" for Preset 2. Kept apart from `levels` so older builds,
+    /// which don't know those levels, still decode the file.
     var mineGroups: [String]? = nil
     var completedAt: Date? = nil
     /// Effective completed sets per muscle, keyed by `MuscleGroup.rawValue`,

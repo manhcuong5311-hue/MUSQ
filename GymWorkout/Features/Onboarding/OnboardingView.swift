@@ -17,6 +17,7 @@ struct OnboardingView: View {
     var onClose: () -> Void = {}
 
     @Environment(WorkoutStore.self) private var store
+    @Environment(Purchases.self) private var purchases
 
     @State private var step: Step = .welcome
     @State private var movingForward = true
@@ -32,6 +33,7 @@ struct OnboardingView: View {
     /// changes their starting values.
     @State private var bodyTouched = false
     @State private var didLoad = false
+    @State private var showsPremium = false
 
     enum Step: Int, CaseIterable {
         case welcome, experience, sex, goal, days, split, body, plan
@@ -64,6 +66,12 @@ struct OnboardingView: View {
             }
         }
         .onAppear(perform: load)
+        // Presented here rather than through `Paywall`: closing it, bought or
+        // not, is what finishes onboarding.
+        .sheet(isPresented: $showsPremium, onDismiss: finish) {
+            PremiumView(reason: .onboarding)
+                .environment(purchases)
+        }
     }
 
     // MARK: - Chrome
@@ -109,7 +117,7 @@ struct OnboardingView: View {
             }
         case .plan:
             WideButton(title: isEditing ? "Save Changes" : "Start Training", prominent: true,
-                       fontSize: 15, verticalPadding: 15, action: finish)
+                       fontSize: 15, verticalPadding: 15, action: complete)
         default:
             WideButton(title: "Continue", prominent: canContinue, fontSize: 15, verticalPadding: 15) { advance() }
                 .disabled(!canContinue)
@@ -477,6 +485,16 @@ struct OnboardingView: View {
         guard let previous = Step(rawValue: step.rawValue - 1) else { return }
         movingForward = false
         withAnimation(.easeInOut(duration: 0.3)) { step = previous }
+    }
+
+    /// A new user sees Premium once, on the way in. Saving edits from
+    /// Profile, or already being premium, skips it.
+    private func complete() {
+        if isEditing || purchases.isPremium {
+            finish()
+        } else {
+            showsPremium = true
+        }
     }
 
     private func finish() {

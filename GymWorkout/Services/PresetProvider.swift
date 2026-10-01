@@ -16,9 +16,9 @@ enum PresetProvider {
         return ExercisePreset(group: group, level: level, items: items)
     }
 
-    /// Groups the library can actually train today. Forearms, Calves and
-    /// Adductors have no dedicated exercise in the library yet, so they are
-    /// tracked but not offered as presets.
+    /// Groups with a built-in preset. Forearms, Calves and Adductors have
+    /// none: their exercises are in the library, added from the Exercises
+    /// tab, so they are tracked but not offered as presets.
     static var trainableGroups: [MuscleGroup] {
         MuscleGroup.allCases.filter { preset(for: $0, level: .basic) != nil }
     }

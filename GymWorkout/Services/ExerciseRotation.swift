@@ -84,8 +84,8 @@ enum ExerciseRotation {
         var tired: Set<MusclePart> = []
         /// Exercises the user saved with the heart.
         var saved: Set<String> = []
-        /// The hardest a pick for My List may be: the hardest exercise the
-        /// user saved in it, so swaps don't climb a level at a time.
+        /// The hardest a pick for a saved preset may be: the hardest exercise
+        /// the user saved in it, so swaps don't climb a level at a time.
         var ceiling: Difficulty = .intermediate
         var now = Date()
     }
@@ -113,7 +113,7 @@ enum ExerciseRotation {
     /// a long run of swaps comes back round rather than running dry; the
     /// same pattern at any level for Advanced; then any exercise for the
     /// same part of the group at the list's level. Basic never hands out an
-    /// advanced lift, and My List keeps under its ceiling.
+    /// advanced lift, and a saved preset keeps under its ceiling.
     static func replacement(for name: String, context: Context, avoid: Set<String>,
                             thenAvoid fallback: Set<String>) -> String? {
         var generator = SystemRandomNumberGenerator()
@@ -164,7 +164,8 @@ enum ExerciseRotation {
 
     /// Basic: beginner exercises, intermediate ones on machines and cables,
     /// and intermediate dumbbell isolation work — what "machines and
-    /// supported positions" means. Advanced: any. My List: up to its ceiling.
+    /// supported positions" means. Advanced: any. A saved preset: up to its
+    /// ceiling.
     static func fits(_ exercise: Exercise, _ context: Context) -> Bool {
         switch context.level {
         case .basic:
@@ -177,7 +178,7 @@ enum ExerciseRotation {
             }
         case .advanced:
             return true
-        case .mine:
+        case .mine, .mine2, .mine3:
             return rank(exercise.difficulty) <= rank(context.ceiling)
         }
     }

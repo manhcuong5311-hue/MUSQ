@@ -4,8 +4,8 @@
 //
 //  Tab 4. The totals, the onboarding answers and the plan they add up to,
 //  the settings that shape every other tab (units, experience for recovery
-//  estimates, rest timer), personal records, and the workout history they
-//  come from. Only completed sets count.
+//  estimates, rest timer), Premium and ad privacy, personal records, and the
+//  workout history they come from. Only completed sets count.
 //
 
 import SwiftUI
@@ -21,11 +21,11 @@ struct ProfileView: View {
     @Environment(WorkoutStore.self) private var store
     @Environment(Purchases.self) private var purchases
     @Environment(Ads.self) private var ads
+    @Environment(Paywall.self) private var paywall
     @State private var path: [ProfileRoute] = []
     @State private var showsAllRecords = false
     @State private var historyLimit = ProfileView.historyPage
     @State private var editsProfile = false
-    @State private var showsRemoveAds = false
 
     private static let recordPreview = 5
     private static let historyPage = 8
@@ -48,7 +48,7 @@ struct ProfileView: View {
                             .padding(.top, 28)
                         settings
                             .padding(.top, 28)
-                        adsAndPrivacy
+                        premiumAndPrivacy
                             .padding(.top, 28)
                         records
                             .padding(.top, 30)
@@ -63,6 +63,7 @@ struct ProfileView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 TabBarView(selection: $tab)
             }
+            .statusBarScrim()
             .navigationDestination(for: ProfileRoute.self) { route in
                 switch route {
                 case .session(let id): SessionHistoryView(sessionID: id)
@@ -75,9 +76,6 @@ struct ProfileView: View {
         .fullScreenCover(isPresented: $editsProfile) {
             OnboardingView(isEditing: true, onClose: { editsProfile = false })
                 .environment(store)
-        }
-        .sheet(isPresented: $showsRemoveAds) {
-            RemoveAdsView()
                 .environment(purchases)
         }
     }
@@ -195,14 +193,16 @@ struct ProfileView: View {
         }
     }
 
-    // MARK: - Ads & privacy
+    // MARK: - Premium & privacy
 
-    private var adsAndPrivacy: some View {
+    private var premiumAndPrivacy: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "ADS & PRIVACY")
+            SectionEyebrow(text: "PREMIUM & PRIVACY")
             VStack(spacing: 0) {
-                settingRow("Remove ads", detail: removeAdsDetail) {
-                    pillButton(purchases.hasRemovedAds ? "THANK YOU" : "REMOVE") { showsRemoveAds = true }
+                settingRow("MUSQ Premium", detail: premiumDetail) {
+                    pillButton(purchases.isPremium ? "ACTIVE" : "UPGRADE", prominent: !purchases.isPremium) {
+                        paywall.show(.profile)
+                    }
                 }
                 if ads.privacyOptionsRequired {
                     Hairline(opacity: 0.06)
@@ -226,24 +226,29 @@ struct ProfileView: View {
         }
     }
 
-    private var removeAdsDetail: String {
-        if purchases.hasRemovedAds {
-            return purchases.activePlan == Purchases.ProductID.yearly
-                ? "Ads are off while your yearly plan is active."
-                : "Ads are off for good."
+    private var premiumDetail: String {
+        switch purchases.activePlan {
+        case Purchases.ProductID.yearly: return "Your yearly plan is active."
+        case Purchases.ProductID.monthly: return "Your monthly plan is active."
+        case Purchases.ProductID.lifetime: return "Lifetime. Premium is yours for good."
+        default:
+            return purchases.isPremium
+                ? "Premium is on."
+                : "Common mistakes, Form Comparison, Preset 2 and 3, no ads."
         }
-        return "Every feature is free. Removing ads just clears them away."
     }
 
-    private func pillButton(_ title: String, action: @escaping () -> Void) -> some View {
+    /// A small capsule action; prominent (silver) when it's an offer.
+    private func pillButton(_ title: String, prominent: Bool = false,
+                            action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
                 .font(.mono(10, .semibold))
                 .trackingEm(0.08, size: 10)
-                .foregroundStyle(DS.silver.opacity(0.8))
+                .foregroundStyle(prominent ? DS.ink : DS.silver.opacity(0.8))
                 .padding(.horizontal, 11)
                 .padding(.vertical, 8)
-                .background(Capsule().fill(DS.silver.opacity(0.07)))
+                .background(Capsule().fill(prominent ? DS.silver : DS.silver.opacity(0.07)))
         }
         .buttonStyle(.plain)
     }

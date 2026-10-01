@@ -2,15 +2,18 @@
 //  MusclePresetView.swift
 //  GymWorkout
 //
-//  One muscle group's exercises for a day. Opens on the user's own list
-//  when they saved one, else the Basic or Advanced preset; the list is only
-//  written into the day once the user does something with it (adds it,
-//  edits it, or opens an exercise), so looking never changes the workout.
+//  One muscle group's exercises for a day. Opens on the preset picked from
+//  the card's menu, else the user's first saved preset, else Basic or
+//  Advanced; the list is only written into the day once the user does
+//  something with it (adds it, edits it, or opens an exercise), so looking
+//  never changes the workout. Any list can be saved as Preset 1, 2 or 3 —
+//  2 and 3 with Premium. Ones saved before a subscription lapsed stay
+//  usable and deletable, just not saved over.
 //
 //  Swap All swaps every exercise not started yet, and each row's swap button
 //  one of them, for another that trains the same part the same way — one
-//  the user hasn't done lately (`ExerciseRotation`). Swaps, saving over My
-//  List and deleting it can all be undone from the toast.
+//  the user hasn't done lately (`ExerciseRotation`). Swaps, saving over a
+//  preset and deleting one can all be undone from the toast.
 //
 
 import SwiftUI
@@ -18,9 +21,13 @@ import SwiftUI
 struct MusclePresetView: View {
     var group: MuscleGroup
     var day: Date
+    /// The preset to open an unplanned group on, from the card's menu.
+    var initialLevel: PresetLevel? = nil
 
     @Environment(WorkoutStore.self) private var store
     @Environment(TrainRouter.self) private var router
+    @Environment(Purchases.self) private var purchases
+    @Environment(Paywall.self) private var paywall
     @Environment(\.dismiss) private var dismiss
 
     @State private var level: PresetLevel = .basic
@@ -30,7 +37,10 @@ struct MusclePresetView: View {
     @State private var editingTarget: WorkoutExercise?
     @State private var editMode: EditMode = .inactive
     @State private var confirmsRemoval = false
-    @State private var confirmsDeletingMine = false
+    /// A row with sets already done, waiting on the remove confirmation.
+    @State private var removingExercise: WorkoutExercise?
+    /// The saved preset waiting on the delete confirmation.
+    @State private var deletingPreset: PresetLevel?
     /// Every exercise the list has shown on this visit, so Shuffle and the
     /// swap buttons keep bringing ones not seen yet.
     @State private var shown: Set<String> = []
@@ -48,13 +58,14 @@ struct MusclePresetView: View {
         /// The unsaved list as it was, when the swap was made before the list
         /// was added to the day.
         var previewBefore: [WorkoutExercise]? = nil
-        /// My List as it was before it was saved over or deleted (nil: there
-        /// was none), and the level the screen was on.
-        var restoresMine = false
-        var mineBefore: [PresetItem]? = nil
+        /// The saved preset to put back, as it was before it was saved over
+        /// or deleted (nil: the slot was empty), and the level the screen
+        /// was on.
+        var restoresPreset: PresetLevel? = nil
+        var presetBefore: [PresetItem]? = nil
         var levelBefore: PresetLevel? = nil
 
-        var canUndo: Bool { !undo.isEmpty || restoresMine }
+        var canUndo: Bool { !undo.isEmpty || restoresPreset != nil }
     }
 
     enum PickerMode: Identifiable {
@@ -76,6 +87,15 @@ struct MusclePresetView: View {
     private var dayName: String { isToday ? "Today's" : RecoveryText.day(day) + "'s" }
     private var isPast: Bool { Calendar.current.startOfDay(for: day) < Calendar.current.startOfDay(for: Date()) }
 
+    /// The moment recovery is judged at, as on Train: now for today, the
+    /// same time of day on another day.
+    private var referenceTime: Date {
+        let now = Date()
+        let calendar = Calendar.current
+        return isToday ? now
+            : calendar.startOfDay(for: day).addingTimeInterval(now.timeIntervalSince(calendar.startOfDay(for: now)))
+    }
+
     var body: some View {
         ZStack {
             DS.ink.ignoresSafeArea()
@@ -92,6 +112,8 @@ struct MusclePresetView: View {
                     ForEach(rows) { exercise in
                         row(exercise)
                             .modifier(PlainRow(top: 5, bottom: 5))
+                            // Logged sets go only through ⋯ Remove, which asks first.
+                            .deleteDisabled(!exercise.completedSets.isEmpty)
                     }
                     .onDelete(perform: delete)
                     .onMove(perform: move)
@@ -124,9 +146,9 @@ struct MusclePresetView: View {
             withAnimation(.easeOut(duration: 0.2)) { toast = nil }
         }
         .onDisappear { toast = nil }
-        .onChange(of: store.hasCustomPreset(for: group)) { _, has in
-            // My List deleted or restored from another screen.
-            guard !has, level == .mine else { return }
+        .onChange(of: store.savedLevels(for: group)) { _, saved in
+            // The preset on screen deleted from another screen.
+            guard level.isSaved, !saved.contains(level) else { return }
             level = store.suggestedLevel
             if !isPlanned { preview = store.preview(group, level: level) }
         }
@@ -162,10 +184,22 @@ struct MusclePresetView: View {
         } message: {
             Text("Sets you've already marked done are removed too.")
         }
-        .confirmationDialog("Delete My List for \(group.title)?",
-                            isPresented: $confirmsDeletingMine, titleVisibility: .visible) {
-            Button("Delete", role: .destructive, action: deleteMine)
-        } message: {
+        .confirmationDialog("Remove \(removingExercise?.exerciseName ?? "Exercise")?",
+                            isPresented: Binding(get: { removingExercise != nil },
+                                                 set: { if !$0 { removingExercise = nil } }),
+                            titleVisibility: .visible, presenting: removingExercise) { exercise in
+            Button("Remove", role: .destructive) { remove(exercise) }
+        } message: { exercise in
+            let done = exercise.completedSets.count
+            Text(done == 1 ? "The set you've marked done is removed too."
+                 : "The \(done) sets you've marked done are removed too.")
+        }
+        .confirmationDialog("Delete \(deletingPreset?.name ?? "Preset") for \(group.title)?",
+                            isPresented: Binding(get: { deletingPreset != nil },
+                                                 set: { if !$0 { deletingPreset = nil } }),
+                            titleVisibility: .visible, presenting: deletingPreset) { preset in
+            Button("Delete", role: .destructive) { deletePreset(preset) }
+        } message: { _ in
             Text("Days you've already planned keep their exercises.")
         }
     }
@@ -186,7 +220,7 @@ struct MusclePresetView: View {
                     .font(.ui(16, .semibold))
                     .tracking(-0.25)
                     .foregroundStyle(DS.silver)
-                MetaLine(text: "\(dayName.uppercased()) WORKOUT · \(rows.count) EXERCISES")
+                MetaLine(text: "\(dayName.uppercased()) WORKOUT · \(rows.count) \(rows.count == 1 ? "EXERCISE" : "EXERCISES")")
                     .padding(.top, 3)
             }
 
@@ -209,46 +243,31 @@ struct MusclePresetView: View {
     // MARK: - Intro
 
     private var intro: some View {
-        let record = store.recoveryRecords()[group]
+        let now = referenceTime
+        let levels = levels
         return VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 12) {
-                VStack(alignment: .leading, spacing: 5) {
-                    SectionEyebrow(text: "RECOVERY", size: 9.5)
-                    MuscleStateLabel(state: MuscleCardState(record?.status))
-                    if let record, record.status == .partlyReady {
-                        Text("\(RecoveryText.recovering(record.tiredParts.map(\.part))) · \(RecoveryText.ready(record.readyParts).lowercased())")
-                            .font(.ui(12))
-                            .foregroundStyle(DS.silver.opacity(0.5))
-                            .fixedSize(horizontal: false, vertical: true)
-                    } else if let record, record.status != .ready {
-                        Text("\(RecoveryText.trainedAgo(record.lastTrainedAt)) · est. \(RecoveryText.remaining(record.hoursRemaining))")
-                            .font(.ui(12))
-                            .foregroundStyle(DS.silver.opacity(0.5))
-                    } else if let record {
-                        // Helping on another group's day isn't "trained".
-                        if let note = record.sideNotes.first {
-                            Text(RecoveryText.sideNote(note))
-                                .font(.ui(12))
-                                .foregroundStyle(DS.silver.opacity(0.5))
-                        } else if let last = record.lastCountedAt {
-                            Text(RecoveryText.trainedAgo(last))
-                                .font(.ui(12))
-                                .foregroundStyle(DS.silver.opacity(0.5))
-                        }
-                    }
+                // A past day's log is a record; recovery is about what's next.
+                if !isPast {
+                    recovery(store.recoveryRecords(at: now)[group], now: now)
                 }
                 Spacer()
                 MiniBodyMap(group: group)
                     .frame(width: 30, height: 70)
             }
 
-            MonoSegmentedControl(
-                options: levels.map { ($0, $0.title) },
-                selection: Binding(get: { level }, set: select),
-                fontSize: 10,
-                itemPaddingV: 8,
-                fillsWidth: true
-            )
+            // Nothing to pick between for a group with no built-in preset
+            // and none saved.
+            if !levels.isEmpty {
+                MonoSegmentedControl(
+                    options: levels.map { ($0, $0.title) },
+                    selection: Binding(get: { level }, set: select),
+                    fontSize: levels.count > 3 ? 9 : 10,
+                    itemPaddingH: levels.count > 3 ? 4 : 11,
+                    itemPaddingV: 8,
+                    fillsWidth: true
+                )
+            }
 
             Text(levelCaption)
                 .font(.ui(12.5))
@@ -256,17 +275,52 @@ struct MusclePresetView: View {
         }
     }
 
-    /// Basic and Advanced always; Mine once the user saved a list.
+    /// The group's recovery as of `now`: the day open, at this time of day.
+    private func recovery(_ record: MuscleTrainingRecord?, now: Date) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            SectionEyebrow(text: "RECOVERY", size: 9.5)
+            MuscleStateLabel(state: MuscleCardState(record?.status))
+            if let record, record.status == .partlyReady {
+                Text("\(RecoveryText.recovering(record.tiredParts.map(\.part))) · \(RecoveryText.ready(record.readyParts).lowercased())")
+                    .font(.ui(12))
+                    .foregroundStyle(DS.silver.opacity(0.5))
+                    .fixedSize(horizontal: false, vertical: true)
+            } else if let record, record.status != .ready {
+                Text("\(RecoveryText.trainedAgo(record.lastTrainedAt, now: now)) · est. \(RecoveryText.remaining(record.hoursRemaining))")
+                    .font(.ui(12))
+                    .foregroundStyle(DS.silver.opacity(0.5))
+            } else if let record {
+                // Helping on another group's day isn't "trained".
+                if let note = record.sideNotes.first {
+                    Text(RecoveryText.sideNote(note, now: now))
+                        .font(.ui(12))
+                        .foregroundStyle(DS.silver.opacity(0.5))
+                } else if let last = record.lastCountedAt {
+                    Text(RecoveryText.trainedAgo(last, now: now))
+                        .font(.ui(12))
+                        .foregroundStyle(DS.silver.opacity(0.5))
+                }
+            }
+        }
+    }
+
+    /// Basic and Advanced when the group has them (Forearms, Calves and
+    /// Adductors don't), then each preset the user saved.
     private var levels: [PresetLevel] {
-        [.basic, .advanced] + (store.hasCustomPreset(for: group) ? [.mine] : [])
+        [PresetLevel.basic, .advanced].filter { PresetProvider.preset(for: group, level: $0) != nil }
+            + store.savedLevels(for: group)
     }
 
     private var levelCaption: String {
+        // Only a group with no built-in preset can be on a level it doesn't offer.
+        guard levels.contains(level) else {
+            return "There's no built-in preset for \(group.title). Add exercises, then save the list as a preset."
+        }
         let suggested = store.profile != nil && level == store.suggestedLevel ? " Suggested for you." : ""
         switch level {
         case .basic: return "Machines and supported positions — a good place to start." + suggested
         case .advanced: return "Free-weight compounds that need more balance and bracing." + suggested
-        case .mine: return "Your saved list for \(group.title)."
+        case .mine, .mine2, .mine3: return "Your saved \(level.name) for \(group.title)."
         }
     }
 
@@ -347,8 +401,8 @@ struct MusclePresetView: View {
                     }
                     .disabled(!exercise.completedSets.isEmpty)
                     Button("Remove", systemImage: "trash", role: .destructive) {
-                        ensurePlanned()
-                        store.removeExercise(id: exercise.id)
+                        // Logged sets go with the row, so ask first.
+                        if exercise.completedSets.isEmpty { remove(exercise) } else { removingExercise = exercise }
                     }
                 } label: {
                     Image(systemName: "ellipsis")
@@ -394,16 +448,7 @@ struct MusclePresetView: View {
 
     @ViewBuilder
     private var dayFooter: some View {
-        if !isPlanned {
-            VStack(spacing: 8) {
-                WideButton(title: "Add to \(dayName) Workout", prominent: true) {
-                    withAnimation { ensurePlanned() }
-                }
-                Text("Or tap an exercise to start logging sets.")
-                    .font(.ui(11.5))
-                    .foregroundStyle(DS.silver.opacity(0.4))
-            }
-        } else {
+        if isPlanned {
             let done = planned.reduce(0) { $0 + $1.completedSets.count }
             let total = planned.reduce(0) { $0 + $1.sets.count }
             VStack(spacing: 12) {
@@ -416,37 +461,69 @@ struct MusclePresetView: View {
                     .buttonStyle(.borderless)
             }
             .frame(maxWidth: .infinity)
+        } else if !rows.isEmpty {
+            // An empty list (no built-in preset) has nothing to add yet;
+            // Add Exercise plans the group with its first pick.
+            VStack(spacing: 8) {
+                WideButton(title: "Add to \(dayName) Workout", prominent: true) {
+                    withAnimation { ensurePlanned() }
+                }
+                Text("Or tap an exercise to start logging sets.")
+                    .font(.ui(11.5))
+                    .foregroundStyle(DS.silver.opacity(0.4))
+            }
         }
     }
 
-    /// Saves the list as the group's own, updates it, or says this is it.
-    /// Update only shows once the list has been changed from what the screen
-    /// opened on, so just looking at Basic or Advanced never offers to write
-    /// over a saved list.
+    /// Says which preset the list is saved as, or offers to save it as
+    /// Preset 1, 2 or 3. Saving only shows while a slot is free, on a saved
+    /// preset, or once the list has been changed from what its level gives,
+    /// so just looking at Basic or Advanced never offers to write over a
+    /// full set of presets. Without Premium an empty Preset 2 or 3 still
+    /// counts as free: the menu lists it locked, and tapping it opens the
+    /// paywall.
     @ViewBuilder
     private var mineFooter: some View {
         if !rows.isEmpty {
-            if store.matchesCustomPreset(rows, for: group) {
+            if let saved = store.matchingPreset(rows, for: group) {
                 HStack(spacing: 6) {
                     Image(systemName: "bookmark.fill")
                         .font(.system(size: 10, weight: .semibold))
-                    Text("Saved as My List")
+                    Text("Saved as \(saved.name)")
                     Text("·")
-                    Button { confirmsDeletingMine = true } label: {
+                    Button { deletingPreset = saved } label: {
                         Text("Delete")
                             .padding(.vertical, 8)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.borderless)
                     .foregroundStyle(DS.silver.opacity(0.7))
-                    .accessibilityLabel("Delete My List")
+                    .accessibilityLabel("Delete \(saved.name)")
                 }
                 .font(.ui(12))
                 .foregroundStyle(DS.silver.opacity(0.45))
                 .frame(maxWidth: .infinity)
-            } else if !store.hasCustomPreset(for: group) || level == .mine || isEdited {
-                Button(action: saveAsMine) {
-                    Label(store.hasCustomPreset(for: group) ? "Update My List" : "Save as My List", systemImage: "bookmark")
+            } else if store.savedLevels(for: group).count < PresetLevel.saved.count || level.isSaved || isEdited {
+                Menu {
+                    Section("Save this list as") {
+                        ForEach(saveSlots, id: \.self) { slot in
+                            let existing = store.customPreset(for: group, slot)
+                            let title = existing == nil ? slot.name : slot == level ? "Update \(slot.name)" : "Replace \(slot.name)"
+                            if isLocked(slot) {
+                                Button { paywall.show(.preset) } label: {
+                                    Label(title, systemImage: "lock.fill")
+                                    Text("Premium")
+                                }
+                            } else {
+                                Button { saveAsPreset(slot) } label: {
+                                    Label(title, systemImage: existing == nil ? "bookmark" : "arrow.triangle.2.circlepath")
+                                    Text(existing.map { "\($0.count) \($0.count == 1 ? "exercise" : "exercises")" } ?? "Empty")
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    Label(level.isSaved && !isLocked(level) ? "Update \(level.name)" : "Save as Preset", systemImage: "bookmark")
                         .font(.ui(12.5, .semibold))
                         .foregroundStyle(DS.silver.opacity(0.75))
                         .padding(.vertical, 8)
@@ -455,9 +532,23 @@ struct MusclePresetView: View {
                 }
                 .buttonStyle(.borderless)
                 .frame(maxWidth: .infinity)
-                .accessibilityHint("\(group.title) opens on this list next time.")
+                .accessibilityHint(purchases.isPremium
+                                   ? "Saves this list as Preset 1, 2 or 3, in the menu next to \(group.title) on Train."
+                                   : "Saves this list as Preset 1, in the menu next to \(group.title) on Train. Preset 2 and 3 come with Premium.")
             }
         }
+    }
+
+    /// The save menu's slots, the preset on screen first unless it's locked,
+    /// so the first row is one that saves.
+    private var saveSlots: [PresetLevel] {
+        level.isSaved && !isLocked(level) ? [level] + PresetLevel.saved.filter { $0 != level } : PresetLevel.saved
+    }
+
+    /// Preset 2 and 3 can't be saved or saved over without Premium. One
+    /// saved before a subscription lapsed is still opened and deleted as usual.
+    private func isLocked(_ slot: PresetLevel) -> Bool {
+        !purchases.isPremium && (slot.slot ?? 0) > Premium.freePresets
     }
 
     /// The list differs from the preset its level would give.
@@ -494,7 +585,7 @@ struct MusclePresetView: View {
     /// that is still recovering as a primary mover. Only for today or later —
     /// a past day's log is just a record.
     private func caution(for exercise: WorkoutExercise) -> String? {
-        guard !isPast, let record = store.recoveryRecords()[group] else { return nil }
+        guard !isPast, let record = store.recoveryRecords(at: referenceTime)[group] else { return nil }
         let tired = Set(record.tiredParts.map(\.part))
         let hit = RecoveryCalculator.partContributions(of: exercise)
             .filter { $0.role == .primary && tired.contains($0.part) }
@@ -509,14 +600,20 @@ struct MusclePresetView: View {
         didLoad = true
         // A group already on the day without a level (added from the library)
         // isn't the saved list, whatever the group opens on otherwise.
-        level = store.level(for: group, on: day) ?? (isPlanned ? store.suggestedLevel : store.defaultLevel(for: group))
-        if level == .mine && !store.hasCustomPreset(for: group) { level = store.suggestedLevel }
+        // A preset picked from the menu wins over a level the day kept after
+        // the group's last exercise was removed.
+        level = isPlanned
+            ? store.level(for: group, on: day) ?? store.suggestedLevel
+            : initialLevel ?? store.level(for: group, on: day) ?? store.defaultLevel(for: group)
+        if level.isSaved && store.customPreset(for: group, level) == nil { level = store.suggestedLevel }
         preview = store.preview(group, level: level)
         shown = Set(rows.map(\.exerciseName))
     }
 
     private func select(_ newLevel: PresetLevel) {
-        guard newLevel != level else { return }
+        // A level with no list would empty the screen, or a planned group
+        // of everything not started yet.
+        guard newLevel != level, !store.preview(group, level: newLevel).isEmpty else { return }
         toast = nil
         withAnimation(.easeOut(duration: 0.18)) {
             level = newLevel
@@ -540,7 +637,7 @@ struct MusclePresetView: View {
         // shouldn't lean on glutes trained yesterday.
         let when = max(day, Date())
         let tired = store.recoveryRecords(at: when).values.flatMap { $0.parts.filter(\.isTired).map(\.part) }
-        let ceiling = (store.customPreset(for: group) ?? [])
+        let ceiling = (store.customPreset(for: group, level) ?? [])
             .compactMap { ExerciseCatalog.exercise(named: $0.exerciseName)?.difficulty }
             .max { ExerciseRotation.rank($0) < ExerciseRotation.rank($1) } ?? .intermediate
         return ExerciseRotation.Context(group: group, level: level, lastDone: store.lastDoneDates,
@@ -622,17 +719,18 @@ struct MusclePresetView: View {
 
     private func undo(_ toast: Toast) {
         withAnimation(.easeOut(duration: 0.2)) {
-            if toast.restoresMine {
-                store.restoreCustomPreset(toast.mineBefore, for: group)
+            if let preset = toast.restoresPreset {
+                store.restoreCustomPreset(toast.presetBefore, for: group, preset)
                 let before = toast.levelBefore ?? level
-                let restored = before == .mine && toast.mineBefore == nil ? store.suggestedLevel : before
+                let restored = before.isSaved && store.customPreset(for: group, before) == nil ? store.suggestedLevel : before
                 if restored != level {
                     level = restored
                     if isPlanned {
                         store.markLevel(restored, for: group, on: day)
-                    } else if restored == .mine {
+                    } else if restored == preset {
                         // Undoing a delete: the list it showed comes back.
-                        preview = store.preview(group, level: .mine)
+                        // Undoing a save keeps the list on screen.
+                        preview = store.preview(group, level: restored)
                     }
                 }
             } else if let before = toast.previewBefore, !isPlanned {
@@ -654,22 +752,24 @@ struct MusclePresetView: View {
         AccessibilityNotification.Announcement(newToast.text + (newToast.canUndo ? ". Undo available." : "")).post()
     }
 
-    private func saveAsMine() {
-        let before = store.customPreset(for: group)
+    private func saveAsPreset(_ preset: PresetLevel) {
+        // The menu routes locked slots to the paywall; this is the backstop.
+        guard !isLocked(preset) else { paywall.show(.preset); return }
+        let before = store.customPreset(for: group, preset)
         let levelBefore = level
-        store.saveCustomPreset(rows, for: group)
-        if isPlanned { store.markLevel(.mine, for: group, on: day) }
-        withAnimation(.easeOut(duration: 0.18)) { level = .mine }
+        store.saveCustomPreset(rows, for: group, as: preset)
+        if isPlanned { store.markLevel(preset, for: group, on: day) }
+        withAnimation(.easeOut(duration: 0.18)) { level = preset }
         show(before == nil
-             ? Toast(text: "Saved as My List. \(group.title) opens on it next time.")
-             : Toast(text: "My List updated", restoresMine: true, mineBefore: before, levelBefore: levelBefore))
+             ? Toast(text: "Saved as \(preset.name). Find it under ⋯ next to \(group.title) on Train.")
+             : Toast(text: "\(preset.name) updated", restoresPreset: preset, presetBefore: before, levelBefore: levelBefore))
     }
 
-    private func deleteMine() {
-        let before = store.customPreset(for: group)
-        store.deleteCustomPreset(for: group)
-        show(Toast(text: "My List deleted", restoresMine: true, mineBefore: before, levelBefore: level))
-        guard level == .mine else { return }
+    private func deletePreset(_ preset: PresetLevel) {
+        let before = store.customPreset(for: group, preset)
+        store.deleteCustomPreset(for: group, preset)
+        show(Toast(text: "\(preset.name) deleted", restoresPreset: preset, presetBefore: before, levelBefore: level))
+        guard level == preset else { return }
         withAnimation(.easeOut(duration: 0.18)) {
             level = store.suggestedLevel
             if !isPlanned { preview = store.preview(group, level: level) }
@@ -681,8 +781,16 @@ struct MusclePresetView: View {
         router.push(.exercise(exercise.id))
     }
 
+    private func remove(_ exercise: WorkoutExercise) {
+        ensurePlanned()
+        store.removeExercise(id: exercise.id)
+    }
+
     private func delete(_ offsets: IndexSet) {
-        let ids = offsets.map { rows[$0].id }
+        // Rows with sets done can't be swiped (`deleteDisabled`); this is
+        // the backstop.
+        let ids = offsets.map { rows[$0] }.filter { $0.completedSets.isEmpty }.map(\.id)
+        guard !ids.isEmpty else { return }
         ensurePlanned()
         ids.forEach { store.removeExercise(id: $0) }
     }
@@ -811,7 +919,10 @@ struct TargetEditorSheet: View {
                 .padding(.top, 5)
 
             VStack(spacing: 4) {
-                stepper("Sets", value: $sets, range: max(1, exercise.completedSets.count)...10)
+                // Add Set has no cap: past 10 the range grows to the sets
+                // already there, never below the ones done.
+                stepper("Sets", value: $sets,
+                        range: max(1, exercise.completedSets.count)...max(10, exercise.sets.count))
                 if exercise.isTimed {
                     stepper("Seconds from", value: $lower, range: 5...300, step: 5)
                     stepper("Seconds up to", value: $upper, range: lower...300, step: 5)

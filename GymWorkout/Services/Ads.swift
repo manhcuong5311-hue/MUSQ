@@ -2,16 +2,17 @@
 //  Ads.swift
 //  GymWorkout
 //
-//  AdMob, kept out of the way. Nothing starts until onboarding is done and
-//  only if Remove Ads hasn't been bought. Start-up runs in the order the
-//  rules want: Google's consent form where it applies (EEA, UK, some US
-//  states), then Apple's tracking prompt, then the SDK.
+//  AdMob, kept out of the way, and never for MUSQ Premium. RootView calls
+//  `start()` once onboarding is done. Start-up runs in the order the rules
+//  want: Google's consent form where it applies (EEA, UK, some US states),
+//  then Apple's tracking prompt, then the SDK.
 //
 //  Two formats. One adaptive banner sits on top of the tab bar; it is a single
 //  view shared by all four tab roots, so switching tabs doesn't request a new
 //  ad. Full-screen ads only come at a natural break — finishing a workout, or
-//  every fourth time an exercise screen is closed — and never within three
-//  minutes of the last one.
+//  every fourth time an exercise screen is closed outside a workout (that one
+//  at most once a day) — none until the second workout is finished, and never
+//  within three minutes of the last one.
 //
 
 import AppTrackingTransparency
@@ -48,6 +49,12 @@ final class Ads: NSObject {
     /// The consent form must stay reachable from Settings where it applies.
     private(set) var privacyOptionsRequired = false
 
+    /// Finished workouts so far, read live; RootView points it at the store.
+    @ObservationIgnored var completedWorkouts: () -> Int = { 0 }
+    /// Whether a workout is under way, read live; RootView points it at the
+    /// store and the rest timer.
+    @ObservationIgnored var workoutInProgress: () -> Bool = { false }
+
     @ObservationIgnored private let purchases: Purchases
     @ObservationIgnored private(set) var banner: BannerView?
     @ObservationIgnored private var interstitial: InterstitialAd?
@@ -56,9 +63,20 @@ final class Ads: NSObject {
     @ObservationIgnored private var isStarting = false
     @ObservationIgnored private var lastFullScreenAd = Date()
     @ObservationIgnored private var exercisesClosedSinceAd = 0
+    /// The break the ad on screen was shown at, so only an exercise-screen ad
+    /// uses up the day's one.
+    @ObservationIgnored private var presentingMoment: Moment?
 
     private static let fullScreenGap: TimeInterval = 180
+    /// The SDK's anchored sizes are now only the large ones (up to ~150 pt);
+    /// an adaptive banner capped here keeps the strip about as tall as the
+    /// old anchored one, so it doesn't eat the screen above the tab bar.
+    private static let bannerMaxHeight: CGFloat = 60
     private static let exercisesPerAd = 4
+    /// The first finished workout never ends in an ad.
+    private static let workoutsBeforeFullScreen = 2
+    /// Start of the day the last exercise-screen ad showed, kept across launches.
+    private static let exerciseClosedAdDayKey = "ads.exerciseClosedAdDay"
     /// Google drops a loaded interstitial after an hour.
     private static let interstitialLifetime: TimeInterval = 55 * 60
 
@@ -66,20 +84,19 @@ final class Ads: NSObject {
         self.purchases = purchases
     }
 
-    var showsAds: Bool { isReady && !purchases.hasRemovedAds }
+    var showsAds: Bool { isReady && !purchases.isPremium }
     var showsBanner: Bool { showsAds && bannerHeight > 0 && banner != nil }
 
     // MARK: - Start-up
 
-    /// Safe to call repeatedly; does nothing once running, or for anyone who
-    /// removed the ads.
+    /// Safe to call repeatedly; does nothing once running, or for Premium.
     func start() async {
         guard !isReady, !isStarting else { return }
         isStarting = true
         defer { isStarting = false }
 
         if !purchases.hasCheckedEntitlements { await purchases.refreshEntitlements() }
-        guard !purchases.hasRemovedAds else { return }
+        guard !purchases.isPremium else { return }
 
         do {
             try await ConsentInformation.shared.requestConsentInfoUpdate(with: RequestParameters())
@@ -95,6 +112,8 @@ final class Ads: NSObject {
         }
 
         guard ConsentInformation.shared.canRequestAds else { return }
+        // The app is rated 9+, so nothing above parental guidance.
+        MobileAds.shared.requestConfiguration.maxAdContentRating = .parentalGuidance
         _ = await MobileAds.shared.start()
         lastFullScreenAd = Date()
         isReady = true
@@ -112,7 +131,7 @@ final class Ads: NSObject {
     private func loadBanner() {
         guard banner == nil else { return }
         let width = Self.keyWindow?.bounds.width ?? 390
-        let view = BannerView(adSize: currentOrientationAnchoredAdaptiveBanner(width: width))
+        let view = BannerView(adSize: inlineAdaptiveBanner(width: width, maxHeight: Self.bannerMaxHeight))
         view.adUnitID = UnitID.banner
         view.delegate = self
         view.rootViewController = Self.topViewController
@@ -125,9 +144,15 @@ final class Ads: NSObject {
     /// Offers a break to show a full-screen ad at; most are passed over.
     func moment(_ moment: Moment) {
         guard showsAds else { return }
+        // The count already includes a workout that has just been finished.
+        guard completedWorkouts() >= Self.workoutsBeforeFullScreen else { return }
         if moment == .exerciseClosed {
+            // Between sets is no break, and those closes don't count either:
+            // the workout's own end is the break.
+            guard !workoutInProgress() else { return }
             exercisesClosedSinceAd += 1
-            guard exercisesClosedSinceAd >= Self.exercisesPerAd else { return }
+            guard exercisesClosedSinceAd >= Self.exercisesPerAd,
+                  !hasShownExerciseClosedAdToday else { return }
         }
         guard Date().timeIntervalSince(lastFullScreenAd) >= Self.fullScreenGap else { return }
         guard let ad = interstitial, let loadedAt = interstitialLoadedAt,
@@ -141,8 +166,14 @@ final class Ads: NSObject {
         Task {
             try? await Task.sleep(for: delay)
             guard showsAds, let root = Self.topViewController else { return }
+            presentingMoment = moment
             ad.present(from: root)
         }
+    }
+
+    private var hasShownExerciseClosedAdToday: Bool {
+        let day = UserDefaults.standard.double(forKey: Self.exerciseClosedAdDayKey)
+        return Calendar.current.isDateInToday(Date(timeIntervalSinceReferenceDate: day))
     }
 
     private func loadInterstitial() {
@@ -182,15 +213,22 @@ extension Ads: FullScreenContentDelegate {
     func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
         lastFullScreenAd = Date()
         exercisesClosedSinceAd = 0
+        // Only an ad that really showed counts as today's.
+        if presentingMoment == .exerciseClosed {
+            let day = Calendar.current.startOfDay(for: Date())
+            UserDefaults.standard.set(day.timeIntervalSinceReferenceDate, forKey: Self.exerciseClosedAdDayKey)
+        }
     }
 
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         lastFullScreenAd = Date()
+        presentingMoment = nil
         interstitial = nil
         loadInterstitial()
     }
 
     func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        presentingMoment = nil
         interstitial = nil
         loadInterstitial()
     }

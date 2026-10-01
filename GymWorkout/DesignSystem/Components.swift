@@ -567,3 +567,18 @@ struct Hairline: View {
             .frame(height: 1)
     }
 }
+
+extension View {
+    /// Paints the screen ground behind the status bar, so a page that
+    /// scrolls under it doesn't run its text into the clock.
+    func statusBarScrim() -> some View {
+        overlay(alignment: .top) {
+            // A zero-height strip at the top whose background reaches up
+            // through the safe area, i.e. exactly the status bar's height.
+            Color.clear
+                .frame(height: 0)
+                .background(DS.ink.ignoresSafeArea(edges: .top))
+                .allowsHitTesting(false)
+        }
+    }
+}

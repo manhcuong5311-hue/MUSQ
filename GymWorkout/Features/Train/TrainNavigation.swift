@@ -10,7 +10,9 @@ import SwiftUI
 import Observation
 
 enum TrainRoute: Hashable {
-    case preset(MuscleGroup, day: Date)
+    /// `level` opens an unplanned group on that preset instead of the one
+    /// it would open on.
+    case preset(MuscleGroup, day: Date, level: PresetLevel? = nil)
     case exercise(UUID)
     case trainer(exerciseName: String)
 }
@@ -29,8 +31,8 @@ extension View {
     func trainDestinations() -> some View {
         navigationDestination(for: TrainRoute.self) { route in
             switch route {
-            case .preset(let group, let day):
-                MusclePresetView(group: group, day: day)
+            case .preset(let group, let day, let level):
+                MusclePresetView(group: group, day: day, initialLevel: level)
             case .exercise(let id):
                 ExerciseDetailView(workoutExerciseID: id)
             case .trainer(let name):

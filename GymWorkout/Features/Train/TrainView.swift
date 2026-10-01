@@ -13,8 +13,12 @@ struct TrainView: View {
 
     @Environment(WorkoutStore.self) private var store
     @Environment(Ads.self) private var ads
+    @Environment(\.scenePhase) private var scenePhase
     @State private var router = TrainRouter()
     @State private var selectedDay = Calendar.current.startOfDay(for: Date())
+    /// The day the screen last took for today, so a return after midnight
+    /// can tell the day has changed under it.
+    @State private var today = Calendar.current.startOfDay(for: Date())
     @State private var infoGroup: MuscleGroup?
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 2)
@@ -51,6 +55,7 @@ struct TrainView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 TabBarView(selection: $tab)
             }
+            .statusBarScrim()
             .trainDestinations()
             .toolbar(.hidden, for: .navigationBar)
         }
@@ -71,6 +76,26 @@ struct TrainView: View {
                 )
             }
         }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { followNewDay() }
+        }
+        // Posted at midnight while the app is open, and on wake when the
+        // phone slept through it.
+        .task {
+            for await _ in NotificationCenter.default.notifications(named: .NSCalendarDayChanged) {
+                followNewDay()
+            }
+        }
+    }
+
+    /// Once midnight has passed, moves the selection to the new today if it
+    /// was on the old one, so new sets aren't logged to yesterday. A day the
+    /// user picked on purpose stays picked.
+    private func followNewDay() {
+        let now = calendar.startOfDay(for: Date())
+        guard now != today else { return }
+        if calendar.isDate(selectedDay, inSameDayAs: today) { selectedDay = now }
+        today = now
     }
 
     // MARK: - Header
@@ -184,6 +209,24 @@ struct TrainView: View {
             } else {
                 router.push(.preset(group, day: selectedDay))
             }
+        } accessory: {
+            PresetMenu(group: group) { open(group, on: $0) }
+        }
+    }
+
+    /// Opens the group on a preset picked from its ⋯ menu. A planned group
+    /// switches to it first, keeping exercises already started; an
+    /// unplanned one only shows it until the user adds it. A preset with
+    /// nothing in it never clears a planned group.
+    private func open(_ group: MuscleGroup, on level: PresetLevel) {
+        if store.exercises(for: group, on: selectedDay).isEmpty {
+            router.push(.preset(group, day: selectedDay, level: level))
+        } else {
+            if store.level(for: group, on: selectedDay) != level,
+               !store.preview(group, level: level).isEmpty {
+                store.switchLevel(group, on: selectedDay, to: level)
+            }
+            router.push(.preset(group, day: selectedDay))
         }
     }
 
@@ -205,9 +248,15 @@ struct TrainView: View {
                     router.push(.preset(group, day: selectedDay))
                 } label: {
                     WorkoutGroupRow(group: group, exercises: exercises, isToday: isToday,
-                                    workoutCompleted: session.completedAt != nil)
+                                    workoutCompleted: session.completedAt != nil, showsChevron: false)
                 }
                 .buttonStyle(.plain)
+                .overlay(alignment: .trailing) {
+                    PresetMenu(group: group, current: store.level(for: group, on: selectedDay)) {
+                        open(group, on: $0)
+                    }
+                    .padding(.trailing, 4)
+                }
             }
 
             if store.canLog(on: selectedDay) {
@@ -255,6 +304,8 @@ struct WorkoutGroupRow: View {
     var isToday: Bool
     /// A finished workout counts every group with logged sets as completed.
     var workoutCompleted = false
+    /// Off when a control sits over the row's trailing edge instead.
+    var showsChevron = true
 
     private var done: Int { exercises.reduce(0) { $0 + $1.completedSets.count } }
     private var total: Int { exercises.reduce(0) { $0 + $1.sets.count } }
@@ -290,9 +341,13 @@ struct WorkoutGroupRow: View {
                 }
                 .frame(height: 4)
             }
-            Image(systemName: "chevron.right")
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundStyle(DS.silver.opacity(0.3))
+            if showsChevron {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.3))
+            } else {
+                Color.clear.frame(width: 28, height: 1)
+            }
         }
         .padding(12)
         .background(

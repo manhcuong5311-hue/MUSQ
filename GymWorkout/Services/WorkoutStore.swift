@@ -30,7 +30,9 @@ final class WorkoutStore {
     }
     /// Exercises saved with the heart, by name.
     private(set) var saved: Set<String> = []
-    /// Each group's own list ("Mine"), keyed by `MuscleGroup.rawValue`.
+    /// The user's own presets, keyed by `presetKey`: `MuscleGroup.rawValue`
+    /// for Preset 1 (the one list earlier builds saved), "chest#2" and
+    /// "chest#3" for the others.
     private(set) var customPresets: [String: [PresetItem]] = [:]
 
     @ObservationIgnored private var isLoading = false
@@ -55,7 +57,10 @@ final class WorkoutStore {
 
     func level(for group: MuscleGroup, on day: Date) -> PresetLevel? {
         guard let session = session(on: day) else { return nil }
-        if session.mineGroups?.contains(group.rawValue) == true { return .mine }
+        if let mine = session.mineGroups,
+           let saved = PresetLevel.saved.first(where: { mine.contains(Self.presetKey(group, $0)) }) {
+            return saved
+        }
         return session.levels[group.rawValue]
     }
 
@@ -77,6 +82,11 @@ final class WorkoutStore {
         return PerformanceHistory.previous(of: item.exerciseName, before: day, in: sessions)
     }
 
+    /// Workouts finished with Complete Workout. Ads wait for the first ones.
+    var completedWorkoutCount: Int {
+        sessions.reduce(0) { $0 + ($1.completedAt == nil ? 0 : 1) }
+    }
+
     /// Days with at least one completed set — the calendar's markers.
     var trainedDays: Set<Date> {
         Set(sessions.filter(\.hasCompletedSets).map(\.day))
@@ -89,10 +99,10 @@ final class WorkoutStore {
         ProgramAdvisor.suggestedLevel(for: profile, experience: experience)
     }
 
-    /// The list a group starts from: the user's own when they saved one,
-    /// else the suggested preset.
+    /// The list a group starts from: the user's first saved preset, else
+    /// the suggested one.
     func defaultLevel(for group: MuscleGroup) -> PresetLevel {
-        customPresets[group.rawValue] == nil ? suggestedLevel : .mine
+        savedLevels(for: group).first ?? suggestedLevel
     }
 
     /// The last day each exercise had a completed set.
@@ -121,8 +131,8 @@ final class WorkoutStore {
     /// The exercises a preset would add, not yet saved. Pass these back to a
     /// mutation to save them with the same ids.
     func preview(_ group: MuscleGroup, level: PresetLevel) -> [WorkoutExercise] {
-        let items = level == .mine
-            ? customPresets[group.rawValue] ?? []
+        let items = level.isSaved
+            ? customPresets[Self.presetKey(group, level)] ?? []
             : PresetProvider.preset(for: group, level: level)?.items ?? []
         return items.compactMap { item in
             makeExercise(item.exerciseName, group: group, sets: item.sets, reps: item.reps)
@@ -157,8 +167,8 @@ final class WorkoutStore {
         }
     }
 
-    /// "Add to Today" from the Muscles tab: the user's own list or the
-    /// suggested preset, unless the group is already planned today.
+    /// "Add to Today" from the Muscles tab: the user's first preset or the
+    /// suggested one, unless the group is already planned today.
     func addToToday(_ group: MuscleGroup) {
         let level = self.level(for: group, on: Date()) ?? defaultLevel(for: group)
         ensurePlan(group, on: Date(), level: level, planned: preview(group, level: level))
@@ -174,7 +184,9 @@ final class WorkoutStore {
         mutateSession(on: day) { session in
             session.exercises.removeAll { $0.group == group }
             session.levels[group.rawValue] = nil
-            session.mineGroups?.removeAll { $0 == group.rawValue }
+            let keys = Self.presetKeys(group)
+            session.mineGroups?.removeAll { keys.contains($0) }
+            if session.mineGroups?.isEmpty == true { session.mineGroups = nil }
         }
     }
 
@@ -338,69 +350,88 @@ final class WorkoutStore {
         mutateSession(on: day) { $0.walkDone = done ? true : nil }
     }
 
-    // MARK: - The user's own lists
+    // MARK: - The user's own presets
 
-    func hasCustomPreset(for group: MuscleGroup) -> Bool {
-        customPresets[group.rawValue] != nil
+    /// Where a saved preset lives in `customPresets` and `mineGroups`.
+    static func presetKey(_ group: MuscleGroup, _ level: PresetLevel) -> String {
+        guard let slot = level.slot, slot > 1 else { return group.rawValue }
+        return "\(group.rawValue)#\(slot)"
     }
 
-    /// Whether `exercises` are the group's saved list: the same exercises,
-    /// in any order, with the same sets and targets. Saved exercises no
-    /// longer in the library are left out of the comparison.
-    func matchesCustomPreset(_ exercises: [WorkoutExercise], for group: MuscleGroup) -> Bool {
-        let saved = (customPresets[group.rawValue] ?? [])
-            .filter { ExerciseCatalog.exercise(named: $0.exerciseName) != nil }
-        guard !saved.isEmpty else { return false }
+    private static func presetKeys(_ group: MuscleGroup) -> Set<String> {
+        Set(PresetLevel.saved.map { presetKey(group, $0) })
+    }
+
+    /// The group's saved presets, Preset 1 first.
+    func savedLevels(for group: MuscleGroup) -> [PresetLevel] {
+        PresetLevel.saved.filter { customPresets[Self.presetKey(group, $0)] != nil }
+    }
+
+    /// The saved preset `exercises` are, if any: the same exercises, in any
+    /// order, with the same sets and targets. Saved exercises no longer in
+    /// the library are left out of the comparison.
+    func matchingPreset(_ exercises: [WorkoutExercise], for group: MuscleGroup) -> PresetLevel? {
         let byName = { (a: PresetItem, b: PresetItem) in a.exerciseName < b.exerciseName }
-        return saved.sorted(by: byName) == exercises.map(Self.presetItem).sorted(by: byName)
+        let items = exercises.map { Self.presetItem($0) }.sorted(by: byName)
+        return savedLevels(for: group).first { level in
+            let saved = (customPresets[Self.presetKey(group, level)] ?? [])
+                .filter { ExerciseCatalog.exercise(named: $0.exerciseName) != nil }
+            return !saved.isEmpty && saved.sorted(by: byName) == items
+        }
     }
 
-    /// The group's saved list as it is now, to hand back to
-    /// `restoreCustomPreset` for an undo.
-    func customPreset(for group: MuscleGroup) -> [PresetItem]? {
-        customPresets[group.rawValue]
+    /// A saved preset as it is now, to hand back to `restoreCustomPreset`
+    /// for an undo. Nil when the slot is empty.
+    func customPreset(for group: MuscleGroup, _ level: PresetLevel) -> [PresetItem]? {
+        guard level.isSaved else { return nil }
+        return customPresets[Self.presetKey(group, level)]
     }
 
-    /// Puts back a saved list (or its absence) captured before a change.
-    func restoreCustomPreset(_ items: [PresetItem]?, for group: MuscleGroup) {
-        customPresets[group.rawValue] = items
-        if items == nil { forgetMine(group) }
+    /// Puts back a saved preset (or its absence) captured before a change.
+    func restoreCustomPreset(_ items: [PresetItem]?, for group: MuscleGroup, _ level: PresetLevel) {
+        guard level.isSaved else { return }
+        customPresets[Self.presetKey(group, level)] = items
+        if items == nil { forgetPreset(group, level) }
         save()
     }
 
-    /// Saves `exercises` as the group's own list, which the group then opens on.
-    func saveCustomPreset(_ exercises: [WorkoutExercise], for group: MuscleGroup) {
-        guard !exercises.isEmpty else { return }
-        customPresets[group.rawValue] = exercises.map(Self.presetItem)
+    /// Saves `exercises` as one of the group's presets. The group opens on
+    /// its first saved preset.
+    func saveCustomPreset(_ exercises: [WorkoutExercise], for group: MuscleGroup, as level: PresetLevel) {
+        guard level.isSaved, !exercises.isEmpty else { return }
+        customPresets[Self.presetKey(group, level)] = exercises.map { Self.presetItem($0) }
         save()
     }
 
-    /// Deletes the group's own list. Days planned from it keep their
+    /// Deletes one of the group's presets. Days planned from it keep their
     /// exercises and read as the suggested preset from then on.
-    func deleteCustomPreset(for group: MuscleGroup) {
-        customPresets[group.rawValue] = nil
-        forgetMine(group)
+    func deleteCustomPreset(for group: MuscleGroup, _ level: PresetLevel) {
+        guard level.isSaved else { return }
+        customPresets[Self.presetKey(group, level)] = nil
+        forgetPreset(group, level)
         save()
     }
 
-    /// Days planned from the group's own list read as the preset they fell
-    /// back to (`levels`) once the list is gone.
-    private func forgetMine(_ group: MuscleGroup) {
+    /// Days planned from a deleted preset read as the preset they fell back
+    /// to (`levels`) once it is gone.
+    private func forgetPreset(_ group: MuscleGroup, _ level: PresetLevel) {
+        let key = Self.presetKey(group, level)
         for index in sessions.indices {
-            sessions[index].mineGroups?.removeAll { $0 == group.rawValue }
+            sessions[index].mineGroups?.removeAll { $0 == key }
             if sessions[index].mineGroups?.isEmpty == true { sessions[index].mineGroups = nil }
         }
     }
 
-    /// Records a group's level: Basic and Advanced in `levels`; the user's
-    /// own list as membership of `mineGroups`, with the suggested preset in
+    /// Records a group's level: Basic and Advanced in `levels`; a saved
+    /// preset as its key in `mineGroups`, with the suggested preset in
     /// `levels` for builds that don't know it.
     private func setLevel(_ level: PresetLevel, for group: MuscleGroup, in session: inout WorkoutSession) {
         var mine = session.mineGroups ?? []
-        mine.removeAll { $0 == group.rawValue }
-        if level == .mine {
-            mine.append(group.rawValue)
-            session.levels[group.rawValue] = suggestedLevel == .mine ? .basic : suggestedLevel
+        let keys = Self.presetKeys(group)
+        mine.removeAll { keys.contains($0) }
+        if level.isSaved {
+            mine.append(Self.presetKey(group, level))
+            session.levels[group.rawValue] = suggestedLevel.isSaved ? .basic : suggestedLevel
         } else {
             session.levels[group.rawValue] = level
         }
@@ -530,7 +561,7 @@ final class WorkoutStore {
         var rest: RestSetting?
         var profile: UserProfile?
         var saved: [String]?
-        /// Nil in files saved before the user's own lists existed.
+        /// Nil in files saved before the user's own presets existed.
         var customPresets: [String: [PresetItem]]?
         var sessions: [WorkoutSession]
     }
@@ -542,8 +573,13 @@ final class WorkoutStore {
     }
 
     private func load() {
-        guard let data = try? Data(contentsOf: fileURL),
-              let snapshot = try? JSONDecoder.workouts.decode(Snapshot.self, from: data) else { return }
+        guard let data = try? Data(contentsOf: fileURL) else { return }
+        guard let snapshot = try? JSONDecoder.workouts.decode(Snapshot.self, from: data) else {
+            // Set the history aside rather than let the next save write an
+            // empty one over it.
+            moveAsideUnreadableFile()
+            return
+        }
         isLoading = true
         sessions = snapshot.sessions.sorted { $0.day < $1.day }
         experience = snapshot.experience
@@ -553,6 +589,19 @@ final class WorkoutStore {
         saved = Set(snapshot.saved ?? [])
         customPresets = snapshot.customPresets ?? [:]
         isLoading = false
+    }
+
+    /// Renames a file that no longer decodes to workouts.corrupt-<unix
+    /// time>.json beside it, so the history can still be recovered.
+    private func moveAsideUnreadableFile() {
+        let stamp = Int(Date().timeIntervalSince1970)
+        let name = "\(fileURL.deletingPathExtension().lastPathComponent).corrupt-\(stamp).\(fileURL.pathExtension)"
+        let destination = fileURL.deletingLastPathComponent().appendingPathComponent(name)
+        do {
+            try FileManager.default.moveItem(at: fileURL, to: destination)
+        } catch {
+            assertionFailure("Couldn't set aside unreadable workouts: \(error)")
+        }
     }
 
     private func save() {

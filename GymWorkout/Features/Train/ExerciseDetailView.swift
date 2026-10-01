@@ -44,6 +44,10 @@ struct ExerciseDetailView: View {
                         .padding(.bottom, 32)
                     }
                     .scrollDismissesKeyboard(.interactively)
+                    // The rest bar slides in under the sets when one is marked
+                    // done; keep what was at the bottom (Complete Exercise) in
+                    // view instead of letting the bar cover it.
+                    .defaultScrollAnchor(.bottom, for: .sizeChanges)
                 }
             } else {
                 VStack(spacing: 14) {

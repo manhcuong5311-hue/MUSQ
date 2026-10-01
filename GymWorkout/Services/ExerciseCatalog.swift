@@ -42,7 +42,7 @@ enum ExerciseCatalog {
     }
 
     static func partContributions(forExerciseNamed name: String) -> [MusclePartContribution] {
-        exercise(named: name).map(partContributions(for:)) ?? []
+        exercise(named: name).map { partContributions(for: $0) } ?? []
     }
 
     /// How an exercise loads each muscle group: its parts rolled up, the
@@ -61,7 +61,7 @@ enum ExerciseCatalog {
     }
 
     static func contributions(forExerciseNamed name: String) -> [ExerciseMuscleContribution] {
-        exercise(named: name).map(contributions(for:)) ?? []
+        exercise(named: name).map { contributions(for: $0) } ?? []
     }
 
     /// The parts a session for `group` mainly works: the group's own parts

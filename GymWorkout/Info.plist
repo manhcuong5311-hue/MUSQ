@@ -4,8 +4,10 @@
 <dict>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-5982140566133654~4611516581</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Your data is used to show ads that are more relevant to you. MUSQ stays free either way.</string>
+	<string>Your data is used to show ads that are more relevant to you. Saying no doesn't change anything else in MUSQ.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

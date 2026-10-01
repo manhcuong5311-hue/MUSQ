@@ -80,7 +80,7 @@ struct RecoveryCalculator {
         let parts = partRecords(from: sessions, now: now)
         var result: [MuscleGroup: MuscleTrainingRecord] = [:]
         for group in MuscleGroup.allCases {
-            let loaded = group.parts.compactMap { parts[$0] }.sorted(by: Self.moreFatigued)
+            let loaded = group.parts.compactMap { parts[$0] }.sorted { Self.moreFatigued($0, $1) }
             guard !loaded.isEmpty else { continue }
             let main = ExerciseCatalog.mainParts(of: group)
             let tired = loaded.filter { $0.isTired && main.contains($0.part) }

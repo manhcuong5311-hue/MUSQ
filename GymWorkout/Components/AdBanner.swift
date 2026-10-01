@@ -2,10 +2,10 @@
 //  AdBanner.swift
 //  GymWorkout
 //
-//  The banner slot on top of the tab bar. Every tab root draws its own bar,
-//  so each one hosts the same `BannerView` from `Ads` rather than loading a
-//  new ad per tab. Takes no space until an ad has loaded, and none at all
-//  once the ads are removed.
+//  The banner slot directly on top of the tab bar, under the rest timer.
+//  Every tab root draws its own bar, so each one hosts the same `BannerView`
+//  from `Ads` rather than loading a new ad per tab. Takes no space until an
+//  ad has loaded, and none at all once the ads are removed.
 //
 
 import GoogleMobileAds
@@ -19,6 +19,9 @@ struct AdBanner: View {
             BannerHost(banner: banner)
                 .frame(height: ads.bannerHeight)
                 .frame(maxWidth: .infinity)
+                // Clear space from the rest timer's buttons above, so a tap
+                // meant for them can't land on the ad.
+                .padding(.top, 6)
                 .background(DS.ink)
         }
     }
