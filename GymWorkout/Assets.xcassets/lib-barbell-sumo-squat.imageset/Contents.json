@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-barbell-sumo-squat.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

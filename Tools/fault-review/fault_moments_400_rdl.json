@@ -1,0 +1,10 @@
+{
+ "Single-Leg Romanian Deadlift": {"back": "bottom", "hinge": "bottom", "square": "bottom", "knee": "bottom", "balance": "bottom"},
+ "Barbell Single-Leg Romanian Deadlift": {"barpath": "bottom", "back": "bottom", "hinge": "bottom", "knee": "bottom", "square": "bottom"},
+ "Dumbbell Single-Leg Romanian Deadlift": {"path": "bottom", "back": "bottom", "hinge": "bottom", "knee": "bottom", "square": "bottom"},
+ "B-Stance Romanian Deadlift": {"back": "bottom", "hinge": "bottom", "path": "bottom", "front": "bottom", "stance": "any"},
+ "Smith Machine Romanian Deadlift": {"back": "bottom", "hinge": "bottom", "range": "bottom", "stance": "bottom", "knee": "bottom"},
+ "Cable Romanian Deadlift": {"hinge": "bottom", "lockout": "lockout", "arms": "bottom", "knee": "bottom", "stance": "bottom"},
+ "Kettlebell Romanian Deadlift": {"back": "bottom", "hinge": "bottom", "tempo": "top", "path": "bottom", "knee": "bottom"},
+ "Dumbbell Deadlift": {"back": "bottom", "lockout": "lockout", "hips": "bottom", "knee": "bottom", "path": "bottom"}
+}

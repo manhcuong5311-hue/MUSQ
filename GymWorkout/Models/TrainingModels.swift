@@ -115,7 +115,7 @@ enum MusclePart: String, CaseIterable, Codable, Identifiable, Hashable {
         else if has("quad", "rectus femoris", "vastus") { self = .quads }
         else if has("adductor") { self = .adductors }
         else if has("abdomin", "oblique", "core", "abs") { self = .abs }
-        else if has("brachioradialis", "forearm", "wrist", "grip") { self = .forearms }
+        else if has("brachioradialis", "forearm", "wrist", "grip", "finger", "digitorum", "pollicis", "carpi") { self = .forearms }
         else if has("biceps", "brachialis") { self = .biceps }
         else if has("triceps") { self = .triceps }
         else if has("gastrocnemius", "soleus", "calf", "calves") { self = .calves }

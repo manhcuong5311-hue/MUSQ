@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-weighted-frog-pump.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

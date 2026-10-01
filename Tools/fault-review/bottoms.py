@@ -2,13 +2,13 @@
 # moment most faults are about. Run with Blender's Python:
 #   python3 bottoms.py "Barbell Bench Press" "Push-Up" ...   -> bottoms.json
 import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
-_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 import json, math, glob, re
 from pxr import Usd, UsdSkel, UsdGeom, Gf
-S = open("/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Models/SampleData.swift").read()
+S = open("/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Models/SampleData.swift").read()
 block = S[S.index("modelByExercise: [String: ExerciseModel] = ["):S.index("static func model(for")]
 res = dict(re.findall(r'"([^"]+)":\s*ExerciseModel\(resource: "([^"]+)"', block))
-M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
+M = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/"
 # Flys hold the elbows nearly fixed, so their bottom is where the hands are
 # furthest apart; everything else bottoms out where the elbow bends most.
 # Extend with a knee rule when lower-body faults are authored.
@@ -65,7 +65,10 @@ AT_LOCKOUT = {("Barbell Overhead Press", "barpath"), ("Barbell Overhead Press", 
               ("Arnold Press", "finish"), ("Dumbbell Shoulder Press", "path"),
               ("Triceps Pushdown", "lockout"), ("Rope Pushdown", "split"), ("Single-Arm Cable Pushdown", "lockout"),
               ("Skull Crusher", "upperarm"), ("Assisted Dip", "lockout"), ("Barbell Curl", "range"),
-              ("Single-Arm Landmine Press", "barpath")}
+              ("Single-Arm Landmine Press", "barpath"), ("Chest Press Machine", "barpath"),
+              ("Iso-Lateral Chest Press", "barpath"), ("Incline Chest Press Machine", "barpath"),
+              ("Decline Chest Press Machine", "barpath"), ("Plate-Loaded Chest Press", "barpath"),
+              ("Wide-Grip Chest Press Machine", "barpath")}
 def ang(a, b, c):
     u = (a - b).GetNormalized(); v = (c - b).GetNormalized()
     return math.degrees(math.acos(max(-1, min(1, Gf.Dot(u, v)))))
@@ -75,7 +78,7 @@ out = {}
 for n in names:
     st = Usd.Stage.Open(glob.glob(M + "*/" + res[n] + ".usdc")[0])
     t0, t1, fps = st.GetStartTimeCode(), st.GetEndTimeCode(), st.GetTimeCodesPerSecond()
-    sk = next(p for p in st.Traverse() if p.GetTypeName() == "Skeleton")
+    sk = next(p for p in sorted(st.Traverse(), key=lambda q: "Anatomy_MasterRig" not in q.GetPath().pathString) if p.GetTypeName() == "Skeleton")
     q = UsdSkel.Cache().GetSkelQuery(UsdSkel.Skeleton(sk))
     J = [str(j).split("/")[-1] for j in q.GetJointOrder()]
     best = None

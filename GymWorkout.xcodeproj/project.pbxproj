@@ -14,9 +14,22 @@
 		0DE6167130565CF100D60C46 /* GymWorkout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymWorkout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0DC01B7030656A8100922DAC /* Exceptions for "GymWorkout" folder in "GymWorkout" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0DE6167030565CF100D60C46 /* GymWorkout */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0DE6167330565CF100D60C46 /* GymWorkout */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0DC01B7030656A8100922DAC /* Exceptions for "GymWorkout" folder in "GymWorkout" target */,
+			);
 			path = GymWorkout;
 			sourceTree = "<group>";
 		};
@@ -265,6 +278,7 @@
 				DEVELOPMENT_TEAM = 553U32259K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GymWorkout/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MUSQ;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -299,6 +313,7 @@
 				DEVELOPMENT_TEAM = 553U32259K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GymWorkout/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MUSQ;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

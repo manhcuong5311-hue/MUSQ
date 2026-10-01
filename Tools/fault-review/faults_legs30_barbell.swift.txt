@@ -1,0 +1,143 @@
+// MARK: PIECES
+
+    // MARK: 30-leg set barbell squat pieces (2026-09-28)
+
+    /// Box squat: relaxing on the box. The brace lets go: the lower back
+    /// rounds (the middle of the spine sinks back ~3.5 cm) and the trunk rocks
+    /// back 18° about the hips, the bar and arms with it — from the model's
+    /// 44° lean on the box to ~26°. Full while seated (knees ~84°).
+    private static let barbellBoxRockedBack = FaultPose(
+        chains: [spine, armsToGrip, bar],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 18),
+                .shift(["spine"], forward: -0.06), .shift(["chest"], forward: -0.02)],
+        strength: .withBend("shin_L")
+    )
+
+    /// Box squat: squatting straight down instead of sitting back. The hips
+    /// and all they carry come ~12 cm forward (level), the trunk 12° more
+    /// upright, and both knees re-seat further forward over the feet: the
+    /// pelvis ends ~21 cm behind the ankles instead of ~33 cm, over the box's
+    /// front edge (~18 cm behind the ankles).
+    private static let barbellBoxKneesForward = FaultPose(
+        chains: [spine, armsToGrip, legs, hips, bar],
+        moves: [.shift(carried, ahead: 0.2),
+                .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 12),
+                .resolve(["shin_*"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// Safety bar squat: the handles held loosely out in front. The hands
+    /// move ~12 cm further ahead and ~5 cm up (level and vertical) and the
+    /// elbows re-seat ~14 cm further forward (at the bottom on the rig), so
+    /// the upper arms lift forward and the arms reach out.
+    private static let barbellHandlesPushedAway = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], ahead: 0.2, rise: 0.08),
+                .resolve(["forearm_*"])]
+    )
+
+    /// Zercher squat: the arms sagging away from the body. The trunk tips 8°
+    /// forward after the load; the upper arms swing 15° forward about the
+    /// shoulders, so the elbows, where the bar sits, move ~10 cm ahead and
+    /// ~2 cm lower (at the bottom on the rig; ~7 cm further from the chest),
+    /// and the forearms open 30° about the elbows (46° -> ~72°), the clasped
+    /// hands dropping ~8 cm and moving ~17 cm ahead. Rigid turns only, so the
+    /// arm lengths hold. No bar line: the hands are clasped, so a line
+    /// between them would not be the bar. Grows with the knees.
+    private static let barbellZercherArmsSagging = FaultPose(
+        chains: [spine, armsToGrip],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -8),
+                .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: 15),
+                .turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: -30)],
+        strength: .withBend("shin_L")
+    )
+
+    /// Overhead squat: the elbows softening. The hands and bar sink ~11 cm
+    /// along the trunk (~10 cm lower at the bottom on the rig) and the
+    /// elbows re-seat, bending the way they already bend slightly (~170° on
+    /// the model): they come ~11 cm forward.
+    private static let barbellOverheadElbowsBent = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], up: -0.18), .resolve(["forearm_*"])]
+    )
+
+    /// Landmine squat: the handle drifting away from the chest. The trunk
+    /// tips 8° forward after the load and the hands move ~18 cm further
+    /// ahead (level): ~24 cm ahead and ~5 cm lower in all at the bottom on
+    /// the rig, the elbows re-seated as the arms open. No bar line: the
+    /// hands share one short handle. Grows with the knees.
+    private static let barbellLandmineHandleAway = FaultPose(
+        chains: [spine, armsToGrip],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -8),
+                .shift(["hand_*", "hand_*.tip"], ahead: 0.3),
+                .resolve(["forearm_*"])],
+        strength: .withBend("shin_L")
+    )
+
+// MARK: TABLE
+
+        // MARK: 30-leg set barbell squats (2026-09-28)
+        // Framed three-quarter from the lifter's front-left: yaw -1.0 (box,
+        // pause, safety bar, Zercher), -0.8 (overhead) and -0.9 (landmine).
+        // Sagittal faults turn to a total of -1.4, near side-on (.seen(-0.4),
+        // -0.6, -0.5); knees caving in turn to a total of -0.2, near face-on
+        // (.seen(0.8), 0.6, 0.7).
+        "Box Squat": [
+            // The bar slid down the back, the chest tipping further.
+            "bar": barSlidLow.seen(-0.4),
+            // The back rounding as the chest leans toward the box.
+            "back": chestDropped(12, withBar: true).seen(-0.4),
+            // Relaxed on the box: the trunk rocks back, the lower back rounds.
+            "tight": barbellBoxRockedBack.seen(-0.4),
+            // Straight down: knees forward, hips on the box's front edge.
+            "sit": barbellBoxKneesForward.seen(-0.4),
+            "knee": kneesIn().seen(0.8)
+        ],
+        "Pause Squat": [
+            "bar": barSlidLow.seen(-0.4),
+            // The chest sinking and the upper back rounding during the hold.
+            "brace": chestDropped(12, withBar: true).seen(-0.4),
+            // "pause" has no ghost: cutting the pause short and bouncing is
+            // a matter of timing, not a position the ghost could draw.
+            // Pausing above parallel: the hips ~13 cm higher.
+            "depth": shallow(0.22, withBar: true).seen(-0.4),
+            "knee": kneesIn().seen(0.8)
+        ],
+        "Safety Bar Squat": [
+            // Handles held loosely out in front, the arms reaching forward.
+            "handles": barbellHandlesPushedAway.seen(-0.4),
+            // The upper back rounding, the chest dropping toward the knees.
+            "torso": chestDropped(12).seen(-0.4),
+            "knee": kneesIn().seen(0.8),
+            "depth": shallow(0.22).seen(-0.4),
+            "feet": heelsUp().seen(-0.4)
+        ],
+        "Zercher Squat": [
+            // The elbows swinging away from the body and the hands dropping,
+            // the chest following.
+            "crook": barbellZercherArmsSagging.seen(-0.4),
+            "back": chestDropped(14).seen(-0.4),
+            "knee": kneesIn().seen(0.8),
+            "depth": shallow(0.22).seen(-0.4),
+            "feet": heelsUp().seen(-0.4)
+        ],
+        "Overhead Squat": [
+            // The arms drifting forward about the shoulders, the bar ~14 cm
+            // ahead of the ankles at the bottom.
+            "bar": armsTurned(.lateral, -14, withBar: true, strength: .withBend("shin_L")).seen(-0.6),
+            // The elbows softening, the bar sinking toward the head.
+            "elbows": barbellOverheadElbowsBent.seen(-0.6),
+            // The chest dropping forward, the bar going with it.
+            "torso": leanedForward(18, withBar: true).seen(-0.6),
+            "knee": kneesIn().seen(0.6),
+            "depth": shallow(0.22, withBar: true).seen(-0.6)
+        ],
+        "Landmine Squat": [
+            // The handle drifting away from the chest, the arms reaching.
+            "handle": barbellLandmineHandleAway.seen(-0.5),
+            // Folding at the hips, the chest dropping toward the handle.
+            "torso": chestDropped(15).seen(-0.5),
+            "depth": shallow(0.22).seen(-0.5),
+            "knee": kneesIn().seen(0.7),
+            "feet": heelsUp().seen(-0.5)
+        ],

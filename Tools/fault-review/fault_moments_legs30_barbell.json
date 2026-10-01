@@ -1,0 +1,8 @@
+{
+  "Box Squat": {"bar": "bottom", "back": "bottom", "tight": "bottom", "sit": "bottom", "knee": "bottom"},
+  "Pause Squat": {"bar": "bottom", "brace": "bottom", "depth": "bottom", "knee": "bottom"},
+  "Safety Bar Squat": {"handles": "any", "torso": "bottom", "knee": "bottom", "depth": "bottom", "feet": "bottom"},
+  "Zercher Squat": {"crook": "bottom", "back": "bottom", "knee": "bottom", "depth": "bottom", "feet": "bottom"},
+  "Overhead Squat": {"bar": "bottom", "elbows": "any", "torso": "bottom", "knee": "bottom", "depth": "bottom"},
+  "Landmine Squat": {"handle": "bottom", "torso": "bottom", "depth": "bottom", "knee": "bottom", "feet": "bottom"}
+}

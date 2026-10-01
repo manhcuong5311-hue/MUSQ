@@ -12,6 +12,7 @@ struct TrainView: View {
     @Binding var tab: AppTab
 
     @Environment(WorkoutStore.self) private var store
+    @Environment(Ads.self) private var ads
     @State private var router = TrainRouter()
     @State private var selectedDay = Calendar.current.startOfDay(for: Date())
     @State private var infoGroup: MuscleGroup?
@@ -229,6 +230,7 @@ struct TrainView: View {
                 } else {
                     WideButton(title: "Complete Workout", prominent: session.hasCompletedSets) {
                         withAnimation(.easeOut(duration: 0.2)) { store.completeWorkout(on: selectedDay) }
+                        ads.moment(.workoutCompleted)
                     }
                     .disabled(!session.hasCompletedSets)
                     .opacity(session.hasCompletedSets ? 1 : 0.5)

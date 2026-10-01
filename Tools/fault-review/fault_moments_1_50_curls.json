@@ -1,0 +1,7 @@
+{
+  "Dumbbell Curl": {"shoulder": "top", "elbow": "top", "grip": "top", "torso": "top", "range": "bottom"},
+  "Incline Dumbbell Curl": {"back": "bottom", "arms": "top", "shoulder": "top", "grip": "top", "range": "bottom"},
+  "Preacher Curl": {"pad": "top", "range": "bottom", "grip": "top", "torso": "top", "seat": "bottom"},
+  "Cable Curl": {"top": "top", "grip": "top", "elbow": "top", "torso": "top", "range": "bottom"},
+  "Bayesian Cable Curl": {"elbow": "top", "range": "bottom", "grip": "top", "shoulder": "top", "torso": "top"}
+}

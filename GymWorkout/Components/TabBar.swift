@@ -46,6 +46,7 @@ struct TabBarView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            AdBanner()
             // Every tab root carries the bar, so the running rest rides on it
             // and stays visible whichever tab is open.
             RestTimerBar()

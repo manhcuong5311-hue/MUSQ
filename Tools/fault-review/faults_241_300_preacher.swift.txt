@@ -1,0 +1,170 @@
+// MARK: PIECES
+    // MARK: Batch 241-300 preacher and machine curl pieces (2026-09-27)
+
+    /// Palm-down or thumb-up curls: the wrist giving way under the weight,
+    /// the hand tipping down toward the floor — into flexion with the palm
+    /// down (Reverse Preacher Curl), toward the little finger with the thumb
+    /// up (Preacher Hammer Curl). With the palm facing down or in, a
+    /// negative turn about `.lateral` tips the hand down, the other way from
+    /// `curlWristsCurled`. On a preacher pad the weight sits furthest out in
+    /// front of the wrist near the bottom, so all of it shows from the
+    /// bottom until the elbow is at ~125° (shoulder to wrist 0.8 torso
+    /// lengths, read on the left arm or `side`) and none of it by 90°
+    /// (0.64). On the rig the hand ends 45° below the forearm's line at the
+    /// bottom and is back in line at the top.
+    private static func curlWristsGivingWay(_ side: String = "*", withBar: Bool = false,
+                                            degrees: Float = 45) -> FaultPose {
+        let s = side == "*" ? "L" : side
+        return FaultPose(chains: [["forearm_\(side)", "hand_\(side)", "hand_\(side).tip"]] + (withBar ? [bar] : []),
+                         moves: [.turn(pivot: "hand_\(side)", points: ["hand_\(side).tip"], axis: .lateral, degrees: -degrees)],
+                         strength: .between("upper_arm_\(s)", "hand_\(s)", from: 0.64, to: 0.8))
+    }
+
+    /// Curls stopped short of the top: the forearms held 40° lower than the
+    /// lifter's as the curl finishes, a negative turn about `.lateral`
+    /// unfolding the elbows (on the Cable Preacher Curl rig the ghost elbows
+    /// sit at ~95-102° while the real ones close from 90° to 63°). Shown only
+    /// over the last part of the lift: `from`…`to` is shoulder-to-wrist in
+    /// torso lengths on the left arm (or `side`), 0.64 with the elbow at 90°
+    /// and 0.48 at the preacher models' top (63°), so pass `from: 0.64, to:
+    /// 0.5`. Drawn to the wrists only, like `curlArmsOffPad`: at the top the
+    /// hand tips would reach up into the top-row label.
+    private static func curlStoppedShortOfTop(_ side: String = "*", from: Float, to: Float) -> FaultPose {
+        let s = side == "*" ? "L" : side
+        return FaultPose(chains: [["upper_arm_\(side)", "forearm_\(side)", "hand_\(side)"]],
+                         moves: [.turn(pivot: "forearm_\(side)", points: ["hand_\(side)"], axis: .lateral, degrees: -40)],
+                         strength: .between("upper_arm_\(s)", "hand_\(s)", from: from, to: to))
+    }
+
+    /// Seated curls on a preacher pad or curl machine: the trunk rocking back
+    /// from the hips as the weight comes up, the arms carried off the pad.
+    /// `curlSeatedSwungBack` turns the whole `trunk`, both arms and hand tips
+    /// included, while it draws only the spine and `side`'s arm to the wrist,
+    /// so the ghost left dashed guides from the resting arm and the hand tips
+    /// to points with no line; this one moves only what it draws. Both models
+    /// sit 12° forward, so 22° ends ~10° behind vertical.
+    private static func preacherRockedBack(_ degrees: Float, side: String = "*") -> FaultPose {
+        let drawn = ["upper_arm_\(side)", "forearm_\(side)", "hand_\(side)"]
+        return FaultPose(chains: [spine, drawn],
+                         moves: [.turn(pivot: "pelvis", points: torso + drawn, axis: .lateral, degrees: degrees)],
+                         strength: .withBend(elbow(side)))
+    }
+
+    /// One-arm curl machine (the left arm works), seat too low:
+    /// `curlMachineSatLow` with only the working arm drawn, to the wrist.
+    /// The body and shoulders sit 0.1 torso lengths lower while the hand
+    /// stays on the handle, so the elbow drops below the lever's pivot (and
+    /// into the arm pad, which the ghost ignores; on the rig ~8 cm below and
+    /// ~4 cm behind the hub at the bottom, ~5 cm inside the pad, ~2 cm below
+    /// and ~5 cm in front of it at the top). The direction follows the
+    /// Machine Biceps Curl's piece; no source states it. The free arm rests
+    /// on the pad and is left out, and its shoulder does not move, so no
+    /// dashed guide starts there. The toes never move, so the legs are drawn
+    /// to the ankles only (the near foot sits behind the machine's front
+    /// base rail, where a toe line was drawn on the rail).
+    private static let leftCurlMachineSatLow = FaultPose(
+        chains: [spine, leftArm, ["thigh_*", "shin_*", "foot_*"], hips],
+        moves: [.shift(["pelvis", "thigh_*", "upper_arm_L"] + torso, rise: -0.1), .resolve(["forearm_L", "shin_*"])]
+    )
+
+    /// `preacherSatLow` with the sink set by `drop` (torso lengths), for a
+    /// lifter framed small: on the Barbell Preacher Curl (zoom 0.602) the
+    /// shared 0.2 sink left the shoulders' V only ~9 pt deep; 0.28 about
+    /// doubles it (the trunk moves ~58 px instead of ~42 px at 764 wide).
+    /// The arms stay hooked over the pad and the knees re-seat, as there.
+    private static func preacherSatLower(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, ["thigh_*", "shin_*", "foot_*"], hips],
+                  moves: [.shift(["pelvis", "thigh_*"] + torso, rise: -drop), .resolve(["shin_*"])])
+    }
+
+// MARK: TABLE
+        // MARK: Batch 241-300 preacher and machine curls (2026-09-27)
+        // Seated, framed at yaw -1.0 like the Machine Biceps Curl; -0.5 turns
+        // to a true left side view, where the elbow lines up with the lever's
+        // side pivot. Only the LEFT arm curls; the right rests on the pad.
+        "Single-Arm Machine Curl": [
+            // The upper arm lifting off the pad at the top.
+            "pad": curlArmsOffPad(25, side: "L").seen(-0.5),
+            // Half reps: 0.897 torso lengths shoulder-to-wrist at the model's
+            // bottom (162°), 0.78 at 120°. A 30° fold (the ghost elbow ~132°,
+            // the forearm about level), not curlBottomCut's 45°: from the side
+            // a 45° fold lays the ghost forearm over the resting right one.
+            "range": elbowsFolded(.lateral, 30, side: "L",
+                                  strength: .between("upper_arm_L", "hand_L", from: 0.8, to: 0.885)).seen(-0.5),
+            "grip": curlWristsCurled("L").seen(-0.5),
+            // Rocking back past upright, the working arm carried off the pad.
+            "torso": preacherRockedBack(22, side: "L").seen(-0.5),
+            // Seat too low: the elbow under the pivot; read at the bottom.
+            "pivot": leftCurlMachineSatLow.seen(-0.5)
+        ],
+        // Seated on a preacher bench facing a low pulley, framed from the
+        // front-right at yaw +1.1; +0.4 turns to a true right side view (the
+        // near arm is the right one). Both arms curl.
+        "Cable Preacher Curl": [
+            "pad": curlArmsOffPad(25).seen(0.4),
+            // Half reps at the bottom: 0.899 torso lengths at 164°.
+            "range": curlBottomCut(from: 0.8, to: 0.885).seen(0.4),
+            // Reps stopped halfway up, where the cable still pulls hard.
+            "top": curlStoppedShortOfTop(from: 0.64, to: 0.5).seen(0.4),
+            // The near (right) hand only: from the side the two arms line up
+            // and a second folded hand and the bar cross the near forearm.
+            "grip": curlWristsCurled("R").seen(0.4),
+            "torso": preacherRockedBack(22).seen(0.4)
+        ],
+        // The Dumbbell Preacher Curl's body on a preacher bench, yaw -1.1;
+        // -0.4 turns to a true left side view. Only the LEFT arm curls, with
+        // the palm facing in.
+        "Preacher Hammer Curl": [
+            "pad": curlArmsOffPad(25, side: "L").seen(-0.4),
+            "range": curlBottomCut("L", from: 0.8, to: 0.885).seen(-0.4),
+            // The thumb-up wrist giving way toward the little finger near the
+            // bottom.
+            "grip": curlWristsGivingWay("L").seen(-0.4),
+            "torso": preacherRockedBack(22, side: "L").seen(-0.4),
+            // Seat too low, as for the Dumbbell Preacher Curl.
+            "seat": preacherSatLow.seen(0.5)
+        ],
+        // Same bench, an EZ bar overhand; framed at yaw -0.8, zoom 1.0. Pad
+        // and wrist keep the framing's own view: turned further left the
+        // near plate covers the head at the top and the two lifted upper arms
+        // fall on one line (they separate from -0.9 on). Range and torso turn
+        // -0.4 (total -1.2): the two short forearms stay apart at the bottom,
+        // and the leaning ghost's spine, neck and head clear the near plate
+        // (which covers the real head at the top; from -0.8 the ghost's head
+        // and near arm were drawn on the plate). Seat +0.5 (total -0.3) keeps
+        // both plates off the trunk (at -0.6 the near plate covers the ghost
+        // spine).
+        "Reverse Preacher Curl": [
+            "pad": curlArmsOffPad(25),
+            "range": curlBottomCut(from: 0.8, to: 0.885).seen(-0.4),
+            // Palm-down wrists dropping into flexion near the bottom; from
+            // -0.8 both hands show between the plates and the two dropped
+            // hands separate (from the side both sit behind the near plate).
+            "wrist": curlWristsGivingWay(withBar: true),
+            // The far (right) arm only: from -1.2 the two lifted upper arms
+            // fall on one line that crosses the spine (as the pad did).
+            "torso": preacherRockedBack(22, side: "R").seen(-0.4),
+            "seat": preacherSatLow.seen(0.5)
+        ],
+        // Same bench, an Olympic bar underhand; framed at yaw -0.8, zoom
+        // 0.602. The top-of-rep faults keep the framing's own view: turned
+        // further left (-0.9 and beyond) the near plate reaches the left
+        // shoulder, where the lifted arms start, and the leaning ghost's head.
+        // Range turns -0.4 (total -1.2) so the two arms stay apart at the
+        // bottom (from -0.8 the near upper arm crosses the far forearm); seat
+        // +0.5 (total -0.3) keeps both plates off the trunk. The lifter is
+        // drawn small here, so the arms lift 35°, the wrists fold 65° (as
+        // the Dumbbell Spider Curl) and the seat sinks 0.28 to read at a
+        // glance.
+        "Barbell Preacher Curl": [
+            "pad": curlArmsOffPad(35),
+            "range": curlBottomCut(from: 0.8, to: 0.885).seen(-0.4),
+            // No bar line: drawn tip to tip it ran along the real bar, just
+            // below it, and with the two folded hands read as a lowered bar
+            // rather than two bent wrists.
+            "grip": curlWristsCurled(degrees: 65),
+            // The far (right) arm only: from -0.8 the near arm's forearm lies
+            // along the ghost's neck and its upper arm crosses the spine.
+            "torso": preacherRockedBack(22, side: "R"),
+            "seat": preacherSatLower(0.28).seen(0.5)
+        ],

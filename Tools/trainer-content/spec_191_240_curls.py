@@ -59,7 +59,7 @@
 #   lowering phase); the biceps is a strong supinator as well as a flexor.
 # - Coratella G, Tornatore G, Longo S, Toninelli N, Padovan R, Esposito F,
 #   Cè E 2023, Sports 11(3):64 (doi 10.3390/sports11030064) — ten
-#   bodybuilders, barbell curls at 8RM: in the lifting phase biceps
+#   bodybuilders, standing cable curls at each grip's 8RM: in the lifting phase biceps
 #   excitation greater with a supinated grip than neutral (+12%) or pronated
 #   (+19%); the brachioradialis also highest supinated (+6% vs neutral, +5%
 #   vs pronated); anterior deltoid higher with neutral and pronated grips.

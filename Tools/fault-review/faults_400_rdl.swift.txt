@@ -1,0 +1,290 @@
+// MARK: PIECES
+
+    // MARK: 351-400 folder, Romanian deadlift pieces (2026-10-01)
+
+    /// Single-leg and B-stance RDLs: how far the standing (left) hip has
+    /// hinged. None standing tall (hip 171-172°), all of it from 90° down
+    /// (the bottom is 79° on the single-leg lifts, 93° on the B-stance), so
+    /// the faults of the bottom fade out as the lifter stands.
+    private static let rdl4Hinged = FaultStrength.withBend("thigh_L")
+
+    /// Single-leg RDLs (the left leg stands, the right reaches back): the free
+    /// leg's knee, ankle and toes.
+    private static let rdl4FreeLeg = ["shin_R", "foot_R", "foot_R.tip"]
+
+    /// Every RDL and the Dumbbell Deadlift: the back rounding at the bottom.
+    /// The Pendlay Row's deeper `backRounded`: the lower and middle back hump
+    /// 0.10 torso lengths (~6 cm) toward the ceiling, and the neck and head
+    /// drop toward the floor and draw in along the spine, so the rounding
+    /// shows as an arch over the real back. On the simulator stills the
+    /// shared piece's ~3-4 cm hump lay along the model's back as a flat line,
+    /// only the head dropping, side-on and from the three-quarter views alike.
+    private static func rdl4BackRounded(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.shift(["spine"], forward: -0.10),
+                          .shift(["chest"], forward: -0.10, up: -0.02),
+                          .shift(["neck"], forward: 0.04, up: -0.04),
+                          .shift(["head"], forward: 0.13, up: -0.07)],
+                  strength: strength)
+    }
+
+    /// Single-leg RDLs: reaching for the floor while the hips stay over the
+    /// foot and the free leg hangs. The Stiff-Leg Deadlift's toe-touch (the
+    /// hips and free leg 0.12 torso lengths, ~7 cm, forward over the
+    /// standing foot, the standing knee re-seated, the waist folding and the
+    /// head dropping), then the free leg swings 35° down about its hip, from
+    /// ~18° below level at the bottom to ~53°, its ankle ~42 cm lower and
+    /// the toes just at the floor (45° put them ~7 cm through it).
+    private static let rdl4ReachedDown = FaultPose(
+        chains: [spine, leg("L"), leg("R"), hips],
+        moves: [.shift(["pelvis", "thigh_*"] + rdl4FreeLeg, ahead: 0.12),
+                .shift(["spine"], ahead: 0.06, rise: 0.02),
+                .resolve(["shin_L"]),
+                .shift(["chest"], forward: -0.05), .shift(["neck"], forward: 0.05), .shift(["head"], forward: 0.12),
+                .turn(pivot: "thigh_R", points: rdl4FreeLeg, axis: .lateral, degrees: 35)],
+        strength: rdl4Hinged
+    )
+
+    /// Single-leg RDLs: the standing knee bending further as the chest lowers.
+    /// `hingeKneesBending` for one leg: the hips, trunk, arms, load and the
+    /// free leg sink 0.13 torso lengths (~7 cm) and come 0.04 forward, the
+    /// standing knee re-seated over the planted foot (160° to ~125° at the
+    /// bottom). The free foot moves with the hips instead of being re-seated,
+    /// since it is in the air.
+    private static func rdl4StandingKneeSinks(withBar: Bool) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, leg("L"), leg("R"), hips] + (withBar ? [bar] : []),
+                  moves: [.shift(carried + rdl4FreeLeg, ahead: 0.04, rise: -0.13), .resolve(["shin_L"])],
+                  strength: rdl4Hinged)
+    }
+
+    /// Single-leg RDLs: the free (right) hip rolling open toward the ceiling.
+    /// The pelvis and free leg turn 25° about the standing hip around the
+    /// trunk's long axis, lifting the free hip ~7 cm, and the free leg swings
+    /// 20° out to the side (the free foot ~25 cm out, toes turned out). With
+    /// a load in each hand (`withArm`), the whole right arm, shoulder to
+    /// palm, rises 0.1 torso lengths (~6 cm) with the opening side, so that
+    /// side's dumbbell rides higher or, with `withBar`, the bar tips; moving
+    /// the shoulder too keeps every arm bone its length. The trunk is left
+    /// alone: turned with the pelvis, the hanging arms swung out sideways
+    /// instead of hanging. The opening is across the line of sight side-on,
+    /// so it is seen from behind on the left (turned -1.3, a total of -2.6),
+    /// where the ghost's free foot moves about twice as far on screen as at
+    /// -0.8 or unturned.
+    private static func rdl4HipOpened(withArm: Bool = false, withBar: Bool = false) -> FaultPose {
+        let arm = ["upper_arm_R", "forearm_R", "hand_R", "hand_R.tip"]
+        let hand: [FaultMove] = withArm ? [.shift(arm, forward: -0.1)] : []
+        return FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("R")]
+                                 + (withArm ? [arm] : []) + (withBar ? [bar] : []),
+                         moves: [.turn(pivot: "thigh_L", points: ["pelvis", "thigh_R"] + rdl4FreeLeg, axis: .up, degrees: 25),
+                                 .turn(pivot: "thigh_R", points: rdl4FreeLeg, axis: .forward, degrees: 20)] + hand,
+                         strength: rdl4Hinged)
+    }
+
+    /// Single-leg RDL: rocking onto the toes of the standing foot. The left
+    /// heel lifts (the foot turns 22° about the toes) with the knee re-seated,
+    /// and the arms drift 12° forward as the weight goes over the toes.
+    private static let rdl4StandingHeelUp = FaultPose(
+        chains: [leg("L"), armsToGrip],
+        moves: [.turn(pivot: "foot_L.tip", points: ["foot_L"], axis: .lateral, degrees: -22),
+                .resolve(["shin_L"]),
+                .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: 12)],
+        strength: rdl4Hinged
+    )
+
+    /// B-stance RDL (the left foot works, the right is the kickstand): the
+    /// back heel dropping and the hips drifting back onto it, so both feet
+    /// share the load. The right foot turns 30° about its toes (pitch ~56° to
+    /// ~26°, flat, the ankle ~9 cm lower), the hips, trunk and arms go 0.06
+    /// torso lengths (~3.5 cm) back and 0.04 (~2.4 cm) down, and both knees
+    /// re-seat: the back knee opens (113° to ~131° at the bottom, the leg
+    /// pushing) while the front knee stays soft (162° to ~154°). Moved back
+    /// only, the hips went out of the front leg's reach and snapped its knee
+    /// straight, which read as the locked-knee fault instead.
+    private static let rdl4KickstandLoaded = FaultPose(
+        chains: [legs, hips, spine],
+        moves: [.turn(pivot: "foot_R.tip", points: ["foot_R"], axis: .lateral, degrees: 30),
+                .shift(carried, ahead: -0.06, rise: -0.04), .resolve(["shin_*"])]
+    )
+
+    /// B-stance RDL: the back foot stepped far back like a lunge. The right
+    /// ankle and toes go 0.35 torso lengths (~20 cm) further back, the toes
+    /// ~34 cm behind the front heel instead of level with it, the back knee
+    /// re-seated (straight where the foot is out of reach at the top).
+    private static let rdl4KickstandFarBack = FaultPose(
+        chains: [leg("R"), hips],
+        moves: [.shift(["foot_R", "foot_R.tip"], ahead: -0.35), .resolve(["shin_R"])]
+    )
+
+    /// Two-leg RDLs: the knees locked straight as the hips go back, drawn at
+    /// the bottom (the models' knees 150-154° there), none standing tall.
+    private static let rdl4KneesLocked = FaultPose(
+        chains: [legs], moves: [.straighten(["shin_*"])], strength: .withBend("thigh_L")
+    )
+
+    /// Smith RDL: chasing the floor once the stretch runs out. The Romanian
+    /// Deadlift's range fault: the hips and all they carry sink 0.1 torso
+    /// lengths (~6 cm), the knees re-seat, and the back rounds, the head
+    /// dropping. The bar sinks with the hands, straight down its track.
+    private static func rdl4ChasedFloor(withBar: Bool) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, legs, hips] + (withBar ? [bar] : []),
+                  moves: [.shift(carried, rise: -0.1), .resolve(["shin_*"]),
+                          .shift(["spine"], forward: -0.07), .shift(["chest"], forward: -0.05),
+                          .shift(["neck"], forward: 0.05), .shift(["head"], forward: 0.12)],
+                  strength: .withBend("thigh_L"))
+    }
+
+    /// Cable RDL: the cable dragging the arms out toward the low pulley, the
+    /// shoulders rounding forward with them. The shoulders, elbows and hands
+    /// go 0.08 torso lengths (~5 cm) out of the chest and the arms swing 28°
+    /// further forward about the shoulders, the bar ~30 cm nearer the
+    /// machine at the bottom; none standing tall. At the bottom the model's
+    /// arms hang about 5° forward of vertical and the ghost's ~31°, past the
+    /// ~28° the cable already draws them to at the top, so the ghost never
+    /// looks like the model's own top.
+    private static let rdl4ArmsDragged = FaultPose(
+        chains: [shoulders, armsToGrip, bar],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], forward: 0.08),
+                .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: 28)],
+        strength: .withBend("thigh_L")
+    )
+
+    /// Cable RDL: standing too close to the low pulley. The whole lifter,
+    /// feet and bar included, drawn 0.6 torso lengths (~34 cm) nearer the
+    /// machine in the same pose, about half the model's ~0.9 m from the
+    /// pulley, where the stack comes down onto its rest at the bottom.
+    private static let rdl4CloserToPulley = FaultPose(
+        chains: [spine, armsToGrip, legs, hips, bar],
+        moves: [.shift(carried + ["shin_*", "foot_*", "foot_*.tip"], ahead: 0.6)]
+    )
+
+    /// Smith RDL: standing too far back from the bar, which the rails hold in
+    /// place. The body, feet and shoulders stand 0.15 torso lengths (~9 cm)
+    /// further back while the hands stay on the bar and the elbows re-seat,
+    /// so at the bottom the bar sits over the ghost's toe tips instead of
+    /// mid-foot and the arms reach forward to it (the Smith Machine Upright
+    /// Row's stance fault; `barDrifting` would move the bar off its track).
+    /// It grows as the hips hinge, so the arms are never stretched to reach
+    /// the bar at the top.
+    private static let rdl4StoodBackFromBar = FaultPose(
+        chains: [spine, legs, hips, armsToGrip, bar],
+        moves: [.shift(["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip", "upper_arm_*"] + torso, ahead: -0.15),
+                .resolve(["forearm_*"])],
+        strength: .withBend("thigh_L")
+    )
+
+    /// Dumbbell Deadlift: the hips shooting up out of the bottom while the
+    /// chest stays low. The pelvis, hips and lower trunk turn 25° up about
+    /// the neck, so the head and hands stay where they are while the hips
+    /// rise ~24 cm and go ~10 cm back, the trunk tips from ~56° to ~81°, and
+    /// the knees re-seat, opening from ~65° to ~114°. The shared
+    /// `hipsShotUp` straightens the knees onto the hip-ankle line, which at
+    /// this model's deep 65° knees shrank both leg bones by about 40%.
+    private static let rdl4HipsShotUp = FaultPose(
+        chains: [spine, legs, hips],
+        moves: [.turn(pivot: "neck", points: ["pelvis", "thigh_*", "spine", "chest"], axis: .lateral, degrees: -25),
+                .resolve(["shin_*"])],
+        strength: .withBend("shin_L")
+    )
+
+// MARK: TABLE
+
+        // MARK: 351-400 folder, Romanian deadlifts (2026-10-01)
+        // The three single-leg RDLs and the B-stance stand on the LEFT leg
+        // (the right leg reaches back, or is the B-stance's kickstand), framed
+        // side-on from the left at yaw -1.3: sagittal faults need no turn;
+        // the free hip opening is across the line of sight, so it turns -1.3
+        // (a total of -2.6, from behind on the left; at -0.8 the free foot's
+        // sideways swing and its change in depth cancelled on screen). The
+        // Smith and cable RDLs are framed at -1.0 and turn -0.2 (total -1.2), the
+        // kettlebell RDL and Dumbbell Deadlift at -0.8 and turn -0.4 (total
+        // -1.2, as the Dumbbell Romanian Deadlift's faults); the Dumbbell
+        // Deadlift's knees caving turn 0.6 (total -0.2, near face-on); the
+        // B-stance's loaded kickstand turns -0.5 (total -1.8). Every back
+        // ghost is `rdl4BackRounded`, the Pendlay Row's deeper rounding.
+        "Single-Leg Romanian Deadlift": [
+            "back": rdl4BackRounded(rdl4Hinged),
+            // Hips over the foot, waist folding, the free leg hanging.
+            "hinge": rdl4ReachedDown,
+            // The free hip rolling open, the free leg swinging out.
+            "square": rdl4HipOpened().seen(-1.3),
+            "knee": rdl4StandingKneeSinks(withBar: false),
+            // Rocking onto the toes, the standing heel up.
+            "balance": rdl4StandingHeelUp
+        ],
+        "Barbell Single-Leg Romanian Deadlift": [
+            // The bar swinging out in front of the standing leg.
+            "barpath": armsSwungForward(22, withBar: true, strength: rdl4Hinged),
+            "back": rdl4BackRounded(rdl4Hinged),
+            "hinge": rdl4ReachedDown,
+            "knee": rdl4StandingKneeSinks(withBar: true),
+            // The free hip opening, the bar tipping with it.
+            "square": rdl4HipOpened(withArm: true, withBar: true).seen(-1.3)
+        ],
+        "Dumbbell Single-Leg Romanian Deadlift": [
+            // The dumbbells drifting forward toward the toes.
+            "path": armsSwungForward(22, strength: rdl4Hinged),
+            "back": rdl4BackRounded(rdl4Hinged),
+            "hinge": rdl4ReachedDown,
+            "knee": rdl4StandingKneeSinks(withBar: false),
+            // The free hip opening, that side's dumbbell riding higher.
+            "square": rdl4HipOpened(withArm: true).seen(-1.3)
+        ],
+        "B-Stance Romanian Deadlift": [
+            "back": rdl4BackRounded(rdl4Hinged),
+            // Both knees bending, the hips sinking: a split squat.
+            "hinge": hingeSquatted(withBar: false),
+            "path": armsSwungForward(22, strength: rdl4Hinged),
+            // The back heel down, the weight spread over both feet. Turned
+            // -0.5 (total -1.8, just behind side-on): at -1.3, ~16° in front
+            // of side-on, the kickstand's 29 cm to the side cancelled most of
+            // its 20 cm back on screen, and the ghost's back leg lay over the
+            // front one; from just behind they sit over twice as far apart.
+            "front": rdl4KickstandLoaded.seen(-0.5),
+            // The back foot stepped far back like a lunge.
+            "stance": rdl4KickstandFarBack
+        ],
+        "Smith Machine Romanian Deadlift": [
+            "back": rdl4BackRounded(.withBend("thigh_L")).seen(-0.2),
+            // Knees bending, hips sinking under the bar, which slides
+            // straight down its track (hingeSquatted swung the bar ~20 cm
+            // off the rails).
+            "hinge": hingeKneesBending(withBar: true).seen(-0.2),
+            // Rounding and sinking once the stretch runs out.
+            "range": rdl4ChasedFloor(withBar: true).seen(-0.2),
+            // Standing too far back: the lifter back, the bar on its track
+            // out over the toes, the arms reaching forward to it.
+            "stance": rdl4StoodBackFromBar.seen(-0.2),
+            "knee": rdl4KneesLocked.seen(-0.2)
+        ],
+        "Cable Romanian Deadlift": [
+            "hinge": hingeSquatted(withBar: true).seen(-0.2),
+            // Leaning back against the cable at the top.
+            "lockout": leanedBackAtLockout(withBar: true).seen(-0.2),
+            "arms": rdl4ArmsDragged.seen(-0.2),
+            "knee": rdl4KneesLocked.seen(-0.2),
+            // Standing too close to the pulley.
+            "stance": rdl4CloserToPulley.seen(-0.2)
+        ],
+        "Kettlebell Romanian Deadlift": [
+            "back": rdl4BackRounded(.withBend("thigh_L")).seen(-0.4),
+            // Knees bending, hips sinking, the chest rising: a squat. The
+            // arms turn with the trunk, so the bell comes forward and up.
+            "hinge": hingeSquatted(withBar: true).seen(-0.4),
+            // Snapping the hips so the bell swings out in front at the top,
+            // a kettlebell swing. The hip reads only ~0.62 straight at this
+            // model's top, so ~37° of the 60° shows: the hands rise ~25 cm
+            // and the bell swings out to about waist height.
+            "tempo": armsSwungForward(60, withBar: true, strength: .whenStraight("thigh_L")).seen(-0.4),
+            // The bell swinging out away from the shins.
+            "path": armsSwungForward(22, withBar: true, strength: .withBend("thigh_L")).seen(-0.4),
+            "knee": rdl4KneesLocked.seen(-0.4)
+        ],
+        "Dumbbell Deadlift": [
+            "back": rdl4BackRounded(.withBend("shin_L")).seen(-0.4),
+            "lockout": leanedBackAtLockout(withBar: false).seen(-0.4),
+            // The hips shooting up first while the chest stays low.
+            "hips": rdl4HipsShotUp.seen(-0.4),
+            "knee": kneesIn().seen(0.6),
+            // The dumbbells drifting forward in front of the knees.
+            "path": armsSwungForward(22, strength: .withBend("shin_L")).seen(-0.4)
+        ],

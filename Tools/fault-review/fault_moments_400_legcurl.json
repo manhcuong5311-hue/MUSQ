@@ -1,0 +1,8 @@
+{
+  "Standing Leg Curl": {"chest": "top", "range": "top", "pivot": "top", "stance": "top"},
+  "Kneeling Leg Curl": {"lean": "top", "hips": "top", "range": "top", "pivot": "top"},
+  "Cable Standing Leg Curl": {"range": "bottom", "trunk": "top", "hips": "bottom", "thigh": "top"},
+  "Swiss Ball Leg Curl": {"ribs": "top", "hips": "bottom", "arms": "top"},
+  "Sliding Leg Curl": {"hips": "top", "knees": "bottom", "ribs": "top", "arms": "top"},
+  "Single-Leg Sliding Curl": {"free": "top", "hips": "top", "arms": "top", "range": "bottom"}
+}

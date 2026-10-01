@@ -2,7 +2,7 @@ import sys, json
 sys.path.insert(0, sys.argv[1])
 from framer import gather, solve
 import numpy as np
-M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
+M = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/"
 HELD = ("Barbell", "Dumbbell", "Lat_Bar", "Handle", "TGrip", "TBar_Plate", "LandmineBar", "Rope")
 for spec in sys.argv[2:]:
     res, yaws = spec.split("=")

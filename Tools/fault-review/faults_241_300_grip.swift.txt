@@ -1,0 +1,188 @@
+// MARK: PIECES
+
+    // MARK: Batch 241-300 grip hold pieces (2026-09-27)
+
+    /// Grip holds: the wrists curling toward the palms as the grip tires,
+    /// which leaves the finger flexors short and weak. A negative `degrees`
+    /// folds each hand toward its palm: about `.forward` for hands hanging
+    /// palms-in at the sides (dumbbells), which tip in toward the thighs;
+    /// about `.lateral` for a bar held palms-back in front, where the grip
+    /// swings back toward the thighs, and for fists gripping towels overhead
+    /// palms-forward, which tip forward. Only the forearms and hands are
+    /// drawn: a bar drawn between the tips moves back along its own length
+    /// in the barbell's -0.8 view, so it reads as the bar sliding sideways.
+    /// Not for the Plate Pinch Hold: its plates rest on the outer thighs, and
+    /// turning them about `.forward` would swing their lower edges about
+    /// 20 cm into the legs.
+    private static func holdWristsCurled(_ axis: BodyAxis, _ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"]],
+                  moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: axis, degrees: degrees)])
+    }
+
+    /// Standing holds: the load dragging the shoulders forward and down and
+    /// rounding the upper back, the arms and grip hanging from them — the
+    /// Farmer's Carry slump, drawn to the grip so a bar rides along.
+    private static func holdSlumped(withBar: Bool = false) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], forward: 0.13, up: -0.06, outward: -0.03),
+                          .shift(["chest"], forward: -0.07),
+                          .shift(["neck", "head"], forward: 0.09, up: -0.03)])
+    }
+
+    /// Standing holds, leaning forward over the load: the trunk tips forward
+    /// from the hips (`leanedForward`'s turn) while the arms keep hanging
+    /// straight down from the shoulders, so the load comes forward under
+    /// them. `leanedForward` turns the arms with the trunk: on the Plate Pinch
+    /// and Dumbbell Static Hold models 10° took the shoulders 9.1 cm forward
+    /// and the grip 2 cm back, the arms 10° behind vertical. Here the grip
+    /// goes 9.1 cm forward with the shoulders and the arms keep their angle
+    /// (the same counter-turn as `barRestedOnThighs`).
+    private static func holdLeanedForward(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -degrees),
+                          .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: degrees)])
+    }
+
+    /// A barbell held in front: the hips pushed 6 cm forward and the trunk
+    /// leaning back (~14° behind vertical) so the bar rests on the thighs.
+    /// The arms keep hanging as they were from the shoulders, which go back
+    /// with the trunk: on the Barbell Static Hold model the bar (3.5-5 cm off
+    /// the thighs, just below the hip crease) comes back ~7 cm, so the ghost
+    /// bar is drawn on the lifter's own thighs. Turning the arms with the
+    /// trunk instead (the Trap Bar Shrug's posture moves) lifts the bar 3 cm
+    /// and carries it forward with the hips, so over the real lifter it would
+    /// not read as coming back onto the legs.
+    private static let barRestedOnThighs = FaultPose(
+        chains: [spine, armsToGrip, hips, legs, bar],
+        moves: [.shift(["pelvis", "thigh_*"], ahead: 0.1),
+                .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 8),
+                .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -8),
+                .resolve(["shin_*"])]
+    )
+
+    /// Hanging from towels: the elbows bending into a half pull-up, the body
+    /// rising 0.12 torso lengths (7 cm) under hands that stay on the towels.
+    /// On the Towel Grip Hold model the elbows bend from 168° to ~119°,
+    /// flaring out the way they already point.
+    private static let hangPulledUp = FaultPose(
+        chains: [spine, arms, legs, hips],
+        moves: [.shift(["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip", "upper_arm_*"] + torso, rise: 0.12),
+                .resolve(["forearm_*"])]
+    )
+
+    /// Hanging with the knees bent and the shins pointing back: the shins
+    /// swing down about the knees. On the Towel Grip Hold model 11° brings
+    /// the ankles ~7 cm lower and the toe tips (the shoes are ~6 cm clear) to
+    /// the floor.
+    private static func hangToesDown(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "shin_*", points: ["foot_*", "foot_*.tip"], axis: .lateral, degrees: degrees)])
+    }
+
+    /// Hanging: the whole body swinging forward under the hands, which stay
+    /// where they grip. The lateral axis through `hand_L` also passes through
+    /// `hand_R` on a level, square grip, so both hands stay put. On the Towel
+    /// Grip Hold model 10° brings the knees ~27 cm forward, the hips ~19 cm
+    /// and the head ~7 cm, keeps the elbows as they are and the toe tips
+    /// ~5 cm off the floor (`kipping` there would put them ~8 cm through it).
+    private static func hangSwung(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, arms, legs, hips],
+                  moves: [.turn(pivot: "hand_L",
+                                points: ["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip", "upper_arm_*", "forearm_*"] + torso,
+                                axis: .lateral, degrees: degrees)])
+    }
+
+    /// Standing holds, looking down at the load: the upper back rounds and
+    /// the head bows forward and down about the neck, its length kept (the
+    /// Farmer's Carry "head" moves): the head point ~12 cm forward and ~6 cm
+    /// lower on the grip-hold models (`headDropped` there pushes it ~11 cm
+    /// straight forward and stretches the neck).
+    private static let lookingDown = FaultPose(
+        chains: [spine],
+        moves: [.shift(["chest"], forward: -0.06),
+                .shift(["neck", "head"], forward: 0.07, up: -0.03),
+                .turn(pivot: "neck", points: ["head"], axis: .lateral, degrees: -55)]
+    )
+
+// MARK: TABLE
+
+        // MARK: Batch 241-300 grip holds (2026-09-27)
+        // Each clip is 8 s of stillness, so every fault shows throughout
+        // (`.always`) and reads at any moment. The standing holds are framed
+        // front-left (yaw -0.5): the palms-in wrist fault is side to side and
+        // reads front-on; the forward-and-back faults turn toward the left
+        // side (-1.3 in total), as the Farmer's Carry. The posture faults turn
+        // further, to -1.5: the posture dot on the front of the chest then
+        // stays clear of the ghost's arms, which hang forward over the trunk
+        // at -1.3.
+        "Plate Pinch Hold": [
+            // No "pinch" ghost: the plates rest on the outer thighs, so the
+            // wrists cannot curl in without driving the plates' lower edges
+            // into the legs. The mistake shows as the ring on the left hand.
+
+            // The plates drifting forward in front of the thighs (the grip
+            // ~15 cm ahead).
+            "sides": armsSwungForward(14).seen(-0.8),
+            "shoulders": holdSlumped().seen(-0.8),
+            // Leaning forward, the plates hanging forward under the
+            // shoulders (both ~9 cm).
+            "posture": holdLeanedForward(10).seen(-1.0),
+            // Looking down at the plates.
+            "head": lookingDown.seen(-0.8),
+        ],
+        "Dumbbell Static Hold": [
+            // The wrists curling in toward the thighs; the handle, 8 cm below
+            // the wrist, carries the heads ~4.6 cm in, about their ~4 cm of
+            // clearance from the thighs.
+            "grip": holdWristsCurled(.forward, -35),
+            // The dumbbells drifting forward of the thighs.
+            "sides": armsSwungForward(14).seen(-0.8),
+            "shoulders": holdSlumped().seen(-0.8),
+            "posture": holdLeanedForward(10).seen(-1.0),
+            "head": lookingDown.seen(-0.8),
+        ],
+        // Framed at yaw -0.8, which shows forward-and-back moves at about
+        // three-quarters of their length, but side-to-side ones nearly as
+        // much: from here the head bowing and the shoulders slumping move the
+        // way a tilt toward the lifter's right would. The trunk and head
+        // faults therefore turn to the side (-1.4 in total), as the Barbell
+        // Shrug: there the near (left) plates, 1 m out and 0.19 m ahead,
+        // stand in front of the hips and hands, but the ghost's lines are
+        // drawn over the plate, and the head, neck, chest and the posture
+        // dot on the upper abdomen stay above it. The grip and bar faults
+        // stay at -0.8: the wrist kink and the bar's rise read there, and at
+        // -1.4 both real hands would be behind the plate.
+        "Barbell Static Hold": [
+            // Palms back: the hands curl back toward the thighs. The bar is
+            // not drawn: from -0.8 its move back runs along its own length.
+            "grip": holdWristsCurled(.lateral, -45),
+            // The bar drifting forward, away from the thighs.
+            "bar": armsSwungForward(14, withBar: true),
+            "shoulders": holdSlumped(withBar: true).seen(-0.6),
+            // In profile the trunk leans back, the hips come forward and the
+            // bar, nearly end-on, comes back onto the ghost's thighs.
+            "posture": barRestedOnThighs.seen(-0.6),
+            // Looking down at the bar.
+            "head": lookingDown.seen(-0.6),
+        ],
+        // Hanging in a rack, framed at yaw -0.5. Side views stop at -1.0 in
+        // total: from about -1.3 to -2.0 the rack's front-left upright (0.69 m
+        // out, level with the lifter) stands between the camera and the body.
+        // The feet hang behind the lifter, so the upright and its base block
+        // cover them from -1.0; the legs fault is seen at -0.8.
+        "Towel Grip Hold": [
+            // Palms forward, hands up: the fists tipping forward (~8 cm). The
+            // body weight pulls straight along the forearms, so the copy calls
+            // it a position to avoid, not something fatigue brings on.
+            "grip": holdWristsCurled(.lateral, -40).seen(-0.5),
+            // A half pull-up; front-on, the elbows flaring as they bend.
+            "arms": hangPulledUp,
+            // The toes brought down to rest on the floor. Seen at -0.8 in
+            // total: at -1.0 the front-left upright's base block stands in
+            // front of the ghost's toes and the upright hides the real left toe.
+            "legs": hangToesDown(11).seen(-0.3),
+            // Swinging: the whole body swings forward under the towels.
+            "body": hangSwung(10).seen(-0.5),
+            // Craning the chin up and forward to look at the bar.
+            "head": chinCraned.seen(-0.5),
+        ],

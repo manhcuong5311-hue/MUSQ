@@ -116,3 +116,109 @@ Row, Dumbbell Upright Row and Barbell Hip Thrust, written the same way
 `python3 spec_0927.py` validates the four). The Swift lives under
 `// MARK: - Late additions (2026-09-27)`; the integration script cuts after the
 Legs 300-350 block, so the late block is always pasted after it.
+
+Batch 241-300 (2026-09-27): 15 curls and 11 wrist, finger and grip exercises
+from `SourceExports/241-300`, in five families
+(`spec_241_300_{preacher,cable,dragspider,wrist,grip}.py` on top of
+`common_241_300.py`; `notes_241_300_*.md`; `python3 spec_241_300.py`
+validates all 26). `validate()` also runs `part_of()`, a copy of
+`MusclePart.init(muscleName:)`, and rejects activation names the app would
+drop or file under the wrong group (Adductor Pollicis reads as the leg
+adductors, Pronator Teres as the lats); the Swift mapping now also files
+finger, digitorum, pollicis and carpi names under the forearms. The four holds
+are timed (`ExerciseCatalog.timedExercises`) and the towel hang counts as
+bodyweight. The briefs came from the arm summary plus a wrist summary (wrist
+bend toward the palm or the back of the hand, palm direction, finger bend);
+the skeleton's joint space is the app's Y-up frame with the lifter facing +z.
+Each family was drafted, checked by two reviewers (sources, model), revised,
+then reviewed again on the app's own screenshots and ghost stills and fixed.
+The integration script cuts only inside the content map: the library above it
+carries markers with the same prefix. Run it after the legs and late ones.
+
+Exercises 1-150 redone (2026-09-29/30): the user re-did models 1-150 and
+mostly re-painted which muscles are lit, so content was realigned with each
+model's highlight tiers (bright = PRIMARY, dim = SECONDARY in the legend).
+- Nine new exercises from the 1-50 set (Pendlay Row, Dumbbell, Incline
+  Dumbbell, Preacher, Cable, Bayesian Cable and Reverse Curls, Wrist Curl,
+  Close-Grip Bench Press) were written by family in
+  `spec_1_50_{curls,forearm,compound}.py` on `common_1_50.py`
+  (`notes_1_50_*.md` map claims to sources; `python3 preview_1_50.py
+  <family>` validates and prints the label layout; `briefs_1_50/` holds the
+  arm/upper-body motion briefs from `briefs_1_50/brief_arms.py`). Each family
+  was drafted, checked by a sources reviewer and a model reviewer, revised,
+  re-checked, then fixed again from the app's own screenshots and ghost
+  stills. `integrate_1_50.py <scratch>` adds their setup steps, content map
+  entries and Swift (`// MARK: - Exercises 1-50 redone (2026-09-29)`) and the
+  fault ghosts (`// MARK: Exercises 1-50 redo`); the library rows and model
+  map went in with the models.
+- The 75 replaced exercises were edited in place in SampleData.swift (and
+  setup.py where generated): activation ranks, stabilisers and glows moved to
+  the new tiers, setup/cue copy fixed where the new model does something
+  else, and labels relaid where a reframe or the new motion put pills on the
+  lifter. House decisions: rows list Middle Trapezius, Posterior Deltoid and
+  Rhomboids as primary with the rotator cuff in the stabilisers (the legend is
+  one line), a dim-lit muscle that was only a stabiliser becomes a sourced
+  LOW/MODERATE secondary row. The generated families these came from
+  (spec.py, spec_legs2.py, spec_chest3.py, spec_131_160.py, spec_abs.py,
+  spec_legs30_press.py …) were NOT updated, so regenerating them would undo
+  those edits — edit SampleData.swift directly for these exercises, or bring
+  the spec files up to date first.
+- `probe.py` now carries the chest/back/leg exercises whose content predates
+  it, with their current framings (Step-Up's stale entry fixed).
+
+Exercises 151-190 and gated redone (2026-09-30): the last 37 re-exports of
+the `1-100 🟢` folder. Biceps Curl came back identical; the other 36 were
+realigned in SampleData.swift (and setup.py) the same way as 1-150, from the
+new highlight tiers:
+- Rows (Meadows, Landmine, Dumbbell Bent-Over, Renegade, Kettlebell, Gorilla,
+  Reverse-Grip T-Bar, the seven cable rows and three machine rows): Middle
+  Trapezius, Posterior Deltoid and Rhomboids primary, lats and biceps
+  secondary, rotator cuff with the stabilisers (neutral-grip fractions from
+  Vasconcelos et al. 2023). The High Cable Row keeps the lats primary too (they
+  stay bright), and its face-pull copy was rewritten: the model rows neutral
+  handles from high pulleys down to the lower chest.
+- Pull-ups and pulldowns (lats alone bright, trapezius dim): the lats stay the
+  only primary; the dim trapezius leaves the stabilisers as a "Trapezius"
+  secondary row, or is already named by an existing Middle Trapezius row. The
+  Wide-Grip Lat Pulldown's copy no longer asks for straight arms at the top
+  (the model stops at 149°).
+- Pullovers: the bright rear delts stay a LOW secondary on the EMG, as on the
+  Dumbbell and Barbell Pullover.
+- Lunge / Lunge (Lean): nothing to change beyond what was flagged.
+spec_131_160.py, spec_161_190.py and spec_gated.py were NOT updated.
+
+Redone 190-280 folder (2026-09-30): 21 replaced models were realigned in
+SampleData.swift / setup.py the same way (activation from the new tiers,
+presses relaid for their new arm paths and framings, the rear-delt rows'
+now-bright cuff kept in the stabilisers). The new Machine Preacher Curl was
+written as family `machinecurl` on `common_1_50.py`: `spec_280.py`,
+`spec_280_machinecurl.py`, `notes_280_machinecurl.md`, `preview_280.py
+machinecurl`; `integrate_280.py <scratch>` writes its setup steps, content
+map entry, Swift block and fault ghosts between its own BEGIN/END markers,
+so it can be re-run after any family edit. The spec_191_240_* and
+spec_241_300_* families were not updated.
+
+Back Extension rewritten (2026-10-01): the model is the lower-back variant
+(pelvis resting on the pad at the hip bones, the spine curling down over the
+pad edge and uncurling to a straight line; erector spinae the only bright
+muscle), but the copy taught the flat-back hip hinge for the glutes and
+hamstrings. SampleData.swift (`backExtensionContent`) and setup.py were
+rewritten for the spinal curl (sources in the code comment: da Silva et al.
+2009, Schoenfeld et al. 2017, Mayer et al. 1999/2002, Andersen et al. 2021),
+labels relaid for its new behind-left framing (-1.9), and the "hips" ghost
+now draws the flat-back hinge as the mistake. The spec file it was
+generated from was not updated.
+
+351-400 folder (2026-10-01): 27 new hamstring, glute and hip exercises, in
+four families (`spec_400_{rdl,hinge,legcurl,hip}.py` on `common_1_50.py`;
+`notes_400_*.md`; `python3 spec_400.py` validates all 27, `preview_400.py
+<family>` prints the label layout). Each family was drafted, checked by a
+sources reviewer and a model reviewer, revised and re-checked, then fixed
+again from the app's own screenshots. `integrate_400.py <scratch>` writes the
+setup steps, content map entries, Swift (`// MARK: - 351-400 (2026-09-30)`)
+and fault ghosts between its own BEGIN/END markers and can be re-run. The
+library rows and model map went in with the models; `ExerciseRotation`'s
+movement patterns now file the Nordic/sliding curls and the glute-ham raise
+as leg curls, frog pumps as bridges and the clamshell with the glute
+isolation lifts, and `ExerciseCatalog.isBodyweight` counts the SWISS BALL,
+SLIDERS and BAND lifts as bodyweight.

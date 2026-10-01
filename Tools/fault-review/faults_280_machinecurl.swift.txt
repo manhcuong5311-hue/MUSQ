@@ -1,0 +1,42 @@
+// MARK: PIECES
+    // MARK: Redone 190-280: Machine Preacher Curl pieces (2026-09-30)
+
+    /// Curl machine, seat too low, both arms: `curlMachineSatLow` with the
+    /// legs drawn to the ankles, as `leftCurlMachineSatLow` does for one arm.
+    /// The body and upper arms sit 0.1 torso lengths lower while the hands
+    /// stay on the handle, so the elbows drop below the lever's pivots (on
+    /// the Machine Preacher Curl's rig ~8 cm below and ~2.5 cm behind the
+    /// hubs at the bottom, ~1 cm under the pad's front underside, so the
+    /// ghost upper arms pass through the pad, which the ghost ignores; ~1 cm
+    /// below and ~4 cm in front at the top). The direction follows the
+    /// Machine Biceps Curl's piece; no source states it. The toes never move,
+    /// and from the -0.5 side view the near foot sits behind the machine's
+    /// base rail, where `curlMachineSatLow`'s toe line was drawn on the rail.
+    private static let curlMachineSatLowToAnkles = FaultPose(
+        chains: [spine, arms, ["thigh_*", "shin_*", "foot_*"], hips],
+        moves: [.shift(["pelvis", "thigh_*", "upper_arm_*"] + torso, rise: -0.1), .resolve(["forearm_*", "shin_*"])]
+    )
+
+// MARK: TABLE
+        // MARK: Redone 190-280: Machine Preacher Curl (2026-09-30)
+        // The Machine Biceps Curl's plate-stack curl machine with the arm pad
+        // and pivots higher: seated, chest to the pad, both upper arms 45°
+        // below horizontal (the Machine Biceps Curl's 55°), both elbows on
+        // the lever's pivots, palms up on a straight handle, elbows 162° to
+        // 62°. Framed at yaw -1.0 like the Machine Biceps Curl; -0.5 turns to
+        // a true left side view, where the elbows line up with the pivots.
+        // The lowering-speed cue is tempo and has no ghost.
+        "Machine Preacher Curl": [
+            // Seat too low: the body and upper arms 0.1 torso lengths lower,
+            // the hands on the handle, so the elbows end ~8 cm below and
+            // ~2.5 cm behind the pivots at the bottom (read there). The legs
+            // stop at the ankles (the near foot is behind the base rail).
+            "pivot": curlMachineSatLowToAnkles.seen(-0.5),
+            // The upper arms lifting off the pad at the top, from 45° to 20°
+            // below horizontal.
+            "pad": curlArmsOffPad(25).seen(-0.5),
+            "grip": curlWristsCurled().seen(-0.5),
+            // Short reps: shoulder-to-wrist 0.897 torso lengths at the model's
+            // bottom (162°), ~0.8 at ~122°.
+            "range": curlBottomCut(from: 0.8, to: 0.885).seen(-0.5)
+        ],

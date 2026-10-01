@@ -1,0 +1,146 @@
+// MARK: PIECES
+
+    // MARK: 30-leg set leg press pieces (2026-09-28)
+
+    /// 45-degree presses (back pad 60° back from vertical, the footplate's
+    /// face 33° back from vertical): the feet set `by` torso lengths lower
+    /// down the platform. Down the plate is 0.45 of a step back toward the
+    /// chest's side and 0.89 of it toward the feet in the lifter's own axes
+    /// (the plate's normal is (0, 0.545, 0.839) in the model, the body's
+    /// forward (0, 0.866, 0.5), its up (0, 0.5, -0.866)). The foot then rocks
+    /// `heelUp` degrees up about its toes, the heel peeling off, and the knee
+    /// re-seats. A setup fault, so it holds all rep (the feet do not slide on
+    /// the plate), like pressFeetTogether; the heel lift is kept small because
+    /// one FaultPose has one strength and it then shows at the top too. On
+    /// the rig (`by` 0.2, `heelUp` 10) the toes sit 12 cm lower on the plate
+    /// all rep; at the bottom (1.5 s) the ankle rises ~3.4 cm off the plate
+    /// and the knee, moved ~2.5 cm, ends ~6 cm past the toe tips instead of
+    /// ~4 cm short of them, closing from 95° to 84°; at the top (0 s) the
+    /// shorter hip-to-ankle span (0.83 -> 0.77 m) seats the knee at 133°
+    /// instead of 160°, as it would be with the feet that low.
+    private static func pressFeetLow(_ side: String = "*", by: Float = 0.2, heelUp: Float = 10) -> FaultPose {
+        FaultPose(chains: [leg(side)],
+                  moves: [.shift(["foot_\(side)", "foot_\(side).tip"], forward: -0.45 * by, up: -0.89 * by),
+                          .turn(pivot: "foot_\(side).tip", points: ["foot_\(side)"], axis: .lateral, degrees: -heelUp),
+                          .resolve(["shin_\(side)"])])
+    }
+
+    /// Seated and lying presses: lowering past the hips' range, so the hips
+    /// curl up off the seat (away from the pad, a little toward the head)
+    /// and the lower back rounds; the knees re-seat under the moved hips.
+    /// On the vertical press the pad is level, so this lifts the hips
+    /// straight up. Grows with the left knee's bend.
+    private static let pressHipsCurled = FaultPose(
+        chains: [spine, legs, hips],
+        moves: [.shift(["pelvis", "thigh_*"], forward: 0.1, up: 0.03),
+                .shift(["spine"], forward: 0.05),
+                .resolve(["shin_*"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// Single-leg press with the left leg: the working hip lifting off the
+    /// seat at the bottom, the pelvis tilting up on that side while the
+    /// resting right hip stays down; the working knee re-seats.
+    private static let pressHipLifted = FaultPose(
+        chains: [spine, leg("L"), ["thigh_L", "pelvis", "thigh_R"]],
+        moves: [.shift(["thigh_L"], forward: 0.14),
+                .shift(["pelvis"], forward: 0.07),
+                .shift(["spine"], forward: 0.03),
+                .resolve(["shin_L"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// Vertical press: the hands leaving the handles to push on the thighs
+    /// just above the knees. On the rig at the bottom (1.5 s) the hands move
+    /// from beside the hips to ~85% of the way from hip to knee: 0.30 torso
+    /// lengths in toward the midline, 0.46 toward the ceiling (the lying
+    /// lifter's forward) and 0.31 toward the head; the elbows re-seat. Grows
+    /// with the knee's bend, so it only sits on the thighs at the bottom.
+    private static let pressHandsOnKnees = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], forward: 0.46, up: 0.31, outward: -0.3),
+                .resolve(["forearm_*"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// Narrow stance taken too far: the feet ~6 cm in toward the midline on
+    /// each side (touching) and the knees crowding in with them. A setup
+    /// fault (the feet do not slide on the plate), so it holds all rep, as
+    /// the older Leg Press's "feet" fault does.
+    private static let pressFeetTogether = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["foot_*", "foot_*.tip"], outward: -0.1), .shift(["shin_*"], outward: -0.1)]
+    )
+
+    /// Single-leg press: only the working (left) knee snapped straight; the
+    /// resting right leg is bent on its foot rest and must not straighten.
+    private static let pressLeftKneeSnapped = FaultPose(
+        chains: [leg("L")],
+        moves: [.straighten(["shin_L"], past: 0.05)],
+        strength: .whenStraight("shin_L")
+    )
+
+// MARK: TABLE
+
+        // MARK: 30-leg set leg presses (2026-09-28)
+        // The pelvis never moves in these models, so every fault reads the
+        // knee's bend. The four 45-degree presses are framed at yaw -2.0 and
+        // the vertical press at -2.2, rear three-quarter views from the
+        // lifter's left, 25° and 36° off a true side view: moves in the
+        // lifter's sagittal plane (hips off the seat, the back arching, the
+        // feet down the platform, the knees snapping straight) read without a
+        // turn. The knees caving in move along the lifter's side-to-side
+        // axis, only 25-36° off the camera's line of sight at these yaws, so
+        // those faults turn the model toward a view from behind the head. On
+        // the vertical press that is a total of -3.14 (-0.94): the knees sit
+        // well above the head there. On the four 45-degree presses a total of
+        // -3.14 put the head between the knees and under the caved ghost
+        // knees, so they turn to a total of -2.7 (-0.7), which moves the head
+        // to the right of the knees with the caving almost as wide.
+        "Vertical Leg Press": [
+            // The heels peeling off the plate at the bottom.
+            "feet": heelsUp(),
+            "lockout": kneesSnapped,
+            "knee": kneesIn().seen(-0.94),
+            // The hips curling up off the pad, the lower back rounding.
+            "depth": pressHipsCurled,
+            // Pushing on the thighs with the hands.
+            "grip": pressHandsOnKnees
+        ],
+        "45-Degree Leg Press": [
+            // Feet ~12 cm low on the platform: knees past the toes, heels up.
+            "feet": pressFeetLow(),
+            "lockout": kneesSnapped,
+            "knee": kneesIn().seen(-0.7),
+            "depth": pressHipsCurled,
+            // The lower back arching off the pad.
+            "back": lowerBackArched(0.14)
+        ],
+        "Single-Leg Press": [
+            // The working (left) foot low on the platform, its heel up.
+            "foot": pressFeetLow("L"),
+            "lockout": pressLeftKneeSnapped,
+            "knee": kneesIn("L").seen(-0.7),
+            // The working hip lifting off the seat, the pelvis tilting.
+            "hip": pressHipLifted,
+            "back": lowerBackArched(0.14)
+        ],
+        "Narrow-Stance Leg Press": [
+            // Feet touching, the knees crowding in together.
+            "stance": pressFeetTogether.seen(-0.7),
+            "lockout": kneesSnapped,
+            // A smaller cave than the default 0.17: these knees start only
+            // 0.11 m from the midline, so 0.09 (~5 cm each) brings them to
+            // ~0.06 m, just touching, instead of through each other.
+            "knee": kneesIn("*", 0.09).seen(-0.7),
+            "depth": pressHipsCurled,
+            "back": lowerBackArched(0.14)
+        ],
+        "Wide-Stance Leg Press": [
+            // Wide but low on the platform: knees past the toes, heels up.
+            "stance": pressFeetLow(),
+            "lockout": kneesSnapped,
+            "knee": kneesIn().seen(-0.7),
+            "depth": pressHipsCurled,
+            "back": lowerBackArched(0.14)
+        ],

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-narrow-stance-leg-press.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

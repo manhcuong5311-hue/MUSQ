@@ -19,10 +19,13 @@ struct ProfileView: View {
     @Binding var tab: AppTab
 
     @Environment(WorkoutStore.self) private var store
+    @Environment(Purchases.self) private var purchases
+    @Environment(Ads.self) private var ads
     @State private var path: [ProfileRoute] = []
     @State private var showsAllRecords = false
     @State private var historyLimit = ProfileView.historyPage
     @State private var editsProfile = false
+    @State private var showsRemoveAds = false
 
     private static let recordPreview = 5
     private static let historyPage = 8
@@ -44,6 +47,8 @@ struct ProfileView: View {
                         aboutYou
                             .padding(.top, 28)
                         settings
+                            .padding(.top, 28)
+                        adsAndPrivacy
                             .padding(.top, 28)
                         records
                             .padding(.top, 30)
@@ -70,6 +75,10 @@ struct ProfileView: View {
         .fullScreenCover(isPresented: $editsProfile) {
             OnboardingView(isEditing: true, onClose: { editsProfile = false })
                 .environment(store)
+        }
+        .sheet(isPresented: $showsRemoveAds) {
+            RemoveAdsView()
+                .environment(purchases)
         }
     }
 
@@ -184,6 +193,59 @@ struct ProfileView: View {
             .padding(.horizontal, 14)
             .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
         }
+    }
+
+    // MARK: - Ads & privacy
+
+    private var adsAndPrivacy: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionEyebrow(text: "ADS & PRIVACY")
+            VStack(spacing: 0) {
+                settingRow("Remove ads", detail: removeAdsDetail) {
+                    pillButton(purchases.hasRemovedAds ? "THANK YOU" : "REMOVE") { showsRemoveAds = true }
+                }
+                if ads.privacyOptionsRequired {
+                    Hairline(opacity: 0.06)
+                    settingRow("Privacy choices", detail: "Change what you agreed to for ads.") {
+                        pillButton("OPEN") { Task { await ads.presentPrivacyOptions() } }
+                    }
+                }
+            }
+            .padding(.horizontal, 14)
+            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
+
+            HStack(spacing: 14) {
+                Link("Privacy Policy", destination: AppLinks.privacy)
+                Link("Terms of Use", destination: AppLinks.terms)
+                Link("Support", destination: AppLinks.support)
+            }
+            .font(.ui(12, .semibold))
+            .foregroundStyle(DS.silver.opacity(0.55))
+            .padding(.horizontal, 4)
+            .padding(.top, 2)
+        }
+    }
+
+    private var removeAdsDetail: String {
+        if purchases.hasRemovedAds {
+            return purchases.activePlan == Purchases.ProductID.yearly
+                ? "Ads are off while your yearly plan is active."
+                : "Ads are off for good."
+        }
+        return "Every feature is free. Removing ads just clears them away."
+    }
+
+    private func pillButton(_ title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.mono(10, .semibold))
+                .trackingEm(0.08, size: 10)
+                .foregroundStyle(DS.silver.opacity(0.8))
+                .padding(.horizontal, 11)
+                .padding(.vertical, 8)
+                .background(Capsule().fill(DS.silver.opacity(0.07)))
+        }
+        .buttonStyle(.plain)
     }
 
     private func settingRow<Control: View>(_ title: String, detail: String,

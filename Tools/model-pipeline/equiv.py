@@ -1,7 +1,7 @@
 # Composed slim model vs the original (2026-09-26): every prim, attribute value
 # and time sample, and relationship must match.  equiv.py <original> <slim>
 import os, sys, hashlib
-os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 from pxr import Usd
 def sig(path):
     st = Usd.Stage.Open(path)

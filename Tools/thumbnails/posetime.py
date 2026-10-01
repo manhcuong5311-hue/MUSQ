@@ -1,9 +1,9 @@
 import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
-_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 import re, glob, json
 from pxr import Usd, UsdSkel, UsdGeom
-SRC = open("/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Models/SampleData.swift").read()
-M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
+SRC = open("/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Models/SampleData.swift").read()
+M = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/"
 block = SRC[SRC.index("modelByExercise: [String: ExerciseModel] = ["):SRC.index("static func model(for")]
 import sys
 ONLY = sys.argv[1:]
@@ -12,7 +12,7 @@ for name, res in re.findall(r'"([^"]+)":\s*ExerciseModel\(resource: "([^"]+)"', 
     if ONLY and name not in ONLY: continue
     st = Usd.Stage.Open(glob.glob(M + "*/" + res + ".usdc")[0])
     t0, t1, fps = st.GetStartTimeCode(), st.GetEndTimeCode(), st.GetTimeCodesPerSecond()
-    sk = next(p for p in st.Traverse() if p.GetTypeName() == "Skeleton")
+    sk = next(p for p in sorted(st.Traverse(), key=lambda q: "Anatomy_MasterRig" not in q.GetPath().pathString) if p.GetTypeName() == "Skeleton")
     q = UsdSkel.Cache().GetSkelQuery(UsdSkel.Skeleton(sk))
     names = [str(j).split("/")[-1] for j in q.GetJointOrder()]
     js = [names.index(j) for j in ("hand_L","hand_R","foot_L","foot_R","head","pelvis","patella_L","patella_R","forearm_L","forearm_R")]

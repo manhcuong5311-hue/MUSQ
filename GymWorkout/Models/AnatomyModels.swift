@@ -143,7 +143,8 @@ struct CueAnnotation: Identifiable, Hashable {
     /// Skeleton joint the dot follows, matched on the last component of the
     /// rig's joint path, e.g. `hand_L`. For lifts that alternate legs,
     /// `_front` / `_back` in place of `_L` / `_R` follow the leading or
-    /// trailing leg, e.g. `patella_front`.
+    /// trailing leg, e.g. `patella_front`; for lifts that shift from side to
+    /// side, `_bent` / `_straight` follow the working or straight leg.
     var joint: String? = nil
 }
 

@@ -84,3 +84,44 @@ Late additions (2026-09-27): `fault_times.py` classes hip thrusts as `legs`
 too (top = highest pelvis, which is lockout). Ghosts in
 `faults_0927_{shoulders,hipthrust}.swift.txt`, integrated under
 `// MARK: Late additions` in FaultPoses.swift.
+
+Batch 241-300 (2026-09-27): `fault_times.py` has three more kinds: `wrist`
+(top = the wrist at the end of its working range, flexed for wrist curls,
+extended for reverse ones), `finger` (top = fingers closed, bottom = the bar on
+the fingertips) and `hold` (static, 2 s). Ghosts in
+`faults_241_300_<family>.swift.txt`, integrated under `// MARK: Batch 241-300`.
+
+Exercises 1-150 redone (2026-09-29/30): the nine new 1-50 exercises have a
+ghost per position cue in `faults_1_50_{curls,forearm,compound}.swift.txt`
+(`check_faults_1_50.py` compile-checks them; `fault_moments_1_50_*.json`
+feed `fault_times.py`), integrated under `// MARK: Exercises 1-50 redo`.
+Every replaced exercise's ghosts were shot on the simulator and fixed where
+the new motion or a reframe broke them (e.g. Barbell Bench Press
+`elbowsFlared(46)`, per-exercise `.seen` views on the Leg Press after its
+reframe, stronger Walking/Reverse Lunge knee faults, `rangeCutShort` stills
+on the chest machines); shared pieces were left unchanged for other
+exercises (new parameters or pieces instead).
+
+Exercises 151-190, gated and the redone 190-280 folder (2026-09-30): motion
+was unchanged for most, so the existing ghosts stand; the five dumbbell and
+landmine presses changed their rep timing (bottom at 0/4 s, lockout at
+1.5-1.58 s), and their bottoms.json stills were moved to match. The new
+Machine Preacher Curl's ghosts are in `faults_280_machinecurl.swift.txt`
+(`check_faults_280.py` compile-checks them; `fault_moments_280_machinecurl.json`
+feeds `fault_times.py`), integrated between the `Redone 190-280` markers.
+
+Back Extension (2026-10-01): with the copy now teaching the lower-back
+(spine-curling) variant, the "hips" ghost undoes the curl and folds the
+straight trunk at the hips instead, "thigh" tips the curled trunk further at
+the hips (pad set too low), both faded in only near the bottom hold
+(`bottoms.json` stills at 1.5 s); "spine" arches the lower and upper back at
+the top, "grip" swings the arms forward, "feet" slide down the foot plate.
+
+351-400 folder (2026-10-01): every new exercise has a ghost per position cue
+in `faults_400_{rdl,hinge,legcurl,hip}.swift.txt` (`check_faults_400.py`
+compile-checks them; `fault_moments_400_*.json` feed `fault_times.py`),
+integrated between the `351-400` markers. `fault_times.py` gained four kinds:
+`hinge` (RDLs, deadlifts, good mornings: bottom = trunk tipped furthest),
+`legcurl` (leg curls, Nordics, sliding curls, glute-ham raise: top = knee
+most bent), `abduction` / `adduction` (knees furthest apart / closest), and
+frog pumps count as `legs`.

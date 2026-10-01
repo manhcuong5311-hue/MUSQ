@@ -1,0 +1,284 @@
+// MARK: PIECES
+    // MARK: 351-400 hinge family pieces (2026-09-30)
+
+    /// Good mornings: how far the trunk has tipped, from the neck's distance
+    /// to the left knee in torso lengths. The hip's own bend cannot be used:
+    /// in these rigs the spine-hip-knee angle already reads ~146° standing
+    /// (~34° of "bend", ~38% of a `.withBend("thigh_L")` fault at the top)
+    /// and ~122° seated upright. Standing: 1.76 at the top, 1.28 at the
+    /// bottom; seated: 1.47 and 0.90; Smith: 1.76 and 1.35. Each is none
+    /// standing or sitting tall, all of it from just above the bottom.
+    private static let hingeGMLean = FaultStrength.between("neck", "shin_L", from: 1.72, to: 1.30)
+    private static let hingeSeatedLean = FaultStrength.between("neck", "shin_L", from: 1.40, to: 0.95)
+    private static let hingeSmithLean = FaultStrength.between("neck", "shin_L", from: 1.72, to: 1.38)
+
+    /// Good mornings: the bar set low on the back of the shoulders. The hands
+    /// (the bar between them) sit 0.12 torso lengths (~7 cm) further down the
+    /// back and a little behind it, the elbows re-seated; the same all rep.
+    /// Only the arms and bar are drawn: the spine does not move, and drawn
+    /// over the back it buried the ~12 px shift of the hands side-on.
+    private static let hingeGMBarLow = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], forward: -0.03, up: -0.12), .resolve(["forearm_*"])]
+    )
+
+    /// Smith good morning: the bar set low on the back under the fixed track.
+    /// `barLowOnTrack`'s moves grown with the lean instead of the knee, which
+    /// bends only 16-30° in this model, and with the hips taken back only
+    /// 0.03 torso lengths (~2 cm) instead of 0.13: on this rig that is what
+    /// keeps the bar on its line (within ~1.3 cm through the rep; with 0.13
+    /// it ended 6 cm behind it). At the bottom the hands sit ~6 cm lower on
+    /// the back and the bar ~10 cm lower on the rails, the chest tipped 10°
+    /// further, the knees re-seated at ~153°.
+    private static let hingeSmithBarLow = FaultPose(
+        chains: [spine, armsToGrip, legs, hips, bar],
+        moves: [.shift(carried, ahead: -0.03),
+                .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -10),
+                .shift(["hand_*", "hand_*.tip"], forward: -0.03, up: -0.1),
+                .resolve(["forearm_*"]),
+                .resolve(["shin_*"])],
+        strength: hingeSmithLean
+    )
+
+    /// Good mornings: the hips staying over the heels. The pelvis, thighs and
+    /// trunk go 0.4 torso lengths (~24 cm) forward and 0.06 (~4 cm) up at
+    /// the bottom, so the pelvis ends over the ankles; the trunk keeps its
+    /// length and its tip, so the chest folds out over the toes, and the hip
+    /// stays ~26° more open (less hamstring stretch). The knees, re-seated
+    /// over the planted feet, keep their ~18° bend (162-165°), so this does
+    /// not read as the knees-bending ghost.
+    private static func hingeGMWaistFold(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*"] + torso, ahead: 0.4, rise: 0.06),
+                          .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// Good mornings: the knees bending more and more on the way down. The
+    /// hips, trunk and bar sink 0.08 torso lengths (~5 cm) and come ~2 cm
+    /// forward, the knees re-seated: ~40° bent at the bottom instead of ~18°.
+    private static func hingeGMKneesBending(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, legs, hips, bar],
+                  moves: [.shift(carried, ahead: 0.03, rise: -0.08), .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// Good mornings: stopping short, the trunk, arms and bar turned
+    /// `degrees` back toward upright about the hips. Sized so the ghost
+    /// holds a short nod (~15-19° standing, ~8-15° seated) from mid-descent
+    /// on and never tips past upright.
+    private static func hingeGMShort(_ degrees: Float, _ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, bar],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Seated good morning: the feet pulled in close. Each foot moves 0.3
+    /// torso lengths (~18 cm) toward the middle (the ankles ~0.25 m apart
+    /// instead of 0.60 m) and each knee ~7 cm.
+    private static let hingeSeatedFeetNarrow = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["foot_*", "foot_*.tip"], outward: -0.3), .shift(["shin_*"], outward: -0.12)]
+    )
+
+    /// Seated good morning: leaning by curling the upper back instead of
+    /// folding at the hips. The trunk turns 15° back toward upright about the
+    /// pelvis while the chest caves and the neck and head curl forward: at
+    /// the bottom the lower trunk sits ~15° more upright and the chest ~8 cm
+    /// higher, while the head ends near the real head, so the lean looks as
+    /// deep but comes from the upper back. Unlike `backRounded` (the back
+    /// ghost), whose whole trunk drops with the hips still folding.
+    private static let hingeSeatedUpperBackCurl = FaultPose(
+        chains: [spine],
+        moves: [.turn(pivot: "pelvis", points: torso, axis: .lateral, degrees: 15),
+                .shift(["chest"], forward: -0.06), .shift(["neck"], forward: 0.1), .shift(["head"], forward: 0.25)],
+        strength: hingeSeatedLean
+    )
+
+    /// Smith good morning: squatting the bar down the rails. The trunk rises
+    /// 15° toward upright, the hips and all they carry sink 0.25 torso
+    /// lengths (~15 cm) and come 0.22 (~13 cm) forward, the knees re-seated
+    /// (~99° at the bottom instead of 150°). The forward shift is what keeps
+    /// the bar on its fixed line (within ~1 cm through the rep) while it
+    /// slides ~6 cm further down the rails.
+    private static let hingeSmithSquatted = FaultPose(
+        chains: [spine, armsToGrip, legs, hips, bar],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 15),
+                .shift(carried, ahead: 0.22, rise: -0.25),
+                .resolve(["shin_*"])],
+        strength: hingeSmithLean
+    )
+
+    /// Smith good morning: the feet set out in front of the bar, as for a
+    /// Smith squat. Both feet 0.35 torso lengths (~21 cm) further forward,
+    /// the ankles ~2 cm in front of the bar's line instead of ~18 cm behind
+    /// it and the toes ~26 cm ahead of it, the knees re-seated. Read at the
+    /// top: once the hips travel back the planted ankles are out of reach,
+    /// so from mid-descent the legs lock straight and stretch (~6% at the
+    /// bottom), which the still avoids.
+    private static let hingeSmithFeetForward = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["foot_*", "foot_*.tip"], ahead: 0.35), .resolve(["shin_*"])]
+    )
+
+    /// Nordics and the glute-ham raise: the thighs as one line through the
+    /// hips, knee to knee.
+    private static let hingeNordicThighs = ["shin_L", "thigh_L", "pelvis", "thigh_R", "shin_R"]
+
+    /// Nordics and the glute-ham raise: how far the body has tipped from
+    /// kneeling upright, read from the knees opening: none at the top (89°),
+    /// ~40% at 1 s, ~82% at the Nordic's bottom (164°), ~91% at the glute-ham
+    /// raise's (172°).
+    private static let hingeNordicLowered = FaultStrength.whenStraight("shin_L")
+
+    /// Bending at the hips, the backside pushing back: the thighs, hips and
+    /// trunk turn 20° back toward upright about the knees, then the trunk and
+    /// head fold 45° forward about the hips. At the Nordic's bottom (82%)
+    /// the knees open to ~147° instead of 164°, the hips sit ~12 cm higher
+    /// and ~5 cm further back, folded ~37°, the chest at the real height and
+    /// the head ~13 cm lower (still ~35 cm above the mat); the glute-ham
+    /// raise's knees ~153° instead of 172°. The arms are left out: carried
+    /// along they reach the floor at the Nordic's bottom.
+    private static let hingeNordicHipsBent = FaultPose(
+        chains: [spine, hingeNordicThighs],
+        moves: [.turn(pivot: "shin_L", points: ["thigh_*", "pelvis"] + torso, axis: .lateral, degrees: 20),
+                .turn(pivot: "pelvis", points: torso, axis: .lateral, degrees: -45)],
+        strength: hingeNordicLowered
+    )
+
+    /// Stopping short: the hips, trunk, head and arms turned `degrees` back
+    /// toward kneeling upright about the knees, never past upright at any
+    /// point of the rep (at the Nordic's bottom 50 leaves the body ~34°
+    /// forward instead of 75°, 60 ~26°; at the glute-ham raise's 45 leaves
+    /// it ~42° instead of 83°, about halfway).
+    private static func hingeNordicShort(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, hingeNordicThighs],
+                  moves: [.turn(pivot: "shin_L", points: ["thigh_*", "pelvis"] + trunk, axis: .lateral, degrees: degrees)],
+                  strength: hingeNordicLowered)
+    }
+
+    /// Dropping the last part: the hips, trunk and head `degrees` further
+    /// toward the floor about the knees (~10° of 12 at the bottom: the body
+    /// ~5° above level, the head joint still ~33 cm up). The arms are left
+    /// out: carried along they would pass through the floor.
+    private static func hingeNordicDropped(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, hingeNordicThighs],
+                  moves: [.turn(pivot: "shin_L", points: ["thigh_*"] + spine, axis: .lateral, degrees: -degrees)],
+                  strength: hingeNordicLowered)
+    }
+
+    /// The heels lifting out of a loose anchor: the lower legs swing
+    /// `degrees` up about the knees (the ankles ~14 cm off the pad at the
+    /// bottom).
+    private static func hingeNordicHeelsUp(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs],
+                  moves: [.turn(pivot: "shin_*", points: ["foot_*", "foot_*.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: hingeNordicLowered)
+    }
+
+    /// Propping on the hands at the bottom: the hands 0.18 torso lengths
+    /// straight down (~9 cm at the bottom), the elbows re-seated. The real
+    /// wrists sit ~18 cm and the palms ~9 cm above the mat (5 cm thick) at
+    /// the bottom; the propped palms land on it.
+    private static let hingeNordicPropped = FaultPose(
+        chains: [armsToGrip],
+        moves: [.shift(["hand_*", "hand_*.tip"], rise: -0.18), .shift(["forearm_*"], rise: -0.09),
+                .resolve(["forearm_*"])],
+        strength: hingeNordicLowered
+    )
+
+    /// Glute-ham raise: set up too far forward, the kneecaps on the pad. The
+    /// whole lifter 0.15 torso lengths (~9 cm) further forward down to the
+    /// ankles (the footplate set too close). The toe tips are left out: moved
+    /// along they would hang ~9 cm off the real footplate, which reads as the
+    /// loose-feet fault.
+    private static let hingeGHRKneesOnPad = FaultPose(
+        chains: [spine, ["thigh_*", "shin_*", "foot_*"], hips],
+        moves: [.shift(["pelvis", "thigh_*", "shin_*", "foot_*"] + torso, ahead: 0.15)]
+    )
+
+    /// Glute-ham raise: the feet gone loose, the toes pulled 25° toward the
+    /// shins, ~10 cm off the footplate.
+    private static let hingeGHRFeetLoose = FaultPose(
+        chains: [legs],
+        moves: [.turn(pivot: "foot_*", points: ["foot_*.tip"], axis: .lateral, degrees: 25)]
+    )
+
+// MARK: TABLE
+        // MARK: 351-400 hinge family (2026-09-30)
+        // Good Morning and Seated Good Morning are framed from behind the
+        // lifter's left (yaw -2.3), the back and bar toward the camera: the
+        // forward-line faults turn 0.9 (a total of -1.4, near side-on from the
+        // left), where the trunk's lean, the hips and the bar read in profile;
+        // the seated feet turn -0.5 (total -2.8, from behind), where the
+        // stance width runs across the screen. The Smith Machine Good Morning
+        // is framed three-quarter from the front-left (yaw -1.0): its faults
+        // turn -0.4 (total -1.4), as the Smith lifts before it. The Nordic,
+        // Assisted Nordic and Glute-Ham Raise are framed side-on from the left
+        // (yaw -1.4) and need no turn. Every model works both legs together,
+        // so the faults use `*` and `shin_L`. Checked offline with a copy of
+        // FaultGhost.solve on the clips every 0.25 s through the first rep:
+        // the Smith bar ghosts stay on the bar's fixed line, no stop-short
+        // ghost tips past upright, the Nordics' ghost heads stay >= 33 cm up and
+        // the propped palms land on the mat (5 cm up).
+        "Good Morning": [
+            // The bar low on the back of the shoulders, ~7 cm down the back.
+            "bar": hingeGMBarLow.seen(0.9),
+            "back": backRounded(hingeGMLean).seen(0.9),
+            // The hips staying over the heels, the chest out over the toes.
+            "hips": hingeGMWaistFold(hingeGMLean).seen(0.9),
+            // The knees bending to ~40° as the hips sink ~5 cm.
+            "knee": hingeGMKneesBending(hingeGMLean).seen(0.9),
+            // Stopping short: a nod, the trunk ~16° forward at the bottom
+            // instead of 64°.
+            "depth": hingeGMShort(48, hingeGMLean).seen(0.9)
+        ],
+        "Seated Good Morning": [
+            "bar": hingeGMBarLow.seen(0.9),
+            // The lower back rounding at the bottom of the lean.
+            "back": backRounded(hingeSeatedLean).seen(0.9),
+            // Leaning by curling the upper back, the hips hardly folding.
+            "hinge": hingeSeatedUpperBackCurl.seen(0.9),
+            // Feet pulled in close, from behind.
+            "feet": hingeSeatedFeetNarrow.seen(-0.5),
+            // Stopping short: a nod, the trunk ~15° forward at the bottom
+            // instead of 55°.
+            "range": hingeGMShort(40, hingeSeatedLean).seen(0.9)
+        ],
+        "Smith Machine Good Morning": [
+            "bar": hingeSmithBarLow.seen(-0.4),
+            // Feet ~21 cm forward, out in front of the bar (read at the top).
+            "feet": hingeSmithFeetForward.seen(-0.4),
+            // Squatting the bar down the rails.
+            "hips": hingeSmithSquatted.seen(-0.4),
+            // The upper back rounding, the chest caving and the head dropping.
+            "back": headDropped(hingeSmithLean).seen(-0.4),
+            // Knees locked straight all rep.
+            "knee": FaultPose(chains: [legs], moves: [.straighten(["shin_*"])], view: -0.4)
+        ],
+        "Nordic Hamstring Curl": [
+            "line": hingeNordicHipsBent,
+            "lower": hingeNordicDropped(12),
+            // Stopping short: the body ~34° forward at the bottom, not 75°.
+            "range": hingeNordicShort(50),
+            "anchor": hingeNordicHeelsUp(25),
+            "hands": hingeNordicPropped
+        ],
+        "Assisted Nordic Curl": [
+            // A band so strong the lifter hangs in it and barely leans: the
+            // body ~26° forward at the bottom, not 75°.
+            "band": hingeNordicShort(60),
+            "line": hingeNordicHipsBent,
+            "lower": hingeNordicDropped(12),
+            "anchor": hingeNordicHeelsUp(25),
+            "hands": hingeNordicPropped
+        ],
+        "Glute-Ham Raise": [
+            "pad": hingeGHRKneesOnPad,
+            "feet": hingeGHRFeetLoose,
+            "line": hingeNordicHipsBent,
+            // Stopping halfway: the body ~42° forward at the bottom, not 83°.
+            "range": hingeNordicShort(45)
+            // "lower" has no ghost: dropping fast and bouncing is a matter of
+            // speed, not position.
+        ],

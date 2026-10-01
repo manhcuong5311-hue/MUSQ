@@ -1,0 +1,259 @@
+// MARK: PIECES
+    // MARK: Batch 241-300 wrist curl pieces (2026-09-27)
+
+    /// Seated wrist, reverse wrist and finger curls, forearms along the
+    /// thighs: where the hands are in their arc, read as the middle of the
+    /// left palm's distance from the left knee, in torso lengths. It is
+    /// 0.12-0.18 with the hands hanging low at the bottom (palms-up curls
+    /// 0.12, palms-down 0.16, the finger curl 0.18 with the bar in the
+    /// fingertips), 0.28 with the hands in line with the forearms, about
+    /// 0.34 as they pass level and 0.37-0.40 with them curled up at the top,
+    /// in all six seated models. `wristCurlLow` shows a fault only near the
+    /// bottom; `wristCurlHigh` fades in once the hands rise ~3° above the
+    /// forearm line, about 60% shown as they pass level, in full from ~14°
+    /// above level, so a hand turned 35° lower never dips below the forearm
+    /// line on the way up or down (at 0.28-0.36 it dipped ~4° mid-rep). The
+    /// palm point is in every chain drawn with them, so the ghost solves it.
+    private static let wristCurlLow = FaultStrength.between("hand_L.tip", "shin_L", from: 0.27, to: 0.18)
+    private static let wristCurlHigh = FaultStrength.between("hand_L.tip", "shin_L", from: 0.29, to: 0.37)
+
+    /// Palms-up wrist curl cut short at the bottom: all of it with the hands
+    /// hanging at the bottom (0.124), none once they rise past ~31° below
+    /// level (0.257). Fitted on the rig so the 40° ghost holds at ~31° below
+    /// level until the lifter's hands pass it, rather than rising with them
+    /// and falling back as `wristCurlLow` (full to 0.18, ~56° below) made it.
+    private static let wristCurlBottomShort = FaultStrength.between("hand_L.tip", "shin_L", from: 0.257, to: 0.124)
+
+    /// Wrist curls: the hands turned about the wrists, the forearms left on
+    /// the thighs. A positive turn raises the fingers (the wrist curled up
+    /// on a palms-up curl, bent up on a palms-down one; on the standing
+    /// behind-the-back curl, where the hands hang, it tips them forward, out
+    /// of the curl), a negative one lowers them: a rep cut short at either
+    /// end, with the matching strength.
+    private static func wristCurlHandsTurned(_ degrees: Float, withBar: Bool = false,
+                                             strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"]] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Seated wrist curls: the forearms lifting off the thighs, turned up
+    /// about the elbows with the hands carried along (`elbowsFolded`'s turn,
+    /// with the bar drawn). 22° brings the models' forearms from 23° below
+    /// level to level and the wrists up ~9 cm. Drawn from the elbows: the
+    /// upper arms do not move, and seen from the side the far one crossed
+    /// the near hand and bar.
+    private static func wristCurlForearmsLifted(_ degrees: Float, withBar: Bool = false,
+                                                strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"]] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Seated wrist curls: the forearms resting too far back along the
+    /// thighs, the wrists on them instead of just past the knees. Elbows,
+    /// wrists and hands slide ~8 cm back and up the thighs' 15° slope, so at
+    /// the bottom the hanging hands reach down into the legs; drawn from the
+    /// elbows, since the upper arms could only follow with a change of trunk
+    /// angle.
+    private static func wristCurlOnThighs(withBar: Bool = false) -> FaultPose {
+        FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"]] + (withBar ? [bar] : []),
+                  moves: [.shift(["forearm_*", "hand_*", "hand_*.tip"], ahead: -0.135, rise: 0.036)])
+    }
+
+    /// Seated wrist curls: the grip loosening at the bottom, the handle
+    /// slipping ~6 cm on down the hanging hands toward the fingertips (the
+    /// palm point pushed ~70° below level, along the models' hands, which
+    /// hang 61-72° below level there, from 11.8 cm to ~17.7 cm past the
+    /// wrist: at the finger joints, inside the open fingers' ~19 cm). The
+    /// slipped handle is drawn as a dot (or the bar) of its own, not joined
+    /// to the wrist, so it reads as the handle moving rather than a longer
+    /// hand, with the guide from the palm showing how far. Use with
+    /// `wristCurlLow`.
+    private static func wristCurlGripSlipping(withBar: Bool = false, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [["forearm_*", "hand_*"], ["hand_*.tip"]] + (withBar ? [bar] : []),
+                  moves: [.shift(["hand_*.tip"], ahead: 0.035, rise: -0.095)],
+                  strength: strength)
+    }
+
+    /// Seated wrist curls: the trunk rocking back `degrees` from the hips,
+    /// the arms, grip and any bar carried with it (`trunkLifted`'s turn,
+    /// drawn out to the palm points, which it also moves, so no guide is
+    /// left without a line), on the top's ramp (`wristCurlHigh`), rising
+    /// with the load as the copy's "as the dumbbells come up" says; shown
+    /// throughout, the ghost sat too upright at the bottom rather than
+    /// rocking. The ramp reads the lifter's own palm point, not the moved
+    /// one.
+    private static func wristCurlTrunkLifted(_ degrees: Float, withBar: Bool = false,
+                                             strength: FaultStrength = .always) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Behind-the-back wrist curl: how far the wrists have curled the bar up
+    /// behind the hips, read as the middle of the left palm's distance from
+    /// the left knee in torso lengths (0.69 hanging at the bottom, 0.82
+    /// curled at the top).
+    private static let behindWristCurlTop = FaultStrength.between("hand_L.tip", "shin_L", from: 0.72, to: 0.80)
+
+    /// Behind-the-back wrist curl: the shoulders shrugging up as the bar
+    /// rises (`shrugged`'s lift, 0.12 torso lengths, ~7 cm), the arms, grip
+    /// and bar carried up with them, on the curl's own strength.
+    private static let behindWristCurlShrugged = FaultPose(
+        chains: [shoulders, armsToGrip, bar],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], up: 0.12)],
+        strength: behindWristCurlTop
+    )
+
+    /// Behind-the-back wrist curl: the elbows driving back `back`° and bending
+    /// `bend`° to pull the bar up behind the hips as the wrists curl
+    /// (`shrugRowed`'s moves on the curl's own strength). On the rig 30° and
+    /// 50° raise the wrists ~7 cm and keep the grip ~25 cm behind the pelvis.
+    private static func behindWristCurlRowed(back: Float, bend: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -back),
+                          .turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: bend)],
+                  strength: behindWristCurlTop)
+    }
+
+    /// Standing with straight arms: the knees dipping to bounce the bar up,
+    /// the hips and everything they carry sinking 0.1 torso lengths (~6 cm)
+    /// and the knees re-seated (174° to ~136°, ~13 cm forward on the rig).
+    /// `pressKneesDipped`'s moves, shown throughout: that piece fades with
+    /// elbow bend, and these arms stay straight.
+    private static let behindWristCurlKneesDipped = FaultPose(
+        chains: [spine, legs, hips, armsToGrip, bar],
+        moves: [.shift(carried, rise: -0.1), .resolve(["shin_*"])]
+    )
+
+// MARK: TABLE
+
+        // MARK: Batch 241-300 wrist curls (2026-09-27)
+        // Six seated models share one body: sitting on the end of a bench,
+        // trunk ~55° forward, forearms along the thighs (23° below level),
+        // wrists just past the knees; only the wrists (and the finger curl's
+        // fingers) move. The barbell and finger curls are framed at yaw -1.0
+        // and the cable curls at +1.0, ~57° round to the side; the two
+        // dumbbell curls at -0.7 (~40°), where the near plates clear the
+        // near fist at the top. The sagittal faults read from there without
+        // a turn, except on the dumbbell curls: their trunk rock is seen from
+        // -1.0 (`.seen(-0.3)`), where the rocked-back near shoulder stays
+        // clear of the top-right pill, and their forearm lift is turned 0.15
+        // to the front, so the far elbow does not sit on the near palm's
+        // ring. Turning round past about -0.75 puts the near plate over the
+        // near fist at the top. Faults of the bottom of the rep use
+        // `wristCurlLow` (the Dumbbell Wrist Curl's short bottom
+        // `wristCurlBottomShort`), of the top `wristCurlHigh`, the trunk rock
+        // included. The trunk faults turn everything above the pelvis, palm
+        // points and bar included, so they draw them too.
+        "Dumbbell Wrist Curl": [
+            // The forearms coming up off the thighs (to level) as the
+            // dumbbells rise, the elbows bending to help. Turned 0.15 to the
+            // front (-0.55 in total): unturned, the far elbow's dot sat on the
+            // near palm's ring and the two arms read as one zig-zag; the near
+            // fist stays clear of the plate.
+            "forearm": wristCurlForearmsLifted(22, strength: wristCurlHigh).seen(0.15),
+            // Wrists back on the thighs: at the bottom the hands hang into the legs.
+            "position": wristCurlOnThighs(),
+            // Short at the bottom: the hands stop 40° higher, the wrists
+            // barely bent back (the lifter's hang 72° below level, the
+            // ghost's 31°, held there until the lifter's hands pass it).
+            "range": wristCurlHandsTurned(40, strength: wristCurlBottomShort),
+            "grip": wristCurlGripSlipping(strength: wristCurlLow),
+            // Rocking up from the hips (55° to 43° forward) as the hands curl
+            // up, the arms carried up off the thighs. Seen from -1.0, the side
+            // view: at -0.7 the ghost's near shoulder landed on the top-right
+            // pill's text and the rock was foreshortened.
+            "torso": wristCurlTrunkLifted(12, strength: wristCurlHigh).seen(-0.3),
+        ],
+        "Barbell Reverse Wrist Curl": [
+            "forearm": wristCurlForearmsLifted(22, withBar: true, strength: wristCurlHigh),
+            "position": wristCurlOnThighs(withBar: true),
+            // Short at the top: the knuckles 35° lower, about level (the
+            // lifter's hands end 24° above level, the ghost's 11° below, still
+            // 11° above the forearms, which slope 22° down). wristCurlHigh
+            // ramps over ~33° of the arc, from ~19° below level to ~14°
+            // above, which keeps a 35° ghost level with the forearm line at
+            // worst mid-rep; a bigger turn would dip it below.
+            "top": wristCurlHandsTurned(-35, withBar: true, strength: wristCurlHigh),
+            "grip": wristCurlGripSlipping(withBar: true, strength: wristCurlLow),
+            "torso": wristCurlTrunkLifted(12, withBar: true, strength: wristCurlHigh),
+        ],
+        "Dumbbell Reverse Wrist Curl": [
+            // As the Dumbbell Wrist Curl's, turned 0.15 to the front.
+            "forearm": wristCurlForearmsLifted(22, strength: wristCurlHigh).seen(0.15),
+            "position": wristCurlOnThighs(),
+            // Short at the top: the knuckles 35° lower, as the barbell
+            // version. The far hand is drawn from the wrist: at -0.7 the far
+            // elbow sits on the near palm point, and drawn it hid that palm's
+            // ring and joined the two hands into one zig-zag. Not turned as
+            // the forearm fault is: this cue's pill is top-left, and 0.15 to
+            // the front would run its leader through the head.
+            "top": FaultPose(chains: [["forearm_L", "hand_L", "hand_L.tip"], ["hand_R", "hand_R.tip"]],
+                             moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .lateral, degrees: -35)],
+                             strength: wristCurlHigh),
+            "grip": wristCurlGripSlipping(strength: wristCurlLow),
+            // As the Dumbbell Wrist Curl's, seen from -1.0.
+            "torso": wristCurlTrunkLifted(12, strength: wristCurlHigh).seen(-0.3),
+        ],
+        // The cable bar joins the hands; the cable itself is not drawn.
+        "Cable Wrist Curl": [
+            "forearm": wristCurlForearmsLifted(22, withBar: true, strength: wristCurlHigh),
+            "position": wristCurlOnThighs(withBar: true),
+            // Short at the top, where the cable pulls hardest: the palms stop
+            // about level (the lifter's curl ends 34° above level, the
+            // ghost's about 1° below).
+            "top": wristCurlHandsTurned(-35, withBar: true, strength: wristCurlHigh),
+            "grip": wristCurlGripSlipping(withBar: true, strength: wristCurlLow),
+            "torso": wristCurlTrunkLifted(12, withBar: true, strength: wristCurlHigh),
+        ],
+        "Cable Reverse Wrist Curl": [
+            "forearm": wristCurlForearmsLifted(22, withBar: true, strength: wristCurlHigh),
+            "position": wristCurlOnThighs(withBar: true),
+            "top": wristCurlHandsTurned(-35, withBar: true, strength: wristCurlHigh),
+            "grip": wristCurlGripSlipping(withBar: true, strength: wristCurlLow),
+            "torso": wristCurlTrunkLifted(12, withBar: true, strength: wristCurlHigh),
+        ],
+        // Standing, seen from behind on the left (yaw -2.4). The sagittal
+        // faults turn +0.2 (-2.2 in total): the arms and hands moving back
+        // show at ~81% of their length (68% unturned), and the near plate
+        // stays ~4 cm clear of the left wrist at the top. Further round it
+        // covers the wrist: by ~1 cm at -2.1, ~12 cm at -1.9.
+        "Behind-the-Back Wrist Curl": [
+            // The elbows driving back and bending to pull the bar up.
+            "arms": behindWristCurlRowed(back: 30, bend: 50).seen(0.2),
+            // Shoulders shrugged up as the bar rises, the arms, grip and bar
+            // lifted with them; seen from behind, unturned.
+            "shoulders": behindWristCurlShrugged,
+            // The arms swinging back 15° from the shoulders (the grip ~14 cm
+            // further back, ~8 cm higher) as the bar rises.
+            "swing": armsSwungForward(-15, withBar: true, strength: behindWristCurlTop).seen(0.2),
+            // Short at the top: the hands 35° less curled (the lifter's point
+            // 27° below straight back; the ghost's 62°).
+            "range": wristCurlHandsTurned(35, withBar: true, strength: behindWristCurlTop).seen(0.2),
+            "stance": behindWristCurlKneesDipped.seen(0.2),
+        ],
+        // The clip starts at the top (bar in the palms) and reaches the
+        // bottom (bar in the fingertips) at ~1.3-1.7 s.
+        "Finger Curl": [
+            "forearm": wristCurlForearmsLifted(22, withBar: true, strength: wristCurlHigh),
+            "position": wristCurlOnThighs(withBar: true),
+            // The bar kept in the palms: at the bottom the fingers stay closed
+            // and the wrists about straight (the lifter's hands hang 57° below
+            // level, the ghost's 27°), the palm point drawn ~3.3 cm back along
+            // the hand, to 8.5 cm from the wrist, where the model holds the
+            // bar in the palm (the lifter's bar sits 14 cm out, in the
+            // fingertips).
+            "roll": FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"], bar],
+                              moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .lateral, degrees: 30),
+                                      .shift(["hand_*.tip"], ahead: -0.05, rise: 0.025)],
+                              strength: wristCurlLow),
+            // The fingers closed but the wrists never curled: the hands 30°
+            // lower at the top (the lifter's 14° above level, the ghost's 16°
+            // below; the model's fingers and wrists close together, so the
+            // ghost is read at the top).
+            "top": wristCurlHandsTurned(-30, withBar: true, strength: wristCurlHigh),
+            // Read at the top, 0.0 s (99% shown).
+            "torso": wristCurlTrunkLifted(12, withBar: true, strength: wristCurlHigh),
+        ],

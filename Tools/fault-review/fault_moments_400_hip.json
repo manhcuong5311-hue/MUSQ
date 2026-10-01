@@ -1,0 +1,9 @@
+{
+ "Frog Pump": {"hips": "top", "ribs": "top", "feet": "top", "knees": "top", "head": "top"},
+ "Weighted Frog Pump": {"hips": "top", "dumbbell": "top", "ribs": "top", "feet": "top", "knees": "top"},
+ "Cable Hip Adduction": {"torso": "top", "grip": "top", "hips": "top", "leg": "top", "sweep": "top"},
+ "Standing Hip Abduction": {"torso": "top", "grip": "top", "hips": "top", "lift": "top", "foot": "top"},
+ "Side-Lying Hip Abduction": {"lift": "top", "line": "top", "hips": "top", "waist": "top", "head": "top"},
+ "Banded Hip Abduction": {"torso": "top", "grip": "top", "knees": "top", "feet": "top"},
+ "Clamshell": {"open": "top", "angle": "bottom", "pelvis": "top", "heels": "top"}
+}

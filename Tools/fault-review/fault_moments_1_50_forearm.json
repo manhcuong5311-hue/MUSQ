@@ -1,0 +1,4 @@
+{
+  "Reverse Curl": {"grip": "top", "elbow": "top", "range": "bottom", "torso": "top", "shoulder": "top"},
+  "Wrist Curl": {"forearm": "top", "position": "bottom", "range": "bottom", "torso": "top", "seat": "any"}
+}

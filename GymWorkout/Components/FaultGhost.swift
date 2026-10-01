@@ -78,6 +78,10 @@ struct FaultGhost: View {
             guard let side = BodyFrame.leadingSide(transforms) else { return nil }
             fault = fault.leading(side)
         }
+        if fault.bends {
+            guard let side = BodyFrame.bentSide(transforms) else { return nil }
+            fault = fault.bending(side)
+        }
 
         var names = fault.joints.union(fault.chains.joined())
         for move in fault.moves {
@@ -221,6 +225,22 @@ struct BodyFrame {
         guard let frame = BodyFrame(transforms),
               let left = transforms["foot_L"], let right = transforms["foot_R"] else { return nil }
         return simd_dot(left.columns.3.xyz - right.columns.3.xyz, frame.ahead) >= 0 ? "L" : "R"
+    }
+
+    /// `L` or `R`, whichever knee is bent further — the working leg of a lift
+    /// that shifts from side to side (lateral lunge, Cossack squat), where
+    /// neither foot leads. Nil until both legs are tracked.
+    static func bentSide(_ transforms: [String: simd_float4x4]) -> String? {
+        func bend(_ side: String) -> Float? {
+            guard let hip = transforms["thigh_\(side)"], let knee = transforms["shin_\(side)"],
+                  let ankle = transforms["foot_\(side)"] else { return nil }
+            let up = hip.columns.3.xyz - knee.columns.3.xyz, down = ankle.columns.3.xyz - knee.columns.3.xyz
+            guard simd_length(up) > 1e-5, simd_length(down) > 1e-5 else { return nil }
+            // Cosine of the knee's inner angle: larger the more it bends.
+            return simd_dot(simd_normalize(up), simd_normalize(down))
+        }
+        guard let left = bend("L"), let right = bend("R") else { return nil }
+        return left >= right ? "L" : "R"
     }
 
     /// The rotation axis that makes a positive turn match `FaultMove.turn`.

@@ -1,22 +1,28 @@
 import sys, re, json, glob, os
-sys.path.insert(0, "/Users/sammanhcuong/Desktop/GymWorkout/Tools/model-pipeline")
+sys.path.insert(0, "/Users/sammanhcuong/Developer/GymWorkout/Tools/model-pipeline")
 sys.path.insert(0, ".")
 from framer_still import gather, solve
 PT = json.load(open("posetimes.json")); PT["Walking Lunge"]["time"] = 1.0
 import numpy as np
-SRC = open("/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Models/SampleData.swift").read()
-M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
+SRC = open("/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Models/SampleData.swift").read()
+M = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/"
 PRESET = {"standing": 0.0, "bench": -1.0, "chestPress": -0.7, "pecDeck": 0.0, "cableStation": 0.0}
 HELD = ("Barbell", "Dumbbell", "Lat_Bar", "Handle", "TGrip", "TBar_Plate", "LandmineBar", "Rope", "Mat", "AnkleCuff", "CuffAttachment", "Step",
         # Batch 191-240 (2026-09-26): the plate, straight cable bar and trap bar are
         # held; the landmine presses' 1.8 m bar is left to crop.
-        "FrontPlate", "CableStraightBar", "TrapBar")
+        "FrontPlate", "CableStraightBar", "TrapBar",
+        # Batch 241-300 (2026-09-27): the EZ bar, pinch plates and towels are held.
+        "EZBar", "PinchPlates", "Towel",
+        # 1-50 redo (2026-09-29): the preacher and reverse curls' EZ bars.
+        "EZ_Bar")
 BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Grip Lat Pulldown",
              "V-Bar Lat Pulldown", "Single-Arm Lat Pulldown", "Rope Lat Pulldown",
              # Batch 191-240 (2026-09-26): cable towers and the rear-delt machine
              # left these lifters a corner of the tile.
              "Cable Upright Row", "Cable Y-Raise", "Cable Front Raise", "Cable Shrug",
-             "Cable External Rotation", "Machine Rear Delt Row"}
+             "Cable External Rotation", "Machine Rear Delt Row",
+             # Batch 241-300 (2026-09-27): the cable curls seen from the front-right.
+             "Cable Preacher Curl", "Single-Arm Cable Curl", "Cable Hammer Curl", "Cable Drag Curl"}
 block = SRC[SRC.index("modelByExercise: [String: ExerciseModel] = ["):SRC.index("static func model(for")]
 jobs = {}
 for m in re.finditer(r'"([^"]+)":\s*ExerciseModel\(resource: "([^"]+)",\s*framing: (?:\.(\w+)|ModelFraming\(yaw: ([-\d.]+))', block):
@@ -39,7 +45,9 @@ for name, (path, yaw) in jobs.items():
     # sliver, so frame the lifter and let the tower crop.
     if name in BODY_ONLY: z, off = zb, offb
     elif za >= zb: z, off = zb, offb
-    elif za >= 0.6 * zb or name in ("Leg Press", "Cable Crunch"): z, off = za, offa
+    # The 1-50 redo's row machine (2026-09-29) raised the knees, which
+    # tipped it into cropping the machine; it keeps showing all of it.
+    elif za >= 0.6 * zb or name in ("Leg Press", "Cable Crunch", "Chest-Supported Row Machine"): z, off = za, offa
     else: z, off = zb, offb
     out[name] = dict(yaw=yaw, zoom=round(z, 3), off=[round(float(v), 3) for v in off])
     print(f"{name:36s} yaw={yaw:+.2f} zoom={z:.3f} body={zb:.3f} all={za:.3f}", flush=True)

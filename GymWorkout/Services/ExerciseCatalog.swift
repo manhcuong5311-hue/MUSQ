@@ -101,10 +101,12 @@ enum ExerciseCatalog {
         timedExercises.contains(name) ? .time : .reps
     }
 
-    /// No external load unless the user adds some (a vest, a plate).
+    /// No external load unless the user adds some (a vest, a plate). The
+    /// towel hang is a hang from a bar, so it counts too, as do the ball,
+    /// slider and band lifts of the 351-400 set (nothing to log in kilos).
     static func isBodyweight(_ name: String) -> Bool {
         guard let exercise = exercise(named: name) else { return false }
-        return ["BODYWEIGHT", "BENCH"].contains(exercise.equipment)
+        return ["BODYWEIGHT", "BENCH", "TOWEL", "SWISS BALL", "SLIDERS", "BAND"].contains(exercise.equipment)
     }
 
     /// Step-by-step setup, from the exercise's trainer content.
@@ -121,7 +123,9 @@ enum ExerciseCatalog {
 
     /// Holds and loaded carries, logged in seconds rather than reps.
     private static let timedExercises: Set<String> = ["Plank", "Side Plank",
-                                                      "Farmer's Carry", "Suitcase Carry", "Overhead Carry"]
+                                                      "Farmer's Carry", "Suitcase Carry", "Overhead Carry",
+                                                      "Plate Pinch Hold", "Dumbbell Static Hold",
+                                                      "Barbell Static Hold", "Towel Grip Hold"]
 
     private static let byName: [String: Exercise] =
         Dictionary(SampleData.exercises.map { ($0.name, $0) }, uniquingKeysWith: { first, _ in first })

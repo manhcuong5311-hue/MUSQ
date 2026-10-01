@@ -16,6 +16,7 @@ struct ExerciseDetailView: View {
     @Environment(TrainRouter.self) private var router
     @Environment(RestTimer.self) private var restTimer
     @Environment(\.dismiss) private var dismiss
+    @Environment(Ads.self) private var ads
     /// The set whose weight is being typed.
     @FocusState private var focusedSet: UUID?
 
@@ -72,7 +73,7 @@ struct ExerciseDetailView: View {
 
     private func header(_ exercise: Exercise) -> some View {
         HStack(spacing: 12) {
-            CircleIconButton(action: { dismiss() }) {
+            CircleIconButton(action: { dismiss(); ads.moment(.exerciseClosed) }) {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(DS.silver)

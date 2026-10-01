@@ -1,0 +1,215 @@
+// MARK: PIECES
+    // MARK: Batch 241-300 drag, spider and hammer curl pieces (2026-09-27)
+
+    /// Drag curls: how much of a fault of the top of the rep shows, read from
+    /// the left shoulder-to-wrist distance in torso lengths: none at 0.75
+    /// (elbow ~112°), all of it by 0.5 (~67°); the top of these models is
+    /// 0.42. The elbow bend alone would already show half of it with the bar
+    /// at the thighs, where the drag curl models start at ~138°.
+    private static let dragTop = FaultStrength.between("upper_arm_L", "hand_L", from: 0.75, to: 0.5)
+
+    /// Drag curls: the bar shrugged the last few centimetres like an upright
+    /// row, the shoulders, arms and grip lifted 0.12 torso lengths (~7 cm)
+    /// toward the ears near the top (`shouldersLowered` run upward).
+    private static func dragShrugged(withBar: Bool) -> FaultPose {
+        shouldersLowered(-0.12, withBar: withBar, strength: dragTop)
+    }
+
+    /// Drag curls: the wrists curling in at the top, `curlWristsCurled`'s
+    /// fold toward the palm (50° unless a model framed small needs a deeper
+    /// one to read), read by `dragTop` rather than the elbow bend.
+    private static func dragWristsCurled(_ degrees: Float = 50) -> FaultPose {
+        FaultPose(
+            chains: [["forearm_*", "hand_*", "hand_*.tip"], bar],
+            moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .lateral, degrees: degrees)],
+            strength: dragTop
+        )
+    }
+
+    /// Drag curls cut short at the bottom: the bar turns round at the
+    /// stomach, still on the body. The upper arms stay 18° further back and
+    /// the elbows 43° more bent, so the models' ~138° bottom becomes ~95°,
+    /// their own pose about a third of the way up (the ghost bar ~14 cm
+    /// higher, still against the body). Shown only near the
+    /// bottom: `from`…`to` is the left shoulder-to-wrist distance in torso
+    /// lengths (0.848 at the models' bottom, 0.73 at ~108°).
+    private static func dragCurlShort(from: Float, to: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -18),
+                          .turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: 43)],
+                  strength: .between("upper_arm_L", "hand_L", from: from, to: to))
+    }
+
+    /// Drag curls: `bodySwung`'s moves (hips 0.06 forward, trunk and arms 15°
+    /// back about the pelvis), growing from the models' bottom (shoulder to
+    /// wrist 0.84 torso lengths, elbows ~138°) to all of it by 0.6 (~83°).
+    /// `bodySwung` reads the elbow bend, which would already show ~0.47 of
+    /// the lean with the bar still at the thighs, since these models never
+    /// straighten the elbows. Drawn as the spine, the hips and the arm nearer
+    /// the camera (`side`): seen side-on, the far arm lies beside the near
+    /// one, its upper arm running down next to the spine and its forearm
+    /// doubling the near one, and the bar is end-on, a stub.
+    private static func dragSwung(near side: String) -> FaultPose {
+        FaultPose(chains: [spine, arm(side), hips],
+                  moves: [.shift(["pelvis", "thigh_*"], ahead: 0.06),
+                          .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 15)],
+                  strength: .between("upper_arm_L", "hand_L", from: 0.84, to: 0.6))
+    }
+
+    /// Spider curls: the shoulders shrugging up the pad toward the ears (0.18
+    /// torso lengths, ~10.6 cm, ending above the neck), drawn as the girdle
+    /// and upper arms only so no forearm crosses the shoulder line. The
+    /// Spider Curl's inline shrug, pulled out unchanged so the dumbbell and
+    /// EZ bar spider curls share it.
+    private static let spiderShrugged = FaultPose(
+        chains: [shoulders, ["upper_arm_*", "forearm_*"]],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], up: 0.18)]
+    )
+
+    /// Spider curls: `trunkLifted(18)` (chest and shoulders heaving 18° up off
+    /// the pad about the pelvis, the arms riding with it), drawn as the spine
+    /// and the near (left) arm only. Side-on with the arms curled, the two arm
+    /// chains cross each other and the lifted spine; the far arm is behind the
+    /// torso and pad in the trainer view anyway.
+    private static let spiderPadLifted = FaultPose(
+        chains: [spine, ["upper_arm_L", "forearm_L", "hand_L"]],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 18)]
+    )
+
+    /// Hammer curls (palm facing in): the left wrist bending in toward the
+    /// palm, the fingers tipping toward the midline, with the left elbow bend.
+    /// With the palm facing the body a fold toward the palm is a turn about
+    /// the lifter's vertical; `.lateral` would tip the thumb side up instead.
+    /// 55° about `.up` bends the hand ~47° with the forearm level and ~39°
+    /// at the top, where the forearm is ~45° up.
+    private static let hammerWristBent = FaultPose(
+        chains: [["forearm_L", "hand_L", "hand_L.tip"]],
+        moves: [.turn(pivot: "hand_L", points: ["hand_L.tip"], axis: .up, degrees: 55)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Alternating hammer curl: `hunched()` (both shoulders and arms 0.07
+    /// forward, 0.1 up) drawn as the girdle and upper arms only, like
+    /// `spiderShrugged`: at the top of either curl the working forearm runs
+    /// up across the chest to the other shoulder, and its line outweighs the
+    /// raised girdle the fault is about.
+    private static let hammerHunched = FaultPose(
+        chains: [shoulders, ["upper_arm_*", "forearm_*"]],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], forward: 0.07, up: 0.1)]
+    )
+
+    /// Alternating hammer curl: `bodySwung`'s moves (hips 0.06 forward, trunk
+    /// and arms 15° back about the pelvis), shown as the hands spread apart
+    /// while one dumbbell rises (1.075 torso lengths with both arms down, 0.97
+    /// mid-curl, 1.155 at the top of either curl). Drawn as the spine, girdle,
+    /// upper arms and hips: drawn to the hands, the working forearm crosses
+    /// the resting upper arm over the chest.
+    private static let hammerSwung = FaultPose(
+        chains: [spine, shoulders, ["upper_arm_*", "forearm_*"], hips],
+        moves: [.shift(["pelvis", "thigh_*"], ahead: 0.06),
+                .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 15)],
+        strength: .between("hand_L", "hand_R", from: 1.09, to: 1.15)
+    )
+
+// MARK: TABLE
+        // MARK: Batch 241-300 drag, spider and hammer curls (2026-09-27)
+        // Drag curls, standing, framed at yaw -0.8 (Drag Curl, front-left),
+        // -0.3 (EZ Bar Drag Curl, near front-on) and +1.1 (Cable Drag Curl,
+        // right side to the camera). The bar rides up the body while the
+        // elbows go back (upper arms 15-28° behind vertical); every rep starts
+        // at ~138° with the bar at the thighs. The elbow and torso faults turn
+        // to a true side view (total ±1.5: .seen(-0.7) / .seen(-1.2) /
+        // .seen(0.4)), where both arms fold into one V and the lean shows in
+        // full (the torso ghost draws the near arm only: side-on the far arm
+        // doubles it and its upper arm runs down beside the spine); on the
+        // two plate-loaded bars the near plate then stands in front of the
+        // real arms at the top (the Olympic plate also the chest), and the
+        // ghost is drawn over it. The shrug is seen near front-on (total -0.1
+        // / 0 / +0.6; at +0.4 the cable column's back panel hides the far
+        // hand; at +0.6 the bar line would cross the far upper arm, so the
+        // cable drag curl's shrug leaves it out). The faults of the top read
+        // `dragTop`.
+        // Grip is seen from the front-left (total -0.8 on both plate-loaded
+        // bars: the fold ~72% in the picture plane, the far hand clear of the
+        // plate), range from the framing (both hands clear at the bottom).
+        "Drag Curl": [
+            // The elbows swinging forward into an ordinary curl, the bar
+            // arcing out in front of the body (35° about the shoulders).
+            "elbow": armsTurned(.lateral, 35, withBar: true, strength: dragTop).seen(-0.7),
+            "shoulder": dragShrugged(withBar: true).seen(0.7),
+            // No turn (-0.8); framed small, so a deeper 65° fold.
+            "grip": dragWristsCurled(65),
+            // Short reps: the bar turns round at the stomach (no turn).
+            "range": dragCurlShort(from: 0.78, to: 0.84),
+            // Leaning back and rocking the hips forward to get the bar up,
+            // none of it with the bar still at the thighs. The left arm is
+            // the near one.
+            "torso": dragSwung(near: "L").seen(-0.7),
+        ],
+        "EZ Bar Drag Curl": [
+            "elbow": armsTurned(.lateral, 35, withBar: true, strength: dragTop).seen(-1.2),
+            // Square-on (total 0): both shoulders rise evenly, and the ghost's
+            // near shoulder stays clear of the top-right pill.
+            "shoulder": dragShrugged(withBar: true).seen(0.3),
+            "grip": dragWristsCurled().seen(-0.5),
+            // No turn: front-on shows the bar held at the stomach.
+            "range": dragCurlShort(from: 0.78, to: 0.84),
+            "torso": dragSwung(near: "L").seen(-1.2),
+        ],
+        "Cable Drag Curl": [
+            // The cable drawing the bar out, the elbows swinging forward.
+            "elbow": armsTurned(.lateral, 35, withBar: true, strength: dragTop).seen(0.4),
+            // No bar line: at +0.6 it runs across the chest and crosses the
+            // far upper arm; the hands and tips still show the handle rise.
+            "shoulder": dragShrugged(withBar: false).seen(-0.5),
+            "grip": dragWristsCurled().seen(0.4),
+            "range": dragCurlShort(from: 0.78, to: 0.84).seen(0.4),
+            // Leaning back against the cable; the right arm is the near one.
+            "torso": dragSwung(near: "R").seen(0.4),
+        ],
+        // Spider curls: the Spider Curl's body and arm motion exactly, seen
+        // from behind on the left (yaw -2.0); +0.45 brings them to a true left
+        // side view. Two dumbbells (no bar line) or an EZ bar.
+        "Dumbbell Spider Curl": [
+            // Chest and shoulders heaving up off the pad (trunk 48° to 30°
+            // forward of vertical), the near arm riding with it.
+            "pad": spiderPadLifted.seen(0.45),
+            "shoulder": spiderShrugged,
+            // Upper arms swinging from vertical toward the head.
+            "elbow": elbowsForward(30).seen(0.45),
+            // Framed small: a deeper fold, the fingers tipping past vertical.
+            "grip": curlWristsCurled(degrees: 65).seen(0.45),
+            // Half reps: shoulder-to-wrist 0.90 torso lengths at the bottom
+            // (170°), 0.81 at ~126°.
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(0.45),
+        ],
+        "EZ Bar Spider Curl": [
+            "pad": spiderPadLifted.seen(0.45),
+            "shoulder": spiderShrugged,
+            "elbow": elbowsForward(30, withBar: true).seen(0.45),
+            // No turn: side-on the near plate covers both hands; from
+            // behind (-2.0) the near hand is clear and the fold ~91% in view.
+            "grip": curlWristsCurled(withBar: true, degrees: 65),
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(0.45),
+        ],
+        // Standing, framed at yaw -0.4 like the Alternating Dumbbell Curl. The
+        // LEFT arm curls first (0-4 s) with the palm facing in throughout; the
+        // elbow and grip faults read the left elbow, so they show during the
+        // left curl and fade while the right arm works.
+        "Alternating Hammer Curl": [
+            // Both shoulders hunched up and forward (the label points at the
+            // top of the right trap, on the open side of the frame), drawn
+            // as the girdle and upper arms.
+            "shoulder": hammerHunched.seen(-0.6),
+            "elbow": elbowsForward(35, side: "L").seen(-0.9),
+            // The wrist bending in toward the midline; turned to face the
+            // lifter (total 0) so the fold reads across the frame.
+            "grip": hammerWristBent.seen(0.4),
+            // The resting (right) arm left half-bent (elbow ~118°) while the
+            // left arm curls; turned to the right side (total +1.1) so the
+            // forearm shows swinging forward, not folding across the hips.
+            "range": elbowsFolded(.lateral, 60, side: "R", strength: .withBend("forearm_L")).seen(1.5),
+            // Either arm's curl: bodySwung's moves, shown as the hands spread
+            // apart while one dumbbell rises, drawn without the forearms.
+            "torso": hammerSwung.seen(-0.9),
+        ],

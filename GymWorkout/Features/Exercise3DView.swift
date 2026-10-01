@@ -26,6 +26,7 @@ struct Exercise3DView: View {
     var still: TimeInterval? = nil
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(Ads.self) private var ads
 
     @State private var sheet: SheetKind?
     @State private var cueID: String
@@ -57,12 +58,12 @@ struct Exercise3DView: View {
             _cueMode = State(initialValue: .mistake)
         }
         // The cue dots, plus whatever the exercise's fault ghosts pose. A dot
-        // on the leading or trailing leg needs both legs, and the feet and
-        // body axes that decide which one leads.
+        // on the leading or trailing (or bent or straight) leg needs both
+        // legs, and the joints that decide which one it is.
         let cueJoints = (content?.annotations.compactMap(\.joint) ?? []).flatMap { joint -> [String] in
-            guard let cut = joint.hasSuffix("_front") ? 6 : joint.hasSuffix("_back") ? 5 : nil else { return [joint] }
-            let stem = joint.dropLast(cut)
-            return ["\(stem)_L", "\(stem)_R", "foot_L", "foot_R"] + BodyFrameJoints.all
+            guard let suffix = FaultPose.roleSuffixes.first(where: joint.hasSuffix) else { return [joint] }
+            let stem = joint.dropLast(suffix.count)
+            return ["\(stem)_L", "\(stem)_R", "thigh_L", "thigh_R", "shin_L", "shin_R", "foot_L", "foot_R"] + BodyFrameJoints.all
         }
         let joints = cueJoints + FaultPoses.joints(for: exercise.name)
         _tracker = State(initialValue: JointTracker(joints: Array(Set(joints)).sorted()))
@@ -177,7 +178,7 @@ struct Exercise3DView: View {
 
     private var header: some View {
         HStack(spacing: 12) {
-            CircleIconButton(action: { dismiss() }) {
+            CircleIconButton(action: { dismiss(); ads.moment(.exerciseClosed) }) {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(DS.silver)
@@ -355,12 +356,17 @@ struct Exercise3DView: View {
     }
 
     /// A joint's point on the live model. `_front` and `_back` name the
-    /// leading and trailing leg of a lift that alternates legs, decided afresh
-    /// every frame like the fault ghosts do.
+    /// leading and trailing leg of a lift that alternates legs, `_bent` and
+    /// `_straight` the working and straight leg of one that shifts from side
+    /// to side, decided afresh every frame like the fault ghosts do.
     private func trackedPoint(_ joint: String) -> CGPoint? {
-        for (suffix, leads) in [("_front", true), ("_back", false)] where joint.hasSuffix(suffix) {
-            guard let side = BodyFrame.leadingSide(tracker.transforms) else { return nil }
-            let resolved = leads ? side : (side == "L" ? "R" : "L")
+        let roles = [
+            ("_front", true, BodyFrame.leadingSide), ("_back", false, BodyFrame.leadingSide),
+            ("_bent", true, BodyFrame.bentSide), ("_straight", false, BodyFrame.bentSide),
+        ]
+        for (suffix, isSide, decide) in roles where joint.hasSuffix(suffix) {
+            guard let side = decide(tracker.transforms) else { return nil }
+            let resolved = isSide ? side : (side == "L" ? "R" : "L")
             return tracker.points[String(joint.dropLast(suffix.count)) + "_" + resolved]
         }
         return tracker.points[joint]

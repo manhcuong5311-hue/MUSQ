@@ -1,0 +1,111 @@
+// MARK: PIECES
+    // MARK: 1-50 redo curl pieces (2026-09-29)
+
+    /// Incline curls: the bench set upright, or the lifter sitting up off it.
+    /// The trunk comes forward 25° about the hips (to vertical on the Incline
+    /// Dumbbell Curl, whose back pad slopes 65°), and the arms turn 25° back
+    /// forward about the shoulders, so they hang straight down in line with
+    /// the body instead of 25° behind it. Read at the bottom, with the arms
+    /// hanging: on the rig the ghost shoulders sit ~23 cm in front of the
+    /// real ones and the ghost arms hang straight below them.
+    private static let inclineSatUpright = FaultPose(
+        chains: [spine, shoulders, armsToGrip],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -25),
+                .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: 25)]
+    )
+
+    /// One-arm curls with the pulley behind the lifter (the Bayesian curl,
+    /// left arm): the body rocking forward to drag the handle, the hips
+    /// sliding 0.06 torso lengths back and the trunk tipping 15° forward from
+    /// them with the working arm carried along — `bodySwungOneArm` mirrored.
+    /// Only the drawn points move, so the free arm gets no dashed guides.
+    /// Grows with the left elbow's bend.
+    private static let cableBehindRockedForward = FaultPose(
+        chains: [spine, arm("L"), hips],
+        moves: [.shift(["pelvis", "thigh_*"], ahead: -0.06),
+                .turn(pivot: "pelvis", points: torso + arm("L"), axis: .lateral, degrees: -15)],
+        strength: .withBend("forearm_L")
+    )
+
+// MARK: TABLE
+        // MARK: 1-50 redo curls (2026-09-29)
+        // Standing, both arms together, palms forward from the start; framed
+        // at yaw -0.4 like the Biceps Curl, whose faults these follow. The
+        // sagittal faults turn to the left side (total -1.3).
+        "Dumbbell Curl": [
+            // Shoulders shrugged up and rolled forward at the top (as the
+            // Alternating Dumbbell Curl's), turned to the front-left.
+            "shoulder": hunched().seen(-0.6),
+            "elbow": elbowsForward(35).seen(-0.9),
+            "grip": curlWristsCurled().seen(-0.9),
+            "torso": bodySwung(withBar: false).seen(-0.9),
+            // Short reps: shoulder-to-wrist 0.908 torso lengths at the model's
+            // bottom (180°), 0.78 at 120°.
+            "range": curlBottomCut(from: 0.8, to: 0.9).seen(-0.9)
+        ],
+        // Seated back on a 65° pad, framed from the front-left at yaw -0.9;
+        // -0.6 turns to a true left side view, where the arms hang behind the
+        // line of the trunk.
+        "Incline Dumbbell Curl": [
+            // Bench upright or sitting up off it: the trunk upright and the
+            // arms hanging in line with it (read at the bottom).
+            "back": inclineSatUpright.seen(-0.6),
+            // The upper arms swinging from 25° behind the trunk to 10° in
+            // front of it as the dumbbells rise.
+            "arms": elbowsForward(35).seen(-0.6),
+            // Shoulders rolled forward off the pad (0.11 torso lengths out of
+            // the chest, which faces up and forward here).
+            "shoulder": shouldersForward.seen(-0.6),
+            "grip": curlWristsCurled().seen(-0.6),
+            // Short reps: 0.906 torso lengths at the model's bottom (172°),
+            // 0.78 at 120°.
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(-0.6)
+        ],
+        // EZ bar on a preacher bench with two arm pads, seated upright, framed
+        // at yaw -0.8 like the Reverse and Barbell Preacher Curls, whose view
+        // choices these follow: the faults of the top keep the framing's view
+        // (turned further left the near plate covers the head at the top),
+        // range and torso turn -0.4, seat +0.5.
+        "Preacher Curl": [
+            "pad": curlArmsOffPad(25),
+            // Half reps at the bottom: 0.899 torso lengths at 164°.
+            "range": curlBottomCut(from: 0.8, to: 0.885).seen(-0.4),
+            // No bar line, as the Barbell Preacher Curl: drawn tip to tip it
+            // runs along the real bar.
+            "grip": curlWristsCurled(),
+            // The model sits upright, so 15° ends 15° behind vertical; the far
+            // (right) arm only, as the Reverse Preacher Curl.
+            "torso": preacherRockedBack(15, side: "R").seen(-0.4),
+            // Seat too low: the trunk sinks, the shoulders ride up; read at the
+            // bottom, with the bar away from the head.
+            "seat": preacherSatLow.seen(0.5)
+        ],
+        // Between two low pulleys ~0.9 m in front, framed from the left side
+        // (yaw -1.4): the faults move front to back and up and down, as
+        // framed. From the side the two arms line up, so the grip and torso
+        // faults draw the near (left) arm only.
+        "Cable Curl": [
+            // Reps stopped halfway up (the cables still pull hard at the top):
+            // shoulder-to-wrist 0.64 torso lengths at 90°, 0.457 at the top.
+            "top": curlStoppedShortOfTop(from: 0.64, to: 0.5),
+            "grip": curlWristsCurled("L"),
+            "elbow": elbowsForward(35),
+            "torso": bodySwungOneArm("L"),
+            // Short reps: 0.906 torso lengths at the model's bottom (172°).
+            "range": curlBottomCut(from: 0.8, to: 0.89)
+        ],
+        // Back to one low pulley, the LEFT arm working with the upper arm 23°
+        // behind the trunk; framed from the left (yaw -1.2), close enough to
+        // side-on that the faults read as framed.
+        "Bayesian Cable Curl": [
+            // The upper arm swinging from 23° behind the trunk to 12° in
+            // front of it as the hand rises.
+            "elbow": elbowsForward(35, side: "L"),
+            // Short reps: 0.906 torso lengths at the model's bottom (172°).
+            "range": curlBottomCut("L", from: 0.8, to: 0.89),
+            "grip": curlWristsCurled("L"),
+            // The working shoulder rolled forward and shrugged, the arm carried
+            // with it.
+            "shoulder": hunched("L"),
+            "torso": cableBehindRockedForward
+        ],

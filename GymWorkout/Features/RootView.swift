@@ -17,6 +17,15 @@ struct RootView: View {
     @State private var store = WorkoutStore()
     /// One rest timer for the app, so a rest keeps running across tabs.
     @State private var restTimer = RestTimer()
+    /// Remove Ads, and the ads it removes.
+    @State private var purchases: Purchases
+    @State private var ads: Ads
+
+    init() {
+        let purchases = Purchases()
+        _purchases = State(initialValue: purchases)
+        _ads = State(initialValue: Ads(purchases: purchases))
+    }
 
     var body: some View {
         ZStack {
@@ -43,6 +52,14 @@ struct RootView: View {
         .animation(.easeInOut(duration: 0.35), value: store.profile == nil)
         .environment(store)
         .environment(restTimer)
+        .environment(purchases)
+        .environment(ads)
+        // Ads wait until onboarding is done, and start again if a
+        // subscription lapses.
+        .task(id: store.profile == nil || purchases.hasRemovedAds) {
+            guard store.profile != nil, !purchases.hasRemovedAds else { return }
+            await ads.start()
+        }
     }
 }
 

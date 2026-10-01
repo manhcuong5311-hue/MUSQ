@@ -1,0 +1,191 @@
+// MARK: PIECES
+
+    // MARK: 30-leg set calf raise pieces (2026-09-28)
+
+    /// Calf raises: how far the heels are up, read off the distance from the
+    /// knee to the toe tips. The shin and foot keep their lengths, so that
+    /// distance depends on the ankle angle alone: 0.82-0.87 torso lengths with
+    /// the heels at their lowest in these five models (ankle 98-108°), 0.98-1.02
+    /// at their highest (ankle 138-148°). `from` below `to` grows the fault
+    /// toward the top of the rep, `from` above `to` toward the bottom.
+    private static func calfHeelHeight(from: Float, to: Float) -> FaultStrength {
+        .between("shin_L", "foot_L.tip", from: from, to: to)
+    }
+
+    /// The single-leg calf raise's body above the working (left) ankle: the
+    /// hips, trunk, head, both upper arms, the left arm with its dumbbell and
+    /// the bent right leg hanging behind. The right hand stays on the fixed
+    /// balance handle, so its elbow is re-seated rather than carried.
+    private static let calfOneLegBody = ["pelvis", "thigh_*", "spine", "chest", "neck", "head",
+                                         "upper_arm_*", "forearm_L", "hand_L", "hand_L.tip",
+                                         "shin_R", "foot_R", "foot_R.tip"]
+
+    /// Standing calf raises: stopping partway up. The heels sit 20° lower about
+    /// the planted toes (on the rig at the top, 1.5 s: ankle ~139° -> ~117°,
+    /// about half the rise) and the body drops with them, ~6 cm, and `back`
+    /// torso lengths back with the ankles (0.08, ~5 cm; 0 under a Smith bar,
+    /// whose track holds the shoulders over the same line); the knees
+    /// re-seat. Full once the heels are nearly at the top, none below
+    /// mid-rise. `body` is what rides on the ankles: `carried` on two legs,
+    /// `calfOneLegBody` on one.
+    private static func calfStoppedShortOfTop(_ side: String = "*", body: [String], back: Float = 0.08,
+                                              reseat extra: [String] = []) -> FaultPose {
+        FaultPose(chains: [leg(side), hips, spine],
+                  moves: [.turn(pivot: "foot_\(side).tip", points: ["foot_\(side)"], axis: .lateral, degrees: 20),
+                          .shift(["shin_\(side)"] + body, ahead: -back, rise: -0.105),
+                          .resolve(["shin_\(side)"] + extra)],
+                  strength: calfHeelHeight(from: 0.9, to: 0.97))
+    }
+
+    /// Standing calf raises: the heels never coming back down. At the bottom
+    /// the heels stay 22° up about the planted toes (ankle ~99° -> ~120°, about
+    /// half the rise) and the body stays ~8 cm higher, `forward` torso lengths
+    /// ahead with the ankles (0.06, ~4 cm; 0 under a Smith bar); the knees
+    /// re-seat. Full with the heels at their lowest, gone by mid-rise.
+    private static func calfHeelsLeftHigh(_ side: String = "*", body: [String], forward: Float = 0.06,
+                                          reseat extra: [String] = []) -> FaultPose {
+        FaultPose(chains: [leg(side), hips, spine],
+                  moves: [.turn(pivot: "foot_\(side).tip", points: ["foot_\(side)"], axis: .lateral, degrees: -22),
+                          .shift(["shin_\(side)"] + body, ahead: forward, rise: 0.13),
+                          .resolve(["shin_\(side)"] + extra)],
+                  strength: calfHeelHeight(from: 0.9, to: 0.86))
+    }
+
+    /// Standing calf raises: dipping at the knees at the bottom to bounce the
+    /// load up with the thighs. The body drops ~4 cm over the planted feet and
+    /// the knees re-seat forward (172° -> ~142°, the knee ~10 cm further
+    /// forward). Full with the heels at their lowest.
+    private static func calfKneesDipped(_ side: String = "*", body: [String], reseat extra: [String] = []) -> FaultPose {
+        FaultPose(chains: [leg(side), hips, spine],
+                  moves: [.shift(body, rise: -0.07),
+                          .resolve(["shin_\(side)"] + extra)],
+                  strength: calfHeelHeight(from: 0.9, to: 0.86))
+    }
+
+    /// Standing machine and Smith calf raises: the hips pushed back under
+    /// shoulders held by the pads or the bar. The pelvis goes ~12 cm back and
+    /// ~3 cm down, the middle of the spine half as far, the chest and
+    /// shoulders stay, so the trunk tips ~10° forward; the knees re-seat
+    /// (172° -> ~152-157°). The same all rep.
+    private static let calfHipsBack = FaultPose(
+        chains: [spine, legs, hips],
+        moves: [.shift(["pelvis", "thigh_*"], ahead: -0.2, rise: -0.05),
+                .shift(["spine"], ahead: -0.1, rise: -0.025),
+                .resolve(["shin_*"])]
+    )
+
+    /// Seated calf raise: stopping partway up. The heels sit 20° lower about
+    /// the planted toes (ankle ~148° -> ~120° at the top); with the hips on
+    /// the seat the knees, and the pad on them, sit ~6 cm lower. Full near the
+    /// top.
+    private static let calfSeatedShortOfTop = FaultPose(
+        chains: [legs],
+        moves: [.turn(pivot: "foot_*.tip", points: ["foot_*"], axis: .lateral, degrees: 20),
+                .resolve(["shin_*"])],
+        strength: calfHeelHeight(from: 0.93, to: 1.0)
+    )
+
+    /// Seated calf raise: the heels staying up at the bottom (ankle ~103° ->
+    /// ~130°), the knees and pad ~8 cm higher. Full at the bottom.
+    private static let calfSeatedHeelsLeftHigh = FaultPose(
+        chains: [legs],
+        moves: [.turn(pivot: "foot_*.tip", points: ["foot_*"], axis: .lateral, degrees: -22),
+                .resolve(["shin_*"])],
+        strength: calfHeelHeight(from: 0.92, to: 0.87)
+    )
+
+    /// Seated calf raise: the feet set ~12 cm further out in front, flat on
+    /// the platform, so the shins slope forward and the knees open from ~96°
+    /// to ~116° under the pad (the knee itself moves under 2 cm at the
+    /// bottom, ~3.5 cm at the top). The same all rep; stilled at the bottom.
+    private static let calfSeatedFeetForward = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["foot_*", "foot_*.tip"], ahead: 0.2), .resolve(["shin_*"])]
+    )
+
+    /// Leg press calf raise: the sled stopping short. The hips stay on the
+    /// seat and the knees hold their angle, so the ankle stays put and the
+    /// toes, with the plate, come 20° back toward the shins (~8 cm; ankle
+    /// ~148° -> ~129°). Full near the top.
+    private static let calfPressShortOfTop = FaultPose(
+        chains: [legs],
+        moves: [.turn(pivot: "foot_*", points: ["foot_*.tip"], axis: .lateral, degrees: 20)],
+        strength: calfHeelHeight(from: 0.95, to: 1.0)
+    )
+
+    /// Leg press calf raise: the ankles staying pointed at the bottom, the
+    /// toes and plate ~8 cm further out (ankle ~108° -> ~130°). Full at the
+    /// bottom.
+    private static let calfPressHeelsLeftHigh = FaultPose(
+        chains: [legs],
+        moves: [.turn(pivot: "foot_*", points: ["foot_*.tip"], axis: .lateral, degrees: -22)],
+        strength: calfHeelHeight(from: 0.93, to: 0.875)
+    )
+
+    /// Leg press calf raise: the knees bending at the bottom and the sled
+    /// sinking toward the lifter. The feet come ~5 cm back along the legs'
+    /// line (the lifter's forward axis on this 45° back pad) and the knees
+    /// re-seat (170° -> ~140°, the knee ~11 cm lower). Full at the bottom.
+    private static let calfPressKneesBent = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["foot_*", "foot_*.tip"], forward: -0.08), .resolve(["shin_*"])],
+        strength: calfHeelHeight(from: 0.93, to: 0.875)
+    )
+
+// MARK: TABLE
+
+        // MARK: 30-leg set calf raises (2026-09-28)
+        // All five do two reps in 8 s: about a second up, most of a second
+        // held at the top, ~1.7 s down, a short pause with the heels level.
+        // Standing, seated and single-leg are framed from the lifter's front
+        // left (yaw -1.3), near side-on: faults in the lifter's sagittal
+        // plane need no turn. The Smith machine is framed three-quarter
+        // (-0.8): sagittal faults turn -0.5 (a total of -1.3). The leg press
+        // is framed from behind on the left (-2.4, ~47° past a side view):
+        // its faults turn 0.4 to -2.0, the view the leg press family reads
+        // its sagittal faults from. The single-leg lean toward the handle is
+        // side to side, so it turns faceOn (a total of -0.2). Every "tempo"
+        // cue has no ghost: dropping fast and bouncing out of the bottom is a
+        // matter of speed, not position.
+        "Standing Calf Raise": [
+            // Hips pushed back under the pads, the chest tipping forward.
+            "body": calfHipsBack,
+            // Dipping at the knees at the bottom.
+            "knees": calfKneesDipped(body: carried),
+            // Heels only half-way up at the top.
+            "top": calfStoppedShortOfTop(body: carried),
+            // Heels held half-way up at the bottom.
+            "bottom": calfHeelsLeftHigh(body: carried)
+        ],
+        "Seated Calf Raise": [
+            // Feet far out in front, the knees opening past a right angle.
+            "knees": calfSeatedFeetForward,
+            // Leaning back and hauling on the handles.
+            "trunk": seatedRocked(12),
+            "top": calfSeatedShortOfTop,
+            "bottom": calfSeatedHeelsLeftHigh
+        ],
+        "Leg Press Calf Raise": [
+            // The knees bending and the sled sinking at the bottom.
+            "knees": calfPressKneesBent.seen(0.4),
+            // The knees snapped straight under the sled.
+            "lock": kneesSnapped.seen(0.4),
+            "top": calfPressShortOfTop.seen(0.4),
+            "bottom": calfPressHeelsLeftHigh.seen(0.4)
+        ],
+        "Single-Leg Calf Raise": [
+            // Leaning to the right and pushing down on the handle, which sits below
+            // the shoulder; face-on.
+            "support": pulledOnSupport(strength: .always).seen(faceOn),
+            "knee": calfKneesDipped("L", body: calfOneLegBody, reseat: ["forearm_R"]),
+            "top": calfStoppedShortOfTop("L", body: calfOneLegBody, reseat: ["forearm_R"]),
+            "bottom": calfHeelsLeftHigh("L", body: calfOneLegBody, reseat: ["forearm_R"])
+        ],
+        "Smith Machine Calf Raise": [
+            // Hips pushed back under the fixed bar.
+            "body": calfHipsBack.seen(-0.5),
+            // Dipping at the knees; the bar drops straight down its track.
+            "knees": calfKneesDipped(body: carried).seen(-0.5),
+            "top": calfStoppedShortOfTop(body: carried, back: 0).seen(-0.5),
+            "bottom": calfHeelsLeftHigh(body: carried, forward: 0).seen(-0.5)
+        ],

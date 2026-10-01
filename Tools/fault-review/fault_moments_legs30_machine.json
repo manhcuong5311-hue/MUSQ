@@ -1,0 +1,5 @@
+{
+  "Belt Squat": {"cable": "bottom", "knee": "bottom", "depth": "bottom", "heel": "bottom"},
+  "Pendulum Squat": {"pad": "bottom", "feet": "bottom", "knee": "bottom", "depth": "bottom"},
+  "V-Squat": {"pad": "bottom", "feet": "bottom", "knee": "bottom", "depth": "bottom"}
+}

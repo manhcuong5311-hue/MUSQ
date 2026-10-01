@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-swiss-ball-leg-curl.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

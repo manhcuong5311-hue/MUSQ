@@ -1,0 +1,156 @@
+// MARK: PIECES
+
+    // MARK: 30-leg set single-leg and heel-elevated squat pieces (2026-09-28)
+
+    /// Heel-elevated and cyclist squats: sitting the hips back with the shins
+    /// kept upright, a flat-footed hip-led squat. The hips and all they carry
+    /// go 0.16 torso lengths (~9 cm) back and the trunk tips 15° further; the
+    /// knees, re-seated over the planted feet, end ~9 cm further back with
+    /// the shins more upright. Grows with the knee's bend.
+    private static let singleSatBack = FaultPose(
+        chains: [spine, armsToGrip, legs, hips, bar],
+        moves: [.shift(carried, ahead: -0.16),
+                .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -15),
+                .resolve(["shin_*"])],
+        strength: .withBend("shin_L")
+    )
+
+    /// Cyclist squat: the feet set out wide like a regular squat. Each ankle,
+    /// its toes and its knee go 0.14 torso lengths (~8 cm) further out, the
+    /// ankles ~0.38 m apart instead of the model's 0.21 m.
+    private static let singleStanceWide = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["foot_*", "foot_*.tip", "shin_*"], outward: 0.14)]
+    )
+
+    /// Heel-elevated and cyclist squats: stopping halfway. `shallow()`'s
+    /// chains and moves, the hips and all they carry held `rise` torso
+    /// lengths up (0.3: ~18 cm, the knees ~77° instead of ~50°), but faded by
+    /// how deep the hips sit rather than by the knee's bend: these models
+    /// never stand up (knee 139° / 135° at the top), so a knee-bend strength
+    /// would still show ~46-50% there and lift the hips past a straight leg.
+    /// None with the pelvis 1.2 torso lengths or more above the left ankle
+    /// (the top is 1.33-1.37), all of it from 0.8 down (the bottom 0.62-0.69).
+    private static func singleSquatShallow(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, armsToGrip, bar],
+                  moves: [.shift(carried, rise: rise), .resolve(["shin_*"])],
+                  strength: .between("pelvis", "foot_L", from: 1.2, to: 0.8))
+    }
+
+    /// Pistols (left leg standing): how deep the hips sit. None with the
+    /// pelvis 1.2 torso lengths or more above the standing ankle (the model's
+    /// top is 1.39: its knee stops at 156°, so a knee-bend strength would still
+    /// show ~27% there), all of it from 0.8 down (the bottom is 0.54).
+    private static let singlePistolDepth = FaultStrength.between("pelvis", "foot_L", from: 1.2, to: 0.8)
+
+    /// A pistol's free (right) leg below the hip.
+    private static let singleFreeLeg = ["shin_R", "foot_R", "foot_R.tip"]
+
+    /// The assisted pistol's body without the hands, which stay on the bar:
+    /// hips, trunk, head, shoulders and the free leg.
+    private static let singleBodyOffBar = ["pelvis", "thigh_*", "spine", "chest", "neck", "head", "upper_arm_*"] + singleFreeLeg
+
+    /// Pistols: the free leg sagging 25° about its hip. At the bottom, where
+    /// the model holds it about level with the hips, its heel comes down to
+    /// the floor (the ankle ~36 cm lower on the rig).
+    private static let singleFreeLegDropped = FaultPose(
+        chains: [leg("R"), hips],
+        moves: [.turn(pivot: "thigh_R", points: singleFreeLeg, axis: .lateral, degrees: -25)],
+        strength: singlePistolDepth
+    )
+
+    /// Pistol: the arms dropping and the trunk rocking back at the bottom. The
+    /// trunk turns 12° back toward upright and the arms swing 70° down from
+    /// reaching forward to hanging by the knee, so nothing reaches forward to
+    /// balance the hips behind the foot.
+    private static let singleArmsDropped = FaultPose(
+        chains: [spine, armsToGrip],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 12),
+                .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -70)],
+        strength: singlePistolDepth
+    )
+
+    /// Pistol: stopping high. The hips, trunk, arms and free leg are held
+    /// `rise` torso lengths up (0.4: ~24 cm, the standing knee ~82° instead of
+    /// 45°), the standing knee re-seated over the planted foot.
+    private static func singlePistolShallow(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, leg("L"), leg("R"), hips],
+                  moves: [.shift(carried + singleFreeLeg, rise: rise), .resolve(["shin_L"])],
+                  strength: singlePistolDepth)
+    }
+
+    /// Assisted pistol: stopping high with the hands kept on the bar. The body
+    /// and free leg rise as in `singlePistolShallow`, the elbows re-seated
+    /// between the raised shoulders and the hands.
+    private static func singleAssistedShallow(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, leg("L"), leg("R"), hips],
+                  moves: [.shift(singleBodyOffBar, rise: rise), .resolve(["forearm_*", "shin_L"])],
+                  strength: singlePistolDepth)
+    }
+
+    /// Assisted pistol: pulling on the bar to get out of the bottom. The
+    /// hips, trunk and free leg are hauled 0.12 torso lengths (~7 cm) up and
+    /// ~7 cm in toward the bar and the trunk leans 6° further into it while
+    /// the hands stay put, so the shoulders end ~12 cm nearer the bar and the
+    /// elbows fold from ~110° to ~77°; the standing knee re-seats (45° to
+    /// ~54°).
+    private static let singlePulledToBar = FaultPose(
+        chains: [spine, armsToGrip, leg("L"), leg("R"), hips],
+        moves: [.shift(singleBodyOffBar, ahead: 0.12, rise: 0.12),
+                .turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head", "upper_arm_*"], axis: .lateral, degrees: -6),
+                .resolve(["forearm_*", "shin_L"])],
+        strength: singlePistolDepth
+    )
+
+// MARK: TABLE
+
+        // MARK: 30-leg set single-leg and heel-elevated squats (2026-09-28)
+        // The heel-elevated and cyclist squats are framed three-quarter from
+        // the left (yaw -1.0): sagittal faults turn -0.4 (a total of -1.4, near
+        // side-on), knee and stance faults turn 0.8 (a total of -0.2, near
+        // face-on). The pistol stands on its LEFT leg, framed at -1.2:
+        // sagittal faults turn -0.2 (total -1.4), the knee caving turns faceOn
+        // (total -0.1). The assisted pistol, the same legs, is framed side-on
+        // at -1.6: sagittal faults need no turn, the knee turns 1.4 (total
+        // -0.2); the upright stands off to the lifter's left at the crossbar's
+        // left end, clear of the standing knee, and the crossbar runs above
+        // the knees.
+        "Heel-Elevated Squat": [
+            // The bar slid down the back, the chest tipping to balance it.
+            "bar": barSlidLow.seen(-0.4),
+            // The chest folding toward the knees, the bar out over the toes.
+            "torso": leanedForward(15, withBar: true).seen(-0.4),
+            // Stopping halfway: the hips ~18 cm higher, the knees ~77°; faded
+            // by hip height, as the model's knees never straighten.
+            "depth": singleSquatShallow(0.3).seen(-0.4),
+            "knee": kneesIn().seen(0.8),
+            // The heels peeling off the wedges.
+            "heels": heelsUp().seen(-0.4)
+        ],
+        "Cyclist Squat": [
+            // Feet set out wide like a regular squat.
+            "stance": singleStanceWide.seen(0.8),
+            // Hips back, shins upright, the chest tipping forward.
+            "knee": singleSatBack.seen(-0.4),
+            "track": kneesIn().seen(0.8),
+            "depth": singleSquatShallow(0.3).seen(-0.4),
+            "heels": heelsUp().seen(-0.4)
+        ],
+        "Pistol Squat": [
+            // Arms dropped, trunk rocked back: nothing reaching forward.
+            "reach": singleArmsDropped.seen(-0.2),
+            "depth": singlePistolShallow(0.4).seen(-0.2),
+            "knee": kneesIn("L").seen(faceOn),
+            // The standing heel lifting.
+            "foot": heelsUp("L").seen(-0.2),
+            // The free heel dropping to the floor at the bottom.
+            "free": singleFreeLegDropped.seen(-0.2)
+        ],
+        "Assisted Pistol Squat": [
+            // Pulling on the bar: body hauled up and in, elbows folded.
+            "hold": singlePulledToBar,
+            "depth": singleAssistedShallow(0.4),
+            "knee": kneesIn("L").seen(1.4),
+            "foot": heelsUp("L"),
+            "free": singleFreeLegDropped
+        ],

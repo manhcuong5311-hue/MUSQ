@@ -46,7 +46,7 @@
 #   activity in the pulldown.
 # - Lehman GJ et al. 2004, Dyn Med 3:4 — row variations: mid-back and lat
 #   activity with grip and elbow path.
-# - Fenwick CMJ, Brown SHM, McGill SM 2009, J Strength Cond Res 23(2):350-358
+# - Fenwick CMJ, Brown SHM, McGill SM 2009, J Strength Cond Res 23(5):1408-1417 (PMID 19620925)
 #   — standing one-arm cable rows load the trunk rotators; supported rows
 #   spare the lower back.
 # - Marchetti PH, Uchida MC 2011, J Appl Biomech 27(4):380-384 — pullovers

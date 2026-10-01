@@ -44,7 +44,7 @@
 #   al. 2016, J Strength Cond Res 30(5):1183-1188 — the hexagonal (trap) bar
 #   shifts load from the hips and lower back toward the knees; more vastus
 #   lateralis, less hamstring than a straight bar.
-# - Fenwick CMJ, Brown SHM, McGill SM 2009, J Strength Cond Res 23(2):350-358
+# - Fenwick CMJ, Brown SHM, McGill SM 2009, J Strength Cond Res 23(5):1408-1417 (PMID 19620925)
 #   — bent-over, inverted and one-arm rows: lumbar load is highest in the
 #   bent-over row, lowest in the inverted row; latissimus and mid-back
 #   activity are similar across rows.

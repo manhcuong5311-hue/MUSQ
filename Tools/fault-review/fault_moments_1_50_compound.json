@@ -1,0 +1,4 @@
+{
+  "Pendlay Row": {"torso": "bottom", "spine": "bottom", "floor": "bottom", "pull": "top", "shoulders": "bottom"},
+  "Close-Grip Bench Press": {"grip": "top", "elbow": "bottom", "barpath": "top", "scapula": "top", "feet": "any"}
+}

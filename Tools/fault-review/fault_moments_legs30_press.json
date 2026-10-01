@@ -1,0 +1,7 @@
+{
+ "Vertical Leg Press": {"feet": "bottom", "lockout": "lockout", "knee": "bottom", "depth": "bottom", "grip": "bottom"},
+ "45-Degree Leg Press": {"feet": "bottom", "lockout": "lockout", "knee": "bottom", "depth": "bottom", "back": "any"},
+ "Single-Leg Press": {"foot": "bottom", "lockout": "lockout", "knee": "bottom", "hip": "bottom", "back": "any"},
+ "Narrow-Stance Leg Press": {"stance": "any", "lockout": "lockout", "knee": "bottom", "depth": "bottom", "back": "any"},
+ "Wide-Stance Leg Press": {"stance": "bottom", "lockout": "lockout", "knee": "bottom", "depth": "bottom", "back": "any"}
+}

@@ -1,0 +1,371 @@
+// MARK: PIECES
+    // MARK: 351-400 hip family pieces (2026-09-30)
+
+    /// Frog pumps: the top of the rep, read from how far the hips sit from
+    /// the left ankle (0.67 torso lengths at the bottom, 0.86 at the top on
+    /// the rig): none below 0.74 (the first ~1 s of the rise), all of it
+    /// from 0.84 (1.5-2.4 s). The hip angle cannot be used: with the thighs
+    /// splayed ~50 deg the spine-hip-knee angle stays at 128-132 deg all rep.
+    private static let hipFrogTop = FaultStrength.between("pelvis", "foot_L", from: 0.74, to: 0.84)
+
+    /// Frog pump, stopping short: the hips and thighs hang 0.2 torso lengths
+    /// (~12 cm) below the top, the spine and chest less as the trunk pivots
+    /// on the shoulders (0.16, 0.1), the knees re-seated over the planted
+    /// feet: the pelvis ends at ~0.24 m instead of 0.36 m, about where it
+    /// passes at 1.0 s. `hipsShortOfLockout` without the hands, which rest
+    /// on the floor here.
+    private static let hipFrogShort = FaultPose(
+        chains: [spine, legs, hips],
+        moves: [.shift(["pelvis", "thigh_*"], rise: -0.2), .shift(["spine"], rise: -0.16),
+                .shift(["chest"], rise: -0.1), .resolve(["shin_*"])],
+        strength: hipFrogTop
+    )
+
+    /// Frog pumps, finished with the lower back: the lumbar spine bows ~7 cm
+    /// up above the line of the pelvis and chest at the top, the chest ~3 cm.
+    /// `thrustArched` read from the frog pump's own top.
+    private static let hipFrogArched = FaultPose(
+        chains: [spine],
+        moves: [.shift(["spine"], rise: 0.12), .shift(["chest"], rise: 0.05)],
+        strength: hipFrogTop
+    )
+
+    /// Frog pumps: the feet slid away from the hips. Both feet go 0.22 torso
+    /// lengths (~13 cm) level along the floor away from the head (`ahead` is
+    /// toward the head for a lifter lying face up), the knees re-seat, ~2.5 cm
+    /// lower and straighter. Seen turned 0.7 toward the feet: side-on the
+    /// feet already sit at the viewport's left edge and the slid toes would
+    /// be cut off (the ghost's toes reach x 2 of 322 on the still); turned,
+    /// they stop ~20 pt inside it.
+    private static let hipFrogFeetFar = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["foot_*", "foot_*.tip"], ahead: -0.22), .resolve(["shin_*"])]
+    )
+
+    /// Frog pumps: the knees drifting up and together into an ordinary
+    /// bridge as the hips rise, while the soles stay together. Each knee is
+    /// pushed 0.5 torso lengths toward the ceiling and 0.35 toward the
+    /// midline, then re-seated between the hip and the planted foot, so at
+    /// the top it ends ~16 cm higher and ~21 cm further in (0.78 m apart
+    /// becomes ~0.36 m). None at the bottom, all of it at the top.
+    private static let hipFrogKneesIn = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["shin_*"], forward: 0.5, outward: -0.35), .resolve(["shin_*"])],
+        strength: hipFrogTop
+    )
+
+    /// Lying face up: the head lifted off the mat to watch the hips, the neck
+    /// raised ~3.5 cm and the head nodded 40 deg forward, ~10 cm up.
+    private static let hipFrogHeadUp = FaultPose(
+        chains: [["chest", "neck", "head"]],
+        moves: [.shift(["neck", "head"], forward: 0.06),
+                .turn(pivot: "neck", points: ["head"], axis: .lateral, degrees: -40)]
+    )
+
+    /// Cable hip adduction: the working (left) leg swept in, read from the
+    /// knees' spread (0.67 torso lengths with the leg out, 0.16 crossed):
+    /// none from 0.45, all of it from 0.22 (1.5-2.5 s).
+    private static let hipCableIn = FaultStrength.between("shin_L", "shin_R", from: 0.45, to: 0.22)
+
+    /// Cable hip adduction: the upper body twisting toward the standing leg
+    /// as the foot crosses. The trunk, head, shoulders and hanging right arm
+    /// turn 25 deg about the spine (the left shoulder forward), the left hand
+    /// stays on the post and its elbow re-seats. Seen turned 1.3 (the
+    /// lifter's front-right, the post and stack behind): the chest turns
+    /// toward the camera, so the ghost's shoulders open ~12 pt a side wider
+    /// than the lifter's and the hanging arm swings back. From the front-left
+    /// (-0.6) the shoulders turned into the line of sight, the ghost
+    /// narrowed to a sliver and the post-side elbow folded across the waist.
+    private static let hipCableTwist = FaultPose(
+        chains: [spine, shoulders, arms],
+        moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*", "forearm_R", "hand_R"], axis: .up, degrees: 25),
+                .resolve(["forearm_L"])],
+        strength: hipCableIn
+    )
+
+    /// Cable hip adduction: hauling on the post in the left hand. The trunk
+    /// tips 10 deg over toward the post and the stack (the head ~12 cm), the
+    /// hand stays on the post and the elbow bends to let it.
+    private static let hipCableHauled = FaultPose(
+        chains: [spine, shoulders, ["upper_arm_L", "forearm_L", "hand_L"]],
+        moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .forward, degrees: -10),
+                .resolve(["forearm_L"])]
+    )
+
+    /// Cable hip adduction: the working hip dropping to swing the foot
+    /// across. The pelvis and the whole left leg tilt 12 deg about the
+    /// standing (right) hip, so the left hip sinks ~4 cm, the hip line tips
+    /// down on the working side and the foot, carried with it, ends ~16 cm
+    /// further across without the hip adducting any further; the toes stay
+    /// clear of the floor. A `_R` pivot mirrors turns about `.forward`, so
+    /// a positive turn drops the left side.
+    private static let hipCableHipDropped = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "thigh_R", points: ["pelvis", "thigh_L", "shin_L", "foot_L", "foot_L.tip"],
+                      axis: .forward, degrees: 12)],
+        strength: hipCableIn
+    )
+
+    /// Cable hip adduction: the working knee bending, the lower leg swinging
+    /// 45 deg back from the knee (the ankle ~29 cm back), which shortens the
+    /// cable's lever on the hip. The foot tips its toes back up 30 deg at
+    /// the ankle so they stay clear of the floor (they would pass ~3 cm
+    /// under it swung with the shin). Seen turned -0.6 (front-left): at -0.9
+    /// the post and the stack's rods stood between the camera and the lifter.
+    private static let hipCableKneeBent = FaultPose(
+        chains: [leg("L")],
+        moves: [.turn(pivot: "shin_L", points: ["foot_L", "foot_L.tip"], axis: .lateral, degrees: -45),
+                .turn(pivot: "foot_L", points: ["foot_L.tip"], axis: .lateral, degrees: 30)]
+    )
+
+    /// Cable hip adduction: short swings that stop at the midline. At the
+    /// crossing the left leg is turned 10 deg back out, so the foot stops on
+    /// the body's midline instead of ~14 cm past it in front of the
+    /// standing foot (~14 cm shorter).
+    private static let hipCableShort = FaultPose(
+        chains: [leg("L"), hips],
+        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 10)],
+        strength: hipCableIn
+    )
+
+    /// Standing hip abduction: the left leg out, read from the feet's spread
+    /// (0.31 torso lengths together, 1.04 at the top): none at 0.45, all of
+    /// it from 0.95 (1.5-2.5 s).
+    private static let hipStandOut = FaultStrength.between("foot_L", "foot_R", from: 0.45, to: 0.95)
+
+    /// Standing hip abduction: the lifting hip hitched up toward the ribs,
+    /// the left hip and leg 0.08 torso lengths (~5 cm) up, the pelvis half
+    /// that. The Cable Hip Abduction's hip fault.
+    private static let hipStandHiked = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.shift(["thigh_L", "shin_L", "foot_L", "foot_L.tip"], rise: 0.08), .shift(["pelvis"], rise: 0.04)],
+        strength: hipStandOut
+    )
+
+    /// Standing hip abduction: the leg swung out as high as it goes, 12 deg
+    /// past the model's 30 to 42 (the foot ~10 cm higher), about the 45 deg
+    /// the thigh can abduct before the pelvis tips. At 20 deg past, the
+    /// ghost's foot ran off the viewport's right edge in the lifted mistake
+    /// view; at 12 its toes stop ~10 pt inside.
+    private static let hipStandSwungHigh = FaultPose(
+        chains: [leg("L"), hips],
+        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 12)],
+        strength: hipStandOut
+    )
+
+    /// Standing hip abduction: the toes turned out as the leg lifts, the left
+    /// foot's toes swung 45 deg outward about the body's long axis.
+    private static let hipStandToesOut = FaultPose(
+        chains: [leg("L")],
+        moves: [.turn(pivot: "foot_L", points: ["foot_L.tip"], axis: .up, degrees: -45)],
+        strength: hipStandOut
+    )
+
+    /// Side-lying hip abduction: the top (left) leg up, read from the feet's
+    /// spread (0.31 torso lengths stacked, 1.08 at the top): none at 0.45,
+    /// all of it from 1.0 (1.5-2.5 s).
+    private static let hipSideUp = FaultStrength.between("foot_L", "foot_R", from: 0.45, to: 1.0)
+
+    /// Side-lying hip abduction: the top leg swung 18 deg past the model's
+    /// 32 (the foot ~20 cm higher and ~17 cm toward the head).
+    private static let hipSideSwungHigh = FaultPose(
+        chains: [leg("L"), hips],
+        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 18)],
+        strength: hipSideUp
+    )
+
+    /// Side-lying hip abduction: the top leg drifting forward of the body as
+    /// it rises, 25 deg of hip flexion (the foot ~30 cm forward), with the
+    /// toes turned up toward the ceiling. Forward is along the line of sight
+    /// from behind, so it is seen from the feet end.
+    private static let hipSideLegForward = FaultPose(
+        chains: [leg("L"), hips],
+        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: 25),
+                .turn(pivot: "foot_L", points: ["foot_L.tip"], axis: .up, degrees: -40)],
+        strength: hipSideUp
+    )
+
+    /// Lying on the side: the pelvis and shoulders rolling back 35 deg about
+    /// the spine (the angle Willcox & Burden 2013 reclined the pelvis to),
+    /// the top hip and shoulder going back and the bottom ones forward while
+    /// the top knee and foot stay where they are, so the top thigh ends
+    /// angled forward of the pelvis. Seen from the feet end.
+    private static let hipRolledBack = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], ["upper_arm_L", "neck", "upper_arm_R"], leg("L")],
+        moves: [.turn(pivot: "pelvis", points: ["thigh_*", "upper_arm_*"], axis: .up, degrees: -35)]
+    )
+
+    /// Side-lying hip abduction: the top hip hitched toward the ribs to lift
+    /// the leg higher, a lateral pelvic tilt. The pelvis and the whole top
+    /// leg tilt 12 deg about the bottom (right) hip, so the top hip rides
+    /// ~4 cm toward the head, the waist shortens (the pelvis-spine line
+    /// bends) and the leg rises from 32 to ~44 deg (the foot ~19 cm higher)
+    /// with no more hip abduction (Cynn 2006 measured 13.9 deg of lateral
+    /// pelvic tilt in the unstabilised lift). A `_R` pivot mirrors turns
+    /// about `.forward`, so a negative turn lifts the left side toward the
+    /// head. (Sliding the hip and leg 8 cm toward the head read on the still
+    /// only as a small shift along the body.)
+    private static let hipSideHitched = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L"), ["pelvis", "spine", "chest"]],
+        moves: [.turn(pivot: "thigh_R", points: ["pelvis", "thigh_L", "shin_L", "foot_L", "foot_L.tip"],
+                      axis: .forward, degrees: -12)],
+        strength: hipSideUp
+    )
+
+    /// Lying on the side: the head lifted off the floor, the neck ~3 cm up
+    /// and the head bent 35 deg toward the ceiling (~9 cm).
+    private static let hipSideHeadUp = FaultPose(
+        chains: [["chest", "neck", "head"]],
+        moves: [.shift(["neck", "head"], outward: 0.05),
+                .turn(pivot: "neck", points: ["head"], axis: .forward, degrees: -35)]
+    )
+
+    /// Seated banded hip abduction: the knees pushed apart, read from their
+    /// spread (0.60 torso lengths at rest, 1.15 at the top): none at 0.75,
+    /// all of it from 1.08 (1.5-2.5 s).
+    private static let hipBandApart = FaultStrength.between("shin_L", "shin_R", from: 0.75, to: 1.08)
+
+    /// Seated banded hip abduction: short pulses. Each knee held 0.15 torso
+    /// lengths further in and re-seated over its foot, ~7 cm short of the
+    /// model's widest point on each side.
+    private static let hipBandShort = FaultPose(
+        chains: [legs, hips],
+        moves: [.shift(["shin_*"], outward: -0.15), .resolve(["shin_*"])],
+        strength: hipBandApart
+    )
+
+    /// Seated with the hands on the bench: pressing down through straight
+    /// arms so the hips lift off it. The hips and trunk rise 0.1 torso
+    /// lengths (~6 cm) between the shoulders, which stay where they are with
+    /// the arms and hands (the arms are nearly straight and cannot reach
+    /// further); the knees re-seat over the planted feet. Seen face-on the
+    /// rise runs up the screen between the two unmoving arms.
+    private static let hipBandHipsUp = FaultPose(
+        chains: [spine, legs, hips, arms],
+        moves: [.shift(["pelvis", "thigh_*"] + torso, rise: 0.1), .resolve(["shin_*"])]
+    )
+
+    /// Clamshell: the top knee open, read from the knees' spread (0.27 torso
+    /// lengths closed, 0.61 open): none at 0.40, all of it from 0.58.
+    private static let hipClamOpen = FaultStrength.between("shin_L", "shin_R", from: 0.40, to: 0.58)
+
+    /// Clamshell: short openings. The top knee is pushed 0.3 torso lengths
+    /// back down toward the bottom one and re-seated between the hip and the
+    /// foot, so at the top it sits only ~3 cm above its closed height
+    /// instead of ~19 cm: the knees barely part.
+    private static let hipClamShort = FaultPose(
+        chains: [leg("L"), hips],
+        moves: [.shift(["shin_L"], outward: -0.3), .resolve(["shin_L"])],
+        strength: hipClamOpen
+    )
+
+    /// Clamshell: the top foot lifting off the bottom one, 0.15 torso lengths
+    /// (~9 cm) toward the ceiling, the top knee re-seated. Shown as the knee
+    /// opens, from a spread of 0.30 to 0.50.
+    private static let hipClamFootUp = FaultPose(
+        chains: [leg("L"), leg("R")],
+        moves: [.shift(["foot_L", "foot_L.tip"], outward: 0.15), .resolve(["shin_L"])],
+        strength: .between("shin_L", "shin_R", from: 0.30, to: 0.50)
+    )
+
+    /// Clamshell: lying with the hips nearly straight, both legs turned 30
+    /// deg back about the hips (from ~51 deg of hip flexion to ~21), the feet
+    /// still together. Seen from the feet end.
+    private static let hipClamHipsStraight = FaultPose(
+        chains: [legs, hips],
+        moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -30)]
+    )
+
+// MARK: TABLE
+        // MARK: 351-400 hip family (2026-09-30)
+        // The frog pumps lie face up framed side-on from the lifter's left
+        // (yaw -1.57): the hips move up and down the screen, so the hip,
+        // back and head faults need no turn; the knees closing move across
+        // the line of sight, so they turn 0.9 toward the feet (a total of
+        // -0.67), and the feet sliding away turn 0.7 so the toes stay in
+        // frame. Cable adduction, standing abduction and the banded seated
+        // abduction are framed near face-on (yaw -0.3): side-to-side and
+        // up-and-down faults need no turn, forward-and-back ones turn -0.6
+        // to -1.1, and the cable twist turns 1.3 to the front-right. The side-lying abduction and the clamshell
+        // are framed from behind (yaw 3.14): up-and-down and head-to-feet
+        // faults show as they are, forward-and-back ones (leg drifting
+        // forward, pelvis rolling back, hips straightening, back arching)
+        // turn 1.1 to look from the feet end. Only the left leg works in the
+        // single-leg models (the right stands or lies underneath). The
+        // banded abduction's band-placement cue has no ghost, nor has the
+        // clamshell's arched-back cue: lying on the side, an arch bends the
+        // spine in a level plane, which a camera turned about the vertical
+        // sees edge-on from every side (the old ghost was a flat row of dots).
+        "Frog Pump": [
+            // Stopping short: the hips ~12 cm below the top.
+            "hips": hipFrogShort,
+            // The lower back bowing up at the top.
+            "ribs": hipFrogArched,
+            // Feet ~13 cm further from the hips, knees opening, turned
+            // toward the feet so the slid toes stay in the viewport.
+            "feet": hipFrogFeetFar.seen(0.7),
+            // Knees up and together into an ordinary bridge.
+            "knees": hipFrogKneesIn.seen(0.9),
+            "head": hipFrogHeadUp
+        ],
+        "Weighted Frog Pump": [
+            // Stopping short: the hips and the dumbbell with them ~12 cm low.
+            "hips": hipsShortOfLockout(0.2, strength: hipFrogTop),
+            // The dumbbell rolled ~15 cm up onto the stomach as the hips
+            // rise, the hands with it.
+            "dumbbell": barRolledUp(0.25, strength: hipFrogTop),
+            "ribs": hipFrogArched,
+            "feet": hipFrogFeetFar.seen(0.7),
+            "knees": hipFrogKneesIn.seen(0.9)
+        ],
+        "Cable Hip Adduction": [
+            // Twisting toward the standing leg as the foot crosses, seen
+            // from the front-right so the shoulders open toward the camera.
+            "torso": hipCableTwist.seen(1.3),
+            // Hauling on the post, the trunk tipping toward the stack.
+            "grip": hipCableHauled,
+            // The pelvis tilting down on the working side at the crossing,
+            // the foot carried further across.
+            "hips": hipCableHipDropped,
+            // The knee bending, the lower leg swinging back, seen from the
+            // front-left, clear of the post and stack.
+            "leg": hipCableKneeBent.seen(-0.6),
+            // Stopping at the midline.
+            "sweep": hipCableShort
+        ],
+        "Standing Hip Abduction": [
+            // The trunk tipping 12 deg away from the lifting leg.
+            "torso": leanedAway(12, strength: hipStandOut),
+            // Leaning the chest forward onto the rails, the hands staying put.
+            "grip": seatedRocked(-15).seen(-0.9),
+            "hips": hipStandHiked,
+            "lift": hipStandSwungHigh,
+            "foot": hipStandToesOut
+        ],
+        "Side-Lying Hip Abduction": [
+            "lift": hipSideSwungHigh,
+            // Leg forward of the body, toes up: seen from the feet end.
+            "line": hipSideLegForward.seen(1.1),
+            // Pelvis and shoulders rolling back: seen from the feet end.
+            "hips": hipRolledBack.seen(1.1),
+            "waist": hipSideHitched,
+            "head": hipSideHeadUp
+        ],
+        "Banded Hip Abduction": [
+            // Rocking the trunk back 12 deg, seen near side-on.
+            "torso": seatedRocked(12).seen(-1.1),
+            // Pressing through the hands, the hips and trunk lifting off the
+            // bench between the arms: seen face-on.
+            "grip": hipBandHipsUp,
+            "knees": hipBandShort,
+            // The heels lifting as the knees push out.
+            "feet": heelsUp().seen(-1.1)
+        ],
+        "Clamshell": [
+            "open": hipClamShort,
+            // Hips nearly straight: seen from the feet end.
+            "angle": hipClamHipsStraight.seen(1.1),
+            // Pelvis rolling back: seen from the feet end.
+            "pelvis": hipRolledBack.seen(1.1),
+            "heels": hipClamFootUp
+        ],

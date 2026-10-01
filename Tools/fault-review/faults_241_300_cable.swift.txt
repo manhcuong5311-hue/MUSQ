@@ -1,0 +1,149 @@
+// MARK: PIECES
+    // MARK: Batch 241-300 standing cable curl pieces (2026-09-27)
+
+    /// Neutral-grip (hammer) curls: the wrists bent back, the knuckles
+    /// tipping out to the sides. With the palms facing in, the backs of the
+    /// hands face out, so the bend is sideways. The turn is about the body's
+    /// up axis: it swings the forward-pointing part of each hand outward (a
+    /// negative turn is outward on both sides) and leaves a hand hanging
+    /// straight down alone, so the ghost never bends the wrong way on the way
+    /// up, as a turn about `.forward` would once the forearm passes level.
+    /// Grows with the left elbow's bend: strongest from mid-rep to the top.
+    private static let hammerWristsBentBack = FaultPose(
+        chains: [["forearm_*", "hand_*", "hand_*.tip"]],
+        moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .up, degrees: -45)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Curls with the upper arms held out to the sides (the high cable curl):
+    /// the wrists curling in toward the palms. The palms face up with the
+    /// arms out and toward the head at the top, so the fold lies in the plane
+    /// the forearms curl in, about the chest's axis: a positive turn tips a
+    /// hand pointing out to the side up, and one pointing up in toward the
+    /// head (`curlWristsCurled` turns about `.lateral`, for arms by the
+    /// sides). Grows with the left elbow's bend: strongest at the top.
+    private static let armsOutWristsCurled = FaultPose(
+        chains: [["forearm_*", "hand_*", "hand_*.tip"]],
+        moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .forward, degrees: 50)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Standing curls seen side-on: `bodySwung(withBar: false)` (the hips
+    /// 0.06 ahead, the trunk 15° back from them) drawn with one arm, `side`,
+    /// and only the drawn points move, so the other arm gets no dashed
+    /// guides. Side-on, the other arm's ghost crossed the leaned spine and the
+    /// drawn arm: the free arm's hand-on-hip triangle on the one-arm curl,
+    /// a second offset V on the hammer curl. Grows with the left elbow's
+    /// bend, as `bodySwung` does.
+    private static func bodySwungOneArm(_ side: String) -> FaultPose {
+        FaultPose(chains: [spine, arm(side), hips],
+                  moves: [.shift(["pelvis", "thigh_*"], ahead: 0.06),
+                          .turn(pivot: "pelvis", points: torso + arm(side), axis: .lateral, degrees: 15)],
+                  strength: .withBend("forearm_L"))
+    }
+
+// MARK: TABLE
+        // MARK: Batch 241-300 standing cable curls (2026-09-27)
+        // Standing, framed from the working left side (yaw -1.5), facing the
+        // column on the left. Only the LEFT arm curls; the right hand rests on
+        // the hip. The upper-arm, range, shoulder and lean-back faults read as
+        // framed; the stance turns to the back-left (total -2.6).
+        "Single-Arm Cable Curl": [
+            "elbow": elbowsForward(35, side: "L"),
+            // Short reps: shoulder-to-wrist 0.906 torso lengths at the model's
+            // bottom (172°), 0.78 at 120°.
+            "range": curlBottomCut("L", from: 0.8, to: 0.89),
+            // The near shoulder rolled forward and shrugged, the working arm
+            // carried with it; drawn on the working side only: side-on, the
+            // free arm's ghost would cross the trunk.
+            "shoulder": hunched("L"),
+            // Side-on as framed: the lean back and the hips forward lie in the
+            // picture plane. Turned toward the front (total -1.05) the column and
+            // stack hide the lifter. Drawn on the working side only: the free
+            // hand stays on the hip, and side-on its arm's ghost crossed the
+            // trunk, the working arm and the lat dot's leader.
+            "torso": bodySwungOneArm("L"),
+            // Feet drawn together (ankles ~6 cm apart against the model's 30)
+            // and knees locked, turned to the back-left (total -2.6) so the
+            // width shows: the ankles ~70 pt apart, the ghost's ~15. The turn
+            // swings away from the column, which stays beyond the lifter.
+            "stance": cableFeetTogetherLocked.seen(-1.1),
+        ],
+        // Between two pulleys at shoulder height, framed nearly head-on (yaw
+        // -0.3): every fault here moves in the plane the camera sees.
+        "High Cable Curl": [
+            // The upper arms sinking 20° below level as the hands come in.
+            "upperarm": armsTurned(.forward, -20, strength: .withBend("forearm_L")),
+            // Shoulders shrugged toward the ears (0.12 torso lengths, as
+            // `shrugged`), drawn as the girdle and upper arms only, and the
+            // undrawn hands are not moved: with the forearms, the raised right
+            // hand sat on the top-left pill in the mistake view.
+            "shoulder": FaultPose(chains: [shoulders, ["upper_arm_*", "forearm_*"]],
+                                  moves: [.shift(["upper_arm_*", "forearm_*"], up: 0.12)]),
+            "wrist": armsOutWristsCurled,
+            // Short reps: the forearms stay folded 45° toward the head where
+            // the arms should be almost straight (shoulder-to-wrist 0.903 torso
+            // lengths at the model's 168°, 0.78 at 120°).
+            "range": elbowsFolded(.forward, 45, strength: .between("upper_arm_L", "hand_L", from: 0.8, to: 0.885)),
+            // Feet drawn together (ankles ~6 cm apart against the model's 30)
+            // and knees locked.
+            "stance": cableFeetTogetherLocked,
+        ],
+        // Seated at a pulldown station, framed from the left (yaw -1.3): the
+        // faults move front to back and up and down, as framed.
+        "Overhead Cable Curl": [
+            // The upper arms swinging 30° down and forward as the elbows bend,
+            // giving way to the cable (its shoulder moment is extension from
+            // ~150° to the top): the bar drifts toward the pulley.
+            "upperarm": armsTurned(.lateral, -30, withBar: true, strength: .withBend("forearm_L")),
+            // Short reps: the forearms stay folded 45° back where the arms
+            // should be almost straight overhead (shoulder-to-wrist 0.899
+            // torso lengths at the model's 164°, 0.78 at 120°). This is
+            // `curlBottomCut(from: 0.8, to: 0.885)`'s fold and strength drawn
+            // and moved to the wrists only: in the mistake view the bar ends
+            // sit under the mistake bar, and their guides ran across it.
+            "range": FaultPose(chains: [["upper_arm_*", "forearm_*", "hand_*"]],
+                               moves: [.turn(pivot: "forearm_*", points: ["hand_*"], axis: .lateral, degrees: 45)],
+                               strength: .between("upper_arm_L", "hand_L", from: 0.8, to: 0.885)),
+            // The palms face back toward the head with the arms up and down at
+            // the top, so the Biceps Curl's fold about `.lateral` curls them in.
+            "grip": curlWristsCurled(withBar: true),
+            // Rocking back 15° from the hips as the bar comes down; the model
+            // sits upright, so the ghost ends 15° behind vertical
+            // (`curlSeatedSwungBack(15)`'s turn and strength). Drawn as the
+            // spine and the near (left) arm to the wrist, and only those
+            // points turn: side-on the far forearm crossed the near upper arm,
+            // and the hand tips' guides ran off the right edge.
+            "torso": FaultPose(chains: [spine, ["upper_arm_L", "forearm_L", "hand_L"]],
+                               moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_L", "forearm_L", "hand_L"],
+                                             axis: .lateral, degrees: 15)],
+                               strength: .withBend("forearm_L")),
+            // Loose under the pads, rising to follow the bar: the hips and
+            // trunk lift 0.18 torso lengths (~10 cm, ~25 pt) off the seat and
+            // the knees open from 92° to ~110° over the planted feet
+            // (`shallow(0.18)`'s rise, knee re-seat and knee-bend strength,
+            // full at the model's 92°). Drawn without the arms, bar or feet
+            // (the legs to the ankles, as `preacherSatLow`; the feet stay
+            // planted), and only the drawn points move, so no guides run up
+            // into the mistake bar and no foot line reaches the pad pill. At
+            // 0.1 the ghost all but lay on the body.
+            "pad": FaultPose(chains: [spine, ["thigh_*", "shin_*", "foot_*"], hips],
+                             moves: [.shift(["pelvis", "thigh_*"] + torso, rise: 0.18), .resolve(["shin_*"])],
+                             strength: .withBend("shin_L")),
+        ],
+        // Between two low pulleys, framed from the right side (yaw +1.4).
+        "Cable Hammer Curl": [
+            "elbow": elbowsForward(35),
+            // Short reps: shoulder-to-wrist 0.906 torso lengths at the model's
+            // bottom (172°), 0.78 at 120°.
+            "range": curlBottomCut(from: 0.8, to: 0.89),
+            // Turned face-on (total 0) so the sideways bend shows; at +0.4 the
+            // right stack column hides the right arm.
+            "grip": hammerWristsBentBack.seen(-1.4),
+            // Side-on as framed; drawn with the near (right) arm only: the far
+            // arm's ghost made a second V across the spine and the near arm.
+            "torso": bodySwungOneArm("R"),
+            // Feet drawn together (ankles ~6 cm apart against the model's 30)
+            // and knees locked, turned face-on (total 0).
+            "stance": cableFeetTogetherLocked.seen(-1.4),
+        ],

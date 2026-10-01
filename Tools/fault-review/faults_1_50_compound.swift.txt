@@ -1,0 +1,154 @@
+// MARK: PIECES
+
+    // MARK: Exercises 1-50 redo: Pendlay Row and Close-Grip Bench Press (2026-09-29)
+
+    /// Pendlay row: how near the floor the bar is, read off the distance from
+    /// the left wrist to the pelvis in torso lengths: 1.19 with the plates at
+    /// their lowest (0 s and 4 s), 1.03 half a second into the pull, 0.80 at
+    /// the top (1.25-1.9 s). All of it at the floor, none once the bar is
+    /// ~11 cm up.
+    private static let pendlayAtFloor = FaultStrength.between("hand_L", "pelvis", from: 1.0, to: 1.17)
+
+    /// Pendlay row: the chest swinging up 25° about the hips to heave the bar
+    /// off the floor. The trunk turns as in `trunkLifted`, then each arm turns
+    /// back by the same angle about its shoulder, so the arms keep hanging as
+    /// the real ones do and the bar comes up with the chest instead of being
+    /// rowed: at the bottom the ghost bar rises ~19 cm, to knee height, ~12 cm
+    /// in front of the knees, the trunk ~45° above level. (Turned with the
+    /// trunk, the arms swung forward to point level in the air, and at the
+    /// top of the pull they drew a zigzag over the back.) The heave is the
+    /// start of the pull, so it fades as the bar rises: all of it from the
+    /// floor until the left wrist is within 1.10 torso lengths of the pelvis
+    /// (~0.35 s), about three quarters at 0.5 s, none by 0.85 (~0.9 s) and
+    /// through the top, where the counter-turned arms, folded back past the
+    /// trunk, drew a zigzag with the hands above the back.
+    private static let pendlayChestHeave = FaultPose(
+        chains: [spine, armsToGrip, bar],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 25),
+                .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -25)],
+        strength: .between("hand_L", "pelvis", from: 0.85, to: 1.10)
+    )
+
+    /// Pendlay row: the back rounding to reach the bar on the floor. A deeper
+    /// `backRounded` (the Z Press's idiom): the lower and middle back hump
+    /// 0.10 torso lengths (~6 cm) away from the floor, the neck and head
+    /// drop toward it and draw in along the spine, so the rounding shows as
+    /// an arch over the real back from the rear three-quarter view, where the
+    /// shared piece's ~4 cm hump read as a flat line with the head dropping.
+    /// Strength `pendlayAtFloor`.
+    private static let pendlayBackRounded = FaultPose(
+        chains: [spine],
+        moves: [
+            .shift(["spine"], forward: -0.10),
+            .shift(["chest"], forward: -0.10, up: -0.02),
+            .shift(["neck"], forward: 0.04, up: -0.04),
+            .shift(["head"], forward: 0.13, up: -0.07)
+        ],
+        strength: pendlayAtFloor
+    )
+
+    /// Pendlay row: the bar left hovering between reps instead of going back
+    /// to the floor, a bent-over row's bottom. The hands, with the bar, stay
+    /// 0.15 torso lengths (~9 cm) higher, the plates ~12 cm off the floor,
+    /// and the elbows re-seat under the shoulders, which hold still. Full
+    /// with the plates at their lowest, fading as the bar rises.
+    private static let pendlayBarHovering = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], rise: 0.15), .resolve(["forearm_*"])],
+        strength: pendlayAtFloor
+    )
+
+    /// Pendlay row: the pull stopping about half-way, out in front of the
+    /// knees (the correct top is beside them, brushing the thighs). The
+    /// hands sit 0.14 torso lengths (~8 cm) further ahead and 0.17 (~10 cm)
+    /// lower, back along the bar's own path (the model's bar rises 24 cm and
+    /// comes 20 cm toward the body), the elbows re-seating less bent; the
+    /// ghost bar ends ~7 cm in front of the knees. Full
+    /// once the left wrist is within 0.85 torso lengths of the pelvis (0.80
+    /// at the top), none beyond 1.05, so it never pushes the bar into the
+    /// floor.
+    private static let pendlayPulledShort = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], ahead: 0.14, rise: -0.17), .resolve(["forearm_*"])],
+        strength: .between("hand_L", "pelvis", from: 1.05, to: 0.85)
+    )
+
+    /// Close-grip bench press: the hands slid in until they nearly touch. The
+    /// model's wrists are 0.38 m apart, right over the shoulder joints; each
+    /// moves 0.2 torso lengths (~12 cm) in, leaving ~14 cm between them, and
+    /// the elbows stay where they are, so the forearms slant in toward the
+    /// middle of the bar. The same all rep; drawn at the top, where the
+    /// forearms converge on the bar in open space above the chest (at the
+    /// bottom the elbows splay beside the chest and the ghost is a tangle
+    /// over the torso).
+    private static let closeGripHandsTogether = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.2)]
+    )
+
+    /// Close-grip bench press: the bar drifting down onto the upper stomach
+    /// and pressed straight up from there. The model's bar touches the lower
+    /// chest and comes 13 cm back on the way up to finish over the shoulders;
+    /// the ghost's hands sit 0.30 torso lengths toward the feet and 0.075
+    /// lower at full strength, and the shift grows as the bar rises (the
+    /// left wrist 0.75 torso lengths from the pelvis at the bottom, 1.27 at
+    /// the top): about half of it at the bottom, ~9.4 cm toward the feet and
+    /// ~2.4 cm down, over the upper stomach, and all of it at the top, so the
+    /// ghost bar rises almost straight up (only ~5 cm toward the head over
+    /// ~40 cm) and ends over the upper stomach instead of the shoulders. The
+    /// elbows move with the hands before re-seating, so they keep bending
+    /// toward the feet like the real ones: re-seated from where they were,
+    /// at the top the shoulder-to-wrist line swung past them and the ghost
+    /// elbows bent the wrong way, toward the head (simulator QA). Elbows 51°
+    /// at the bottom and 136° at the top. Drawn at the top, where all of it
+    /// shows: side-on, the ghost upper arms lean ~42° toward the feet and the
+    /// forearms stand upright under a bar over the upper stomach, while the
+    /// real forearms lean back over the shoulders (at the bottom,
+    /// half-strength, the ghost stood on the real arms ~15 pt away).
+    private static let closeGripBarLow = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip", "forearm_*"], forward: -0.075, up: -0.30), .resolve(["forearm_*"])],
+        strength: .between("hand_L", "pelvis", from: 0.17, to: 1.27)
+    )
+
+// MARK: TABLE
+
+        // MARK: Exercises 1-50 redo: Pendlay Row and Close-Grip Bench Press (2026-09-29)
+        // Pendlay Row is framed from behind on the lifter's left (yaw -2.0,
+        // ~25° past a side view), like the Barbell Bent-Over Row: its faults
+        // are all in the lifter's own sagittal plane, which that view shows,
+        // so none turns. Only the arms and bar move in the model (up 1.25 s,
+        // held 0.65 s, down 2.1 s, no pause at the floor). Close-Grip Bench
+        // Press uses the bench lifts' .bench framing (yaw -1.0), where the
+        // lifter's side-to-side and head-to-feet axes both run across the
+        // screen: the narrow grip and the flared elbows turn toward the foot
+        // end (yaw -0.4) so the hands visibly close in and the two elbows
+        // visibly spread, and the low bar path turns side-on (yaw -1.5) so
+        // its shift reads as down the body rather than along the bar. The
+        // feet fault turns side-on too: in the .bench view the far foot's toes
+        // run past the viewport's left edge, and with them the ghost's far
+        // toe; side-on both feet sit inside it and the heels and hips lift
+        // straight up the screen.
+        "Pendlay Row": [
+            // The chest swinging up 25° to heave the bar off the floor, the arms hanging.
+            "torso": pendlayChestHeave,
+            // The back rounding and the head dropping as the bar reaches the floor.
+            "spine": pendlayBackRounded,
+            // The plates hovering ~12 cm above the floor between reps.
+            "floor": pendlayBarHovering,
+            // The pull stopping half-way, out in front of the knees.
+            "pull": pendlayPulledShort,
+            // The shoulders rounded forward toward the floor, hunched over the bar.
+            "shoulders": shouldersForward
+        ],
+        "Close-Grip Bench Press": [
+            // Hands nearly touching in the middle of the bar.
+            "grip": closeGripHandsTogether.seen(0.6),
+            // Upper arms flared ~45° further out from the sides, the hands staying put.
+            "elbow": elbowsFlared(45).seen(0.6),
+            // Bar lowered onto the stomach and pressed straight up.
+            "barpath": closeGripBarLow.seen(-0.5),
+            "scapula": benchShoulders,
+            // Heels up and hips off the bench, seen side-on so the far foot stays in frame.
+            "feet": benchFeet.seen(-0.5)
+        ],

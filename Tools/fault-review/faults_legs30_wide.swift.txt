@@ -1,0 +1,134 @@
+// MARK: PIECES
+
+    // MARK: 30-leg set wide-stance pieces (2026-09-28): lateral lunge, Cossack and sumo squats, kettlebell goblet squat
+
+    /// Lifts that shift from side to side (lateral lunge, Cossack squat): the
+    /// straight leg bending, its foot sliding `by` torso lengths in toward the
+    /// midline and the knee re-seated between the same hip and the moved
+    /// ankle, so it folds forward — the weight settling between the feet
+    /// instead of over the bent leg. `_bent` / `_straight` follow whichever
+    /// knee is bent further, so the ghost switches legs with the reps; it
+    /// grows with the bent knee.
+    private static func wideStraightLegBent(_ by: Float) -> FaultPose {
+        FaultPose(chains: [leg("straight"), hips],
+                  moves: [.shift(["foot_straight", "foot_straight.tip"], outward: -by),
+                          .resolve(["shin_straight"])],
+                  strength: .withBend("shin_bent"))
+    }
+
+    /// Lateral lunge: the hips kept forward (still behind the stepping foot)
+    /// instead of sitting back. The hips and all they carry sit 0.15 torso lengths
+    /// (~9 cm) further forward and the trunk comes 25° more upright, so both
+    /// knees re-seat and the bent knee drives forward over the toes. With
+    /// its foot fixed, the straight leg also folds (171° -> ~149°) as the
+    /// hips come toward it; it is drawn so the ghost's hips stay joined.
+    private static let wideHipsForward = FaultPose(
+        chains: [spine, arms, leg("bent"), leg("straight"), hips],
+        moves: [.shift(carried, ahead: 0.15),
+                .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 25),
+                .resolve(["shin_bent", "shin_straight"])],
+        strength: .withBend("shin_bent")
+    )
+
+    /// Side-to-side lifts stopping high: `shallow` with the strength read
+    /// from whichever knee is bent (the left knee is straight in rep 2), both
+    /// legs drawn and re-seated under the raised hips.
+    private static func wideSideShallow(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, arms, leg("bent"), leg("straight"), hips],
+                  moves: [.shift(carried, rise: rise), .resolve(["shin_bent", "shin_straight"])],
+                  strength: .withBend("shin_bent"))
+    }
+
+    /// Wide stances: the toes turned to point straight ahead. Each foot's toes
+    /// swing about its ankle toward the front (35°, the sumo models' toe-out)
+    /// while the knees stay out, so the ghost shows the feet no longer under
+    /// the knees. The same at every moment.
+    private static let wideToesForward = FaultPose(
+        chains: [legs],
+        moves: [.turn(pivot: "foot_*", points: ["foot_*.tip"], axis: .up, degrees: 35)]
+    )
+
+    /// Goblet squat with a kettlebell: the bell sagging down and away from
+    /// the chest, the trunk tipping 8° after it (the library Goblet Squat's
+    /// hold fault). Grows with the knees.
+    private static let wideBellSagging = FaultPose(
+        chains: [spine, armsToGrip],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -8),
+                .shift(["hand_*", "hand_*.tip"], forward: 0.1, up: -0.18),
+                .resolve(["forearm_*"])],
+        strength: .withBend("shin_L")
+    )
+
+// MARK: TABLE
+
+        // MARK: 30-leg set wide stances: lateral lunge, Cossack and sumo squats, kettlebell goblet squat (2026-09-28)
+        // Lateral Lunge and Cossack Squat shift from side to side (rep 1 over
+        // the LEFT leg, rep 2 the RIGHT), so their one-leg faults name the
+        // `bent` and `straight` leg and follow the working leg. Both are
+        // framed near front-on (yaw -0.3): sagittal faults turn -0.9 (a total
+        // of -1.2, the left side, the working leg in rep 1, toward the
+        // camera), the knee caving in turns 0.3 to face-on, the straight leg
+        // bending turns -0.6 (three-quarter, so both the foot sliding in and
+        // the knee folding forward show). The sumo and goblet squats are
+        // symmetric: the dumbbell sumo and goblet squats are framed at -0.5
+        // and the barbell sumo squat at -0.8; sagittal faults turn to -1.2,
+        // knees caving in to face-on, the toes turned forward to -0.2.
+        "Lateral Lunge": [
+            // The back rounding and the head dropping toward the knee; the
+            // model already hinges 58° forward, so the ghost rounds rather
+            // than leans further.
+            "torso": backRounded(.withBend("shin_bent")).seen(-0.9),
+            // Hips kept forward: ~9 cm forward, trunk 58° -> 33°, the
+            // kneecap 21 cm ahead of the ankle instead of 13 cm (a port of
+            // FaultGhost.solve on the rig at 2.0 s); the straight knee folds
+            // to ~149° as a side effect.
+            "hips": wideHipsForward.seen(-0.9),
+            // The straight leg bending, its foot ~7 cm in: the knee folds
+            // from 171° to ~139°.
+            "trail": wideStraightLegBent(0.12).seen(-0.6),
+            "knee": kneesIn("bent").seen(0.3),
+            "heel": heelsUp("bent").seen(-0.9)
+        ],
+        "Cossack Squat": [
+            "torso": chestDropped(20, strength: .withBend("shin_bent")).seen(-0.9),
+            // Stopping short of parallel (about three quarters down): the hips
+            // ~12 cm higher, the hip joint ~7-8 cm above the bent knee instead
+            // of 4 cm below it. Kept at 0.2: the
+            // straight leg is already at 171° with its foot fixed, so a
+            // higher pelvis stretches it (~4% here, ~7% at 0.3).
+            "depth": wideSideShallow(0.2),
+            // The straight leg bending, its foot ~12 cm in: the knee folds
+            // from 171° to ~120° and rises ~17 cm.
+            "trail": wideStraightLegBent(0.2).seen(-0.6),
+            // The bent knee already sits ~16 cm outside the ankle and ~8 cm
+            // outside the toe line (toes out 20°), so the default 0.17 (~10
+            // cm) would only bring it onto the toes; 0.3 (~18 cm) puts the
+            // ghost knee ~2 cm inside the ankle, over the arch.
+            "knee": kneesIn("bent", 0.3).seen(0.3),
+            "heel": heelsUp("bent").seen(-0.9)
+        ],
+        "Dumbbell Sumo Squat": [
+            "torso": chestDropped(15).seen(-0.7),
+            // Stopping at a half squat: the hips and the dumbbell ~21 cm up.
+            "depth": shallow(0.35),
+            // The dumbbell swinging forward in front of the knees.
+            "hold": armsSwungForward(25, strength: .withBend("shin_L")).seen(-0.7),
+            "knee": kneesIn().seen(0.5),
+            // Toes turned from 35° out to straight ahead (within 3°).
+            "stance": wideToesForward.seen(0.3)
+        ],
+        "Barbell Sumo Squat": [
+            // The bar slid down onto the rear delts, the chest tipping 10°.
+            "bar": barSlidLow.seen(-0.4),
+            "torso": chestDropped(12, withBar: true).seen(-0.4),
+            "depth": shallow(0.35, withBar: true),
+            "knee": kneesIn().seen(0.8),
+            "stance": wideToesForward.seen(0.6)
+        ],
+        "Kettlebell Goblet Squat": [
+            "hold": wideBellSagging.seen(-0.7),
+            "torso": chestDropped(15).seen(-0.7),
+            "knee": kneesIn().seen(0.5),
+            "depth": shallow(0.35),
+            "heel": heelsUp().seen(-0.7)
+        ],

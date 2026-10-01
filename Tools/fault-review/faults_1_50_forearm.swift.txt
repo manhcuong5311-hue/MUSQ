@@ -1,0 +1,99 @@
+// MARK: PIECES
+    // MARK: Exercises 1-50 redo, forearm pieces (2026-09-29)
+
+    /// Wrist curl on a forearm pad (the Wrist Curl: seated, forearms level
+    /// on the pad, elbows ~95°, wrists just past its front edge): where the
+    /// hands are in their arc, read as the middle of the left palm's distance
+    /// from the left knee, in torso lengths. On the rig it is 0.63 at the
+    /// bottom (the palm point ~26° below level), 0.717 as the palm point
+    /// passes level, 0.742 at ~8° above it (the knuckles level), 0.774 at
+    /// ~22° above and 0.805 at the top (~39° above). `wristPadTop` fades a
+    /// fault of the top in once the knuckles rise past level, in full from
+    /// ~30° above; `wristPadBottomShort` shows all of one at the bottom and
+    /// none once the knuckles reach level, so a hand turned 35° up holds at
+    /// about level (the palm point 8-8.4° above it, within ~0.5°) until the
+    /// lifter's hands reach it, rather than rising with them.
+    private static let wristPadTop = FaultStrength.between("hand_L.tip", "shin_L", from: 0.745, to: 0.79)
+    private static let wristPadBottomShort = FaultStrength.between("hand_L.tip", "shin_L", from: 0.742, to: 0.63)
+
+    /// Wrist curl on a forearm pad: the forearms resting too far back, the
+    /// wrists on the pad instead of just past its front edge. Elbows, wrists
+    /// and hands slide 0.17 torso lengths (~10 cm) straight back along the
+    /// level pad, so the wrists sit ~8 cm in from the edge and the elbows
+    /// hang off its back; at the bottom the hand line, tipped as far as the
+    /// lifter's (~26° below level), only just clears the pad's front corner
+    /// (~1.6 cm above it, less than the back of the hand's depth). Drawn from
+    /// the elbows, since the upper arms could only follow with the whole body
+    /// moving back.
+    private static let wristPadForearmsBack = FaultPose(
+        chains: [["forearm_*", "hand_*", "hand_*.tip"]],
+        moves: [.shift(["forearm_*", "hand_*", "hand_*.tip"], ahead: -0.17)]
+    )
+
+    /// Standing reverse (overhand) curl: the shoulders rolling forward and
+    /// shrugging up as the bar reaches the top (the Biceps Curl's shoulder
+    /// fault, 0.06 forward and 0.1 up, ~4 and ~6 cm), the arms, grip and bar
+    /// carried with them. Grows with the left elbow's bend, so it is all
+    /// there from the elbows at 90° to the top and gone with the arms
+    /// straight.
+    private static let reverseCurlShouldersRolled = FaultPose(
+        chains: [shoulders, armsToGrip, bar],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], forward: 0.06, up: 0.1)],
+        strength: .withBend("forearm_L")
+    )
+
+// MARK: TABLE
+
+        // MARK: Exercises 1-50 redo, forearm (2026-09-29)
+        // Standing, an EZ bar overhand; framed at yaw -0.4, nearly face-on,
+        // like the Barbell Curl, and turned -0.5 (to -0.9) for the faults
+        // that move along the lifter's forward axis, as the Barbell Curl's.
+        // The dropped wrists turn too: in the framing's own view the forearms
+        // and hands point at the camera from mid-rep up, and on the simulator
+        // the ghost hands were ~11 pt stubs and the lowered bar lay along the
+        // real bar's middle. From -0.9 each hand is ~24 pt long, bent ~50°
+        // below its forearm on screen, and the bar ~22 pt under the real one.
+        "Reverse Curl": [
+            // Palm-down wrists bending toward the palm under the bar, the
+            // hands turned 45° below the forearm line (`curlWristsCurled`
+            // turned the other way), with the left elbow's bend: strongest
+            // from mid-rep to the top, where the bar pulls the hands down
+            // (on the rig the palm point ends ~10° below level at the top
+            // against the lifter's 35° above, ~9 cm lower).
+            "grip": curlWristsCurled(withBar: true, degrees: -45).seen(-0.5),
+            // Upper arms swinging 35° forward as the elbows bend.
+            "elbow": elbowsForward(35, withBar: true).seen(-0.5),
+            // Half reps: the elbows stay ~45° bent at the bottom (the
+            // lifter's 167°, the ghost's ~115-122°), shown from about 126°
+            // down; shoulder to wrist 0.80-0.89 torso lengths on the rig
+            // (0.90 at the bottom, 0.81 at 126°, 0.65 with the elbow at 90°).
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(-0.5),
+            // Hips forward and trunk 15° back to heave the bar.
+            "torso": bodySwung(withBar: true).seen(-0.5),
+            // Shoulders rolled forward and up at the top.
+            "shoulder": reverseCurlShouldersRolled.seen(-0.5),
+        ],
+        // Seated at a forearm pad, dumbbells palms up; framed at yaw -0.7,
+        // from the front-left, the lifter facing left. The forearm lift, the
+        // short bottom and the low seat move up and down and read from the
+        // framing's own view. The trunk rock and the forearms slid back move
+        // along the lifter's forward axis and are seen from -1.0
+        // (`.seen(-0.3)`), as the Dumbbell Wrist Curl's trunk rock.
+        "Wrist Curl": [
+            // The forearms coming up off the pad (20° about the elbows, the
+            // wrists ~8 cm higher) as the dumbbells rise, the elbows bending
+            // to help.
+            "forearm": wristCurlForearmsLifted(20, strength: wristPadTop),
+            // Wrists back on the pad: forearms slid ~10 cm back.
+            "position": wristPadForearmsBack.seen(-0.3),
+            // Short at the bottom: the hands held about level (the knuckles
+            // level, the palm point ~8° above; the lifter's palm point ~26°
+            // below), the wrists barely bent back.
+            "range": wristCurlHandsTurned(35, strength: wristPadBottomShort),
+            // Rocking back from the hips (25° to 13° forward) as the hands
+            // curl up, the arms carried up off the pad.
+            "torso": wristCurlTrunkLifted(12, strength: wristPadTop).seen(-0.3),
+            // Seat too low: the body sinks ~12 cm while the forearms stay
+            // on the pad, so the shoulders ride up toward the ears.
+            "seat": preacherSatLow,
+        ],

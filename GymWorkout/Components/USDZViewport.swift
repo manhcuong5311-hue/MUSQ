@@ -266,7 +266,11 @@ struct USDZViewport: View {
     private func track(
         _ tracker: JointTracker, in model: Entity, content: RealityViewCameraContent
     ) -> EventSubscription? {
-        guard let skin = Self.skinnedModel(in: model) else { return nil }
+        // Looked for under the rig first: some props are skinned too (the
+        // Assisted Nordic Curl's band has a one-joint skeleton of its own,
+        // exported ahead of the rig), and their joints are not the lifter's.
+        guard let skin = Self.skinnedModel(in: model.findEntity(named: Self.rigEntityName) ?? model)
+        else { return nil }
         let names = skin.jointNames
         var indexByPath: [String: Int] = [:]
         for (i, name) in names.enumerated() { indexByPath[name] = i }

@@ -1,7 +1,7 @@
 # Offline replica of USDZViewport's framing: model scaled by zoom/1.7923 about
 # the rig's bind-pose centre, offset, turned by yaw; camera at z=2.05, 32deg vFOV.
 import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
-_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 import math, sys, json
 import numpy as np
 from pxr import Usd, UsdGeom, UsdSkel, Gf
@@ -21,7 +21,7 @@ def gather(path, nt=12):
     # The rig sits directly under /root, except when a machine's own follow
     # transform (e.g. an assisted-dip platform) parents the whole body, so find
     # it by type instead of assuming a fixed path.
-    skel_path = next(p.GetPath() for p in st.Traverse() if p.GetTypeName() == "Skeleton")
+    skel_path = next(p.GetPath() for p in sorted(st.Traverse(), key=lambda q: "Anatomy_MasterRig" not in q.GetPath().pathString) if p.GetTypeName() == "Skeleton")
     skel = UsdSkel.Skeleton(st.GetPrimAtPath(skel_path))
     q = UsdSkel.Cache().GetSkelQuery(skel)
     names = [str(j).split("/")[-1] for j in q.GetJointOrder()]

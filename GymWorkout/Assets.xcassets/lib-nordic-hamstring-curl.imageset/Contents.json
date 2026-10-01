@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-nordic-hamstring-curl.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -48,7 +48,10 @@
 # - Marchetti PH, Uchida MC 2011, J Appl Biomech 27(4):380-384 — the pullover
 #   works the pectoralis major more than the latissimus dorsi.
 # - Solstad TEJ et al. 2020, J Sports Sci Med 19(4):645-651 — dumbbell fly vs
-#   bench press: similar pectoralis activity, far less triceps in the fly.
+#   bench press: pectoralis, anterior deltoid and triceps all more active in
+#   the bench press (by 8-81%), the triceps by far the most; the biceps more
+#   active in the fly. (Corrected 2026-09-29; this line used to say the
+#   pectoralis activity was similar.)
 # - Santana JC, Vera-Garcia FJ, McGill SM 2007, J Strength Cond Res
 #   21(4):1271-1277 — the standing one-arm cable press is limited by balance
 #   and the trunk's rotational stiffness, not by the chest.

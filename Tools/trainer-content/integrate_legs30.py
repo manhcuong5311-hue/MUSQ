@@ -1,0 +1,118 @@
+# Integrates the 30-leg set (2026-09-28) into the app: setup steps into
+# setup.py, trainer content (gen.py) plus the library rows, content map and
+# model map into SampleData.swift, and the families' fault ghosts into
+# FaultPoses.swift. Always starts from the pristine copies saved on the first
+# run (<scratch>/pristine), so it can be re-run after any family edit.
+#   python3 integrate_legs30.py <scratch dir>
+import json, os, re, shutil, sys, glob
+HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE); sys.path.insert(0, HERE)
+REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
+SD = os.path.join(REPO, "GymWorkout/Models/SampleData.swift")
+FP = os.path.join(REPO, "GymWorkout/Models/FaultPoses.swift")
+SU = os.path.join(HERE, "setup.py")
+PR = os.path.join(sys.argv[1], "pristine"); os.makedirs(PR, exist_ok=True)
+for f in (SD, FP, SU):
+    keep = os.path.join(PR, os.path.basename(f))
+    if not os.path.exists(keep): shutil.copy(f, keep)
+    shutil.copy(keep, f)
+
+import spec_legs30 as S
+from common_legs30 import SETUP as NEW
+missing = [n for n in S.ORDER if n not in {e["name"] for e in S.SPEC}]
+# Test runs: `--skip <family>` leaves a family out (spec and faults).
+SKIP = [sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--skip"]
+for fam in SKIP:
+    S.SPEC[:] = [e for e in S.SPEC if e["name"] not in S.FAMILIES[fam]]
+    S.ORDER[:] = [n for n in S.ORDER if n not in S.FAMILIES[fam]]
+missing = [n for n in S.ORDER if n not in {e["name"] for e in S.SPEC}]
+assert not missing, missing
+problems = S.validate() + S.validate_library()
+assert not problems, problems
+
+# 1. setup.py
+s = open(SU).read().rstrip()
+assert s.endswith("}")
+block = ["    # 30-leg set 02-27 (2026-09-28)"]
+for n in S.ORDER:
+    block.append(f'    "{n}": [')
+    block += [f'        "{t}",' for t in NEW[n]]
+    block.append("    ],")
+open(SU, "w").write(s[:-1].rstrip() + "\n" + "\n".join(block) + "\n}\n")
+
+# 2. gen
+import setup  # noqa: E402  (the file just written)
+sys.modules["spec"] = S
+import gen  # noqa: E402
+swift = "\n\n".join(gen.emit(e) for e in S.SPEC)
+json.dump({"legs30": swift}, open("generated_legs30.json", "w"))
+layout_lines = []
+for e in S.SPEC:
+    layout_lines.append(e["name"])
+    for (cue, label, joint), (x, y, side, jx, jy) in gen.layout(e["name"], e["annotations"], e.get("overrides"), e.get("slots")):
+        layout_lines.append(f"   {label:30s} {side:8s} x={x:.3f} y={y:.2f}  joint {joint:22s} at ({jx:.2f},{jy:.2f})")
+open(os.path.join(sys.argv[1], "layout_legs30.txt"), "w").write("\n".join(layout_lines) + "\n")
+
+# 3. SampleData.swift
+t = open(SD).read()
+lib = ["        // 30-leg set 02-27 (2026-09-28)"]
+for e in S.SPEC:
+    m, q, d = e["library"]
+    lib += [f'        Exercise(name: "{e["name"]}", category: .legs,',
+            f'                 primaryMuscle: "{m}", equipment: "{q}",',
+            f'                 difficulty: .{d}),']
+anchor = '''        Exercise(name: "Smith Machine Bulgarian Split Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
+                 difficulty: .intermediate),
+'''
+assert t.count(anchor) == 1
+t = t.replace(anchor, anchor + "\n".join(lib) + "\n")
+old = '''        "Towel Grip Hold": towelGripHoldContent
+    ]'''
+assert t.count(old) == 1
+t = t.replace(old, '''        "Towel Grip Hold": towelGripHoldContent,
+        // 30-leg set 02-27 (2026-09-28)
+''' + ",\n".join(f'        "{e["name"]}": {e["var"]}Content' for e in S.SPEC) + "\n    ]")
+FR = {}
+for line in open("probe.py"):
+    m = re.match(r' "([^"]+)": \("([^"]+)", ([-0-9.]+), ([0-9.]+), \(([-0-9.]+),([-0-9.]+),([-0-9.]+)\)\),', line)
+    if m: FR[m.group(1)] = m.groups()[1:]
+old = '''        "Towel Grip Hold":                    ExerciseModel(resource: "TowelGripHold",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.75, offset: [-0.023, -0.04, 0.013]))
+    ]'''
+assert t.count(old) == 1
+rows = ["        // 30-leg set 02-27 (2026-09-28), solved at 382×655 (see",
+        "        // Tools/model-pipeline/README.md): free squats from the front-left,",
+        "        // the side-shifting lunges near front-on, the machines and leg presses",
+        "        // from the side or rear three-quarter where the frame hides least."]
+for e in S.SPEC:
+    res, yaw, zoom, ox, oy, oz = FR[e["name"]]
+    key = f'"{e["name"]}":'
+    rows.append(f'        {key:<37s} ExerciseModel(resource: "{res.split("/")[-1]}",')
+    rows.append(f'                                        framing: ModelFraming(yaw: {float(yaw)}, zoom: {float(zoom)}, offset: [{float(ox)}, {float(oy)}, {float(oz)}])),')
+rows[-1] = rows[-1].rstrip(",")
+t = t.replace(old, old[:-6] + ",\n" + "\n".join(rows) + "\n    ]")
+header = '''
+    // MARK: - 30-leg set (2026-09-28)
+    //
+    // Twenty-three squats, lunges and leg presses (02-27 of the 30-leg set)
+    // from the HIKSEMI drive's 300-350/27_9 exports. Generated by
+    // `Tools/trainer-content/gen.py` from `spec_legs30.py`; each family
+    // file's header lists what its models show and its sources, and
+    // `notes_legs30_*.md` maps the copy's claims to them.
+
+'''
+assert t.rstrip().endswith("}")
+t = t.rstrip()[:-1].rstrip() + "\n" + header + swift + "\n}\n"
+open(SD, "w").write(t)
+
+# 4. FaultPoses.swift
+f = open(FP).read(); pieces, table = [], []
+for path in sorted(glob.glob(os.path.join(REPO, "Tools/fault-review/faults_legs30_*.swift.txt"))):
+    if any(path.endswith(f"_{fam}.swift.txt") for fam in SKIP): continue
+    x = open(path).read(); a, b = x.index("// MARK: PIECES"), x.index("// MARK: TABLE")
+    pieces.append(x[a + 15:b].strip("\n")); table.append(x[b + 14:].strip("\n"))
+pm, tm = "    // MARK: 30-leg set pieces (2026-09-28)\n", "        // MARK: 30-leg set (2026-09-28)\n"
+assert f.count(pm) == 1 and f.count(tm) == 1
+f = f.replace(pm, pm + "\n".join(pieces) + "\n").replace(tm, tm + "\n".join(table) + "\n")
+open(FP, "w").write(f)
+print(f"integrated {len(S.SPEC)} exercises, {len(pieces)} fault families; layout in {sys.argv[1]}/layout_legs30.txt")

@@ -18,7 +18,7 @@
 import sys, os
 # Before pxr loads: slim models in the repo find the body through this.
 os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH",
-                      "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+                      "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 from pxr import Sdf, Usd
 
 BODY = "AnatomyBody.usdc"

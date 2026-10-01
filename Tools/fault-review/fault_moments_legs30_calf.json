@@ -1,0 +1,7 @@
+{
+  "Standing Calf Raise": {"body": "any", "knees": "bottom", "top": "top", "bottom": "bottom"},
+  "Seated Calf Raise": {"knees": "bottom", "trunk": "top", "top": "top", "bottom": "bottom"},
+  "Leg Press Calf Raise": {"knees": "bottom", "lock": "top", "top": "top", "bottom": "bottom"},
+  "Single-Leg Calf Raise": {"support": "top", "knee": "bottom", "top": "top", "bottom": "bottom"},
+  "Smith Machine Calf Raise": {"body": "any", "knees": "bottom", "top": "top", "bottom": "bottom"}
+}

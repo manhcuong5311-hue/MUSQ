@@ -1,0 +1,8 @@
+{
+ "Good Morning": {"bar": "bottom", "back": "bottom", "hips": "bottom", "knee": "bottom", "depth": "bottom"},
+ "Seated Good Morning": {"bar": "bottom", "back": "bottom", "hinge": "bottom", "feet": "bottom", "range": "bottom"},
+ "Smith Machine Good Morning": {"bar": "bottom", "feet": "top", "hips": "bottom", "back": "bottom", "knee": "bottom"},
+ "Nordic Hamstring Curl": {"line": "bottom", "lower": "bottom", "range": "bottom", "anchor": "bottom", "hands": "bottom"},
+ "Assisted Nordic Curl": {"band": "bottom", "line": "bottom", "lower": "bottom", "anchor": "bottom", "hands": "bottom"},
+ "Glute-Ham Raise": {"pad": "top", "feet": "top", "line": "bottom", "range": "bottom"}
+}

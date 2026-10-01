@@ -3,10 +3,10 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from curves2mesh import replace_curves
-from pxr import Usd, UsdGeom, UsdLux, Sdf
+from pxr import Usd, UsdGeom, UsdLux, Sdf, Gf
 
-SRC = "/Users/sammanhcuong/Desktop/GymWorkout/SourceExports"
-OUT = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models"
+SRC = "/Users/sammanhcuong/Developer/GymWorkout/SourceExports"
+OUT = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models"
 JOBS = {
     # Chest redo (2026-09-23) — overwrites the earlier conversion of the same six.
     "USDForapp/01_barbell_bench_press": "Chest/BarbellBenchPress",
@@ -279,10 +279,249 @@ JOBS = {
     "241-300/273_cable_reverse_wrist_curl": "Forearms/CableReverseWristCurl",
     "241-300/274_behind_the_back_wrist_curl": "Forearms/BehindTheBackWristCurl",
     "241-300/276_finger_curl": "Forearms/FingerCurl",
+    # 277-280 redone (2026-09-28) from the drive's "241-300/27:09" folder: the
+    # user's static exports of the re-saved .blend files (no animation; the
+    # pose is the skeleton's rest). hold_static.py makes them 8 s clips.
     "241-300/277_plate_pinch_hold": "Forearms/PlatePinchHold",
     "241-300/278_dumbbell_static_hold": "Forearms/DumbbellStaticHold",
     "241-300/279_barbell_static_hold": "Forearms/BarbellStaticHold",
     "241-300/280_towel_grip_hold": "Forearms/TowelGripHold",
+    # Arnold Press redo (2026-09-28): the user's BLENDER/exercises_13_49/
+    # BLENDER/02_Vai/30_arnold_press.blend with the palms re-keyed to pronate
+    # (they turned the wrong way, twisting the forearms a half turn), exported
+    # headless.
+    "Shoulder/30_arnold_press": "Shoulder/ArnoldPress",
+    # 30-leg set, 02-27 (2026-09-28), from the HIKSEMI drive's "300-350/27_9"
+    # folder (24 exports; 16, 22 and 23 were not exported). Squats, lunges and
+    # leg presses into Legs/.
+    "300-350/02_lateral_lunge": "Legs/LateralLunge",
+    "300-350/03_cossack_squat": "Legs/CossackSquat",
+    "300-350/04_dumbbell_sumo_squat": "Legs/DumbbellSumoSquat",
+    "300-350/05_barbell_sumo_squat": "Legs/BarbellSumoSquat",
+    "300-350/06_kettlebell_goblet_squat": "Legs/KettlebellGobletSquat",
+    "300-350/07_box_squat": "Legs/BoxSquat",
+    "300-350/08_pause_squat": "Legs/PauseSquat",
+    "300-350/09_safety_bar_squat": "Legs/SafetyBarSquat",
+    "300-350/10_zercher_squat": "Legs/ZercherSquat",
+    "300-350/11_overhead_squat": "Legs/OverheadSquat",
+    "300-350/12_landmine_squat": "Legs/LandmineSquat",
+    "300-350/13_belt_squat": "Legs/BeltSquat",
+    "300-350/14_pendulum_squat": "Legs/PendulumSquat",
+    "300-350/15_v_squat": "Legs/VSquat",
+    "300-350/17_vertical_leg_press": "Legs/VerticalLegPress",
+    "300-350/18_45_degree_leg_press": "Legs/LegPress45",
+    "300-350/19_single_leg_press": "Legs/SingleLegPress",
+    "300-350/20_narrow_stance_leg_press": "Legs/NarrowStanceLegPress",
+    "300-350/21_wide_stance_leg_press": "Legs/WideStanceLegPress",
+    "300-350/24_heel_elevated_squat": "Legs/HeelElevatedSquat",
+    "300-350/25_cyclist_squat": "Legs/CyclistSquat",
+    "300-350/26_pistol_squat": "Legs/PistolSquat",
+    "300-350/27_assisted_pistol_squat": "Legs/AssistedPistolSquat",
+    # Calves 083-087 (2026-09-28), from the HIKSEMI drive's "Calf 83-" folder.
+    "Calf/083_standing_calf_raise": "Legs/StandingCalfRaise",
+    "Calf/084_seated_calf_raise": "Legs/SeatedCalfRaise",
+    "Calf/085_leg_press_calf_raise": "Legs/LegPressCalfRaise",
+    "Calf/086_single_leg_calf_raise": "Legs/SingleLegCalfRaise",
+    "Calf/087_smith_machine_calf_raise": "Legs/SmithMachineCalfRaise",
+    # Exercises 1-50 redone (2026-09-29), from the HIKSEMI drive's "1-100 🟢"
+    # folder (the 🟢 copy where a number has two). 26 replace the app's
+    # models; 15, 42, 44-49 and 050 are new. 01 was re-exported headless with
+    # its RIG collection's render toggle back on: the user's export had lost
+    # the armature (120 one-joint skeletons, no motion).
+    "1-50/01_barbell_bench_press": "Chest/BarbellBenchPress",
+    "1-50/02_incline_barbell_bench_press": "Chest/InclineBarbellBenchPress",
+    "1-50/03_decline_barbell_bench_press": "Chest/DeclineBarbellBenchPress",
+    "1-50/04_dumbbell_bench_press": "Chest/DumbbellBenchPress",
+    "1-50/05_incline_dumbbell_press": "Chest/InclineDumbbellPress",
+    "1-50/06_dumbbell_fly": "Chest/DumbbellFly",
+    "1-50/07_incline_dumbbell_fly": "Chest/InclineDumbbellFly",
+    "1-50/08_chest_press_machine": "Chest/ChestPressMachine",
+    "1-50/09_pec_deck_fly": "Chest/PecDeckFly",
+    "1-50/10_cable_fly": "Chest/CableFly",
+    "1-50/11_low_to_high_cable_fly": "Chest/LowToHighCableFly",
+    "1-50/13_conventional_deadlift": "Back/ConventionalDeadlift",
+    "1-50/14_barbell_bent_over_row": "Back/BarbellBentOverRow",
+    "1-50/15_pendlay_row": "Back/PendlayRow",
+    "1-50/16_one_arm_dumbbell_row": "Back/OneArmDumbbellRow",
+    "1-50/17_chest_supported_dumbbell_row": "Back/ChestSupportedDumbbellRow",
+    "1-50/23_straight_arm_pulldown": "Back/StraightArmPulldown",
+    "1-50/24_t_bar_row": "Back/TBarRow",
+    "1-50/25_chest_supported_row_machine": "Back/ChestSupportedRowMachine",
+    "1-50/27_back_extension": "Back/BackExtension",
+    "1-50/28_barbell_overhead_press": "Shoulder/BarbellOverheadPress",
+    "1-50/29_dumbbell_shoulder_press": "Shoulder/DumbbellShoulderPress",
+    "1-50/33_cable_lateral_raise": "Shoulder/CableLateralRaise",
+    "1-50/35_dumbbell_front_raise": "Shoulder/DumbbellFrontRaise",
+    "1-50/36_reverse_dumbbell_fly": "Shoulder/ReverseDumbbellFly",
+    "1-50/37_reverse_pec_deck": "Shoulder/ReversePecDeck",
+    "1-50/39_cable_rear_delt_fly": "Shoulder/CableRearDeltFly",
+    "1-50/42_dumbbell_curl": "Biceps/DumbbellCurl",
+    "1-50/44_incline_dumbbell_curl": "Biceps/InclineDumbbellCurl",
+    "1-50/45_preacher_curl": "Biceps/PreacherCurl",
+    "1-50/46_cable_curl": "Biceps/CableCurl",
+    "1-50/47_bayesian_cable_curl": "Biceps/BayesianCableCurl",
+    "1-50/48_reverse_curl": "Biceps/ReverseCurl",
+    "1-50/49_wrist_curl": "Forearms/WristCurl",
+    "1-50/050_close_grip_bench_press": "Triceps/CloseGripBenchPress",
+    # Exercises 51-150 redone (2026-09-30), from the same "1-100 🟢" folder (the
+    # 🟢 copy of 062 and 091; Step-Up and Single-Leg Glute Bridge are 069 and
+    # 079). All 49 replace existing models; 51-60, 66-70, 74, 77, 79 (the
+    # numbered bridge), 81, 83-85, 88, 89, 93, 95-110, 113-116, 127, 129, 130,
+    # 132, 136, 138, 141, 142 were not redone.
+    "51-150/061_goblet_squat": "Legs/GobletSquat",
+    "51-150/062_bulgarian_split_squat": "Legs/BulgarianSplitSquatUpright",
+    "51-150/063_walking_lunge": "Legs/WalkingLunge",
+    "51-150/064_reverse_lunge": "Legs/ReverseLunge",
+    "51-150/065_leg_press": "Legs/LegPress",
+    "51-150/071_romanian_deadlift": "Legs/RomanianDeadlift",
+    "51-150/072_dumbbell_romanian_deadlift": "Legs/DumbbellRomanianDeadlift",
+    "51-150/073_stiff_leg_deadlift": "Legs/StiffLegDeadlift",
+    "51-150/075_seated_leg_curl": "Legs/SeatedLegCurl",
+    "51-150/076_single_leg_curl": "Legs/SingleLegCurl",
+    "51-150/078_glute_bridge": "Legs/GluteBridge",
+    "51-150/080b_cable_side_kick": "Legs/CableSideKick",
+    "51-150/082_cable_hip_abduction": "Legs/CableHipAbduction",
+    "51-150/086_single_leg_calf_raise": "Legs/SingleLegCalfRaise",
+    "51-150/087_smith_machine_calf_raise": "Legs/SmithMachineCalfRaise",
+    "51-150/090_decline_crunch": "Abs/DeclineCrunch",
+    "51-150/091_hanging_knee_raise": "Abs/HangingKneeRaise",
+    "51-150/092_hanging_leg_raise": "Abs/HangingLegRaise",
+    "51-150/094_reverse_crunch": "Abs/ReverseCrunch",
+    "51-150/111_dumbbell_pullover": "Chest/DumbbellPullover",
+    "51-150/112_barbell_pullover": "Chest/BarbellPullover",
+    "51-150/117_high_to_low_cable_fly": "Chest/HighToLowCableFly",
+    "51-150/118_single_arm_cable_fly": "Chest/SingleArmCableFly",
+    "51-150/119_incline_cable_fly": "Chest/InclineCableFly",
+    "51-150/120_decline_cable_fly": "Chest/DeclineCableFly",
+    "51-150/121_cable_crossover": "Chest/CableCrossover",
+    "51-150/122_iso_lateral_chest_press": "Chest/IsoLateralChestPress",
+    "51-150/123_incline_chest_press_machine": "Chest/InclineChestPressMachine",
+    "51-150/124_decline_chest_press_machine": "Chest/DeclineChestPressMachine",
+    "51-150/125_plate_loaded_chest_press": "Chest/PlateLoadedChestPress",
+    "51-150/126_wide_grip_chest_press_machine": "Chest/WideGripChestPressMachine",
+    "51-150/128_single_arm_landmine_press": "Chest/SingleArmLandminePress",
+    "51-150/131_incline_push_up": "Chest/InclinePushUp",
+    "51-150/133_diamond_push_up": "Chest/DiamondPushUp",
+    "51-150/134_wide_grip_push_up": "Chest/WideGripPushUp",
+    "51-150/135_archer_push_up": "Chest/ArcherPushUp",
+    "51-150/137_medicine_ball_push_up": "Chest/MedicineBallPushUp",
+    "51-150/139_larsen_press": "Chest/LarsenPress",
+    "51-150/140_reverse_grip_bench_press": "Chest/ReverseGripBenchPress",
+    "51-150/143_sumo_deadlift": "Back/SumoDeadlift",
+    "51-150/144_trap_bar_deadlift": "Back/TrapBarDeadlift",
+    "51-150/145_snatch_grip_deadlift": "Back/SnatchGripDeadlift",
+    "51-150/146_deficit_deadlift": "Back/DeficitDeadlift",
+    "51-150/147_barbell_yates_row": "Back/BarbellYatesRow",
+    "51-150/148_reverse_grip_barbell_row": "Back/ReverseGripBarbellRow",
+    "51-150/149_wide_grip_barbell_row": "Back/WideGripBarbellRow",
+    "51-150/150_seal_row": "Back/SealRow",
+    "51-150/Single-Leg_Glute_Bridge": "Legs/SingleLegGluteBridge",
+    "51-150/Step-Up": "Legs/StepUp",
+    # Exercises 151-190 and the gated models redone (2026-09-30), from the same
+    # "1-100 🟢" folder (the 🟢 copy of Lunge_Lean). All 37 replace existing
+    # models; 153, 158-160, 166, 175 were not redone.
+    "151-190/151_meadows_row": "Back/MeadowsRow",
+    "151-190/152_landmine_row": "Back/LandmineRow",
+    "151-190/154_dumbbell_bent_over_row": "Back/DumbbellBentOverRow",
+    "151-190/155_renegade_row": "Back/RenegadeRow",
+    "151-190/156_kettlebell_row": "Back/KettlebellRow",
+    "151-190/157_gorilla_row": "Back/GorillaRow",
+    "151-190/161_wide_grip_pull_up": "Back/WideGripPullUp",
+    "151-190/162_neutral_grip_pull_up": "Back/NeutralGripPullUp",
+    "151-190/163_archer_pull_up": "Back/ArcherPullUp",
+    "151-190/164_weighted_pull_up": "Back/WeightedPullUp",
+    "151-190/165_assisted_pull_up": "Back/AssistedPullUp",
+    "151-190/167_weighted_chin_up": "Back/WeightedChinUp",
+    "151-190/168_machine_pull_up": "Back/MachinePullUp",
+    "151-190/169_wide_grip_lat_pulldown": "Back/WideGripLatPulldown",
+    "151-190/170_reverse_grip_lat_pulldown": "Back/ReverseGripLatPulldown",
+    "151-190/171_neutral_grip_lat_pulldown": "Back/NeutralGripLatPulldown",
+    "151-190/172_v_bar_lat_pulldown": "Back/VBarLatPulldown",
+    "151-190/173_single_arm_lat_pulldown": "Back/SingleArmLatPulldown",
+    "151-190/174_kneeling_lat_pulldown": "Back/KneelingLatPulldown",
+    "151-190/176_machine_lat_pulldown": "Back/MachineLatPulldown",
+    "151-190/177_iso_lateral_lat_pulldown": "Back/IsoLateralLatPulldown",
+    "151-190/178_wide_grip_seated_cable_row": "Back/WideGripSeatedCableRow",
+    "151-190/179_close_grip_seated_cable_row": "Back/CloseGripSeatedCableRow",
+    "151-190/180_single_arm_cable_row": "Back/SingleArmCableRow",
+    "151-190/181_standing_cable_row": "Back/StandingCableRow",
+    "151-190/182_half_kneeling_cable_row": "Back/HalfKneelingCableRow",
+    "151-190/183_high_cable_row": "Back/HighCableRow",
+    "151-190/184_low_cable_row": "Back/LowCableRow",
+    "151-190/185_machine_seated_row": "Back/MachineSeatedRow",
+    "151-190/186_iso_lateral_row_machine": "Back/IsoLateralRowMachine",
+    "151-190/187_single_arm_machine_row": "Back/SingleArmMachineRow",
+    "151-190/188_reverse_grip_t_bar_row": "Back/ReverseGripTBarRow",
+    "151-190/189_dumbbell_pullover_row": "Back/DumbbellPulloverRow",
+    "151-190/190_machine_pullover": "Back/MachinePullover",
+    "151-190/Biceps_Curl": "Biceps/BicepsCurl",
+    "151-190/Lunge": "Legs/Lunge",
+    "151-190/Lunge_Lean": "Legs/LungeLean",
+    # The drive's "190-280 🟢" folder (2026-09-30): the user's redone exports of
+    # 21 shoulder, carry, curl and grip models already in the app, plus 264
+    # Machine Preacher Curl, new. The grip holds 277-280 come animated this time.
+    "190-280/191_seated_barbell_overhead_press": "Shoulder/SeatedBarbellOverheadPress",
+    "190-280/195_standing_dumbbell_press": "Shoulder/StandingDumbbellPress",
+    "190-280/197_neutral_grip_dumbbell_shoulder_press": "Shoulder/NeutralGripDumbbellShoulderPress",
+    "190-280/198_single_arm_dumbbell_shoulder_press": "Shoulder/SingleArmDumbbellShoulderPress",
+    "190-280/200_landmine_shoulder_press": "Shoulder/LandmineShoulderPress",
+    "190-280/201_kneeling_landmine_press": "Shoulder/KneelingLandminePress",
+    "190-280/208_incline_lateral_raise": "Shoulder/InclineLateralRaise",
+    "190-280/211_cable_y_raise": "Shoulder/CableYRaise",
+    "190-280/220_rear_delt_row": "Shoulder/RearDeltRow",
+    "190-280/221_machine_rear_delt_row": "Shoulder/MachineRearDeltRow",
+    "190-280/225_cable_upright_row": "Shoulder/CableUprightRow",
+    "190-280/234_suitcase_carry": "Abs/SuitcaseCarry",
+    "190-280/236_alternating_dumbbell_curl": "Biceps/AlternatingDumbbellCurl",
+    "190-280/241_single_arm_machine_curl": "Biceps/SingleArmMachineCurl",
+    "190-280/250_preacher_hammer_curl": "Biceps/PreacherHammerCurl",
+    "190-280/264_machine_preacher_curl": "Biceps/MachinePreacherCurl",
+    "190-280/265_dumbbell_spider_curl": "Biceps/DumbbellSpiderCurl",
+    "190-280/266_ez_bar_spider_curl": "Biceps/EZBarSpiderCurl",
+    "190-280/277_plate_pinch_hold": "Forearms/PlatePinchHold",
+    "190-280/278_dumbbell_static_hold": "Forearms/DumbbellStaticHold",
+    "190-280/279_barbell_static_hold": "Forearms/BarbellStaticHold",
+    "190-280/280_towel_grip_hold": "Forearms/TowelGripHold",
+    # The drive's "351-400" folder (2026-09-30): 27 new hamstring, glute and hip
+    # exercises (the 🟢-approved ones of the builder's 356-400 set; 372, 376-380,
+    # 383-392, 394 and 399 were not exported).
+    "351-400/356_single_leg_romanian_deadlift": "Legs/SingleLegRomanianDeadlift",
+    "351-400/357_barbell_single_leg_romanian_deadlift": "Legs/BarbellSingleLegRomanianDeadlift",
+    "351-400/358_dumbbell_single_leg_romanian_deadlift": "Legs/DumbbellSingleLegRomanianDeadlift",
+    "351-400/359_b_stance_romanian_deadlift": "Legs/BStanceRomanianDeadlift",
+    "351-400/360_smith_machine_romanian_deadlift": "Legs/SmithMachineRomanianDeadlift",
+    "351-400/361_cable_romanian_deadlift": "Legs/CableRomanianDeadlift",
+    "351-400/362_kettlebell_romanian_deadlift": "Legs/KettlebellRomanianDeadlift",
+    "351-400/363_good_morning": "Legs/GoodMorning",
+    "351-400/364_seated_good_morning": "Legs/SeatedGoodMorning",
+    "351-400/365_smith_machine_good_morning": "Legs/SmithMachineGoodMorning",
+    "351-400/366_nordic_hamstring_curl": "Legs/NordicHamstringCurl",
+    "351-400/367_assisted_nordic_curl": "Legs/AssistedNordicCurl",
+    "351-400/368_glute_ham_raise": "Legs/GluteHamRaise",
+    "351-400/369_standing_leg_curl_machine": "Legs/StandingLegCurl",
+    "351-400/370_kneeling_leg_curl": "Legs/KneelingLegCurl",
+    "351-400/371_cable_standing_leg_curl": "Legs/CableStandingLegCurl",
+    "351-400/373_swiss_ball_leg_curl": "Legs/SwissBallLegCurl",
+    "351-400/374_sliding_leg_curl": "Legs/SlidingLegCurl",
+    "351-400/375_single_leg_sliding_curl": "Legs/SingleLegSlidingCurl",
+    "351-400/381_frog_pump": "Legs/FrogPump",
+    "351-400/382_weighted_frog_pump": "Legs/WeightedFrogPump",
+    "351-400/393_dumbbell_deadlift": "Legs/DumbbellDeadlift",
+    "351-400/395_hip_adduction_cable": "Legs/CableHipAdduction",
+    "351-400/396_standing_hip_abduction": "Legs/StandingHipAbduction",
+    "351-400/397_side_lying_hip_abduction": "Legs/SideLyingHipAbduction",
+    "351-400/398_banded_hip_abduction": "Legs/BandedHipAbduction",
+    "351-400/400_clamshell": "Legs/Clamshell",
+}
+
+# Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs
+# one centre cable; its unused left cable is shrunk to nothing (see
+# `collapsed` below) except these three pieces, which drew a stray line
+# between the feet.
+OFF = {
+    "190-280/225_cable_upright_row": ["GYM_Cable_Root/GYM_Cable_L_CableToHandle",
+                                      "GYM_Cable_Root/GYM_Cable_L_PullOffset",
+                                      "GYM_Cable_Root/GYM_Cable_L_CableToStack"],
 }
 
 ONLY = sys.argv[1:]
@@ -291,17 +530,38 @@ for raw, name in JOBS.items():
     src = os.path.join(SRC, raw + ".usdc")
     rawStage = Usd.Stage.Open(src)
     start, end = rawStage.GetStartTimeCode(), rawStage.GetEndTimeCode()
-    assert start == 1, (raw, start)
+    # Static exports (no animation) have no frame range: start == end == 0.
+    assert start == 1 or start == end, (raw, start)
 
     lights = [p.GetPath() for p in rawStage.Traverse() if p.HasAPI(UsdLux.LightAPI)]
+    # Cameras too (2026-09-29): the redone 04 Dumbbell Bench Press carried two,
+    # and RealityKit sometimes rendered through them instead of the viewport's.
+    cameras = [p.GetPath() for p in rawStage.Traverse() if p.IsA(UsdGeom.Camera)]
+    # Parts collapsed to a zero scale (2026-09-30: the redone 225 Cable Upright
+    # Row runs one centre cable and shrinks the unused left one to nothing)
+    # draw nothing but break the bounds (a singular matrix gives ±1e38), which
+    # parked the whole cable station. They are switched off, and the parking
+    # test only reads the meshes outside them.
+    def zero_scaled(p):
+        a = p.GetAttribute("xformOp:scale")
+        if not a or not a.HasAuthoredValue():
+            return False
+        vals = [a.Get(t) for t in a.GetTimeSamples()] or [a.Get()]
+        return all(v is not None and min(abs(x) for x in v) < 1e-9 for v in vals)
+    collapsed = [p.GetPath() for p in rawStage.Traverse() if zero_scaled(p)]
     cache = UsdGeom.BBoxCache(Usd.TimeCode(1), [UsdGeom.Tokens.default_, UsdGeom.Tokens.render])
     parked = []
     for c in rawStage.GetPrimAtPath("/root").GetChildren():
         if c.GetName() in ("Anatomy_MasterRig", "DARK_Floor") or not c.IsA(UsdGeom.Imageable):
             continue
-        if not any(p.GetTypeName() == "Mesh" for p in Usd.PrimRange(c)):
+        meshes = [p for p in Usd.PrimRange(c) if p.GetTypeName() == "Mesh"
+                  and not any(p.GetPath().HasPrefix(z) for z in collapsed)]
+        if not meshes:
             continue
-        mid = cache.ComputeWorldBound(c).ComputeAlignedRange().GetMidpoint()
+        box = Gf.Range3d()
+        for p in meshes:
+            box.UnionWith(cache.ComputeWorldBound(p).ComputeAlignedRange())
+        mid = box.GetMidpoint()
         if abs(mid[0]) > 5 or abs(mid[1]) > 5:
             parked.append(c.GetPath())
 
@@ -314,7 +574,9 @@ for raw, name in JOBS.items():
     stage.SetDefaultPrim(root.GetPrim())
     root.GetPrim().GetReferences().AddReference(src, "/root")
     root.AddRotateXOp().Set(-90)
-    for path in lights + parked:
+    off = [Sdf.Path("/root/" + p) for p in OFF.get(raw, [])]
+    assert all(rawStage.GetPrimAtPath(p) for p in off), (raw, off)
+    for path in lights + cameras + parked + collapsed + off:
         stage.OverridePrim(path).SetActive(False)
 
     def radius_for(prim):
@@ -327,4 +589,5 @@ for raw, name in JOBS.items():
 
     out = os.path.join(OUT, name + ".usdc")
     stage.Flatten().Export(out)
-    print(f"{name:34s} lights off: {len(lights)}  parked off: {[p.name for p in parked]}")
+    print(f"{name:34s} lights off: {len(lights)}  cameras off: {len(cameras)}  parked off: {[p.name for p in parked]}"
+          + (f"  collapsed off: {len(collapsed)}" if collapsed else "") + (f"  by hand off: {len(off)}" if off else ""))

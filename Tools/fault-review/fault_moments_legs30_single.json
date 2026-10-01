@@ -1,0 +1,6 @@
+{
+ "Heel-Elevated Squat": {"bar": "bottom", "torso": "bottom", "depth": "bottom", "knee": "bottom", "heels": "bottom"},
+ "Cyclist Squat": {"stance": "any", "knee": "bottom", "track": "bottom", "depth": "bottom", "heels": "bottom"},
+ "Pistol Squat": {"reach": "bottom", "depth": "bottom", "knee": "bottom", "foot": "bottom", "free": "bottom"},
+ "Assisted Pistol Squat": {"hold": "bottom", "depth": "bottom", "knee": "bottom", "foot": "bottom", "free": "bottom"}
+}

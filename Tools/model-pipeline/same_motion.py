@@ -3,7 +3,7 @@
 # the stage, must equal the second's. For checking pad_clips.py.
 #   python3 same_motion.py <before.usdc> <after.usdc>
 import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
-_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 import sys
 import numpy as np
 from pxr import Usd

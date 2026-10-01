@@ -48,7 +48,7 @@ SETUP = {
     "Chest Press Machine": [
         "Set the seat so the handles line up with your mid-chest.",
         "Sit with your back flat against the pad, feet on the floor.",
-        "Grip the handles with your elbows just below shoulder height.",
+        "Grip the handles with your elbows below shoulder height, about 45° from your torso.",
     ],
     "Pec Deck Fly": [
         "Set the seat so the handles sit at chest height.",
@@ -138,8 +138,9 @@ SETUP = {
         "Sit tall, chest up and shoulders down.",
     ],
     "Back Extension": [
-        "Set the hip pad just below your hip bones.",
-        "Lock your heels under the ankle roller.",
+        "Set the hip pad so its top edge sits at your hip bones.",
+        "Hook your ankles snugly under the roller.",
+        "Lean over the pad with your hips on it and your waist free to curl past its edge.",
         "Cross your arms over your chest, body in a straight line.",
     ],
     # Legs
@@ -171,7 +172,7 @@ SETUP = {
     "Leg Press": [
         "Sit with your back and hips flat against the pad.",
         "Place your feet shoulder-width in the middle of the platform.",
-        "Press the platform up and release the safety handles.",
+        "Press the platform up, release the safety handles and hold the side handles.",
     ],
     "Hack Squat": [
         "Stand on the platform with your back against the pad.",
@@ -358,12 +359,12 @@ SETUP = {
     ],
     "Cable Side Kick": [
         "Attach an ankle cuff to the low pulley and strap it to the far ankle.",
-        "Stand side-on to the stack and hold the rail with your near hand.",
+        "Stand side-on to the stack, hold the rail with your near hand and rest the other on your hip.",
         "Let the working leg cross slightly in front, toes forward.",
     ],
     "Cable Hip Abduction": [
         "Attach an ankle cuff to the low pulley and strap it to the far ankle.",
-        "Stand side-on to the stack, one hand on the balance post.",
+        "Stand side-on to the stack, one hand on the balance post and the other on your hip.",
         "Stand tall with the hips level and the standing knee soft.",
     ],
     "Hip Abduction Machine": [
@@ -598,7 +599,7 @@ SETUP = {
         "Set one pulley at shoulder height and stand side-on to the stack.",
         "Take the handle in the near hand and step away until the cable is tight.",
         "Open that arm out toward the stack, elbow slightly bent.",
-        "Keep your free arm by your side.",
+        "Rest your free hand on your hip.",
     ],
     "Incline Cable Fly": [
         "Set a bench to about 30° between two low pulleys.",
@@ -619,7 +620,7 @@ SETUP = {
         "Wedge one end of a bar in a landmine and load the other end.",
         "Stand facing the loaded end in a staggered stance.",
         "Hold the end of the bar at the front of your shoulder in one hand.",
-        "Brace your core and squeeze your glutes.",
+        "Rest your free hand on your hip, brace your core and squeeze your glutes.",
     ],
     "Incline Push-Up": [
         "Place your hands on the edge of a bench, a bit wider than your shoulders.",
@@ -817,7 +818,7 @@ SETUP = {
     "Wide-Grip Lat Pulldown": [
         "Adjust the thigh pads so your legs are locked in.",
         "Grip the bar overhand where it starts to bend.",
-        "Sit down tall with your arms straight overhead.",
+        "Sit down tall with your arms overhead, elbows slightly bent.",
     ],
     "Reverse-Grip Lat Pulldown": [
         "Adjust the thigh pads so your legs are locked in.",
@@ -852,7 +853,7 @@ SETUP = {
     "Machine Lat Pulldown": [
         "Set the seat and thigh pad so the handles are just within reach.",
         "Sit tall and grip both handles.",
-        "Start with your arms straight overhead, shoulders down.",
+        "Start with your arms overhead, elbows slightly bent, shoulders down.",
     ],
     "Iso-Lateral Lat Pulldown": [
         "Set the seat and thigh pad so the handles are just within reach.",
@@ -860,14 +861,14 @@ SETUP = {
         "Pull one handle at a time, the other held overhead.",
     ],
     "Wide-Grip Seated Cable Row": [
-        "Attach a straight bar to the low pulley.",
+        "Set both pulleys at waist height and clip a handle to each.",
         "Sit with your feet on the footplate, knees soft.",
-        "Grip the bar overhand, wide, and sit tall with your arms straight.",
+        "Grip the handles overhand, wide, and sit tall with your arms straight.",
     ],
     "Close-Grip Seated Cable Row": [
-        "Attach a V-handle to the low pulley.",
+        "Set both pulleys at waist height and clip a handle to each.",
         "Sit with your feet on the footplate, knees soft.",
-        "Hold the handle, palms facing, and sit tall with your arms straight.",
+        "Hold the handles close together, palms facing, and sit tall with your arms straight.",
     ],
     "Single-Arm Cable Row": [
         "Attach a single handle to the low pulley.",
@@ -875,7 +876,7 @@ SETUP = {
         "Take the handle in one hand and sit tall, arm straight.",
     ],
     "Standing Cable Row": [
-        "Set both pulleys at about chest height and take a handle in each hand.",
+        "Set both pulleys just below hip height and take a handle in each hand.",
         "Step back into a staggered stance until the cables are tight.",
         "Stand tall with soft knees, arms straight in front.",
     ],
@@ -886,7 +887,7 @@ SETUP = {
     ],
     "High Cable Row": [
         "Set both pulleys high and sit facing them on the bench.",
-        "Take a handle in each hand, overhand.",
+        "Take a handle in each hand, palms facing in.",
         "Sit tall with your arms reaching up and forward.",
     ],
     "Low Cable Row": [
@@ -965,12 +966,12 @@ SETUP = {
         "Set the bench upright or one notch back and sit with your back on the pad.",
         "Plant your feet flat on the floor.",
         "Hold the dumbbells at the front of your shoulders, palms facing each other.",
-        "Keep your elbows low, by your sides and a little forward.",
+        "Keep your elbows low and in front of your body.",
     ],
     "Single-Arm Dumbbell Shoulder Press": [
         "Stand with your feet hip-width and your knees soft.",
         "Hold one dumbbell just above your shoulder, palm forward.",
-        "Let your free arm hang by your side.",
+        "Rest your free hand on your hip.",
         "Brace your core and squeeze your glutes.",
     ],
     "Z Press": [
@@ -982,13 +983,13 @@ SETUP = {
     "Landmine Shoulder Press": [
         "Wedge one end of a bar in a landmine and load the other end.",
         "Stand at the loaded end facing the landmine, the foot opposite your pressing arm forward.",
-        "Hold the end of the bar at the front of your shoulder in one hand.",
+        "Hold the end of the bar in front of your shoulder in one hand.",
         "Rest your free hand on your hip and brace your core.",
     ],
     "Half-Kneeling Landmine Press": [
         "Wedge one end of a bar in a landmine and load the other end.",
         "Kneel at the loaded end facing the landmine, pressing-side knee down, other foot flat ahead.",
-        "Hold the end of the bar at the front of your shoulder in one hand.",
+        "Hold the end of the bar in front of your shoulder in one hand.",
         "Rest your free hand on your hip and squeeze the glute of the down leg.",
     ],
     "Cable Shoulder Press": [
@@ -1024,7 +1025,7 @@ SETUP = {
     "Incline Lateral Raise": [
         "Set an incline bench to about 30°.",
         "Lie on your side against the backrest, bottom hip on the seat.",
-        "Rest your bottom arm along the top of the bench, bottom foot on the floor.",
+        "Rest your bottom hand at the top of the backrest, bottom foot on the floor.",
         "Start with the dumbbell in front of your hip, palm facing in.",
     ],
     "Chest-Supported Lateral Raise": [
@@ -1043,7 +1044,7 @@ SETUP = {
         "Set both pulleys of a cable crossover at the bottom.",
         "Take the right pulley's handle in your left hand and the left one in your right.",
         "Stand between the pulleys facing the machine, feet hip-width.",
-        "Lean forward slightly, hands crossed in front of your hips.",
+        "Lean forward slightly, hands in front of your hips.",
     ],
     "Lu Raise": [
         "Stand tall, feet hip-width, a light dumbbell in each hand.",
@@ -1289,4 +1290,555 @@ SETUP = {
         "Plant your feet flat, about shoulder-width apart and close enough that your shins will be vertical at the top, toes turned out a little.",
         "Lean back so the bench edge sits near the top of your shoulder blades and hold the bar either side of the pad.",
     ],
+    # Batch 241-300 (2026-09-27): written to each model (see spec_241_300_*.py).
+    "Single-Arm Machine Curl": [
+        "Set the seat so your working elbow lines up with the pivot.",
+        "Sit with your chest to the pad, the back of the working arm on it.",
+        "Take the handle underhand in one hand; rest the other arm on the pad.",
+        "Start with the working arm almost straight.",
+    ],
+    "Cable Preacher Curl": [
+        "Set a preacher bench facing a low pulley, about a metre from it.",
+        "Clip a straight bar to the cable.",
+        "Sit with your armpits at the top of the pad, backs of the arms flat on it.",
+        "Take the bar underhand, hands shoulder-width apart, arms almost straight.",
+    ],
+    "Single-Arm Cable Curl": [
+        "Attach a D-handle to a pulley at the bottom of the column.",
+        "Take it underhand in one hand and step back until the stack lifts.",
+        "Stand tall, feet hip-width, the working arm straight by your side.",
+        "Rest your free hand on your hip.",
+    ],
+    "High Cable Curl": [
+        "Set both pulleys at about shoulder height, a D-handle on each.",
+        "Stand centred between them, feet hip-width apart.",
+        "Take a handle in each hand, palms up.",
+        "Raise the arms out to the sides, level with the shoulders.",
+    ],
+    "Overhead Cable Curl": [
+        "Attach a lat bar to the high pulley of a pulldown station.",
+        "Take the bar underhand, hands about shoulder-width apart.",
+        "Sit with your thighs under the pads, feet flat.",
+        "Hold the bar with the arms almost straight, just in front of your head.",
+    ],
+    "Cable Hammer Curl": [
+        "Attach a D-handle to each pulley at the bottom of the columns.",
+        "Stand centred between them, a short step back, feet hip-width.",
+        "Hold the handles with the palms facing in, arms by your sides.",
+        "Stand tall with soft knees and the shoulders down.",
+    ],
+    "Preacher Hammer Curl": [
+        "Set the seat so your armpit rests at the top of the pad.",
+        "Hold a dumbbell in one hand, thumb up, palm facing in.",
+        "Lay the back of that arm flat on the pad and grip the pad's far edge with the other hand.",
+        "Sit tall, chest to the pad, feet flat.",
+    ],
+    "Drag Curl": [
+        "Take a barbell underhand, hands shoulder-width apart.",
+        "Stand tall, feet hip-width, the bar resting against the tops of the thighs.",
+        "Set the shoulders down and back, elbows by your sides.",
+        "Drag the bar up the body to the lower chest as the elbows travel back.",
+    ],
+    "EZ Bar Drag Curl": [
+        "Take an EZ bar underhand on the outer angled grips.",
+        "Stand tall, feet hip-width, the bar resting against the tops of the thighs.",
+        "Set the shoulders down and back, elbows by your sides.",
+        "Drag the bar up the body to the lower chest as the elbows travel back.",
+    ],
+    "Cable Drag Curl": [
+        "Set the pulley at its lowest point and attach a straight bar.",
+        "Face the stack close to the pulley and take the bar underhand, hands shoulder-width.",
+        "Stand tall, feet hip-width, the bar against the tops of the thighs.",
+        "Drag the bar up the body to the lower chest as the elbows travel back.",
+    ],
+    "Reverse Preacher Curl": [
+        "Set the seat so your armpits rest at the top of the pad.",
+        "Take an EZ bar overhand on its angled grips, hands shoulder-width apart.",
+        "Lay the backs of your arms flat on the pad.",
+        "Sit tall, chest to the pad, feet flat.",
+    ],
+    "Barbell Preacher Curl": [
+        "Set the seat so your armpits rest at the top of the pad.",
+        "Take the barbell underhand, hands shoulder-width apart.",
+        "Lay the backs of your arms flat on the pad.",
+        "Sit tall, chest to the pad, feet flat.",
+    ],
+    "Dumbbell Spider Curl": [
+        "Set an incline bench to about 45°.",
+        "Kneel on the seat, chest on the pad, shoulders just over the top.",
+        "Take a dumbbell in each hand, palms facing forward.",
+        "Let your arms hang straight down.",
+    ],
+    "EZ Bar Spider Curl": [
+        "Set an incline bench to about 45°.",
+        "Kneel on the seat, chest on the pad, shoulders just over the top.",
+        "Take an EZ bar underhand on the outer angled grips.",
+        "Let your arms hang straight down.",
+    ],
+    "Alternating Hammer Curl": [
+        "Hold a dumbbell in each hand, palms facing in.",
+        "Stand tall, feet hip-width, arms straight by your sides.",
+        "Shoulders down and back, elbows by your ribs.",
+        "Curl one arm at a time, thumb up, without twisting the wrist.",
+    ],
+    "Dumbbell Wrist Curl": [
+        "Sit on the end of a flat bench, feet flat and about shoulder-width apart.",
+        "Hold a dumbbell in each hand, palms up.",
+        "Lean forward and rest your forearms along your thighs.",
+        "Slide your forearms forward until your wrists just clear your knees.",
+    ],
+    "Barbell Reverse Wrist Curl": [
+        "Sit on the end of a flat bench, feet flat and about shoulder-width apart.",
+        "Take a light barbell overhand, hands shoulder-width or a little narrower.",
+        "Lean forward and rest your forearms along your thighs, palms down.",
+        "Slide your forearms forward until your wrists just clear your knees.",
+    ],
+    "Dumbbell Reverse Wrist Curl": [
+        "Sit on the end of a flat bench, feet flat and about shoulder-width apart.",
+        "Hold a light dumbbell in each hand, palms down.",
+        "Lean forward and rest your forearms along your thighs.",
+        "Slide your forearms forward until your wrists just clear your knees.",
+    ],
+    "Cable Wrist Curl": [
+        "Attach a straight bar to a low pulley and sit on the end of a bench facing it, about a stride back.",
+        "Take the bar underhand, hands shoulder-width or a little narrower.",
+        "Lean forward and rest your forearms along your thighs, palms up.",
+        "Slide your forearms forward until your wrists just clear your knees.",
+    ],
+    "Cable Reverse Wrist Curl": [
+        "Attach a straight bar to a low pulley and sit on the end of a bench facing it, about a stride back.",
+        "Take the bar overhand, hands shoulder-width or a little narrower.",
+        "Lean forward and rest your forearms along your thighs, palms down.",
+        "Slide your forearms forward until your wrists just clear your knees.",
+    ],
+    "Behind-the-Back Wrist Curl": [
+        "Set a barbell in a rack just below hip height.",
+        "Stand with your back to it and grip it at shoulder-width, palms facing back.",
+        "Lift it off and step forward, the bar behind your thighs.",
+        "Stand tall, arms straight, shoulders down.",
+    ],
+    "Finger Curl": [
+        "Sit on the end of a flat bench, feet flat and about shoulder-width apart.",
+        "Take a light barbell underhand, hands shoulder-width or a little narrower.",
+        "Rest your forearms along your thighs, wrists just past your knees.",
+        "Start with the bar curled up in your palms.",
+    ],
+    "Plate Pinch Hold": [
+        "Stand a pair of equal plates on edge beside each foot, smooth sides out.",
+        "Squat and pinch each pair at the top, fingers outside, thumb inside.",
+        "Stand tall with the arms long, the plates at your sides.",
+        "Pinch for the set time, about 30 seconds, then squat to set them down; keep your toes clear in case they slip.",
+    ],
+    "Dumbbell Static Hold": [
+        "Stand between two heavy dumbbells, feet hip-width apart.",
+        "Squat down with a flat back and grip each handle in the middle.",
+        "Stand tall, arms straight at your sides, palms facing in.",
+        "Hold for the set time, about 30 seconds with a weight that is hard to hold by the end, then squat to set them down.",
+    ],
+    "Barbell Static Hold": [
+        "Set the bar in a rack just above knee height.",
+        "Grip it overhand, hands about shoulder-width, just outside the thighs.",
+        "Stand up with it: knees soft, hips straight, back tall.",
+        "Hold for the set time, about 30 seconds with a weight that is hard to hold by the end, then set it back in the rack.",
+    ],
+    "Towel Grip Hold": [
+        "Hang a sturdy towel over the bar on each side, a little wider than your shoulders.",
+        "Grip both ends of each towel in one hand, hands level, and let them take some weight to check they do not slide.",
+        "Bend the knees to lift the feet and hang with the arms long.",
+        "Hold for the set time, about 20 seconds to start, then put the feet down.",
+    ],
+    # 30-leg set 02-27 (2026-09-28)
+    "Lateral Lunge": [
+        "Stand tall with your feet about hip-width apart, toes pointing ahead.",
+        "Clasp your hands in front of your chest.",
+        "Brace your core and settle your weight into your heels.",
+        "Keep both feet pointing ahead; each rep steps one foot wide to the side and back.",
+    ],
+    "Cossack Squat": [
+        "Stand with your feet about twice shoulder-width apart.",
+        "Turn your toes out slightly.",
+        "Clasp your hands in front of your chest.",
+        "Brace your core, chest up, before shifting to one side.",
+    ],
+    "Dumbbell Sumo Squat": [
+        "Stand with your feet well wider than your shoulders, toes turned out.",
+        "Hold one dumbbell upright by its top end with both hands.",
+        "Let it hang at arm's length between your legs.",
+        "Brace your core and lift your chest.",
+    ],
+    "Barbell Sumo Squat": [
+        "Set the bar in a rack at upper-chest height, safety bars just below your bottom position.",
+        "Take it high across your upper traps, hands wider than your shoulders.",
+        "Step back and set your feet well wider than your shoulders, toes turned out.",
+        "Brace your core and lift your chest.",
+    ],
+    "Kettlebell Goblet Squat": [
+        "Hold a kettlebell by the sides of the handle, bell down, against your chest.",
+        "Stand with your feet about shoulder-width apart, toes turned out slightly.",
+        "Tuck your elbows in under the kettlebell.",
+        "Brace your core and stand tall.",
+    ],
+    "Box Squat": [
+        "Set a box a short step behind where you will stand after walking the bar out, at a height that puts your thighs about parallel when seated.",
+        "Take the bar high across your upper traps, hands wider than your shoulders.",
+        "Step back until the box is a short step behind your heels.",
+        "Set your feet a little wider than your shoulders, toes turned out, and brace.",
+    ],
+    "Pause Squat": [
+        "Set the rack's safety bars just below the depth you will pause at.",
+        "Take the bar high across your upper traps, hands wider than your shoulders.",
+        "Step back and set your feet about shoulder-width, toes turned slightly out.",
+        "Take a big breath and brace before each rep.",
+    ],
+    "Safety Bar Squat": [
+        "Set the safety bar in a rack at about shoulder height.",
+        "Step under it so the padded yoke rests across your upper back and shoulders.",
+        "Take a handle in each hand in front of you and stand up to lift it off.",
+        "Step back and set your feet about shoulder-width, toes turned slightly out.",
+    ],
+    "Zercher Squat": [
+        "Set the bar in a rack just below elbow height.",
+        "Hook the bar into the crooks of your elbows and clasp your hands in front of your chest.",
+        "Stand up to lift it off, step back and set your feet about shoulder-width, toes slightly out.",
+        "Wrap the bar in a towel or pad if it digs into your elbows.",
+    ],
+    "Overhead Squat": [
+        "Learn it with an empty bar or a dowel before adding weight.",
+        "Set your feet about shoulder-width, toes turned slightly out.",
+        "Take a grip well wider than your shoulders and press the bar overhead.",
+        "Lock your elbows with the bar over your ankles, slightly behind your head, and brace.",
+    ],
+    "Landmine Squat": [
+        "Set one end of a barbell in a landmine or a corner and load the other end.",
+        "Lift the loaded end (or a handle attachment on it) and hold it with both hands in front of your chest, at chest height.",
+        "Stand facing the anchor, feet about shoulder-width, toes turned slightly out.",
+        "Stand tall and brace before each rep.",
+    ],
+    "Belt Squat": [
+        "Fasten the belt around your hips and step onto the platform.",
+        "Clip the cable to the front of the belt.",
+        "Set your feet shoulder-width, either side of the cable, ankles in line with where it runs down.",
+        "Rest your hands on the handles and stand tall to lift the weight.",
+    ],
+    "Pendulum Squat": [
+        "Stand on the plate with your back against the pad and your shoulders under the pads.",
+        "Set your feet about shoulder-width in the middle of the plate, toes out a little.",
+        "Hold the handles and stand tall to lift the carriage.",
+        "Release the safety stop and brace.",
+    ],
+    "V-Squat": [
+        "Stand on the plate with your back against the pad and your shoulders under the pads.",
+        "Set your feet about shoulder-width, well ahead of your hips, toes out a little.",
+        "Hold the handles and stand tall to lift the carriage.",
+        "Release the safety stop and brace.",
+    ],
+    "Vertical Leg Press": [
+        "Lie on the back pad with your hips on the seat, right under the sled.",
+        "Set the safety stops just below the lowest point you plan to reach.",
+        "Place your feet flat on the plate, shoulder-width apart, above your hips.",
+        "Press the sled up, release the sled's catch and hold the handles at your sides.",
+    ],
+    "45-Degree Leg Press": [
+        "Set the back pad so you can reach about 90 degrees at the knee without your hips lifting.",
+        "Sit with your back and hips flat against the pad.",
+        "Place your feet shoulder-width apart in the middle of the platform.",
+        "Press the platform up, release the safety handles and hold the side handles.",
+    ],
+    "Single-Leg Press": [
+        "Set a load you can control on one leg.",
+        "Sit with your back and hips flat against the pad.",
+        "Place one foot flat in the middle of the platform, where it sits in your two-leg stance.",
+        "Rest the other foot on the side foot rest or the floor.",
+        "Press the platform up, release the safety handles and hold the side handles.",
+    ],
+    "Narrow-Stance Leg Press": [
+        "Set the back pad so you can reach about 90 degrees at the knee without your hips lifting.",
+        "Sit with your back and hips flat against the pad.",
+        "Place your feet hip-width apart in the middle of the platform.",
+        "Press the platform up, release the safety handles and hold the side handles.",
+    ],
+    "Wide-Stance Leg Press": [
+        "Set the back pad so you can reach about 90 degrees at the knee without your hips lifting.",
+        "Sit with your back and hips flat against the pad.",
+        "Place your feet wider than your shoulders in the middle of the platform, toes turned out a little.",
+        "Press the platform up, release the safety handles and hold the side handles.",
+    ],
+    "Heel-Elevated Squat": [
+        "Set two heel wedges, or a slant board, in front of a squat rack.",
+        "Take the bar high across your upper traps, hands wider than your shoulders, and step back.",
+        "Stand with your heels on the high end of the wedges, feet about shoulder-width, toes slightly out.",
+        "Brace, chest tall, before the first rep.",
+    ],
+    "Cyclist Squat": [
+        "Set a heel wedge or slant board in front of a squat rack.",
+        "Take the bar high across your upper traps, hands wider than your shoulders, and step back.",
+        "Stand with your heels on the high end of the wedge, feet hip-width or closer, toes nearly straight.",
+        "Brace, chest tall, before the first rep.",
+    ],
+    "Pistol Squat": [
+        "Stand on one foot, the whole foot flat, toes pointing forward.",
+        "Lift the other leg straight out in front, heel just off the floor.",
+        "Reach both arms straight out in front, just below shoulder height.",
+        "Brace your trunk before you start down.",
+    ],
+    "Assisted Pistol Squat": [
+        "Face a fixed bar or handle at about chest height.",
+        "Hold it with both hands and stand on one foot a little less than arm's length from it, elbows bent.",
+        "Lift the other leg straight out in front, heel just off the floor.",
+        "Brace your trunk before you start down.",
+    ],
+    "Standing Calf Raise": [
+        "Set the shoulder pads so they sit on your shoulders with your heels down.",
+        "Step onto the block with the balls of your feet on its edge, heels off.",
+        "Set your feet hip-width apart, toes forward, and hold the handles.",
+        "Stand up tall under the pads, knees straight but soft.",
+    ],
+    "Seated Calf Raise": [
+        "Sit on the seat with the balls of your feet on the edge of the platform, heels off.",
+        "Set the pad on your lower thighs, just above the knees, knees at about 90°.",
+        "Hold the handles, rise onto your toes a little and release the safety catch.",
+        "Sit tall with your trunk still.",
+    ],
+    "Leg Press Calf Raise": [
+        "Sit with your back flat on the pad and hold the handles beside the seat.",
+        "Put the balls of your feet on the lower edge of the platform, hip-width apart, heels off.",
+        "Press the sled up until your knees are nearly straight, then release the safety stops.",
+        "Keep a slight bend in your knees; if your feet start to slip, re-engage the stops before you reset them.",
+    ],
+    "Single-Leg Calf Raise": [
+        "Stand on a sturdy step beside a support, a dumbbell in the hand on the working side.",
+        "Put the ball of the working foot on the edge of the step, heel off.",
+        "Hold the support lightly with your free hand for balance.",
+        "Bend the other knee to lift that foot behind you and stand tall over the working foot.",
+    ],
+    "Smith Machine Calf Raise": [
+        "Set the bar at upper-chest height with a calf block under it.",
+        "Step under the bar, rest it on your upper traps and grip it just outside your shoulders.",
+        "Put the balls of your feet on the edge of the block, heels off, hip-width apart.",
+        "Stand up tall, turn the bar to unhook it and keep the knees straight but soft.",
+    ],
+    # Exercises 1-50 redone (2026-09-29)
+    "Dumbbell Curl": [
+        "Hold a dumbbell in each hand, palms facing forward.",
+        "Stand tall, feet hip-width, arms straight by your sides.",
+        "Draw your shoulders down and back, elbows by your ribs.",
+        "Curl both dumbbells together, palms turned up.",
+    ],
+    "Incline Dumbbell Curl": [
+        "Set the back pad of an incline bench to about 65°.",
+        "Sit back, back and shoulders on the pad, feet flat.",
+        "Hold a dumbbell in each hand, palms facing forward.",
+        "Let your arms hang straight down, behind your body.",
+    ],
+    "Preacher Curl": [
+        "Set the seat so your armpits sit just over the arm pads.",
+        "Take an EZ bar underhand on its angled grips, about shoulder-width.",
+        "Rest the backs of your upper arms on the pads, arms almost straight.",
+        "Sit tall with both feet flat.",
+    ],
+    "Cable Curl": [
+        "Attach a D-handle to the low pulley of each of two columns.",
+        "Take a handle in each hand, palms facing forward.",
+        "Step back about a metre until both stacks lift.",
+        "Stand tall, feet hip-width, arms almost straight, leaning back slightly.",
+    ],
+    "Bayesian Cable Curl": [
+        "Attach a D-handle to the low pulley and stand with your back to it.",
+        "Take the handle in one hand, palm facing forward.",
+        "Step forward until the arm is drawn back behind you and the stack lifts.",
+        "Stand tall, feet hip-width, the free arm at your side.",
+    ],
+    "Reverse Curl": [
+        "Take an EZ bar overhand, hands about shoulder-width apart.",
+        "Stand tall, feet about hip-width apart, the bar at your thighs.",
+        "Arms almost straight, elbows by your sides, wrists straight.",
+    ],
+    "Wrist Curl": [
+        "Choose a seat that lets your forearms lie level on the pad, elbows at about 90°.",
+        "Sit with your feet flat and knees under the pad, and lean in over it.",
+        "Hold a dumbbell in each hand, palms up.",
+        "Rest your forearms along the pad, wrists just past its front edge.",
+    ],
+    "Pendlay Row": [
+        "Stand with your feet about hip-width apart, the bar on the floor in front of your toes.",
+        "Bend your knees well and push your hips back until your back is close to level.",
+        "Grip the bar overhand, hands a little wider than your shoulders.",
+        "Brace with a flat back and your shoulders held back, arms reaching down to the bar.",
+    ],
+    "Close-Grip Bench Press": [
+        "Lie on a flat bench with your head, upper back and hips on the pad.",
+        "Plant your feet flat on the floor, set wider than your shoulders.",
+        "Grip the bar overhand with your hands about shoulder-width apart.",
+        "Pull your shoulder blades back and down, then hold the bar over your shoulders.",
+    ],
+    # BEGIN Redone 190-280 (2026-09-30)
+    "Machine Preacher Curl": [
+        "Set the seat so your elbows sit level with the pivots on each side.",
+        "Sit with your chest to the pad and your armpits over its top edge.",
+        "Rest the backs of your upper arms on the pad's slope.",
+        "Take the straight handle underhand, hands in front of your shoulders.",
+        "Start with your arms almost straight.",
+    ],
+    # END Redone 190-280 (2026-09-30)
+    # BEGIN 351-400 (2026-09-30)
+    "Single-Leg Romanian Deadlift": [
+        "Stand on your left foot, the whole foot flat and the knee slightly bent, as the model does.",
+        "Rest the right toes lightly on the floor just behind you.",
+        "Let both arms hang straight down, palms facing in.",
+        "Brace your trunk, hinge for all your reps, then switch to the right leg.",
+    ],
+    "Barbell Single-Leg Romanian Deadlift": [
+        "Take a light barbell from a rack at hip height, overhand, hands about shoulder-width.",
+        "Step back and stand on your left foot, knee slightly bent, as the model does.",
+        "Rest the right toes lightly on the floor just behind you, the bar against your thighs.",
+        "Brace, hinge for all your reps, then switch to the right leg.",
+    ],
+    "Dumbbell Single-Leg Romanian Deadlift": [
+        "Hold a dumbbell in each hand at your sides, palms facing in.",
+        "Stand on your left foot, knee slightly bent, as the model does.",
+        "Rest the right toes lightly on the floor just behind you.",
+        "Brace, hinge for all your reps, then switch to the right leg.",
+    ],
+    "B-Stance Romanian Deadlift": [
+        "Hold a dumbbell in each hand at your sides, palms facing in.",
+        "Stand on your left foot and step the right foot back so its toes are level with your left heel, as the model does.",
+        "Lift the right heel and keep most of your weight on the left foot, knee slightly bent.",
+        "Brace, do all your reps, then switch the feet.",
+    ],
+    "Smith Machine Romanian Deadlift": [
+        "Set the bar on the hooks just below hip height and the safety stops below the lowest point of your rep.",
+        "Stand under the bar, feet hip-width, so it hangs over the middle of your feet.",
+        "Grip it overhand just outside your thighs and stand tall with the knees soft.",
+        "Brace and twist the bar off the hooks.",
+    ],
+    "Cable Romanian Deadlift": [
+        "Set the pulley at its lowest point and clip on a straight bar.",
+        "Face the machine and take the bar overhand, hands just outside your thighs.",
+        "Walk back about a metre from the pulley, feet hip-width, until the stack lifts clear.",
+        "Stand tall with the knees soft, shoulders back, and brace.",
+    ],
+    "Kettlebell Romanian Deadlift": [
+        "Stand with your feet hip-width, the kettlebell on the floor between them.",
+        "Squat down, grip the handle overhand with both hands and stand up with it.",
+        "Let the bell hang in front of your thighs, arms long, knees soft.",
+        "Brace and pull the shoulders back before the first rep.",
+    ],
+    "Dumbbell Deadlift": [
+        "Stand with your feet about hip-width, toes forward, a dumbbell beside each foot.",
+        "Push the hips back, bend the knees and grip the dumbbells with the palms facing in.",
+        "Chest up, back flat, shoulders over the dumbbells.",
+        "Brace and stand up with them to begin.",
+    ],
+    "Good Morning": [
+        "Set the bar in a rack at about shoulder height.",
+        "Step under it and rest it high across your upper traps, hands well outside your shoulders.",
+        "Lift it off, step back and set your feet about hip-width, toes nearly straight ahead.",
+        "Unlock your knees slightly and brace before the first rep.",
+    ],
+    "Seated Good Morning": [
+        "Set a flat bench lengthwise in a rack, with the bar at a height you can take it from while seated.",
+        "Straddle the end of the bench with your feet flat, wider than your shoulders.",
+        "Take the bar high across your upper traps, hands wide, and lift it off the hooks.",
+        "Sit tall, set a slight arch in your lower back and brace before each rep.",
+    ],
+    "Smith Machine Good Morning": [
+        "Set the Smith bar hooks just below shoulder height and the safety stops just below the lowest point of your rep.",
+        "Step under the bar and rest it high across your upper traps, hands well outside your shoulders.",
+        "Set your feet hip-width, back under the bar so it sits over the balls of your feet, toes straight ahead.",
+        "Unlock your knees, brace and turn the bar off the hooks.",
+    ],
+    "Nordic Hamstring Curl": [
+        "Kneel on a thick pad with your knees about hip-width apart.",
+        "Hook your ankles under the padded anchor, or have a partner hold your lower calves down.",
+        "Kneel tall with your hips straight and your hands loose in front of your chest.",
+        "Squeeze your glutes and brace before each rep.",
+    ],
+    "Assisted Nordic Curl": [
+        "Set the band's anchor behind you, a little higher than your chest when you kneel tall.",
+        "Kneel on the pad and hook your ankles under the padded roller.",
+        "Loop the band around your chest, high under your armpits.",
+        "Kneel tall with your hips straight and your hands loose in front of your chest.",
+    ],
+    "Glute-Ham Raise": [
+        "Set the footplate so your knees sit just behind the pad when your feet are against the plate.",
+        "Step onto the plate and lock your ankles between the rollers.",
+        "Rest your lower thighs on the pad and kneel up tall, hips straight, hands in front of your chest.",
+        "Press the balls of your feet into the plate and brace before each rep.",
+    ],
+    "Standing Leg Curl": [
+        "Set the roller so it sits just above your left heel.",
+        "Stand on the platform on your right foot, left knee level with the pivot.",
+        "Rest your chest on the pad and your forearms on the arm pads.",
+        "Hold the handles and let the left leg hang almost straight.",
+    ],
+    "Kneeling Leg Curl": [
+        "Set the roller low on the left leg, just above the heel.",
+        "Kneel with your right knee on the pad and your left knee level with the pivot.",
+        "Rest your forearms on the arm pads and hold the handles.",
+        "Lean well forward over the pads; the left leg starts almost straight.",
+    ],
+    "Cable Standing Leg Curl": [
+        "Strap the cuff round your left ankle and clip it to the low pulley.",
+        "Face the stack and hold the frame handles in front of you.",
+        "Stand on your right foot, knee soft, the left foot hanging just behind it.",
+        "Start with the left knee a little bent and the cable taut.",
+    ],
+    "Swiss Ball Leg Curl": [
+        "Lie on your back with your heels on top of the ball, hip-width apart.",
+        "Lay your arms on the floor a little out from your sides, palms down.",
+        "Lift your hips off the floor into a bridge, legs almost straight.",
+    ],
+    "Sliding Leg Curl": [
+        "Lie on your back with both heels on sliders, legs almost straight.",
+        "Rest your arms on the floor out to your sides, palms down.",
+        "Press your heels down, toes pointing up.",
+    ],
+    "Single-Leg Sliding Curl": [
+        "Lie on your back with your left heel on a slider, leg almost straight.",
+        "Lift your right foot off the floor and hold the knee bent, thigh angled up.",
+        "Spread your arms wide on the floor, palms down.",
+    ],
+    "Frog Pump": [
+        "Lie on your back on a mat, arms resting on the floor out to your sides, palms down.",
+        "Press the soles of your feet together and let your knees fall open to the sides.",
+        "Draw your heels in toward your hips, the feet resting on their outer edges.",
+        "Flatten your lower back into the mat and tuck your chin slightly before the first rep.",
+    ],
+    "Weighted Frog Pump": [
+        "Lie on your back on a mat and set a dumbbell across your hips, holding it at both ends.",
+        "Press the soles of your feet together and let your knees fall open to the sides.",
+        "Draw your heels in toward your hips, the feet resting on their outer edges.",
+        "Brace with your ribs down and your lower back flat before the first rep.",
+    ],
+    "Cable Hip Adduction": [
+        "Attach an ankle cuff to a low pulley and strap it around the ankle nearest the stack.",
+        "Stand side-on to the stack, far enough away that the cable draws the cuffed leg out to the side.",
+        "Hold the support post or the machine frame with the hand nearest the stack.",
+        "Stand tall on your right leg, knee slightly soft; the left leg, nearest the stack, works in this demo.",
+    ],
+    "Standing Hip Abduction": [
+        "Stand facing two support rails and rest a hand on each handle at lower-chest height.",
+        "Stand tall with your feet under your hips, knees and toes pointing forward.",
+        "Shift your weight onto your right leg, knee slightly soft; the left leg lifts in this demo.",
+        "Level your hips and brace your trunk before the first lift.",
+    ],
+    "Side-Lying Hip Abduction": [
+        "Lie on your right side on a mat, legs straight and stacked in line with your body.",
+        "Stack your hips and shoulders one above the other and keep your head in line with your spine.",
+        "Rest your hands on the floor in front of your chest for balance.",
+        "Point the toes of the top leg forward; the top leg lifts in this demo.",
+    ],
+    "Banded Hip Abduction": [
+        "Loop a mini band around both thighs just above the knees.",
+        "Sit tall on a flat bench with your feet flat under your knees, about shoulder-width apart.",
+        "Rest your hands on the bench beside your hips.",
+        "Let the knees come in until the band is just taut before the first rep.",
+    ],
+    "Clamshell": [
+        "Lie on your right side on a mat with your hips bent to about 45 to 60 degrees and your knees bent.",
+        "Stack your feet, knees and hips, the feet in line with your hips.",
+        "Fold your lower arm under your head and rest your top hand on the floor in front of you.",
+        "Brace your trunk before the first rep; the top knee opens in this demo.",
+    ],
+    # END 351-400 (2026-09-30)
 }

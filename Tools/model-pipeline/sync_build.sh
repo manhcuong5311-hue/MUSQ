@@ -6,7 +6,7 @@ rsync -a --delete \
   --exclude 'GymWorkout/Resources/Models/*/textures' \
   --exclude 'GymWorkout/Resources/Models/*/1-10' \
   --exclude 'SourceExports' \
-  /Users/sammanhcuong/Desktop/GymWorkout/ $S/build_src/
+  /Users/sammanhcuong/Developer/GymWorkout/ $S/build_src/
 cd $S/build_src
 xcodebuild -project GymWorkout.xcodeproj -scheme GymWorkout -sdk iphonesimulator -destination "platform=iOS Simulator,id=$U" -derivedDataPath $S/dd2 build 2>&1 | grep -E "error:|BUILD" | head -8
 xcrun simctl install $U $S/dd2/Build/Products/Debug-iphonesimulator/GymWorkout.app && echo installed

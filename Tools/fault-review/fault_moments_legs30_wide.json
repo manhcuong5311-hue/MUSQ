@@ -1,0 +1,7 @@
+{
+  "Lateral Lunge": {"torso": "bottom", "hips": "bottom", "trail": "bottom", "knee": "bottom", "heel": "bottom"},
+  "Cossack Squat": {"torso": "bottom", "depth": "bottom", "trail": "bottom", "knee": "bottom", "heel": "bottom"},
+  "Dumbbell Sumo Squat": {"torso": "bottom", "depth": "bottom", "hold": "bottom", "knee": "bottom", "stance": "any"},
+  "Barbell Sumo Squat": {"bar": "bottom", "torso": "bottom", "depth": "bottom", "knee": "bottom", "stance": "any"},
+  "Kettlebell Goblet Squat": {"hold": "bottom", "torso": "bottom", "knee": "bottom", "depth": "bottom", "heel": "bottom"}
+}

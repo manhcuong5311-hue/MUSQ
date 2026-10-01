@@ -5,14 +5,14 @@
 # Height changes (the bob of each step) are kept. Edits the usdc in place.
 #   python3 inplace.py <converted.usdc> [prop prim names...]
 import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
-_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 import sys
 import numpy as np
 from pxr import Usd, UsdSkel, UsdGeom, Gf
 
 path, props = sys.argv[1], sys.argv[2:] or ["GYM_Dumbbell_L_ROOT", "GYM_Dumbbell_R_ROOT"]
 st = Usd.Stage.Open(path)
-sk = next(p for p in st.Traverse() if p.GetTypeName() == "Skeleton")
+sk = next(p for p in sorted(st.Traverse(), key=lambda q: "Anatomy_MasterRig" not in q.GetPath().pathString) if p.GetTypeName() == "Skeleton")
 anim = UsdSkel.Animation(next(p for p in st.Traverse() if p.GetTypeName() == "SkelAnimation"))
 q = UsdSkel.Cache().GetSkelQuery(UsdSkel.Skeleton(sk))
 order = [str(j) for j in q.GetJointOrder()]

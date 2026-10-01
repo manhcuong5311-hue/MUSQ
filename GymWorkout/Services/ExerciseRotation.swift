@@ -39,7 +39,7 @@ enum MovementPattern: String {
         else if has("pullover", "straight-arm pulldown") { self = .pullover }
         else if has("pull-up", "chin-up", "pulldown") { self = .verticalPull }
         else if has("row") { self = .horizontalPull }
-        else if has("leg curl") { self = .legCurl }
+        else if has("leg curl", "nordic", "sliding curl", "glute-ham raise") { self = .legCurl }
         else if has("curl") { self = .armCurl }
         else if has("pushdown", "triceps extension", "skull crusher") { self = .tricepsExtension }
         else if has("dip") { self = .dip }
@@ -47,8 +47,8 @@ enum MovementPattern: String {
         else if has("lunge", "split squat", "step-up") { self = .lunge }
         else if has("squat", "leg press") { self = .squat }
         else if has("deadlift", "rack pull", "block pull", "back extension", "good morning") { self = .hinge }
-        else if has("bridge", "hip thrust") { self = .bridge }
-        else if has("kickback", "abduction", "side kick") { self = .gluteIsolation }
+        else if has("bridge", "hip thrust", "frog pump") { self = .bridge }
+        else if has("kickback", "abduction", "side kick", "clamshell") { self = .gluteIsolation }
         else if has("crunch") { self = .crunch }
         else if has("leg raise", "knee raise") { self = .legRaise }
         else if has("twist", "wood chop") { self = .trunkRotation }

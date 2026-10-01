@@ -6,7 +6,7 @@
 # clip the same length without changing the pose at any frame.
 #   python3 pad_clips.py <model.usdc>...   (edits in place; slim models too)
 import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
-_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 import sys
 from pxr import Sdf
 

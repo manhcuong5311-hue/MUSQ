@@ -6,7 +6,7 @@
 # Only valid when both roots share rotation and scale — checked below.
 #   python graft_bar.py <target.usdc> <donor.usdc>
 import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
-_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 import sys
 from pxr import Sdf, Usd, UsdGeom
 

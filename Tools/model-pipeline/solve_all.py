@@ -2,7 +2,7 @@ import sys, math, json
 sys.path.insert(0, sys.argv[1])
 from framer import gather, solve, project
 import numpy as np
-M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
+M = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/"
 HELD = ("Barbell", "Dumbbell", "Lat_Bar", "Handle", "TGrip", "TBar_Plate", "LandmineBar", "Rope")
 ASPECT = float(__import__("os").environ.get("ASPECT", 0.74))  # 382/655 for the trainer since the setup drawer
 JOBS = json.loads(sys.argv[2])

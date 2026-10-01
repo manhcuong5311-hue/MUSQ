@@ -36,12 +36,12 @@
  },
  "Walking Lunge": {
   "time": 7.83,
-  "disp": 17.03,
+  "disp": 17.02,
   "length": 7.96
  },
  "Reverse Lunge": {
-  "time": 1.33,
-  "disp": 4.44,
+  "time": 1.5,
+  "disp": 4.42,
   "length": 7.96
  },
  "Leg Press": {
@@ -70,13 +70,13 @@
   "length": 7.96
  },
  "Romanian Deadlift": {
-  "time": 1.33,
-  "disp": 2.52,
+  "time": 1.5,
+  "disp": 2.49,
   "length": 7.96
  },
  "Barbell Bench Press": {
   "time": 1.33,
-  "disp": 1.64,
+  "disp": 1.65,
   "length": 7.96
  },
  "Incline Barbell Bench Press": {
@@ -91,7 +91,7 @@
  },
  "Dumbbell Bench Press": {
   "time": 1.33,
-  "disp": 1.75,
+  "disp": 1.74,
   "length": 7.96
  },
  "Incline Dumbbell Press": {
@@ -106,12 +106,12 @@
  },
  "Incline Dumbbell Fly": {
   "time": 1.33,
-  "disp": 2.04,
+  "disp": 2.11,
   "length": 7.96
  },
  "Chest Press Machine": {
   "time": 1.33,
-  "disp": 1.57,
+  "disp": 1.51,
   "length": 7.96
  },
  "Pec Deck Fly": {
@@ -136,7 +136,7 @@
  },
  "Barbell Bent-Over Row": {
   "time": 1.33,
-  "disp": 1.35,
+  "disp": 1.24,
   "length": 7.96
  },
  "Dumbbell Row": {
@@ -181,7 +181,7 @@
  },
  "Straight-Arm Pulldown": {
   "time": 1.33,
-  "disp": 2.28,
+  "disp": 2.39,
   "length": 7.96
  },
  "T-Bar Row": {
@@ -206,12 +206,12 @@
  },
  "Barbell Overhead Press": {
   "time": 1.33,
-  "disp": 2.01,
+  "disp": 2.07,
   "length": 7.96
  },
  "Dumbbell Shoulder Press": {
   "time": 1.33,
-  "disp": 1.84,
+  "disp": 1.83,
   "length": 7.96
  },
  "Arnold Press": {
@@ -240,8 +240,8 @@
   "length": 7.96
  },
  "Dumbbell Front Raise": {
-  "time": 5.33,
-  "disp": 2.0,
+  "time": 1.33,
+  "disp": 1.97,
   "length": 7.96
  },
  "Reverse Dumbbell Fly": {
@@ -310,13 +310,13 @@
   "length": 7.96
  },
  "Dumbbell Romanian Deadlift": {
-  "time": 1.33,
-  "disp": 2.49,
+  "time": 1.5,
+  "disp": 2.48,
   "length": 7.96
  },
  "Stiff-Leg Deadlift": {
-  "time": 1.33,
-  "disp": 2.67,
+  "time": 1.5,
+  "disp": 2.65,
   "length": 7.96
  },
  "Lying Leg Curl": {
@@ -335,8 +335,8 @@
   "length": 7.96
  },
  "Glute Bridge": {
-  "time": 1.33,
-  "disp": 0.38,
+  "time": 1.5,
+  "disp": 0.41,
   "length": 7.96
  },
  "Single-Leg Glute Bridge": {
@@ -441,7 +441,7 @@
  },
  "Lunge (Lean)": {
   "time": 1.33,
-  "disp": 2.12,
+  "disp": 2.11,
   "length": 7.96
  },
  "Biceps Curl": {
@@ -501,7 +501,7 @@
  },
  "Dumbbell Pullover": {
   "time": 1.33,
-  "disp": 2.21,
+  "disp": 2.18,
   "length": 7.96
  },
  "Barbell Pullover": {
@@ -596,7 +596,7 @@
  },
  "Wide-Grip Push-Up": {
   "time": 1.33,
-  "disp": 0.53,
+  "disp": 0.56,
   "length": 7.96
  },
  "Archer Push-Up": {
@@ -676,7 +676,7 @@
  },
  "Meadows Row": {
   "time": 1.33,
-  "disp": 0.65,
+  "disp": 0.63,
   "length": 7.96
  },
  "Single-Arm Landmine Row": {
@@ -766,7 +766,7 @@
  },
  "Wide-Grip Lat Pulldown": {
   "time": 1.33,
-  "disp": 1.99,
+  "disp": 1.97,
   "length": 7.96
  },
  "Reverse-Grip Lat Pulldown": {
@@ -781,7 +781,7 @@
  },
  "V-Bar Lat Pulldown": {
   "time": 1.33,
-  "disp": 2.26,
+  "disp": 2.25,
   "length": 7.96
  },
  "Kneeling Lat Pulldown": {
@@ -895,8 +895,8 @@
   "length": 7.96
  },
  "Standing Dumbbell Press": {
-  "time": 1.33,
-  "disp": 2.02,
+  "time": 1.67,
+  "disp": 2.18,
   "length": 7.96
  },
  "Seated Dumbbell Press": {
@@ -906,12 +906,12 @@
  },
  "Neutral-Grip Dumbbell Shoulder Press": {
   "time": 1.67,
-  "disp": 2.29,
+  "disp": 2.22,
   "length": 7.96
  },
  "Single-Arm Dumbbell Shoulder Press": {
-  "time": 1.33,
-  "disp": 1.01,
+  "time": 1.67,
+  "disp": 1.07,
   "length": 7.96
  },
  "Z Press": {
@@ -920,13 +920,13 @@
   "length": 7.96
  },
  "Landmine Shoulder Press": {
-  "time": 1.67,
-  "disp": 1.03,
+  "time": 1.5,
+  "disp": 1.0,
   "length": 7.96
  },
  "Half-Kneeling Landmine Press": {
-  "time": 1.67,
-  "disp": 1.04,
+  "time": 1.5,
+  "disp": 1.3,
   "length": 7.96
  },
  "Cable Shoulder Press": {
@@ -971,7 +971,7 @@
  },
  "Cable Y-Raise": {
   "time": 1.67,
-  "disp": 3.15,
+  "disp": 2.85,
   "length": 7.96
  },
  "Lu Raise": {
@@ -1021,7 +1021,7 @@
  },
  "Machine Rear Delt Row": {
   "time": 1.67,
-  "disp": 1.31,
+  "disp": 1.26,
   "length": 7.96
  },
  "Barbell Upright Row": {
@@ -1086,7 +1086,7 @@
  },
  "Alternating Dumbbell Curl": {
   "time": 1.67,
-  "disp": 0.51,
+  "disp": 0.53,
   "length": 7.96
  },
  "Spider Curl": {
@@ -1177,6 +1177,461 @@
  "Barbell Hip Thrust": {
   "time": 1.5,
   "disp": 1.25,
+  "length": 7.96
+ },
+ "Single-Arm Machine Curl": {
+  "time": 1.67,
+  "disp": 0.4,
+  "length": 7.96
+ },
+ "Cable Preacher Curl": {
+  "time": 1.67,
+  "disp": 0.8,
+  "length": 7.96
+ },
+ "Single-Arm Cable Curl": {
+  "time": 1.67,
+  "disp": 0.51,
+  "length": 7.96
+ },
+ "High Cable Curl": {
+  "time": 1.67,
+  "disp": 0.88,
+  "length": 7.96
+ },
+ "Overhead Cable Curl": {
+  "time": 1.67,
+  "disp": 0.77,
+  "length": 7.96
+ },
+ "Cable Hammer Curl": {
+  "time": 1.67,
+  "disp": 1.03,
+  "length": 7.96
+ },
+ "Preacher Hammer Curl": {
+  "time": 1.67,
+  "disp": 0.4,
+  "length": 7.96
+ },
+ "Drag Curl": {
+  "time": 2.33,
+  "disp": 0.75,
+  "length": 7.96
+ },
+ "EZ Bar Drag Curl": {
+  "time": 2.33,
+  "disp": 0.75,
+  "length": 7.96
+ },
+ "Cable Drag Curl": {
+  "time": 2.33,
+  "disp": 0.76,
+  "length": 7.96
+ },
+ "Reverse Preacher Curl": {
+  "time": 1.67,
+  "disp": 0.8,
+  "length": 7.96
+ },
+ "Barbell Preacher Curl": {
+  "time": 1.67,
+  "disp": 0.8,
+  "length": 7.96
+ },
+ "Dumbbell Spider Curl": {
+  "time": 5.67,
+  "disp": 0.91,
+  "length": 7.96
+ },
+ "EZ Bar Spider Curl": {
+  "time": 5.67,
+  "disp": 0.9,
+  "length": 7.96
+ },
+ "Alternating Hammer Curl": {
+  "time": 1.67,
+  "disp": 0.53,
+  "length": 7.96
+ },
+ "Dumbbell Wrist Curl": {
+  "time": 1.67,
+  "disp": 0.0,
+  "length": 7.96
+ },
+ "Barbell Reverse Wrist Curl": {
+  "time": 1.67,
+  "disp": 0.0,
+  "length": 7.96
+ },
+ "Dumbbell Reverse Wrist Curl": {
+  "time": 1.67,
+  "disp": 0.01,
+  "length": 7.96
+ },
+ "Cable Wrist Curl": {
+  "time": 1.67,
+  "disp": 0.01,
+  "length": 7.96
+ },
+ "Cable Reverse Wrist Curl": {
+  "time": 1.67,
+  "disp": 0.01,
+  "length": 7.96
+ },
+ "Behind-the-Back Wrist Curl": {
+  "time": 1.67,
+  "disp": 0.18,
+  "length": 7.96
+ },
+ "Finger Curl": {
+  "time": 1.33,
+  "disp": 0.01,
+  "length": 7.96
+ },
+ "Plate Pinch Hold": {
+  "time": 2.0,
+  "disp": 0.02,
+  "length": 7.96
+ },
+ "Dumbbell Static Hold": {
+  "time": 2.0,
+  "disp": 0.05,
+  "length": 7.96
+ },
+ "Barbell Static Hold": {
+  "time": 2.0,
+  "disp": 0.06,
+  "length": 7.96
+ },
+ "Towel Grip Hold": {
+  "time": 2.0,
+  "disp": 0.03,
+  "length": 7.96
+ },
+ "Lateral Lunge": {
+  "time": 2.0,
+  "disp": 5.95,
+  "length": 7.96
+ },
+ "Cossack Squat": {
+  "time": 1.67,
+  "disp": 4.71,
+  "length": 7.96
+ },
+ "Dumbbell Sumo Squat": {
+  "time": 1.67,
+  "disp": 3.1,
+  "length": 7.96
+ },
+ "Barbell Sumo Squat": {
+  "time": 1.67,
+  "disp": 2.97,
+  "length": 7.96
+ },
+ "Kettlebell Goblet Squat": {
+  "time": 1.67,
+  "disp": 3.49,
+  "length": 7.96
+ },
+ "Box Squat": {
+  "time": 2.0,
+  "disp": 3.21,
+  "length": 9.96
+ },
+ "Pause Squat": {
+  "time": 2.0,
+  "disp": 3.34,
+  "length": 11.96
+ },
+ "Safety Bar Squat": {
+  "time": 2.0,
+  "disp": 3.52,
+  "length": 9.96
+ },
+ "Zercher Squat": {
+  "time": 2.0,
+  "disp": 3.45,
+  "length": 9.96
+ },
+ "Overhead Squat": {
+  "time": 1.33,
+  "disp": 3.35,
+  "length": 7.96
+ },
+ "Landmine Squat": {
+  "time": 1.33,
+  "disp": 3.42,
+  "length": 7.96
+ },
+ "Belt Squat": {
+  "time": 1.33,
+  "disp": 3.05,
+  "length": 7.96
+ },
+ "Pendulum Squat": {
+  "time": 1.33,
+  "disp": 3.58,
+  "length": 7.96
+ },
+ "V-Squat": {
+  "time": 1.33,
+  "disp": 2.99,
+  "length": 7.96
+ },
+ "Vertical Leg Press": {
+  "time": 1.33,
+  "disp": 0.91,
+  "length": 7.96
+ },
+ "45-Degree Leg Press": {
+  "time": 1.33,
+  "disp": 0.91,
+  "length": 7.96
+ },
+ "Single-Leg Press": {
+  "time": 1.33,
+  "disp": 0.45,
+  "length": 7.96
+ },
+ "Narrow-Stance Leg Press": {
+  "time": 1.33,
+  "disp": 0.9,
+  "length": 7.96
+ },
+ "Wide-Stance Leg Press": {
+  "time": 1.33,
+  "disp": 0.95,
+  "length": 7.96
+ },
+ "Heel-Elevated Squat": {
+  "time": 1.33,
+  "disp": 3.24,
+  "length": 7.96
+ },
+ "Cyclist Squat": {
+  "time": 1.33,
+  "disp": 3.09,
+  "length": 7.96
+ },
+ "Pistol Squat": {
+  "time": 1.33,
+  "disp": 5.17,
+  "length": 7.96
+ },
+ "Assisted Pistol Squat": {
+  "time": 1.5,
+  "disp": 3.33,
+  "length": 7.96
+ },
+ "Standing Calf Raise": {
+  "time": 1.33,
+  "disp": 1.14,
+  "length": 7.96
+ },
+ "Seated Calf Raise": {
+  "time": 1.33,
+  "disp": 0.76,
+  "length": 7.96
+ },
+ "Leg Press Calf Raise": {
+  "time": 1.33,
+  "disp": 0.19,
+  "length": 7.96
+ },
+ "Single-Leg Calf Raise": {
+  "time": 1.33,
+  "disp": 0.98,
+  "length": 7.96
+ },
+ "Smith Machine Calf Raise": {
+  "time": 1.33,
+  "disp": 1.14,
+  "length": 7.96
+ },
+ "Pendlay Row": {
+  "time": 1.33,
+  "disp": 1.24,
+  "length": 7.96
+ },
+ "Dumbbell Curl": {
+  "time": 1.33,
+  "disp": 0.83,
+  "length": 7.96
+ },
+ "Incline Dumbbell Curl": {
+  "time": 1.33,
+  "disp": 0.83,
+  "length": 7.96
+ },
+ "Preacher Curl": {
+  "time": 1.33,
+  "disp": 0.89,
+  "length": 7.96
+ },
+ "Cable Curl": {
+  "time": 1.33,
+  "disp": 0.83,
+  "length": 7.96
+ },
+ "Bayesian Cable Curl": {
+  "time": 1.33,
+  "disp": 0.45,
+  "length": 7.96
+ },
+ "Reverse Curl": {
+  "time": 1.33,
+  "disp": 0.79,
+  "length": 7.96
+ },
+ "Wrist Curl": {
+  "time": 1.5,
+  "disp": 0,
+  "length": 7.96
+ },
+ "Close-Grip Bench Press": {
+  "time": 1.33,
+  "disp": 1.74,
+  "length": 7.96
+ },
+ "Machine Preacher Curl": {
+  "time": 1.67,
+  "disp": 0.8,
+  "length": 7.96
+ },
+ "Single-Leg Romanian Deadlift": {
+  "time": 1.83,
+  "disp": 4.57,
+  "length": 7.96
+ },
+ "Barbell Single-Leg Romanian Deadlift": {
+  "time": 1.83,
+  "disp": 4.42,
+  "length": 7.96
+ },
+ "Dumbbell Single-Leg Romanian Deadlift": {
+  "time": 1.83,
+  "disp": 4.32,
+  "length": 7.96
+ },
+ "B-Stance Romanian Deadlift": {
+  "time": 1.83,
+  "disp": 2.21,
+  "length": 7.96
+ },
+ "Smith Machine Romanian Deadlift": {
+  "time": 1.83,
+  "disp": 2.63,
+  "length": 7.96
+ },
+ "Cable Romanian Deadlift": {
+  "time": 1.83,
+  "disp": 2.8,
+  "length": 7.96
+ },
+ "Kettlebell Romanian Deadlift": {
+  "time": 1.83,
+  "disp": 2.7,
+  "length": 7.96
+ },
+ "Good Morning": {
+  "time": 1.83,
+  "disp": 2.08,
+  "length": 7.96
+ },
+ "Seated Good Morning": {
+  "time": 2.0,
+  "disp": 2.07,
+  "length": 7.96
+ },
+ "Smith Machine Good Morning": {
+  "time": 1.83,
+  "disp": 1.78,
+  "length": 7.96
+ },
+ "Nordic Hamstring Curl": {
+  "time": 2.0,
+  "disp": 5.55,
+  "length": 7.96
+ },
+ "Assisted Nordic Curl": {
+  "time": 2.0,
+  "disp": 5.67,
+  "length": 7.96
+ },
+ "Glute-Ham Raise": {
+  "time": 1.83,
+  "disp": 6.04,
+  "length": 7.96
+ },
+ "Standing Leg Curl": {
+  "time": 1.83,
+  "disp": 0.61,
+  "length": 7.96
+ },
+ "Kneeling Leg Curl": {
+  "time": 1.83,
+  "disp": 0.61,
+  "length": 7.96
+ },
+ "Cable Standing Leg Curl": {
+  "time": 1.83,
+  "disp": 0.52,
+  "length": 7.96
+ },
+ "Swiss Ball Leg Curl": {
+  "time": 1.83,
+  "disp": 1.98,
+  "length": 7.96
+ },
+ "Sliding Leg Curl": {
+  "time": 1.83,
+  "disp": 2.06,
+  "length": 7.96
+ },
+ "Single-Leg Sliding Curl": {
+  "time": 1.83,
+  "disp": 1.74,
+  "length": 7.96
+ },
+ "Frog Pump": {
+  "time": 1.83,
+  "disp": 0.42,
+  "length": 7.96
+ },
+ "Weighted Frog Pump": {
+  "time": 1.83,
+  "disp": 0.92,
+  "length": 7.96
+ },
+ "Dumbbell Deadlift": {
+  "time": 1.83,
+  "disp": 4.45,
+  "length": 7.96
+ },
+ "Cable Hip Adduction": {
+  "time": 1.83,
+  "disp": 0.96,
+  "length": 7.96
+ },
+ "Standing Hip Abduction": {
+  "time": 1.83,
+  "disp": 0.72,
+  "length": 7.96
+ },
+ "Side-Lying Hip Abduction": {
+  "time": 1.83,
+  "disp": 0.7,
+  "length": 7.96
+ },
+ "Banded Hip Abduction": {
+  "time": 1.83,
+  "disp": 0.36,
+  "length": 7.96
+ },
+ "Clamshell": {
+  "time": 1.83,
+  "disp": 0.2,
   "length": 7.96
  }
 }

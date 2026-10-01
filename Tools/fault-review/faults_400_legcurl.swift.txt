@@ -1,0 +1,235 @@
+// MARK: PIECES
+    // MARK: 351-400 leg curl pieces (2026-10-01)
+
+    /// Standing and kneeling machine curls (the left leg works): the trunk
+    /// and upper arms swung `degrees` about the hips, positive rocking back
+    /// and up, with the hands left on the handles and the elbows re-seated
+    /// between. Grows with the left knee's bend, so it shows as the heel
+    /// comes up (all of it at the top, 73°). Keep the shoulder-to-hand span
+    /// within the arm's reach (0.538 m): tipping forward toward fixed hands
+    /// folds the elbows into a tangle, and too far back locks them.
+    private static func legCurlRocked(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, arms],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: degrees),
+                          .resolve(["forearm_*"])],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// Standing one-leg curls: the working (left) knee drifting forward off
+    /// the lever's pivot or toward the stack, the whole left leg swung
+    /// `degrees` forward about the hip with the knee bend kept, so the thigh
+    /// no longer hangs straight down. Grows with the left knee's bend.
+    private static func legCurlKneeForward(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("L"), hips],
+                  moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: degrees)],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// Floor curls (lying face up, heels on a ball or sliders): the lower
+    /// back arching the hips higher at the top, the lumbar spine lifted
+    /// `rise` torso lengths and the chest `chest`, as `bridgeArched`, but
+    /// growing with the knee bend, since these bridges peak with the knees
+    /// most bent (the Sliding Leg Curl's hips are only 148° there).
+    private static func floorCurlArched(_ rise: Float, chest: Float) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.shift(["spine"], rise: rise), .shift(["chest"], rise: chest)],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// Floor curls: the hips sinking toward the floor, the pelvis and hips
+    /// `drop` torso lengths lower and the lumbar spine half that, the knees
+    /// re-seated between the lowered hips and the heels, which stay on the
+    /// ball or sliders.
+    private static func floorCurlHipsDown(_ drop: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*"], rise: -drop), .shift(["spine"], rise: -drop / 2),
+                          .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// Floor curls: both arms lifted off the floor about the shoulders.
+    /// Arms that lie along the body toward the feet lift about `.lateral`;
+    /// arms spread out to the sides with the elbows bent (the sliding curls)
+    /// lift about `.up`, the body's long axis (mirrored for the right arm).
+    private static func floorCurlArmsUp(_ axis: BodyAxis, _ degrees: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: axis, degrees: degrees)])
+    }
+
+// MARK: TABLE
+        // MARK: 351-400 leg curls (2026-10-01)
+        // Six knee-flexion curls, one body (torso 0.592 m). The three upright
+        // ones curl the LEFT leg and are framed side-on from the left at yaw
+        // -1.3 (about 15° short of a true left side view, the front a little
+        // toward the camera); the three floor curls lie face up, feet toward
+        // the lifter's +z, framed side-on from the left at -1.35. Faults in
+        // the lifter's own front-back plane keep the framing, except the two
+        // machine pivot faults, turned -0.3 to a true side view so the pivot
+        // disc lines up with the knee; the two that move across the body
+        // (the pelvis tips) turn to where that move runs across the screen.
+        // Distances below were measured with a Python
+        // port of FaultGhost.solve on the rigs at the fault's moment
+        // (legcurl/ghost.py in the session scratchpad). Roller, cuff and
+        // tempo cues and the Swiss ball's heels have no ghost: the roller's,
+        // cuff's or heels' place is on the equipment, not a body position,
+        // and speed is not a pose.
+        "Standing Leg Curl": [
+            // Rocking back off the chest pad: the trunk from 8° forward to 7°
+            // back at the top, the head ~18 cm and the shoulders ~14 cm back,
+            // the elbows re-seated toward straight (the hands stay on the
+            // handles).
+            "chest": legCurlRocked(15),
+            // Short reps: the knee stops at ~118° instead of 73°, the lower
+            // leg 28° below level instead of 17° above it (the heel ~30 cm
+            // lower).
+            "range": curlShort("L", 45),
+            // The left knee ~15 cm forward of the pivot at the top, the
+            // thigh swung 20° forward. Turned -0.3 to a true left side view:
+            // from the framing (15° short of it) the pivot disc, 0.4 m
+            // nearer the camera than the knee, shows ~36 pt behind the
+            // correct knee, so the real knee already looks off the pivot;
+            // side-on the disc covers the real knee (~5 pt off its centre)
+            // and the ghost's knee sits ~44 pt off it, past the disc's rim
+            // (~29 pt). At 15° it only reached the rim.
+            "pivot": legCurlKneeForward(20).seen(-0.3),
+            // Bobbing up off the standing (right) heel: the heel 20° up
+            // about the toes (the ankle ~6.5 cm higher), both hips 0.1 torso
+            // lengths (~6 cm) higher, the right knee re-seated (165° -> 163°).
+            // Grows with the left knee's bend, as the bob comes with the
+            // curl.
+            "stance": FaultPose(chains: [leg("R"), hips],
+                                moves: [.turn(pivot: "foot_R.tip", points: ["foot_R"], axis: .lateral, degrees: -20),
+                                        .shift(["thigh_*"], rise: 0.1), .resolve(["shin_R"])],
+                                strength: .withBend("shin_L"))
+            // "pad" has no ghost: the roller's place on the leg.
+        ],
+        "Kneeling Leg Curl": [
+            // Pushing up off the arm pads: the trunk from 50° forward to 32°,
+            // the head ~22 cm and the shoulders ~16 cm up and back at the top,
+            // the elbows opening from 89° to ~157° between the shoulders and
+            // the fixed hands (at 20° they would lock past straight).
+            "lean": legCurlRocked(18),
+            // The left hip hitching: the left hip and leg 0.12 torso lengths
+            // (~7 cm) up, the pelvis 0.05. Turned -1.0 (a total of -2.3, from
+            // behind and to the left), where the hip line runs ~31 pt across
+            // the screen and its left end lifts ~18 pt; from the framing the
+            // two hips sit ~13 pt apart and the tilt reads as a stub.
+            "hips": FaultPose(chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+                              moves: [.shift(leg("L"), rise: 0.12), .shift(["pelvis"], rise: 0.05)],
+                              strength: .withBend("shin_L"), view: -1.0),
+            // Short reps: ~118° instead of 73° at the top.
+            "range": curlShort("L", 45),
+            // Kneeling too far back: the whole body 0.2 torso lengths
+            // (~12 cm) back along the pad, so the left knee sits behind the
+            // pivot. Turned -0.3 to a true left side view: from the framing
+            // the pivot disc shows ~36 pt behind the correct knee, so a
+            // knee moved back looked like it moved onto the disc; side-on
+            // the correct knee is on the disc's centre and the ghost's knee
+            // ~31 pt behind it, at the disc's back rim.
+            "pivot": FaultPose(chains: [spine, legs, hips],
+                               moves: [.shift(["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip"] + torso, ahead: -0.2)],
+                               view: -0.3)
+            // "pad" has no ghost: the roller's place on the leg.
+        ],
+        "Cable Standing Leg Curl": [
+            // Swinging all the way straight between reps: the left lower leg
+            // turned 32° toward straight, fading as the knee bends; at the
+            // model's start (155°, strength 0.72) the knee ends ~178°, the
+            // foot ~16 cm forward; none at the top.
+            "range": FaultPose(chains: [leg("L")],
+                               moves: [.turn(pivot: "shin_L", points: ["foot_L", "foot_L.tip"], axis: .lateral, degrees: 32)],
+                               strength: .whenStraight("shin_L")),
+            // Bending forward over the frame: the trunk from 8° to 28°
+            // forward at the top, the head ~24 cm forward and down. The arms
+            // are left out: with the hands fixed 0.34 m from the shoulders,
+            // re-seating the elbows would fold them to ~39°.
+            "trunk": FaultPose(chains: [spine],
+                               moves: [.turn(pivot: "pelvis", points: torso, axis: .lateral, degrees: -20)],
+                               strength: .withBend("shin_L")),
+            // The cable dragging the hips toward the stack as the leg lowers:
+            // the pelvis, hips and hanging left leg 0.15 torso lengths
+            // forward and the mid-spine 0.14, so it sits ahead of the
+            // pelvis-chest line (the lower back arches); the right knee
+            // re-seats over the planted foot (172° -> 161°). Fades as the
+            // left knee bends; at the start (strength 0.72) the hips are
+            // ~6.4 cm (~18 pt) forward.
+            "hips": FaultPose(chains: [spine, legs, hips],
+                              moves: [.shift(["pelvis", "thigh_*", "shin_L", "foot_L", "foot_L.tip"], forward: 0.15),
+                                      .shift(["spine"], forward: 0.14), .resolve(["shin_R"])],
+                              strength: .whenStraight("shin_L")),
+            // The left knee ~15 cm forward toward the stack at the top, the
+            // thigh swung 20° forward.
+            "thigh": legCurlKneeForward(20)
+            // "cuff" has no ghost: the cuff's place on the ankle.
+        ],
+        "Swiss Ball Leg Curl": [
+            // "heels" has no ghost: the heels' place on the ball (low on
+            // its side instead of on top) is not a body position, and moving
+            // the heels down the ball would push the toes, already ~20 pt
+            // from the screen's left edge, off it.
+            // Arching at the top: the lumbar spine ~11 cm (~20 pt) and the
+            // chest ~5 cm up with the knees at 90°.
+            "ribs": floorCurlArched(0.18, chest: 0.08),
+            // The hips sinking as the legs straighten: at the start (knees
+            // 164°, strength 0.82) the pelvis ~11 cm (~20 pt) lower, about
+            // the ~11 cm the seat is held above the mat, the knees straight
+            // between the lowered hips and the heels on the ball.
+            "hips": floorCurlHipsDown(0.22, strength: .whenStraight("shin_L")),
+            // The arms, which lie toward the feet ~35-40° out from the sides,
+            // lifted 30° off the floor: the hands ~24 cm (~45 pt) up.
+            "arms": floorCurlArmsUp(.lateral, 30)
+            // "tempo" has no ghost: rolling the ball out slowly is speed.
+        ],
+        "Sliding Leg Curl": [
+            // The hips left down as the heels come in: at the top the pelvis
+            // 0.44 torso lengths (~26 cm, ~40 pt) lower, at its resting
+            // height on the mat (0.21 m), the knees folding from 70° to ~45°
+            // over the heels. Grows with how far the heels have come in (the
+            // hip-to-ankle distance, 1.41 torso lengths at the start, 0.82 at
+            // the top), so the ghost's seat never sinks into the mat: none at
+            // the start, where the seat already rests on it.
+            "hips": floorCurlHipsDown(0.44, strength: .between("thigh_L", "foot_L", from: 1.41, to: 0.82)),
+            // Snapping straight: the knees pushed onto the hip-heel line and
+            // 0.06 torso lengths past it, fading as they bend; at the start
+            // (164°, strength 0.82) they end ~175°, ~8 cm (~12 pt) lower. The
+            // heels stay put: the framing already puts the toes ~16 pt from
+            // the screen's left edge.
+            "knees": FaultPose(chains: [legs],
+                               moves: [.straighten(["shin_*"], past: 0.06)],
+                               strength: .whenStraight("shin_L")),
+            // Arching at the top: the lumbar spine ~12 cm (~19 pt) up.
+            "ribs": floorCurlArched(0.2, chest: 0.09),
+            // The arms, out to the sides with the elbows bent ~75°, lifted
+            // 40° about the body's long axis: the elbows ~20 cm (~30 pt) and
+            // the hands 12-20 cm off the floor.
+            "arms": floorCurlArmsUp(.up, 40)
+            // "tempo" has no ghost: sliding out slowly is speed.
+        ],
+        "Single-Leg Sliding Curl": [
+            // Kicking the free (right) knee up toward the chest to swing the
+            // hips up, as the Single-Leg Glute Bridge's free-leg fault: the
+            // right thigh 30° further up, from 68° to ~98° above the floor
+            // (just past vertical), the knee ~23 cm (~35 pt) toward the head
+            // and the foot ~23 cm higher at the top.
+            "free": FaultPose(chains: [leg("R"), hips],
+                              moves: [.turn(pivot: "thigh_R", points: ["shin_R", "foot_R", "foot_R.tip"], axis: .lateral, degrees: 30)],
+                              strength: .withBend("shin_L")),
+            // The free side of the pelvis dropping: the right hip and leg 0.2
+            // torso lengths (~12 cm) lower, the pelvis 0.1. Turned +0.7 (a
+            // total of -0.65, from the feet end on the left), where the hip
+            // line runs ~23 pt across the screen and its right end drops
+            // ~19 pt; from the framing the hips sit ~6 pt apart.
+            "hips": FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("R")],
+                              moves: [.shift(leg("R"), rise: -0.2), .shift(["pelvis"], rise: -0.1)],
+                              strength: .withBend("shin_L"), view: 0.7),
+            // As the Sliding Leg Curl: the elbows ~20 cm off the floor.
+            "arms": floorCurlArmsUp(.up, 40),
+            // Stopping the slide halfway: the left heel 0.25 torso lengths
+            // nearer the hips, fading as the knee bends; at the start
+            // (strength 0.82) ~12 cm nearer, the knee 116° instead of 164°,
+            // about halfway to the top's 70°.
+            "range": FaultPose(chains: [leg("L")],
+                               moves: [.shift(["foot_L", "foot_L.tip"], ahead: 0.25), .resolve(["shin_L"])],
+                               strength: .whenStraight("shin_L"))
+            // "tempo" has no ghost: sliding out slowly is speed.
+        ],

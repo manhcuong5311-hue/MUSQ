@@ -5,7 +5,7 @@
 set -e
 PY=/Applications/Blender.app/Contents/Resources/5.1/python/bin/python3.13
 HERE=${0:A:h}
-BODY=/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared/AnatomyBody.usdc
+BODY=/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared/AnatomyBody.usdc
 f=$1; tmp=${f:r}.slim.tmp.usdc
 if [ $(stat -f %z "$f") -lt 5000000 ]; then echo "already slim: ${f:t}"; exit 0; fi
 $PY $HERE/share_body.py slim "$f" $BODY "$tmp" >/dev/null

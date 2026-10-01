@@ -80,3 +80,43 @@ Raise, Cable Rear Delt Row, Dumbbell Upright Row, Barbell Hip Thrust) got a
 pose time and a framing, and the fifteen re-exported models (knee and toe-out
 fixes, the rebuilt 191/199 presses, the upright abduction machine) were
 re-solved and re-shot; the library now has 236 exercises, all with a thumbnail.
+
+Batch 241-300 (2026-09-27): the 26 curls, wrist curls and holds were added the
+same way; the library now has 262 exercises, all with a thumbnail. The EZ bar,
+pinch plates and towels count as held; the four cable curls seen from the side
+joined `BODY_ONLY`. The wrist curls are pinned to the working end of the wrist
+range (1.67 s) and the finger curl to the bar on the fingertips (1.33 s), since
+their displacement barely changes.
+
+Exercises 1-50 redone (2026-09-29): the 26 re-exported models and the nine
+new ones (Pendlay Row, Dumbbell, Incline Dumbbell, Preacher, Cable, Bayesian
+Cable and Reverse Curls, Wrist Curl, Close-Grip Bench Press) got fresh pose
+times (`posetime.py <names…>`; the Wrist Curl pinned to 1.5 s, its wrists'
+fullest curl) and framings (`thumbsolve.py thumbs.json <names…>`), and were
+shot from a scratch mirror build with the harness. T-Bar Row keeps its
+hand-tuned framing (its motion did not change); the Chest-Supported Row
+Machine joins Leg Press and Cable Crunch in always showing the whole machine
+(its raised knees had tipped it into cropping). The EX_* EZ bars count as
+held (`EZ_Bar`). `framer_still.py` leaves the skeleton's `root` bone out (the
+row machine parks it under the floor). The library now has 299 exercises.
+
+Exercises 151-190 and gated redone (2026-09-30): the 36 re-exported models
+that changed (Biceps Curl came back identical) kept their pose times; their
+square framings were re-solved with the current `thumbsolve.py` (the pull-ups,
+pulldowns and cable/machine rows zoom in a little, since `framer_still.py`
+now leaves the root bone out) and re-shot. The assisted and machine pull-ups
+lost their floating guide rails in the redo, so their tiles look cleaner.
+
+Redone 190-280 folder (2026-09-30): the 21 re-exported models and the new
+Machine Preacher Curl were re-solved and re-shot. The dumbbell and landmine
+presses, whose arm paths changed, took new pose times; the others kept
+theirs. The spider curls, Cable Y-Raise and Rear Delt Row keep their earlier
+(hand-set) square framings, which the solver would otherwise move. The
+library now has 300 exercises.
+
+351-400 folder (2026-09-30): the 27 new hamstring, glute and hip exercises
+got pose times and square framings (`posetime.py` / `thumbsolve.py` with
+their names) and were shot the same way; the library now has 327 exercises,
+all with a thumbnail. Back Extension was re-shot from its new behind-left
+view (-1.9) at the bottom of the rep, so the tile shows the rounded spine of
+the lower-back variant the model performs.

@@ -1,14 +1,14 @@
 # Projects rig joints through each exercise's framing with the app's camera
 # (vertical FOV 32deg at z=2.05, viewport aspect 382/705) — unit coords.
 import os as _os  # slim models reference Shared/AnatomyBody.usdc (share_body.py)
-_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/Shared")
+_os.environ.setdefault("PXR_AR_DEFAULT_SEARCH_PATH", "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/Shared")
 import sys, math, json
-sys.path.insert(0, "/Users/sammanhcuong/Desktop/GymWorkout/Tools/model-pipeline")
+sys.path.insert(0, "/Users/sammanhcuong/Developer/GymWorkout/Tools/model-pipeline")
 from framer import LONGEST, CENTER, D, TAN
 from pxr import Usd, UsdSkel, UsdGeom
 import numpy as np
 ASPECT = 382 / 655   # trainer viewport since the setup drawer (was 382/705)
-M = "/Users/sammanhcuong/Desktop/GymWorkout/GymWorkout/Resources/Models/"
+M = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/"
 PI = math.pi
 JOBS = {
  "Barbell Overhead Press": ("Shoulder/BarbellOverheadPress", -0.5, 0.654, (-0.009,-0.083,0.005)),
@@ -36,7 +36,7 @@ JOBS = {
  "Lunge": ("Legs/Lunge", 0, 1.0, (0,0.10,0)),
  "Bulgarian Split Squat": ("Legs/BulgarianSplitSquatUpright", 0, 1.0, (0,0.10,0)),
  "Bulgarian Split Squat (Lean)": ("Legs/BulgarianSplitSquatLean", 0, 1.0, (0,0.10,0)),
- "Step-Up": ("Legs/StepUp", 0, 1.0, (0,0.10,0)),
+ "Step-Up": ("Legs/StepUp", -0.9, 0.745, (0.03,-0.049,-0.038)),
  "Single-Leg Glute Bridge": ("Legs/SingleLegGluteBridge", PI/2, 0.62, (0,0.52,0)),
  "Push-Up": ("Chest/pushup", PI/2, 0.62, (0,0.30,0)),
  "Plank": ("Abs/Plank", PI/2, 0.62, (0,0.52,0)),
@@ -142,13 +142,13 @@ JOBS = {
  "Behind-the-Neck Press": ("Shoulder/BehindTheNeckPress", -0.8, 0.664, (-0.056,-0.079,0.058)),
  "Push Press": ("Shoulder/PushPress", -0.8, 0.628, (-0.014,-0.076,0.015)),
  "Dumbbell Push Press": ("Shoulder/DumbbellPushPress", -0.5, 0.742, (0.013,-0.053,-0.007)),
- "Standing Dumbbell Press": ("Shoulder/StandingDumbbellPress", -0.5, 0.742, (0.013,-0.053,-0.007)),
+ "Standing Dumbbell Press": ("Shoulder/StandingDumbbellPress", -0.5, 0.728, (-0.005,-0.051,0.003)),
  "Seated Dumbbell Press": ("Shoulder/SeatedDumbbellPress", -0.5, 0.833, (-0.001,0.016,0.0)),
- "Neutral-Grip Dumbbell Shoulder Press": ("Shoulder/NeutralGripDumbbellShoulderPress", -0.6, 0.821, (-0.012,0.056,0.008)),
- "Single-Arm Dumbbell Shoulder Press": ("Shoulder/SingleArmDumbbellShoulderPress", -0.5, 0.742, (-0.025,-0.053,0.014)),
+ "Neutral-Grip Dumbbell Shoulder Press": ("Shoulder/NeutralGripDumbbellShoulderPress", -0.6, 0.783, (0.001,0.045,0.0)),
+ "Single-Arm Dumbbell Shoulder Press": ("Shoulder/SingleArmDumbbellShoulderPress", -0.5, 0.727, (-0.04,-0.052,0.022)),
  "Z Press": ("Shoulder/ZPress", -1.3, 0.721, (0.014,0.052,-0.049)),
- "Landmine Shoulder Press": ("Shoulder/LandmineShoulderPress", -1.0, 0.83, (-0.004,0.001,0.006)),
- "Half-Kneeling Landmine Press": ("Shoulder/KneelingLandminePress", -1.0, 0.898, (0.009,0.081,-0.013)),
+ "Landmine Shoulder Press": ("Shoulder/LandmineShoulderPress", -1.0, 0.76, (-0.004,0.001,0.006)),
+ "Half-Kneeling Landmine Press": ("Shoulder/KneelingLandminePress", -1.0, 0.863, (0.002,0.078,-0.003)),
  "Cable Shoulder Press": ("Shoulder/CableShoulderPress", -0.5, 0.679, (-0.089,-0.032,0.049)),
  "Single-Arm Cable Shoulder Press": ("Shoulder/SingleArmCableShoulderPress", -0.5, 0.76, (-0.026,-0.043,0.014)),
  "Smith Machine Shoulder Press": ("Shoulder/SmithMachineShoulderPress", -0.6, 0.843, (0.031,0.061,-0.021)),
@@ -201,6 +201,140 @@ JOBS = {
  "Cable Rear Delt Row": ("Shoulder/CableRearDeltRow", -2.6, 0.867, (0.007,0.114,0.004)),
  "Dumbbell Upright Row": ("Shoulder/DumbbellUprightRow", -0.5, 0.885, (0.003,0.039,-0.002)),
  "Barbell Hip Thrust": ("Legs/BarbellHipThrust", -0.7, 0.879, (0.002,0.274,-0.002)),
+ # Batch 241-300 (2026-09-27).
+ "Single-Arm Machine Curl": ("Biceps/SingleArmMachineCurl", -1.0, 1.032, (-0.025,0.142,0.038)),
+ "Cable Preacher Curl": ("Biceps/CablePreacherCurl", 1.1, 0.994, (0.022,0.119,0.043)),
+ "Single-Arm Cable Curl": ("Biceps/SingleArmCableCurl", -1.5, 0.875, (-0.002,0.037,0.026)),
+ "High Cable Curl": ("Biceps/HighCableCurl", -0.3, 0.652, (-0.012,0.015,0.004)),
+ "Overhead Cable Curl": ("Biceps/OverheadCableCurl", -1.3, 0.867, (-0.074,0.022,0.266)),
+ "Cable Hammer Curl": ("Biceps/CableHammerCurl", 1.4, 0.874, (0.0,0.038,0.001)),
+ "Preacher Hammer Curl": ("Biceps/PreacherHammerCurl", -1.1, 0.994, (-0.024,0.119,0.048)),
+ "Drag Curl": ("Biceps/DragCurl", -0.8, 0.653, (-0.008,0.027,0.008)),
+ "EZ Bar Drag Curl": ("Biceps/EZBarDragCurl", -0.3, 0.891, (-0.012,0.038,0.004)),
+ "Cable Drag Curl": ("Biceps/CableDragCurl", 1.1, 0.874, (0.023,0.039,0.046)),
+ "Reverse Preacher Curl": ("Biceps/ReversePreacherCurl", -0.8, 1.0, (-0.02,0.123,0.02)),
+ "Barbell Preacher Curl": ("Biceps/BarbellPreacherCurl", -0.8, 0.602, (-0.003,0.051,0.003)),
+ "Dumbbell Spider Curl": ("Biceps/DumbbellSpiderCurl", -2.0, 0.599, (-0.018,0.069,-0.039)),
+ "EZ Bar Spider Curl": ("Biceps/EZBarSpiderCurl", -2.0, 0.606, (-0.025,0.076,-0.055)),
+ "Alternating Hammer Curl": ("Biceps/AlternatingHammerCurl", -0.4, 0.888, (0.003,0.039,-0.001)),
+ "Dumbbell Wrist Curl": ("Forearms/DumbbellWristCurl", -0.7, 1.009, (0.142,0.23,-0.119)),
+ "Barbell Reverse Wrist Curl": ("Forearms/BarbellReverseWristCurl", -1.0, 0.75, (0.1,0.172,-0.155)),
+ "Dumbbell Reverse Wrist Curl": ("Forearms/DumbbellReverseWristCurl", -0.7, 1.009, (0.142,0.23,-0.119)),
+ "Cable Wrist Curl": ("Forearms/CableWristCurl", 1.0, 0.932, (-0.097,0.195,-0.151)),
+ "Cable Reverse Wrist Curl": ("Forearms/CableReverseWristCurl", 1.0, 0.932, (-0.097,0.195,-0.151)),
+ "Behind-the-Back Wrist Curl": ("Forearms/BehindTheBackWristCurl", -2.4, 0.608, (0.023,0.023,0.021)),
+ "Finger Curl": ("Forearms/FingerCurl", -1.0, 0.746, (0.106,0.171,-0.164)),
+ "Plate Pinch Hold": ("Forearms/PlatePinchHold", -0.5, 0.887, (-0.023,0.041,0.012)),
+ "Dumbbell Static Hold": ("Forearms/DumbbellStaticHold", -0.5, 0.885, (-0.023,0.04,0.012)),
+ "Barbell Static Hold": ("Forearms/BarbellStaticHold", -0.8, 0.668, (-0.012,0.028,0.012)),
+ "Towel Grip Hold": ("Forearms/TowelGripHold", -0.5, 0.75, (-0.023,-0.04,0.013)),
+ # 30-leg set 02-27 (2026-09-28).
+ "Lateral Lunge": ("Legs/LateralLunge", -0.3, 0.598, (-0.01,0.019,0.003)),
+ "Cossack Squat": ("Legs/CossackSquat", -0.3, 0.659, (0.005,0.04,-0.002)),
+ "Dumbbell Sumo Squat": ("Legs/DumbbellSumoSquat", -0.5, 0.905, (0.008,0.039,-0.004)),
+ "Barbell Sumo Squat": ("Legs/BarbellSumoSquat", -0.8, 0.7, (-0.028,0.032,0.029)),
+ "Kettlebell Goblet Squat": ("Legs/KettlebellGobletSquat", -0.5, 0.883, (0.037,0.026,-0.02)),
+ "Box Squat": ("Legs/BoxSquat", -1.0, 0.847, (-0.025,0.019,0.039)),
+ "Pause Squat": ("Legs/PauseSquat", -1.0, 0.85, (-0.026,0.017,0.04)),
+ "Safety Bar Squat": ("Legs/SafetyBarSquat", -1.0, 0.776, (-0.003,0.026,0.005)),
+ "Zercher Squat": ("Legs/ZercherSquat", -1.0, 0.809, (-0.003,0.027,0.004)),
+ "Overhead Squat": ("Legs/OverheadSquat", -0.8, 0.698, (-0.029,-0.076,0.03)),
+ "Landmine Squat": ("Legs/LandmineSquat", -0.9, 0.884, (0.034,0.03,-0.043)),
+ "Belt Squat": ("Legs/BeltSquat", -1.5, 0.767, (0.004,-0.034,-0.061)),
+ "Pendulum Squat": ("Legs/PendulumSquat", -1.3, 0.751, (-0.024,-0.018,0.088)),
+ "V-Squat": ("Legs/VSquat", -1.3, 0.778, (-0.003,0.024,0.012)),
+ "Vertical Leg Press": ("Legs/VerticalLegPress", -2.2, 0.861, (0.145,0.118,0.199)),
+ "45-Degree Leg Press": ("Legs/LegPress45", -2.0, 0.681, (0.049,0.122,0.108)),
+ "Single-Leg Press": ("Legs/SingleLegPress", -2.0, 0.681, (0.049,0.122,0.108)),
+ "Narrow-Stance Leg Press": ("Legs/NarrowStanceLegPress", -2.0, 0.704, (0.055,0.127,0.121)),
+ "Wide-Stance Leg Press": ("Legs/WideStanceLegPress", -2.0, 0.656, (0.043,0.119,0.094)),
+ "Heel-Elevated Squat": ("Legs/HeelElevatedSquat", -1.0, 0.832, (-0.02,0.019,0.031)),
+ "Cyclist Squat": ("Legs/CyclistSquat", -1.0, 0.863, (-0.032,0.019,0.05)),
+ "Pistol Squat": ("Legs/PistolSquat", -1.2, 0.874, (0.05,0.026,-0.127)),
+ "Assisted Pistol Squat": ("Legs/AssistedPistolSquat", -1.6, 0.878, (-0.005,0.03,-0.159)),
+ # Calves 083-087 (2026-09-28).
+ "Standing Calf Raise": ("Legs/StandingCalfRaise", -1.3, 0.76, (-0.003,-0.038,0.01)),
+ "Seated Calf Raise": ("Legs/SeatedCalfRaise", -1.3, 0.993, (-0.028,0.094,0.1)),
+ "Leg Press Calf Raise": ("Legs/LegPressCalfRaise", -2.4, 0.721, (0.148,0.108,0.136)),
+ "Single-Leg Calf Raise": ("Legs/SingleLegCalfRaise", -1.3, 0.752, (-0.025,-0.043,0.09)),
+ "Smith Machine Calf Raise": ("Legs/SmithMachineCalfRaise", -0.8, 0.628, (-0.115,-0.033,0.119)),
+ # Exercises 1-50 redone (2026-09-29): the replaced models whose content
+ # predates this script (chest and back), then the nine new exercises.
+ "Barbell Bench Press": ("Chest/BarbellBenchPress", -1.0, 0.66, (-0.05,0.04,0.08)),
+ "Incline Barbell Bench Press": ("Chest/InclineBarbellBenchPress", -1.0, 0.66, (-0.05,0.04,0.08)),
+ "Decline Barbell Bench Press": ("Chest/DeclineBarbellBenchPress", -1.0, 0.66, (-0.05,0.04,0.08)),
+ "Dumbbell Bench Press": ("Chest/DumbbellBenchPress", -1.0, 0.66, (-0.05,0.04,0.08)),
+ "Incline Dumbbell Press": ("Chest/InclineDumbbellPress", -1.0, 0.66, (-0.05,0.04,0.08)),
+ "Dumbbell Fly": ("Chest/DumbbellFly", -1.0, 0.66, (-0.05,0.04,0.08)),
+ "Incline Dumbbell Fly": ("Chest/InclineDumbbellFly", -1.0, 0.66, (-0.05,0.04,0.08)),
+ "Chest Press Machine": ("Chest/ChestPressMachine", -0.7, 0.62, (-0.023,0.03,0.019)),
+ "Pec Deck Fly": ("Chest/PecDeckFly", 0, 0.68, (0,0.03,0)),
+ "Cable Fly": ("Chest/CableFly", 0, 0.85, (0,0.03,0)),
+ "Low-to-High Cable Fly": ("Chest/LowToHighCableFly", 0, 0.913, (0,0.037,0)),
+ "Deadlift": ("Back/ConventionalDeadlift", -2, 0.866, (-0.048,0.031,-0.104)),
+ "Barbell Bent-Over Row": ("Back/BarbellBentOverRow", -2, 0.856, (-0.053,0.143,-0.117)),
+ "One-Arm Dumbbell Row": ("Back/OneArmDumbbellRow", -2, 0.86, (-0.001,0.118,-0.003)),
+ "Chest-Supported Dumbbell Row": ("Back/ChestSupportedDumbbellRow", -2, 1.215, (-0.027,0.233,-0.06)),
+ "Straight-Arm Pulldown": ("Back/StraightArmPulldown", -2.5, 0.94, (-0.063,0.044,-0.047)),
+ "T-Bar Row": ("Back/TBarRow", -2.7, 0.809, (0.135,0.18,0.064)),
+ "Chest-Supported Row Machine": ("Back/ChestSupportedRowMachine", 2.4, 1.065, (0.023,0.152,-0.021)),
+ "Back Extension": ("Back/BackExtension", -1.9, 0.637, (-0.013,0.057,-0.037)),
+ "Pendlay Row": ("Back/PendlayRow", -2.0, 0.803, (-0.058,0.219,-0.126)),
+ "Dumbbell Curl": ("Biceps/DumbbellCurl", -0.4, 0.892, (0.016,0.03,-0.007)),
+ "Incline Dumbbell Curl": ("Biceps/InclineDumbbellCurl", -0.9, 0.975, (-0.028,0.149,0.036)),
+ "Preacher Curl": ("Biceps/PreacherCurl", -0.8, 0.969, (0.063,0.123,-0.065)),
+ "Cable Curl": ("Biceps/CableCurl", -1.4, 0.883, (0.004,0.043,-0.023)),
+ "Bayesian Cable Curl": ("Biceps/BayesianCableCurl", -1.2, 0.877, (-0.019,0.028,0.049)),
+ "Reverse Curl": ("Biceps/ReverseCurl", -0.4, 0.823, (0.031,0.03,-0.013)),
+ "Wrist Curl": ("Forearms/WristCurl", -0.7, 0.918, (0.024,0.124,-0.02)),
+ "Close-Grip Bench Press": ("Triceps/CloseGripBenchPress", -1.0, 0.66, (-0.05,0.04,0.08)),
+ # Redone 190-280 folder (2026-09-30): new.
+ "Machine Preacher Curl": ("Biceps/MachinePreacherCurl", -1.0, 1.032, (-0.024,0.142,0.037)),
+ # The "351-400" folder (2026-09-30): new hamstring, glute and hip exercises.
+ "Single-Leg Romanian Deadlift": ("Legs/SingleLegRomanianDeadlift", -1.3, 0.599, (-0.024,0.011,0.087)),
+ "Barbell Single-Leg Romanian Deadlift": ("Legs/BarbellSingleLegRomanianDeadlift", -1.3, 0.599, (-0.024,0.011,0.087)),
+ "Dumbbell Single-Leg Romanian Deadlift": ("Legs/DumbbellSingleLegRomanianDeadlift", -1.3, 0.599, (-0.024,0.011,0.087)),
+ "B-Stance Romanian Deadlift": ("Legs/BStanceRomanianDeadlift", -1.3, 0.897, (0.011,0.019,-0.04)),
+ "Smith Machine Romanian Deadlift": ("Legs/SmithMachineRomanianDeadlift", -1.0, 0.915, (0.021,0.025,-0.032)),
+ "Cable Romanian Deadlift": ("Legs/CableRomanianDeadlift", -1.0, 0.902, (0.031,0.021,-0.048)),
+ "Kettlebell Romanian Deadlift": ("Legs/KettlebellRomanianDeadlift", -0.8, 0.904, (0.034,0.02,-0.035)),
+ "Good Morning": ("Legs/GoodMorning", -2.3, 0.644, (-0.032,0.012,-0.035)),
+ "Seated Good Morning": ("Legs/SeatedGoodMorning", -2.3, 0.593, (-0.026,0.057,-0.029)),
+ "Smith Machine Good Morning": ("Legs/SmithMachineGoodMorning", -1.0, 0.926, (-0.04,0.019,0.062)),
+ "Nordic Hamstring Curl": ("Legs/NordicHamstringCurl", -1.4, 0.556, (0.016,0.027,-0.096)),
+ "Assisted Nordic Curl": ("Legs/AssistedNordicCurl", -1.4, 0.556, (0.016,0.027,-0.096)),
+ "Glute-Ham Raise": ("Legs/GluteHamRaise", -1.4, 0.46, (0.003,-0.047,-0.018)),
+ "Standing Leg Curl": ("Legs/StandingLegCurl", -1.3, 0.901, (-0.016,0.002,0.059)),
+ "Kneeling Leg Curl": ("Legs/KneelingLegCurl", -1.3, 0.815, (0.002,0.043,-0.006)),
+ "Cable Standing Leg Curl": ("Legs/CableStandingLegCurl", -1.3, 0.921, (-0.017,0.012,0.06)),
+ "Swiss Ball Leg Curl": ("Legs/SwissBallLegCurl", -1.35, 0.603, (-0.013,0.129,0.057)),
+ "Sliding Leg Curl": ("Legs/SlidingLegCurl", -1.35, 0.507, (-0.015,0.177,0.069)),
+ "Single-Leg Sliding Curl": ("Legs/SingleLegSlidingCurl", -1.35, 0.511, (-0.016,0.132,0.071)),
+ "Frog Pump": ("Legs/FrogPump", -1.57, 0.722, (0.0,0.282,0.125)),
+ "Weighted Frog Pump": ("Legs/WeightedFrogPump", -1.57, 0.722, (0.0,0.239,0.125)),
+ "Dumbbell Deadlift": ("Legs/DumbbellDeadlift", -0.8, 0.901, (0.021,0.018,-0.021)),
+ "Cable Hip Adduction": ("Legs/CableHipAdduction", -0.3, 0.918, (-0.04,0.019,0.012)),
+ "Standing Hip Abduction": ("Legs/StandingHipAbduction", -0.3, 0.914, (0.002,0.056,-0.001)),
+ "Side-Lying Hip Abduction": ("Legs/SideLyingHipAbduction", 3.14, 0.482, (0.0,0.135,0.0)),
+ "Banded Hip Abduction": ("Legs/BandedHipAbduction", -0.3, 1.052, (0.022,0.136,-0.007)),
+ "Clamshell": ("Legs/Clamshell", 3.14, 0.643, (0.058,0.226,0.0)),
+ # Exercises 51-150 redone (2026-09-30): models whose content predates this script.
+ "Goblet Squat": ("Legs/GobletSquat", 0.0, 0.899, (0.0,0.03,0.0)),
+ "Walking Lunge": ("Legs/WalkingLunge", 0.0, 0.649, (0.0,0.01,0.0)),
+ "Reverse Lunge": ("Legs/ReverseLunge", 0.0, 0.897, (0.0,0.028,0.0)),
+ "Leg Press": ("Legs/LegPress", -2.0, 0.683, (0.037,0.06,0.081)),
+ "Romanian Deadlift": ("Legs/RomanianDeadlift", 0.0, 0.597, (0.0,0.019,0.0)),
+ "Dumbbell Romanian Deadlift": ("Legs/DumbbellRomanianDeadlift", -0.8, 0.883, (0.034,0.029,-0.035)),
+ "Stiff-Leg Deadlift": ("Legs/StiffLegDeadlift", -0.8, 0.666, (-0.007,0.021,0.007)),
+ "Seated Leg Curl": ("Legs/SeatedLegCurl", -0.9, 0.813, (0.053,0.041,-0.067)),
+ "Single-Leg Curl": ("Legs/SingleLegCurl", -1.35, 0.551, (-0.006,0.107,0.029)),
+ "Glute Bridge": ("Legs/GluteBridge", -1.35, 0.474, (-0.015,0.168,0.068)),
+ "Cable Side Kick": ("Legs/CableSideKick", -0.3, 0.834, (-0.016,0.024,0.005)),
+ "Cable Hip Abduction": ("Legs/CableHipAbduction", -0.3, 0.893, (-0.015,0.029,0.005)),
+ "Reverse Crunch": ("Abs/ReverseCrunch", -1.35, 0.441, (-0.011,0.113,0.048)),
+ "Decline Crunch": ("Abs/DeclineCrunch", -1.35, 0.682, (-0.018,0.132,0.081)),
+ "Hanging Knee Raise": ("Abs/HangingKneeRaise", -1.3, 0.674, (-0.002,-0.075,0.006)),
+ "Hanging Leg Raise": ("Abs/HangingLegRaise", -1.3, 0.654, (0.015,-0.073,-0.053)),
 }
 JOINTS = ["support_TrapeziusUpper_L","support_TrapeziusUpper_R","head","neck","chest","spine","pelvis","scapula_L","upper_arm_L","forearm_L","hand_L",
           "scapula_R","upper_arm_R","forearm_R","hand_R","thigh_L","patella_L","shin_L","foot_L","thigh_R","patella_R","shin_R","foot_R",
@@ -217,6 +351,10 @@ JOINTS = ["support_TrapeziusUpper_L","support_TrapeziusUpper_R","head","neck","c
 # Lifts that switch legs between reps: probe.py also writes `<stem>_front` /
 # `<stem>_back` points for their cue dots (legs 300-350, 2026-09-26).
 ALTERNATING = {"Forward Lunge", "Barbell Lunge", "Smith Machine Reverse Lunge", "Curtsy Lunge"}
+# Lifts that shift from side to side: `<stem>_bent` / `<stem>_straight` points
+# follow the more bent knee's leg and the other, as BodyFrame.bentSide does
+# in the app (30-leg set, 2026-09-28).
+SIDE_SHIFT = {"Lateral Lunge", "Cossack Squat"}
 
 def proj(p, yaw, zoom, off):
     s = zoom / LONGEST
@@ -236,7 +374,7 @@ for name in only:
     res, yaw, zoom, off = JOBS[name]
     st = Usd.Stage.Open(M + res + ".usdc")
     t0, t1 = st.GetStartTimeCode(), st.GetEndTimeCode()
-    sk = next(p for p in st.Traverse() if p.GetTypeName() == "Skeleton")
+    sk = next(p for p in sorted(st.Traverse(), key=lambda q: "Anatomy_MasterRig" not in q.GetPath().pathString) if p.GetTypeName() == "Skeleton")
     q = UsdSkel.Cache().GetSkelQuery(UsdSkel.Skeleton(sk))
     names = [str(j).split("/")[-1] for j in q.GetJointOrder()]
     idx = {n: i for i, n in enumerate(names)}
@@ -261,6 +399,21 @@ for name in only:
             other = "R" if side == "L" else "L"
             for stem in ("thigh", "patella", "shin", "foot", "toe"):
                 for role, sd in (("front", side), ("back", other)):
+                    j = f"{stem}_{sd}"
+                    if j not in idx:
+                        continue
+                    p = w[idx[j]].ExtractTranslation()
+                    u, v, _ = proj((p[0], p[1], p[2]), yaw, zoom, off)
+                    out[name].setdefault(f"{stem}_{role}", []).append((round(u, 3), round(v, 3)))
+        if name in SIDE_SHIFT:
+            P = {j: np.array(w[idx[j]].ExtractTranslation()) for j in ("thigh_L", "thigh_R", "shin_L", "shin_R", "foot_L", "foot_R")}
+            def bend(sd):
+                a, b = P[f"thigh_{sd}"] - P[f"shin_{sd}"], P[f"foot_{sd}"] - P[f"shin_{sd}"]
+                return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+            side = "L" if bend("L") >= bend("R") else "R"
+            other = "R" if side == "L" else "L"
+            for stem in ("thigh", "patella", "shin", "foot", "toe"):
+                for role, sd in (("bent", side), ("straight", other)):
                     j = f"{stem}_{sd}"
                     if j not in idx:
                         continue
