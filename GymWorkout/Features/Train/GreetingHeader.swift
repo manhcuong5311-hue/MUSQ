@@ -304,8 +304,9 @@ struct Greeting: Equatable {
     }
 
     /// "Lower day", "Leg day", "Leg A day": a split's day inside a sentence,
-    /// so "Back" can't read as the word.
-    private static func sessionName(_ split: String) -> String {
+    /// so "Back" can't read as the word. Nonisolated: it only builds a
+    /// string, and `Optional.map` takes it from outside the main actor.
+    nonisolated private static func sessionName(_ split: String) -> String {
         split.hasPrefix("Legs") ? "Leg\(split.dropFirst(4)) day" : "\(split) day"
     }
 

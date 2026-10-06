@@ -5,8 +5,8 @@
 //  Tab 4. The Premium offer up top for anyone without it, the name the app
 //  greets you by, the onboarding answers and the plan they add up to, the
 //  settings that shape every other tab (units, experience for recovery
-//  estimates, rest timer, card colours), and Premium and ad privacy. The
-//  totals, personal records and history live on the Muscles tab.
+//  estimates, rest timer, card colours), Premium and ad privacy, and Help &
+//  FAQ. The totals, personal records and history live on the Muscles tab.
 //
 
 import SwiftUI
@@ -283,6 +283,30 @@ struct ProfileView: View {
             }
             .padding(.horizontal, 14)
             .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
+
+            NavigationLink {
+                FAQView()
+            } label: {
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Help & FAQ")
+                            .font(.ui(14.5, .semibold))
+                            .foregroundStyle(DS.silver)
+                        Text("Premium, billing, recovery, your data, and contact.")
+                            .font(.ui(12))
+                            .foregroundStyle(DS.silver.opacity(0.5))
+                    }
+                    Spacer(minLength: 8)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(DS.silver.opacity(0.28))
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 13)
+                .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
 
             HStack(spacing: 14) {
                 Link("Privacy Policy", destination: AppLinks.privacy)
