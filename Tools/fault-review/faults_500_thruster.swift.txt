@@ -1,0 +1,185 @@
+// MARK: PIECES
+    // MARK: 401-500 thruster and clean and press pieces (2026-10-05)
+
+    /// Thrusters: the load slipping forward off the shoulders as the lifter
+    /// squats, the trunk tipped `lean` degrees further forward after it, the
+    /// hands `forward` torso lengths out of the chest and `down` along the
+    /// trunk, the elbows `elbowsBack` back before they are re-seated (the arms
+    /// keep their lengths). Grows with the knees, so it shows in the squat.
+    private static func thruster500RackSlipped(lean: Float, forward: Float, down: Float, elbowsBack: Float = 0,
+                                               withBar: Bool) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -lean),
+                          .shift(["hand_*", "hand_*.tip"], forward: forward, up: -down),
+                          .shift(["forearm_*"], forward: -elbowsBack, up: -elbowsBack / 3),
+                          .resolve(["forearm_*"])],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// Squats: the knees caving in, each knee `amount` torso lengths toward
+    /// the midline and then re-seated between hip and ankle, so the thighs and
+    /// shins keep their lengths and the knee angle (the shared `kneesIn` only
+    /// shifts the knee, which shortens the thigh on these rigs). Grows with
+    /// the knees.
+    private static func thruster500KneesIn(_ amount: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["shin_*"], outward: -amount), .resolve(["shin_*"])],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// Thrusters: pressing out of the squat, the hands (and the load) `up`
+    /// torso lengths higher along the trunk while the legs are still bent, the
+    /// elbows re-seated as they open. Grows with the knees, so it is gone once
+    /// the legs are straight and the real press starts.
+    private static func thruster500PressedEarly(_ up: Float, withBar: Bool) -> FaultPose {
+        FaultPose(chains: [armsToGrip] + (withBar ? [bar] : []),
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: up), .resolve(["forearm_*"])],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// The kettlebell rack: the elbows flaring away from the ribs, each elbow
+    /// `amount` torso lengths out to the side and the hands a little forward
+    /// and out with it, the elbows re-seated. Grows with the knees.
+    private static func thruster500ElbowsFlared(_ amount: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["forearm_*"], outward: amount),
+                          .shift(["hand_*", "hand_*.tip"], forward: 0.06, outward: 0.08),
+                          .resolve(["forearm_*"])],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// The clean's pull: the arms bending early, the hands and bar `up` torso
+    /// lengths higher along the trunk while the hips are still bent, the
+    /// elbows re-seated back and out as in an upright row (the arms keep their
+    /// lengths). The same all rep; read with the bar at mid-thigh.
+    private static func thruster500CleanArmsBent(up: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: up), .resolve(["forearm_*"])])
+    }
+
+    /// The kettlebell rack, palms facing in: the wrists bent back under the
+    /// bells, each hand turned `degrees` about the wrist toward the back of
+    /// the hand, which faces out (a larger turn than the shared
+    /// `palmsInWristsBentBack`, whose 40° read faintly on the lab shot).
+    private static func thruster500WristsBentBack(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"]],
+                  moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .forward, degrees: -degrees)])
+    }
+
+    /// A strict press turned into a push press: the knees dipping, the hips
+    /// and all they carry (the bar too) `drop` torso lengths lower and the
+    /// knees re-seated forward. The same all rep; read as the bar leaves the
+    /// shoulders.
+    private static func thruster500PressDipped(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, armsToGrip, bar],
+                  moves: [.shift(carried, rise: -drop), .resolve(["shin_*"])])
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 thrusters and the clean and press (2026-10-05)
+        // One body (torso, neck to pelvis, ~0.59 m standing; shifts below are
+        // in torso lengths). The barbell thruster and the clean and press
+        // are framed front three-quarter from the lifter's left (yaw -0.8),
+        // the dumbbell and kettlebell thrusters a little more face-on (-0.6).
+        // The three thrusters squat 0.33-1.50 s, stand 1.67-2.17 s, press to
+        // 2.5-2.67 s and hold the lockout to ~3.3 s, then repeat from 4 s; the
+        // clean and press is one rep (start 0-0.42 s, bar at the knees ~1.0 s,
+        // mid-thigh 1.25 s, catch lowest 2.25 s, press 3.67-4.75 s). Sizes
+        // were measured with a Python port of FaultGhost.solve on the rigs at
+        // each fault's still (thruster/ghost.py and pieces.py in the session
+        // scratchpad): bone lengths kept unless said, no knee or elbow bent
+        // backward. Every cue of the four has a ghost.
+        "Barbell Thruster": [
+            // The bar rolling off the shoulders into the hands at the bottom:
+            // the trunk 8° further forward, the hands and bar ~11 cm forward
+            // and ~12 cm lower, the elbows opening 44° -> ~60°.
+            "rack": thruster500RackSlipped(lean: 8, forward: 0.12, down: 0.06, elbowsBack: 0.15, withBar: true),
+            // Stopping high, well short of level: the hips and all they
+            // carry ~27 cm higher (the pelvis ~16 cm below standing), the
+            // knees 62° -> ~110° at the bottom. (0.3, ~18 cm and knees ~92°,
+            // drew a half squat.)
+            "depth": shallow(0.45, withBar: true),
+            // The knees caving in ~14 cm each at the bottom, the knee angle
+            // and bone lengths kept. Turned 0.5 toward face-on (a total of
+            // -0.3), where the move runs across the screen.
+            "knees": thruster500KneesIn(0.25).seen(0.5),
+            // Pressing early: rising out of the squat (knees ~100° at the
+            // 1.90 s still), the hands and bar ~16 cm higher, the elbows
+            // 43° -> ~62°.
+            "drive": thruster500PressedEarly(0.3, withBar: true),
+            // Locked out in front of the face: the arms 18° forward about the
+            // shoulders, the hands ~16 cm and the bar ~19 cm forward. Turned
+            // 0.6 toward the lifter's left (a total of -1.4): the drift
+            // forward shows in profile and the far plate moves in from the
+            // top-left label, which it sat under in the first lab shot.
+            "lockout": armsTurned(.lateral, -18, withBar: true, strength: .whenStraight("forearm_L")).seen(-0.6)
+        ],
+        "Dumbbell Thruster": [
+            // The dumbbells drifting off the shoulders at the bottom: the
+            // trunk 6° further forward, the hands ~12 cm forward and ~13 cm
+            // lower, the elbows 31-35° -> ~56-60°. Turned 0.4 toward the
+            // lifter's left (a total of -1.0) so the drift forward shows.
+            "hold": thruster500RackSlipped(lean: 6, forward: 0.18, down: 0.08, withBar: false).seen(-0.4),
+            // Stopping high, well short of level: the hips ~27 cm higher
+            // (the pelvis ~16 cm below standing), the knees 62° -> ~110°.
+            "depth": shallow(0.45),
+            // Up on the toes at the bottom: the heels ~7 cm up, the knees
+            // driven forward (62° -> ~54°). Turned 0.6 toward the lifter's
+            // left (a total of -1.2), where the heel lift shows.
+            "heels": heelsUp().seen(-0.6),
+            // Pressing early: rising out of the squat (knees ~100° at the
+            // 1.90 s still), the hands ~18 cm higher, the elbows 30-35° ->
+            // ~60°.
+            "drive": thruster500PressedEarly(0.35, withBar: false),
+            // Locked out in front of the face: the arms 18° forward, the
+            // hands ~16 cm forward. Turned 0.4 toward the lifter's left.
+            "lockout": armsTurned(.lateral, -18, strength: .whenStraight("forearm_L")).seen(-0.4)
+        ],
+        "Kettlebell Thruster": [
+            // The elbows flaring at the bottom: each elbow ~15 cm out to the
+            // side, the hands ~6 cm forward and out.
+            "rack": thruster500ElbowsFlared(0.3),
+            // The wrists bent back in the rack (palms facing in, so the hands
+            // tip outward), 60° about the wrists: the hand tips ~12 cm out
+            // (the shared palmsInWristsBentBack's 40°, ~8 cm, read faintly on
+            // the first lab shot).
+            "wrists": thruster500WristsBentBack(60),
+            // Stopping high, well short of level: the hips ~27 cm higher
+            // (the pelvis ~16 cm below standing), the knees 62° -> ~110°.
+            "depth": shallow(0.45),
+            // Pressing early: the hands ~18 cm higher while the knees are
+            // still bent ~100° (the 1.90 s still).
+            "drive": thruster500PressedEarly(0.35, withBar: false),
+            // Locked out in front of the face: the arms 18° forward, the
+            // hands ~16 cm forward. Turned 0.4 toward the lifter's left.
+            "lockout": armsTurned(.lateral, -18, strength: .whenStraight("forearm_L")).seen(-0.4)
+        ],
+        "Clean and Press": [
+            // The lower back rounded over the bar at the start: the 351-400
+            // RDLs' `rdl4BackRounded` (the lumbar and mid back ~6 cm up off
+            // the line of the back, the head ~9 cm lower), whose arch over
+            // the real back reads on the lab shots. A turns-only family piece
+            // tried first moved the spine mostly along the line of the
+            // tipped back and read as no rounding at all on two rounds of lab
+            // shots. Turned 0.5 toward the lifter's left (a total of -1.3);
+            // the plates stay below the back.
+            "start": rdl4BackRounded(.always).seen(-0.5),
+            // The bar drifting out at the knees: the arms 20° forward about
+            // the shoulders, the hands ~18 cm and the bar ~22 cm forward.
+            // Turned 0.4 toward the lifter's left (a total of -1.2): the drift
+            // shows nearer profile and the far plate moves in from under the
+            // left 0.58 label, which it covered in the mistake view at -0.8.
+            "pull": armsSwungForward(20, withBar: true).seen(-0.4),
+            // Pulling with the arms early, the bar at mid-thigh and the hips
+            // still bent: the hands and bar ~18 cm higher up the body, the
+            // elbows back and out, 161° -> ~99°, as in an upright row. (The
+            // first draft folded the forearms forward about the elbows, which
+            // swung the bar ~30 cm out in front, a curl, not a pull.)
+            "extend": thruster500CleanArmsBent(up: 0.3),
+            // A weak catch: the trunk 14° further forward and the back
+            // rounding, the head ~23 cm and the bar ~13 cm forward.
+            "catch": chestDropped(14, withBar: true, strength: .always),
+            // Dipping to drive the press: the hips, trunk and bar ~6 cm lower
+            // as the bar leaves the shoulders, the knees 175° -> ~136°.
+            "press": thruster500PressDipped(0.1)
+        ],

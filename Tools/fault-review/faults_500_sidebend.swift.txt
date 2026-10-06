@@ -1,0 +1,254 @@
+// MARK: PIECES
+    // MARK: 401-500 side bend, chop and cable rotation pieces (2026-10-05)
+
+    /// Side bends with the weight in the right hand: how far the trunk leans,
+    /// read off the neck-to-right-hip distance in torso lengths, which
+    /// shrinks as the trunk leans toward the weight and grows as it leans
+    /// away (1.01 upright; 0.97 at the bottom of the cable side bend's lean,
+    /// 0.96 of the dumbbell one's; 1.03 at the cable side bend's far lean):
+    /// none of the fault at `from`, all of it at `to`.
+    private static func sideBend500Lean(from: Float, to: Float) -> FaultStrength {
+        .between("neck", "thigh_R", from: from, to: to)
+    }
+
+    /// Side bends: the hips pushed out sideways to the lifter's left, away
+    /// from the weight, carrying everything above them, `out` torso lengths
+    /// across and `drop` lower so the nearly straight legs still reach the
+    /// planted feet; both knees re-seated. While the trunk leans, the body's
+    /// left axis tilts up, so part of the drop goes into the shift (at the
+    /// side bends' deepest lean the hips end ~1 cm lower). Two shifts
+    /// because `outward` points away from the midline: the midline and
+    /// left-side points take `out`, the right-side points `-out`, so all of
+    /// them move left.
+    private static func sideBend500HipsOut(_ out: Float, drop: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, armsToGrip],
+                  moves: [.shift(["pelvis", "spine", "chest", "neck", "head", "thigh_L",
+                                  "upper_arm_L", "forearm_L", "hand_L", "hand_L.tip"], outward: out, rise: -drop),
+                          .shift(["thigh_R", "upper_arm_R", "forearm_R", "hand_R", "hand_R.tip"], outward: -out, rise: -drop),
+                          .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// Side bends: the trunk bent `degrees` further to the lifter's right
+    /// (negative: to the left) at the lumbar joint and the same again at the
+    /// chest joint, the way the models bend (their lumbar and thoracic side
+    /// bends are equal), the head and arms carried. Turns only, so every
+    /// segment keeps its length.
+    private static func sideBend500Bent(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        let above = ["neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"]
+        return FaultPose(chains: [spine, armsToGrip],
+                         moves: [.turn(pivot: "chest", points: above, axis: .forward, degrees: degrees),
+                                 .turn(pivot: "spine", points: ["chest"] + above, axis: .forward, degrees: degrees)],
+                         strength: strength)
+    }
+
+    /// The trunk turned about its own length `degrees` to the lifter's right
+    /// (negative: left), head and arms carried: the chest turned toward the
+    /// dumbbell, a chop raised without turning, a cable rotation stopped
+    /// short. The library's `twisted` with a strength.
+    private static func sideBend500Turned(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .up, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// The trunk leaning sideways from the hips, `degrees` to the lifter's
+    /// right (negative: left), head and arms carried.
+    private static func sideBend500Leaned(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .forward, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Dumbbell side bend: a second dumbbell in the free (left) hand, drawn
+    /// as the left arm hanging at the side like the right one. Turns only:
+    /// the hand brought round the elbow (64 -> 171 degrees) and the whole arm
+    /// swung down about the shoulder, three turns each, sized on the rig
+    /// upright (0 s), where the elbow and hand land within a millimetre of
+    /// the right arm's mirror image. As the trunk bends the arm stays
+    /// alongside it, lengths kept.
+    private static let sideBend500SecondDumbbell = FaultPose(
+        chains: [["upper_arm_L", "forearm_L", "hand_L", "hand_L.tip"]],
+        moves: [.turn(pivot: "forearm_L", points: ["hand_L", "hand_L.tip"], axis: .forward, degrees: -119.8),
+                .turn(pivot: "forearm_L", points: ["hand_L", "hand_L.tip"], axis: .lateral, degrees: 15.8),
+                .turn(pivot: "forearm_L", points: ["hand_L", "hand_L.tip"], axis: .up, degrees: 21.1),
+                .turn(pivot: "upper_arm_L", points: ["forearm_L", "hand_L", "hand_L.tip"], axis: .forward, degrees: -123),
+                .turn(pivot: "upper_arm_L", points: ["forearm_L", "hand_L", "hand_L.tip"], axis: .lateral, degrees: 14.5),
+                .turn(pivot: "upper_arm_L", points: ["forearm_L", "hand_L", "hand_L.tip"], axis: .up, degrees: -24.4)]
+    )
+
+    /// Cable chops and rotations: the rope pulled in with the arms, the hands
+    /// drawn `amount` torso lengths back along the body's forward axis and
+    /// the elbows re-seated between the shoulders and the hands, bending the
+    /// way they already bend.
+    private static func sideBend500HandsIn(_ amount: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["hand_*", "hand_*.tip"], forward: -amount), .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// Reverse wood chop, bottom: reaching down to the low rope with the legs
+    /// nearly straight and the back bent over instead of squatting. The hips
+    /// and everything above them `rise` torso lengths higher, the knees
+    /// re-seated (opening over the planted feet), then the trunk and arms
+    /// tipped `tip` degrees further forward about the hips.
+    private static func sideBend500StiffLegs(rise: Float, tip: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, armsToGrip],
+                  moves: [.shift(carried, rise: rise), .resolve(["shin_*"]),
+                          .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -tip)],
+                  strength: strength)
+    }
+
+    /// Reverse wood chop, top: the back (right) foot left planted instead of
+    /// pivoting, so the knee caves in as the hips turn over it. The ankle
+    /// turned about the ball of the foot (`toe_R`) `heel` degrees down and
+    /// `turn` degrees about the vertical, back toward where the foot pointed
+    /// at the start; the right knee pushed `kneeIn` torso lengths toward the
+    /// midline and re-seated between the hip and the ankle, so both bones
+    /// keep their lengths and the knee bends the way it did.
+    private static func sideBend500FootPlanted(heel: Float, turn: Float, kneeIn: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [["thigh_R", "shin_R", "foot_R", "toe_R"], hips],
+                  moves: [.turn(pivot: "toe_R", points: ["foot_R"], axis: .lateral, degrees: heel),
+                          .turn(pivot: "toe_R", points: ["foot_R"], axis: .up, degrees: turn),
+                          .shift(["shin_R"], outward: -kneeIn),
+                          .resolve(["shin_R"])],
+                  strength: strength)
+    }
+
+    /// Cable side bend: the handle pulled up with the arm, the right
+    /// shoulder shrugged `shrug` torso lengths toward the ear (the arm
+    /// carried) and the elbow bent `elbow` degrees, the hand coming forward
+    /// and up. Seen from the front a bend alone points at the camera, so the
+    /// shrug carries it; drawn from the neck so the shoulder's rise reads.
+    private static func sideBend500ArmPulled(shrug: Float, elbow: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [["neck", "upper_arm_R"], ["upper_arm_R", "forearm_R", "hand_R", "hand_R.tip"]],
+                  moves: [.shift(["upper_arm_R", "forearm_R", "hand_R", "hand_R.tip"], up: shrug),
+                          .turn(pivot: "forearm_R", points: ["hand_R", "hand_R.tip"], axis: .lateral, degrees: elbow)],
+                  strength: strength)
+    }
+
+    /// Reverse wood chop: how far the rope has come up, read off the left
+    /// hand's distance from the right hip in torso lengths (0.78 at the low
+    /// start, 1.33 with the hands in front of the chest at 0.75 s, 1.65 at
+    /// the top).
+    private static func sideBend500Chop(from: Float, to: Float) -> FaultStrength {
+        .between("hand_L", "thigh_R", from: from, to: to)
+    }
+
+    /// Cable rotation: how far the turn away from the pulley has gone, read
+    /// off the left hand's distance from the left hip in torso lengths (1.20
+    /// turned toward the pulley, 1.09 at the end of the turn).
+    private static let sideBend500TurnedAway = FaultStrength.between("hand_L", "thigh_L", from: 1.17, to: 1.10)
+
+// MARK: TABLE
+        // MARK: 401-500 side bends, reverse wood chop and cable rotation (2026-10-05)
+        // Four standing oblique lifts on one body (torso 0.59 m), two
+        // identical 4 s reps each, all worked toward or away from the
+        // lifter's right side: the side bends lean toward the weight in the
+        // right hand (0-1.25 s, held to ~1.6 s) and rise past upright the
+        // other way (~3 s); the chop sweeps the rope from beside the right
+        // hip (0 s, 3.5-4 s) to above the left shoulder (1.5-2 s); the
+        // rotation turns from the pulley on the right to the left (1.5-2 s).
+        // The cable side bend is framed from the front right (yaw 0.4), the
+        // dumbbell one from the front left (-0.3), the chop and rotation
+        // from the front right (0.5). Sizes were measured with a Python port
+        // of FaultGhost.solve on the rigs at each fault's moment (sidebend/
+        // ghost.py, final.py in the session scratchpad; screen sizes in
+        // points of the 382 x 655 viewport, without the mistake view's
+        // shrink); every drawn segment keeps its length within 5 mm through
+        // the clip and every knee and elbow bends the way it did. Tempo cues
+        // (how fast the lean, chop or turn comes back) have no ghost.
+        "Cable Side Bend": [
+            // Tipping forward while leaning toward the pulley: the trunk 20°
+            // forward about the hips at the bottom of the lean, the head
+            // ~24 cm (~53 pt from the lifter's left, the view's turn to a
+            // total of -1.1; ~26 pt face-on).
+            "plane": leanedForward(20, strength: sideBend500Lean(from: 1.005, to: 0.975)).seen(-1.5),
+            // Pulling the handle up with the arm: the right shoulder ~7 cm
+            // (~19 pt) up toward the ear, the elbow 172° -> ~119°, the hand
+            // ~27 cm (~49 pt) up and forward. (Round 1 bent the elbow alone,
+            // 70°: from the front the forearm folded toward the camera and
+            // read as a short forearm.)
+            "arm": sideBend500ArmPulled(shrug: 0.12, elbow: 60, strength: sideBend500Lean(from: 1.005, to: 0.975)),
+            // Stopping at upright on the far side: the 12° lean away from the
+            // pulley at ~3 s taken out at the lumbar and chest joints, the
+            // head ~10 cm (~25 pt) back over the hips.
+            "range": sideBend500Bent(6, strength: sideBend500Lean(from: 1.015, to: 1.03)),
+            // The hips pushed out away from the pulley: everything from the
+            // hips up ~8.5 cm (~20 pt) to the lifter's left and ~1 cm down
+            // (the 3.5 cm drop less the rise of the leaning body's left
+            // axis), the left and right knees 171° / 173° -> ~162° / ~170°.
+            "hips": sideBend500HipsOut(0.15, drop: 0.06, strength: sideBend500Lean(from: 1.005, to: 0.975))
+            // "tempo" has no ghost.
+        ],
+        "Dumbbell Side Bend": [
+            // The chest turned toward the dumbbell at the bottom of the lean:
+            // the trunk 30° about its own length, the dumbbell hand ~24 cm
+            // (~45 pt) back and the shoulders ~10 cm, the shoulder line
+            // shortening from ~87 to ~60 pt, seen 0.3 further round from the
+            // left (a total of -0.6). (Round 2 turned 25° seen from -1.3,
+            // nearly side-on, where the shoulder line hardly changed.)
+            "twist": sideBend500Turned(30, strength: sideBend500Lean(from: 1.005, to: 0.97)).seen(-0.3),
+            // A dumbbell in each hand: the left arm hanging at the side like
+            // the right one, the hand ~81 cm (~200 pt) down from behind the
+            // head; stilled upright.
+            "free": sideBend500SecondDumbbell,
+            // A short dip: half the 26° lean taken out at the lumbar and
+            // chest joints, the head ~11 cm (~28 pt) and the dumbbell hand
+            // ~12 cm (~29 pt) back up.
+            "depth": sideBend500Bent(-6.5, strength: sideBend500Lean(from: 1.005, to: 0.97)),
+            // The hips pushed out away from the dumbbell: as the cable side
+            // bend's, ~8.5 cm (~20 pt) left and ~1 cm down, the knees
+            // 172° / 175° -> ~165° / ~177°.
+            "hips": sideBend500HipsOut(0.15, drop: 0.06, strength: sideBend500Lean(from: 1.005, to: 0.97))
+            // "tempo" has no ghost.
+        ],
+        "Reverse Cable Wood Chop": [
+            // Pulling the rope up with bent arms, as the hands pass the
+            // chest: the hands ~15 cm (~22 pt) back toward the chest, the
+            // elbows 171° -> ~95°, moving ~15 cm (~36 pt).
+            "arms": sideBend500HandsIn(0.25, strength: sideBend500Chop(from: 1.0, to: 1.25)),
+            // Lifting without turning, at the top: the trunk and arms turned
+            // 45° back toward the pulley, the chest about square, the hands
+            // ~25-31 cm to the lifter's right, out in front of the face;
+            // seen 0.3 round toward the left (a total of 0.2), where the
+            // hands move ~50-54 pt (~31-42 pt in the framing) and the
+            // shoulder line widens from ~48 to ~92 pt.
+            "turn": sideBend500Turned(45, strength: sideBend500Chop(from: 1.2, to: 1.55)).seen(-0.3),
+            // Reaching down with straight legs, at the bottom: the hips
+            // ~9 cm (~22 pt) higher, the knees 125° -> ~161° / ~164°, the
+            // trunk 25° further over, the hands ~12-15 cm (~32-41 pt).
+            "legs": sideBend500StiffLegs(rise: 0.15, tip: 25, strength: sideBend500Chop(from: 1.0, to: 0.82)),
+            // The back foot planted, at the top: the foot turned 32° back
+            // toward its start about the ball and the heel ~2 cm lower (the
+            // ankle ~6 cm, ~13 pt), the right knee caved ~13 cm (~26 pt)
+            // toward the midline, 149° -> ~151°; seen nearly face-on (-0.6,
+            // a total of -0.1). The heel stays ~4 cm up: with the hips this
+            // high a heel put fully down (~30° about the ball) leaves the leg
+            // short of the floor, so the knee locks straight (180°) and both
+            // bones stretch ~1 cm; the mistake line says the foot stays
+            // pointing where it started, not that it is flat. (Round 1
+            // dropped the heel 4 cm with the knee straightening, seen from
+            // the right side: the cable tower hid the lifter.)
+            "pivot": sideBend500FootPlanted(heel: 8, turn: -32, kneeIn: 0.25,
+                                            strength: sideBend500Chop(from: 1.2, to: 1.55)).seen(-0.6)
+            // "return" has no ghost.
+        ],
+        "Cable Rotation": [
+            // The rope pulled in to the chest at the end of the turn: the
+            // hands ~15 cm (~29 pt) in, the elbows 152° -> ~91-104°.
+            "arms": sideBend500HandsIn(0.25, strength: sideBend500TurnedAway),
+            // The hands sinking: both arms 25° down about the shoulders, the
+            // hands ~17-22 cm (~46-57 pt) lower.
+            "height": armsTurned(.lateral, -25, strength: sideBend500TurnedAway),
+            // Stopping short: the trunk and arms turned 40° back toward the
+            // pulley, the shoulders ending about square, the hands ~35 cm,
+            // in front of the chest; seen 0.3 round toward the left (a
+            // total of 0.2), where the hands move ~68-92 pt (~40-70 pt in
+            // the framing, where the square arms point at the camera).
+            "turn": sideBend500Turned(40, strength: sideBend500TurnedAway).seen(-0.3),
+            // Leaning away from the pulley: the trunk 15° to the lifter's
+            // left about the hips, the head ~18 cm (~37 pt).
+            "tall": sideBend500Leaned(-15, strength: sideBend500TurnedAway)
+            // "return" has no ghost.
+        ],

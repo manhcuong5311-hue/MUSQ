@@ -1,0 +1,230 @@
+// MARK: PIECES
+    // MARK: 401-500 leg raise and kick pieces (2026-10-05)
+
+    /// Hanging passively from the bar: everything below the shoulders sinks
+    /// `drop` torso lengths, the shoulder joints 0.3 of it, the elbows
+    /// re-seated (the library's `hangingLoose`, deeper: at 0.1 it moves the
+    /// body ~6 cm).
+    private static func legRaise500HangingLoose(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, legs, arms],
+                  moves: [.shift(["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip"] + torso, rise: -drop),
+                          .shift(["upper_arm_*"], rise: -drop * 0.3), .resolve(["forearm_*"])])
+    }
+
+    /// Legs stopping short: both legs turned `degrees` back down about the
+    /// hips, the knee angle kept.
+    private static func legRaise500LegsShort(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// The knee(s) of `side` (`*`, `L`, `R` or a role such as `front`) bent
+    /// `degrees`, the shin folding toward the back of the thigh.
+    private static func legRaise500KneesBent(_ side: String, _ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [leg(side)],
+                  moves: [.turn(pivot: "shin_\(side)", points: ["foot_\(side)", "foot_\(side).tip"], axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// The lower back arching: the lumbar segment tipped 60° toward the
+    /// front about the pelvis, the upper back turned 80° back about the
+    /// lumbar joint and the neck and head 10° about the chest. Built from
+    /// turns so every segment keeps its length (as `situp500BackArched`):
+    /// the lumbar joint ~11 cm and the chest ~6 cm toward the front (off the
+    /// mat lying face up), the pelvis, neck and head within ~1.5 cm.
+    private static func legRaise500BackArched(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head"], axis: .lateral, degrees: -60),
+                          .turn(pivot: "spine", points: ["chest", "neck", "head"], axis: .lateral, degrees: 80),
+                          .turn(pivot: "chest", points: ["neck", "head"], axis: .lateral, degrees: -10)],
+                  strength: strength)
+    }
+
+    /// Hanging leg raises with no pelvic curl: the lower back arched as
+    /// `legRaise500BackArched` and the legs `degrees` lower about the hips,
+    /// stalling short of the top; all of it once the hips are bent past 90°.
+    private static func legRaise500NoCurl(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head"], axis: .lateral, degrees: -60),
+                          .turn(pivot: "spine", points: ["chest", "neck", "head"], axis: .lateral, degrees: 80),
+                          .turn(pivot: "chest", points: ["neck", "head"], axis: .lateral, degrees: -10),
+                          .turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: .withBend("thigh_L"))
+    }
+
+    /// Hanging: the legs dropped and swung `degrees` back behind the body
+    /// about the hips, all of it with the hips straight (the library's
+    /// `legsSwungBack` swings 30°).
+    private static func legRaise500SwungBack(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: .whenStraight("thigh_L"))
+    }
+
+    /// The oblique knee raise done straight up the middle: the hips and legs
+    /// turned `degrees` about the body's long axis through the pelvis,
+    /// undoing the pelvis's turn toward the side (+20 brings rep 1's knees,
+    /// 20° to the left, back to straight ahead).
+    private static func legRaise500KneesMiddle(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs, ["thigh_L", "pelvis", "thigh_R"]],
+                  moves: [.turn(pivot: "pelvis", points: ["thigh_*", "shin_*", "foot_*", "foot_*.tip"], axis: .up, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// The oblique knee raise's first rep, the knees to the left: the left
+    /// knee ~1.02 torso lengths from the left shoulder at the top, ~1.23 at
+    /// the right-side top and 1.3-1.64 everywhere else, so a fault drawn for
+    /// the left side shows on the first rep only.
+    private static let legRaise500LeftRep = FaultStrength.between("shin_L", "upper_arm_L", from: 1.2, to: 1.05)
+
+    /// Lying face up: the head and shoulders lifted off the mat, the chest,
+    /// neck, head and shoulder joints curled `degrees` about the lumbar joint
+    /// (the arms, which lie beside the hips, are left out: turned with the
+    /// trunk their hands went into the mat).
+    private static func legRaise500HeadUp(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders],
+                  moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*"], axis: .lateral, degrees: -degrees)])
+    }
+
+    /// Lying face up: the leg of `side` (a role such as `front`) turned
+    /// `degrees` about its hip, + up off the mat, - down toward it.
+    private static func legRaise500LegTurned(_ side: String, _ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [leg(side), hips],
+                  moves: [.turn(pivot: "thigh_\(side)", points: ["shin_\(side)", "foot_\(side)", "foot_\(side).tip"], axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Scissor kick not crossing: both legs turned `degrees` out about the
+    /// hips (abducted), the feet apart where they should overlap.
+    private static func legRaise500LegsApart(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .forward, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Flutter kicks: the legs furthest apart (ankles ~0.73 torso lengths
+    /// apart at each kick's peak, ~0.47 where they pass), so a fault of the
+    /// higher (`_front`) or lower (`_back`) leg fades out as they pass and
+    /// never jumps from one leg to the other.
+    private static let legRaise500KickApart = FaultStrength.between("foot_L", "foot_R", from: 0.52, to: 0.68)
+
+    /// Scissor kicks: the legs crossed (ankles ~0.33 torso lengths apart, the
+    /// top leg higher), none from halfway open (~0.55) to wide open (1.17).
+    private static let legRaise500Crossed = FaultStrength.between("foot_L", "foot_R", from: 0.55, to: 0.4)
+
+// MARK: TABLE
+        // MARK: 401-500 leg raises and kicks (2026-10-05)
+        // Two hanging raises from a pull-up bar (the Toe-to-Bar framed
+        // side-on, yaw -1.3; the oblique knee raise three-quarter, -0.5) and
+        // three face-up floor lifts (the Lying Leg Raise side-on, -1.35; the
+        // kicks three-quarter, -0.8). One body, torso 0.57-0.59 m. Sizes were
+        // measured with a Python port of FaultGhost.solve on the rigs at each
+        // fault's moment (ghost.py, pieces.py, sizes.py in the session
+        // scratchpad's lab/r3/legraise; points are the trainer view's).
+        // The kicks name the legs by role: lying face up, `BodyFrame.ahead`
+        // falls back to the head end, so `_front` is the leg whose foot is
+        // nearer the head, the higher one. Cues about tempo, rhythm and
+        // which side comes next have no ghost: speed and order are not
+        // positions.
+        "Toe-to-Bar": [
+            // Hanging loose: the body below the shoulders ~11 cm (~22 pt)
+            // lower, the shoulders ~3 cm; still hanging between reps.
+            "hang": legRaise500HangingLoose(0.18),
+            // Feet short of the bar: the legs 35° lower at the top. The legs
+            // point almost straight up there, so the feet swing ~45-57 cm
+            // (~100 pt) out in front of the bar and only ~20 cm down: the
+            // ankles at ~2.0 m and the toes at ~2.2 m, about head height
+            // (the head joint ~1.95 m).
+            "toes": legRaise500LegsShort(35, strength: .withBend("thigh_L")),
+            // Knees tucked: bent 70° at the top (173° -> ~103°), the ankles
+            // ~46 cm (~93 pt) toward the hips, ~34 cm of it down (to ~1.9 m).
+            "legs": legRaise500KneesBent("*", 70, strength: .withBend("thigh_L")),
+            // No pelvic curl: the lower back arched (the lumbar joint ~11 cm
+            // toward the belly) and the legs 20° lower, the feet ~29 cm
+            // short of where they are; at the top.
+            "pelvis": legRaise500NoCurl(20),
+            // Legs dropped and swung back 40° behind the body at the bottom
+            // (~0.6 of it: the hip reads ~145° there), the feet ~35 cm back.
+            "lower": legRaise500SwungBack(40)
+        ],
+        "Hanging Oblique Knee Raise": [
+            // As the Toe-to-Bar: the body ~11 cm lower in the hang.
+            "hang": legRaise500HangingLoose(0.18),
+            // Knees up the middle on the first (left) rep: the hips and legs
+            // turned 20° back square, the knees ~16 cm (~31 pt) toward the
+            // midline; none on the right-side rep. Seen from the front
+            // (+0.5 onto the framing's -0.5): at the framing the left-side
+            // knees point almost at the camera and look centred, so the
+            // squared ghost knees read as going to the other side; from the
+            // front the real knees sit ~28 pt to the lifter's left of the
+            // pelvis and the ghost's ~3 pt from it, straight under the body.
+            "side": legRaise500KneesMiddle(20, strength: legRaise500LeftRep).seen(0.5),
+            // Thighs below level: the legs 30° lower at the top, 0.86 of it
+            // at the still (the hip reads ~103° against the spine joint), so
+            // the thighs go from 18° above level to ~8° below and the knees
+            // ~20 cm down. Turned toward side-on (-0.8 onto the framing's
+            // -0.5) so the drop is not along the line of sight (~40 -> ~45 pt).
+            "height": legRaise500LegsShort(30, strength: .withBend("thigh_L")).seen(-0.8),
+            // The legs swung 40° back at the bottom, the feet ~34 cm back;
+            // seen side-on, where the swing reads (~34 pt at the framing,
+            // ~61 pt turned -0.8).
+            "swing": legRaise500SwungBack(40).seen(-0.8)
+            // "switch" has no ghost: which side comes next.
+        ],
+        "Lying Leg Raise": [
+            // The lower back arching as the legs come down, at 3.2 s (legs
+            // ~15° up): the lumbar joint ~11 cm (~19 pt) and the chest ~6 cm
+            // off the mat. Gated to the low part of the rep by the left
+            // ankle's distance from the neck (2.2 -> 2.42 torso lengths; the
+            // top 1.89, flat 2.47).
+            "back": legRaise500BackArched(.between("foot_L", "neck", from: 2.2, to: 2.42)),
+            // Knees bent 60° at the top (180° -> 120°), the ankles ~40 cm
+            // (~65 pt) away from the head, ~21 cm of it down; full near the top
+            // (ankle to neck 2.3 -> 2.0 torso lengths; `withBend("thigh_L")`
+            // only reached 0.66 lying), none low down where the feet would go
+            // into the mat.
+            "legs": legRaise500KneesBent("*", 60, strength: .between("foot_L", "neck", from: 2.3, to: 2.0)),
+            // Stopping halfway: the legs 40° lower at the top (86° -> 46°),
+            // the ankles ~58 cm (~95 pt) out along their arc, ~22 cm of it
+            // down.
+            "top": legRaise500LegsShort(40, strength: .between("foot_L", "neck", from: 2.3, to: 2.0)),
+            // The head and shoulders lifted: curled 25° about the lumbar
+            // joint, the head ~25 cm (~40 pt) up.
+            "head": legRaise500HeadUp(25)
+            // "lower" has no ghost: lowering speed (the heels' 5 cm hover is
+            // too small to draw).
+        ],
+        "Flutter Kick": [
+            // The lower back arching off the mat at 0.33 s: the lumbar joint
+            // ~11 cm (~22 pt) and the chest ~6 cm up.
+            "back": legRaise500BackArched(.always),
+            // The higher leg's knee bent 45° at its peak, the foot ~30 cm
+            // (~67 pt) down toward the mat; fades out as the legs pass.
+            "knees": legRaise500KneesBent("front", 45, strength: legRaise500KickApart),
+            // A big kick: the higher leg 35° higher at its peak (27° -> 62°),
+            // the ankle ~51 cm (~94 pt) along its arc, ~36 cm of it up.
+            "range": legRaise500LegTurned("front", 35, strength: legRaise500KickApart),
+            // The lower heel on the mat: the lower leg 9° down (5° -> -4°
+            // about the hip), the foot ~13 cm down onto the mat.
+            "heels": legRaise500LegTurned("back", -9, strength: legRaise500KickApart)
+            // "tempo" has no ghost: rhythm.
+        ],
+        "Scissor Kick": [
+            // As the Flutter Kick, at the first cross (0.67 s).
+            "back": legRaise500BackArched(.always),
+            // Not crossing: both legs turned 15° out at the cross, the feet
+            // ~21 cm apart each way instead of overlapping (~0.49 m apart).
+            // Turned toward the feet (+0.5 onto the framing's -0.8), where
+            // the sideways spread crosses the screen (~30 -> ~44 pt).
+            "cross": legRaise500LegsApart(15, strength: legRaise500Crossed).seen(0.5),
+            // The top leg's knee bent 45° at the cross, the foot ~30 cm
+            // (~64 pt) down.
+            "knees": legRaise500KneesBent("front", 45, strength: legRaise500Crossed),
+            // The under leg dropped to the mat at the cross: 13° down about
+            // the hip (9° -> -4°), the ankle joint ~19 cm (~40 pt) down to
+            // ~10 cm above the mat, where the heel touches it (as the
+            // Flutter Kick's heels ghost).
+            "heels": legRaise500LegTurned("back", -13, strength: legRaise500Crossed)
+            // "tempo" has no ghost: rhythm.
+        ],

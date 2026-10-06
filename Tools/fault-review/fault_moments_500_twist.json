@@ -1,0 +1,6 @@
+{
+  "Landmine Rotation": {"turn": "1.0", "arms": "1.0", "range": "1.0", "knees": "1.0"},
+  "Landmine 180": {"top": "0.0", "turn": "2.0", "back": "2.0", "hip": "2.0"},
+  "Medicine Ball Russian Twist": {"turn": "2.0", "low": "2.0", "lean": "2.0", "knees": "2.0"},
+  "Weighted Russian Twist": {"turn": "2.0", "low": "2.0", "lean": "2.0", "knees": "2.0"}
+}

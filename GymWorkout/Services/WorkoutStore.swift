@@ -126,6 +126,19 @@ final class WorkoutStore {
         RecoveryCalculator(settings: recoverySettings).records(from: sessions, now: date)
     }
 
+    /// The groups a full round of the Train tab's card edges has to cover:
+    /// every group the split trains.
+    var roundSplit: Set<MuscleGroup> {
+        Set(ProgramAdvisor.rotation(for: profile).joined()).intersection(PresetProvider.trainableGroups)
+    }
+
+    /// The groups trained in the current round of the Train tab's card
+    /// edges (see `TrainingRound`).
+    func trainedThisRound(at date: Date = Date(), reset: TrainingRound.Reset) -> Set<MuscleGroup> {
+        let days = RecoveryCalculator(settings: recoverySettings).trainingDays(from: sessions, now: date)
+        return TrainingRound.trained(days: days, split: roundSplit, reset: reset, at: date)
+    }
+
     // MARK: - Presets → plan
 
     /// The exercises a preset would add, not yet saved. Pass these back to a

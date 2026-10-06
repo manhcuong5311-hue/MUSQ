@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-farmer-s-walk-on-toes.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

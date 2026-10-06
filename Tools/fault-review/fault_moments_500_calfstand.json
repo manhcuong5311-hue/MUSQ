@@ -1,0 +1,9 @@
+{
+  "Bodyweight Standing Calf Raise": {"toes": "top", "knees": "bottom", "top": "top", "floor": "bottom"},
+  "Dumbbell Standing Calf Raise": {"arms": "top", "knees": "bottom", "top": "top", "floor": "bottom"},
+  "Single-Leg Dumbbell Calf Raise": {"post": "top", "hips": "top", "knee": "bottom", "top": "top", "bottom": "bottom"},
+  "Single-Leg Machine Calf Raise": {"pads": "top", "free": "bottom", "knee": "bottom", "top": "top", "bottom": "bottom"},
+  "Donkey Calf Raise": {"hinge": "top", "back": "bottom", "knees": "bottom", "top": "top", "bottom": "bottom"},
+  "Machine Donkey Calf Raise": {"back": "bottom", "knees": "bottom", "top": "top", "bottom": "bottom"},
+  "Hack Squat Calf Raise": {"back": "top", "knees": "bottom", "top": "top", "bottom": "bottom"}
+}

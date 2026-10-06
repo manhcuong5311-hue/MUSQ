@@ -2,18 +2,14 @@
 //  ProfileView.swift
 //  GymWorkout
 //
-//  Tab 4. The totals, the onboarding answers and the plan they add up to,
-//  the settings that shape every other tab (units, experience for recovery
-//  estimates, rest timer), Premium and ad privacy, personal records, and the
-//  workout history they come from. Only completed sets count.
+//  Tab 4. The Premium offer up top for anyone without it, the name the app
+//  greets you by, the onboarding answers and the plan they add up to, the
+//  settings that shape every other tab (units, experience for recovery
+//  estimates, rest timer, card colours), and Premium and ad privacy. The
+//  totals, personal records and history live on the Muscles tab.
 //
 
 import SwiftUI
-
-enum ProfileRoute: Hashable {
-    case session(UUID)
-    case exercise(String)
-}
 
 struct ProfileView: View {
     @Binding var tab: AppTab
@@ -22,16 +18,15 @@ struct ProfileView: View {
     @Environment(Purchases.self) private var purchases
     @Environment(Ads.self) private var ads
     @Environment(Paywall.self) private var paywall
-    @State private var path: [ProfileRoute] = []
-    @State private var showsAllRecords = false
-    @State private var historyLimit = ProfileView.historyPage
+    @Environment(\.scenePhase) private var scenePhase
     @State private var editsProfile = false
-
-    private static let recordPreview = 5
-    private static let historyPage = 8
+    /// The name as it's typed; saved when the field is left.
+    @State private var nameDraft = ""
+    @FocusState private var editsName: Bool
+    private let cardColors = CardColorPrefs()
 
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack {
             ZStack {
                 DS.ink.ignoresSafeArea()
 
@@ -42,34 +37,31 @@ struct ProfileView: View {
                             .tracking(-0.7)
                             .foregroundStyle(DS.silver)
 
-                        stats
-                            .padding(.top, 18)
+                        if !purchases.isPremium {
+                            PremiumHeroCard()
+                                .padding(.top, 18)
+                                .transition(.opacity)
+                        }
                         aboutYou
-                            .padding(.top, 28)
+                            .padding(.top, purchases.isPremium ? 18 : 28)
                         settings
+                            .padding(.top, 28)
+                        cardColorSettings
                             .padding(.top, 28)
                         premiumAndPrivacy
                             .padding(.top, 28)
-                        records
-                            .padding(.top, 30)
-                        history
-                            .padding(.top, 30)
                     }
                     .padding(.horizontal, DS.Metric.gutter)
                     .padding(.top, 22)
                     .padding(.bottom, 24)
+                    .animation(.easeOut(duration: 0.3), value: purchases.isPremium)
                 }
+                .scrollDismissesKeyboard(.interactively)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 TabBarView(selection: $tab)
             }
             .statusBarScrim()
-            .navigationDestination(for: ProfileRoute.self) { route in
-                switch route {
-                case .session(let id): SessionHistoryView(sessionID: id)
-                case .exercise(let name): ExerciseHistoryView(exerciseName: name)
-                }
-            }
             .toolbar(.hidden, for: .navigationBar)
         }
         .tint(DS.silver)
@@ -77,26 +69,6 @@ struct ProfileView: View {
             OnboardingView(isEditing: true, onClose: { editsProfile = false })
                 .environment(store)
                 .environment(purchases)
-        }
-    }
-
-    private var loggedSessions: [WorkoutSession] {
-        store.sessions.filter(\.hasCompletedSets).sorted { $0.day > $1.day }
-    }
-
-    // MARK: - Totals
-
-    private var stats: some View {
-        let week = Calendar.current.dateInterval(of: .weekOfYear, for: Date())
-            ?? DateInterval(start: Date(), duration: 0)
-        let thisWeek = PerformanceHistory.sessions(in: week, from: store.sessions)
-        let volume = thisWeek.reduce(0) { $0 + $1.volume }
-        return HStack(spacing: 8) {
-            StatTile(label: "Workouts", value: loggedSessions.count.formatted())
-            StatTile(label: "This week", value: thisWeek.count.formatted())
-            StatTile(label: "Volume this week",
-                     value: StatTile.compact(store.unit.fromKilograms(volume)),
-                     unit: store.unit.symbol)
         }
     }
 
@@ -115,6 +87,8 @@ struct ProfileView: View {
                         .buttonStyle(.plain)
                 }
                 VStack(alignment: .leading, spacing: 12) {
+                    nameField
+                    Hairline(opacity: 0.06)
                     HStack(spacing: 8) {
                         fact("GOAL", profile.goal.title)
                         fact("SEX", profile.sex == .unspecified ? "–" : profile.sex.title)
@@ -134,6 +108,45 @@ struct ProfileView: View {
                 .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
             }
         }
+    }
+
+    /// What Train greets the lifter by. Saved, trimmed, when the field is
+    /// left or Return is pressed; cleared, it takes the name away.
+    private var nameField: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            MetaLine(text: "NAME", size: 8.5)
+                .accessibilityHidden(true)
+            TextField("Add your name", text: $nameDraft)
+                .accessibilityLabel("Name")
+                .font(.ui(15, .semibold))
+                .foregroundStyle(DS.silver)
+                .textContentType(.givenName)
+                .textInputAutocapitalization(.words)
+                .autocorrectionDisabled()
+                .submitLabel(.done)
+                .focused($editsName)
+                .onSubmit(saveName)
+        }
+        .onAppear { nameDraft = store.profile?.name ?? "" }
+        .onChange(of: nameDraft) { _, name in
+            if name.count > Self.nameLimit { nameDraft = String(name.prefix(Self.nameLimit)) }
+        }
+        .onChange(of: editsName) { _, editing in if !editing { saveName() } }
+        .onDisappear(perform: saveName)
+        // Leaving the app keeps the field focused, so nothing above runs;
+        // save before it can be closed.
+        .onChange(of: scenePhase) { _, phase in if phase != .active { saveName() } }
+    }
+
+    /// Enough for a first name or a nickname. The Train header greets with
+    /// it on one line, and longer greeting lines leave a long name out.
+    private static let nameLimit = 24
+
+    private func saveName() {
+        let name = nameDraft.trimmingCharacters(in: .whitespacesAndNewlines)
+        nameDraft = name
+        guard store.profile != nil, (store.profile?.name ?? "") != name else { return }
+        store.profile?.name = name.isEmpty ? nil : name
     }
 
     private func fact(_ label: String, _ value: String) -> some View {
@@ -193,6 +206,63 @@ struct ProfileView: View {
         }
     }
 
+    // MARK: - Card colors
+
+    /// The Train tab's card edges: which show, when green starts over, and
+    /// the colours themselves.
+    private var cardColorSettings: some View {
+        let reset = cardColors.reset
+        return VStack(alignment: .leading, spacing: 10) {
+            SectionEyebrow(text: "TRAIN CARD COLORS")
+            VStack(spacing: 0) {
+                settingRow("Card colors", detail: cardColorDetail) {
+                    menu(selection: cardColors.$mode, options: CardColorMode.allCases, title: \.title)
+                }
+                if cardColors.mode != .off {
+                    Hairline(opacity: 0.06)
+                    settingRow("Green starts over", detail: reset == .weekly
+                               ? "Each new week, every group not trained yet that week turns green."
+                               : "Once every group in your split has been trained, a new round starts and each turns green again as it recovers.") {
+                        menu(selection: cardColors.$reset, options: TrainingRound.Reset.allCases, title: \.title)
+                    }
+                    ForEach(cardColors.mode.tones, id: \.self) { tone in
+                        Hairline(opacity: 0.06)
+                        settingRow(tone.title(reset: reset), detail: toneDetail(tone, reset: reset)) {
+                            ColorPicker(tone.title(reset: reset), selection: cardColors.binding(for: tone),
+                                        supportsOpacity: false)
+                                .labelsHidden()
+                        }
+                    }
+                    if cardColors.hasCustomColors {
+                        Hairline(opacity: 0.06)
+                        moreButton("Reset to default colors") { cardColors.resetColors() }
+                    }
+                }
+            }
+            .padding(.horizontal, 14)
+            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
+        }
+    }
+
+    private var cardColorDetail: String {
+        let done = cardColors.reset == .weekly ? "done this week" : "done this round"
+        switch cardColors.mode {
+        case .all: return "Red while a group recovers, yellow once it's \(done), green while it's still due."
+        case .redGreen: return "Red while a group recovers, green while it's still due."
+        case .off: return "No colored edges on the Train tab."
+        }
+    }
+
+    private func toneDetail(_ tone: MuscleCardTone, reset: TrainingRound.Reset) -> String {
+        switch tone {
+        case .waiting: return "Trained and still recovering."
+        case .recent: return reset == .weekly
+            ? "Trained this week and recovered."
+            : "Trained this round and recovered; it waits for the rest of the round."
+        case .due: return reset == .weekly ? "Not trained yet this week." : "Not trained yet this round."
+        }
+    }
+
     // MARK: - Premium & privacy
 
     private var premiumAndPrivacy: some View {
@@ -234,7 +304,7 @@ struct ProfileView: View {
         default:
             return purchases.isPremium
                 ? "Premium is on."
-                : "Common mistakes, Form Comparison, Preset 2 and 3, no ads."
+                : "Common mistakes, Preset 2 and 3, no ads."
         }
     }
 
@@ -293,80 +363,6 @@ struct ProfileView: View {
         }
     }
 
-    // MARK: - Personal records
-
-    @ViewBuilder
-    private var records: some View {
-        let all = PerformanceHistory.records(in: store.sessions)
-        let shown = showsAllRecords ? all : Array(all.prefix(Self.recordPreview))
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "PERSONAL RECORDS")
-                Spacer()
-                if !all.isEmpty {
-                    MetaLine(text: "\(all.count) \(all.count == 1 ? "EXERCISE" : "EXERCISES")", em: 0.08)
-                }
-            }
-            if all.isEmpty {
-                emptyNote("Your best set for each exercise shows up here once you mark sets done in Train.")
-            } else {
-                VStack(spacing: 0) {
-                    ForEach(shown) { record in
-                        Button {
-                            path.append(.exercise(record.exerciseName))
-                        } label: {
-                            RecordRow(record: record, unit: store.unit)
-                        }
-                        .buttonStyle(.plain)
-                        if record.id != shown.last?.id { Hairline(opacity: 0.06) }
-                    }
-                }
-                if all.count > Self.recordPreview {
-                    moreButton(showsAllRecords ? "Show fewer" : "Show all \(all.count)") {
-                        withAnimation(.easeOut(duration: 0.2)) { showsAllRecords.toggle() }
-                    }
-                }
-            }
-        }
-    }
-
-    // MARK: - History
-
-    @ViewBuilder
-    private var history: some View {
-        let sessions = loggedSessions
-        VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "HISTORY")
-            if sessions.isEmpty {
-                emptyNote("Every workout with a set marked done is listed here, newest first.")
-            } else {
-                ForEach(sessions.prefix(historyLimit)) { session in
-                    Button {
-                        path.append(.session(session.id))
-                    } label: {
-                        SessionRow(session: session, unit: store.unit)
-                    }
-                    .buttonStyle(.plain)
-                }
-                if sessions.count > historyLimit {
-                    moreButton("Show more") {
-                        withAnimation(.easeOut(duration: 0.2)) { historyLimit += Self.historyPage }
-                    }
-                }
-            }
-        }
-    }
-
-    // MARK: - Helpers
-
-    private func emptyNote(_ text: String) -> some View {
-        Text(text)
-            .font(.ui(13))
-            .cssLineHeight(13, 1.5)
-            .foregroundStyle(DS.silver.opacity(0.5))
-            .fixedSize(horizontal: false, vertical: true)
-    }
-
     private func moreButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
@@ -377,153 +373,5 @@ struct ProfileView: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-    }
-}
-
-// MARK: - Stat tile
-
-/// One total: a sentence-case label over its value.
-struct StatTile: View {
-    var label: String
-    var value: String
-    var unit: String? = nil
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(label)
-                .font(.ui(11.5))
-                .foregroundStyle(DS.silver.opacity(0.5))
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
-            HStack(alignment: .firstTextBaseline, spacing: 3) {
-                Text(value)
-                    .font(.ui(22, .semibold))
-                    .tracking(-0.4)
-                    .foregroundStyle(DS.silver)
-                if let unit {
-                    Text(unit)
-                        .font(.ui(12, .semibold))
-                        .foregroundStyle(DS.silver.opacity(0.5))
-                }
-            }
-            .lineLimit(1)
-            .minimumScaleFactor(0.7)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 12)
-        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
-        .accessibilityElement(children: .combine)
-    }
-
-    /// "940", "3,240", "12.9K".
-    static func compact(_ value: Double) -> String {
-        value < 10_000
-            ? Int(value.rounded()).formatted()
-            : value.formatted(.number.notation(.compactName).precision(.fractionLength(0...1)))
-    }
-}
-
-// MARK: - Rows
-
-/// An exercise's best: the headline number on the right, how it was set below
-/// the name.
-struct RecordRow: View {
-    var record: ExerciseRecord
-    var unit: WeightUnit
-
-    var body: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(record.exerciseName)
-                    .font(.ui(14.5, .semibold))
-                    .foregroundStyle(DS.silver)
-                    .multilineTextAlignment(.leading)
-                Text(detail)
-                    .font(.ui(12))
-                    .foregroundStyle(DS.silver.opacity(0.5))
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            Spacer(minLength: 8)
-            VStack(alignment: .trailing, spacing: 3) {
-                Text(headline.value)
-                    .font(.mono(14, .semibold))
-                    .foregroundStyle(DS.silver)
-                MetaLine(text: headline.label, size: 8.5, em: 0.08)
-            }
-            Image(systemName: "chevron.right")
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundStyle(DS.silver.opacity(0.28))
-        }
-        .padding(.vertical, 11)
-        .contentShape(Rectangle())
-        .accessibilityElement(children: .combine)
-    }
-
-    private var headline: (value: String, label: String) {
-        if record.measure == .time, let best = record.bestUnloaded {
-            return (SetMeasure.clock(best.reps), "LONGEST")
-        }
-        if let heaviest = record.heaviest, let weight = heaviest.weight {
-            return (unit.format(weight), "HEAVIEST")
-        }
-        if let best = record.bestUnloaded {
-            return ("\(best.reps)", "MOST REPS")
-        }
-        return ("–", "")
-    }
-
-    private var detail: String {
-        var parts: [String] = []
-        if let best = record.bestSet, let weight = best.weight, let estimate = best.estimatedMax {
-            parts.append("Best set \(unit.format(weight)) × \(best.reps) · est. 1RM \(unit.total(estimate))")
-        }
-        parts.append("Last done \(RecoveryText.dayPhrase(record.lastDone))")
-        return parts.joined(separator: " · ")
-    }
-}
-
-/// One day's workout in the history list.
-struct SessionRow: View {
-    var session: WorkoutSession
-    var unit: WeightUnit
-
-    var body: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 8) {
-                    Text(RecoveryText.day(session.day))
-                        .font(.ui(15, .semibold))
-                        .foregroundStyle(DS.silver)
-                    if session.completedAt == nil {
-                        MetaLine(text: "IN PROGRESS", size: 8.5)
-                    }
-                }
-                MetaLine(text: session.groups.map { $0.title.uppercased() }.joined(separator: " · "), em: 0.06)
-                    .lineLimit(1)
-                Text(SessionText.summary(session, unit: unit))
-                    .font(.ui(12))
-                    .foregroundStyle(DS.silver.opacity(0.55))
-            }
-            Spacer(minLength: 8)
-            Image(systemName: "chevron.right")
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundStyle(DS.silver.opacity(0.28))
-        }
-        .padding(12)
-        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
-        .contentShape(Rectangle())
-        .accessibilityElement(children: .combine)
-    }
-}
-
-enum SessionText {
-    /// "4 exercises · 14 sets · 3,240 kg" — counting what was done.
-    static func summary(_ session: WorkoutSession, unit: WeightUnit) -> String {
-        let done = session.exercises.filter { !$0.completedSets.isEmpty }.count
-        let sets = session.completedSetCount
-        var parts = ["\(done) \(done == 1 ? "exercise" : "exercises")", "\(sets) \(sets == 1 ? "set" : "sets")"]
-        if session.volume > 0 { parts.append(unit.total(session.volume)) }
-        return parts.joined(separator: " · ")
     }
 }

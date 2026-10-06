@@ -1,0 +1,271 @@
+// MARK: PIECES
+    // MARK: 401-500 cable, machine and ab coaster crunch pieces (2026-10-04)
+
+    /// Standing and machine crunches: how far the trunk is curled, read off
+    /// the distance from the neck to the left knee in torso lengths, which
+    /// shrinks as the spine rounds (standing cable crunches 1.76 upright,
+    /// 1.68 at the bottom; machine crunch 1.32 and 1.12): none of the fault
+    /// at `from`, all of it at `to`.
+    private static func cableCrunch500Curled(from: Float, to: Float) -> FaultStrength {
+        .between("neck", "shin_L", from: from, to: to)
+    }
+
+    /// The oblique cable crunch's first rep, which turns to the right: the
+    /// left elbow comes down and across toward the right hip (left elbow to
+    /// right hip 1.11 torso lengths upright, 0.96 at the bottom), while in the
+    /// second rep, which turns left, it stays ~1.10. Faults of the rightward
+    /// turn show in the first rep only.
+    private static let cableCrunch500TurnRight = FaultStrength.between("forearm_L", "thigh_R", from: 1.08, to: 0.98)
+
+    /// Ab coaster: how far the knees have rolled up the track, read off the
+    /// knee-to-hand distance (1.51 torso lengths at the start, 1.07 at the
+    /// top): none at `from`, all of it at `to`.
+    private static func cableCrunch500Track(from: Float, to: Float) -> FaultStrength {
+        .between("shin_L", "hand_L", from: from, to: to)
+    }
+
+    /// Hauling the rope or the machine's handles down with the arms: both
+    /// arms turned `degrees` down about the shoulders with the elbow angle
+    /// kept, so the hands leave the head and the elbows drive down.
+    private static func cableCrunch500ArmsPulled(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// Bowing forward from the hips with a flat back instead of curling: the
+    /// curl undone joint by joint (everything above the chest joint turned
+    /// `thoracic` degrees back up about it, everything above the lumbar joint
+    /// `lumbar` degrees back up about that), which leaves the spine as
+    /// straight as it is upright, then the whole trunk with the arms tipped
+    /// `tip` degrees forward about the hips. Turns only, so every segment
+    /// keeps its length.
+    private static func cableCrunch500FlatBack(thoracic: Float, lumbar: Float, tip: Float, strength: FaultStrength) -> FaultPose {
+        let above = ["neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"]
+        return FaultPose(chains: [spine, armsToGrip],
+                         moves: [.turn(pivot: "chest", points: above, axis: .lateral, degrees: thoracic),
+                                 .turn(pivot: "spine", points: ["chest"] + above, axis: .lateral, degrees: lumbar),
+                                 .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -tip)],
+                         strength: strength)
+    }
+
+    /// Cutting the curl short: the chest, head and arms turned `degrees`
+    /// back up about the lumbar spine, so the upper back stays nearly
+    /// upright.
+    private static func cableCrunch500CurlShort(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Standing cable crunch: the hips sat back `back` and down `down` torso
+    /// lengths (level and vertical) to drag the stack down with body weight,
+    /// everything above carried, the knees re-seated over the planted feet.
+    private static func cableCrunch500HipsBack(_ back: Float, down: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(carried, ahead: -back, rise: -down), .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// Oblique cable crunch, first rep: curling straight down with no turn.
+    /// The trunk and arms turned `degrees` back about the trunk's own line
+    /// and a third of that about the chest's forward axis, which squares the
+    /// shoulders and brings the head back to the midline: within ~3 cm of the
+    /// standing cable crunch's own bottom pose on the same rig.
+    private static func cableCrunch500Square(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, arms],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .up, degrees: -degrees),
+                          .turn(pivot: "pelvis", points: trunk, axis: .forward, degrees: -degrees / 3)],
+                  strength: strength)
+    }
+
+    /// Oblique cable crunch: turning with the back upright. The curl undone
+    /// at the spine (everything above the chest joint turned `degrees` back
+    /// up about it, everything above the lumbar joint `degrees` back up about
+    /// that), so the turn of the shoulders is kept on an upright back.
+    private static func cableCrunch500Uncurled(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        let above = ["neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"]
+        return FaultPose(chains: [spine, armsToGrip],
+                         moves: [.turn(pivot: "chest", points: above, axis: .lateral, degrees: degrees),
+                                 .turn(pivot: "spine", points: ["chest"] + above, axis: .lateral, degrees: degrees)],
+                         strength: strength)
+    }
+
+    /// Oblique cable crunch, first rep (turning right): the hips swinging
+    /// round with the shoulders on planted feet, pivoting on the right hip.
+    /// The left hip `ahead` torso lengths forward and `inward` toward the
+    /// midline (level; the two together keep the hip line's length), the
+    /// left knee pushed forward and in, both knees re-seated so the legs keep
+    /// their lengths and bend the way they did. With the knees nearly
+    /// straight a knee can only swing a few centimetres, so the turn is shown
+    /// by the line of the hips opening front to back: seen from the lifter's
+    /// left side (0.95 further round, a total of -1.35), where the two hips
+    /// otherwise overlap.
+    private static func cableCrunch500HipsTurned(ahead: Float, inward: Float, knee: Float, kneeIn: Float,
+                                                 strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["thigh_L"], outward: -inward, ahead: ahead),
+                          .shift(["shin_L"], outward: -kneeIn, ahead: knee),
+                          .resolve(["shin_*"])],
+                  strength: strength, view: -0.95)
+    }
+
+    /// Machine crunch: the hips lifted `rise` and slid `ahead` torso lengths
+    /// (vertical and level) off the seat to drive the pads down, everything
+    /// above carried, the knees re-seated over the feet held by the roller.
+    private static func cableCrunch500SeatLifted(rise: Float, ahead: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(carried, ahead: ahead, rise: rise), .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// Ab coaster: the knees brought up with the lower back left flat, a
+    /// little arched, instead of rounded. At the top of the track the lumbar
+    /// and lower-thoracic joints sit 7 and 9 cm behind the hips-to-neck
+    /// line; here they go onto it and the lumbar joint ~3 cm past it toward
+    /// the belly, and the hips drop ~3 cm down the trunk's line, which a
+    /// straight back needs to reach the same shoulders. Sized on the rig at
+    /// the top of the track, where the segments keep their lengths (within
+    /// ~0.5 cm through the rest of the rep).
+    private static func cableCrunch500CoasterFlatBack(strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, hips],
+                  moves: [.shift(["pelvis", "thigh_*"], up: -0.058),
+                          .shift(["spine"], forward: 0.178, up: -0.023),
+                          .shift(["chest"], forward: 0.169, up: -0.025)],
+                  strength: strength)
+    }
+
+    /// Ab coaster: pulling with the arms, the trunk, head and shoulders
+    /// turned `degrees` forward about the hips, which takes the shoulders
+    /// down and forward toward the bar; the hands stay on the bar and the
+    /// elbows are re-seated between them and the shoulders, bending the way
+    /// they already bend.
+    private static func cableCrunch500CoasterPull(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head", "upper_arm_*"], axis: .lateral, degrees: -degrees),
+                          .resolve(["forearm_*"])])
+    }
+
+    /// Ab coaster: the carriage stopped part of the way along the track. The
+    /// legs turned `degrees` about the hips (negative: the knees back down
+    /// the curve), the hips and legs moved `ahead` and `rise` torso lengths
+    /// (level and vertical), knee angle kept; the lumbar joint moved
+    /// `spineForward` and `spineUp` torso lengths (body axes), sized on the
+    /// rig so the two lower-back segments keep their lengths with the chest
+    /// held where it is.
+    private static func cableCrunch500CoasterShort(_ degrees: Float, ahead: Float, rise: Float,
+                                                   spineForward: Float, spineUp: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: degrees),
+                          .shift(["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip"], ahead: ahead, rise: rise),
+                          .shift(["spine"], forward: spineForward, up: spineUp)],
+                  strength: strength)
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 cable, machine and ab coaster crunches (2026-10-04)
+        // Four crunches on one body (torso 0.592 m), two reps in 8 s each:
+        // ~1.5 s curling, ~0.5 s held, ~1.5 s back, ~0.5 s rest. The standing,
+        // machine and coaster crunches are framed side-on from the front left
+        // (yaw -1.35), so their faults, all in the lifter's own front-back
+        // plane, need no turn; only the stance fault turns `faceOn` (a total
+        // of -0.25) for the feet drawn together. The oblique cable crunch is
+        // framed three-quarter from the front (-0.4); its first rep turns to
+        // the right, which its turn faults draw, so they read the left elbow's
+        // distance to the right hip and show in that rep only; its hips fault
+        // turns to the lifter's left side (-0.95) to show the hips' line. Sizes below
+        // were measured with a Python port of FaultGhost.solve on the rigs at
+        // the fault's moment (cablecrunch/ghost.py and proto.py in the session
+        // scratchpad; screen sizes in points of the 382 x 655 viewport,
+        // without the mistake view's shrink). The review (2026-10-05) rebuilt
+        // seven ghosts from turns, or shifts sized on the rig, so every drawn
+        // segment keeps its length and every knee and elbow bends the way it
+        // did (cablecrunch/review/final.py); only the library's
+        // squareLockedStance shortens the legs ~1 cm as it locks the knees.
+        // Tempo cues, the machine's foot
+        // roller cue (a pull against the roller is a force, not a pose) and
+        // the oblique crunch's alternate-sides cue have no ghost.
+        "Standing Cable Crunch": [
+            // Hauling the rope down: the arms 35° down about the shoulders,
+            // the hands ~13 cm (~35 pt) down from the forehead and the elbows
+            // ~17 cm (~46 pt) lower and closer in, elbow angle kept (47°).
+            "rope": cableCrunch500ArmsPulled(35, strength: cableCrunch500Curled(from: 1.75, to: 1.69)),
+            // Bowing from the hips with a flat back: the 19° lumbar and 19°
+            // thoracic curl undone and the trunk tipped 36° about the hips,
+            // so the straight trunk leans ~10° further than the model's
+            // (lumbar joint ~7 cm, chest ~12 cm and head ~10 cm (~26 pt)
+            // moved; every segment keeps its length).
+            "curl": cableCrunch500FlatBack(thoracic: 19, lumbar: 19, tip: 36, strength: cableCrunch500Curled(from: 1.75, to: 1.69)),
+            // A short nod: the chest, head and arms 25° back up about the
+            // lumbar spine, the head ~25 cm (~61 pt) and the hands ~25 cm
+            // (~64 pt) higher and further back.
+            "range": cableCrunch500CurlShort(25, strength: cableCrunch500Curled(from: 1.75, to: 1.69)),
+            // Sitting back to drag the stack down: the hips and trunk ~9 cm
+            // back and ~5 cm down (~23 pt), the knees 160° -> ~139°.
+            "hips": cableCrunch500HipsBack(0.15, down: 0.08, strength: cableCrunch500Curled(from: 1.75, to: 1.69)),
+            // Feet together, knees locked: the feet ~6 cm in each (~13 pt),
+            // the knees 160° -> 180°; seen from the front.
+            "stance": squareLockedStance.seen(faceOn)
+        ],
+        "Oblique Cable Crunch": [
+            // No turn, first rep: the shoulders squared and the head back to
+            // the midline, ~13 cm (~30 pt); the hands ~22 cm (~59 pt).
+            "twist": cableCrunch500Square(30, strength: cableCrunch500TurnRight),
+            // Turning upright: the curl undone 18° at the chest joint and 18°
+            // at the lumbar joint with the shoulders' turn kept, the trunk
+            // line 31° -> ~7° forward, the head ~30 cm (~36 pt) higher and
+            // further back, the hands ~33 cm.
+            "curl": cableCrunch500Uncurled(18, strength: cableCrunch500Curled(from: 1.75, to: 1.71)),
+            // The hips swinging round with the shoulders, first rep, pivoting
+            // on the right hip: the left hip ~11 cm forward and ~3.7 cm in
+            // (~29 pt seen from the side; the hip line keeps its 18 cm and
+            // opens ~11 cm front to back where it was end-on), the left knee
+            // ~6 cm forward and in, knees ~162° and 160°, both bending the
+            // way they did; seen from the lifter's left side.
+            "hips": cableCrunch500HipsTurned(ahead: 0.196, inward: 0.066, knee: 0.22, kneeIn: 0.08,
+                                              strength: cableCrunch500TurnRight),
+            // Hauling the rope down: as the standing crunch, ~11 cm (~30 pt)
+            // at the hands.
+            "rope": cableCrunch500ArmsPulled(35, strength: cableCrunch500Curled(from: 1.75, to: 1.71))
+            // "sides" has no ghost: which way each rep turns is not one pose.
+        ],
+        "Machine Crunch": [
+            // Pulling the handles down: the arms 35° down about the
+            // shoulders, the hands ~17 cm (~60 pt) below the handles' line,
+            // the elbows ~16 cm (~54 pt) lower and back.
+            "arms": cableCrunch500ArmsPulled(35, strength: cableCrunch500Curled(from: 1.3, to: 1.15)),
+            // Tipping from the hips with a flat back: the 24° thoracic and
+            // 10° lumbar curl undone and the trunk tipped 32° about the hips,
+            // ~10° further than the model's trunk line; the chest ~12 cm
+            // (~37 pt) and the head ~11 cm (~33 pt) moved, lengths kept.
+            "curl": cableCrunch500FlatBack(thoracic: 24, lumbar: 10, tip: 32, strength: cableCrunch500Curled(from: 1.3, to: 1.15)),
+            // The hips lifted ~7 cm and slid ~5 cm forward off the seat
+            // (~25 pt), the knees 98° -> ~102° over the feet under the roller.
+            "hips": cableCrunch500SeatLifted(rise: 0.12, ahead: 0.08, strength: cableCrunch500Curled(from: 1.3, to: 1.15))
+            // "feet" (pulling on the roller) and "tempo" have no ghost.
+        ],
+        "Ab Coaster Crunch": [
+            // The lower back left flat, a little arched, at the top: the hips
+            // to the neck one straight line with a ~3 cm dip at the lumbar
+            // joint, where the model's back is rounded (lumbar joint ~10 cm,
+            // chest ~9.5 cm (~17-18 pt), hips ~3 cm; lengths kept).
+            "curl": cableCrunch500CoasterFlatBack(strength: cableCrunch500Track(from: 1.35, to: 1.12)),
+            // Pulling with the arms: the trunk turned 14° forward about the
+            // hips, the shoulders ~12 cm (~22 pt) down and toward the bar,
+            // the head ~16 cm, the elbows 136° -> ~91°.
+            "arms": cableCrunch500CoasterPull(14),
+            // Stopping partway up the track: the knees ~16 cm (~30 pt) back
+            // down the curve and the feet ~19 cm, the hips ~7.5 cm back and
+            // ~3 cm up, the lumbar joint 2.5 cm; about the model's own
+            // mid-track pose; knees 62° kept.
+            "range": cableCrunch500CoasterShort(-16, ahead: -0.12, rise: 0.06, spineForward: 0.044, spineUp: 0.011,
+                                                strength: cableCrunch500Track(from: 1.35, to: 1.12)),
+            // Turning around halfway back: the knees ~17 cm (~30 pt) up the
+            // curve and the hips ~7.7 cm forward at the bottom, the pelvis
+            // tipped round the lumbar joint, which stays put; within ~2 cm of
+            // the model's own pose at 0.75 s (mid-track); knees 70° kept.
+            "return": cableCrunch500CoasterShort(14, ahead: 0.12, rise: -0.05, spineForward: 0, spineUp: 0,
+                                                 strength: cableCrunch500Track(from: 1.25, to: 1.45))
+            // "tempo" has no ghost.
+        ],

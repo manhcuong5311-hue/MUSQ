@@ -125,3 +125,39 @@ integrated between the `351-400` markers. `fault_times.py` gained four kinds:
 `legcurl` (leg curls, Nordics, sliding curls, glute-ham raise: top = knee
 most bent), `abduction` / `adduction` (knees furthest apart / closest), and
 frog pumps count as `legs`.
+
+401-500 folder (2026-10-04): every new exercise has a ghost per position cue
+in `faults_500_{chest,hammer,curls,calfstand,calfseat,hip}.swift.txt` (new
+pieces prefixed by family, e.g. `calfStand500Heels`; `check_faults_500.py`
+compile-checks them; `fault_moments_500_*.json` feed `fault_times.py`),
+integrated between the `401-500` markers. `fault_times.py` now also takes a
+moment in seconds ("16.9"), used for the 21s' later blocks, the cross-body
+curl's right arm and the wrist roller; the calf press counts as `calf`, the
+21s as `pull` and the wrist roller as a `hold`. The standing calf pieces turn
+the foot about the ball of the foot (`toe_*`) and nudge the knees forward
+before re-seating them, so no ghost bends a knee backwards. The reviewers
+re-measured the ghosts with Python ports of `FaultGhost.solve` (bone lengths,
+bend direction, on-screen size). The Dumbbell Hip Thrust reuses the Barbell
+Hip Thrust's pieces, sized on its own rig.
+
+Second round, 415-444 (2026-10-04/05): ghosts in
+`faults_500_{calfmore,tibialis,situp,crunch,cablecrunch,stability}.swift.txt`
+(prefixed pieces), moments in `fault_moments_500_*.json`. `fault_times.py`
+gained the kinds `tibialis` (top = toes highest by the left ankle) and
+`curlup` (top = trunk and thighs closest, for crunches, sit-ups and V-ups);
+the dead bug, bird dog and hollow body are holds whose moments are given in
+seconds, as are the alternating and right-side reps. Each family's ghosts
+were sized with a Python port of `FaultGhost.solve` (bone lengths kept, no
+knee or elbow bent backwards) and checked on lab shots by the author and the
+reviewer.
+
+Third round, 445-474 (2026-10-05): ghosts in
+`faults_500_{legraise,plankdyn,plankhold,sidebend,twist,antiext,carrymarch,
+thruster}.swift.txt`. `fault_times.py` reads leg and knee raises and the
+toe-to-bar as `curlup`; kicks, planks, climbers, side bends, twists, chops,
+rotations and rollouts as holds; the bear crawl and marches as carries;
+thrusters and the clean and press as `legs`, whose top by pelvis height is
+ambiguous for a thruster (the pelvis is as high racked as locked out), so
+those families give every moment in seconds. The kick ghosts name legs by
+role (`_front` = the higher leg when lying face up) and fade where the legs
+pass, so a ghost never jumps between legs.

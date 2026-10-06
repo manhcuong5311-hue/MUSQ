@@ -120,3 +120,28 @@ their names) and were shot the same way; the library now has 327 exercises,
 all with a thumbnail. Back Extension was re-shot from its new behind-left
 view (-1.9) at the bottom of the rep, so the tile shows the rounded spine of
 the lower-back variant the model performs.
+
+401-500 folder (2026-10-04): the 30 new exercises got pose times and square
+framings (`posetime.py` / `thumbsolve.py` with their names) and were shot on
+the harness simulator; the library now has 357 exercises, all with a
+thumbnail. `thumbsolve.py` gained `CROP`, held parts a lift lets crop (the
+landmine chest press's 1.9 m bar); the Rope Hammer Curl joins the cable curls
+in `BODY_ONLY`, and the Landmine Chest Press and Smith Machine Seated Calf
+Raise too, where the bar and the Smith frame left the lifter a third of the
+tile. The app's slot names turn "21s" into a dash, so the two 21s tiles are
+`lib--s-curl` and `lib-ez-bar-s`.
+
+Second round, 415-444 (2026-10-04): the 30 new calf, tibialis and core
+exercises got pose times and square framings the same way and were shot on
+the harness simulator; the library now has 387 exercises, all with a
+thumbnail. The floor lifts keep the whole mat in the tile, like the
+library's Crunch and Reverse Crunch, and the cable crunches the whole tower,
+like the Cable Crunch.
+
+Third round, 445-474 (2026-10-05): the 30 new exercises got pose times and
+square framings the same way, shot with `Tools/lab/shots.sh photo`; the
+library now has 417 exercises, all with a thumbnail. The Toe-to-Bar was set
+by hand: the solver over-zoomed its folded top pose (as the trainer solver
+did for compact poses), so its tile is framed like the Hanging Leg Raise and
+held at 1.0 s, mid-swing with the legs out level. The app's slot name turns
+"Landmine 180" into `lib-landmine-`.

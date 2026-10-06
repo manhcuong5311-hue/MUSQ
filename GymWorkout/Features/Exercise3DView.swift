@@ -17,8 +17,7 @@
 //  borrowing another lift's cues and activation.
 //
 //  A free account gets the model, the setup and every key tip; the common
-//  mistakes and Form Comparison are Premium's, shown behind a lock that opens
-//  the paywall.
+//  mistakes are Premium's, shown behind a lock that opens the paywall.
 //
 
 import SwiftUI
@@ -43,7 +42,6 @@ struct Exercise3DView: View {
     /// The dashed "replaceable viewport" marker — a build-time aid, off
     /// for users and only offered in the menu of debug builds.
     @State private var showsGuides = false
-    @State private var showsComparison = false
     @State private var setupExpanded = false
     /// Off shows the lift with nothing over it. Remembered across exercises,
     /// so someone who prefers the clean view doesn't have to ask every time.
@@ -140,12 +138,6 @@ struct Exercise3DView: View {
         .animation(.easeOut(duration: 0.22), value: toast)
         .toolbar(.hidden, for: .navigationBar)
         .navigationBarBackButtonHidden()
-        .navigationDestination(isPresented: $showsComparison) {
-            if let content {
-                FormComparisonView(exercise: exercise, copy: content.comparison,
-                                   glows: content.glows)
-            }
-        }
         .onAppear {
             // Opened straight onto a mistake (`showingMistake: true`).
             if sheet == .cue && cueMode == .mistake && !purchases.isPremium {
@@ -223,18 +215,11 @@ struct Exercise3DView: View {
             .sensoryFeedback(.selection, trigger: isSaved)
             .accessibilityLabel(isSaved ? "Remove from saved" : "Save exercise")
 
+            // Its only item is a build-time aid, so release builds have no menu.
+            #if DEBUG
             if content != nil {
                 Menu {
-                    if purchases.isPremium {
-                        Button("Form Comparison") { showsComparison = true }
-                    } else {
-                        Button { paywall.show(.comparison) } label: {
-                            Label("Form Comparison", systemImage: "lock.fill")
-                        }
-                    }
-                    #if DEBUG
                     Toggle("Viewport Guides", isOn: $showsGuides)
-                    #endif
                 } label: {
                     ZStack {
                         Circle().fill(DS.silver.opacity(0.08))
@@ -244,6 +229,7 @@ struct Exercise3DView: View {
                 }
                 .accessibilityLabel("More options")
             }
+            #endif
         }
         .padding(.horizontal, 16)
         .padding(.top, 11)
@@ -504,11 +490,10 @@ struct Exercise3DView: View {
     }
 
     /// Back to what a free account sees: every key tip, but in its correct
-    /// form and without Form Comparison. For a screen that opens on a
-    /// mistake, or Premium lapsing with one open.
+    /// form. For a screen that opens on a mistake, or Premium lapsing with
+    /// one open.
     private func applyFreeLimits() {
         guard !purchases.isPremium else { return }
-        showsComparison = false
         if sheet == .cue { cueMode = .correct }
     }
 

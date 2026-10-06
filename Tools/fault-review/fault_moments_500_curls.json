@@ -1,0 +1,7 @@
+{
+  "Strict Curl": {"hips": "top", "shoulders": "top", "elbows": "top", "knees": "bottom", "range": "bottom"},
+  "21s Curl": {"bottom": "bottom", "top": "16.9", "full": "30.9", "elbows": "17.8", "torso": "40.9"},
+  "EZ-Bar 21s": {"grip": "17.8", "bottom": "bottom", "top": "16.9", "full": "30.9", "elbows": "40.9"},
+  "Waiter Curl": {"upright": "top", "elbows": "top", "range": "bottom", "torso": "top"},
+  "Seated Dumbbell Curl": {"back": "bottom", "palms": "top", "elbows": "top", "range": "bottom"}
+}

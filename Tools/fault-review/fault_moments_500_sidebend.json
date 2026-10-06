@@ -1,0 +1,6 @@
+{
+  "Cable Side Bend": {"plane": "1.4", "arm": "1.4", "range": "3.0", "hips": "1.4"},
+  "Dumbbell Side Bend": {"twist": "1.4", "free": "0.1", "depth": "1.4", "hips": "1.4"},
+  "Reverse Cable Wood Chop": {"arms": "0.75", "turn": "1.6", "legs": "3.75", "pivot": "1.6"},
+  "Cable Rotation": {"arms": "1.6", "height": "1.6", "turn": "1.6", "tall": "1.6"}
+}

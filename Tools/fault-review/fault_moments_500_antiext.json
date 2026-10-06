@@ -1,0 +1,5 @@
+{
+  "Stability Ball Rollout": {"hips": "1.75", "reach": "1.75", "head": "1.75", "arms": "1.75"},
+  "Body Saw": {"hips": "1.75", "range": "1.75", "elbows": "1.75", "knees": "1.75"},
+  "Bear Crawl": {"knees": "2.0", "back": "2.0", "hips": "1.0", "pair": "1.5", "hands": "2.0"}
+}

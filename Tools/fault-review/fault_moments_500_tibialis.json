@@ -1,0 +1,7 @@
+{
+  "Tibialis Raise": {"hips": "top", "knees": "top", "top": "top", "floor": "bottom"},
+  "Single-Leg Tibialis Raise": {"post": "top", "free": "bottom", "hips": "top", "top": "top", "floor": "bottom"},
+  "Wall Tibialis Raise": {"wall": "bottom", "feet": "bottom", "knees": "bottom", "top": "top"},
+  "Machine Tibialis Raise": {"seat": "bottom", "top": "top", "bottom": "bottom"},
+  "Banded Dorsiflexion": {"recline": "top", "top": "top", "bottom": "bottom"}
+}

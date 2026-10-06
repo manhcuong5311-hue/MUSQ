@@ -1,0 +1,8 @@
+{
+  "Elevated Calf Raise": {"bottom": "bottom", "top": "top", "knees": "bottom"},
+  "Bent-Knee Calf Raise": {"knees": "top", "toes": "top", "top": "top", "floor": "bottom"},
+  "Calf Raise Hold": {"height": "4.0", "toes": "3.0", "knees": "4.0", "body": "5.0"},
+  "Calf Raise Pulse": {"top": "2.0", "range": "3.0", "knees": "2.67", "toes": "2.0"},
+  "Farmer's Walk on Toes": {"heels": "0.58", "posture": "2.5", "shoulders": "2.5", "hips": "0.25"},
+  "Banded Plantar Flexion": {"top": "1.5", "return": "3.75", "knees": "1.5", "hands": "1.5", "back": "3.0"}
+}

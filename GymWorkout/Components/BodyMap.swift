@@ -68,7 +68,12 @@ enum BodyRegion {
         if has("brachioradialis", "forearm", "wrist", "grip") { return [(.forearm, both)] }
         if has("biceps", "brachialis") { return [(.biceps, both)] }
         if has("triceps") { return [(.triceps, both)] }
-        if has("gastrocnemius", "soleus", "calf", "calves") { return [(.calves, both)] }
+        // Tibialis posterior and the fibularis (peroneal) muscles lie behind
+        // and beside the shin bone, so they light the calves, not the front
+        // of the shin.
+        if has("gastrocnemius", "soleus", "calf", "calves", "tibialis posterior", "fibularis", "peroneus") {
+            return [(.calves, both)]
+        }
         if has("tibialis", "shin") { return [(.tibialis, both)] }
         if has("neck", "sternocleidomastoid") { return [(.neck, both)] }
         return []

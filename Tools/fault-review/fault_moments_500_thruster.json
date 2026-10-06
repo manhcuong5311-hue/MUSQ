@@ -1,0 +1,6 @@
+{
+  "Barbell Thruster": {"rack": "1.54", "depth": "bottom", "knees": "bottom", "drive": "1.88", "lockout": "2.9"},
+  "Dumbbell Thruster": {"hold": "1.54", "depth": "bottom", "heels": "bottom", "drive": "1.88", "lockout": "2.9"},
+  "Kettlebell Thruster": {"rack": "1.54", "wrists": "0.2", "depth": "bottom", "drive": "1.88", "lockout": "2.9"},
+  "Clean and Press": {"start": "0.2", "pull": "1.0", "extend": "1.25", "catch": "2.25", "press": "3.95"}
+}

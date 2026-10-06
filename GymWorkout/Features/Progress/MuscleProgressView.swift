@@ -2,9 +2,10 @@
 //  MuscleProgressView.swift
 //  GymWorkout
 //
-//  Tab 3. "What have I actually trained, and what am I missing?" — the body
-//  map lit by completed sets this week or month, the groups worth a look, and
-//  the full list. Planned-but-unfinished sets never count.
+//  Tab 3. "What have I actually trained, and what am I missing?" — the
+//  totals, the body map lit by completed sets this week or month, the groups
+//  worth a look, the full list, personal records, and the workout history
+//  they come from. Planned-but-unfinished sets never count.
 //
 
 import SwiftUI
@@ -16,6 +17,11 @@ struct MuscleProgressView: View {
     @State private var router = TrainRouter()
     @State private var period: ActivityPeriod = .week
     @State private var side: BodySide = .front
+    @State private var showsAllRecords = false
+    @State private var historyLimit = MuscleProgressView.historyPage
+
+    private static let recordPreview = 5
+    private static let historyPage = 8
 
     private let calculator = MuscleActivityCalculator()
 
@@ -36,6 +42,9 @@ struct MuscleProgressView: View {
                             .font(.ui(28, .semibold))
                             .tracking(-0.7)
                             .foregroundStyle(DS.silver)
+
+                        stats
+                            .padding(.top, 18)
 
                         MonoSegmentedControl(
                             options: [(ActivityPeriod.week, "THIS WEEK"), (.month, "THIS MONTH")],
@@ -58,6 +67,11 @@ struct MuscleProgressView: View {
 
                         activityList(activity)
                             .padding(.top, 28)
+
+                        records
+                            .padding(.top, 30)
+                        history
+                            .padding(.top, 30)
                     }
                     .padding(.horizontal, DS.Metric.gutter)
                     .padding(.top, 22)
@@ -73,6 +87,26 @@ struct MuscleProgressView: View {
         }
         .environment(router)
         .tint(DS.silver)
+    }
+
+    private var loggedSessions: [WorkoutSession] {
+        store.sessions.filter(\.hasCompletedSets).sorted { $0.day > $1.day }
+    }
+
+    // MARK: - Totals
+
+    private var stats: some View {
+        let week = Calendar.current.dateInterval(of: .weekOfYear, for: Date())
+            ?? DateInterval(start: Date(), duration: 0)
+        let thisWeek = PerformanceHistory.sessions(in: week, from: store.sessions)
+        let volume = thisWeek.reduce(0) { $0 + $1.volume }
+        return HStack(spacing: 8) {
+            StatTile(label: "Workouts", value: loggedSessions.count.formatted())
+            StatTile(label: "This week", value: thisWeek.count.formatted())
+            StatTile(label: "Volume this week",
+                     value: StatTile.compact(store.unit.fromKilograms(volume)),
+                     unit: store.unit.symbol)
+        }
     }
 
     // MARK: - Body map
@@ -250,6 +284,90 @@ struct MuscleProgressView: View {
 }
 
 extension MuscleProgressView {
+    // MARK: - Personal records
+
+    @ViewBuilder
+    private var records: some View {
+        let all = PerformanceHistory.records(in: store.sessions)
+        let shown = showsAllRecords ? all : Array(all.prefix(Self.recordPreview))
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .firstTextBaseline) {
+                SectionEyebrow(text: "PERSONAL RECORDS")
+                Spacer()
+                if !all.isEmpty {
+                    MetaLine(text: "\(all.count) \(all.count == 1 ? "EXERCISE" : "EXERCISES")", em: 0.08)
+                }
+            }
+            if all.isEmpty {
+                logNote("Your best set for each exercise shows up here once you mark sets done in Train.")
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(shown) { record in
+                        Button {
+                            router.push(.exerciseHistory(record.exerciseName))
+                        } label: {
+                            RecordRow(record: record, unit: store.unit)
+                        }
+                        .buttonStyle(.plain)
+                        if record.id != shown.last?.id { Hairline(opacity: 0.06) }
+                    }
+                }
+                if all.count > Self.recordPreview {
+                    moreButton(showsAllRecords ? "Show fewer" : "Show all \(all.count)") {
+                        withAnimation(.easeOut(duration: 0.2)) { showsAllRecords.toggle() }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - History
+
+    @ViewBuilder
+    private var history: some View {
+        let sessions = loggedSessions
+        VStack(alignment: .leading, spacing: 10) {
+            SectionEyebrow(text: "HISTORY")
+            if sessions.isEmpty {
+                logNote("Every workout with a set marked done is listed here, newest first.")
+            } else {
+                ForEach(sessions.prefix(historyLimit)) { session in
+                    Button {
+                        router.push(.session(session.id))
+                    } label: {
+                        SessionRow(session: session, unit: store.unit)
+                    }
+                    .buttonStyle(.plain)
+                }
+                if sessions.count > historyLimit {
+                    moreButton("Show more") {
+                        withAnimation(.easeOut(duration: 0.2)) { historyLimit += Self.historyPage }
+                    }
+                }
+            }
+        }
+    }
+
+    private func logNote(_ text: String) -> some View {
+        Text(text)
+            .font(.ui(13))
+            .cssLineHeight(13, 1.5)
+            .foregroundStyle(DS.silver.opacity(0.5))
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func moreButton(_ title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.ui(13, .semibold))
+                .foregroundStyle(DS.silver.opacity(0.7))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
     fileprivate static func weight(_ role: ContributionRole) -> String {
         let w = role.defaultWeight
         return w.rounded() == w ? String(Int(w)) : String(w)

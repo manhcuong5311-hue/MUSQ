@@ -51,7 +51,7 @@ def part_of(name):
     if has("posterior deltoid", "rear delt", "rotator cuff", "infraspinatus", "teres minor", "supraspinatus", "subscapularis"): return "rearDelts"
     if has("deltoid", "delt"): return "sideDelts"
     if has("latissimus", "lats", "teres"): return "lats"
-    if has("erector", "spinae", "lower back", "posterior chain"): return "lowerBack"
+    if has("erector", "spinae", "lower back", "posterior chain", "quadratus lumborum"): return "lowerBack"
     if has("trapez", "rhomboid", "back"): return "upperBack"
     if has("glute"): return "glutes"
     if has("quad", "rectus femoris", "vastus"): return "quads"
@@ -60,11 +60,15 @@ def part_of(name):
     if has("brachioradialis", "forearm", "wrist", "grip", "finger", "digitorum", "pollicis", "carpi"): return "forearms"
     if has("biceps", "brachialis"): return "biceps"
     if has("triceps"): return "triceps"
-    if has("gastrocnemius", "soleus", "calf", "calves"): return "calves"
+    if has("gastrocnemius", "soleus", "calf", "calves", "tibialis", "fibularis", "peroneus"): return "calves"
     return None
 
 
 HAND = ("pollicis", "digitorum", "carpi", "finger", "wrist", "forearm", "grip", "brachioradialis", "pronator", "supinator", "thenar", "lumbrical", "inteross", "palmaris")
+
+# Legend-only names (README, Abs batch 2026-09-24): shown in the activation
+# legend but filed under no MusclePart, so recovery ignores them on purpose.
+LEGEND_ONLY = {"Hip Flexors", "Serratus Anterior"}
 
 
 def level(fraction):
@@ -116,12 +120,19 @@ def validate(names=None):
             if lvl != level(frac):
                 problems.append(f"{n}: {name} level {lvl} disagrees with fraction {frac} ({level(frac)})")
             part = part_of(name)
-            if part is None:
+            if part is None and name not in LEGEND_ONLY:
                 problems.append(f"{n}: the app drops activation name {name!r} (no MusclePart keyword); rename it")
             elif any(h in name.lower() for h in HAND) and part != "forearms":
                 problems.append(f"{n}: the app files {name!r} under {part}, not forearms; rename it")
+            if any(w in name.lower() for w in ("digitorum longus", "hallucis", "toe ")) and part != "calves":
+                problems.append(f"{n}: {name!r} is a shin muscle but the app files it under {part}; "
+                                "name the toe extensors in the stabilisers instead")
         if not any(m[1] == P for m in e["activation"]):
             problems.append(f"{n}: no primary muscle")
+        elif not any(m[1] == P and part_of(m[0]) for m in e["activation"]):
+            # Legend-only primaries (Hip Flexors) count for no group, so the
+            # exercise would belong to none (401-500, 2026-10-05).
+            problems.append(f"{n}: no primary row the app counts (legend-only names count for no group)")
         if not 3 <= len(SETUP.get(n, [])) <= 5:
             problems.append(f"{n}: needs 3-5 setup steps in SETUP")
         for s in e["stabilisers"]:

@@ -110,15 +110,15 @@ struct PremiumView: View {
 
     private var headline: (title: String, message: String) {
         switch reason {
-        case .mistake, .comparison:
+        case .mistake:
             return ("See the mistakes before you make them",
-                    "Premium draws each exercise's common mistakes over the lifter and opens Form Comparison, so you know what bad form looks like before it creeps in.")
+                    "Premium draws each exercise's common mistakes over the lifter, so you know what bad form looks like before it creeps in.")
         case .preset:
             return ("Three presets for every muscle",
                     "Preset 1 is free. Premium adds Preset 2 and 3 for every muscle group, so a different session for each one is a tap away.")
         case .onboarding, .profile:
             return ("Train with MUSQ Premium",
-                    "Everything in MUSQ stays free to train with. Premium adds the common mistakes, Form Comparison, more presets and no ads.")
+                    "Everything in MUSQ stays free to train with. Premium adds the common mistakes, more presets and no ads.")
         }
     }
 
@@ -131,7 +131,6 @@ struct PremiumView: View {
             .init(symbol: "list.bullet.clipboard", title: "Workout log, history and recovery", free: true),
             .init(symbol: "square.stack", title: "Basic, Advanced and Preset 1", free: true),
             .init(symbol: "exclamationmark.triangle", title: "Common mistakes over the lifter", free: false),
-            .init(symbol: "rectangle.split.2x1", title: "Form Comparison", free: false),
             .init(symbol: "square.stack.3d.up", title: "Preset 2 and 3 for every group", free: false),
             .init(symbol: "nosign", title: "No ads", free: false),
         ]
@@ -142,8 +141,6 @@ struct PremiumView: View {
         VStack(alignment: .leading, spacing: 14) {
             BenefitRow(symbol: "exclamationmark.triangle", title: "The common mistakes",
                        detail: "Drawn over the lifter for every key tip.")
-            BenefitRow(symbol: "rectangle.split.2x1", title: "Form Comparison",
-                       detail: "Good form and the mistake side by side.")
             BenefitRow(symbol: "square.stack.3d.up", title: "Preset 2 and 3",
                        detail: "For every muscle group.")
             BenefitRow(symbol: "nosign", title: "No ads",
@@ -342,21 +339,10 @@ struct PremiumView: View {
     /// Trial wording appears only when this Apple Account can still take the
     /// yearly plan's free trial.
     private var showsTrial: Bool {
-        isEligibleForTrial && purchases.yearly?.subscription?.introductoryOffer?.paymentMode == .freeTrial
+        isEligibleForTrial && purchases.yearlyOffersFreeTrial
     }
 
-    /// "7 days", read from the offer so the copy can't drift from App Store
-    /// Connect.
-    private var trialLength: String {
-        guard let period = purchases.yearly?.subscription?.introductoryOffer?.period else { return "7 days" }
-        switch period.unit {
-        case .day: return period.value == 1 ? "1 day" : "\(period.value) days"
-        case .week: return "\(period.value * 7) days"
-        case .month: return period.value == 1 ? "1 month" : "\(period.value) months"
-        case .year: return period.value == 1 ? "1 year" : "\(period.value) years"
-        @unknown default: return "7 days"
-        }
-    }
+    private var trialLength: String { purchases.trialLength }
 
     /// The billed price stays the card's big number; this line only explains it.
     private func yearlyDetail(_ yearly: Product) -> String {
@@ -568,7 +554,7 @@ private struct FeatureTable: View {
 }
 
 /// One thing Premium unlocks: its symbol, name and a line on what it means.
-private struct BenefitRow: View {
+struct BenefitRow: View {
     var symbol: String
     var title: String
     var detail: String

@@ -1,0 +1,238 @@
+// MARK: PIECES
+    // MARK: 401-500 hammer, Zottman, reverse curl and wrist roller pieces (2026-10-04)
+
+    /// Neutral-grip curls with both hands (the incline hammer curl): both
+    /// wrists folding in toward the palms, the fingers tipping toward the
+    /// midline, growing with the left elbow's bend. With the palms facing in,
+    /// a fold toward the palm is a turn about the lifter's vertical
+    /// (`hammerWristBent` for both hands; the right hand's turn is mirrored,
+    /// so a positive turn folds both in). On the incline rig 60° moves each
+    /// hand tip ~12 cm at the top.
+    private static func hammer500WristsIn(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"]],
+                  moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .up, degrees: degrees)],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Cross-body hammer curl: one wrist (`side`) folding in toward the
+    /// chest as the dumbbell crosses, `hammerWristBent` for either arm, read
+    /// by that arm's elbow so it shows only during that arm's curl. At the
+    /// top the forearm points up, in and forward, and a positive turn about
+    /// the vertical swings the fingers in and back toward the chest.
+    private static func hammer500WristIn(_ side: String, _ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["forearm_\(side)", "hand_\(side)", "hand_\(side).tip"]],
+                  moves: [.turn(pivot: "hand_\(side)", points: ["hand_\(side).tip"], axis: .up, degrees: degrees)],
+                  strength: .withBend("forearm_\(side)"))
+    }
+
+    /// Cross-body hammer curl: the dumbbell curled straight up beside its
+    /// own shoulder instead of across, the forearm and hand swung `degrees`
+    /// outward about the elbow (a negative turn about `.up` is outward on
+    /// both sides), with that arm's elbow bend. On the rig 28° takes the
+    /// right hand ~10 cm back out from the middle of the chest, in front of
+    /// its own shoulder, at the top of the right curl.
+    private static func hammer500CurledStraight(_ side: String, _ degrees: Float) -> FaultPose {
+        FaultPose(chains: [arm(side)],
+                  moves: [.turn(pivot: "forearm_\(side)", points: ["hand_\(side)", "hand_\(side).tip"], axis: .up, degrees: -degrees)],
+                  strength: .withBend("forearm_\(side)"))
+    }
+
+    /// Cross-body hammer curl: the trunk turning toward the right as the
+    /// left dumbbell crosses, the left shoulder coming forward (`twisted`'s
+    /// turn about the pelvis), growing with the left elbow's bend so it comes
+    /// and goes with the left curl and stays off while the right arm works.
+    /// Drawn as the spine, the shoulder girdle, the working (left) arm and
+    /// the hip line, which stays put so the turned shoulders read against
+    /// it; the hanging right arm is left out (only drawn points move, so it
+    /// gets no guides): in the three-quarter view it swung onto the middle
+    /// of the trunk and read as a second spine.
+    private static func hammer500Twisted(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, ["upper_arm_L", "forearm_L", "hand_L"], hips],
+                  moves: [.turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head", "upper_arm_L", "upper_arm_R", "forearm_L", "hand_L"],
+                                axis: .up, degrees: degrees)],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Incline curls on a low pad, sitting up off it: `inclineSatUpright`'s
+    /// moves with the turn set by `degrees`. The trunk comes forward about the
+    /// hips and the arms turn back by as much about the shoulders, so they
+    /// still hang straight down, now nearly in line with the trunk. On the
+    /// Incline Hammer Curl (trunk 42° back) 35° leaves the trunk 7° back and
+    /// the shoulders ~32 cm forward and higher; read at the bottom.
+    private static func hammer500InclineSatUp(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -degrees),
+                          .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: degrees)])
+    }
+
+    /// Palms-down dumbbell curl: `reverseCurlShouldersRolled` without the
+    /// bar line (the shoulders 0.06 torso lengths forward and 0.1 up, ~4 and
+    /// ~6 cm, the arms and grip carried), with the left elbow's bend.
+    private static let hammer500ShouldersRolled = FaultPose(
+        chains: [shoulders, armsToGrip],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], forward: 0.06, up: 0.1)],
+        strength: .withBend("forearm_L")
+    )
+
+    /// Wrist roller (arms held out in front, overhand on the roller): both
+    /// arms sinking `degrees` about the shoulders, the roller (drawn between
+    /// the palms) coming down and back toward the body. On the rig 30° drops
+    /// the hands ~27 cm.
+    private static func hammer500RollerArmsSunk(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -degrees)])
+    }
+
+    /// Wrist roller: the trunk leaning back `degrees` from the hips, the
+    /// arms and roller carried with it (`leanedBack` drawn with the roller).
+    private static func hammer500RollerLeanedBack(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, bar],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)])
+    }
+
+    /// Wrist roller: the shoulders shrugging up 0.12 torso lengths (~7 cm),
+    /// the arms and roller lifted with them (`shrugged` drawn to the grip).
+    private static let hammer500RollerShrugged = FaultPose(
+        chains: [shoulders, armsToGrip, bar],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"], up: 0.12)]
+    )
+
+// MARK: TABLE
+        // MARK: 401-500 hammer, Zottman and reverse curls and the wrist roller (2026-10-04)
+        // One body (torso 0.592 m). Distances below were measured with a
+        // Python port of FaultGhost.solve on the rigs at each fault's moment,
+        // projected with the framing plus the fault's view and the mistake
+        // view's scale and lift (hammer/ghost.py, gdraw.py in the session
+        // scratchpad); "pt" is the 382 x 655 trainer viewport.
+        // One low pulley in front, framed from the right side (yaw +1.4) like
+        // the Cable Hammer Curl: the sagittal faults read as framed.
+        "Rope Hammer Curl": [
+            // The upper arms swinging 35° forward with the elbow bend: the
+            // elbows ~17 cm (~44 pt) forward at the top.
+            "elbow": elbowsForward(35),
+            // Half reps: the elbows ~45° more bent at the bottom (the model's
+            // 152° to ~107°), the hands ~19 cm (~48 pt) higher; shoulder to
+            // wrist 0.881 torso lengths at the bottom, none of it by 0.81
+            // (~126°).
+            "range": curlBottomCut(from: 0.81, to: 0.875),
+            // The rope tipping the hands down at the wrists, toward the little
+            // fingers: the hand tips 45° below the forearm line, ~9 cm
+            // (~22 pt), read at 1.0 s with the forearms about level. Side-on as
+            // framed: face-on the stack, straight ahead of the lifter, would
+            // stand between the camera and the hands.
+            "grip": curlWristsCurled(degrees: -45),
+            // Rocking back: the hips 0.06 forward and the trunk 15° further
+            // back, the neck ~16 cm back at the top; drawn with the near
+            // (right) arm only, as the Cable Hammer Curl's.
+            "torso": bodySwungOneArm("R"),
+            // Shoulders rolled forward and shrugged (0.07 forward, 0.1 up,
+            // ~7 cm), the arms carried.
+            "shoulder": hunched(),
+        ],
+        // Alternating, the LEFT arm curls 0-4 s and the right 4-8 s; framed
+        // nearly face-on at yaw -0.4 like the Alternating Hammer Curl. The
+        // path and grip faults show the right arm at the top of its curl
+        // (5.6 s), where their labels' dots sit; the elbow and trunk faults
+        // the left arm (1.6 s).
+        "Cross-Body Hammer Curl": [
+            // Curled straight up: the right forearm swung 28° out about the
+            // elbow, the hand ~10 cm (~25 pt) back out from the middle of the
+            // chest, in front of its own shoulder (at 40° it passed outside
+            // the shoulder on screen and reached the label).
+            "path": hammer500CurledStraight("R", 28),
+            // The left elbow raised: the upper arm 35° further forward (from
+            // the model's ~32° to ~67°), the elbow ~17 cm higher and forward;
+            // turned to the left side (total -1.3).
+            "elbow": elbowsForward(35, side: "L").seen(-0.9),
+            // The right wrist folded 60° in toward the chest at the top, the
+            // hand tip ~10 cm in; turned to the right side (total +1.2),
+            // where the fold runs across the screen (~24 pt; ~12 pt as
+            // framed, ~17 pt at +0.8, too faint on the simulator). Small but
+            // the most this fold can show: the hand is ~10 cm long and 60° is
+            // about as far as a gripping wrist bends; no view or moment of
+            // the right curl gives more than ~27 pt (reviewer check, 4.8-5.6 s
+            // at views -0.4 to +2.0).
+            "grip": hammer500WristIn("R", 60).seen(1.6),
+            // The left arm stopped ~45° short (170° to ~125°) at the bottom,
+            // the hand ~19 cm higher; turned to the left side (total -1.3) so
+            // the forearm folds across the screen, not toward the camera.
+            "range": curlBottomCut("L", from: 0.8, to: 0.89).seen(-0.9),
+            // The trunk turned 25° to the right as the left dumbbell crosses,
+            // the left shoulder ~8 cm forward and the right one back; turned
+            // -0.5 (total -0.9), a front-left three-quarter view, where the
+            // shoulders move ~20 pt and the girdle narrows to a short V
+            // above the unmoved hip line (as framed, nearly face-on, the
+            // turn ran along the line of sight: ~12 pt, the girdle barely
+            // changed and the ghost read as the arm reaching further).
+            "torso": hammer500Twisted(25).seen(-0.5),
+        ],
+        // Seated on a ~52° pad, trunk 42° back, framed from the front-left
+        // at yaw -0.9; -0.6 turns it to a true left side view (total -1.5)
+        // for the sagittal faults, as the Incline Dumbbell Curl's.
+        "Incline Hammer Curl": [
+            // Sitting up off the pad: the trunk from 42° to 7° back, the
+            // shoulders ~32 cm (~64 pt) forward and higher, the arms still
+            // hanging straight down below them (read at the bottom).
+            "back": hammer500InclineSatUp(35).seen(-0.6),
+            // The upper arms swinging from vertical to 35° forward as the
+            // dumbbells rise, the elbows ~17 cm (~35 pt) forward at the top.
+            "arms": elbowsForward(35).seen(-0.6),
+            // Both wrists folded 60° in toward the palms at the top, the hand
+            // tips ~12 cm (~23 pt) in; turned face-on (total 0).
+            "grip": hammer500WristsIn(60).seen(0.9),
+            // Half reps: ~45° short at the bottom (170° to ~125°), the hands
+            // ~19 cm (~37 pt) higher.
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(-0.6),
+            // Shoulders rolled forward off the pad (0.11 torso lengths, ~7 cm
+            // out of the chest, which faces up and forward here).
+            "shoulder": shouldersForward.seen(-0.6),
+        ],
+        // Standing, both arms together, framed at yaw -0.4; the sagittal
+        // faults turn to the left side (total -1.3) as the Dumbbell Curl's,
+        // the wrist fault -0.5 (total -0.9) as the Reverse Curl's.
+        "Zottman Curl": [
+            // "turn" has no ghost: turning the forearm over spins the hand
+            // about its own length, which the joint lines cannot show.
+            "elbow": elbowsForward(35).seen(-0.9),
+            // Palms down on the way down, the wrists sagging: the hands
+            // tipped 50° below the forearm line at 2.5 s (elbows ~94°, the
+            // forearms about level), the hand tips ~10 cm (~26 pt) lower.
+            "wrist": curlWristsCurled(degrees: -50).seen(-0.5),
+            // Half reps: ~45° short at the bottom (170° to ~125°).
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(-0.9),
+            // Hips 0.06 forward, trunk 15° back to heave the dumbbells up.
+            "torso": bodySwung(withBar: false).seen(-0.9),
+        ],
+        // Standing, palms down, framed at yaw -0.4 like the Reverse Curl,
+        // whose faults these follow (turned -0.5, to -0.9).
+        "Dumbbell Reverse Curl": [
+            // The wrists bending down under the dumbbells: the hands 45°
+            // below the forearm line from mid-rep to the top, the hand tips
+            // ~9 cm (~22 pt) lower.
+            "grip": curlWristsCurled(degrees: -45).seen(-0.5),
+            "elbow": elbowsForward(35).seen(-0.5),
+            // Half reps: ~45° short at the bottom (166° to ~121°), the hands
+            // ~19 cm (~47 pt) higher.
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(-0.5),
+            "torso": bodySwung(withBar: false).seen(-0.5),
+            // Shoulders rolled forward and up at the top (~4 and ~6 cm).
+            "shoulder": hammer500ShouldersRolled.seen(-0.5),
+        ],
+        // Arms held out in front, framed from the front-left at yaw -0.7.
+        // Faults read at 2.0 s, mid-wind. "turn" (which way the roller
+        // turns) and "lower" (how fast it unwinds) have no ghost: both
+        // directions pass through the same wrist angles, and speed is not a
+        // pose.
+        "Wrist Roller": [
+            // The arms sunk 30° about the shoulders, the roller ~27 cm lower
+            // and nearer the body; turned to the left side (total -1.5),
+            // where the arms drop across the screen.
+            "arms": hammer500RollerArmsSunk(30).seen(-0.8),
+            // Leaning back 12° from the hips, the neck ~12 cm back and the
+            // roller ~14 cm back and higher; seen from the left side.
+            "torso": hammer500RollerLeanedBack(12).seen(-0.8),
+            // Shoulders shrugged up ~7 cm with the arms and roller; seen from
+            // the left side (total -1.5), as framed the raised left arm ran
+            // into the top-right label.
+            "shoulder": hammer500RollerShrugged.seen(-0.8),
+        ],

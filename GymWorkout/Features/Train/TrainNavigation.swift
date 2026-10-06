@@ -3,7 +3,8 @@
 //  GymWorkout
 //
 //  Navigation shared by the Train and Muscles tabs: both can open a muscle
-//  group's preset, an exercise's sets, and the full 3D trainer.
+//  group's preset, an exercise's sets, and the full 3D trainer; the Muscles
+//  tab also opens the workout history.
 //
 
 import SwiftUI
@@ -15,6 +16,10 @@ enum TrainRoute: Hashable {
     case preset(MuscleGroup, day: Date, level: PresetLevel? = nil)
     case exercise(UUID)
     case trainer(exerciseName: String)
+    /// A logged day, read-only.
+    case session(UUID)
+    /// One exercise across every day it was done, read-only.
+    case exerciseHistory(String)
 }
 
 /// Owns a tab's navigation path so screens deep in the stack can push after
@@ -39,6 +44,10 @@ extension View {
                 if let exercise = ExerciseCatalog.exercise(named: name) {
                     Exercise3DView(exercise: exercise)
                 }
+            case .session(let id):
+                SessionHistoryView(sessionID: id)
+            case .exerciseHistory(let name):
+                ExerciseHistoryView(exerciseName: name)
             }
         }
     }

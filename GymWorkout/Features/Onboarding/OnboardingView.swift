@@ -444,8 +444,9 @@ struct OnboardingView: View {
 
     private var draftProfile: UserProfile? {
         guard let sex, let goal else { return nil }
+        // Onboarding doesn't ask for a name; editing keeps the one from Profile.
         return UserProfile(sex: sex, goal: goal, heightCm: heightCm, weightKg: weightKg,
-                           daysPerWeek: daysPerWeek, split: split)
+                           daysPerWeek: daysPerWeek, split: split, name: store.profile?.name)
     }
 
     // MARK: - Actions

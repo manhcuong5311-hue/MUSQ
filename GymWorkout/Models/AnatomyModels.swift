@@ -148,7 +148,9 @@ struct CueAnnotation: Identifiable, Hashable {
     var joint: String? = nil
 }
 
-/// Copy for the correct-vs-mistake comparison screen.
+/// Correct-vs-mistake copy for each exercise. Nothing shows it since the Form
+/// Comparison screen was taken out; it's kept for when it comes back on the
+/// live model.
 struct FormComparisonCopy: Hashable {
     let correctBadge: String
     let mistakeBadge: String

@@ -1,0 +1,285 @@
+// MARK: PIECES
+    // MARK: 401-500 standing, hinged and sled calf raise pieces (2026-10-04)
+
+    /// Calf raises on the 401-500 rigs, which have toe joints (`toe_*`, the
+    /// ball of the foot, ~15 cm from the ankle): the foot turned `degrees`
+    /// about the ball of the foot (positive lowers the heel, negative lifts
+    /// it), the shin and `body` shifted with the ankle (`up` along the trunk,
+    /// `ahead` and `rise` in the room, in torso lengths) and `half` shifted
+    /// half as far, then the knee and any `reseat` joints re-seated. The
+    /// sizes in the table are matched to how far the ankle moves, so the knee
+    /// stays near straight (measured on the rigs). `kneeAhead` nudges the
+    /// knee forward in the room before the re-seat, which only sets the side
+    /// the knee bends to: where the hips move ahead of the old knee line
+    /// (the donkey and hack squat bottoms) the re-seat would otherwise bend
+    /// the near-straight knee backward, past straight.
+    private static func calfStand500Heels(_ side: String, turn degrees: Float, body: [String], half: [String] = [],
+                                          up: Float = 0, ahead: Float = 0, rise: Float = 0, kneeAhead: Float = 0,
+                                          reseat extra: [String] = [], strength: FaultStrength) -> FaultPose {
+        var moves: [FaultMove] = [
+            .turn(pivot: "toe_\(side)", points: ["foot_\(side)", "foot_\(side).tip"], axis: .lateral, degrees: degrees),
+            .shift(["shin_\(side)"] + body, up: up, ahead: ahead, rise: rise),
+        ]
+        if !half.isEmpty { moves.append(.shift(half, up: up / 2, ahead: ahead / 2, rise: rise / 2)) }
+        if kneeAhead != 0 { moves.append(.shift(["shin_\(side)"], ahead: kneeAhead)) }
+        moves.append(.resolve(["shin_\(side)"] + extra))
+        return FaultPose(chains: [leg(side), hips, spine], moves: moves, strength: strength)
+    }
+
+    /// Two-foot standing calf raises: rolling out onto the outside edges of
+    /// the feet at the top, the ankles `ankle` and the knees `knee` torso
+    /// lengths out from the midline over the planted toes. Full near the top;
+    /// seen from the front (`faceOn`), where the move runs across the screen.
+    private static func calfStand500RolledOut(ankle: Float = 0.1, knee: Float = 0.06) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["foot_*"], outward: ankle), .shift(["shin_*"], outward: knee)],
+                  strength: calfHeelHeight(from: 0.9, to: 0.97), view: faceOn)
+    }
+
+    /// One-leg standing calf raises on the left leg: the free (right) side of
+    /// the pelvis sagging, the right hip and its hanging leg `drop` torso
+    /// lengths lower and the pelvis half that. The same all rep; seen from
+    /// the front (`faceOn`).
+    private static func calfStand500HipDropped(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("R")],
+                  moves: [.shift(leg("R"), rise: -drop), .shift(["pelvis"], rise: -drop / 2)],
+                  view: faceOn)
+    }
+
+    /// What rides on the working (left) ankle in the one-leg machine calf
+    /// raise: the hips, trunk, both arms on the handles and the hanging right
+    /// lower leg.
+    private static let calfStand500MachineOneLegBody = carried + ["shin_R", "foot_R", "foot_R.tip"]
+
+    /// The one-leg machine calf raise: the hips pushed back under the
+    /// shoulder pads, as `calfHipsBack`, with the hanging right leg carried
+    /// along and only the standing (left) knee re-seated. The same all rep.
+    private static let calfStand500OneLegHipsBack = FaultPose(
+        chains: [spine, leg("L"), hips, ["thigh_R", "shin_R", "foot_R", "foot_R.tip"]],
+        moves: [.shift(["pelvis", "thigh_*", "shin_R", "foot_R", "foot_R.tip"], ahead: -0.2, rise: -0.05),
+                .shift(["spine"], ahead: -0.1, rise: -0.025),
+                .resolve(["shin_L"])]
+    )
+
+    /// The one-leg machine calf raise: the free (right) foot put down to
+    /// help, the right lower leg swung `degrees` forward about the knee toward
+    /// straight. Full with the heel at its lowest.
+    private static func calfStand500FreeFootDown(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("R"), hips],
+                  moves: [.turn(pivot: "shin_R", points: ["foot_R", "foot_R.tip"], axis: .lateral, degrees: degrees)],
+                  strength: calfHeelHeight(from: 0.9, to: 0.8))
+    }
+
+    /// Donkey calf raises (forearms on a pad): pushing up through the arms,
+    /// the trunk and upper arms turned `degrees` back and up about the hips
+    /// with the hands left on the pad and the elbows re-seated. Full near the
+    /// top.
+    private static func calfStand500TrunkRaised(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, arms],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: degrees),
+                          .resolve(["forearm_*"])],
+                  strength: calfHeelHeight(from: 0.9, to: 0.97))
+    }
+
+    /// Donkey calf raises: the knees bending in the stretch, the hips and
+    /// thighs `drop` torso lengths lower and the lower back half that (the
+    /// chest stays on the forearms), the knees re-seated forward. Full with
+    /// the heels at their lowest.
+    private static func calfStand500HingeKneesBent(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips, spine],
+                  moves: [.shift(["pelvis", "thigh_*"], rise: -drop), .shift(["spine"], rise: -drop / 2),
+                          .resolve(["shin_*"])],
+                  strength: calfHeelHeight(from: 0.9, to: 0.82))
+    }
+
+    /// Donkey calf raises: the lower back rounding in the stretch, the lumbar
+    /// spine `amount` torso lengths and the chest 0.4 of that out through the
+    /// back (toward the ceiling in the hinge). Full with the heels at their
+    /// lowest.
+    private static func calfStand500BackRounded(_ amount: Float) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.shift(["spine"], forward: -amount), .shift(["chest"], forward: -amount * 0.4)],
+                  strength: calfHeelHeight(from: 0.9, to: 0.82))
+    }
+
+    /// The hack squat calf raise: the hips sliding forward off the back pad,
+    /// the pelvis and hips `forward` torso lengths out from the pad and `down`
+    /// down the line of the sled, the lower back half that, the knees
+    /// nudged forward and re-seated (the hips end up ahead of the old knee
+    /// line, so without the nudge the re-seat bends the knees backward). The
+    /// same all rep; seen side-on to the sled (`sledSide`).
+    private static func calfStand500SledHipsOff(forward: Float, down: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*"], forward: forward, up: -down),
+                          .shift(["spine"], forward: forward / 2, up: -down / 2),
+                          .shift(["shin_*"], ahead: 0.1),
+                          .resolve(["shin_*"])],
+                  view: sledSide)
+    }
+
+    /// The hack squat calf raise: the knees bending in the stretch so the
+    /// sled sinks, the body `drop` torso lengths down the line of the sled
+    /// (the trunk lies along it, so the hips also come forward) and the
+    /// knees nudged forward and re-seated, so they bend forward rather than
+    /// backward. Full with the heels at their lowest; seen side-on to the
+    /// sled (`sledSide`).
+    private static func calfStand500SledSinks(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(carried, up: -drop), .shift(["shin_*"], ahead: 0.1), .resolve(["shin_*"])],
+                  strength: calfHeelHeight(from: 0.8, to: 0.7), view: sledSide)
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 standing, hinged and sled calf raises (2026-10-04)
+        // Seven straight-knee calf raises, one body (torso 0.592 m). All do
+        // two reps in 8 s: ~0.8 s up, ~1.2 s held at the top, ~1.2 s down,
+        // ~0.7 s resting at the bottom. Six are framed side-on from the
+        // lifter's front left (yaw -1.3), so faults in the lifter's own
+        // front-back plane need no turn; the across-the-body faults (rolling
+        // out, the hip sag, the lean onto the post) turn `faceOn` (a total of
+        // -0.2), and the two donkeys' back faults turn 0.5 so their label
+        // stays clear (see there). The hack squat version is framed
+        // three-quarter (-0.6); its
+        // faults turn `sledSide` to a true side view of the sled (-1.57).
+        // The heel faults turn the foot about the ball of the foot (`toe_*`),
+        // which these rigs have, and move the body with the ankle so the knee
+        // stays near straight. Strengths read the heel height
+        // (`calfHeelHeight`, knee to toe tip): 0.85 -> 0.99 torso lengths on
+        // the two floor raises, 0.74-0.75 -> 0.99-1.0 on the one-leg raises,
+        // 0.80 -> 1.02 on the donkey pair, 0.68 -> 0.98 on the hack squat.
+        // Sizes below were measured with a Python port of FaultGhost.solve on
+        // the rigs at the fault's moment (calfstand/ghost.py and try3.py in
+        // the session scratchpad). Tempo cues, the machine donkey's pad cue
+        // and the hack squat's foot cue have no ghost: speed is not a pose,
+        // and the pad's and feet's places on the machine are not body
+        // positions.
+        "Bodyweight Standing Calf Raise": [
+            // Rolling out at the top: the ankles ~6 cm and the knees ~3.5 cm
+            // out from the midline over the planted toes, seen from the front.
+            "toes": calfStand500RolledOut(),
+            // Dipping at the knees at the bottom: the body ~4 cm lower, the
+            // knees 175° -> ~143° and ~11 cm forward.
+            "knees": calfKneesDipped(body: carried),
+            // Stopping short of the top: the heels 20° lower about the balls
+            // of the feet (ankle 138° -> ~117°), the body ~3 cm lower and
+            // ~4 cm back with the ankles, the knees ~172°.
+            "top": calfStand500Heels("*", turn: 20, body: carried, ahead: -0.07, rise: -0.055,
+                                     strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // Heels hovering at the bottom: the heels 22° up about the balls
+            // of the feet (ankle 104° -> ~126°, the heel ~5 cm off the floor),
+            // the body ~5 cm higher and ~3.5 cm forward.
+            "floor": calfStand500Heels("*", turn: -22, body: carried, ahead: 0.06, rise: 0.08,
+                                       strength: calfHeelHeight(from: 0.9, to: 0.86))
+            // "tempo" has no ghost: lowering speed.
+        ],
+        "Dumbbell Standing Calf Raise": [
+            // The dumbbells swinging forward as the heels rise: the arms 20°
+            // forward about the shoulders, the hands ~18 cm forward at the top.
+            "arms": armsSwungForward(20, strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // As the bodyweight raise (the arms ride down with the body).
+            "knees": calfKneesDipped(body: carried),
+            "top": calfStand500Heels("*", turn: 20, body: carried, ahead: -0.07, rise: -0.055,
+                                     strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            "floor": calfStand500Heels("*", turn: -22, body: carried, ahead: 0.06, rise: 0.08,
+                                       strength: calfHeelHeight(from: 0.9, to: 0.86))
+            // "tempo" has no ghost: bouncing is speed.
+        ],
+        "Single-Leg Dumbbell Calf Raise": [
+            // Leaning onto the post (it sits below the shoulder, ahead and to
+            // the right): the trunk 12° toward it, the head ~14 cm to the
+            // right, the right elbow 97° -> ~71°; seen from the front.
+            "post": pulledOnSupport(strength: .always).seen(faceOn),
+            // The free side sagging: the right hip and hanging leg ~6 cm
+            // lower, the pelvis ~3 cm; seen from the front.
+            "hips": calfStand500HipDropped(0.1),
+            // Dipping the left knee: the body ~4 cm lower, the left knee
+            // 176° -> ~144°, the right elbow re-seated on the post.
+            "knee": calfKneesDipped("L", body: calfOneLegBody, reseat: ["forearm_R"]),
+            // Stopping short: the left heel 20° lower (138° -> ~116°), the
+            // body ~3 cm lower and ~4 cm back.
+            "top": calfStand500Heels("L", turn: 20, body: calfOneLegBody, ahead: -0.07, rise: -0.055,
+                                     reseat: ["forearm_R"], strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // Stopping level with the step: the left heel 25° up from its
+            // stretch (88° -> ~109°, level with the step's top), the body
+            // ~6 cm higher.
+            "bottom": calfStand500Heels("L", turn: -25, body: calfOneLegBody, ahead: 0.035, rise: 0.1,
+                                        reseat: ["forearm_R"], strength: calfHeelHeight(from: 0.9, to: 0.8))
+        ],
+        "Single-Leg Machine Calf Raise": [
+            // The hips ~12 cm back and ~3 cm down under the pads, the hanging
+            // leg with them, the left knee 176° -> ~151°.
+            "pads": calfStand500OneLegHipsBack,
+            // The free foot put down beside the working one at the bottom:
+            // the right knee 129° -> ~174°, the foot ~18 cm lower and ~25 cm
+            // further forward.
+            "free": calfStand500FreeFootDown(45),
+            // Dipping the left knee under the pads: the body ~4 cm lower,
+            // the left knee 176° -> ~144°.
+            "knee": calfKneesDipped("L", body: calfStand500MachineOneLegBody),
+            // Stopping short: the left heel 20° lower (142° -> ~121°), the
+            // body ~3 cm lower and ~4 cm back, the knee ~173°.
+            "top": calfStand500Heels("L", turn: 20, body: calfStand500MachineOneLegBody, ahead: -0.07, rise: -0.055,
+                                     strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // Stopping level with the block: the left heel 25° up from its
+            // stretch (84° -> ~110°), the body ~6 cm higher, the knee ~172°.
+            "bottom": calfStand500Heels("L", turn: -25, body: calfStand500MachineOneLegBody, rise: 0.105,
+                                        strength: calfHeelHeight(from: 0.9, to: 0.8))
+        ],
+        "Donkey Calf Raise": [
+            // Pushing up out of the hinge at the top: the trunk 15° up about
+            // the hips, the head ~18 cm and the shoulders ~14 cm up and back,
+            // the elbows 95° -> ~159° between the shoulders and the hands on
+            // the pad.
+            "hinge": calfStand500TrunkRaised(15),
+            // The lower back rounding in the stretch: the lumbar spine ~8 cm
+            // and the chest ~3 cm up toward the ceiling. Turned 0.5 toward
+            // the front (a total of -0.8): the hump is vertical, so it reads
+            // from any turn about the vertical, and the turn takes the head,
+            // lifted in the mistake view, clear of the back label top left.
+            "back": calfStand500BackRounded(0.14).seen(0.5),
+            // The knees bending in the stretch: the hips ~5 cm lower, the
+            // knees 174° -> ~141°.
+            "knees": calfStand500HingeKneesBent(0.08),
+            // Stopping short: the heels 20° lower (151° -> ~128°), the hips
+            // ~3 cm lower, the shoulders staying on the pad.
+            "top": calfStand500Heels("*", turn: 20, body: ["pelvis", "thigh_*"], half: ["spine"], ahead: 0.01, rise: -0.045,
+                                     strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // Stopping level with the block: the heels 25° up (95° -> ~127°),
+            // the hips ~6 cm higher, the knees ~171° (the knee nudge keeps
+            // the left one from re-seating ~9° past straight).
+            "bottom": calfStand500Heels("*", turn: -25, body: ["pelvis", "thigh_*"], half: ["spine"], ahead: -0.035, rise: 0.095,
+                                        kneeAhead: 0.05, strength: calfHeelHeight(from: 0.9, to: 0.8))
+        ],
+        "Machine Donkey Calf Raise": [
+            // As the Donkey Calf Raise (the same body and motion 5 cm higher;
+            // the lever's pad rides on the hips; the back fault turned 0.5 as
+            // there).
+            "back": calfStand500BackRounded(0.14).seen(0.5),
+            "knees": calfStand500HingeKneesBent(0.08),
+            "top": calfStand500Heels("*", turn: 20, body: ["pelvis", "thigh_*"], half: ["spine"], ahead: 0.01, rise: -0.045,
+                                     strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            "bottom": calfStand500Heels("*", turn: -25, body: ["pelvis", "thigh_*"], half: ["spine"], ahead: -0.035, rise: 0.095,
+                                        kneeAhead: 0.05, strength: calfHeelHeight(from: 0.9, to: 0.8))
+            // "pad" has no ghost: the pad's place on the hips.
+        ],
+        "Hack Squat Calf Raise": [
+            // The hips sliding off the back pad: the pelvis ~9 cm forward off
+            // the pad and down the sled, the knees bending forward, 175° ->
+            // ~160°, at the top. (Before the review's knee nudge the re-seat
+            // bent them ~20° backward, past straight; seen on the lab shot.)
+            "back": calfStand500SledHipsOff(forward: 0.12, down: 0.1),
+            // The knees bending as the heels drop: the body ~7 cm down the
+            // sled, the knees bending forward, 175° -> ~138° (backward
+            // before the nudge, as above).
+            "knees": calfStand500SledSinks(0.12),
+            // Stopping short: the heels 20° lower (134° -> ~113°), the body
+            // ~5 cm down the sled, the knees ~171°.
+            "top": calfStand500Heels("*", turn: 20, body: carried, up: -0.08,
+                                     strength: calfHeelHeight(from: 0.9, to: 0.97)).seen(sledSide),
+            // Stopping about level with the platform: the heels 25° up from
+            // the stretch (75° -> ~109°), the body ~8 cm up the sled, the
+            // knees ~176°, nudged so they stay on the forward side of straight.
+            "bottom": calfStand500Heels("*", turn: -25, body: carried, up: 0.135, kneeAhead: 0.1,
+                                        strength: calfHeelHeight(from: 0.8, to: 0.7)).seen(sledSide)
+            // "feet" has no ghost: the feet's place on the platform.
+        ],

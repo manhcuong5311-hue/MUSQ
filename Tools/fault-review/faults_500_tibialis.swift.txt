@@ -1,0 +1,218 @@
+// MARK: PIECES
+    // MARK: 401-500 tibialis raise and dorsiflexion pieces (2026-10-04)
+
+    /// Tibialis raises and dorsiflexion: how far the toes are up, read off the
+    /// distance from the left knee to the left toe tips. The shin and foot
+    /// keep their lengths, so it depends on the ankle angle alone and shrinks
+    /// as the toes come up: 0.85-0.95 torso lengths with the toes down in
+    /// these five models (ankle 105-129°), 0.73-0.82 with them up (84-100°).
+    /// `from` above `to` grows the fault toward the top of the rep (toes up),
+    /// `from` below `to` toward the bottom.
+    private static func tibialis500Lift(from: Float, to: Float) -> FaultStrength {
+        .between("shin_L", "foot_L.tip", from: from, to: to)
+    }
+
+    /// The forefoot turned about the ankle, `degrees` positive to lift the
+    /// toes (short at the bottom of the rep) or negative to lower them (short
+    /// at the top). The ghost draws the leg to the toe tips, so the ankle
+    /// stays put and the toes rise or drop by the turn.
+    private static func tibialis500Forefoot(_ side: String, _ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [leg(side)],
+                  moves: [.turn(pivot: "foot_\(side)", points: ["foot_\(side).tip"], axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// The standing tibialis raise: folding forward at the hips to stay
+    /// balanced on the heels. The body goes `back` torso lengths back and
+    /// `drop` down over the feet, the trunk and arms tip `degrees` forward
+    /// about the pelvis and the knees re-seat (bending a little forward).
+    private static func tibialis500HipsFolded(_ degrees: Float, back: Float, drop: Float,
+                                              strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, arms],
+                  moves: [.shift(carried, ahead: -back, rise: -drop),
+                          .turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -degrees),
+                          .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// The standing tibialis raise: the knees bending as the hips sink back,
+    /// the body `drop` down and `back` back over the heels, the knees
+    /// re-seated forward, and the toes lowered `toes` degrees with the
+    /// shins, which tip forward by about that much, so the ankle keeps its
+    /// angle and the toes end up lower.
+    private static func tibialis500KneesSunk(drop: Float, back: Float, toes: Float,
+                                             strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(carried, ahead: -back, rise: -drop),
+                          .resolve(["shin_*"]),
+                          .turn(pivot: "foot_*", points: ["foot_*.tip"], axis: .lateral, degrees: -toes)],
+                  strength: strength)
+    }
+
+    /// The wall tibialis raise: the knees bending as the back slides `drop`
+    /// torso lengths down the wall over the planted feet, the knees
+    /// re-seated forward. The same all rep.
+    private static func tibialis500SlidDown(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(carried, rise: -drop), .resolve(["shin_*"])])
+    }
+
+    /// The wall tibialis raise: the hips drifting `forward` torso lengths off
+    /// the wall, the lower back half that, the knees nudged forward and
+    /// re-seated (without the nudge they would cave in toward the midline).
+    /// The same all rep.
+    private static func tibialis500HipsOffWall(_ forward: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*"], ahead: forward),
+                          .shift(["spine"], ahead: forward / 2),
+                          .shift(["shin_*"], ahead: 0.1),
+                          .resolve(["shin_*"])])
+    }
+
+    /// The wall tibialis raise: the feet set `back` torso lengths closer to
+    /// the wall and the body `up` higher on it, so the legs stay about as
+    /// straight and the shins stand nearly upright. The same all rep.
+    private static func tibialis500FeetIn(back: Float, up: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(["foot_*", "foot_*.tip"], ahead: -back),
+                          .shift(carried, rise: up),
+                          .resolve(["shin_*"])])
+    }
+
+    /// The seated tibialis machine: sitting `ahead` torso lengths too far
+    /// forward on the bench with the feet held in the lever, so the knees
+    /// re-seat ahead of the ankles and the shins tip forward. Drawn as the
+    /// legs from the pelvis (a spine line moved forward lies over the real
+    /// torso and reads as clutter). The same all rep.
+    private static func tibialis500SeatForward(_ ahead: Float) -> FaultPose {
+        FaultPose(chains: [legs, ["thigh_L", "pelvis", "thigh_R"]],
+                  moves: [.shift(carried, ahead: ahead), .resolve(["shin_*"])])
+    }
+
+    /// Long-sitting band dorsiflexion: sitting up off the hands, the trunk
+    /// and shoulders turned `degrees` forward about the pelvis toward the
+    /// legs and the back rounded, the lumbar spine `round` torso lengths and
+    /// the chest 0.6 of that out through the back. Drawn as the spine and
+    /// shoulders only (the hands leave the mat). The same all rep.
+    private static func tibialis500SatUp(_ degrees: Float, round: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: -degrees),
+                          .shift(["spine"], forward: -round),
+                          .shift(["chest"], forward: -round * 0.6)])
+    }
+
+    /// One-leg tibialis raise on the left leg: the free (right) side of the
+    /// pelvis sagging, the right hip and its hanging leg `drop` torso lengths
+    /// lower and the pelvis half that. The same all rep; seen from the front
+    /// (`faceOn`).
+    private static func tibialis500HipDropped(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("R")],
+                  moves: [.shift(leg("R"), rise: -drop), .shift(["pelvis"], rise: -drop / 2)],
+                  view: faceOn)
+    }
+
+    /// One-leg tibialis raise: the free (right) foot put down to the floor,
+    /// the right lower leg swung `degrees` forward about the knee toward
+    /// straight.
+    private static func tibialis500FreeFootDown(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [leg("R"), hips],
+                  moves: [.turn(pivot: "shin_R", points: ["foot_R", "foot_R.tip"], axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 tibialis raises and dorsiflexion (2026-10-04)
+        // Five lifts for the front of the shin, one body (torso 0.592 m). All
+        // do two reps in 8 s: ~0.7 s lifting the toes, ~1.3 s held up, ~1.1 s
+        // lowering, ~0.8 s resting down. Four are framed side-on from the
+        // lifter's front left (yaw -1.3), the band one from further round the
+        // front (-0.8); every fault but two is in the lifter's own front-back
+        // plane and needs no turn; the lean onto the post and the hip sag
+        // turn `faceOn` (a total of -0.2). Strengths read the toe height
+        // (`tibialis500Lift`, knee to toe tip): 0.86 -> 0.75 torso lengths on
+        // the Tibialis Raise, 0.85 -> 0.73 one-legged, 0.95 -> 0.82 at the
+        // wall, 0.94 -> 0.78 on the machine, 0.93 -> 0.75 with the band.
+        // Sizes below were measured with a Python port of FaultGhost.solve on
+        // the rigs at the fault's moment (tibialis/try.py, try3.py in the
+        // session scratchpad); every re-seated knee bends forward. Tempo
+        // cues, the machine's heels cue and the band's position cue have no
+        // ghost: speed and pressure are not poses, and where a band sits is
+        // not a body position.
+        "Tibialis Raise": [
+            // Folding forward at the hips at the top: the trunk 25° forward
+            // (hips 167° -> ~136°, the head ~27 cm forward and down), the
+            // pelvis ~4 cm back and ~1 cm down, the knees ~161°.
+            "hips": tibialis500HipsFolded(25, back: 0.06, drop: 0.02,
+                                          strength: tibialis500Lift(from: 0.8, to: 0.76)),
+            // Sinking back on bent knees at the top: the body ~5 cm down and
+            // ~3 cm back, the knees 173° -> ~141° and ~10 cm forward, the toe
+            // tips ~6 cm lower with the shins.
+            "knees": tibialis500KneesSunk(drop: 0.08, back: 0.05, toes: 16,
+                                          strength: tibialis500Lift(from: 0.8, to: 0.76)),
+            // Stopping short of the top: the toes 16° lower (ankle 86° ->
+            // ~102°, the toe tips ~6 cm lower).
+            "top": tibialis500Forefoot("*", -16, strength: tibialis500Lift(from: 0.8, to: 0.76)),
+            // The toes hovering at the bottom: 16° up from the floor (ankle
+            // 106° -> ~90°, the toe tips ~6 cm up).
+            "floor": tibialis500Forefoot("*", 16, strength: tibialis500Lift(from: 0.8, to: 0.84))
+            // "tempo" has no ghost: lowering speed.
+        ],
+        "Single-Leg Tibialis Raise": [
+            // Leaning onto the post (beside the right hip, the hand at
+            // 1.10 m): the trunk 12° toward it, the head ~14 cm to the
+            // right, the right elbow 107° -> ~76°; seen from the front.
+            "post": pulledOnSupport(strength: .always).seen(faceOn),
+            // The free foot put down at the bottom: the right knee 129° ->
+            // ~169°, the right toe tips onto the floor ~13 cm behind the left
+            // foot.
+            "free": tibialis500FreeFootDown(40, strength: tibialis500Lift(from: 0.79, to: 0.83)),
+            // The free side sagging: the right hip and hanging leg ~5 cm
+            // lower, the pelvis ~3 cm; seen from the front.
+            "hips": tibialis500HipDropped(0.09),
+            // Stopping short: the left toes 16° lower (84° -> ~100°).
+            "top": tibialis500Forefoot("L", -16, strength: tibialis500Lift(from: 0.79, to: 0.75)),
+            // Hovering at the bottom: the left toes 16° up (104° -> ~88°).
+            "floor": tibialis500Forefoot("L", 16, strength: tibialis500Lift(from: 0.79, to: 0.83))
+        ],
+        "Wall Tibialis Raise": [
+            // The hips ~9 cm forward off the wall, the knees 168° -> ~147°
+            // and ~7 cm forward, the trunk leaning back further (6° -> 14°).
+            "wall": tibialis500HipsOffWall(0.15),
+            // The heels ~18 cm closer to the wall, the body ~5 cm higher on
+            // it, the knees ~164°, the shins nearly upright (ankle 127° ->
+            // ~112° at the bottom).
+            "feet": tibialis500FeetIn(back: 0.3, up: 0.08),
+            // Sliding ~6 cm down the wall on bent knees: the knees 168° ->
+            // ~137° and ~10 cm forward.
+            "knees": tibialis500SlidDown(0.1),
+            // Stopping short: the toes 16° lower (ankle 99° -> ~115°, the toe
+            // tips ~6 cm lower).
+            "top": tibialis500Forefoot("*", -16, strength: tibialis500Lift(from: 0.89, to: 0.84))
+            // "tempo" has no ghost: lowering speed.
+        ],
+        "Machine Tibialis Raise": [
+            // Sitting ~9 cm too far forward: the knees 84° -> ~72° and ~4 cm
+            // further ahead of the ankles, the shins tipping forward (ankle
+            // 125° -> ~112° at the bottom, the feet held in the lever).
+            "seat": tibialis500SeatForward(0.15),
+            // Stopping short: the toes 18° lower (ankle 90° -> ~108°, the toe
+            // tips ~7 cm lower).
+            "top": tibialis500Forefoot("*", -18, strength: tibialis500Lift(from: 0.86, to: 0.79)),
+            // The feet stopping level at the bottom: the toes 18° up (125° ->
+            // ~107°).
+            "bottom": tibialis500Forefoot("*", 18, strength: tibialis500Lift(from: 0.86, to: 0.93))
+            // "heels" has no ghost: pressing on the cradle is force, not a
+            // pose; "tempo" none: lowering speed.
+        ],
+        "Banded Dorsiflexion": [
+            // Sitting up off the hands: the trunk 28° forward about the
+            // pelvis (34° behind upright -> ~6°), the back rounded, the head
+            // ~33 cm forward and up.
+            "recline": tibialis500SatUp(28, round: 0.06),
+            // Stopping the pull short: the feet 20° less far back (ankle 86°
+            // -> ~106°, about neutral).
+            "top": tibialis500Forefoot("*", -20, strength: tibialis500Lift(from: 0.84, to: 0.77)),
+            // A short return: the feet 20° back from pointed (121° -> ~101°).
+            "bottom": tibialis500Forefoot("*", 20, strength: tibialis500Lift(from: 0.84, to: 0.91))
+            // "band" has no ghost: where the band sits; "tempo" none: speed.
+        ],

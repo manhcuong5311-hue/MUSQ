@@ -1,0 +1,246 @@
+// MARK: PIECES
+    // MARK: 401-500 more calf work pieces (2026-10-04, round 2)
+
+    /// Standing calf work on the 401-500 rigs (toe joints at the ball of the
+    /// foot, `toe_*`): the foot turned `degrees` about the ball of the foot
+    /// (positive lowers the heel, negative lifts it), the shin and `body`
+    /// shifted with the ankle (`up` along the trunk, `ahead` and `rise` in the
+    /// room, in torso lengths) and `half` shifted half as far, then the knee
+    /// and any `reseat` joints re-seated. The sizes in the table are matched
+    /// to how far the ankle moves so the knee keeps its angle (measured on the
+    /// rigs). `kneeAhead` nudges the knee forward in the room before the
+    /// re-seat, which only picks the side it bends to. The same move as the
+    /// standing calf family's heel piece, kept here so this family builds on
+    /// its own.
+    private static func calfMore500Heels(_ side: String, turn degrees: Float, body: [String], half: [String] = [],
+                                         up: Float = 0, ahead: Float = 0, rise: Float = 0, kneeAhead: Float = 0,
+                                         reseat extra: [String] = [], strength: FaultStrength = .always) -> FaultPose {
+        var moves: [FaultMove] = [
+            .turn(pivot: "toe_\(side)", points: ["foot_\(side)", "foot_\(side).tip"], axis: .lateral, degrees: degrees),
+            .shift(["shin_\(side)"] + body, up: up, ahead: ahead, rise: rise),
+        ]
+        if !half.isEmpty { moves.append(.shift(half, up: up / 2, ahead: ahead / 2, rise: rise / 2)) }
+        if kneeAhead != 0 { moves.append(.shift(["shin_\(side)"], ahead: kneeAhead)) }
+        moves.append(.resolve(["shin_\(side)"] + extra))
+        return FaultPose(chains: [leg(side), hips, spine], moves: moves, strength: strength)
+    }
+
+    /// Two-foot calf work up on the toes: rolling out onto the outside edges
+    /// of the feet, the ankles `ankle` and the knees `knee` torso lengths out
+    /// from the midline over the planted toes. Seen from the front (`faceOn`),
+    /// where the move runs across the screen.
+    private static func calfMore500RolledOut(ankle: Float = 0.1, knee: Float = 0.06,
+                                             strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["foot_*"], outward: ankle), .shift(["shin_*"], outward: knee)],
+                  strength: strength, view: faceOn)
+    }
+
+    /// Up on the toes with straight knees (a hold, pulses): the knees going
+    /// soft, the body and all it carries `drop` torso lengths lower over the
+    /// planted feet and the knees re-seated forward.
+    private static func calfMore500KneesSoft(_ drop: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs, hips, spine],
+                  moves: [.shift(carried, rise: -drop), .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// The bent-knee calf raise: the knees straightening as the heels rise,
+    /// the hips and all they carry `rise` torso lengths higher and `back`
+    /// further back, the knees re-seated nearer straight.
+    private static func calfMore500KneesStraightened(rise: Float, back: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs, hips, spine],
+                  moves: [.shift(carried, ahead: -back, rise: rise), .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// Stepping on the spot: the hip of the lifted leg (the one bent further,
+    /// `_bent`) sagging. The pelvis tilts `degrees` about the standing hip
+    /// (`_straight`), as `hipCableHipDropped` does, so the lifted side's hip
+    /// drops and the pelvis keeps its width; the lifted foot stays where it
+    /// is and its knee re-seats. A `_R` pivot mirrors turns about `.forward`,
+    /// so a positive turn drops the lifted side whichever foot is up. Seen from
+    /// the front (`faceOn`).
+    private static func calfMore500HipDropped(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("bent")],
+                  moves: [.turn(pivot: "thigh_straight", points: ["pelvis", "thigh_bent"], axis: .forward, degrees: degrees),
+                          .resolve(["shin_bent"])],
+                  view: faceOn)
+    }
+
+    /// A carry with a dumbbell in each hand: the shoulders dragged forward and
+    /// down, the upper back rounding, the head following (the library Farmer's
+    /// Carry shoulder ghost's moves).
+    private static let calfMore500ShouldersSlumped = FaultPose(
+        chains: [spine, arms, shoulders],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], forward: 0.13, up: -0.06, outward: -0.03),
+                .shift(["chest"], forward: -0.07),
+                .shift(["neck", "head"], forward: 0.09, up: -0.03)]
+    )
+
+    /// Plantar flexion with the feet free (long sitting): the feet turned
+    /// `degrees` about the ankles (positive brings the toes back toward the
+    /// shins, negative points them further).
+    private static func calfMore500FeetTurned(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [["shin_*", "foot_*", "foot_*.tip"]],
+                  moves: [.turn(pivot: "foot_*", points: ["foot_*.tip", "toe_*"], axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Long sitting: the knees bending, the feet sliding `pull` torso lengths
+    /// back toward the hips along the mat and the knees re-seated, rising off
+    /// it. The same all rep.
+    private static func calfMore500LongSitKneesBent(_ pull: Float) -> FaultPose {
+        FaultPose(chains: [legs],
+                  moves: [.shift(["foot_*", "foot_*.tip", "toe_*"], ahead: -pull), .resolve(["shin_*"])])
+    }
+
+    /// Long sitting with a band in each hand: the hands drifting `reach` torso
+    /// lengths forward toward the feet, the elbows re-seated as the arms open.
+    /// The same all rep.
+    private static func calfMore500HandsForward(_ reach: Float) -> FaultPose {
+        FaultPose(chains: [arms],
+                  moves: [.shift(["hand_*"], ahead: reach), .resolve(["forearm_*"])])
+    }
+
+    /// Long sitting: slumping into a C. Measured on the banded rig as the
+    /// spine's four segments turned in the body's side plane, each keeping
+    /// its length: the lumbar segment 25° back (the pelvis rolling under),
+    /// the lower thoracic 5° back, the upper thoracic 15° and the neck 45°
+    /// forward. So the lumbar spine goes ~5 cm back and ~2 cm down, the
+    /// chest ~6 cm back, the neck ~2 cm forward and ~4 cm down and the head
+    /// ~9 cm forward and ~7 cm down. The same all rep.
+    private static let calfMore500Slumped = FaultPose(
+        chains: [spine],
+        moves: [.shift(["spine"], forward: -0.077, up: -0.032),
+                .shift(["chest"], forward: -0.1, up: -0.033),
+                .shift(["neck"], forward: 0.04, up: -0.062),
+                .shift(["head"], forward: 0.16, up: -0.113)]
+    )
+
+// MARK: TABLE
+        // MARK: 401-500 more calf work (2026-10-04, round 2)
+        // Six calf exercises, one body (torso 0.592 m). Four are framed
+        // side-on from the lifter's front left (yaw -1.3), so the front-back
+        // faults need no turn; rolling out is seen from the front (`faceOn`,
+        // a total of -0.2). The farmer's walk on toes is framed three-quarter
+        // (-1.0): its sagittal faults turn -0.5 toward a side view, its hip
+        // fault `faceOn`. The banded plantar flexion is framed from the front
+        // left (-0.8). Heel faults turn the foot about the ball of the foot
+        // (`toe_*`) and move the body with the ankle so the knee keeps its
+        // angle. Strengths read the heel height (`calfHeelHeight`, knee to
+        // toe tip, torso lengths): 0.76 -> 0.99 elevated, 0.81 -> 0.96
+        // bent-knee, 0.85 -> 1.0 hold, 0.85 -> 0.96-0.99 in the pulses, 0.87
+        // -> 1.02 banded. Sizes were measured with a Python port of
+        // FaultGhost.solve on the rigs at each fault's moment (calfmore/gh.py
+        // in the session scratchpad), which also checks bone lengths and that
+        // every knee bends forward. Cues about tempo, rhythm, breathing and
+        // where the feet sit on the step have no ghost.
+        "Elevated Calf Raise": [
+            // Stopping level with the step: the heels 22° up from the stretch
+            // (ankle 89° -> ~110°, level with the step's top), the body ~6 cm
+            // higher, the knees ~175°.
+            "bottom": calfMore500Heels("*", turn: -22, body: carried, ahead: 0.045, rise: 0.09,
+                                       strength: calfHeelHeight(from: 0.9, to: 0.8)),
+            // Stopping short of the top: the heels 20° lower (142° -> ~121°),
+            // the body ~5 cm lower and ~4 cm back, the knees ~172°.
+            "top": calfMore500Heels("*", turn: 20, body: carried, ahead: -0.07, rise: -0.055,
+                                    strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // Bending the knees in the stretch: the body ~4 cm lower, the
+            // knees 176° -> ~144°.
+            "knees": calfKneesDipped(body: carried)
+            // "feet" (where the feet sit on the step) and "tempo" have no ghost.
+        ],
+        "Bent-Knee Calf Raise": [
+            // Straightening the knees at the top: the hips ~3 cm higher and
+            // ~2 cm back, the knees 146° -> ~169°.
+            "knees": calfMore500KneesStraightened(rise: 0.055, back: 0.035,
+                                                  strength: calfHeelHeight(from: 0.88, to: 0.95)),
+            // Rolling out at the top: the ankles ~6 cm and the knees ~3.5 cm
+            // out from the midline, seen from the front.
+            "toes": calfMore500RolledOut(strength: calfHeelHeight(from: 0.88, to: 0.95)),
+            // Stopping short of the top: the heels 18° lower (133° -> ~115°),
+            // the body ~5 cm lower with the knees still ~145°.
+            "top": calfMore500Heels("*", turn: 18, body: carried, ahead: -0.06, rise: -0.05,
+                                    strength: calfHeelHeight(from: 0.88, to: 0.95)),
+            // Hovering at the bottom: the heels 22° up off the floor (97° ->
+            // ~119°), the body ~6 cm higher, the knees still 146°.
+            "floor": calfMore500Heels("*", turn: -22, body: carried, ahead: 0.05, rise: 0.08,
+                                      strength: calfHeelHeight(from: 0.88, to: 0.83))
+            // "tempo" has no ghost: lowering speed.
+        ],
+        "Calf Raise Hold": [
+            // The heels creeping down mid-hold: 20° lower (145° -> ~122°), the
+            // body ~5 cm lower and ~4 cm back, the knees ~170°.
+            "height": calfMore500Heels("*", turn: 20, body: carried, ahead: -0.07, rise: -0.055,
+                                       strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // Drifting onto the outside edges: the ankles ~6 cm and the knees
+            // ~3.5 cm out, seen from the front.
+            "toes": calfMore500RolledOut(strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // The knees going soft: the body ~3 cm lower, the knees 175° ->
+            // ~149°.
+            "knees": calfMore500KneesSoft(0.05, strength: calfHeelHeight(from: 0.9, to: 0.97)),
+            // Folding forward at the hips: the trunk 15° forward, the head
+            // ~18 cm ahead.
+            "body": leanedForward(15, strength: calfHeelHeight(from: 0.9, to: 0.97))
+            // "breath" has no ghost: breathing.
+        ],
+        "Calf Raise Pulse": [
+            // Pulsing short of the top: at a peak the heels 16° lower (142° ->
+            // ~124°), the body ~4 cm lower, the knees ~169°.
+            "top": calfMore500Heels("*", turn: 16, body: carried, ahead: -0.06, rise: -0.045,
+                                    strength: calfHeelHeight(from: 0.9, to: 0.95)),
+            // Dropping the heels between pulses: at a dip the heels 24° lower
+            // (131° -> ~106°, back to a flat foot), the body ~6 cm lower, the
+            // knees ~167°.
+            "range": calfMore500Heels("*", turn: 24, body: carried, ahead: -0.09, rise: -0.085,
+                                      strength: calfHeelHeight(from: 0.9, to: 0.95)),
+            // Bobbing at the knees: the body ~4 cm lower, the knees 175° ->
+            // ~144°.
+            "knees": calfMore500KneesSoft(0.07, strength: calfHeelHeight(from: 0.9, to: 0.95)),
+            // Rolling out, seen from the front, as the hold.
+            "toes": calfMore500RolledOut(strength: calfHeelHeight(from: 0.9, to: 0.95))
+            // "tempo" has no ghost: the pace of the pulses.
+        ],
+        "Farmer's Walk on Toes": [
+            // The heels dropping with both feet down: 28° lower (134° ->
+            // ~109°, flat on the floor), the body and dumbbells ~7 cm lower,
+            // the knees ~175°; turned toward a side view.
+            "heels": calfMore500Heels("*", turn: 28, body: carried, ahead: -0.07, rise: -0.085).seen(-0.5),
+            // Leaning over the dumbbells: the trunk 12° forward, the head
+            // ~15 cm ahead; turned toward a side view.
+            "posture": leanedForward(12, strength: .always).seen(-0.5),
+            // Shoulders sagging forward: the arms ~9 cm forward and down, the
+            // head ~6 cm forward; turned toward a side view. (The library
+            // Farmer's Carry moves; as there, the girdle line shortens ~0.8 cm.)
+            "shoulders": calfMore500ShouldersSlumped.seen(-0.5),
+            // The hip of the lifting leg sagging: the pelvis tilted 24° about
+            // the standing hip, the lifted side's hip ~7.5 cm lower and the
+            // pelvis ~4 cm, its width kept, the lifted foot kept in the air
+            // (its knee 132° -> ~112°); seen from the front. (Lab round 1's
+            // ~6 cm read faintly; review: a tilt replaced the drawn-down hip,
+            // which stretched each half of the pelvis by ~0.8 cm.)
+            "hips": calfMore500HipDropped(24)
+            // "steps" has no ghost: the size and pace of the steps.
+        ],
+        "Banded Plantar Flexion": [
+            // Stopping short of fully pointed: the feet 20° back toward the
+            // shins (ankle 150° -> ~130°), the toes ~8 cm.
+            "top": calfMore500FeetTurned(20, strength: calfHeelHeight(from: 0.95, to: 1.0)),
+            // Not coming back up: the feet left 22° pointed at the start of
+            // the rep (ankle 110° -> ~132°).
+            "return": calfMore500FeetTurned(-22, strength: calfHeelHeight(from: 0.95, to: 0.89)),
+            // Bending the knees: the feet ~5 cm toward the hips, the knees
+            // 170° -> ~140°, ~11 cm off the mat.
+            "knees": calfMore500LongSitKneesBent(0.08),
+            // The hands drifting toward the feet: ~15 cm forward, the elbows
+            // 87° -> ~125°.
+            "hands": calfMore500HandsForward(0.25),
+            // Slumping into a C: the lumbar spine ~5 cm back, the chest ~6 cm
+            // back, the neck ~4 cm and the head ~7 cm lower and ~9 cm forward,
+            // every spine segment its own length; turned toward a side view.
+            // (Round 2's version, the lumbar alone pushed back, read as a
+            // straight forward lean; review: round 3's shifts stretched the
+            // lumbar segment by ~4 cm and shrank the next by ~4 cm.)
+            "back": calfMore500Slumped.seen(-0.5)
+        ],

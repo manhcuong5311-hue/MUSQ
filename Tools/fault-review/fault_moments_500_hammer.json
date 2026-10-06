@@ -1,0 +1,8 @@
+{
+  "Rope Hammer Curl": {"elbow": "top", "range": "bottom", "grip": "1.0", "torso": "top", "shoulder": "top"},
+  "Cross-Body Hammer Curl": {"path": "5.6", "elbow": "1.6", "grip": "5.6", "range": "bottom", "torso": "1.6"},
+  "Incline Hammer Curl": {"back": "bottom", "arms": "top", "grip": "top", "range": "bottom", "shoulder": "top"},
+  "Zottman Curl": {"elbow": "top", "wrist": "2.5", "range": "bottom", "torso": "top"},
+  "Dumbbell Reverse Curl": {"grip": "top", "elbow": "top", "range": "bottom", "torso": "top", "shoulder": "top"},
+  "Wrist Roller": {"arms": "2.0", "torso": "2.0", "shoulder": "2.0"}
+}

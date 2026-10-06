@@ -1,0 +1,187 @@
+// MARK: PIECES
+    // MARK: 401-500 curls pieces (2026-10-04)
+
+    /// Strict (wall) curl: the hips pushed off the wall pad and the lower
+    /// back arched to heave the bar, the pelvis and hips `forward` torso
+    /// lengths out of the chest and the lumbar spine a little over half that,
+    /// the chest, neck and head left on the wall. The feet stay planted, so
+    /// the knees re-seat (they lock straight under the moved hips). Grows with
+    /// the left elbow's bend: strongest from mid-curl to the top.
+    private static func curls500HipsOffWall(_ forward: Float) -> FaultPose {
+        FaultPose(chains: [spine, hips, legs],
+                  moves: [.shift(["pelvis", "thigh_*"], forward: forward), .shift(["spine"], forward: forward * 0.55),
+                          .resolve(["shin_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Strict (wall) curl: the upper back peeling off the wall pad near the
+    /// top, the chest, head and shoulders folded `degrees` forward about the
+    /// mid-spine with the arms and bar carried along, the pelvis and lower
+    /// back left on the wall. Grows with the left elbow's bend.
+    private static func curls500UpperBackOffWall(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip, bar],
+                  moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .lateral, degrees: -degrees)],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Standing curls with the back on a wall: a dip at the knees to drive
+    /// the bar off the thighs, the hips and trunk sliding `drop` torso lengths
+    /// down the wall over planted feet, the knees re-seated (bending) between
+    /// them. The arms are left out (moving them undrawn would leave dashed
+    /// guides with no limb). Strongest with the arms straight, where the dip
+    /// starts the rep; none at 90° of elbow bend.
+    private static func curls500KneeDip(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, hips, legs],
+                  moves: [.shift(["pelvis", "thigh_*"] + torso, rise: -drop), .resolve(["shin_*"])],
+                  strength: .whenStraight("forearm_L"))
+    }
+
+    /// Seated curls with the back on an upright pad: the trunk rocked
+    /// `degrees` forward off the pad about the hips, the arms and dumbbells
+    /// carried along, as the wind-up before a swing. Strongest with the arms
+    /// straight at the bottom; none at 90° of elbow bend.
+    private static func curls500SeatedOffPad(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -degrees)],
+                  strength: .whenStraight("forearm_L"))
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 curls (2026-10-04)
+        // Five biceps curls, one body (torso 0.592 m), both arms working
+        // together in all five. Distances below were measured with a Python
+        // port of FaultGhost.solve on the rigs at the fault's moment
+        // (curls/ghost.py, faults.py in the session scratchpad); screen sizes
+        // are in points in the 382x655 viewport at the fault's view.
+        // Strict Curl: back to a wall pad, framed from the front-left at yaw
+        // -1.0, where moves in the lifter's front-back plane show at ~84% of
+        // their length. Only the hips fault turns: a side view puts the near
+        // plate face-on over the upper body, which hides the arm and upper
+        // back faults.
+        "Strict Curl": [
+            // The hips off the wall at the top: the pelvis ~11 cm (~24 pt at
+            // the turned view) forward, the lumbar spine ~6 cm, the trunk
+            // from 5° to 15° behind vertical with the shoulders still on the
+            // pad; the knees lock (174° -> 180°) under the moved hips.
+            // Turned -0.45 (total -1.45, nearly side-on): the wall is seen
+            // almost edge-on and the gap opening between the glutes and the
+            // pad shows; the near plate, up at the chest at this moment,
+            // covers only the upper body. From the framing the hips' 20 pt
+            // shift read as a slightly different stance (round 1).
+            "hips": curls500HipsOffWall(0.18).seen(-0.45),
+            // The upper back off the wall at the top: the chest, head and
+            // shoulders folded 15° forward about the mid-spine, the head
+            // ~15 cm (~28 pt) and the shoulders ~11 cm forward, the trunk from
+            // 5° back to 7° forward; the bar comes ~8 cm forward with them.
+            "shoulders": curls500UpperBackOffWall(15),
+            // The elbows swinging 35° forward at the top: the elbows ~17 cm
+            // (~38 pt) forward and up, the bar ~14 cm higher.
+            "elbows": elbowsForward(35, withBar: true),
+            // A knee dip at the start: the hips and trunk ~4 cm (~9 pt) down
+            // the wall (0.07 torso lengths at strength 0.94), the knees from
+            // 174° to ~144° and ~10 cm (~21 pt) forward over the planted feet.
+            "knees": curls500KneeDip(0.07),
+            // Short reps: shoulder-to-wrist 0.907 torso lengths at the
+            // model's bottom (175°), 0.80 at ~122°; at the bottom the elbows
+            // stay at ~130° and the hands ~19 cm (~43 pt) higher.
+            "range": curlBottomCut(from: 0.8, to: 0.89)
+        ],
+        // 21s Curl: one 44 s set (bottom-half reps 0-14 s, top-half 15-29 s,
+        // full 30-44 s), framed at yaw -0.9 (front-left, ~78% of a
+        // front-back move shows). Stills in fault_moments_500_curls.json are
+        // in seconds where the cue belongs to a later part of the set.
+        "21s Curl": [
+            // Bottom-half reps that never straighten: at the bottom (176°)
+            // the elbows stay at ~131°, the hands ~19 cm (~39 pt) higher.
+            // Only near straight arms, so it never shows in the top half.
+            "bottom": curlBottomCut(from: 0.8, to: 0.89),
+            // The bar sinking below level between the top-half reps: the
+            // forearms 40° lower at level (90° -> 130°), the hands ~17 cm
+            // (~39 pt) down; read at 16.9 s, the pause at level. Grows with
+            // the bend, so it fades toward straight arms (127° -> ~151° at
+            // 0.4 s) and never passes straight. No FaultStrength peaks at
+            // level alone (each grows one way with the elbow), so while the
+            // clip plays it also shows in the other blocks: the bottom-half
+            // reps topping out ~40° short of level (90° -> 130°) and the full
+            // reps stopping near level (52° -> 92°). A turn strong at level
+            // but not at straight arms would push the forearms past straight.
+            "top": elbowsFolded(.lateral, -40, strength: .withBend("forearm_L")),
+            // The last seven stopping around level: the forearms 40° short
+            // of the top (52° -> 92°), the hands ~17 cm (~36 pt) lower; read
+            // at 30.9 s. Shoulder-to-wrist 0.645 torso lengths at 90°, 0.404
+            // at the top: none until the elbows pass ~80°, so it never shows
+            // in the bottom-half reps; in the top-half reps it shows them
+            // stopping near level too.
+            "full": curlStoppedShortOfTop(from: 0.6, to: 0.45),
+            // The elbows swinging 35° forward at the top of a top-half rep
+            // (17.8 s): the elbows ~17 cm (~34 pt) forward and up.
+            "elbows": elbowsForward(35, withBar: true),
+            // Leaning back to finish a late full rep (40.9 s): the hips
+            // 0.06 torso lengths forward, the trunk 15° back from them (0° ->
+            // 19° behind vertical), the head ~18 cm (~31 pt) back.
+            "torso": bodySwung(withBar: true)
+        ],
+        // EZ-Bar 21s: the same set and timing with an EZ bar, framed at yaw
+        // -0.4 (nearly front-on), so every fault turns -0.5 to the 21s
+        // Curl's front-left view (total -0.9), where a front-back move shows
+        // at ~78%. Turned further, to the Dumbbell Curl's -1.3, the plates
+        // face the camera and cover the arms (lab shots, round 1). The bar
+        // line runs palm to palm, straight; the real bar bends between the
+        // hands.
+        "EZ-Bar 21s": [
+            // Wrists curling in at the top of a top-half rep (17.8 s): the
+            // hand tips folded 50° toward the palms (~10 cm, ~22 pt).
+            "grip": curlWristsCurled(withBar: true).seen(-0.5),
+            // As the 21s Curl: the elbows ~129° at the bottom (174°).
+            "bottom": curlBottomCut(from: 0.8, to: 0.89).seen(-0.5),
+            // As the 21s Curl: 90° -> 130° at the level pause (16.9 s), the
+            // hands ~17 cm (~50 pt at the turned view) lower.
+            "top": elbowsFolded(.lateral, -40, strength: .withBend("forearm_L")).seen(-0.5),
+            // As the 21s Curl: the top of a full rep (30.9 s) stopping at
+            // ~92°.
+            "full": curlStoppedShortOfTop(from: 0.6, to: 0.45).seen(-0.5),
+            // The elbows 35° forward at the top of a late full rep (40.9 s).
+            "elbows": elbowsForward(35, withBar: true).seen(-0.5)
+        ],
+        // Waiter Curl: one dumbbell upright on both palms, framed at yaw -0.5;
+        // the faults turn -0.8 to a near-left side view (total -1.3).
+        "Waiter Curl": [
+            // "palms" has no ghost: the hands' place under the plate (flat,
+            // not gripping) is on the equipment and the rig draws no fingers.
+            // The wrists curling in at the top, the dumbbell tipping back:
+            // the hand tips folded 50° (~8 cm, ~23 pt at the turned view) up
+            // toward the face, so the hands sit near in line with the
+            // forearms instead of level.
+            "upright": curlWristsCurled(degrees: 50).seen(-0.8),
+            // The elbows 30° forward at the top: ~15 cm forward and up, the
+            // hands ~15 cm higher.
+            "elbows": elbowsForward(30).seen(-0.8),
+            // Lowering until the arms hang: at the model's bottom (150°,
+            // strength 0.67) the hands swing 37° down and back about the
+            // elbows, ~15 cm toward the thighs. The forearms angle in to the
+            // plate, so the elbow angle itself only opens to ~155°; from the
+            // side the forearms line up with the upper arms.
+            "range": elbowsFolded(.lateral, -55, strength: .whenStraight("forearm_L")).seen(-0.8),
+            // Leaning back to swing it up: as the Dumbbell Curl's torso fault.
+            "torso": bodySwung(withBar: false).seen(-0.8)
+        ],
+        // Seated Dumbbell Curl: back on a near-upright pad (trunk 17° back),
+        // framed at yaw -0.6; the faults turn -0.7 to a near-left side view
+        // (total -1.3), where the trunk, elbows and wrists move across the
+        // screen.
+        "Seated Dumbbell Curl": [
+            // Rocking forward off the pad at the bottom: the trunk 25° forward
+            // about the hips (22° at strength 0.89), from 17° back to ~5°
+            // forward, the head ~27 cm (~61 pt) and the shoulders ~20 cm
+            // forward; the hanging dumbbells barely move.
+            "back": curls500SeatedOffPad(25).seen(-0.7),
+            // Wrists curling in at the top instead of the palms turning up.
+            "palms": curlWristsCurled().seen(-0.7),
+            // The elbows 30° forward at the top: ~15 cm forward and up.
+            "elbows": elbowsForward(30).seen(-0.7),
+            // Short reps: shoulder-to-wrist 0.904 torso lengths at the
+            // model's bottom (170°); the elbows stay at ~127°.
+            "range": curlBottomCut(from: 0.8, to: 0.89).seen(-0.7)
+            // "lower" has no ghost: lowering speed is not a pose.
+        ],

@@ -1,0 +1,7 @@
+{
+  "Toe-to-Bar": {"hang": "bottom", "toes": "top", "legs": "top", "pelvis": "top", "lower": "bottom"},
+  "Hanging Oblique Knee Raise": {"hang": "bottom", "side": "1.75", "height": "1.75", "swing": "bottom"},
+  "Lying Leg Raise": {"back": "3.2", "legs": "top", "top": "top", "head": "top"},
+  "Flutter Kick": {"back": "0.33", "knees": "0.33", "range": "0.33", "heels": "0.33"},
+  "Scissor Kick": {"cross": "0.67", "back": "0.67", "knees": "0.67", "heels": "0.67"}
+}

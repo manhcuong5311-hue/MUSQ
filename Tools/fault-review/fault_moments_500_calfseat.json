@@ -1,0 +1,8 @@
+{
+  "Calf Press Machine": {"top": "top", "bottom": "bottom", "knees": "bottom", "lock": "top"},
+  "Horizontal Leg Press Calf Raise": {"top": "top", "bottom": "bottom", "seat": "top", "lock": "top"},
+  "Barbell Seated Calf Raise": {"trunk": "top", "knees": "bottom", "top": "top", "bottom": "bottom"},
+  "Dumbbell Seated Calf Raise": {"hands": "top", "knees": "bottom", "top": "top", "bottom": "bottom"},
+  "Single-Leg Seated Calf Raise": {"hand": "top", "knee": "bottom", "top": "top", "bottom": "bottom"},
+  "Smith Machine Seated Calf Raise": {"hands": "top", "knees": "bottom", "top": "top", "bottom": "bottom"}
+}

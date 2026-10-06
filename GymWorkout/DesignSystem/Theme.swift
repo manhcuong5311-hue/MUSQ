@@ -26,6 +26,28 @@ extension Color {
         )
     }
 
+    /// "RRGGBB" or "#RRGGBB" in Display P3, the space the system colour
+    /// picker works in, so a vivid pick comes back as picked; nil for
+    /// anything else, "" included.
+    init?(hexString: String) {
+        let digits = hexString.hasPrefix("#") ? String(hexString.dropFirst()) : hexString
+        guard digits.count == 6, let value = UInt32(digits, radix: 16) else { return nil }
+        self.init(.displayP3,
+                  red: Double((value >> 16) & 0xFF) / 255,
+                  green: Double((value >> 8) & 0xFF) / 255,
+                  blue: Double(value & 0xFF) / 255)
+    }
+
+    /// The colour as Display P3 "RRGGBB", as it looks in the current
+    /// appearance; nil if it can't be converted.
+    var hexString: String? {
+        guard let space = CGColorSpace(name: CGColorSpace.displayP3),
+              let parts = UIColor(self).cgColor.converted(to: space, intent: .defaultIntent, options: nil)?.components,
+              parts.count >= 3 else { return nil }
+        let byte = { (value: CGFloat) in Int((min(max(value, 0), 1) * 255).rounded()) }
+        return String(format: "%02X%02X%02X", byte(parts[0]), byte(parts[1]), byte(parts[2]))
+    }
+
     /// A colour that switches hex value with the system's Light/Dark appearance.
     init(light: UInt32, dark: UInt32, opacity: Double = 1) {
         self.init(uiColor: UIColor { trait in
@@ -86,6 +108,17 @@ enum DS {
     static let activationTint = Color(hex: 0xFFB599)
     /// Intermediate difficulty dot.
     static let difficultyMid = Color(hex: 0xFF9A6B)
+
+    // MARK: - Training rhythm (card edges, never interactive)
+    // Defaults; the user can pick their own (see `CardColorPrefs`).
+
+    /// A group still waiting on recovery. A true red, so it doesn't read as
+    /// the orange of `activation` on the card's own body map.
+    static let rhythmWaiting = Color(light: 0xD93036, dark: 0xF2555A)
+    /// Trained this round and recovered.
+    static let rhythmRecent = Color(light: 0xC99700, dark: 0xF2CC4B)
+    /// Not trained yet this round.
+    static let rhythmDue = Color(light: 0x2E9E4F, dark: 0x45C46B)
 
     // MARK: - Form faults (never interactive)
 

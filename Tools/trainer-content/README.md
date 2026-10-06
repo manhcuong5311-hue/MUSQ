@@ -222,3 +222,109 @@ movement patterns now file the Nordic/sliding curls and the glute-ham raise
 as leg curls, frog pumps as bridges and the clamshell with the glute
 isolation lifts, and `ExerciseCatalog.isBodyweight` counts the SWISS BALL,
 SLIDERS and BAND lifts as bodyweight.
+
+401-500 folder (2026-10-04): 30 new exercises (the folder's exports from 106 on
+that were not in the app), in six families on `common_1_50.py`:
+`spec_500_{chest,hammer,curls,calfstand,calfseat,hip}.py`, `notes_500_*.md`;
+`python3 spec_500.py [family]` validates, `preview_500.py <family>` prints the
+label layout. Each family was drafted by one agent, then checked by an
+independent reviewer (every source re-opened; copy, labels and ghosts against
+the model and the app's own screenshots) who fixed what they found.
+`integrate_500.py <scratch> [--only/--skip <family>]` writes the setup steps,
+content-map entries, Swift (`// MARK: - 401-500 (2026-10-04)`) and fault
+ghosts between its own BEGIN/END markers; it edits the copy of the project it
+sits in, so a mirror's copy integrates into the mirror (that is how families
+were built and shot one at a time). The library rows and model map went in
+with the models. House decisions:
+- Activation follows the paint (bright = primary). Where the paint and the
+  literature disagree it is said in the code and notes: the four seated calf
+  raises light the gastrocnemius bright, so it is a primary row at 0.40 (the
+  lowest moderate value) under the soleus's 0.86, and the copy never says the
+  gastrocnemius works hard with the knee bent. No EMG exists for any of the 30
+  as the models do them; every fraction is a judgement call anchored on the
+  library's nearest lift.
+- Copy follows the model where coaching differs: the rope hammer curl starts
+  each rep 28° short of straight, the cross-body hammer curl alternates (left
+  arm 0-4 s) and finishes on the midline, the decline push-up stops 18 cm off
+  the floor, five of the standing and all six seated calf raises sink the heels
+  below their support.
+- The 21s run 44 s (7 bottom-half reps, 7 top-half, 7 full); their fault
+  stills are given in seconds. The Wrist Roller winds with palms-down wrist
+  flexion (ExRx's Cable Roller Wrist Flexion), so its library row is FOREARM
+  FLEXORS.
+- Cues with no ghost (tempo, the Zottman and wrist-roller forearm turns, where
+  a plate hangs or the palms sit) fall back to the red ring.
+`ExerciseRotation`'s movement patterns gained `calfRaise` (matched before
+squats and presses, so the leg-press, hack-squat and Smith calf raises and the
+calf press stay calf work; the library's Leg Press Calf Raise had been filed as
+a squat) and file the 21s and the wrist roller as curls.
+Open points the reviewers left: the library's Single-Leg, Leg Press and Smith
+Machine Calf Raises paint the soleus bright but list it as secondary; the
+one-line legend truncates three- and four-primary rows; in mistake views the
+lifted model's head can sit behind the "COMMON MISTAKE" chip.
+
+Second round, 415-444 (2026-10-04/05): 30 more exercises in six families on
+the same files (`spec_500_{calfmore,tibialis,situp,crunch,cablecrunch,
+stability}.py`, `notes_500_*.md`; `spec_500.py` now lists 12 families and
+validates all 60). Each family went through a Workflow pipeline: an author
+(measure the model, read sources, draft, two or more lab rounds), an
+independent reviewer (every source re-opened, model fidelity, every lab
+image) and a skeptic that tried to refute every factual claim and number
+against its source and the rig and softened or cut what failed (96-190
+claims checked per family; each notes file has Review and Verification
+sections). Shared changes for this round:
+- `part_of()` (and `MusclePart.init(muscleName:)` in the app) file tibialis,
+  fibularis and peroneus under the calves, the lower leg; `BodyMap` lights
+  tibialis posterior and the fibularis on the calves and tibialis anterior on
+  the shin. `validate()` accepts the library's legend-only names ("Hip
+  Flexors", painted on the rig's Sartorius mesh, and "Serratus Anterior") and
+  rejects shin toe-extensor names the app would file under the forearms.
+- Movement patterns gained `tibialisRaise` and `coreStability` (dead bug, bird
+  dog, hollow body rock); sit-ups and V-ups count as crunches, plantar flexion
+  as a calf raise, the walk on toes as a carry, the hollow body hold as a hold.
+  Calf Raise Hold, Farmer's Walk on Toes and Hollow Body Hold are timed.
+House decisions and open points:
+- The tibialis models paint tibialis posterior and fibularis longus bright
+  next to tibialis anterior. Both are plantar flexors and do not lift the
+  toes, so they stay LOW secondary rows (the one break of bright = primary,
+  explained in the code and notes); the paint could be revisited in Blender.
+- The Toe Touch Crunch's thighs sit about 10° past vertical, which ACE warns
+  against; the copy says "about straight up". A builder fix would match it.
+- These rigs read a flat foot under a vertical shin as an ankle angle of
+  about 112°, not the ~109° round 1 used; only round 1's notes quote angles
+  from it, no copy does.
+- Optional follow-ups the families named: probe `_bent/_straight` points for
+  the bicycle and cross-body crunches, dead bug and bird dog (their labels
+  track fixed left-side joints and are worded to fit); a legend backing where
+  it sits over grey equipment (Elevated Calf Raise step).
+
+Third round, 445-474 (2026-10-05): 30 more in eight families
+(`spec_500_{legraise,plankdyn,plankhold,sidebend,twist,antiext,carrymarch,
+thruster}.py`; `spec_500.py` validates all 90), through the same
+author / reviewer / skeptic Workflow (84-212 claims checked per family). The
+lab scripts and agent brief now live in `Tools/lab/` (the scratchpad copies
+were lost between rounds). Shared changes:
+- `validate()` requires at least one primary row the app counts, so no
+  exercise is left in no muscle group; `part_of()` files Quadratus Lumborum
+  under the lower back, as the app does.
+- Movement patterns: leg and knee raises, toe-to-bar and the kicks are leg
+  raises; side bends, cable and landmine rotations file with the twists and
+  chops; the body saw with the rollouts; the bear crawl and carry marches
+  with the carries; thrusters and the clean and press are a new
+  `olympicLift`; mountain climbers, shoulder taps, knee-to-elbows and the
+  side plank hip lift are `coreStability` (moving drills, not holds), the
+  plank hip dip a trunk rotation. The RKC, weighted and Copenhagen planks,
+  both carry marches and the bear crawl are timed.
+House decisions and open points:
+- Farmer Carry March: the model paints only the hip flexors bright (a
+  legend-only name), so Forearms leads as a deliberate, documented exception
+  to bright = primary.
+- Model details the copy follows and the builder may want to fix: the
+  Toe-to-Bar stops 2.3 cm short of the bar; the Scissor Kick's legs stack
+  rather than cross; the landmine rotations pivot the same-side heel; the
+  dumbbell and kettlebell thrusters' knees cave 13-22° at the bottom and all
+  three thrusters stop 15-20° above parallel; the shoulder tap's balance
+  sits outside its support base; the RKC plank shows no visible pelvic tilt;
+  the mountain climber's front foot never lands.
+- Optional: probe `_bent/_straight` (or `_front/_back`) points for the kicks,
+  climbers, marches and twists so their labels follow the working side.

@@ -1,0 +1,126 @@
+// MARK: PIECES
+    // MARK: 401-500 loaded marches pieces (2026-10-05, round 3)
+
+    /// Marching on the spot: the lifted knee (the one bent further, `_bent`)
+    /// stopping low. The thigh turns `degrees` down about the hip and the
+    /// shin turns the same amount back the other way about the knee, so the
+    /// lower leg keeps its slant and only drops with the knee; the knee opens
+    /// by `degrees`. Fades out as the knee straightens, so it shows only while
+    /// a foot is up, and follows whichever knee that is.
+    private static func carryMarch500KneeLow(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("bent")],
+                  moves: [.turn(pivot: "thigh_bent", points: ["shin_bent", "foot_bent", "foot_bent.tip"],
+                                axis: .lateral, degrees: -degrees),
+                          .turn(pivot: "shin_bent", points: ["foot_bent", "foot_bent.tip"], axis: .lateral, degrees: degrees)],
+                  strength: .withBend("shin_bent"))
+    }
+
+    /// Marching on the spot: the trunk leaning back `degrees` about the
+    /// pelvis as a knee comes up, the arms and dumbbells carried with it.
+    /// Fades out as the lifted knee straightens.
+    private static func carryMarch500LeanedBack(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)],
+                  strength: .withBend("shin_bent"))
+    }
+
+    /// Marching on the spot: the hip of the lifted leg (`_bent`) sagging. The
+    /// pelvis and the lifted leg tilt `degrees` about the standing hip
+    /// (`_straight`), then the lifted leg turns back the same amount about its
+    /// own hip, so it drops with the hip without swinging in under the body;
+    /// the pelvis keeps its width and every bone its length. A `_R` pivot
+    /// mirrors turns about `.forward`, so a positive turn drops the lifted
+    /// side and the second turn undoes the leg's tilt whichever foot is up.
+    /// Fades out as the lifted knee straightens.
+    private static func carryMarch500HipDropped(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("bent")],
+                  moves: [.turn(pivot: "thigh_straight", points: ["pelvis", "thigh_bent", "shin_bent", "foot_bent", "foot_bent.tip"],
+                                axis: .forward, degrees: degrees),
+                          .turn(pivot: "thigh_bent", points: ["shin_bent", "foot_bent", "foot_bent.tip"],
+                                axis: .forward, degrees: degrees)],
+                  strength: .withBend("shin_bent"))
+    }
+
+    /// A dumbbell in each hand: the shoulders rounding forward and down over
+    /// the weights, the upper back rounding and the head following (the
+    /// library Farmer's Carry shoulder ghost's moves).
+    private static let carryMarch500ShouldersRounded = FaultPose(
+        chains: [spine, arms, shoulders],
+        moves: [.shift(["upper_arm_*", "forearm_*", "hand_*"], forward: 0.13, up: -0.06, outward: -0.03),
+                .shift(["chest"], forward: -0.07),
+                .shift(["neck", "head"], forward: 0.09, up: -0.03)]
+    )
+
+    /// One dumbbell, in the right hand: the trunk, shoulders and arms bending
+    /// `degrees` over toward it about the pelvis, the loaded shoulder dropping
+    /// (the mirror of `leanedToLoad`, which leans to a left-hand load).
+    private static func carryMarch500LeanedToWeight(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .forward, degrees: degrees)])
+    }
+
+    /// One dumbbell, in the right hand: that shoulder hitched up `rise` torso
+    /// lengths toward the ear, the arm and the dumbbell lifted with it.
+    private static func carryMarch500ShruggedRight(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [shoulders, arm("R")],
+                  moves: [.shift(["upper_arm_R", "forearm_R", "hand_R", "hand_R.tip"], up: rise)])
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 loaded marches (2026-10-05, round 3)
+        // Two marches on the spot on one body (torso 0.592 m) with the same
+        // legs: the left knee up 0.13-1.71 s (held at the top 0.6-1.2 s, knee
+        // 78°, the thigh 7° short of level), the right 2.13-3.71 s, again from
+        // 4 s. The knee and hip ghosts use the `_bent` leg, so in the live
+        // mistake view they follow whichever knee is up and fade as it comes
+        // down; their stills are at 1.0 s (left knee held up) or 3.0 s (right).
+        // The Farmer Carry March is framed three-quarter (yaw -1.0): its
+        // front-back faults turn -0.5 toward a side view, the hip drop
+        // `faceOn` (a total of 0.1). The Suitcase Carry March is framed nearly
+        // face-on (-0.3), which shows its side-to-side faults as framed; its
+        // knee fault turns `sideOn` (a total of -1.4). Sizes were measured with
+        // a Python port of FaultGhost.solve on the rigs (carrymarch/gh.py in
+        // the session scratchpad), which also checks bone lengths and that
+        // every knee keeps bending forward.
+        "Farmer Carry March": [
+            // Stopping low: the lifted thigh 32° lower (about 39° below level),
+            // the knee ~22 cm lower and ~10 cm back, opening 78° -> ~110°, the
+            // shin keeping its slant, the toes still ~12 cm up; turned toward a
+            // side view. (Lab round 1's 40° put the toes at the floor.)
+            // Stilled at 3.0 s, the right knee up: the knee label tracks
+            // the right knee, so its leader meets the knee the ghost lowers.
+            "knee": carryMarch500KneeLow(32).seen(-0.5),
+            // Leaning back as the knee comes up: the trunk 15° back about the
+            // pelvis, the head ~18 cm and the shoulders ~14 cm back, the hands
+            // and dumbbells nearly in place; turned toward a side view.
+            "posture": carryMarch500LeanedBack(15).seen(-0.5),
+            // The lifted side's hip sagging: the pelvis tilted 26° about the
+            // standing hip, the lifted hip and leg ~8 cm lower, the pelvis
+            // ~4 cm; seen from the front.
+            "hips": carryMarch500HipDropped(26).seen(faceOn),
+            // The dumbbells swinging forward: both arms 18° forward from the
+            // shoulders, the hands ~16 cm ahead; turned toward a side view.
+            "grip": armsSwungForward(18).seen(-0.5),
+            // Shoulders rounding forward over the dumbbells: the shoulders and
+            // arms ~9 cm forward and down, the chest ~4 cm back, the neck and
+            // head ~6 cm forward; turned toward a side view. (The library
+            // Farmer's Carry moves; as there, the girdle line shortens ~0.8 cm.)
+            "shoulders": carryMarch500ShouldersRounded.seen(-0.5)
+        ],
+        "Suitcase Carry March": [
+            // Leaning toward the dumbbell (right hand): the trunk 12° over to
+            // the right about the pelvis, the head ~14 cm, the loaded shoulder
+            // ~5 cm lower; seen as framed.
+            "level": carryMarch500LeanedToWeight(12),
+            // The loaded shoulder hitched up: the right shoulder, arm and
+            // dumbbell ~8 cm higher; seen as framed.
+            "shoulder": carryMarch500ShruggedRight(0.14),
+            // Stopping low: as the farmer march, the lifted thigh 32° lower,
+            // the knee ~22 cm lower; turned to a left-side view.
+            "knee": carryMarch500KneeLow(32).seen(sideOn),
+            // The lifted side's hip sagging as the dumbbell-side (right) knee
+            // comes up: the pelvis tilted 26° about the left hip, the right
+            // hip and leg ~8 cm lower; seen as framed.
+            "hips": carryMarch500HipDropped(26)
+            // "tempo" has no ghost: the pace of the march.
+        ],

@@ -5,7 +5,7 @@
 //  The design draws the tab bar per-screen rather than globally: on the tab
 //  roots it is chrome sitting on the screen ground, while on Anatomy it is
 //  ruled into the bottom of the muscle panel itself. `Style` covers both, and
-//  screens pushed on top of a tab (the 3D view, step mode, comparison) simply
+//  screens pushed on top of a tab (the 3D view, step mode) simply
 //  don't render one.
 //
 

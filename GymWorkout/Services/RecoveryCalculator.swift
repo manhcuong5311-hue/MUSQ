@@ -115,38 +115,10 @@ struct RecoveryCalculator {
 
     /// For every part with a load that registers, the day that matters most
     /// right now: the one leaving it most fatigued, or — once everything has
-    /// recovered — the latest.
+    /// recovered — the latest. It also carries the latest day that counted
+    /// as training the part, which can be an earlier one.
     func partRecords(from sessions: [WorkoutSession], now: Date = Date()) -> [MusclePart: MusclePartRecord] {
-        let calendar = Calendar.current
-
-        struct DayLoad {
-            var direct: Double = 0
-            var indirect: Double = 0
-            var last: Date
-            var exercises: [String] = []
-        }
-        var perDay: [MusclePart: [Date: DayLoad]] = [:]
-        for session in sessions {
-            for exercise in session.exercises {
-                let contributions = Self.partContributions(of: exercise)
-                for set in exercise.sets where set.isCompleted {
-                    let at = set.completedAt ?? session.day
-                    guard at <= now else { continue }
-                    let day = calendar.startOfDay(for: at)
-                    for contribution in contributions {
-                        var load = perDay[contribution.part, default: [:]][day] ?? DayLoad(last: at)
-                        if contribution.role == .primary { load.direct += contribution.weight }
-                        else { load.indirect += contribution.weight }
-                        load.last = max(load.last, at)
-                        if !load.exercises.contains(exercise.exerciseName) {
-                            load.exercises.append(exercise.exerciseName)
-                        }
-                        perDay[contribution.part, default: [:]][day] = load
-                    }
-                }
-            }
-        }
-
+        let perDay = dayLoads(from: sessions, now: now)
         var result: [MusclePart: MusclePartRecord] = [:]
         for (part, days) in perDay {
             let candidates = days.values.compactMap { load -> MusclePartRecord? in
@@ -167,9 +139,70 @@ struct RecoveryCalculator {
                                         status: status, hoursRemaining: remaining,
                                         exercises: load.exercises)
             }
-            result[part] = candidates.max { Self.moreFatigued($1, $0) }
+            var record = candidates.max { Self.moreFatigued($1, $0) }
+            // Once everything has recovered, the latest day is picked even if
+            // it only helped; keep the real training date alongside it so the
+            // part doesn't read as never trained.
+            record?.lastCountedAt = candidates.filter(\.kind.counts).map(\.lastTrainedAt).max()
+            result[part] = record
         }
         return result
+    }
+
+    /// The days each group had a session of its own: a load that counts on
+    /// one of the parts its sessions mainly work, from exercises logged under
+    /// the group. Rows on a back day load the rear delts, but that isn't a
+    /// shoulder session. Oldest first.
+    func trainingDays(from sessions: [WorkoutSession], now: Date = Date()) -> [(day: Date, groups: Set<MuscleGroup>)] {
+        var byDay: [Date: Set<MuscleGroup>] = [:]
+        for (part, days) in dayLoads(from: sessions, now: now, ownGroupOnly: true)
+        where ExerciseCatalog.mainParts(of: part.group).contains(part) {
+            for (day, load) in days
+            where settings.kind(directSets: load.direct, indirectSets: load.indirect)?.counts == true {
+                byDay[day, default: []].insert(part.group)
+            }
+        }
+        return byDay.sorted { $0.key < $1.key }.map { (day: $0.key, groups: $0.value) }
+    }
+
+    /// One day's load on one part: effective sets as a primary mover and as
+    /// a helper, the last set, and the exercises that loaded it.
+    private struct DayLoad {
+        var direct: Double = 0
+        var indirect: Double = 0
+        var last: Date
+        var exercises: [String] = []
+    }
+
+    /// Every completed set up to `now`, added up per part and day. With
+    /// `ownGroupOnly`, an exercise only counts toward the parts of the group
+    /// it was logged under.
+    private func dayLoads(from sessions: [WorkoutSession], now: Date,
+                          ownGroupOnly: Bool = false) -> [MusclePart: [Date: DayLoad]] {
+        let calendar = Calendar.current
+        var perDay: [MusclePart: [Date: DayLoad]] = [:]
+        for session in sessions {
+            for exercise in session.exercises {
+                let contributions = Self.partContributions(of: exercise)
+                    .filter { !ownGroupOnly || $0.part.group == exercise.group }
+                for set in exercise.sets where set.isCompleted {
+                    let at = set.completedAt ?? session.day
+                    guard at <= now else { continue }
+                    let day = calendar.startOfDay(for: at)
+                    for contribution in contributions {
+                        var load = perDay[contribution.part, default: [:]][day] ?? DayLoad(last: at)
+                        if contribution.role == .primary { load.direct += contribution.weight }
+                        else { load.indirect += contribution.weight }
+                        load.last = max(load.last, at)
+                        if !load.exercises.contains(exercise.exerciseName) {
+                            load.exercises.append(exercise.exerciseName)
+                        }
+                        perDay[contribution.part, default: [:]][day] = load
+                    }
+                }
+            }
+        }
+        return perDay
     }
 
     /// Orders by what holds a part back most: real training over helping,

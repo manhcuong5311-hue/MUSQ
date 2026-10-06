@@ -21,17 +21,25 @@ enum MovementPattern: String {
     case carry, hold, shrug, cuffRotation, uprightRow, rearDelt, lateralRaise, frontRaise
     case pullover, verticalPull, horizontalPull, verticalPress, horizontalPress, fly, dip
     case armCurl, tricepsExtension, legCurl, quadIsolation, squat, lunge, hinge, bridge
-    case gluteIsolation, crunch, legRaise, trunkRotation, rollout, other
+    case gluteIsolation, calfRaise, tibialisRaise, crunch, legRaise, trunkRotation, rollout
+    case coreStability, olympicLift, other
 
     init(exerciseNamed name: String) {
         let n = name.lowercased()
         func has(_ words: String...) -> Bool { words.contains { n.contains($0) } }
         // Order matters: "rear delt row" before "row", "leg press" before
-        // "press", "split squat" and "sissy squat" before "squat".
-        if has("carry") { self = .carry }
-        else if has("plank") { self = .hold }
+        // "press", "split squat" and "sissy squat" before "squat", and calf
+        // raises before all of those, so the leg-press, hack-squat and Smith
+        // calf raises and the calf press stay calf work.
+        if has("carry", "walk on toes", "bear crawl") { self = .carry }
+        // Planks that move are drills, not holds (445-474, 2026-10-05).
+        else if has("plank shoulder tap", "plank knee to elbow", "side plank hip lift") { self = .coreStability }
+        else if has("plank hip dip") { self = .trunkRotation }
+        else if has("plank", "hollow body hold") { self = .hold }
         else if has("shrug") { self = .shrug }
         else if has("external rotation", "internal rotation") { self = .cuffRotation }
+        else if has("calf raise", "calf press", "plantar flexion") { self = .calfRaise }
+        else if has("tibialis raise", "dorsiflexion") { self = .tibialisRaise }
         else if has("upright row") { self = .uprightRow }
         else if has("rear delt", "reverse pec deck", "reverse dumbbell fly", "face pull") { self = .rearDelt }
         else if has("lateral raise", "y-raise", "lu raise", "powell raise") { self = .lateralRaise }
@@ -40,7 +48,7 @@ enum MovementPattern: String {
         else if has("pull-up", "chin-up", "pulldown") { self = .verticalPull }
         else if has("row") { self = .horizontalPull }
         else if has("leg curl", "nordic", "sliding curl", "glute-ham raise") { self = .legCurl }
-        else if has("curl") { self = .armCurl }
+        else if has("curl", "21s", "wrist roller") { self = .armCurl }
         else if has("pushdown", "triceps extension", "skull crusher") { self = .tricepsExtension }
         else if has("dip") { self = .dip }
         else if has("leg extension", "sissy squat") { self = .quadIsolation }
@@ -49,10 +57,17 @@ enum MovementPattern: String {
         else if has("deadlift", "rack pull", "block pull", "back extension", "good morning") { self = .hinge }
         else if has("bridge", "hip thrust", "frog pump") { self = .bridge }
         else if has("kickback", "abduction", "side kick", "clamshell") { self = .gluteIsolation }
-        else if has("crunch") { self = .crunch }
-        else if has("leg raise", "knee raise") { self = .legRaise }
-        else if has("twist", "wood chop") { self = .trunkRotation }
-        else if has("rollout") { self = .rollout }
+        else if has("crunch", "sit-up", "v-up") { self = .crunch }
+        else if has("leg raise", "knee raise", "toe-to-bar", "flutter kick", "scissor kick") { self = .legRaise }
+        // Side bends file with the twists and chops: oblique work either way.
+        else if has("twist", "wood chop", "cable rotation", "landmine rotation", "landmine 180", "side bend") {
+            self = .trunkRotation
+        }
+        else if has("rollout", "body saw") { self = .rollout }
+        else if has("thruster", "clean and press", "clean and jerk", "power clean", "hang clean", "snatch") {
+            self = .olympicLift
+        }
+        else if has("dead bug", "bird dog", "hollow body", "mountain climber") { self = .coreStability }
         else if has("fly", "crossover") { self = .fly }
         else if has("overhead press", "shoulder press", "push press", "z press", "viking press", "arnold press",
                     "behind-the-neck press", "half-kneeling landmine press", "standing dumbbell press",
@@ -67,7 +82,8 @@ enum MovementPattern: String {
     /// Single-joint work, which takes lighter loads for more reps.
     var isIsolation: Bool {
         [.shrug, .cuffRotation, .rearDelt, .lateralRaise, .frontRaise, .pullover, .fly, .armCurl,
-         .tricepsExtension, .legCurl, .quadIsolation, .gluteIsolation, .crunch, .legRaise, .trunkRotation]
+         .tricepsExtension, .legCurl, .quadIsolation, .gluteIsolation, .calfRaise, .tibialisRaise, .crunch, .legRaise,
+         .trunkRotation]
             .contains(self)
     }
 }

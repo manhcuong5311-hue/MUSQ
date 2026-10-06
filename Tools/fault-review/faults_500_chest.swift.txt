@@ -1,0 +1,284 @@
+// MARK: PIECES
+    // MARK: 401-500 chest pieces (2026-10-04)
+
+    /// Lying face down: the hips sagging toward the floor, as
+    /// `hipsSagging` but deeper: the pelvis and hips `drop` torso lengths
+    /// out of the chest (toward the floor), the mid-spine half that and the
+    /// knees 0.45 of it, the feet left where they are. The push-ups here are
+    /// framed small (zoom ~0.52), where `hipsSagging`'s ~9.5 cm read as a
+    /// slight bend.
+    private static func chest500HipsSag(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, ["pelvis", "thigh_L"], ["pelvis", "thigh_R"], ["thigh_*", "shin_*", "foot_*"]],
+                  moves: [.shift(["spine"], forward: drop / 2), .shift(["pelvis", "thigh_*"], forward: drop),
+                          .shift(["shin_*"], forward: drop * 0.45)])
+    }
+
+    /// Hands on a handle with the palms forward: the wrists bent back, the
+    /// hand tips turned `degrees` toward the face, the line between the
+    /// tips (the handle) with them. `wristBentBack`'s 48° moved the tips
+    /// ~9 cm, which barely showed on the two-hand landmine handle.
+    private static func chest500WristsBack(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["forearm_*", "hand_*", "hand_*.tip"], bar],
+                  moves: [.turn(pivot: "hand_*", points: ["hand_*.tip"], axis: .lateral, degrees: degrees)])
+    }
+
+    /// Push-ups: the body held high over the hands, the elbows opening
+    /// toward straight: the head, neck, chest and shoulders moved `rise`
+    /// torso lengths out of the back (toward the ceiling), the mid-spine
+    /// three quarters of that and the pelvis half, so the body pivots about
+    /// the feet; the elbows re-seated between the raised shoulders and the
+    /// hands on the floor. Grows with the left elbow's bend. Short reps at
+    /// the bottom, or a stiff-armed landing in the plyometric push-up.
+    private static func chest500PushUpHigh(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, arms],
+                  moves: [.shift(["head", "neck", "chest", "upper_arm_*"], forward: -rise),
+                          .shift(["spine"], forward: -rise * 0.75), .shift(["pelvis"], forward: -rise / 2),
+                          .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Push-ups: the elbows flared out to a T at the bottom, the upper
+    /// arms turned `degrees` out about the chest's own axis and the elbows
+    /// re-seated between the shoulders and the hands on the floor, so both
+    /// bones keep their length and the elbow its bend. The shoulder line is
+    /// drawn with the arms so the two flared arms read as one T.
+    /// (`elbowsFlared`'s turn alone shortened the forearm ~20% here, where
+    /// the hands sit wider than the shoulder joints.)
+    private static func chest500ElbowsFlared(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["forearm_L", "upper_arm_L", "upper_arm_R", "forearm_R"], arms],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*"], axis: .forward, degrees: degrees),
+                          .resolve(["forearm_*"])])
+    }
+
+    /// Push-ups: the hands placed forward, toward the head, slid level
+    /// along the floor `ahead` torso lengths (the body's own up axis tips
+    /// toward the floor in a decline push-up), the elbows re-seated between
+    /// the shoulders and the moved hands. `handsForwardOnBench` moves the
+    /// elbows half as far instead, which here shortened the upper arm and
+    /// lengthened the forearm by ~5 cm each.
+    private static func chest500HandsForward(_ ahead: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["hand_*", "hand_*.tip"], ahead: ahead), .resolve(["forearm_*"])])
+    }
+
+    /// Push-ups: the head dropped toward the floor, bowed `degrees` about
+    /// the neck; `head.tip` (the head bone's far end) carries the line to
+    /// the crown so the bow shows.
+    private static func chest500HeadDropped(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["chest", "neck", "head", "head.tip"]],
+                  moves: [.turn(pivot: "neck", points: ["head", "head.tip"], axis: .lateral, degrees: -degrees)])
+    }
+
+    /// Bar dips: the trunk held upright instead of leaning, the trunk and
+    /// shoulders tipped `degrees` back about the pelvis with the hands left
+    /// on the bars and the elbows re-seated. Grows with the left elbow's
+    /// bend, so it shows at the bottom, where the lean is greatest.
+    private static func chest500DipUpright(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, arms],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: degrees),
+                          .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Bar dips, half reps: the whole body, hanging legs included, `rise`
+    /// torso lengths higher with the hands on the bars, the elbows
+    /// re-seated toward straight. Grows with the left elbow's bend.
+    private static func chest500DipHeldHigh(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, arms, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip", "upper_arm_*"] + torso, rise: rise),
+                          .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Bar dips: the elbows splaying out past the hands, pushed `outward`
+    /// torso lengths and re-seated (bone lengths kept). Grows with the left
+    /// elbow's bend.
+    private static func chest500DipElbowsOut(_ outward: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["forearm_*"], outward: outward), .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Bar dips: the shoulders shrugged up toward the ears, both shoulder
+    /// joints raised `up` torso lengths along the trunk with the hands left
+    /// on the bars and the elbows re-seated (bone lengths kept); the trunk
+    /// and head stay where they are, so seen head-on the shoulder line rises
+    /// past the base of the neck into a V. Grows with the left elbow's bend:
+    /// with straight arms at the top the shoulders have no room to rise.
+    private static func chest500DipShrugged(_ up: Float) -> FaultPose {
+        FaultPose(chains: [shoulders, arms],
+                  moves: [.shift(["upper_arm_*"], up: up), .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Bar dips with the knees bent behind: the knees kicked forward, both
+    /// legs swung `degrees` forward about the hips with the knee bend kept.
+    /// Grows with the left elbow's bend, as the kick comes out of the
+    /// bottom.
+    private static func chest500KneesKicked(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: degrees)],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Two-hand landmine press: the elbows flared out to the sides at the
+    /// start, the upper arms turned `degrees` out about the chest's axis
+    /// and the elbows re-seated between the shoulders and the hands on the
+    /// handle, so both bones keep their length (the turn alone stretched
+    /// the forearm ~30%). Grows with the left elbow's bend, so it shows with
+    /// the handle at the chest.
+    private static func chest500LandmineElbowsOut(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [arms],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*"], axis: .forward, degrees: degrees),
+                          .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Two-hand landmine press: leaning back to drive the handle, the trunk
+    /// and shoulders tipped `degrees` back about the pelvis, the lower back
+    /// arched by `arch` torso lengths, the hands left on the handle and the
+    /// elbows re-seated. Grows with the left elbow's bend: near lockout the
+    /// arms could no longer reach the handle from a leaning trunk.
+    private static func chest500LandmineLeanBack(_ degrees: Float, arch: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, bar],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: degrees),
+                          .shift(["spine"], forward: arch), .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Two-hand landmine press, stopping short: both hands held back down
+    /// the arc (0.1 torso lengths back, 0.12 down) with the elbows
+    /// re-seated, shown near lockout.
+    private static let chest500LandmineShort = FaultPose(
+        chains: [armsToGrip, bar],
+        moves: [.shift(["hand_*", "hand_*.tip"], forward: -0.1, up: -0.12), .resolve(["forearm_*"])],
+        strength: .whenStraight("forearm_L"))
+
+    /// Split stance: the feet brought level under the hips, each ankle
+    /// moved `ahead` torso lengths (the front one back, the back one
+    /// forward), the legs drawn straight between hip and ankle.
+    private static func chest500FeetLevel(_ ahead: Float) -> FaultPose {
+        FaultPose(chains: [legs],
+                  moves: [.shift(["foot_R", "foot_R.tip"], ahead: ahead), .shift(["foot_L", "foot_L.tip"], ahead: -ahead),
+                          .straighten(["shin_*"])])
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 chest (2026-10-04)
+        // Two push-ups framed side-on from the front-left (yaw -1.2, the head
+        // at the left), two bar dips three-quarter from the front-left (yaw
+        // -1.0) and a landmine press from the front-left (yaw -0.8); one body
+        // (torso 0.592 m). Distances were measured with a Python port of
+        // FaultGhost.solve on the rigs at each fault's moment and projected
+        // with the framing plus the fault's view (chest/ghost.py, faults.py in
+        // the session scratchpad). The plyometric push-up's drive cue (speed)
+        // and the weighted dip's belt cue (where the plate hangs) have no
+        // ghost.
+        "Decline Push-Up": [
+            // Hips sagging toward the floor, at the top: the pelvis ~15 cm
+            // (~25 pt) down, the mid-spine ~8 cm, the knees ~7 cm; the feet
+            // stay on the bench. The shared `hipsSagging` (~9.5 cm) read as
+            // a slight bend in the lab still.
+            "body": chest500HipsSag(0.26),
+            // The hands walked forward, slid level 0.26 torso lengths (~15 cm,
+            // ~24 pt) toward the head, the elbows re-seated (78° -> ~82°,
+            // ~12 cm, ~18 pt); level, since the body's own up axis tips
+            // toward the floor here.
+            "hands": chest500HandsForward(0.26),
+            // Elbows flared to a T at the bottom: the upper arms turned 41°
+            // out (49° -> ~88° from the trunk) and the elbows re-seated
+            // (still 78°, bone lengths kept), each elbow ~18 cm toward the
+            // head and out; the shoulder line is drawn with the arms. From
+            // the framing (no turn) the two arms stand apart and the elbows
+            // move ~20 and ~26 pt; the flare runs mostly toward the head here
+            // (the hands sit outside the shoulders), so head-on it shows
+            // least (~12 pt).
+            "elbow": chest500ElbowsFlared(41),
+            // Short reps: the shoulders held ~17 cm (~28 pt) higher at the
+            // bottom, the elbows 78° -> ~135°.
+            "depth": chest500PushUpHigh(0.28),
+            // Reaching for the floor with the head: bowed 40° about the neck,
+            // the crown ~15 cm (~25 pt) lower and back toward the hands.
+            "head": chest500HeadDropped(40)
+        ],
+        "Plyometric Push-Up": [
+            // "drive" has no ghost: how fast the push is.
+            // A stiff-armed landing, shown in the sink after the catch
+            // (2.33 s, elbows 102°, strength 0.86): the shoulders ~12 cm
+            // (~22 pt) higher, the elbows opened to ~162°.
+            "land": chest500PushUpHigh(0.24),
+            // Hips sagging as you land (2.33 s): the pelvis ~15 cm (~26 pt)
+            // down, as the Decline Push-Up's.
+            "body": chest500HipsSag(0.26),
+            // Landing with the hands further forward: slid level ~15 cm
+            // (~25 pt) toward the head, the elbows re-seated (~9 cm).
+            "hands": chest500HandsForward(0.26),
+            // A shallow dip before the push: at the bottom (1.08 s) the
+            // shoulders ~17 cm (~30 pt) higher, the elbows 78° -> ~129°.
+            "depth": chest500PushUpHigh(0.28)
+        ],
+        "Chest Dip": [
+            // Staying upright: the trunk tipped 20° back about the pelvis at
+            // the bottom (33° -> ~13° forward), the head ~24 cm (~52 pt) and
+            // the shoulders ~18 cm back over the hands, the elbows re-seated.
+            "lean": chest500DipUpright(20),
+            // Half reps: the body 0.32 torso lengths (~19 cm, ~48 pt) higher
+            // at the bottom, the elbows 76° -> ~130°.
+            "depth": chest500DipHeldHigh(0.32),
+            // Elbows splaying out past the bars: ~9 cm out and re-seated.
+            // Turned head-on (view +1.0, a total of 0), where both elbows
+            // move ~20 pt across the screen; from the framing the near one
+            // moved ~2 pt.
+            "elbow": chest500DipElbowsOut(0.2).seen(1.0),
+            // Shrugging: both shoulder joints ~11 cm (0.18 torso lengths) up
+            // toward the ears at the bottom, the hands on the bars, the
+            // elbows re-seated (76° -> ~107°). Turned head-on (view +1.0, a
+            // total of 0), where the shoulders rise ~24 pt past the base of
+            // the neck into a V. The first version, the trunk sinking
+            // between fixed shoulders, only flattened the shoulder line.
+            "shoulders": chest500DipShrugged(0.18).seen(1.0),
+            // Kicking out of the bottom: the legs swung 15° forward, the
+            // knees ~12 cm (~24 pt) and the feet ~18 cm (~38 pt) forward.
+            "legs": chest500KneesKicked(15)
+        ],
+        "Weighted Chest Dip": [
+            // "belt" has no ghost: where the plate hangs.
+            // Staying upright under the plate: as the Chest Dip (33° -> ~13°
+            // at the bottom).
+            "lean": chest500DipUpright(20),
+            // Sinking too deep: the Assisted Dip's piece with the legs
+            // riding, the body ~8 cm (~20 pt) lower at the bottom, the
+            // shoulders ~10 cm below the elbows, the elbows 76° -> ~65°.
+            "depth": dipSunk(-0.14, legsRide: true, strength: .withBend("forearm_L")),
+            // Stopping short of lockout: at the top the body ~7 cm (~16 pt)
+            // lower, the elbows 175° -> ~123°.
+            "lockout": dipSunk(-0.12, legsRide: true, strength: .whenStraight("forearm_L")),
+            // Kicking out of the bottom: as the Chest Dip (knees ~12 cm).
+            "legs": chest500KneesKicked(15)
+        ],
+        "Landmine Chest Press": [
+            // Wrists bent back on the handle: the hand tips turned 65°
+            // toward the face, ~12 cm, the handle line with them. Turned
+            // -0.6 (a total of -1.4, near side-on), where the tips move
+            // ~31 pt across the screen.
+            "grip": chest500WristsBack(65).seen(-0.6),
+            // Elbows flared at the start: the upper arms turned 65° out and
+            // the elbows re-seated (still 60°, bone lengths kept), so they
+            // swing ~21 cm out and up, ~13 cm out to the sides and ~45° from
+            // the trunk (from 0°); ~32 pt (left) and ~49 pt (right).
+            "elbow": chest500LandmineElbowsOut(65),
+            // Stopping short: at lockout the hands ~7 cm back down the arc,
+            // the elbows 162° -> ~117°; turned -0.3 (a total of -1.1), more
+            // side-on, so the bend shows (~20-25 pt).
+            "path": chest500LandmineShort.seen(-0.3),
+            // Leaning back to press (0.6 s, elbows ~71°): the trunk tipped 25°
+            // back about the pelvis (15° forward -> ~10° back) with the lower
+            // back arched, the hands on the handle, the elbows re-seated
+            // (~160°); the head ~30 cm back. Seen side-on (view -0.7, a total
+            // of -1.5), ~77 pt; at -1.2 the arms crossed the shoulder line.
+            "core": chest500LandmineLeanBack(25, arch: 0.05).seen(-0.7),
+            // Feet side by side: each ankle moved ~21 cm (0.36 torso lengths)
+            // to level with the hips, the legs drawn straight; seen side-on
+            // (a total of -1.2), ~50 pt.
+            "stance": chest500FeetLevel(0.36).seen(-0.4)
+        ],

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-hollow-body-rock.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,269 @@
+// MARK: PIECES
+    // MARK: 401-500 moving planks pieces (2026-10-05)
+
+    /// The shoulder tap: the tapping hand's side is the straighter knee in
+    /// this rig (the supporting side's knee bends ~2 deg more while a hand is
+    /// up), so `_straight` is the tapping side and `_bent` the supporting
+    /// one. Full with the tapping elbow bent to 90 deg or more, none with
+    /// both hands down; if the sides were ever read the wrong way round the
+    /// gate would read a straight supporting elbow and hide the ghost.
+    private static let plankDyn500Tapping = FaultStrength.withBend("forearm_straight")
+
+    /// The hip dip: `_bent` is the hip turned down (its knee bends a little
+    /// more) and `_straight` the raised one. The raised hip moves away from
+    /// the lowered side's elbow as the hips turn: none level (1.04 torso
+    /// lengths), all of it from about 30 deg of turn (1.085). Read the wrong
+    /// way round (briefly, at the start and end of the left dip) the distance
+    /// falls below `from` and the ghost hides.
+    private static let plankDyn500Dipping = FaultStrength.between("thigh_straight", "forearm_bent", from: 1.05, to: 1.085)
+
+    /// The knee to elbow: none with both feet on the mat (ankles 0.37 torso
+    /// lengths apart), all of it once a foot is out at the elbow (~1.95).
+    private static let plankDyn500KneeOut = FaultStrength.between("foot_L", "foot_R", from: 0.6, to: 1.4)
+
+    /// A high plank with one knee drawn in (the bent leg): the knee stopping
+    /// short, the thigh turned `degrees` back about the hip toward the feet.
+    /// Full while that knee is bent to 90 deg or less.
+    private static func plankDyn500KneeShort(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("bent")],
+                  moves: [.turn(pivot: "thigh_bent", points: ["shin_bent", "foot_bent", "foot_bent.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: .withBend("shin_bent"))
+    }
+
+    /// A high plank piked: the trunk below the neck, the pelvis and both legs
+    /// turned `trunk` degrees about the neck so the hips rise, then the
+    /// straighter leg turned `legs` degrees back down about its hip so its
+    /// foot lands where it was (the bent leg rides up with the hips). All
+    /// turns, so every bone keeps its length.
+    private static func plankDyn500HipsPiked(_ trunk: Float, legs degrees: Float,
+                                             strength: FaultStrength = .always) -> FaultPose {
+        FaultPose(chains: [spine, ["thigh_L", "pelvis", "thigh_R"], leg("bent"), leg("straight")],
+                  moves: [.turn(pivot: "neck", points: ["chest", "spine", "pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip"],
+                                axis: .lateral, degrees: -trunk),
+                          .turn(pivot: "thigh_straight", points: ["shin_straight", "foot_straight", "foot_straight.tip"],
+                                axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// The mountain climber's back leg left bent: the straighter leg's thigh
+    /// turned `hip` degrees forward about the hip and the knee folded `knee`
+    /// degrees, the knee low and the foot near the mat. The same all clip.
+    private static func plankDyn500BackLegBent(hip: Float, knee: Float) -> FaultPose {
+        FaultPose(chains: [leg("straight")],
+                  moves: [.turn(pivot: "thigh_straight", points: ["shin_straight", "foot_straight", "foot_straight.tip"],
+                                axis: .lateral, degrees: hip),
+                          .turn(pivot: "shin_straight", points: ["foot_straight", "foot_straight.tip"],
+                                axis: .lateral, degrees: -knee)])
+    }
+
+    /// The shoulder tap's hips rotating: the pelvis and the tapping side's
+    /// hip turned `degrees` about the body's long axis through the supporting
+    /// hip, so the tapping side's hip drops toward the mat; that knee re-seats
+    /// over its planted foot. (The `.up` turn is mirrored by its pivot, so it
+    /// drops the tapping hip on either side.)
+    private static func plankDyn500HipsRolled(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], legs],
+                  moves: [.turn(pivot: "thigh_bent", points: ["pelvis", "thigh_straight"], axis: .up, degrees: -degrees),
+                          .resolve(["shin_straight"])],
+                  strength: plankDyn500Tapping)
+    }
+
+    /// The shoulder tap cut short: the tapping arm turned `degrees` back
+    /// down about its shoulder, the hand stopping near the chest instead of
+    /// at the far shoulder.
+    private static func plankDyn500TapShort(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [arm("straight")],
+                  moves: [.turn(pivot: "upper_arm_straight", points: ["forearm_straight", "hand_straight", "hand_straight.tip"],
+                                axis: .up, degrees: -degrees)],
+                  strength: plankDyn500Tapping)
+    }
+
+    /// A plank sagging: the lower trunk, pelvis and legs turned `trunk`
+    /// degrees about the chest so the hips sink toward the mat, then both
+    /// legs turned `legs` degrees back up about the hips so the feet stay
+    /// where they were. All turns, so every bone keeps its length (the
+    /// library's `hipsSagging` shifts and stretches the lower back). The same
+    /// all clip.
+    private static func plankDyn500HipsSagged(_ trunk: Float, legs degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, ["thigh_L", "pelvis", "thigh_R"], legs],
+                  moves: [.turn(pivot: "chest", points: ["spine", "pelvis", "thigh_*", "shin_*", "foot_*", "foot_*.tip"],
+                                axis: .lateral, degrees: trunk),
+                          .turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -degrees)])
+    }
+
+    /// A high plank with the feet together: both legs turned `degrees` in
+    /// toward the midline about the hips. The same all clip.
+    private static func plankDyn500FeetTogether(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs, ["thigh_L", "pelvis", "thigh_R"]],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .forward, degrees: -degrees)])
+    }
+
+    /// The hip dip cut short: the pelvis and the lowered hip turned `degrees`
+    /// back up about the raised hip, so the hips turn only part of the way;
+    /// the lowered side's knee re-seats over its foot.
+    private static func plankDyn500DipShort(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], legs],
+                  moves: [.turn(pivot: "thigh_straight", points: ["pelvis", "thigh_bent"], axis: .up, degrees: degrees),
+                          .resolve(["shin_bent"])],
+                  strength: plankDyn500Dipping)
+    }
+
+    /// The hip dip with the shoulders rolling along: the shoulder girdle,
+    /// chest, neck and head turned `degrees` about the raised side's
+    /// shoulder, so the lowered side's shoulder drops toward the mat with the
+    /// hip. Only the shoulder line and the neck are drawn.
+    private static func plankDyn500ShouldersRolled(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["upper_arm_L", "neck", "upper_arm_R"], ["chest", "neck", "head"]],
+                  moves: [.turn(pivot: "upper_arm_straight", points: ["upper_arm_bent", "chest", "neck", "head"],
+                                axis: .up, degrees: -degrees)],
+                  strength: plankDyn500Dipping)
+    }
+
+    /// The knee to elbow stopping short: the working leg swung `degrees`
+    /// back toward the feet about its hip (about the lifter's forward, which
+    /// is vertical in a plank), the knee further out and well behind the
+    /// elbow.
+    private static func plankDyn500KneeOutShort(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("bent")],
+                  moves: [.turn(pivot: "thigh_bent", points: ["shin_bent", "foot_bent", "foot_bent.tip"], axis: .forward, degrees: -degrees)],
+                  strength: plankDyn500KneeOut)
+    }
+
+    /// A high plank with the hands walked forward: the hands slid `ahead`
+    /// torso lengths along the floor toward the head, the shoulders (and the
+    /// neck between them) `drop` torso lengths lower so the arms keep their
+    /// length, the elbows re-seated between them, still nearly straight.
+    /// The hands stay on the floor (`armsTurned` would lift them off it).
+    /// Only the arms and the shoulder line are drawn.
+    private static func plankDyn500HandsSlid(_ ahead: Float, drop: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, shoulders],
+                  moves: [.shift(["hand_*", "hand_*.tip"], ahead: ahead),
+                          .shift(["upper_arm_*", "neck"], rise: -drop),
+                          .resolve(["forearm_*"])])
+    }
+
+    /// The hip dip's forearm plank with the elbows set forward: the forearms
+    /// and fists slid `along` torso lengths toward the head along the
+    /// trunk's long axis (`up`, pelvis to neck, which the hip turn leaves
+    /// alone; the room's `ahead` swings sideways while the hips are turned)
+    /// and `level` back down so they stay on the mat, the shoulders (and the
+    /// neck) `drop` lower so the upper arms keep their length. Only the arms
+    /// and the shoulder line are drawn.
+    private static func plankDyn500ElbowsSlid(_ along: Float, level: Float, drop: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, shoulders],
+                  moves: [.shift(["forearm_*", "hand_*", "hand_*.tip"], up: along, rise: -level),
+                          .shift(["upper_arm_*", "neck"], rise: -drop)])
+    }
+
+    /// The knee to elbow with the hip rolling open: the pelvis and the
+    /// working leg turned `degrees` about the body's long axis through the
+    /// supporting hip, so the working hip and its leg rise toward the
+    /// ceiling. Both turns keep the bones' lengths.
+    private static func plankDyn500HipRolledOpen(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("bent")],
+                  moves: [.turn(pivot: "thigh_straight", points: ["pelvis", "thigh_bent", "shin_bent", "foot_bent", "foot_bent.tip"],
+                                axis: .up, degrees: degrees)],
+                  strength: plankDyn500KneeOut)
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 moving planks (2026-10-05)
+        // Four planks on one body on a mat (torso, neck to pelvis, 0.59 m),
+        // framed three-quarter from the front-left (yaw -0.8, the hip dip
+        // -0.6). Face down, the lifter's forward is the floor and up is
+        // toward the head. The mountain climber and knee to elbow work one
+        // leg at a time, so their ghosts name `_bent` (the knee drawn in) and
+        // `_straight`; the shoulder tap and hip dip read their sides through
+        // the knees too (see the gates). Sizes below were measured with a
+        // Python port of FaultGhost.solve on the rigs at the fault's still
+        // (plankdyn/ghost.py and pieces.py in the session scratchpad) and
+        // swept over each whole clip: every drawn bone keeps its length
+        // (within 0.4 cm), no knee or elbow bends the wrong way, and no moved
+        // joint goes more than 1 cm below where the real one sits on the mat.
+        // Rhythm and tempo cues have no ghost: they are about time, not a
+        // position.
+        "Mountain Climber": [
+            // Short strokes: the drawn-in thigh 16° back about the hip, the
+            // knee ~11 cm further back, about halfway from the chest to the
+            // hips, and ~6 cm lower (its joint ~8 cm above the mat at 1.0 s,
+            // ~6 cm at the 1.4 s low point; review: 22° put the joint ~4 cm
+            // up and the knee into the mat).
+            "knee": plankDyn500KneeShort(16),
+            // Hips piked: the trunk turned 12° about the neck, the pelvis
+            // ~12 cm higher (level with the shoulders), the back leg turned
+            // 21° down so its foot lands back on the mat ~4 cm ahead. Seen side-on (a turn of -0.6,
+            // to -1.4), where the raised hips show against the line of the
+            // back; from the framing the ghost's back and legs crossed.
+            "hips": plankDyn500HipsPiked(12, legs: 21).seen(-0.6),
+            // Hands walked forward: the hands slid ~22 cm ahead on the mat,
+            // the shoulders ~5 cm lower, elbows still ~175° (review:
+            // `armsTurned` left the hands ~5 cm and the fingers ~10 cm off
+            // the mat).
+            "hands": plankDyn500HandsSlid(0.38, drop: 0.085),
+            // Back leg left bent: the thigh 30° forward, the knee folded to
+            // ~116° and ~18 cm lower, the foot ~14 cm forward on the mat.
+            "leg": plankDyn500BackLegBent(hip: 30, knee: 55)
+            // "pace" has no ghost: rhythm is not a position.
+        ],
+        "Plank Shoulder Tap": [
+            // Hips rotating: the pelvis turned 35° about the supporting hip,
+            // the tapping side's hip ~9 cm lower; only while a hand is up.
+            // Seen from the feet (a turn of -2.3, to about -3.1), as the
+            // shoulder-tap screen judges it: from the framing the 18 cm hip
+            // line was ~30 pt long and lay along the legs.
+            "hips": plankDyn500HipsRolled(35).seen(-2.3),
+            // The tap cut short: the tapping arm 40° back down about the
+            // shoulder, the hand ~22 cm lower, by the chest (28 cm from the
+            // shoulder instead of 12).
+            "tap": plankDyn500TapShort(40),
+            // Hips sagging: the lower body 25° about the chest, the pelvis
+            // ~10 cm lower, the legs 32° back up so the feet stay put. Seen
+            // side-on (-0.6).
+            "line": plankDyn500HipsSagged(25, legs: 32).seen(-0.6),
+            // Feet together: both legs 6° in about the hips, the ankles
+            // ~4.5 cm apart instead of 22.
+            "feet": plankDyn500FeetTogether(6)
+            // "tempo" has no ghost: speed is not a position.
+        ],
+        "Plank Hip Dip": [
+            // A short turn: the hips turned back 28° about the raised hip,
+            // ~10° of turn left instead of 37.5°, the lowered hip ~8 cm
+            // higher; only while the hips are turned. Seen from the feet (a
+            // turn of -2.5, to about -3.1), where the real hip line's tilt
+            // and the ghost's flatter one are both in view.
+            "hips": plankDyn500DipShort(28).seen(-2.5),
+            // Shoulders rolling along: the shoulder line turned 20° about the
+            // raised side's shoulder, the other shoulder ~13 cm lower. Seen
+            // head-on (a turn of +0.6, to 0), across the shoulders.
+            "shoulders": plankDyn500ShouldersRolled(20).seen(0.6),
+            // Hips sagging as they pass the middle: the pelvis ~10 cm lower,
+            // the feet put back where they were. Seen side-on (-0.6, to
+            // -1.2).
+            "line": plankDyn500HipsSagged(25, legs: 32).seen(-0.6),
+            // Elbows set forward: the forearms and fists slid ~13 cm toward
+            // the head on the mat, the shoulders ~3 cm lower, the elbows
+            // opening from 93° to ~120°; the same through the hip turns
+            // (review: `armsTurned` lifted the fists ~13 cm off the mat, and
+            // the room's `ahead` swings sideways while the hips are turned).
+            "elbows": plankDyn500ElbowsSlid(0.22, level: 0.031, drop: 0.05)
+            // "tempo" has no ghost: speed is not a position.
+        ],
+        "Plank Knee to Elbow": [
+            // Stopping short: the working leg swung 30° back about the hip,
+            // the knee ~13 cm further back and ~10 cm further out, 36 cm
+            // from the elbow instead of 20.
+            "knee": plankDyn500KneeOutShort(30),
+            // The hip rolling open: the pelvis and working leg turned 22°
+            // about the supporting hip, that hip ~6.5 cm higher and the
+            // foot ~26 cm higher.
+            "hips": plankDyn500HipRolledOpen(22),
+            // Hips piked to make room: the pelvis ~12 cm higher, as the
+            // mountain climber's; only while a knee is out. Seen side-on
+            // (-0.6).
+            "line": plankDyn500HipsPiked(12, legs: 21, strength: plankDyn500KneeOut).seen(-0.6),
+            // Hands set forward: the hands slid ~22 cm ahead on the mat, the
+            // shoulders ~5 cm lower, elbows ~169° (review: `armsTurned` left
+            // the hands ~5 cm off the mat).
+            "hands": plankDyn500HandsSlid(0.38, drop: 0.08)
+            // "tempo" has no ghost: speed is not a position.
+        ],

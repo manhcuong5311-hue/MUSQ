@@ -1,0 +1,6 @@
+{
+  "Mountain Climber": {"knee": "1.0", "hips": "1.4", "hands": "1.4", "leg": "1.4"},
+  "Plank Shoulder Tap": {"hips": "1.0", "tap": "1.0", "line": "1.0", "feet": "1.0"},
+  "Plank Hip Dip": {"hips": "3.0", "shoulders": "3.0", "line": "2.0", "elbows": "2.0"},
+  "Plank Knee to Elbow": {"knee": "1.0", "hips": "1.0", "line": "1.0", "hands": "1.0"}
+}

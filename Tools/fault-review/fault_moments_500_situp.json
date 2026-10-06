@@ -1,0 +1,8 @@
+{
+  "Sit-Up": {"neck": "top", "curl": "0.3", "feet": "0.8", "top": "top", "bottom": "bottom"},
+  "Weighted Sit-Up": {"plate": "top", "chin": "top", "curl": "0.3", "feet": "0.8", "bottom": "bottom"},
+  "Decline Sit-Up": {"neck": "top", "curl": "0.3", "bottom": "bottom"},
+  "Weighted Decline Sit-Up": {"plate": "top", "chin": "top", "curl": "0.3", "bottom": "bottom"},
+  "V-Up": {"legs": "top", "reach": "top", "together": "0.85", "balance": "top", "back": "2.95"},
+  "Alternating V-Up": {"knees": "top", "down": "top", "reach": "top", "trunk": "top", "back": "2.95"}
+}

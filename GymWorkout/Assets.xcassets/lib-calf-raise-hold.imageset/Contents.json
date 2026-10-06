@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-calf-raise-hold.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

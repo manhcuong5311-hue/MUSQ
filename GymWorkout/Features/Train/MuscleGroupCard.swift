@@ -52,6 +52,11 @@ struct MuscleGroupCard<Accessory: View>: View {
     var state: MuscleCardState
     var detail: String
     var secondaryDetail: String? = nil
+    /// Where the group stands this round, for VoiceOver.
+    var tone: MuscleCardTone? = nil
+    /// The edge colour; none keeps the plain hairline (a past day's log, a
+    /// tone the user's card colours leave out, or card colours off).
+    var edgeColor: Color? = nil
     var action: () -> Void
     /// A control in the bottom-right corner, kept out of the card's own
     /// button: the presets menu on the Train tab.
@@ -97,16 +102,29 @@ struct MuscleGroupCard<Accessory: View>: View {
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(DS.surfaceAlt)
+                    // A soft halo in the edge colour, so it reads from across
+                    // the grid.
+                    .shadow(color: edgeColor?.opacity(0.28) ?? .clear, radius: 6)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .strokeBorder(DS.silver.opacity(state == .ready ? 0.12 : 0.06), lineWidth: 1)
+                    .opacity(edgeColor == nil ? 1 : 0)
             )
             .opacity(state == .recovering ? 0.6 : 1)
+            // After the fade, so a recovering card's red edge stays clear.
+            .overlay {
+                if let edgeColor {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .strokeBorder(edgeColor.opacity(tone == .recent ? 0.7 : 0.85), lineWidth: 1.5)
+                }
+            }
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(group.title), \(state.label.lowercased()), \(detail)")
+        .accessibilityLabel("\(group.title), \(state.label.lowercased()), \(detail)"
+                            + (secondaryDetail.map { ", \($0)" } ?? "")
+                            + (tone == .due ? ", due" : ""))
         .overlay(alignment: .bottomTrailing) {
             // Centred under the figure.
             accessory()
@@ -118,9 +136,9 @@ struct MuscleGroupCard<Accessory: View>: View {
 
 extension MuscleGroupCard where Accessory == EmptyView {
     init(group: MuscleGroup, state: MuscleCardState, detail: String, secondaryDetail: String? = nil,
-         action: @escaping () -> Void) {
+         tone: MuscleCardTone? = nil, edgeColor: Color? = nil, action: @escaping () -> Void) {
         self.init(group: group, state: state, detail: detail, secondaryDetail: secondaryDetail,
-                  action: action, accessory: { EmptyView() })
+                  tone: tone, edgeColor: edgeColor, action: action, accessory: { EmptyView() })
     }
 }
 

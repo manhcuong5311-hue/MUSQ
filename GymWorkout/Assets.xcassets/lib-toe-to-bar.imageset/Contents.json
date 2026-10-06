@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-toe-to-bar.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

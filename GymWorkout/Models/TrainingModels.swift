@@ -119,7 +119,9 @@ enum MusclePart: String, CaseIterable, Codable, Identifiable, Hashable {
         else if has("brachioradialis", "forearm", "wrist", "grip", "finger", "digitorum", "pollicis", "carpi") { self = .forearms }
         else if has("biceps", "brachialis") { self = .biceps }
         else if has("triceps") { self = .triceps }
-        else if has("gastrocnemius", "soleus", "calf", "calves") { self = .calves }
+        // The shin's tibialis anterior and the fibularis (peroneal) muscles
+        // count with the calves: the lower leg is one part to recover.
+        else if has("gastrocnemius", "soleus", "calf", "calves", "tibialis", "fibularis", "peroneus") { self = .calves }
         else { return nil }
     }
 }
@@ -398,6 +400,8 @@ struct UserProfile: Codable, Hashable {
     /// Nil in profiles saved before the question existed, which keep the
     /// rotation they had (see `ProgramAdvisor.split(for:)`).
     var split: TrainingSplit? = nil
+    /// What the app calls the lifter, set in Profile; nil until they give one.
+    var name: String? = nil
 
     var bmi: Double {
         let metres = heightCm / 100
@@ -544,6 +548,10 @@ struct MusclePartRecord: Identifiable, Hashable {
     let hoursRemaining: Double
     /// Exercises that loaded the part that day, in the order they were done.
     let exercises: [String]
+    /// The latest day that counted as training the part (see
+    /// `LoadKind.counts`). Earlier than `lastTrainedAt` when a later day only
+    /// helped; nil when the part has only ever helped.
+    var lastCountedAt: Date? = nil
 
     var id: MusclePart { part }
     /// Still recovering from load that counts as training it.
@@ -581,6 +589,11 @@ struct MuscleTrainingRecord: Hashable {
     }
     /// Nothing in the group was trained directly — it only helped.
     var isIndirectOnly: Bool { parts.allSatisfy { $0.kind == .indirect } }
-    /// The latest load that counted as training any part of the group.
-    var lastCountedAt: Date? { parts.filter(\.kind.counts).map(\.lastTrainedAt).max() }
+    /// The latest day that counted as training one of the group's main parts.
+    /// A later day that only helped doesn't hide it, and work on a part the
+    /// group's sessions don't target (lower back on a leg day) isn't
+    /// training the group.
+    var lastCountedAt: Date? {
+        parts.filter { mainParts.contains($0.part) }.compactMap(\.lastCountedAt).max()
+    }
 }

@@ -1,0 +1,61 @@
+//
+//  ContentView.swift — TEMP HARNESS (lab mirrors only, never commit)
+//
+//  HARNESS_VIEW / HARNESS_PHOTO: the viewport alone (382x655 trainer size, or
+//  the 380x380 white thumbnail), with optional HARNESS_FRAMING
+//  "yaw,zoom,x,y,z" and HARNESS_STILL seconds. HARNESS_EXERCISE: the trainer.
+//  HARNESS_FAULT + HARNESS_CUE: the trainer opened on that cue's mistake
+//  (launch with DEBUG_PREMIUM=1). Exercise3DView reads Purchases, Ads and
+//  Paywall from the environment, so the harness injects them.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        let env = ProcessInfo.processInfo.environment
+        let still = env["HARNESS_STILL"].flatMap { TimeInterval($0) }
+        if let name = env["HARNESS_VIEW"] ?? env["HARNESS_PHOTO"],
+           let ex = SampleData.exercises.first(where: { $0.name == name }),
+           let m = SampleData.model(for: ex) {
+            let photo = env["HARNESS_PHOTO"] != nil
+            let f = env["HARNESS_FRAMING"]?.split(separator: ",").compactMap { Float($0) } ?? []
+            let framing = f.count == 5
+                ? ModelFraming(yaw: f[0], zoom: f[1], offset: [f[2], f[3], f[4]]) : m.framing
+            ZStack {
+                (photo ? Color.white : Color.black).ignoresSafeArea()
+                if photo {
+                    Viewport(slot: "", model: m.resource, framing: framing, speed: m.speed,
+                             still: still, inner: .white, outer: .white, cornerRadius: 0) { EmptyView() }
+                        .frame(width: 380, height: 380)
+                } else {
+                    Viewport(slot: "", model: m.resource, framing: framing, speed: m.speed,
+                             still: still) { EmptyView() }
+                        .frame(width: 382, height: 655)
+                }
+            }
+        } else if let name = env["HARNESS_FAULT"],
+                  let ex = SampleData.exercises.first(where: { $0.name == name }) {
+            let purchases = Purchases()
+            NavigationStack {
+                Exercise3DView(exercise: ex, cue: env["HARNESS_CUE"], showingMistake: true, still: still)
+            }
+            .environment(WorkoutStore())
+            .environment(RestTimer())
+            .environment(purchases)
+            .environment(Ads(purchases: purchases))
+            .environment(Paywall())
+        } else if let name = env["HARNESS_EXERCISE"],
+                  let ex = SampleData.exercises.first(where: { $0.name == name }) {
+            let purchases = Purchases()
+            NavigationStack { Exercise3DView(exercise: ex, still: still) }
+                .environment(WorkoutStore())
+                .environment(RestTimer())
+                .environment(purchases)
+                .environment(Ads(purchases: purchases))
+                .environment(Paywall())
+        } else {
+            RootView()
+        }
+    }
+}

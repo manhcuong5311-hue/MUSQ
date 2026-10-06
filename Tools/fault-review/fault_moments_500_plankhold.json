@@ -1,0 +1,6 @@
+{
+  "RKC Plank": {"lever": "2.0", "glutes": "2.0", "legs": "2.0", "base": "2.0"},
+  "Weighted Plank": {"body": "2.0", "elbows": "2.0", "head": "2.0", "legs": "2.0"},
+  "Side Plank Hip Lift": {"lift": "1.6", "dip": "3.7", "elbow": "1.6", "line": "1.6"},
+  "Copenhagen Plank": {"hips": "2.0", "line": "2.0", "elbow": "2.0", "shoulder": "2.0"}
+}

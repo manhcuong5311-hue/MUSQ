@@ -1,0 +1,7 @@
+{
+  "Decline Push-Up": {"body": "top", "hands": "bottom", "elbow": "bottom", "depth": "bottom", "head": "bottom"},
+  "Plyometric Push-Up": {"land": "2.33", "body": "2.33", "hands": "2.33", "depth": "bottom"},
+  "Chest Dip": {"lean": "bottom", "depth": "bottom", "elbow": "bottom", "shoulders": "bottom", "legs": "bottom"},
+  "Weighted Chest Dip": {"lean": "bottom", "depth": "bottom", "lockout": "lockout", "legs": "bottom"},
+  "Landmine Chest Press": {"grip": "bottom", "elbow": "bottom", "path": "lockout", "core": "0.6", "stance": "lockout"}
+}

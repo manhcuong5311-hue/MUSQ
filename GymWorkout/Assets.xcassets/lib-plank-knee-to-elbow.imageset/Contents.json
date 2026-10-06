@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-plank-knee-to-elbow.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

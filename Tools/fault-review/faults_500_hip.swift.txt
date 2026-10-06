@@ -1,0 +1,36 @@
+// MARK: PIECES
+    // MARK: 401-500 hip family pieces (2026-10-04): none new. The Dumbbell
+    // Hip Thrust reuses the Barbell hip thrust pieces (thrustLockout,
+    // hipsShortOfLockout, thrustArched, thrustFeetFar, slidUpBench,
+    // barRolledUp): same body, bench and range (pelvis 0.205 -> 0.462 m,
+    // left pelvis-to-ankle 0.86 -> 1.04 torso lengths, so `thrustLockout`
+    // reads 0 at the bottom and 1 at the top), and the hand tips' `bar` line
+    // draws the dumbbell held by its heads.
+
+// MARK: TABLE
+        // MARK: 401-500 dumbbell hip thrust (2026-10-04)
+        // Framed three-quarter from the feet on the lifter's left (yaw -0.7),
+        // as the Barbell Hip Thrust; no fault turns the model (moves along
+        // the trunk's line show at about two-thirds of their length, and the
+        // hips and spine move up and down the screen in any framing). All
+        // five are faults of the top, read from hip height. The knees sit
+        // ~3 cm inside the ankles each side at the top, so, as on the barbell
+        // lift, there is no knee cue. Sizes from a Python port of
+        // FaultGhost.solve on the rig at the top (1.75 s).
+        "Dumbbell Hip Thrust": [
+            // Stopping short: the hips and dumbbell ~15 cm (~28 pt) below the
+            // line of the knees and shoulders, the knees 90 -> ~74 degrees.
+            "hips": hipsShortOfLockout(0.25, strength: thrustLockout),
+            // The lower back humping up above the line: the lumbar spine
+            // ~7 cm (~13 pt) up, the chest ~3 cm.
+            "ribs": thrustArched,
+            // Feet ~13 cm (~19 pt) too far out: the shins slope away, the
+            // knees open to ~111 degrees.
+            "feet": thrustFeetFar(0.22),
+            // The back sliding ~12 cm (~15 pt) up the bench as the hips rise,
+            // the knees opening to ~109 degrees.
+            "bench": slidUpBench(0.2),
+            // The dumbbell rolled ~17 cm (~20 pt) up onto the stomach near
+            // the top, the hands with it, the elbows 132 -> ~85 degrees.
+            "dumbbell": barRolledUp(0.28, strength: thrustLockout),
+        ],

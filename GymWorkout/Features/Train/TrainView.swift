@@ -3,7 +3,8 @@
 //  GymWorkout
 //
 //  Tab 1. Open the app and see: the day, what's suggested, what's still
-//  recovering, and the workout in progress. Every group stays tappable.
+//  recovering, what has gone longest without training, and the workout in
+//  progress. Every group stays tappable.
 //
 
 import SwiftUI
@@ -20,6 +21,7 @@ struct TrainView: View {
     /// can tell the day has changed under it.
     @State private var today = Calendar.current.startOfDay(for: Date())
     @State private var infoGroup: MuscleGroup?
+    private let cardColors = CardColorPrefs()
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 2)
     private var calendar: Calendar { .current }
@@ -100,12 +102,26 @@ struct TrainView: View {
 
     // MARK: - Header
 
+    /// A hello by name, then a line about the day picked below (see
+    /// `GreetingHeader`). The tab bar already says this is Train.
     private var header: some View {
-        Text("Train")
-            .font(.ui(28, .semibold))
-            .tracking(-0.7)
-            .foregroundStyle(DS.silver)
+        let planned = store.session(on: selectedDay)?.groups ?? []
+        // What the planner would suggest for that day, to name in a question;
+        // a past day is a log, so it suggests nothing.
+        let suggested = isPast ? [] : TrainingPlanner(records: store.recoveryRecords(at: referenceTime),
+                                                      now: referenceTime,
+                                                      rotation: ProgramAdvisor.rotation(for: store.profile))
+            .recommended(planned: planned)
+        return GreetingHeader(greeting: Greeting(name: store.profile?.name, sessions: store.sessions,
+                                                 selected: selectedDay, next: splitDay(for: suggested)?.name))
             .padding(.horizontal, DS.Metric.gutter)
+    }
+
+    /// The split's day a suggestion comes from: the one sharing most groups.
+    private func splitDay(for groups: [MuscleGroup]) -> ProgramAdvisor.SplitDay? {
+        guard !groups.isEmpty else { return nil }
+        return ProgramAdvisor.days(for: store.profile)
+            .max { $0.groups.filter(groups.contains).count < $1.groups.filter(groups.contains).count }
     }
 
     private var dayHeading: some View {
@@ -116,7 +132,27 @@ struct TrainView: View {
                 .font(.ui(20, .semibold))
                 .tracking(-0.4)
                 .foregroundStyle(DS.silver)
+            if !isPast, cardColors.mode != .off {
+                rhythmLegend
+                    .padding(.top, 8)
+            }
         }
+    }
+
+    /// What the card edges mean. VoiceOver skips it: the cards' labels say
+    /// whether a group is recovering, and add "due" to the ones that are.
+    private var rhythmLegend: some View {
+        HStack(spacing: 14) {
+            ForEach(cardColors.mode.tones, id: \.self) { tone in
+                HStack(spacing: 5) {
+                    Circle()
+                        .fill(cardColors.color(for: tone))
+                        .frame(width: 7, height: 7)
+                    MetaLine(text: tone.title(reset: cardColors.reset).uppercased(), size: 8.5)
+                }
+            }
+        }
+        .accessibilityHidden(true)
     }
 
     // MARK: - Content
@@ -135,23 +171,30 @@ struct TrainView: View {
         }
 
         if isPast {
-            groupSection("LOG A WORKOUT", groups: trainable, records: records)
+            groupSection("LOG A WORKOUT", groups: trainable, records: records, trained: [])
         } else {
+            let trained = cardColors.mode == .off ? []
+                : store.trainedThisRound(at: referenceTime, reset: cardColors.reset)
             let recommended = TrainingPlanner(records: records, now: referenceTime,
                                               rotation: ProgramAdvisor.rotation(for: store.profile))
                 .recommended(planned: planned).filter { !planned.contains($0) }
             let recent = trainable
                 .filter { !recommended.contains($0) && (records[$0].map { $0.status != .ready } ?? false) }
                 .sorted { (records[$0]?.lastTrainedAt ?? .distantPast) > (records[$1]?.lastTrainedAt ?? .distantPast) }
-            let others = trainable.filter { !recommended.contains($0) && !recent.contains($0) }
+            // Least recently trained first, never-trained groups on top, so
+            // what's been left out leads MORE MUSCLE GROUPS (after anything
+            // still recovering). Compared by day, so groups from one session
+            // keep the program's order (the sort is stable).
+            let others = trainable
+                .filter { !recommended.contains($0) && !recent.contains($0) }
+                .sorted { trainedDay(records[$0]) < trainedDay(records[$1]) }
 
             if !recommended.isEmpty {
                 // Name the split's day: the one the suggestion comes from.
-                let day = ProgramAdvisor.days(for: store.profile)
-                    .max { $0.groups.filter(recommended.contains).count < $1.groups.filter(recommended.contains).count }
+                let day = splitDay(for: recommended)
                 let title = isToday ? "RECOMMENDED TODAY" : "RECOMMENDED"
                 groupSection(day.map { "\(title) · \($0.name.uppercased())" } ?? title,
-                             groups: recommended, records: records)
+                             groups: recommended, records: records, trained: trained)
             } else if planned.isEmpty {
                 Text("Everything in the rotation was trained recently. Pick any group below — recovery times are only estimates.")
                     .font(.ui(13))
@@ -161,21 +204,22 @@ struct TrainView: View {
                     .padding(.top, 16)
             }
             if !recent.isEmpty {
-                groupSection("RECENTLY TRAINED", groups: recent, records: records)
+                groupSection("RECENTLY TRAINED", groups: recent, records: records, trained: trained)
             }
             if !others.isEmpty {
-                groupSection("MORE MUSCLE GROUPS", groups: others, records: records)
+                groupSection("MORE MUSCLE GROUPS", groups: others, records: records, trained: trained)
             }
         }
     }
 
     private func groupSection(_ title: String, groups: [MuscleGroup],
-                              records: [MuscleGroup: MuscleTrainingRecord]) -> some View {
+                              records: [MuscleGroup: MuscleTrainingRecord],
+                              trained: Set<MuscleGroup>) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             SectionEyebrow(text: title)
             LazyVGrid(columns: columns, spacing: 10) {
                 ForEach(groups) { group in
-                    card(group, record: records[group])
+                    card(group, record: records[group], trained: trained)
                 }
             }
         }
@@ -183,10 +227,15 @@ struct TrainView: View {
         .padding(.top, 24)
     }
 
-    private func card(_ group: MuscleGroup, record: MuscleTrainingRecord?) -> some View {
+    private func card(_ group: MuscleGroup, record: MuscleTrainingRecord?,
+                      trained: Set<MuscleGroup>) -> some View {
         let state = isPast ? MuscleCardState.ready : MuscleCardState(record?.status)
         // What the group opens on: the user's own list, else the preset.
         let exerciseCount = store.preview(group, level: store.defaultLevel(for: group)).count
+        let exercises = "\(exerciseCount) \(exerciseCount == 1 ? "exercise" : "exercises")"
+        // Recent load that doesn't hold the group back. A past day is a log,
+        // not advice, so it shows none.
+        let note: String? = isPast ? nil : record?.sideNotes.first.map { RecoveryText.sideNote($0, now: referenceTime) }
         let detail: String
         var secondary: String? = nil
         if let record, state == .partlyReady {
@@ -197,13 +246,19 @@ struct TrainView: View {
         } else if let record, state != .ready {
             detail = RecoveryText.trainedAgo(record.lastTrainedAt, now: referenceTime)
             secondary = "Est. \(RecoveryText.remaining(record.hoursRemaining))"
+        } else if !isPast, let last = record?.lastCountedAt {
+            // READY alone can't tell a group trained two days ago from one
+            // never trained, so say when it last was, where a recovering card
+            // does. Helping on another group's day isn't training it.
+            detail = RecoveryText.trainedAgo(last, now: referenceTime)
+            secondary = note ?? exercises
         } else {
-            detail = "\(exerciseCount) exercises"
-            if !isPast, let note = record?.sideNotes.first {
-                secondary = RecoveryText.sideNote(note, now: referenceTime)
-            }
+            detail = exercises
+            secondary = note
         }
-        return MuscleGroupCard(group: group, state: state, detail: detail, secondaryDetail: secondary) {
+        let tone = tone(for: group, state: state, trained: trained)
+        return MuscleGroupCard(group: group, state: state, detail: detail, secondaryDetail: secondary,
+                               tone: tone, edgeColor: cardColors.edge(for: tone)) {
             if !isPast, let record, record.status != .ready {
                 infoGroup = group
             } else {
@@ -212,6 +267,28 @@ struct TrainView: View {
         } accessory: {
             PresetMenu(group: group) { open(group, on: $0) }
         }
+    }
+
+    /// Where the group stands this round, for its card's edge (see
+    /// `TrainingRound`). Red while it recovers: still recovering, or trained
+    /// this round and not all the way back. Yellow once trained this round
+    /// and recovered, and it stays yellow, so the groups still waiting for
+    /// their turn are the green ones until each has had it. Green for those,
+    /// almost or partly ready included: the planner suggests them too. A
+    /// full round only covers the split, so a group outside it is never due.
+    /// None on a past day, which is a log, or with card colours off.
+    private func tone(for group: MuscleGroup, state: MuscleCardState,
+                      trained: Set<MuscleGroup>) -> MuscleCardTone? {
+        guard !isPast, cardColors.mode != .off else { return nil }
+        if state == .recovering { return .waiting }
+        if trained.contains(group) { return state == .ready ? .recent : .waiting }
+        if cardColors.reset == .fullRound, !store.roundSplit.contains(group) { return nil }
+        return .due
+    }
+
+    /// The calendar day a group was last really trained; never sorts first.
+    private func trainedDay(_ record: MuscleTrainingRecord?) -> Date {
+        record?.lastCountedAt.map { calendar.startOfDay(for: $0) } ?? .distantPast
     }
 
     /// Opens the group on a preset picked from its ⋯ menu. A planned group

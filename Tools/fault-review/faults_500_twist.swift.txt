@@ -1,0 +1,194 @@
+// MARK: PIECES
+    // MARK: 401-500 landmine rotations and Russian twists pieces (2026-10-05)
+
+    /// Landmines: how far the bar end has come down to the lifter's right,
+    /// read off the right hand's distance to the right hip in torso lengths
+    /// (Landmine Rotation 1.35 at the top, 0.79 at the bottom of the right
+    /// sweep, 1.04 at the bottom of the left one; Landmine 180 1.53, 0.71 and
+    /// 0.97): none of the fault at `from`, all of it at `to`, so the faults of
+    /// the right-hand sweep show only on that side.
+    private static func twist500RightSweep(from: Float, to: Float) -> FaultStrength {
+        .between("hand_R", "thigh_R", from: from, to: to)
+    }
+
+    /// Russian twists: the twist to the lifter's left, read off the right
+    /// hand's distance to the left hip (0.86 torso lengths at the middle,
+    /// 0.35 at the left, 1.08 at the right): none at 0.80, all at 0.40.
+    private static let twist500LeftTwist = FaultStrength.between("hand_R", "thigh_L", from: 0.80, to: 0.40)
+
+    /// Pulling the load across with the arms: the elbows dropped and out a
+    /// little, the hands drawn `back` torso lengths in toward the chest, the
+    /// elbows re-seated between the shoulders and hands, so they bend the
+    /// way they already bend and the arm bones keep their lengths.
+    private static func twist500ArmsPulled(_ back: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["forearm_*"], up: -0.1, outward: 0.05),
+                          .shift(["hand_*", "hand_*.tip"], forward: -back),
+                          .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// The chest left facing forward while the arms swing the load across:
+    /// everything above the lumbar joint turned `degrees` about it (negative
+    /// turns it back from a turn to the right, positive from one to the
+    /// left), then both arms swung `swing` degrees about their shoulders
+    /// (positive toward the lifter's right) back toward where the load was.
+    /// Turns only, so every segment keeps its length.
+    private static func twist500ChestSquare(_ degrees: Float, swing: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip],
+                  moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .up, degrees: degrees),
+                          .turn(pivot: "upper_arm_L", points: ["forearm_L", "hand_L", "hand_L.tip"], axis: .up, degrees: swing),
+                          .turn(pivot: "upper_arm_R", points: ["forearm_R", "hand_R", "hand_R.tip"], axis: .up, degrees: -swing)],
+                  strength: strength)
+    }
+
+    /// Landmines: turning back early, the bar end still high: everything
+    /// above the lumbar joint turned `degrees` back about it, the arms raised
+    /// `lift` degrees about the shoulders. Turns only.
+    private static func twist500ShortSweep(_ degrees: Float, lift: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip],
+                  moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .up, degrees: degrees),
+                          .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: lift)],
+                  strength: strength)
+    }
+
+    /// Standing with the knees locked: the hips raised `rise` torso lengths
+    /// and the knees re-seated, which straightens them without stretching
+    /// either bone (sized on the rig so they stop just short of straight).
+    private static func twist500KneesLocked(_ rise: Float, strength: FaultStrength, view: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["thigh_*"], rise: rise), .resolve(["shin_*"])],
+                  strength: strength, view: view)
+    }
+
+    /// Landmine 180: starting the rep low, both arms turned `degrees` down
+    /// about the shoulders, elbow angle kept.
+    private static func twist500ArmsLowered(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// Rounding forward over the load: everything above the lumbar joint,
+    /// arms included, turned `degrees` forward about it.
+    private static func twist500Hunched(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip],
+                  moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// Russian twists: the load kept high at the side, the hands moved `up`
+    /// torso lengths along the trunk toward the shoulders and the elbows
+    /// re-seated, bending the way they already bend.
+    private static func twist500LoadHigh(_ up: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: up), .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// Russian twists: sitting up out of the lean, the trunk, head and arms
+    /// turned `degrees` forward about the hips. Turns only.
+    private static func twist500SatUp(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .lateral, degrees: -degrees)])
+    }
+
+    /// Russian twists, the twist to the left: both knees swayed `amount`
+    /// torso lengths toward the lifter's left (the left knee outward, the
+    /// right one inward) and re-seated over the planted feet, so the legs
+    /// keep their lengths and their bend.
+    private static func twist500KneesSway(_ amount: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs],
+                  moves: [.shift(["shin_L"], outward: amount), .shift(["shin_R"], outward: -amount), .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 landmine rotations and Russian twists (2026-10-05)
+        // One body (torso 0.59 m standing, 0.57 m reclined). The landmines
+        // are framed from the front left (yaw -0.3) and their faults are drawn
+        // on the sweep to the lifter's right (Landmine Rotation 1.0 s,
+        // Landmine 180 2.0 s), where the bar end swings out into the open
+        // left of the screen; the Russian twists are framed from the front
+        // left (-0.5) and their faults are drawn on the twist to the lifter's
+        // left (2.0 s), where the load is on the near side. Strengths tie each
+        // side's fault to that side. Sizes were measured with a Python port
+        // of FaultGhost.solve on the rigs at each fault's moment (lab/r3/twist/ghost.py
+        // and final.py in the session scratchpad; screen sizes in points of
+        // the 382 x 655 viewport, without the mistake view's shrink). Every
+        // ghost is built from turns or re-seated joints: no drawn segment
+        // changes length by more than 0.2 cm anywhere in the clip and no
+        // elbow or knee bends the other way (checked every 1/12 s). Tempo,
+        // rhythm and the plate grip have no ghost.
+        "Landmine Rotation": [
+            // Chest square, arms swung: the shoulder line turned back from
+            // 47° to 13° (the chest nearly facing the anchor), both arms swung
+            // 25° back toward the bar end; the near (left) shoulder ~12 cm
+            // (~22 pt), the near (left) hand ~12 cm (~28 pt).
+            "turn": twist500ChestSquare(-35, swing: 25, strength: twist500RightSweep(from: 1.05, to: 0.85)),
+            // Pulling with the arms: the hands ~22 cm (~36 pt) back toward the
+            // chest, the elbows from 153-159° to ~83-95°.
+            "arms": twist500ArmsPulled(0.38, strength: twist500RightSweep(from: 1.05, to: 0.85)),
+            // Turning back early: the shoulder line 47° -> 28°, the hands from
+            // 1.03-1.11 m up to 1.18-1.27 m (~42-50 pt).
+            "range": twist500ShortSweep(-20, lift: 22, strength: twist500RightSweep(from: 1.05, to: 0.85)),
+            // Knees locked: the hips ~3 cm higher, the knees from 150° to
+            // ~169-173°, ~7-8 cm back (~17-22 pt), seen from the lifter's
+            // left side (1.3 further round), where the knees bend across the
+            // screen rather than toward the camera.
+            "knees": twist500KneesLocked(0.046, strength: twist500RightSweep(from: 1.05, to: 0.85), view: -1.3)
+            // "tempo" has no ghost.
+        ],
+        "Landmine 180": [
+            // Starting low: both arms 44° down about the shoulders, the hands
+            // from 1.64 m (about eye level) to ~1.28 m (chest height), ~81 pt;
+            // seen from the lifter's right (1.0 round the other way), where the
+            // arms swing across the screen instead of pointing at the camera
+            // and the bar runs off to the right, clear of the top-left pill.
+            "top": twist500ArmsLowered(44, strength: .between("hand_R", "pelvis", from: 1.3, to: 1.5)).seen(1.0),
+            // Chest square, arms swung: the shoulder line turned back from 77°
+            // to 33°, both arms swung 30° back toward the bar end; the near
+            // (left) shoulder ~16 cm (~34 pt), the near (left) elbow ~18 cm
+            // (~41 pt).
+            "turn": twist500ChestSquare(-45, swing: 30, strength: twist500RightSweep(from: 1.0, to: 0.75)),
+            // Rounding over the bar: everything above the lumbar joint 25°
+            // forward, the trunk line 10° -> 26°, the head ~25 cm (~47 pt).
+            "back": twist500Hunched(25, strength: twist500RightSweep(from: 1.0, to: 0.75)),
+            // Turning back early: the shoulder line 77° -> 48°, the hands from
+            // 1.03-1.09 m up to 1.19-1.26 m (~42 pt).
+            "hip": twist500ShortSweep(-30, lift: 25, strength: twist500RightSweep(from: 1.0, to: 0.75))
+            // "tempo" has no ghost.
+        ],
+        "Medicine Ball Russian Twist": [
+            // Shoulders square, arms swung: the shoulder line turned back from
+            // 48° to 17°, both arms swung 25° back toward the ball; the head
+            // ~6 cm (~14 pt), the hands ~10-14 cm (~18-23 pt).
+            "turn": twist500ChestSquare(35, swing: -25, strength: twist500LeftTwist),
+            // The ball kept high: the hands ~18 cm (~39 pt) up the trunk, from
+            // 0.16-0.28 m to 0.30-0.42 m above the floor, the elbows bending
+            // to ~79-97°.
+            "low": twist500LoadHigh(0.32, strength: twist500LeftTwist),
+            // Sitting up: the trunk line from 39° behind upright to ~14°, the
+            // head ~29 cm (~45 pt).
+            "lean": twist500SatUp(25),
+            // Knees swaying toward the ball: the knees ~10-13 cm toward the
+            // lifter's left (~26-30 pt), feet planted, knee angle kept (63°).
+            "knees": twist500KneesSway(0.22, strength: twist500LeftTwist)
+            // "tempo" has no ghost.
+        ],
+        "Weighted Russian Twist": [
+            // As the medicine-ball twist (the same trunk and legs, the hands within ~3 cm):
+            // the shoulder line 48° -> 17°, the hands ~10-15 cm (~19-25 pt).
+            "turn": twist500ChestSquare(35, swing: -25, strength: twist500LeftTwist),
+            // The plate kept high: the hands ~18 cm (~39 pt) up the trunk.
+            "low": twist500LoadHigh(0.32, strength: twist500LeftTwist),
+            // Rising out of the lean: the trunk line 39° -> ~14° behind upright.
+            "lean": twist500SatUp(25),
+            // Knees tipping toward the plate: ~10-13 cm (~26-30 pt).
+            "knees": twist500KneesSway(0.22, strength: twist500LeftTwist)
+            // "grip" (where the hands sit on the rim) has no ghost.
+        ],

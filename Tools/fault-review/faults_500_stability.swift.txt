@@ -1,0 +1,212 @@
+// MARK: PIECES
+    // MARK: 401-500 hollow body, dead bug and bird dog pieces (2026-10-05)
+
+    /// Lying face up (hollow hold and rock, dead bug): the lower back arching
+    /// off the mat, the lumbar spine `lift` torso lengths toward the ceiling
+    /// (forward, out of the belly, for a lifter on their back) and the chest
+    /// 0.45 of that, and the straight legs `legs` degrees lower about the
+    /// hips (0 leaves them, for lifts whose legs move or rock).
+    private static func stability500BackArched(_ lift: Float, legs degrees: Float = 0,
+                                               strength: FaultStrength = .always) -> FaultPose {
+        var chains = [spine]
+        var moves: [FaultMove] = [.shift(["spine"], forward: lift), .shift(["chest"], forward: lift * 0.45)]
+        if degrees != 0 {
+            chains += [legs, hips]
+            moves.append(.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -degrees))
+        }
+        return FaultPose(chains: chains, moves: moves, strength: strength)
+    }
+
+    /// The hollow hold: the head, shoulders and arms lying back down on the
+    /// mat, the neck, head and arms turned `degrees` back about the chest so
+    /// the upper back flattens. The same all clip.
+    private static func stability500ShouldersDown(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "chest", points: ["neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .lateral, degrees: degrees)])
+    }
+
+    /// Lying face up with straight legs: the legs `degrees` higher about the
+    /// hips, toward the ceiling (the hollow hold's legs drifting up, the
+    /// hollow rock's legs kicked up at the hips). The same all clip.
+    private static func stability500LegsRaised(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: degrees)])
+    }
+
+    /// The hollow rock: the knees bent and tucked in, the thighs `thighs`
+    /// degrees higher about the hips and the lower legs folded `knees`
+    /// degrees about the knees; the thighs rise enough that the feet stay
+    /// above the mat at the low end of the rock. The same all clip.
+    private static func stability500Tucked(thighs: Float, knees: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: thighs),
+                          .turn(pivot: "shin_*", points: ["foot_*", "foot_*.tip"], axis: .lateral, degrees: -knees)])
+    }
+
+    /// Dead bug and bird dog, which reach with one leg and the opposite arm
+    /// in turn: `_straight` is the reaching leg (its knee straightens) and
+    /// `_bent` the resting one, so the reaching arm is `_bent`'s. Full with
+    /// the reaching knee straight, none while both knees are bent at the
+    /// start, so these ghosts follow whichever side is reaching.
+    private static let stability500Reaching = FaultStrength.whenStraight("shin_straight")
+
+    /// The dead bug done with the same side: the reaching (`_bent` side) arm
+    /// turned `degrees` back up toward the ceiling and the other arm turned
+    /// the same overhead, beside the reaching leg.
+    private static func stability500SameSide(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [arm("bent"), arm("straight"), leg("straight")],
+                  moves: [.turn(pivot: "upper_arm_bent", points: ["forearm_bent", "hand_bent", "hand_bent.tip"],
+                                axis: .lateral, degrees: -degrees),
+                          .turn(pivot: "upper_arm_straight", points: ["forearm_straight", "hand_straight", "hand_straight.tip"],
+                                axis: .lateral, degrees: degrees)],
+                  strength: stability500Reaching)
+    }
+
+    /// The dead bug stopping short: the reaching leg `hip` degrees higher
+    /// about the hip with the knee bent `knee` degrees, and the reaching arm
+    /// `arm` degrees short of overhead.
+    private static func stability500StopsShort(hip: Float, knee: Float, arm degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("straight"), arm("bent")],
+                  moves: [.turn(pivot: "thigh_straight", points: ["shin_straight", "foot_straight", "foot_straight.tip"],
+                                axis: .lateral, degrees: hip),
+                          .turn(pivot: "shin_straight", points: ["foot_straight", "foot_straight.tip"], axis: .lateral, degrees: -knee),
+                          .turn(pivot: "upper_arm_bent", points: ["forearm_bent", "hand_bent", "hand_bent.tip"],
+                                axis: .lateral, degrees: -degrees)],
+                  strength: stability500Reaching)
+    }
+
+    /// The dead bug with bent arms: the arm still pointing at the ceiling
+    /// (`_straight` side) folded `resting` degrees at the elbow toward the
+    /// face, the reaching arm folded `reaching` degrees, its hand rising
+    /// toward the ceiling instead of hovering over the floor.
+    private static func stability500ElbowsBent(resting: Float, reaching: Float) -> FaultPose {
+        FaultPose(chains: [arm("bent"), arm("straight")],
+                  moves: [.turn(pivot: "forearm_straight", points: ["hand_straight", "hand_straight.tip"], axis: .lateral, degrees: resting),
+                          .turn(pivot: "forearm_bent", points: ["hand_bent", "hand_bent.tip"], axis: .lateral, degrees: -reaching)],
+                  strength: stability500Reaching)
+    }
+
+    /// The bird dog: the lifted leg's hip rolling open. The pelvis and the
+    /// reaching leg turn `degrees` about the trunk's long axis through the
+    /// supporting hip, so the reaching hip rises and the hip line tilts, and
+    /// the reaching leg swings `out` degrees out to its side about its own
+    /// hip. Both are turns, so the pelvis keeps its width and the leg its
+    /// bones. (The `.up` turn is mirrored by its pivot, the supporting hip:
+    /// a positive angle lifts the reaching hip on either side.)
+    private static func stability500HipRolled(_ degrees: Float, out abduction: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("straight")],
+                  moves: [.turn(pivot: "thigh_bent", points: ["pelvis"] + leg("straight"), axis: .up, degrees: degrees),
+                          .turn(pivot: "thigh_straight", points: ["shin_straight", "foot_straight", "foot_straight.tip"],
+                                axis: .forward, degrees: abduction)],
+                  strength: stability500Reaching)
+    }
+
+    /// The bird dog: the reaching leg kicked `degrees` higher about the hip
+    /// and the lower back sagging toward the floor, the lumbar spine `sag`
+    /// torso lengths and the chest 0.45 of that (forward, toward the floor,
+    /// for a lifter on all fours).
+    private static func stability500LegKicked(_ degrees: Float, sag: Float) -> FaultPose {
+        FaultPose(chains: [spine, leg("straight"), hips],
+                  moves: [.turn(pivot: "thigh_straight", points: ["shin_straight", "foot_straight", "foot_straight.tip"],
+                                axis: .lateral, degrees: -degrees),
+                          .shift(["spine"], forward: sag), .shift(["chest"], forward: sag * 0.45)],
+                  strength: stability500Reaching)
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 hollow body, dead bug and bird dog (2026-10-05)
+        // Four floor core exercises on one body on a mat (the torso, neck to
+        // pelvis, 0.59 m on all fours, 0.53-0.57 m in the curled face-up
+        // poses; shifts below are in those per-pose torso lengths). The
+        // hollow hold and rock are framed side-on (yaw -1.35), the dead bug
+        // and bird dog three-quarter from the front-left (-0.8). Lying face
+        // up the lifter's forward is the ceiling; on all fours it is the
+        // floor. The dead bug and bird dog reach with one leg and the
+        // opposite arm, then switch sides, so their ghosts name `_straight`
+        // (the reaching leg) and `_bent` (the resting leg, whose side's arm
+        // reaches) and fade in with the reaching knee
+        // (`stability500Reaching`). Sizes below were measured with a Python
+        // port of FaultGhost.solve on the rigs at the fault's still
+        // (stability/ghost.py and pieces.py in the session scratchpad), and
+        // the rock's ghosts over its whole clip so none dips into the mat.
+        // The cues on breathing (hollow hold), rhythm (rock) and tempo (dead
+        // bug, bird dog) have no ghost: they are about time, not a position.
+        "Hollow Body Hold": [
+            // The lower back arching: the lumbar spine ~17 cm toward the
+            // ceiling, a hump above the hip and the chest (0.22 read as a
+            // straighter trunk line, not an arch, on the lab shots), the
+            // chest ~8 cm, the legs 10° lower (heels ~15 cm lower).
+            "back": stability500BackArched(0.32, legs: 10),
+            // Head and shoulders resting: the neck, head and arms turned 22°
+            // back about the chest, the head ~15 cm and the shoulders ~9 cm
+            // lower.
+            "shoulders": stability500ShouldersDown(22),
+            // Legs drifting up: 20° higher about the hips, the heels ~27 cm
+            // higher.
+            "legs": stability500LegsRaised(20),
+            // Arms drifting forward over the face: 45° about the shoulders,
+            // the hands ~29 cm higher.
+            "arms": armsTurned(.lateral, -45)
+            // "breath" has no ghost: breathing is not a position.
+        ],
+        "Hollow Body Rock": [
+            // The flat spot: the lumbar spine ~17 cm toward the ceiling and
+            // the chest ~8 cm, as the hold (the legs left where they are, so
+            // they never dip into the mat at the low end of the rock).
+            "back": stability500BackArched(0.32),
+            // Kicking at the hips: the legs 20° higher about the hips at the
+            // legs-up end of the rock (the feet move ~29 cm, ~23 cm of it
+            // upward).
+            "hips": stability500LegsRaised(20),
+            // Arms thrown forward: 55° about the shoulders at the head-up end
+            // (the hands ~22 cm higher, pointing at the ceiling).
+            "arms": armsTurned(.lateral, -55),
+            // Knees bent and tucked: the thighs 35° higher, the knees bent to
+            // ~120°; the feet stay above the mat all clip.
+            "knees": stability500Tucked(thighs: 35, knees: 60)
+            // "tempo" has no ghost: rhythm is not a position.
+        ],
+        "Dead Bug": [
+            // The lower back arching as the leg reaches: the lumbar spine
+            // ~18 cm toward the ceiling, the chest ~8 cm, faded in as the
+            // ankles part (0.42 torso lengths apart at the start, ~1.1 with a
+            // leg out); seen side-on (a turn of -0.55, to the hollow's -1.35),
+            // where the hump shows against the mat.
+            "back": stability500BackArched(0.32, strength: .between("foot_L", "foot_R", from: 0.6, to: 1.0)).seen(-0.55),
+            // Same-side limbs: the reaching arm back up to the ceiling and
+            // the other arm overhead beside the reaching leg (84° each, the
+            // hands ~67 cm).
+            "pair": stability500SameSide(84),
+            // Stopping short: the reaching leg 35° higher with the knee bent
+            // to ~127° (the knee ~23 cm and the foot ~14 cm higher), the arm
+            // 45° short of overhead (the hand ~35 cm higher). 45° put the
+            // ghost's toes against the reach pill in the mistake view.
+            "reach": stability500StopsShort(hip: 35, knee: 50, arm: 45),
+            // Bent elbows: the upright arm folded 60° toward the face (elbow
+            // ~124°), the reaching arm 70° (elbow ~115°, the hand ~21 cm
+            // higher).
+            "arms": stability500ElbowsBent(resting: 60, reaching: 70)
+            // "tempo" has no ghost: speed is not a position.
+        ],
+        "Bird Dog": [
+            // The lifted hip rolling open: the pelvis and reaching leg rolled
+            // 25° about the supporting hip (the reaching hip ~7 cm higher,
+            // the hip line tilted ~22° at the hold), the leg swung 20° out
+            // (the foot ~20 cm out to its side). Review 2026-10-05: replaces
+            // a shift of the whole leg (~9 cm up, ~5 cm out) that stretched
+            // the reaching half of the pelvis by half and read as the leg a
+            // little higher.
+            "hips": stability500HipRolled(25, out: 20),
+            // Kicking high: the reaching leg 25° higher about the hip (the
+            // foot ~31 cm higher) and the lower back sagging ~5 cm.
+            "leg": stability500LegKicked(25, sag: 0.1),
+            // Reaching up: the reaching arm 30° higher about the shoulder,
+            // the hand ~20 cm higher, above the head.
+            "arm": armsTurned(.lateral, 30, side: "bent", strength: stability500Reaching),
+            // The support hand set forward: the supporting arm (the reaching
+            // leg's side) 20° forward about the shoulder, the hand ~18 cm
+            // ahead and still on the mat. The same all clip.
+            "base": armsTurned(.lateral, 20, side: "straight")
+            // "tempo" has no ghost: speed is not a position.
+        ],

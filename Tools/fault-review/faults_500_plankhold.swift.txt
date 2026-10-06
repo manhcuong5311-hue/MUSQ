@@ -1,0 +1,214 @@
+// MARK: PIECES
+    // MARK: 401-500 plank holds pieces (2026-10-05)
+
+    /// Face-down forearm planks: the hips sagging toward the floor, the
+    /// pelvis and hips `drop` torso lengths out of the belly (toward the
+    /// floor), the mid-spine half that and the knees 0.45 of it, the
+    /// shoulders and feet left where they are.
+    private static func plankHold500HipsSag(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, ["pelvis", "thigh_L"], ["pelvis", "thigh_R"], ["thigh_*", "shin_*", "foot_*"]],
+                  moves: [.shift(["spine"], forward: drop / 2), .shift(["pelvis", "thigh_*"], forward: drop),
+                          .shift(["shin_*"], forward: drop * 0.45)])
+    }
+
+    /// Face-down forearm planks: soft knees, the knees `drop` torso lengths
+    /// toward the floor, the hips 0.4 of that and the mid-spine 0.2, the feet
+    /// left on the floor.
+    private static func plankHold500KneesSoft(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips, ["pelvis", "spine"]],
+                  moves: [.shift(["shin_*"], forward: drop), .shift(["pelvis", "thigh_*"], forward: drop * 0.4),
+                          .shift(["spine"], forward: drop * 0.2)])
+    }
+
+    /// Forearm planks: the forearms and hands slid level along the floor,
+    /// `ahead` torso lengths toward the head (negative: toward the feet),
+    /// and the shoulders, neck and head moved `rise` torso lengths up or down
+    /// in the room (the chest half that) so the upper arms keep their length.
+    private static func plankHold500ElbowsSlid(_ ahead: Float, rise: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, shoulders, ["chest", "neck", "head"]],
+                  moves: [.shift(["forearm_*", "hand_*", "hand_*.tip"], ahead: ahead),
+                          .shift(["upper_arm_*", "neck", "head"], rise: rise), .shift(["chest"], rise: rise / 2)])
+    }
+
+    /// Face-down planks: the feet spread wide, each leg turned `degrees` out
+    /// about its hip, seen from `view` (the side-on framing looks along the
+    /// spread).
+    private static func plankHold500FeetApart(_ degrees: Float, view: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .forward, degrees: degrees)],
+                  view: view)
+    }
+
+    /// Face-down planks: the head dropped toward the floor, turned `degrees`
+    /// about the neck, chin toward the chest.
+    private static func plankHold500HeadDropped(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["chest", "neck", "head", "head.tip"]],
+                  moves: [.turn(pivot: "neck", points: ["head", "head.tip"], axis: .lateral, degrees: -degrees)])
+    }
+
+    /// The side plank hip lift's ends of the rep, read off the distance from
+    /// the pelvis to the support (right) hand: 1.07 torso lengths with the
+    /// hips down, 1.20 at the top. `Top` is full from 1.18 and none below
+    /// 1.12, `Bottom` full at 1.09 and none above 1.12.
+    private static let plankHold500Top = FaultStrength.between("pelvis", "hand_R", from: 1.12, to: 1.18)
+    private static let plankHold500Bottom = FaultStrength.between("pelvis", "hand_R", from: 1.12, to: 1.09)
+
+    /// Side planks: the hips lower in the room, the pelvis and hips `drop`
+    /// torso lengths straight down, the mid-spine 0.6 and the chest 0.25 of
+    /// that, both knees re-seated over the planted feet.
+    private static func plankHold500HipsLowered(_ drop: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, hips, legs],
+                  moves: [.shift(["pelvis", "thigh_*"], rise: -drop), .shift(["spine"], rise: -drop * 0.6),
+                          .shift(["chest"], rise: -drop * 0.25), .resolve(["shin_*"])],
+                  strength: strength)
+    }
+
+    /// Side plank on both feet: the hips piked back, the pelvis and hips
+    /// `back` torso lengths behind the body's line and `down` toward the feet
+    /// (so the legs still reach the planted feet), the mid-spine half that,
+    /// both knees re-seated. Seen from `view`: from behind, the move runs
+    /// along the line of sight.
+    private static func plankHold500Piked(back: Float, down: Float, view: Float) -> FaultPose {
+        FaultPose(chains: [spine, hips, legs],
+                  moves: [.shift(["pelvis", "thigh_*"], forward: -back, up: -down),
+                          .shift(["spine"], forward: -back / 2, up: -down / 2), .resolve(["shin_*"])],
+                  view: view)
+    }
+
+    /// Copenhagen plank, on the right forearm with the left foot on the
+    /// bench: the hips piked back as `plankHold500Piked`, the hanging bottom
+    /// (right) leg carried with the pelvis, the top knee re-seated over the
+    /// foot on the bench.
+    private static func plankHold500BenchPiked(back: Float, down: Float, view: Float) -> FaultPose {
+        FaultPose(chains: [spine, hips, legs],
+                  moves: [.shift(["pelvis", "thigh_*", "shin_R", "foot_R", "foot_R.tip"], forward: -back, up: -down),
+                          .shift(["spine"], forward: -back / 2, up: -down / 2), .resolve(["shin_L"])])
+            .seen(view)
+    }
+
+    /// Copenhagen plank: the hips sagging toward the floor, the pelvis, hips
+    /// and hanging bottom leg `drop` torso lengths down in the room (the
+    /// mid-spine 0.6, the chest 0.25 of that), the top knee re-seated over
+    /// the foot on the bench, and the bottom leg turned `adduct` degrees up
+    /// toward the body's line (a negative turn about `.forward` on the right
+    /// side) so its foot stays just off the mat.
+    private static func plankHold500BenchSag(_ drop: Float, adduct: Float) -> FaultPose {
+        FaultPose(chains: [spine, hips, legs],
+                  moves: [.shift(["pelvis", "thigh_*", "shin_R", "foot_R", "foot_R.tip"], rise: -drop),
+                          .shift(["spine"], rise: -drop * 0.6), .shift(["chest"], rise: -drop * 0.25),
+                          .resolve(["shin_L"]),
+                          .turn(pivot: "thigh_R", points: ["shin_R", "foot_R", "foot_R.tip"], axis: .forward, degrees: -adduct)])
+    }
+
+    /// Side planks on the right forearm: sinking into the support shoulder,
+    /// the chest, neck and head `drop` torso lengths down in the room (the
+    /// mid-spine half that) while the support (right) shoulder stays over the
+    /// elbow, so the neck closes on that shoulder. Drawn as the spine and the
+    /// neck-shoulder-elbow line of the support side; the raised arm is left
+    /// out, since moving it straight down along itself hid the change.
+    private static func plankHold500ShoulderSunk(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, ["neck", "upper_arm_R", "forearm_R"]],
+                  moves: [.shift(["chest", "neck", "head"], rise: -drop), .shift(["spine"], rise: -drop * 0.5)])
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 plank holds (2026-10-05)
+        // Four planks on one body (neck to pelvis 0.59 m; shifts below are in
+        // torso lengths). The RKC and weighted planks are framed side-on
+        // (yaw -1.35), face down, head toward +z, so the lifter's forward is
+        // the floor and `ahead` is toward the head. The side plank hip lift
+        // and the Copenhagen plank lie on the right forearm, framed from
+        // behind (yaw 1.5): the lifter's left is the ceiling, so moves toward
+        // the floor use `rise`, and moves out of the chest or back run along
+        // the line of sight (hence the pike's view turn). Sizes were measured
+        // with a Python port of FaultGhost.solve on the rigs at the fault's
+        // still (plankhold/ghost.py, pieces.py, size.py in the session
+        // scratchpad). Cues with no ghost fall back to the red ring: the RKC
+        // plank's pull (a force), the weighted plank's plate (where the load
+        // sits), the hip lift's tempo (timing) and the Copenhagen plank's
+        // bench under the ankle (where the support sits).
+        "RKC Plank": [
+            // Elbows pulled back under the shoulders: the forearms and hands
+            // slid ~10 cm toward the feet along the floor, the shoulders
+            // 1.8 cm higher so the upper arms keep their length; the elbows
+            // close from 113° to ~93°, the regular plank's set-up.
+            "lever": plankHold500ElbowsSlid(-0.17, rise: 0.03),
+            // Glutes let go: the hips ~13 cm toward the floor, the mid-spine
+            // ~6.5 cm, the knees ~6 cm (round 1's ~11 cm read as a slight
+            // bend on the lab shot).
+            "glutes": plankHold500HipsSag(0.22),
+            // Soft knees: the knees ~7 cm toward the floor (174° -> ~159°),
+            // the hips ~3 cm.
+            "legs": plankHold500KneesSoft(0.12),
+            // Feet spread: each leg 12° out about its hip, the feet ~18 cm
+            // out each, seen from behind the feet (a turn of -1.5).
+            "base": plankHold500FeetApart(12, view: -1.5)
+            // "pull" has no ghost: it is a force, not a position.
+        ],
+        "Weighted Plank": [
+            // Hips sagging under the plate: the hips ~12 cm toward the floor,
+            // the mid-spine ~6 cm, the knees ~5 cm.
+            "body": plankHold500HipsSag(0.2),
+            // Elbows far in front: the forearms and hands slid ~12 cm toward
+            // the head along the floor, the shoulders 2.4 cm lower so the
+            // upper arms keep their length; the elbows open from 93° to ~118°.
+            "elbows": plankHold500ElbowsSlid(0.2, rise: -0.04),
+            // The head dropped: turned 50° about the neck toward the floor,
+            // the head joint ~8.5 cm and the crown point ~18 cm lower.
+            "head": plankHold500HeadDropped(50),
+            // Soft knees: the knees ~7 cm toward the floor (174° -> ~159°),
+            // the hips ~3 cm.
+            "legs": plankHold500KneesSoft(0.12)
+            // "plate" has no ghost: where the load sits is not a pose.
+        ],
+        "Side Plank Hip Lift": [
+            // Stopping short at the top: the hips ~10 cm lower (back to the
+            // bottom of the dip), the knees re-seated (top knee 167° -> ~140°);
+            // shown only near the top (`plankHold500Top`), still 1.6 s.
+            "lift": plankHold500HipsLowered(0.17, strength: plankHold500Top),
+            // Resting on the mat: the hips ~11 cm lower at the bottom, so the
+            // side of the bottom hip (the shorts 9 cm up, the thigh 5.8 cm
+            // mid-thigh) comes down to about the mat; the bottom knee
+            // re-seats and rises ~1.5 cm, so the first draft's 0.13 (8 cm) left
+            // the hip ~3 cm up. Shown only near the bottom
+            // (`plankHold500Bottom`), still 3.7 s.
+            "dip": plankHold500HipsLowered(0.18, strength: plankHold500Bottom),
+            // The elbow set out toward the head: the right arm turned 25°
+            // about the shoulder, the elbow ~11 cm toward the head and ~2 cm
+            // off the mat (round 1's 20° barely parted from the real arm).
+            "elbow": armsTurned(.forward, 25, side: "R"),
+            // Hips piked back: the pelvis ~19 cm, mostly behind the line and
+            // partly toward the feet so both legs still reach the planted
+            // feet (top knee 167° -> ~165°, bottom 170° -> ~133°); seen
+            // three-quarter from the head side (a turn of -0.6; round 1's
+            // -1.0 foreshortened the body until the pike did not read). As
+            // with the library Side Plank's shifted pike, the lower trunk's
+            // two segments stretch (27 -> 39 cm here); sliding the chest and
+            // head toward the feet as well (tried in the review's port) cut
+            // that to 30 cm but pulled the ghost neck off the shoulders.
+            "line": plankHold500Piked(back: 0.28, down: 0.16, view: -0.6)
+            // "tempo" has no ghost: timing is not a position.
+        ],
+        "Copenhagen Plank": [
+            // Hips sagging: the pelvis, hips and hanging leg ~9 cm lower, the
+            // top knee re-seated on the bench (171° -> ~160°), the bottom leg
+            // turned 5° up so its shoe stays ~1.5 cm off the mat.
+            "hips": plankHold500BenchSag(0.15, adduct: 5),
+            // Hips piked back: the pelvis and hanging leg ~17 cm behind the
+            // line and ~4 cm toward the bench, the top knee bending to ~154°;
+            // seen three-quarter from the head side (a turn of -0.6; round
+            // 1's -1.0 foreshortened the body). The lower trunk's segments
+            // stretch 27 -> 34 cm, as the shifted pikes do.
+            "line": plankHold500BenchPiked(back: 0.28, down: 0.06, view: -0.6),
+            // The elbow set out toward the head: the right arm turned 25°
+            // about the shoulder, the elbow ~12 cm toward the head and ~3 cm
+            // off the mat (round 1's 20° barely parted from the real arm).
+            "elbow": armsTurned(.forward, 25, side: "R"),
+            // Sinking into the support shoulder: the chest, neck and head
+            // ~9 cm lower, the support shoulder left over the elbow, the neck
+            // closing on it (21 -> 13 cm). Rounds 1 and 2 also lowered the
+            // raised arm, which slid along itself and hid the change.
+            "shoulder": plankHold500ShoulderSunk(0.15)
+            // "top" has no ghost: where the bench sits under the leg is not a
+            // pose.
+        ],

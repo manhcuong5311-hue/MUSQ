@@ -24,17 +24,32 @@ def kind(name):
     if "abduction" in n or "clamshell" in n: return "abduction"   # top / bottom = knees furthest / closest apart
     if "adduction" in n: return "adduction"       # top / bottom = knees closest / furthest apart
     if "frog pump" in n: return "legs"             # a bridge: top / bottom = pelvis highest / lowest
-    if "calf raise" in n: return "calf"            # top / bottom = heels highest / lowest (ankle angle)
+    if "calf raise" in n or "calf press" in n or "plantar flexion" in n: return "calf"   # top / bottom = heels highest / lowest (ankle angle)
+    if "tibialis raise" in n or "dorsiflexion" in n: return "tibialis"   # top / bottom = toes highest / lowest (ankle angle)
+    # 401-500 core work (2026-10-04): trunk-to-thigh angle for the crunches,
+    # sit-ups and V-ups; the dead bug, bird dog and hollow body give seconds.
+    if "crunch" in n or "sit-up" in n or "v-up" in n: return "curlup"   # top / bottom = trunk and thighs closest / furthest
+    if "dead bug" in n or "bird dog" in n or "hollow body" in n: return "hold"
+    # 445-474 (2026-10-05): leg and knee raises fold like the crunches; the
+    # kicks, planks, climbers, side bends, twists, chops, rotations and
+    # rollouts give their moments in seconds; thrusters and the clean and
+    # press read off the pelvis like the squats (top = lockout).
+    if "toe-to-bar" in n or "leg raise" in n or "knee raise" in n: return "curlup"
+    if any(w in n for w in ("kick", "plank", "mountain climber", "side bend", "twist", "wood chop",
+                            "cable rotation", "landmine", "rollout", "body saw")): return "hold"
+    if "thruster" in n or "clean and press" in n: return "legs"
+    if "bear crawl" in n or "march" in n: return "carry"
     if "leg press" in n: return "legpress"        # bottom / top = knees most bent / straightest (the pelvis stays put)
     if "lunge" in n or "squat" in n or "thrust" in n: return "legs"   # bottom / top = pelvis lowest / highest
-    if "carry" in n: return "carry"
+    if "carry" in n or "walk on toes" in n: return "carry"
     if "hold" in n: return "hold"                 # static grip holds: every moment is the same
+    if "wrist roller" in n: return "hold"         # 401-500 (2026-10-04): the roller winds all clip; moments are given in seconds
     if "wrist curl" in n: return "wrist"          # top = the wrist at the end of its working range
     if "finger curl" in n: return "finger"        # top = fingers closed, wrist curled; bottom = bar on the fingertips
     if "shrug" in n: return "shrug"
     if "rotation" in n: return "rotation"
     if "raise" in n: return "raise"
-    if "curl" in n or "row" in n: return "pull"   # top = elbows most bent
+    if "curl" in n or "row" in n or "21s" in n: return "pull"   # top = elbows most bent
     return "press"                                # top = elbows straightest
 
 
@@ -72,8 +87,12 @@ def times(name):
         trunk = P("neck") - P("pelvis")
         tip = math.degrees(math.acos(max(-1, min(1, trunk[1] / trunk.GetLength()))))
         spread = (P("shin_L") - P("shin_R")).GetLength()
+        # Trunk-to-thigh angle (both thighs' mean), small when curled up.
+        thighs = (P("shin_L") + P("shin_R")) / 2 - P("pelvis")
+        fold = math.degrees(math.acos(max(-1, min(1, Gf.Dot(trunk.GetNormalized(), thighs.GetNormalized())))))
         rows.append(dict(t=round((t - t0) / fps, 2), elbow=elbow, hands=hands, shoulders=shoulders, turn=turn, feet=feet,
-                         pelvis=P("pelvis")[1], flex=flex, kneeL=kneeL, kneeR=kneeR, ankle=ankle, tip=tip, spread=spread))
+                         pelvis=P("pelvis")[1], flex=flex, kneeL=kneeL, kneeR=kneeR, ankle=ankle, tip=tip, spread=spread,
+                         fold=fold))
         t += 2
     # The working knee: the one that bends and straightens (the Single-Leg
     # Press rests its other foot with the knee held at ~82 degrees).
@@ -91,6 +110,8 @@ def times(name):
         "legs": dict(top=pick("pelvis", 1), bottom=pick("pelvis", -1)),
         "legpress": dict(top=pick("knee", 1), bottom=pick("knee", -1)),
         "calf": dict(top=pick("ankle", 1), bottom=pick("ankle", -1)),
+        "tibialis": dict(top=pick("ankle", -1), bottom=pick("ankle", 1)),
+        "curlup": dict(top=pick("fold", -1), bottom=pick("fold", 1)),
         "wrist": dict(top=pick("flex", -1 if "reverse" in name.lower() else 1), bottom=pick("flex", 1 if "reverse" in name.lower() else -1)),
         "finger": dict(top=pick("flex", 1), bottom=pick("flex", -1)),
         "hold": dict(top=2.0, bottom=2.0),
@@ -100,7 +121,7 @@ def times(name):
         "adduction": dict(top=pick("spread", -1), bottom=pick("spread", 1)),
     }[k]
     # A leg lift's lockout is its top (knees and hips straight), not the elbows.
-    named["lockout"] = named["top"] if k in ("legs", "legpress", "calf", "hinge", "legcurl", "abduction", "adduction") else pick("elbow", 1)
+    named["lockout"] = named["top"] if k in ("legs", "legpress", "calf", "tibialis", "curlup", "hinge", "legcurl", "abduction", "adduction") else pick("elbow", 1)
     named["any"] = named["bottom"] if k in ("press", "legs", "legpress", "finger", "hinge") else named["top"]
     return named
 
@@ -111,6 +132,12 @@ for name, cues in moments.items():
     t = times(name)
     out[name] = t["any"]
     for cue, when in cues.items():
+        # A moment may also be given in seconds ("12.5" or "t=12.5"), for
+        # clips whose first rep is not the one to show (the 21s' top-half
+        # and full reps, the wrist roller) (401-500, 2026-10-04).
+        num = re.fullmatch(r"(?:t\s*=\s*)?(\d+(?:\.\d+)?)\s*s?", when.lower().strip())
+        if num:
+            out[f"{name}|{cue}"] = float(num.group(1)); continue
         word = re.split(r"[^a-z]", when.lower().strip())[0] or "any"
         out[f"{name}|{cue}"] = t.get(word, t["any"])
     print(f"{name:38s} {kind(name):8s} any {t['any']:.2f}  top {t['top']:.2f}  bottom {t['bottom']:.2f}  lockout {t['lockout']:.2f}")

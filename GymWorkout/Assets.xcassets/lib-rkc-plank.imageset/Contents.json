@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-rkc-plank.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

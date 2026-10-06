@@ -1,0 +1,6 @@
+{
+  "Hollow Body Hold": {"back": "2.0", "shoulders": "2.0", "legs": "2.0", "arms": "2.0"},
+  "Hollow Body Rock": {"back": "2.0", "hips": "1.0", "arms": "1.67", "knees": "1.67"},
+  "Dead Bug": {"back": "1.6", "pair": "1.6", "reach": "1.6", "arms": "1.6"},
+  "Bird Dog": {"hips": "1.6", "leg": "1.6", "arm": "1.6", "base": "1.6"}
+}

@@ -121,11 +121,16 @@ enum ExerciseCatalog {
 
     // MARK: - Storage
 
-    /// Holds and loaded carries, logged in seconds rather than reps.
+    /// Holds and loaded carries, logged in seconds rather than reps (the
+    /// 401-500 folder adds a calf raise hold, a walk on the toes, the hollow
+    /// body hold, three held planks, two carry marches and the bear crawl).
     private static let timedExercises: Set<String> = ["Plank", "Side Plank",
                                                       "Farmer's Carry", "Suitcase Carry", "Overhead Carry",
                                                       "Plate Pinch Hold", "Dumbbell Static Hold",
-                                                      "Barbell Static Hold", "Towel Grip Hold"]
+                                                      "Barbell Static Hold", "Towel Grip Hold",
+                                                      "Calf Raise Hold", "Farmer's Walk on Toes", "Hollow Body Hold",
+                                                      "RKC Plank", "Weighted Plank", "Copenhagen Plank",
+                                                      "Farmer Carry March", "Suitcase Carry March", "Bear Crawl"]
 
     private static let byName: [String: Exercise] =
         Dictionary(SampleData.exercises.map { ($0.name, $0) }, uniquingKeysWith: { first, _ in first })

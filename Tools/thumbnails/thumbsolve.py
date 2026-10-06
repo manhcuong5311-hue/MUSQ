@@ -22,7 +22,14 @@ BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Gri
              "Cable Upright Row", "Cable Y-Raise", "Cable Front Raise", "Cable Shrug",
              "Cable External Rotation", "Machine Rear Delt Row",
              # Batch 241-300 (2026-09-27): the cable curls seen from the front-right.
-             "Cable Preacher Curl", "Single-Arm Cable Curl", "Cable Hammer Curl", "Cable Drag Curl"}
+             "Cable Preacher Curl", "Single-Arm Cable Curl", "Cable Hammer Curl", "Cable Drag Curl",
+             # 401-500 (2026-10-04): the rope hammer curl's tower, like the Cable Hammer Curl;
+             # the landmine chest press's bar and the Smith seated raise's frame left
+             # those lifters a third of the tile.
+             "Rope Hammer Curl", "Landmine Chest Press", "Smith Machine Seated Calf Raise"}
+# Held parts a lift lets crop (401-500, 2026-10-04): the landmine chest press's
+# 1.9 m bar, as in its trainer framing.
+CROP = {"Landmine Chest Press": ("LandmineBar",)}
 block = SRC[SRC.index("modelByExercise: [String: ExerciseModel] = ["):SRC.index("static func model(for")]
 jobs = {}
 for m in re.finditer(r'"([^"]+)":\s*ExerciseModel\(resource: "([^"]+)",\s*framing: (?:\.(\w+)|ModelFraming\(yaw: ([-\d.]+))', block):
@@ -35,8 +42,9 @@ out = json.load(open(sys.argv[1])) if os.path.exists(sys.argv[1]) else {}
 for name, (path, yaw) in jobs.items():
     if only and name not in only: continue
     body, equip = gather(path, PT[name]["time"])
-    held = [v for k, v in equip.items() if any(h in k for h in HELD)]
-    big = [v for k, v in equip.items() if not any(h in k for h in HELD)]
+    isheld = lambda k: any(h in k for h in HELD) and not any(c in k for c in CROP.get(name, ()))
+    held = [v for k, v in equip.items() if isheld(k)]
+    big = [v for k, v in equip.items() if not isheld(k)]
     core = np.vstack([body] + held)
     zb, offb = solve(core, yaw, 1.0, mx=0.84, my_top=0.84, my_bot=0.84)
     allp = np.vstack([core] + big) if big else core

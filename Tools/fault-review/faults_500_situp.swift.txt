@@ -1,0 +1,247 @@
+// MARK: PIECES
+    // MARK: 401-500 sit-up and V-up pieces (2026-10-04)
+
+    /// How far up a sit-up is, read off the neck-to-left-knee distance in
+    /// torso lengths, which shrinks as the trunk comes up to the thighs:
+    /// none lying, all of it near the top (`situp500Top`), or the reverse
+    /// (`situp500Low`). The four sit-ups measure ~1.7 lying and 0.6-1.0 at
+    /// the top, so each passes its own `top`.
+    private static func situp500Top(_ top: Float) -> FaultStrength {
+        .between("neck", "shin_L", from: 1.6, to: top)
+    }
+    private static func situp500Low(_ top: Float) -> FaultStrength {
+        .between("neck", "shin_L", from: top, to: 1.6)
+    }
+
+    /// The V-ups' arms swinging up from overhead: the left hand ~1.87 torso
+    /// lengths from the pelvis lying, ~1.1-1.3 from the start of the rise to
+    /// the top, the same on both reps of the alternating version.
+    private static let situp500Risen = FaultStrength.between("hand_L", "pelvis", from: 1.75, to: 1.4)
+    /// The reverse: all of it with the arms back overhead (lying, and at
+    /// 2.95 s as the arms and legs come down), none from the start of the
+    /// rise to the top.
+    private static let situp500Lowered = FaultStrength.between("hand_L", "pelvis", from: 1.4, to: 1.75)
+
+    /// The alternating V-up's first rep, the left leg up: the neck ~1.26
+    /// torso lengths from the left ankle at the top, ~2.2-2.5 lying and
+    /// throughout the right-leg rep.
+    private static let situp500LeftLegUp = FaultStrength.between("neck", "foot_L", from: 2.0, to: 1.5)
+
+    /// The lower back arching off the mat or bench: the lumbar segment tipped
+    /// up 60° about the pelvis, the upper back turned 80° back down about
+    /// the lumbar joint and the neck and head eased 10° back up about the
+    /// chest. Built from turns so every segment keeps its length: the
+    /// library's `lowerBackArched` shifts the joints, and at the 0.22 these
+    /// lifts need it shrank the lumbar segment by up to ~3 cm (11.4 -> 8.3)
+    /// whenever the trunk was partly curled. Full strength lying: the lumbar
+    /// joint ~11 cm and the chest ~6 cm up, the neck and head within ~1.5 cm.
+    private static func situp500BackArched(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head"], axis: .lateral, degrees: -60),
+                          .turn(pivot: "spine", points: ["chest", "neck", "head"], axis: .lateral, degrees: 80),
+                          .turn(pivot: "chest", points: ["neck", "head"], axis: .lateral, degrees: -10)],
+                  strength: strength)
+    }
+
+    /// Hands behind the head pulling it forward: the head and both arms
+    /// turned `degrees` chin-to-chest about the neck, the elbows re-seated
+    /// (as `headYanked`, which the library's Crunch draws at 35°).
+    private static func situp500HeadYanked(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["chest", "neck", "head"], armsToGrip],
+                  moves: [.turn(pivot: "neck", points: ["head", "forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -degrees),
+                          .resolve(["forearm_*"])])
+    }
+
+    /// The chin dropped onto a plate held on the chest: the head and the
+    /// crown (`head.tip`) turned `degrees` chin-to-chest about the neck.
+    private static func situp500ChinDown(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["chest", "neck", "head", "head.tip"]],
+                  moves: [.turn(pivot: "neck", points: ["head", "head.tip"], axis: .lateral, degrees: -degrees)])
+    }
+
+    /// Unanchored feet lifting off the mat: the legs of `side` turned
+    /// `degrees` about the hips toward the chest, the knee angle kept.
+    private static func situp500FeetUp(_ side: String, _ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [leg(side), hips],
+                  moves: [.turn(pivot: "thigh_\(side)", points: ["shin_\(side)", "foot_\(side)", "foot_\(side).tip"],
+                                axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Stopping short of the top: the trunk, head and arms turned `degrees`
+    /// back about the pelvis, toward the mat. `withArms: false` draws the
+    /// trunk and the shoulder line only (the V-up's reaching arms crowd it).
+    private static func situp500StoppedShort(_ degrees: Float, withArms: Bool = true, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine] + (withArms ? [armsToGrip] : [shoulders]),
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Hovering at the bottom: the upper back, head and arms curled
+    /// `degrees` up off the mat or bench about the lower back.
+    private static func situp500Hovering(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// A plate held on the chest pushed off it toward the knees: the hands
+    /// `forward` torso lengths out of the chest and `down` toward the hips,
+    /// the elbows re-seated (they open).
+    private static func situp500PlatePushed(forward: Float, down: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["hand_*", "hand_*.tip"], forward: forward, up: -down), .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// V-ups: the knees of `side` bent `degrees`, the shins folding back
+    /// toward the thighs (a tuck).
+    private static func situp500KneesBent(_ side: String, _ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [leg(side)],
+                  moves: [.turn(pivot: "shin_\(side)", points: ["foot_\(side)", "foot_\(side).tip"], axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// V-ups: the straight arms pointing at the ceiling instead of reaching
+    /// to the ankles, turned `degrees` up about the shoulders.
+    private static func situp500ArmsUp(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// V-ups: the legs left behind while the trunk rises, turned `degrees`
+    /// down about the hips.
+    private static func situp500LegsDown(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// V-ups: rolled back off the seat onto the lower back, the whole V (the
+    /// trunk, arms and legs) turned `degrees` about the pelvis, the trunk
+    /// lower and the legs higher. Drawn as the trunk and legs: the arms,
+    /// turned with them, crowded the ghost in the first lab round.
+    private static func situp500RolledBack(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.turn(pivot: "pelvis", points: trunk + ["thigh_*", "shin_*", "foot_*", "foot_*.tip"],
+                                axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 sit-ups and V-ups (2026-10-04)
+        // Six lying core lifts, one body (torso 0.55-0.58 m: it shortens as
+        // the spine curls). Two 4 s reps each: still to ~0.3 s, up by
+        // ~1.2 s, held to ~2.1 s, down by ~3.3 s, flat to ~4.3 s. Five are
+        // framed side-on from the front-left (yaw -1.35, the feet to the
+        // left), the Alternating V-Up three-quarter (-0.8); every fault moves
+        // in the lifter's own front-back plane, so only the Alternating
+        // V-Up's trunk ghost needs a turn (side-on, as the V-Up). Ghosts
+        // that would push a limb through the mat lying down are gated by how
+        // far up the rep is (`situp500Top` / `situp500Low` / `situp500Risen`).
+        // Sizes were measured with a Python port of FaultGhost.solve on the
+        // rigs at each fault's moment (situp/gh.py, final.py and sweep.py in
+        // the session scratchpad; screen sizes in the mistake view). Cues
+        // about tempo, and where the ankles hook under the roller, have no
+        // ghost: speed and the roller's place are not body positions.
+        "Sit-Up": [
+            // Pulling the head: the head and arms 45° chin-to-chest about the
+            // neck, at the top the head ~8 cm, the hands ~9 cm (~15 pt) and
+            // the elbows ~14 cm (~26 pt) forward and down.
+            "neck": situp500HeadYanked(45),
+            // The lower back arching off the mat as the rep starts, at 0.3 s:
+            // the lumbar joint ~11 cm (20 pt) and the chest ~6 cm (11 pt) up,
+            // the pelvis and shoulders down, so the hump reads; every segment
+            // keeps its length (`situp500BackArched`, in place of the
+            // library's `lowerBackArched` at 0.22). (A whole stiff trunk
+            // lifted ~9 cm at 0.5 s stayed inside the body's outline in the
+            // first two lab rounds.) Gated to the lower half.
+            "curl": situp500BackArched(situp500Low(1.1)),
+            // The free feet lifting, at 0.8 s: the legs 20° about the hips,
+            // the ankles ~20 cm (36 pt) and the toes ~27 cm (50 pt) up off
+            // the mat, knees kept at 85°. Full strength from ~0.8 s (the
+            // neck 1.4 torso lengths from the knee) so the still shows all of
+            // it; none lying.
+            "feet": situp500FeetUp("*", 20, strength: situp500Top(1.4)),
+            // Stopping halfway: the trunk 35° back, 81° -> 46° above the
+            // floor, the head ~39 cm (~66 pt) back toward the mat.
+            "top": situp500StoppedShort(35, strength: situp500Top(1.1)),
+            // Hovering at the bottom: the upper back curled 25° up off the
+            // mat, the head ~25 cm (42 pt) up.
+            "bottom": situp500Hovering(25, strength: situp500Low(1.1))
+        ],
+        "Weighted Sit-Up": [
+            // The plate pushed toward the knees at the top: the hands ~18 cm
+            // forward and down, the elbows 77-83° -> 129-147°.
+            "plate": situp500PlatePushed(forward: 0.3, down: 0.1, strength: situp500Top(1.15)),
+            // The chin dropped onto the plate: the head turned 40°, the crown
+            // ~15 cm (~25 pt) forward and down.
+            "chin": situp500ChinDown(40),
+            // As the Sit-Up.
+            "curl": situp500BackArched(situp500Low(1.15)),
+            "feet": situp500FeetUp("*", 20, strength: situp500Top(1.4)),
+            "bottom": situp500Hovering(25, strength: situp500Low(1.15))
+        ],
+        "Decline Sit-Up": [
+            // As the Sit-Up, on the 17° decline bench.
+            "neck": situp500HeadYanked(45),
+            "curl": situp500BackArched(situp500Low(0.9)),
+            "bottom": situp500Hovering(25, strength: situp500Low(0.9))
+            // "roller" and "tempo" have no ghost: the roller's place and
+            // lowering speed.
+        ],
+        "Weighted Decline Sit-Up": [
+            // As the Weighted Sit-Up (the hands ~18 cm forward and down at
+            // the top, the elbows opening to 128-140°).
+            "plate": situp500PlatePushed(forward: 0.3, down: 0.1, strength: situp500Top(1.0)),
+            "chin": situp500ChinDown(40),
+            "curl": situp500BackArched(situp500Low(1.0)),
+            "bottom": situp500Hovering(25, strength: situp500Low(1.0))
+            // "roller" has no ghost: the roller's place.
+        ],
+        "V-Up": [
+            // A tuck: both knees bent 60°, 180° -> 120°, the feet ~40 cm
+            // (~50 pt) down toward the seat at the top.
+            "legs": situp500KneesBent("*", 60, strength: situp500Risen),
+            // The arms pointing at the ceiling: turned 55° up, the hands
+            // ~50 cm (~65 pt) away from the ankles.
+            "reach": situp500ArmsUp(55, strength: situp500Risen),
+            // The legs left behind at 0.85 s: turned 38° down about the hips,
+            // from ~40° to ~2° above the floor, while the trunk is ~45° up.
+            "together": situp500LegsDown(38, strength: situp500Risen),
+            // Rolled back off the seat: the whole V turned 25°, the trunk
+            // 62° -> 37° and the legs 62° -> 87° above the floor; the trunk
+            // and legs drawn.
+            "balance": situp500RolledBack(25, strength: situp500Risen),
+            // The lower back arching as the legs come down, at 2.95 s: the
+            // lumbar joint ~11 cm (15 pt) and the chest ~6 cm off the mat,
+            // lengths kept (`situp500BackArched`; the library's
+            // `lowerBackArched` at 0.14, ~8 cm, stayed inside the body's
+            // outline in the first lab round); none at the top, where it
+            // would read as a sway back.
+            "back": situp500BackArched(situp500Lowered)
+        ],
+        "Alternating V-Up": [
+            // The lifted (left) knee bent 60° on the first rep, the foot
+            // ~40 cm toward the seat; gated to the left-leg rep.
+            "knees": situp500KneesBent("L", 60, strength: situp500LeftLegUp),
+            // The resting (right) leg drifting up 25° about the hip on the
+            // first rep, its foot ~36 cm off the mat.
+            "down": situp500FeetUp("R", 25, strength: situp500LeftLegUp),
+            // As the V-Up: the arms 55° up toward the ceiling.
+            "reach": situp500ArmsUp(55, strength: situp500Risen),
+            // The trunk lagging: turned 35° back toward the mat while the
+            // leg is up (62° -> 27° above the floor), the head ~40 cm back;
+            // drawn as the trunk and the shoulder line (with the arms it
+            // crowded the lifted leg). Seen side-on from the left like the
+            // V-Up (-0.55 onto this framing's -0.8): three-quarter, the turn
+            // went partly along the line of sight and the ghost sat inside
+            // the body's outline (the head moved ~47 pt; ~57 pt side-on).
+            // 35° keeps the chest no lower than lying all clip (40° put it
+            // ~2 cm lower as the trunk comes down on the right-leg rep).
+            "trunk": situp500StoppedShort(35, withArms: false, strength: situp500Risen).seen(-0.55),
+            // As the V-Up, at 2.95 s.
+            "back": situp500BackArched(situp500Lowered)
+        ],

@@ -2,8 +2,8 @@
 //  Purchases.swift
 //  GymWorkout
 //
-//  MUSQ Premium, the app's only purchase: the common mistakes and Form
-//  Comparison in the trainer, Preset 2 and 3 for every group, and no ads.
+//  MUSQ Premium, the app's only purchase: the common mistakes in the
+//  trainer, Preset 2 and 3 for every group, and no ads.
 //  Every exercise, every key tip, logging, history and recovery stay free. Two ways to pay — yearly
 //  in the MUSQ Premium subscription group, or a one-time lifetime unlock —
 //  and either counts the same. (A monthly plan for the same group is wired up
@@ -85,6 +85,25 @@ final class Purchases {
     func isEligibleForTrial() async -> Bool {
         guard let yearly, yearly.subscription?.introductoryOffer != nil else { return false }
         return await yearly.subscription?.isEligibleForIntroOffer ?? false
+    }
+
+    /// Whether the yearly plan's introductory offer is a free trial (rather
+    /// than a discount), which is what "free" copy needs.
+    var yearlyOffersFreeTrial: Bool {
+        yearly?.subscription?.introductoryOffer?.paymentMode == .freeTrial
+    }
+
+    /// "7 days", read from the yearly plan's offer so the copy can't drift
+    /// from App Store Connect.
+    var trialLength: String {
+        guard let period = yearly?.subscription?.introductoryOffer?.period else { return "7 days" }
+        switch period.unit {
+        case .day: return period.value == 1 ? "1 day" : "\(period.value) days"
+        case .week: return "\(period.value * 7) days"
+        case .month: return period.value == 1 ? "1 month" : "\(period.value) months"
+        case .year: return period.value == 1 ? "1 year" : "\(period.value) years"
+        @unknown default: return "7 days"
+        }
     }
 
     // MARK: - Loading

@@ -1,0 +1,220 @@
+// MARK: PIECES
+    // MARK: 401-500 stability ball rollout, body saw and bear crawl pieces (2026-10-05)
+
+    /// The stability ball rollout rolled out: none with the hands over the
+    /// knees at the start (hand to knee ~2.0 torso lengths), all of it at
+    /// full reach (~2.5), so the rollout's ghosts fade in as the ball rolls.
+    private static let antiExt500Rolled = FaultStrength.between("hand_L", "shin_L", from: 2.15, to: 2.4)
+
+    /// Kneeling on planted knees (the rollout): the hips sagging toward the
+    /// floor, the pelvis and hip joints `drop` torso lengths out of the
+    /// chest (toward the floor for a lifter leaning on the ball) and the
+    /// lumbar spine half that; the knees and the chest stay.
+    private static func antiExt500KneelingSag(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, ["pelvis", "thigh_L"], ["pelvis", "thigh_R"], ["thigh_*", "shin_*"]],
+                  moves: [.shift(["spine"], forward: drop / 2), .shift(["pelvis", "thigh_*"], forward: drop)],
+                  strength: antiExt500Rolled)
+    }
+
+    /// The rollout stopped short with the hips still bent: the hips, trunk
+    /// and arms turned `knees` degrees up about the planted knees, the trunk
+    /// and arms `hips` degrees back down about the pelvis (the hips bending
+    /// while the trunk keeps its slope), and the arms `arms` degrees back
+    /// toward the trunk, so the body sits higher and nearer the knees. All
+    /// turns, so every bone keeps its length.
+    private static func antiExt500StopsShort(knees: Float, hips: Float, arms: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, ["pelvis", "thigh_L"], ["pelvis", "thigh_R"], ["thigh_*", "shin_*"]],
+                  moves: [.turn(pivot: "shin_L", points: ["pelvis", "thigh_L", "thigh_R", "spine", "chest", "neck", "head",
+                                                         "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .lateral, degrees: knees),
+                          .turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head",
+                                                          "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"],
+                                axis: .lateral, degrees: -hips),
+                          .turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -arms)],
+                  strength: antiExt500Rolled)
+    }
+
+    /// Face down: the head craned up to look ahead, the neck and head turned
+    /// `neck` degrees back about the chest (toward the ceiling) and the head
+    /// `head` degrees more about the neck. The same all clip.
+    private static func antiExt500HeadUp(neck: Float, head: Float) -> FaultPose {
+        FaultPose(chains: [["spine", "chest", "neck", "head"]],
+                  moves: [.turn(pivot: "chest", points: ["neck", "head"], axis: .lateral, degrees: neck),
+                          .turn(pivot: "neck", points: ["head"], axis: .lateral, degrees: head)])
+    }
+
+    /// Forearms on a ball or the floor with the elbows splayed: the elbows
+    /// `elbows` torso lengths out to the sides, the hands `hands`, so the
+    /// forearms angle in. The same all clip.
+    private static func antiExt500ElbowsWide(_ elbows: Float, hands: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["forearm_*"], outward: elbows), .shift(["hand_*", "hand_*.tip"], outward: hands)])
+    }
+
+    /// The body saw slid back: none with the shoulders in front of the elbows
+    /// (shoulder to wrist ~0.53 torso lengths), all of it with them ~11 cm
+    /// behind (~0.77).
+    private static let antiExt500Sawed = FaultStrength.between("upper_arm_L", "hand_L", from: 0.55, to: 0.75)
+
+    /// The body saw cut short: the whole body but the planted forearms
+    /// carried `ahead` torso lengths forward (level with the floor, the way
+    /// the lifter faces), the hips and upper body `rise` up as well, so at
+    /// the back of the slide the shoulders stay over the elbows and the
+    /// upper arms keep their length; the feet slide with it.
+    private static func antiExt500SawShort(ahead: Float, rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, arms],
+                  moves: [.shift(["pelvis", "spine", "chest", "neck", "head", "upper_arm_*", "thigh_*"], ahead: ahead, rise: rise),
+                          .shift(["shin_*", "foot_*", "foot_*.tip"], ahead: ahead)],
+                  strength: antiExt500Sawed)
+    }
+
+    /// A plank on the toes (the body saw): the hips sagging, the pelvis and
+    /// hip joints `drop` torso lengths out of the chest (toward the floor),
+    /// the lumbar spine half that and the knees 0.45 of it, the feet left on
+    /// the sliders. The same as the chest family's `chest500HipsSag`, which
+    /// sits in that family's block and so is not there when this family is
+    /// integrated alone.
+    private static func antiExt500PlankSag(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, ["pelvis", "thigh_L"], ["pelvis", "thigh_R"], ["thigh_*", "shin_*", "foot_*"]],
+                  moves: [.shift(["spine"], forward: drop / 2), .shift(["pelvis", "thigh_*"], forward: drop),
+                          .shift(["shin_*"], forward: drop * 0.45)])
+    }
+
+    /// A plank on the toes with soft legs: the knees bent and sunk `drop`
+    /// torso lengths toward the floor, the hips and feet left where they
+    /// are. The same all clip.
+    private static func antiExt500KneesDropped(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips], moves: [.shift(["shin_*"], forward: drop)])
+    }
+
+    /// On hands and toes (the bear crawl): the hips pushed up into the air,
+    /// the pelvis and hip joints `rise` torso lengths straight up and the
+    /// lumbar spine half that, the knees re-seated over the planted feet so
+    /// they lift and open. The same all clip.
+    private static func antiExt500HipsPiked(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*"], rise: rise), .shift(["spine"], rise: rise / 2), .resolve(["shin_*"])])
+    }
+
+    /// The bear crawl's hips rocking: the hip line rolled `degrees` about
+    /// the trunk's long axis, the stepping leg's hip (`_bent`, the knee bent
+    /// further, which is the stepping leg for most of each step) dropping
+    /// and the supporting hip rising. The pelvis and the stepping hip are
+    /// turned about the supporting hip (a negative angle drops the stepping
+    /// side on either side; the `.up` turn is mirrored by its pivot), then
+    /// the pelvis and both hips are lifted `lift` torso lengths, which puts
+    /// the turn's centre near the pelvis, so the stepping knee drops only
+    /// half as far and stays off the mat; both knees are re-seated over
+    /// their feet. Turns and a shared lift keep the pelvis's width, the
+    /// resolves the legs' bones.
+    private static func antiExt500HipsRocked(_ degrees: Float, lift: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("bent"), leg("straight")],
+                  moves: [.turn(pivot: "thigh_straight", points: ["pelvis", "thigh_bent"], axis: .up, degrees: degrees),
+                          .shift(["pelvis", "thigh_*"], rise: lift),
+                          .resolve(["shin_*"])])
+    }
+
+    /// The bear crawl stepping with the same side: the left hand lifted `up`
+    /// torso lengths off the floor (out of the back) and `ahead` forward
+    /// (toward the head), the elbow re-seated between shoulder and hand,
+    /// with the left leg drawn alongside. It shows while the left foot
+    /// steps forward with the right hand (hand to foot on the left ~1.39
+    /// torso lengths at rest, ~1.16 once the left foot has stepped) and is
+    /// gone in the backward half of the clip.
+    private static func antiExt500SameSide(up: Float, ahead: Float) -> FaultPose {
+        FaultPose(chains: [arm("L"), leg("L")],
+                  moves: [.shift(["hand_L", "hand_L.tip"], forward: -up, up: ahead), .resolve(["forearm_L"])],
+                  strength: .between("hand_L", "foot_L", from: 1.39, to: 1.2))
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 stability ball rollout, body saw and bear crawl (2026-10-05)
+        // Three anti-extension core exercises on one body (torso, neck to
+        // pelvis, 0.59 m; shifts below are in torso lengths), all framed
+        // three-quarter from the front-left (yaw -0.8). Leaning on the ball,
+        // in the plank and on all fours the lifter's forward (out of the
+        // chest) is toward the floor. Sizes were measured with a Python port
+        // of FaultGhost.solve on the rigs at each fault's still
+        // (antiext/ghost.py and pieces.py in the session scratchpad); every
+        // ghost stays above the mat. The tempo cues of the rollout and the
+        // body saw have no ghost: speed is not a position.
+        "Stability Ball Rollout": [
+            // The hips sagging at full reach: the pelvis ~14 cm toward the
+            // floor (to ~13 cm above the mat; the hips ~148° instead of
+            // straight), the lumbar spine ~7 cm, faded in as the ball rolls
+            // out (`antiExt500Rolled`). Like the library's sag pieces it
+            // stretches the pelvis-to-chest line (27 -> ~32 cm).
+            "hips": antiExt500KneelingSag(0.24),
+            // Stopping short with the hips bent: the body turned 18° up about
+            // the knees and the trunk 18° back down about the pelvis (hips
+            // ~162° instead of straight), the arms 20° back toward the
+            // trunk; the pelvis and shoulders ~14 cm up and back (~11 cm
+            // higher, ~8 cm nearer the knees), the hands ~8 cm nearer and
+            // lower. Seen nearer side-on (a turn of -0.6, to yaw -1.4), where
+            // the bent hips read against the straight line (round 1, in the
+            // trainer's three-quarter view, it read as the body shifted up).
+            "reach": antiExt500StopsShort(knees: 18, hips: 18, arms: 20).seen(-0.6),
+            // Looking up: the neck turned 20° back about the chest and the
+            // head 50° more; the head ~21 cm (~10 cm higher, tipped back
+            // toward the shoulders), the neck ~11 cm.
+            "head": antiExt500HeadUp(neck: 20, head: 50),
+            // Elbows splayed off the top of the ball: the elbows ~15 cm out
+            // to each side (~6 cm outside the shoulders), the hands ~5 cm.
+            "arms": antiExt500ElbowsWide(0.25, hands: 0.08)
+            // "tempo" has no ghost: speed is not a position.
+        ],
+        "Body Saw": [
+            // Hips sagging at the back of the slide: the pelvis ~15 cm toward
+            // the floor (to ~11 cm above the mat; the hips ~155°), the lumbar
+            // spine ~7 cm, the knees ~7 cm (the chest family's sag, the feet left
+            // on the sliders).
+            "hips": antiExt500PlankSag(0.25),
+            // A short saw: at the back of the slide the body ~11 cm further
+            // forward and the hips and upper body ~2 cm higher, the shoulders
+            // over the elbows instead of ~11 cm behind them (elbows ~93°
+            // instead of ~116°); none at the front of the slide.
+            "range": antiExt500SawShort(ahead: 0.19, rise: 0.04),
+            // Elbows splayed: the elbows ~12 cm out to each side, the fists
+            // where they are, so the forearms angle in. Seen face on (a turn
+            // of 0.8, to yaw 0), where the splay runs across the screen; in
+            // the three-quarter framing it ran along the forearms and read
+            // only as the arms shifted (review).
+            "elbows": antiExt500ElbowsWide(0.2, hands: 0).seen(0.8),
+            // Soft legs: the knees ~12 cm toward the mat (the knee joints to
+            // ~7 cm above it, bent to ~141°), the hips and toes where they
+            // are.
+            "knees": antiExt500KneesDropped(0.2)
+            // "tempo" has no ghost: speed is not a position.
+        ],
+        "Bear Crawl": [
+            // Hips pushed up: the pelvis ~15 cm higher, the lumbar spine
+            // ~7 cm, the knees re-seated over the feet ~15 cm higher (the
+            // knee joints from ~9 to ~24 cm above the mat), the form the EMG
+            // study counted as lost (hips raised into the air).
+            "knees": antiExt500HipsPiked(0.25),
+            // The lower back sagging: the lumbar spine ~11 cm toward the
+            // floor, the chest ~5 cm (the pelvis-to-lumbar line stretches
+            // 11 -> ~15 cm, as the library piece does), seen nearer side-on
+            // (-0.6, to yaw -1.4), where the back is a long line and the dip
+            // shows (round 1, 0.16 in the three-quarter view, it barely did).
+            "back": lowerBackArched(0.18).seen(-0.6),
+            // The hips rocking toward the stepping leg: the hip line rolled
+            // 25°, the stepping hip ~4 cm lower and the supporting hip ~4 cm
+            // higher, the pelvis where it was; the stepping knee re-seated
+            // ~4 cm lower (its joint ~5 cm above the mat, the knee's skin
+            // ~2 cm), the supporting knee ~4 cm higher; the same on either
+            // side. Review: it was the pelvis rolled about the supporting
+            // hip, which dropped the stepping knee joint to 0.8 cm, the knee
+            // through the mat, and read as the knee dropping.
+            "hips": antiExt500HipsRocked(-25, lift: 0.064),
+            // Same-side step: the left hand lifted ~9 cm and ~9 cm forward
+            // with the left foot as it steps, the elbow bending to ~105° and
+            // ~6 cm out, shown from the first forward step to the second and
+            // gone on the way back.
+            "pair": antiExt500SameSide(up: 0.15, ahead: 0.15),
+            // Hands set far forward: both arms turned 25° forward about the
+            // shoulders, each hand ~23 cm further forward (at 2.0 s the left
+            // ~12 cm and the right ~24 cm in front of its shoulder, the
+            // right ~6 cm off the mat).
+            "hands": armsTurned(.lateral, 25)
+        ],

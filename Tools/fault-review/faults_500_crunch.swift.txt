@@ -1,0 +1,232 @@
+// MARK: PIECES
+    // MARK: 401-500 crunch pieces (2026-10-05)
+
+    /// Crunches with a turn: the crossing elbow nearing the raised knee,
+    /// elbow joint to kneecap in torso lengths, none at `from`, all of it at
+    /// `to`. The raised knee is the more bent one (`_bent`) and the crossing
+    /// elbow is on the other side (`_straight`), so on the alternating lifts
+    /// the fault follows whichever side is working. On the rigs the elbow
+    /// comes within ~0.18 torso lengths (9 cm) of the knee at each touch and
+    /// sits ~1.05-1.9 away in between.
+    private static func crunch500Nearing(from: Float = 0.75, to: Float = 0.35) -> FaultStrength {
+        .between("forearm_straight", "patella_bent", from: from, to: to)
+    }
+
+    /// The floor crunches' turn faults seen from the feet: the framing's
+    /// yaw -0.8 turned to ~0 (`view` 0.8), so the shoulder line, which the
+    /// turn tips, runs across the screen. From the framing itself the ghost
+    /// lay over the arms behind the head (lab round 1).
+    private static let crunch500FromFeet: Float = 0.8
+    /// The toe touch crunch seen from its left side: the behind-the-head
+    /// framing (yaw -2.3) turned to ~-1.35 (`view` 0.95), so the legs' tip,
+    /// the knee bend and the head's nod run across the screen.
+    private static let crunch500ToeSide: Float = 0.95
+    /// The floor crunches seen from their left side: the framing's yaw -0.8
+    /// turned to ~-1.35 (`view` -0.55), so the spine runs across the screen
+    /// and a lower back lifting off the mat reads as a hump in it. From the
+    /// framing the spine is foreshortened to ~35 pt and the same lift reads
+    /// as a kink (review).
+    private static let crunch500Side: Float = -0.55
+
+    /// Crunches with a turn: the turn left out. The chest, head and both arms
+    /// turn `degrees` about the trunk's long axis (negative undoes the
+    /// model's turn, whichever way it goes). It is made as two half turns,
+    /// about the straight-leg hip and then the bent-leg hip: a right-side
+    /// pivot mirrors a turn, so the direction follows the working side, and
+    /// the two half turns land the axis within ~2 cm of the middle of the
+    /// hips (one turn about a hip would carry the chest ~6 cm sideways).
+    /// Drawn as the spine, the shoulder line and the crossing arm.
+    private static func crunch500Unturned(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        let upper = ["chest", "neck", "head", "upper_arm_*", "forearm_*", "hand_*", "hand_*.tip"]
+        return FaultPose(chains: [spine, shoulders, ["upper_arm_straight", "forearm_straight", "hand_straight"]],
+                         moves: [.turn(pivot: "thigh_straight", points: upper, axis: .up, degrees: degrees / 2),
+                                 .turn(pivot: "thigh_bent", points: upper, axis: .up, degrees: -degrees / 2)],
+                         strength: strength)
+    }
+
+    /// Bicycle crunch: the free leg left bent. The straighter leg's foot turns
+    /// `degrees` about its knee (negative bends the knee), with how straight
+    /// that knee is, so it shows most with the leg pushed out and little as
+    /// the legs pass each other.
+    private static func crunch500FreeLegBent(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("straight")],
+                  moves: [.turn(pivot: "shin_straight", points: ["foot_straight", "foot_straight.tip"], axis: .lateral, degrees: degrees)],
+                  strength: .whenStraight("shin_straight"))
+    }
+
+    /// Cross-body crunch: the raised knee left low. The more bent leg turns
+    /// `degrees` about its hip (negative takes the thigh back toward the
+    /// feet), the knee keeping its bend.
+    private static func crunch500KneeLeftLow(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [leg("bent"), hips],
+                  moves: [.turn(pivot: "thigh_bent", points: ["shin_bent", "foot_bent", "foot_bent.tip"], axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Lying crunches: curled less. Everything above the pelvis turns
+    /// `degrees` about the hips back toward the floor (positive), the arms
+    /// with it, so the shoulder blades stay nearer the mat.
+    private static func crunch500Uncurled(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)],
+                  strength: strength)
+    }
+
+    /// Ball crunch: sitting up from the hips instead of curling. Everything
+    /// above the pelvis turns `degrees` about the hips toward upright, the
+    /// lower back leaving the ball with the shoulders.
+    private static func crunch500SatUp(_ degrees: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -degrees)],
+                  strength: strength)
+    }
+
+    /// Toe touch crunch: the legs tipped `degrees` past upright about the
+    /// hips (positive brings the feet toward the face). The same all rep.
+    private static func crunch500LegsTipped(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: degrees)])
+    }
+
+    /// Toe touch crunch: the knees bending, the feet turned `degrees` about
+    /// the knees (negative bends them, the feet dropping away from the
+    /// head). The same all rep.
+    private static func crunch500KneesBent(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs],
+                  moves: [.turn(pivot: "shin_*", points: ["foot_*", "foot_*.tip"], axis: .lateral, degrees: degrees)])
+    }
+
+    /// Toe touch crunch (arms reaching, so no hands on the head): the head
+    /// craned forward, turned `degrees` about the neck (negative tips it
+    /// toward the chest). `head.tip` (0.2 torso lengths up the head bone,
+    /// ~9 cm, toward the crown) draws the head as a line.
+    private static func crunch500HeadCraned(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [["chest", "neck", "head", "head.tip"]],
+                  moves: [.turn(pivot: "neck", points: ["head", "head.tip"], axis: .lateral, degrees: degrees)])
+    }
+
+    /// Ball crunch: the feet drawn together. The feet move `feet` torso
+    /// lengths in toward the midline and the knees `knees` (a hint for the
+    /// re-seat, which keeps both leg bones' lengths). Seen from the front.
+    private static func crunch500FeetTogether(feet: Float = 0.2, knees: Float = 0.16) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["foot_*", "foot_*.tip"], outward: -feet), .shift(["shin_*"], outward: -knees),
+                          .resolve(["shin_*"])],
+                  view: faceOn)
+    }
+
+    /// Ball crunch: the hips pushed up into a bridge. The pelvis and hips
+    /// rise `rise` torso lengths, the lower back about half that, and the
+    /// knees re-seat over the planted feet (they open). The same all rep.
+    private static func crunch500HipsBridged(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*"], rise: rise), .shift(["spine"], rise: rise * 0.45),
+                          .resolve(["shin_*"])])
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 crunches (2026-10-05)
+        // Five crunches on one body (neck to pelvis 0.59 m lying flat,
+        // ~0.52 m curled). The floor crunches are framed three-quarter from
+        // the feet on the lifter's left (yaw -0.8), the toe touch from behind
+        // the head on the left (-2.3), the ball crunch side-on from the left
+        // (-1.35). The bicycle and cross-body crunches alternate sides, so
+        // their turn, leg and knee faults name the raised (more bent) leg
+        // `_bent`, the other leg `_straight` and the crossing elbow, on the
+        // straight leg's side, `_straight`; the oblique crunch keeps the left
+        // knee bent all clip, so the same pieces read the left knee and the
+        // right elbow there. Sizes were measured with a Python port of
+        // FaultGhost.solve on the rigs at the fault's moment (crunch/cg.py,
+        // pieces.py in the session scratchpad): every bone keeps its length
+        // and no knee or elbow bends backward. Tempo cues and the ball
+        // crunch's ball cue have no ghost: speed is not a pose, and where the
+        // ball sits is equipment, not a body position.
+        "Bicycle Crunch": [
+            // The turn left out near each touch: the chest, head and arms
+            // turned 40 degrees back toward the ceiling (~42 -> ~2 degrees
+            // against the hips), the crossing elbow swung ~22 cm back across
+            // the midline to ~21 cm from the knee instead of 9, and the
+            // shoulders level (each ~13 cm); none away from a touch
+            // (elbow-knee over 0.75 torso lengths). Seen from the feet, where
+            // the squared shoulder line crosses the turned body (~43 pt);
+            // from the framing it lay over the arms (lab round 1).
+            "twist": crunch500Unturned(-40, strength: crunch500Nearing()).seen(crunch500FromFeet),
+            // The free leg left bent: knee 170 -> ~117 degrees with the leg
+            // pushed out, the foot ~36 cm lower; ~100 as the legs cross.
+            "legs": crunch500FreeLegBent(-60),
+            // The lower back arching off the mat: the lumbar joint ~9 cm and
+            // the chest ~4 cm toward the ceiling (~18 pt), seen from the
+            // side.
+            "low": lowerBackArched(0.18).seen(crunch500Side),
+            // Pulling on the head: the head and hands turned 35 degrees
+            // toward the chest, the elbows re-seated.
+            "neck": headYanked
+            // "tempo" has no ghost: speed.
+        ],
+        "Oblique Crunch": [
+            // The turn left out at the top: 28 degrees back toward the
+            // ceiling (~31 -> ~1), the right shoulder ~9 cm lower; none
+            // with the shoulders down (right elbow to left knee over 1.6
+            // torso lengths; 0.92-1.0 at the top, 1.76 lying flat). Seen
+            // from the feet (~34 pt), as the bicycle crunch's.
+            "twist": crunch500Unturned(-28, strength: crunch500Nearing(from: 1.6, to: 1.1)).seen(crunch500FromFeet),
+            // Curled less: the trunk 12 degrees back toward the mat at the
+            // top (about half the curl), the head ~13 cm and the shoulders
+            // ~9-11 cm lower; the right elbow stays ~52 cm up.
+            "lift": crunch500Uncurled(12, strength: crunch500Nearing(from: 1.6, to: 1.1)),
+            // As the bicycle crunch's, seen from the side.
+            "low": lowerBackArched(0.18).seen(crunch500Side),
+            "neck": headYanked
+            // "tempo" has no ghost: speed.
+        ],
+        "Toe Touch Crunch": [
+            // Reaching with the arms while the trunk stays low: the trunk and
+            // arms 18 degrees back toward the mat at the top, the hands ~24
+            // cm short of the feet (~56 pt); none lying down (hand to ankle
+            // over 0.7 torso lengths; 0.39 at the top, 0.88 lying flat).
+            // Seen from the framing: turned side-on (lab round 2) the hands
+            // rose under the label's pill.
+            "reach": crunch500Uncurled(18, strength: .between("hand_L", "foot_L", from: 0.7, to: 0.4)),
+            // The other three are seen from the lifter's left side
+            // (`crunch500ToeSide`): from behind the head they lay over the
+            // legs and arms (lab round 1); side-on they are ~20-45% larger.
+            // The legs tipped 20 degrees past upright toward the face, the
+            // feet ~29 cm closer to the head.
+            "legs": crunch500LegsTipped(20).seen(crunch500ToeSide),
+            // The knees bent: 172 -> ~127 degrees, the feet ~30 cm away from
+            // the head.
+            "knees": crunch500KneesBent(-45).seen(crunch500ToeSide),
+            // The chin jutting toward the feet: the head 40 degrees toward the
+            // chest about the neck, the crown ~13 cm.
+            "neck": crunch500HeadCraned(-40).seen(crunch500ToeSide)
+            // "tempo" has no ghost: speed.
+        ],
+        "Cross-Body Crunch": [
+            // As the bicycle crunch's, at each touch (rep 1 right elbow to
+            // left knee, rep 2 the other way).
+            "twist": crunch500Unturned(-40, strength: crunch500Nearing()).seen(crunch500FromFeet),
+            // The knee left low near each touch: the raised thigh 45 degrees
+            // back toward the feet (hip ~42 -> ~87 degrees), the knee ~34 cm
+            // further from the chest.
+            "knee": crunch500KneeLeftLow(-45, strength: crunch500Nearing()),
+            // As the bicycle crunch's, seen from the side.
+            "low": lowerBackArched(0.18).seen(crunch500Side),
+            "neck": headYanked
+            // "tempo" has no ghost: speed.
+        ],
+        "Stability Ball Crunch": [
+            // Sitting up from the hips at the top: the trunk and arms 22
+            // degrees toward upright about the hips (strength ~0.9 at the
+            // top), the lower back ~4 cm off the ball, the head ~23 cm; none
+            // at the bottom (hand to knee over 1.86 torso lengths; ~1.77 at
+            // the top, ~1.92 at rest).
+            "curl": crunch500SatUp(22, strength: .between("hand_L", "shin_L", from: 1.86, to: 1.76)),
+            // The feet drawn together: the ankles ~34 -> ~11 cm apart, the
+            // knees ~9 cm in each; seen from the front.
+            "feet": crunch500FeetTogether(),
+            // The hips pushed up into a bridge: ~11 cm higher, the knees
+            // opening 96 -> ~115 degrees.
+            "hips": crunch500HipsBridged(0.2),
+            "neck": headYanked
+            // "ball" has no ghost: where the ball sits.
+        ],

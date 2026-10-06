@@ -1,0 +1,6 @@
+{
+  "Standing Cable Crunch": {"rope": "top", "curl": "top", "range": "top", "hips": "top", "stance": "top"},
+  "Oblique Cable Crunch": {"twist": "top", "curl": "top", "hips": "top", "rope": "top"},
+  "Machine Crunch": {"arms": "top", "curl": "top", "hips": "top"},
+  "Ab Coaster Crunch": {"curl": "top", "arms": "top", "range": "top", "return": "bottom"}
+}

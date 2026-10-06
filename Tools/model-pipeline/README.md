@@ -319,3 +319,75 @@ behind-left (-2.3; side-on the near plate hid the head), Nordic and GHR -1.4
 side-lying abduction and clamshell from behind (3.14) so the lit glutes show.
 The raw copies in `SourceExports/351-400/` were removed afterwards to save
 disk (the drive keeps them).
+
+401-500 folder (2026-10-04): the drive's `1-500/401-500` folder held 141
+exports: re-exports of models already in the app (056-376, several marked
+🟢/🔴) and the builder's new 401-500 set. Asked for "30 new from 106", the 30
+exports from 106 on whose exercise was not in the app were copied to
+`SourceExports/401-500/` and converted with `convert_all.py 401-500/`: 127
+Landmine Chest Press, 129/130 Chest Dip and Weighted Chest Dip, 132 Decline
+and 136 Plyometric Push-Up into `Chest/`; 246 Rope, 248 Cross-Body and 249
+Incline Hammer Curls, 251 Zottman, 255 Strict, 256 21s (`Curl21s`), 257 EZ-Bar
+21s, 258 Waiter, 262 Dumbbell Reverse and 267 Seated Dumbbell Curls into
+`Biceps/`; 275 Wrist Roller into `Forearms/`; 376 Dumbbell Hip Thrust and
+thirteen calf raises (401, 403-414; 411 is `SingleLegMachineCalfRaise`, 414
+`BodyweightCalfRaise`) into `Legs/`. The re-exports were left alone. Every
+export was intact: one 211-joint skeleton, one animation, no camera prims
+(the `*_Camera`/`REVIEW_Direct_*` prims are empty xforms); 256 and 257 run
+1-1056 (44 s, 3 x 7 reps). All 30 were padded (`pad_one.sh`) and slimmed
+(`slim_one.sh`, attribute for attribute, 0.6-3.2 MB). Framings were solved at
+`ASPECT=0.5832` and picked on viewport stills: curls at -0.4/-0.5 like the
+Dumbbell Curl, the incline and seated curls at -0.9/-0.6, the rope hammer curl
+from the side away from the tower (+1.4, like the Cable Hammer Curl); the two
+barbell curls side-on enough that the 2.2 m bar stops shrinking the lifter
+(-0.9 for the 21s, -1.0 for the Strict Curl, its wall behind); the landmine
+press at -0.8 framed on the lifter with the bar left to crop; push-ups -1.2,
+dips -1.0, the hip thrust -0.7 like the Barbell Hip Thrust; standing, donkey
+and dumbbell-seated calf raises side-on (-1.3); the barbell seated raise -0.8
+(side-on its near plate hid the knees), the Smith seated raise -0.4 (from the
+side the plate and uprights hid the lifter), the hack squat raise -0.6 like
+the Hack Squat, and the calf press and horizontal leg press raise -1.3 with
+their machines left to crop (from behind the seat backs hid the lifter).
+The raw copies are in `SourceExports/401-500/` (about 550 MB; the drive keeps
+them too, so they can be removed).
+
+Second round from the same folder (2026-10-04, "thêm tiếp 30 bài"): the next
+30 new exports by number, 415-444, copied to `SourceExports/401-500/` and
+converted by passing their number prefixes (`convert_all.py 401-500/415_ …`;
+the first round's raw copies had been removed to free disk): six more calf
+lifts and five tibialis raises into `Legs/`, nineteen sit-ups, crunches,
+cable/machine crunches, V-ups, the dead bug, bird dog and hollow body work
+into `Abs/`. All intact (one 211-joint skeleton, one animation, no cameras),
+padded and slimmed (0.5-1.6 MB). The floor lifts lie on a mat, which
+`solve_all.py` counts as equipment and which halved their zoom; they were
+solved with the mat left to crop (`body`), at -1.35 (side-on, like the
+Reverse Crunch) or -0.8 where a twist, an alternating limb or the band reads
+better from the front-left. Standing calf and tibialis lifts are side-on
+(-1.3), the walk on toes -1.0, the banded seated ones -0.8, the cable
+crunches -1.35 (the oblique one -0.4, so the side bend reads), the machine
+and Ab Coaster crunches -1.35. The Toe Touch Crunch is seen from behind the
+head (-2.3, zoom 0.85, set by hand): side-on, its curled trunk hides behind
+the vertical legs, and the solver's own answers for this pose came out far
+too close (zoom 1.0-1.4 with large offsets), so check a compact pose's solve
+on a still before trusting it. Nine new exports numbered 380-399 appeared in
+the folder that evening (and re-exports of 19 and 320); they were left for a
+later round.
+
+Third round, 445-474 (2026-10-05, "30 bài tiếp theo"): the session
+scratchpad holding the round-1/2 helper scripts was wiped (a reboot clears
+/private/tmp), so the helpers were rewritten into the repo: `integrity.py`,
+`facing.py`, `tiers.py`, `solve_pick.py` here and the shooting/lab scripts in
+`Tools/lab/`. The round-2 raw copies were removed and 445-474 copied in;
+all intact (211-joint skeleton, one animation, no cameras), converted into
+`Abs/` (leg raises and kicks, planks, side bends, chops, rotations, twists,
+rollouts, the bear crawl, carry marches), `Legs/` (three thrusters) and
+`Shoulder/` (Clean and Press), padded and slimmed (0.5-1.3 MB). The RKC,
+weighted and Copenhagen planks hold still; the carry marches march in place;
+the bear crawl rocks ~14 cm. Framings were picked on stills of two
+candidates each: floor and plank work side-on (-1.35) or front-left (-0.8)
+with the mat left to crop, the hanging oblique knee raise -0.5 so the twist
+reads, side bends, chops and rotations near front-on (-0.3 to +0.5, the cable
+station kept out of the lifter's way), thrusters and the clean and press
+-0.6/-0.8. The Side Plank Hip Lift and Copenhagen Plank are seen side-on
+(+1.5, like the Side Plank): front-on, the solver again returned an
+over-zoomed framing (as for the Toe Touch Crunch).

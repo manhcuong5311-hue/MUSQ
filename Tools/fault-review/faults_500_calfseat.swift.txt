@@ -1,0 +1,224 @@
+// MARK: PIECES
+    // MARK: 401-500 seated and reclined calf raise pieces (2026-10-04)
+    //
+    // The 401-500 calf rigs have toe joints and sink the heels below the
+    // block or plate. The strengths read how far the heels are up with the
+    // 30-leg set's `calfHeelHeight` (left knee to the left foot's tip, 0.38
+    // torso lengths along the foot bone; it depends on the ankle angle
+    // alone). On these rigs it reads 0.80 at the bottom (ankle 94 degrees)
+    // and 1.03 at the top (157) seated, 0.75-0.76 (85-88) and 1.00 (141-144)
+    // on the two machines.
+
+    /// Seated calf raises: stopping partway up. The heels sit `degrees`
+    /// lower about the planted toes and the knees, carrying the load, re-seat
+    /// lower (20: ankle ~157 -> ~128 degrees, about halfway up; the heels
+    /// ~5.5 cm and the knees ~4.7 cm lower). Full near the top, none below
+    /// mid-rise. `side` is `*` for both legs or `L` for a one-leg raise.
+    private static func calfSeat500ShortOfTop(_ side: String = "*", degrees: Float = 20) -> FaultPose {
+        FaultPose(chains: [leg(side)],
+                  moves: [.turn(pivot: "foot_\(side).tip", points: ["foot_\(side)"], axis: .lateral, degrees: degrees),
+                          .resolve(["shin_\(side)"])],
+                  strength: calfHeelHeight(from: 0.95, to: 1.02))
+    }
+
+    /// Seated calf raises: the heels staying up at the bottom instead of
+    /// sinking below the block, `degrees` up about the planted toes, the
+    /// knees and load re-seated higher (28: ankle ~94 -> ~128 degrees, the
+    /// heels and knees ~10 cm higher). Full with the heels at their lowest,
+    /// gone by mid-descent.
+    private static func calfSeat500HeelsHigh(_ side: String = "*", degrees: Float = 28) -> FaultPose {
+        FaultPose(chains: [leg(side)],
+                  moves: [.turn(pivot: "foot_\(side).tip", points: ["foot_\(side)"], axis: .lateral, degrees: -degrees),
+                          .resolve(["shin_\(side)"])],
+                  strength: calfHeelHeight(from: 0.88, to: 0.81))
+    }
+
+    /// Seated calf raises: the feet set `ahead` torso lengths further out in
+    /// front (level, the way the lifter faces), the knees re-seated between
+    /// the hips on the bench and the moved ankles, so the shins slope forward
+    /// and the knees open (0.2: ~12 cm, knee ~89 -> ~108 degrees at the
+    /// bottom). The same all rep.
+    private static func calfSeat500FeetOut(_ side: String = "*", ahead: Float = 0.2) -> FaultPose {
+        FaultPose(chains: [leg(side), hips],
+                  moves: [.shift(["foot_\(side)", "foot_\(side).tip"], ahead: ahead), .resolve(["shin_\(side)"])])
+    }
+
+    /// Seated calf raises with the load on the thighs: the arms lifting it
+    /// off them, the hands `up` torso lengths higher along the trunk and the
+    /// elbows re-seated between them and the shoulders (0.12: ~7 cm; elbows
+    /// ~78 -> ~71 degrees at the top with dumbbells, 93 -> ~80 on the Smith
+    /// bar). `side` is `*` for both arms or `L`; `withBar` adds the line
+    /// between the hands for a bar held in both.
+    private static func calfSeat500ArmsLift(_ side: String = "*", up: Float = 0.12, withBar: Bool = false) -> FaultPose {
+        FaultPose(chains: [["upper_arm_\(side)", "forearm_\(side)", "hand_\(side)", "hand_\(side).tip"]] + (withBar ? [bar] : []),
+                  moves: [.shift(["hand_\(side)", "hand_\(side).tip"], up: up), .resolve(["forearm_\(side)"])])
+    }
+
+    /// Leg press calf raises (the 45 degree calf press, the horizontal leg
+    /// press): the plate stopping short. The hips and knees hold, so the
+    /// ankles stay put and the toes, with the plate, come `degrees` back
+    /// toward the shins (28: ankle ~141 -> ~113 on the calf press, about
+    /// halfway up its 85-141 range; the toes ~10.9 cm). Full near the top.
+    private static func calfSeat500PressShortOfTop(_ degrees: Float = 28) -> FaultPose {
+        FaultPose(chains: [legs],
+                  moves: [.turn(pivot: "foot_*", points: ["foot_*.tip"], axis: .lateral, degrees: degrees)],
+                  strength: calfHeelHeight(from: 0.92, to: 0.99))
+    }
+
+    /// Leg press calf raises: the heels staying up at the bottom, the ankles
+    /// still pointed and the toes, with the plate, `degrees` further out
+    /// (30: ankle ~85 -> ~115, the toes ~11.6 cm), so the plate never comes
+    /// back far enough for the heels to pass its edge. Full at the bottom.
+    private static func calfSeat500PressHeelsHigh(_ degrees: Float = 30) -> FaultPose {
+        FaultPose(chains: [legs],
+                  moves: [.turn(pivot: "foot_*", points: ["foot_*.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: calfHeelHeight(from: 0.84, to: 0.77))
+    }
+
+    /// 45 degree calf press: the knees bending at the bottom and the plate
+    /// sinking toward the lifter. The feet come `back` torso lengths along
+    /// the lifter's forward axis (on this 51 degree back pad it runs close
+    /// to the legs' line) and the knees re-seat (0.08: the feet ~5 cm, the
+    /// knee 168 -> ~140 degrees). Full at the bottom.
+    private static func calfSeat500PressKneesBent(_ back: Float = 0.08) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["foot_*", "foot_*.tip"], forward: -back), .resolve(["shin_*"])],
+                  strength: calfHeelHeight(from: 0.84, to: 0.77))
+    }
+
+    /// Leg press calf raises: the knees locked and pushed past straight
+    /// under the plate, put on the hip-ankle line and `past` torso lengths
+    /// beyond it (the library's `kneesSnapped` uses 0.05; on these rigs, with
+    /// the knees at 168, 0.08 ends ~10 degrees past straight, the knee
+    /// ~8 cm, ~17 pt, from where it was). Full with the knee straight.
+    private static func calfSeat500KneesLocked(_ past: Float = 0.08) -> FaultPose {
+        FaultPose(chains: [legs], moves: [.straighten(["shin_*"], past: past)],
+                  strength: .whenStraight("shin_L"))
+    }
+
+    /// Horizontal leg press: the seat set too close, the feet `closer` torso
+    /// lengths nearer the hips along the level (the legs' line on this
+    /// machine) and the knees re-seated well bent (0.12: ~7 cm, the knee
+    /// 168 -> ~131 degrees). The same all rep; stilled at the top, where the
+    /// foot's angle on the shin still reads as pointed.
+    private static func calfSeat500SeatClose(_ closer: Float = 0.12) -> FaultPose {
+        FaultPose(chains: [legs, hips],
+                  moves: [.shift(["foot_*", "foot_*.tip"], ahead: -closer), .resolve(["shin_*"])])
+    }
+
+// MARK: TABLE
+        // MARK: 401-500 seated and reclined calf raises (2026-10-04)
+        // Six calf raises, one body (torso 0.592 m). All do two reps in
+        // 7.96 s: heels lowest at 0 and ~3.4-4.1 s, up over ~0.8 s, held
+        // ~1.2 s at the top, down over ~1.2 s. The two machines and the
+        // dumbbell and single-leg seated raises are framed from the front
+        // left at yaw -1.3, near side-on, so faults in the lifter's sagittal
+        // plane need no turn; the barbell seated raise at -0.8 shows them at
+        // ~72%, and a turn toward side-on would swing its near plate over the
+        // legs, so it keeps the framing and its feet fault moves further
+        // (0.25); the Smith seated raise at -0.4 shows a fore-aft move at
+        // ~39%, a turn of -0.5 brings the near upright and plates over the
+        // lifter, but -0.3 keeps them clear, so its feet fault alone turns. Up-and-down faults (the heels, the
+        // knees with them) read in every framing. Sizes below were measured with a Python port of
+        // FaultGhost.solve on the rigs (SCRATCH/calfseat/ghost.py). No "tempo"
+        // cue has a ghost: dropping fast and bouncing is speed, not a pose.
+        "Calf Press Machine": [
+            // The plate stopping short: the toes ~10.9 cm (~23 pt) back toward
+            // the shins at the top, ankle ~141 -> ~113 degrees, about halfway
+            // up the 85-141 range. (22 degrees, ~18 pt, read as barely
+            // different from the model on the simulator.)
+            "top": calfSeat500PressShortOfTop(28),
+            // The heels staying up at the bottom: the toes ~11.6 cm (~25 pt)
+            // further out, ankle ~85 -> ~115, so the heels stay above the
+            // plate's line.
+            "bottom": calfSeat500PressHeelsHigh(30),
+            // The knees bending and the plate sinking at the bottom: the
+            // feet ~5 cm back down the legs' line, the knees 168 -> ~140
+            // degrees, the knee ~6 cm higher.
+            "knees": calfSeat500PressKneesBent(0.08),
+            // The knees locked and pushed back past straight under the
+            // plate: ~10 degrees past straight, the knee ~8 cm (~17 pt).
+            "lock": calfSeat500KneesLocked(0.08)
+            // "tempo" has no ghost: speed.
+        ],
+        "Horizontal Leg Press Calf Raise": [
+            // As the calf press: the toes ~10.9 cm (~21 pt) back at the top,
+            // ankle ~144 -> ~116, about halfway up the 88-144 range.
+            "top": calfSeat500PressShortOfTop(28),
+            // The toes ~11.6 cm (~22 pt) further out at the bottom, ankle
+            // ~88 -> ~118.
+            "bottom": calfSeat500PressHeelsHigh(30),
+            // The seat set too close: the feet ~7 cm nearer the hips, the
+            // knees 168 -> ~131 degrees, the knee ~13 cm (~25 pt) higher.
+            "seat": calfSeat500SeatClose(0.12),
+            // The knees locked past straight: ~10 degrees past, ~8 cm.
+            "lock": calfSeat500KneesLocked(0.08)
+            // "tempo" has no ghost: speed.
+        ],
+        "Barbell Seated Calf Raise": [
+            // Leaning back and hauling on the bar: the trunk 15 degrees
+            // back, the head ~18 cm (~26 pt), the shoulders ~14 cm; the hands
+            // stay on the bar, the elbows opening (91 -> ~124 degrees at the
+            // top). 15 rather than the library Seated Calf Raise's 12: at
+            // this three-quarter framing the lean runs partly into the
+            // screen, and at 12 (head ~20 pt) the ghost read as a slight
+            // sideways tilt on the simulator.
+            "trunk": seatedRocked(15),
+            // The feet ~15 cm (~24 pt) further out, the knees ~89 -> ~114
+            // (0.25: the framing shows the fore-aft move at ~72%).
+            "knees": calfSeat500FeetOut(ahead: 0.25),
+            // Heels only halfway up: ankle ~157 -> ~128, the heels ~5.5 cm
+            // and the knees ~4.7 cm lower.
+            "top": calfSeat500ShortOfTop(),
+            // Heels staying up at the bottom: ankle ~94 -> ~128, the heels
+            // and knees ~10 cm (~22 pt) higher.
+            "bottom": calfSeat500HeelsHigh()
+            // "tempo" has no ghost: speed.
+        ],
+        "Dumbbell Seated Calf Raise": [
+            // Lifting the dumbbells with the arms at the top: the hands ~7 cm
+            // (~21 pt) higher, the elbows ~78 -> ~71 degrees.
+            "hands": calfSeat500ArmsLift(),
+            // The feet ~12 cm (~34 pt) further out, the knees ~89 -> ~108.
+            "knees": calfSeat500FeetOut(),
+            // Heels only halfway up: the heels ~28 pt lower at the top.
+            "top": calfSeat500ShortOfTop(),
+            // Heels staying up at the bottom: the heels ~35 pt higher.
+            "bottom": calfSeat500HeelsHigh()
+            // "tempo" has no ghost: speed.
+        ],
+        "Single-Leg Seated Calf Raise": [
+            // The LEFT leg works; the right foot rests on the floor and the
+            // right hand on the right thigh, so every ghost moves the left
+            // side only. The left arm lifting the dumbbell: the hand ~7 cm
+            // (~22 pt) higher.
+            "hand": calfSeat500ArmsLift("L"),
+            // The left foot ~12 cm (~35 pt) further out, the knee ~93 ->
+            // ~112.
+            "knee": calfSeat500FeetOut("L"),
+            // The left heel only halfway up: ankle ~156 -> ~127.
+            "top": calfSeat500ShortOfTop("L"),
+            // The left heel staying up at the bottom: ~10 cm (~32 pt) higher.
+            "bottom": calfSeat500HeelsHigh("L")
+            // "tempo" has no ghost: speed.
+        ],
+        "Smith Machine Seated Calf Raise": [
+            // Pulling the bar up off the thighs with the arms: the hands and
+            // bar ~7 cm (~25 pt) higher at the top, the elbows 93 -> ~80.
+            // (A trunk rock reads poorly face-on, and turning the model
+            // toward side-on swings the near upright and plates over the
+            // lifter, so this lift's arm cue is the pull, not the lean.)
+            "hands": calfSeat500ArmsLift(withBar: true),
+            // The feet ~12 cm (~29-32 pt) further out, the knees ~89 ->
+            // ~108, the model turned 0.3 toward side-on (yaw -0.7) so the
+            // shins' forward slope shows (at the framing's -0.4 the 15 cm
+            // version read as the feet sliding down the screen). At -0.5 the
+            // near upright and plates covered the legs; at -0.3 the uprights
+            // stay either side of the lifter (checked on the simulator).
+            "knees": calfSeat500FeetOut(ahead: 0.2).seen(-0.3),
+            // Heels only halfway up: the heels and knees ~16-20 pt lower.
+            "top": calfSeat500ShortOfTop(),
+            // Heels staying up at the bottom: ~35 pt higher.
+            "bottom": calfSeat500HeelsHigh()
+            // "tempo" has no ghost: speed.
+        ],
