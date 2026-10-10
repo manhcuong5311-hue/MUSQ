@@ -463,7 +463,7 @@ ex(name="Curtsy Lunge", var="curtsyLunge",
 
 SETUP["Curtsy Lunge"] = [
     "Stand tall with your feet a little wider than hip-width.",
-    "Clasp your hands in front of your chest, elbows out.",
+    "Clasp your hands in front of your chest.",
     "Soften your knees and face straight ahead.",
     "Brace your core before each step.",
 ]

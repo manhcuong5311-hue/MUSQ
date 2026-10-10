@@ -7,6 +7,8 @@
 //  HARNESS_FAULT + HARNESS_CUE: the trainer opened on that cue's mistake
 //  (launch with DEBUG_PREMIUM=1). Exercise3DView reads Purchases, Ads and
 //  Paywall from the environment, so the harness injects them.
+//  HARNESS_RESOURCE (2026-10-10): with HARNESS_VIEW/PHOTO, load that model
+//  resource instead of the exercise's own (e.g. one stance of a stance set).
 //
 
 import SwiftUI
@@ -22,14 +24,15 @@ struct ContentView: View {
             let f = env["HARNESS_FRAMING"]?.split(separator: ",").compactMap { Float($0) } ?? []
             let framing = f.count == 5
                 ? ModelFraming(yaw: f[0], zoom: f[1], offset: [f[2], f[3], f[4]]) : m.framing
+            let resource = env["HARNESS_RESOURCE"] ?? m.resource
             ZStack {
                 (photo ? Color.white : Color.black).ignoresSafeArea()
                 if photo {
-                    Viewport(slot: "", model: m.resource, framing: framing, speed: m.speed,
+                    Viewport(slot: "", model: resource, framing: framing, speed: m.speed,
                              still: still, inner: .white, outer: .white, cornerRadius: 0) { EmptyView() }
                         .frame(width: 380, height: 380)
                 } else {
-                    Viewport(slot: "", model: m.resource, framing: framing, speed: m.speed,
+                    Viewport(slot: "", model: resource, framing: framing, speed: m.speed,
                              still: still) { EmptyView() }
                         .frame(width: 382, height: 655)
                 }

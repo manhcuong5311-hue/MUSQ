@@ -26,7 +26,11 @@ BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Gri
              # 401-500 (2026-10-04): the rope hammer curl's tower, like the Cable Hammer Curl;
              # the landmine chest press's bar and the Smith seated raise's frame left
              # those lifters a third of the tile.
-             "Rope Hammer Curl", "Landmine Chest Press", "Smith Machine Seated Calf Raise"}
+             "Rope Hammer Curl", "Landmine Chest Press", "Smith Machine Seated Calf Raise",
+             # Desktop "1-100" folder (2026-10-10): the Smith rack left the front
+             # squat's lifter a third of the tile, as for the seated raise, and
+             # the Smith Machine Squat's new rack did the same.
+             "Smith Machine Front Squat", "Smith Machine Squat"}
 # Held parts a lift lets crop (401-500, 2026-10-04): the landmine chest press's
 # 1.9 m bar, as in its trainer framing.
 CROP = {"Landmine Chest Press": ("LandmineBar",)}

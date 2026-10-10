@@ -302,9 +302,9 @@ ex(name="Heel-Elevated Squat", var="heelElevatedSquat",
    glows=squat_glows("Heel-Elevated Squat"))
 
 SETUP["Heel-Elevated Squat"] = [
-    "Set two heel wedges, or a slant board, in front of a squat rack.",
+    "Set a slant board, or two heel wedges, in front of a squat rack.",
     "Take the bar high across your upper traps, hands wider than your shoulders, and step back.",
-    "Stand with your heels on the high end of the wedges, feet about shoulder-width, toes slightly out.",
+    "Stand with your heels on the high end of the board, feet about shoulder-width, toes slightly out.",
     "Brace, chest tall, before the first rep.",
 ]
 

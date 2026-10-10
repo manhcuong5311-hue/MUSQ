@@ -430,7 +430,7 @@ SETUP = {
     ],
     "Ab Wheel Rollout": [
         "Kneel on a mat, knees hip-width apart.",
-        "Hold the wheel handles under your shoulders, arms straight.",
+        "Hold the wheel handles just in front of your shoulders, arms straight.",
         "Brace your abs and tuck your pelvis slightly.",
     ],
     "Side Plank": [
@@ -1219,7 +1219,7 @@ SETUP = {
     ],
     "Curtsy Lunge": [
         "Stand tall with your feet a little wider than hip-width.",
-        "Clasp your hands in front of your chest, elbows out.",
+        "Clasp your hands in front of your chest.",
         "Soften your knees and face straight ahead.",
         "Brace your core before each step.",
     ],
@@ -1564,9 +1564,9 @@ SETUP = {
         "Press the platform up, release the safety handles and hold the side handles.",
     ],
     "Heel-Elevated Squat": [
-        "Set two heel wedges, or a slant board, in front of a squat rack.",
+        "Set a slant board, or two heel wedges, in front of a squat rack.",
         "Take the bar high across your upper traps, hands wider than your shoulders, and step back.",
-        "Stand with your heels on the high end of the wedges, feet about shoulder-width, toes slightly out.",
+        "Stand with your heels on the high end of the board, feet about shoulder-width, toes slightly out.",
         "Brace, chest tall, before the first rep.",
     ],
     "Cyclist Squat": [
@@ -2374,4 +2374,53 @@ SETUP = {
         "Brace your trunk before the bar leaves the floor.",
     ],
     # END 401-500 (2026-10-04)
+    # BEGIN Desktop 1-100 (2026-10-10)
+    "Single-Leg Extension": [
+        "Set the back pad so your left knee lines up with the machine's pivot.",
+        "Set the roller so it rests on the front of your shin just above the ankle.",
+        "Sit back against the pad and hold the handles beside the seat.",
+        "Tuck your right foot behind the roller and let that leg relax; the left leg works.",
+    ],
+    "Smith Machine Front Squat": [
+        "Set the Smith bar at shoulder height and step under it.",
+        "Rest the bar on the front of your shoulders and cross your arms, each hand on top of the bar.",
+        "Lift your elbows to shoulder height and set your feet under the bar, a little wider than your shoulders, toes slightly out.",
+        "Brace, turn the bar to unhook it and stand tall.",
+    ],
+    "Dumbbell Lateral Step-Up": [
+        "Stand with a low box at your left side, a dumbbell in each hand at arm's length.",
+        "Place your whole left foot flat on the box, toes pointing ahead.",
+        "Keep your right foot on the floor and lean your chest slightly forward.",
+        "Brace and keep your hips level before the first rep.",
+    ],
+    "Barbell Step-Up": [
+        "Set a bar across your upper back and stand facing a knee-high or lower box.",
+        "Place your whole left foot flat on the box, the right foot on the floor behind.",
+        "Lean forward from your hips with your back flat and your weight over the front foot.",
+        "Brace your trunk before each rep.",
+    ],
+    "Hip Adduction Machine": [
+        "Set the levers so your knees start comfortably apart with a slight stretch.",
+        "Sit back against the pad with your feet on the footrests.",
+        "Place the pads against the insides of your knees and hold the handles beside the seat.",
+    ],
+    "Hack Squat (Stances)": [
+        "Pick a stance, then stand on the plate with your back against the pad and your shoulders under the shoulder pads.",
+        "Set your feet where the stance puts them, toes turned out a little, and hold the handles by your shoulders.",
+        "Straighten your legs a little to lift the sled off its stops, then swing the safety handles open.",
+        "After the last rep, close the safety handles with your legs extended before lowering the sled onto the stops.",
+    ],
+    "Pendulum Squat (Stances)": [
+        "Pick a stance, then step onto the plate with your back against the pad and your shoulders under the shoulder pads.",
+        "Set your feet where the stance puts them, toes turned out a little.",
+        "Hold the handles, stand up to take the weight and release the safety latch.",
+        "Brace and keep your back pressed against the pad.",
+    ],
+    "Cable Knee-Drive Kickback": [
+        "Strap an ankle cuff to your left ankle and clip it to the low pulley.",
+        "Stand on the plate with your right foot, facing the tower, and hold the upright with both hands.",
+        "Lean forward from your hips about 30 degrees and keep a slight bend in your right knee.",
+        "Bring your left knee up in front with the cable taut before the first rep.",
+    ],
+    # END Desktop 1-100 (2026-10-10)
 }

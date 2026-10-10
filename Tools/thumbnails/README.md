@@ -145,3 +145,36 @@ by hand: the solver over-zoomed its folded top pose (as the trainer solver
 did for compact poses), so its tile is framed like the Hanging Leg Raise and
 held at 1.0 s, mid-swing with the legs out level. The app's slot name turns
 "Landmine 180" into `lib-landmine-`.
+
+Desktop "1-100" folder (2026-10-10): 33 of the 34 re-exported models were
+re-shot with `Tools/lab/shots.sh photo` (Cable Glute Kickback came back
+looking the same). The fourteen whose motion changed most (the twelve, the
+Bench Dip and the Landmine Squat) and four that moved the hands a few cm took
+new pose times (`posetime.py <names…>`). The new exports' skeletons add
+`toe_L/R` and `FF_` foot joints that `framer_still.py` counts as body, so
+`thumbsolve.py` zooms the body-framed standing lifts (the squats) out 5-8%
+even where nothing moved; framings bounded by a mat or a machine come out
+unchanged. So the models whose motion and equipment held kept their
+framings; only the six with a rebuilt bench or slant board (Skull Crusher,
+Bench Dip, Close-Grip Bench Press, Barbell Hip Thrust, Decline Crunch,
+Heel-Elevated Squat) and the Dumbbell Overhead Triceps Extension, whose arms
+now straighten further overhead, took the solver's new square framing. The
+081 export went to the Hip Abduction Machine (Lean), which keeps its framing;
+the upright Hip Abduction Machine keeps its model and tile.
+The folder's five new exercises got pose times and square framings
+(`posetime.py` / `thumbsolve.py` with their names) and were shot the same way;
+the library now has 422 exercises, all with a thumbnail. The Smith Machine
+Front Squat joins `BODY_ONLY` (the rack left its lifter a third of the tile),
+and the Hip Adduction Machine's tile holds the open start (0.02 s): at the
+pose time the solver picks, the closed knees hide the lit inner thighs.
+The five formerly red-named replacements (Assisted Dip, Bulgarian Split
+Squat, Smith Machine Squat, both RDLs) took new pose times and framings,
+except the Assisted Dip, which keeps its hand-tuned one; the Smith Machine
+Squat joins `BODY_ONLY`, since its new rack left the lifter a third of the
+tile.
+The female model's lifts (2026-10-10): Hack Squat (Stances) and Pendulum
+Squat (Stances) show their standard stance; with Cable Step-Down they got
+pose times and square framings the usual way, and the Ab Wheel Rollout's
+tile was re-shot on its female model. The library now has 425 exercises.
+The Cable Step-Down was renamed Cable Knee-Drive Kickback (its tile is now
+`lib-cable-knee-drive-kickback`).

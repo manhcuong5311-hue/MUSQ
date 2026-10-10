@@ -27,6 +27,7 @@ view)
     n=${arg%%|*}; fr=""; [[ "$arg" == *"|"* ]] && fr=${arg#*|}
     tag=$(slug "$n")$([[ -n $fr ]] && echo "_${fr//,/_}")
     envs=(SIMCTL_CHILD_HARNESS_VIEW="$n" SIMCTL_CHILD_HARNESS_STILL="$still")
+    [[ -n $HARNESS_RESOURCE ]] && envs+=(SIMCTL_CHILD_HARNESS_RESOURCE="$HARNESS_RESOURCE")
     [[ -n $fr ]] && envs+=(SIMCTL_CHILD_HARNESS_FRAMING="$fr")
     shoot $envs "$out/$tag.png"; crop "$out/$tag.png"
   done;;

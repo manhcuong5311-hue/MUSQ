@@ -1,0 +1,7 @@
+{
+  "Single-Leg Extension": {"pivot": "0.3", "top": "1.9", "seat": "1.9", "rest": "1.9"},
+  "Smith Machine Front Squat": {"rack": "1.8", "torso": "1.8", "knees": "1.8", "depth": "1.8", "stance": "1.8"},
+  "Dumbbell Lateral Step-Up": {"drive": "0.1", "knee": "0.1", "hips": "0.6", "torso": "0.1", "foot": "0.1"},
+  "Barbell Step-Up": {"bar": "0.1", "foot": "0.1", "drive": "0.1", "knee": "0.3", "torso": "0.1"},
+  "Hip Adduction Machine": {"squeeze": "1.5", "stretch": "0.05", "back": "1.5", "grip": "1.5"}
+}

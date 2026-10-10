@@ -24,6 +24,9 @@ except `add_rows_r3.py` (one-off) — mirrors, builds and shots go to `$LAB`.
 - `family.sh check|shoot <family>` — integrate one content family into a
   mirror (`integrate_500.py --only`), set its fault stills, build, and shoot
   the trainer and every ghost into `$LAB/<family>/` with contact sheets.
+- `family_1010.sh check|shoot <family>` — the same for the Desktop "1-100"
+  folder's five new legs (2026-10-10), with `integrate_1010.py` / `spec_1010.py`
+  and `fault_moments_1010_<family>.json`.
 - `sheet.py` — contact sheets.
 - `AGENT_BRIEF.md` — the brief content agents work from (house rules, inputs,
   files to write, tools, process).

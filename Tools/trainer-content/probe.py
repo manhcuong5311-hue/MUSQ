@@ -428,6 +428,18 @@ JOBS = {
  "Hollow Body Rock": ("Abs/HollowBodyRock", -1.35, 0.453, (-0.007,0.127,0.031)),
  "V-Up": ("Abs/VUp", -1.35, 0.456, (-0.009,0.089,0.039)),
  "Alternating V-Up": ("Abs/AlternatingVUp", -0.8, 0.521, (-0.015,0.098,0.015)),
+ # Desktop "1-100" folder's new legs (2026-10-10), solved at 382x655.
+ "Single-Leg Extension": ("Legs/SingleLegExtension", -1.0, 0.797, (0.039,0.085,-0.06)),
+ "Smith Machine Front Squat": ("Legs/SmithMachineFrontSquat", -1.0, 0.843, (0.036,0.053,-0.056)),
+ "Dumbbell Lateral Step-Up": ("Legs/DumbbellLateralStepUp", 0, 0.755, (-0.076,-0.03,0)),
+ "Barbell Step-Up": ("Legs/BarbellStepUp", -0.9, 0.682, (0.033,-0.056,-0.042)),
+ "Hip Adduction Machine": ("Legs/HipAdductionMachine", -0.3, 0.848, (0.035,0.096,-0.011)),
+ # The female model's lifts (2026-10-10); the stance sets probe their
+ # standard stance, the Ab Wheel Rollout its female re-export.
+ "Hack Squat (Stances)": ("Legs/FemaleHackSquatStandard", 0.6, 0.87, (0.048,-0.08,0.033)),
+ "Pendulum Squat (Stances)": ("Legs/FemalePendulumSquatStandard", 0, 0.75, (-0.008,-0.122,0)),
+ "Cable Knee-Drive Kickback": ("Legs/CableStepDown", -1.0, 0.773, (-0.046,0.012,0.072)),
+ "Ab Wheel Rollout": ("Abs/AbWheelRollout", -1.35, 0.487, (0.018,0.151,-0.081)),
 }
 JOINTS = ["support_TrapeziusUpper_L","support_TrapeziusUpper_R","head","neck","chest","spine","pelvis","scapula_L","upper_arm_L","forearm_L","hand_L",
           "scapula_R","upper_arm_R","forearm_R","hand_R","thigh_L","patella_L","shin_L","foot_L","thigh_R","patella_R","shin_R","foot_R",

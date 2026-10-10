@@ -161,3 +161,34 @@ ambiguous for a thruster (the pelvis is as high racked as locked out), so
 those families give every moment in seconds. The kick ghosts name legs by
 role (`_front` = the higher leg when lying face up) and fade where the legs
 pass, so a ghost never jumps between legs.
+
+Desktop "1-100" folder (2026-10-10): the fourteen re-exported models whose
+motion changed most (Cable Wood Chop, Step-Up, Curtsy Lunge, Barbell Hip
+Thrust, Heel-Elevated Squat, Decline Crunch, Dumbbell Overhead Triceps
+Extension, Single-Arm Cable Pushdown, Pistol and Assisted Pistol Squat,
+Close-Grip Bench Press, Single-Leg Glute Bridge, Bench Dip, Landmine Squat)
+had every ghost shot at its stored still; all still read, so the ghosts and
+`bottoms.json` were kept. (The Hip Abduction Machine (Lean), which took the
+folder's 081 export, kept its body motion and so its ghosts.) Re-running `bottoms.py` on them is
+not a check: its generic rules disagree with most of the hand-set times
+(e.g. the Curtsy Lunge's bottom at 0.08 s instead of 1.58 s).
+
+The five new legs of that folder have their ghosts in
+`faults_1010_legs.swift.txt` (pieces prefixed `legs1010`; the Smith front
+squat's torso fault reuses `hipsBehindFixedBar`) and their moments, all in
+seconds, in `fault_moments_1010_legs.json`; `fault_times.py` now files
+step-ups with the squats (`legs`: bottom = pelvis lowest). The leg
+extension's pad and the adduction machine's tempo cue have no ghost.
+
+The formerly red-named replacements (2026-10-10): the Romanian Deadlift's
+knee ghost now draws locked knees (the shared `rdl4KneesLocked`, as on the
+351-400 RDLs), since the model itself now bends the knees to 42° and
+`hingeKneesBending` only drew more of that; the Assisted Dip's elbow ghost
+flares further (outward 0.25, turned to -0.3), since the model now keeps
+its elbows where the old ghost drew the mistake.
+The female model's lifts (2026-10-10): ghosts in `faults_1010_female.swift.txt`
+(pieces prefixed `fem1010`), moments in seconds in
+`fault_moments_1010_female.json`; the stance sets' ghosts are posed on the
+standard stance. The Ab Wheel Rollout's hips and ribs ghosts were resized for
+the female torso (0.44-0.49 m against 0.58 m) and its return ghost moved to
+the return phase.

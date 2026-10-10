@@ -149,7 +149,9 @@ def slim(src, body_path, out):
             off.specifier = Sdf.SpecifierOver
             off.active = False
     root = layer.GetPrimAtPath("/root")
-    root.referenceList.Prepend(Sdf.Reference(BODY, "/root"))
+    # The female rig (2026-10-10) has its own body, AnatomyBodyFemale.usdc:
+    # the reference names whichever body the model was slimmed against.
+    root.referenceList.Prepend(Sdf.Reference(os.path.basename(body_path), "/root"))
     layer.Export(out)
     # Sanity: the composed stage must have the full rig back.
     st = Usd.Stage.Open(out)

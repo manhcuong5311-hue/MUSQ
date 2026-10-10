@@ -49,6 +49,8 @@ struct Exercise3DView: View {
     /// for users and only offered in the menu of debug builds.
     @State private var showsGuides = false
     @State private var setupExpanded = false
+    /// Which stance the trainer shows, for exercises that come in several.
+    @State private var stance = 0
     /// Off shows the lift with nothing over it. Remembered across exercises,
     /// so someone who prefers the clean view doesn't have to ask every time.
     @AppStorage("trainer.showsKeyTips") private var showsKeyTips = true
@@ -90,7 +92,19 @@ struct Exercise3DView: View {
         _tracker = State(initialValue: JointTracker(joints: Array(Set(joints)).sorted()))
     }
 
-    private var content: ExerciseContent? { SampleData.content(for: exercise) }
+    private var content: ExerciseContent? {
+        guard var content = SampleData.content(for: exercise) else { return nil }
+        if let shown = currentStance?.activation { content.activation = shown }
+        return content
+    }
+    private var stances: [SampleData.ExerciseStance] { SampleData.stances(for: exercise) }
+    private var currentStance: SampleData.ExerciseStance? {
+        stances.isEmpty ? nil : stances[min(stance, stances.count - 1)]
+    }
+    /// The model on stage: the picked stance's, or the exercise's own.
+    private var liveModel: SampleData.ExerciseModel? {
+        currentStance?.model ?? SampleData.model(for: exercise)
+    }
     /// Never true without Premium, so no ghost, ring or bar slips through.
     private var showingMistake: Bool { sheet == .cue && cueMode == .mistake && purchases.isPremium }
 
@@ -126,6 +140,16 @@ struct Exercise3DView: View {
 
             VStack(spacing: 0) {
                 header
+
+                if stances.count > 1 {
+                    // Kept in the layout but hidden under a mistake, whose
+                    // banner sits over it.
+                    stancePicker
+                        .padding(.horizontal, DS.Metric.viewportInset)
+                        .padding(.bottom, 10)
+                        .opacity(showingMistake ? 0 : 1)
+                        .allowsHitTesting(!showingMistake)
+                }
 
                 if let content {
                     viewport(content)
@@ -286,9 +310,9 @@ struct Exercise3DView: View {
     private func viewport(_ content: ExerciseContent) -> some View {
         Viewport(
             slot: "ex3d-viewport",
-            model: SampleData.modelName(for: exercise),
-            framing: SampleData.model(for: exercise)?.framing ?? .standing,
-            speed: SampleData.model(for: exercise)?.speed ?? 1,
+            model: liveModel?.resource,
+            framing: liveModel?.framing ?? .standing,
+            speed: liveModel?.speed ?? 1,
             still: still,
             // A mistake is turned to the side it shows best from.
             turn: showingMistake ? (fault?.view ?? 0) : 0,
@@ -297,11 +321,11 @@ struct Exercise3DView: View {
             // The glow stands in for activation on a flat render. A live model
             // carries activation in its own materials, and a screen-space glow
             // would stay put while the lifter is turned out from under it.
-            glows: SampleData.model(for: exercise) == nil ? content.glows : [],
+            glows: liveModel == nil ? content.glows : [],
             pulses: true,
             // The clean view drops the embed guides along with the tips.
             showsGuides: showsGuides && showsKeyTips,
-            tracker: SampleData.model(for: exercise) == nil ? nil : tracker
+            tracker: liveModel == nil ? nil : tracker
         ) {
             annotationLayer(content)
 
@@ -331,10 +355,36 @@ struct Exercise3DView: View {
 
             legend(content)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(14)
+                .padding(8)
         }
         .frame(maxHeight: .infinity)
         .padding(.horizontal, DS.Metric.viewportInset)
+    }
+
+    /// The stances an exercise comes in, over the viewport, with a line on
+    /// the one picked.
+    private var stancePicker: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            // Five segments share the width: a smaller face and tighter
+            // padding keep STANDARD on one line.
+            MonoSegmentedControl(
+                options: stances.indices.map { (value: $0, title: stances[$0].label.uppercased()) },
+                selection: $stance,
+                fontSize: 8.5,
+                em: 0.04,
+                itemPaddingH: 4,
+                fillsWidth: true
+            )
+            .accessibilityLabel("Stance")
+            if let note = currentStance?.note {
+                Text(note)
+                    .font(.ui(12, .regular))
+                    .foregroundStyle(DS.silver.opacity(0.62))
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 2)
+            }
+        }
     }
 
     /// The key tips and the mistake, in the viewport's (or the iPad stage's)
@@ -464,6 +514,18 @@ struct Exercise3DView: View {
                 )
             }
         }
+        // A glass backing, as on the viewport's buttons, so the legend reads
+        // where it sits over dark equipment (a machine's base, a rack).
+        .padding(.horizontal, 9)
+        .padding(.vertical, 7)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(DS.glass(0.72))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .strokeBorder(DS.silver.opacity(0.10), lineWidth: 1)
+                )
+        )
         .allowsHitTesting(false)
     }
 
@@ -573,6 +635,13 @@ struct Exercise3DView: View {
 
             VStack(spacing: 0) {
                 regularHeader
+
+                if stances.count > 1 {
+                    stancePicker
+                        .frame(maxWidth: 560)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 12)
+                }
 
                 if let content {
                     let shell = layout.isWide
@@ -724,11 +793,11 @@ struct Exercise3DView: View {
     /// framing and label points land as they do on the phone. Buttons, the
     /// legend and the banners hold the pane's corners instead.
     private func regularViewport(_ content: ExerciseContent) -> some View {
-        let model = SampleData.model(for: exercise)
+        let model = liveModel
         let ground = self.ground
         return Viewport(
             slot: "ex3d-viewport",
-            model: SampleData.modelName(for: exercise),
+            model: model?.resource,
             framing: model?.framing ?? .standing,
             speed: model?.speed ?? 1,
             still: still,
@@ -779,7 +848,7 @@ struct Exercise3DView: View {
 
         legend(content, size: 10.5)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-            .padding(20)
+            .padding(14)
 
         // Centred on the pane, clear of the button column on the right.
         VStack(spacing: 8) {

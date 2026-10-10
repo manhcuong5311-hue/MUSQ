@@ -11,7 +11,7 @@
  },
  "Bulgarian Split Squat": {
   "time": 1.33,
-  "disp": 2.96,
+  "disp": 3.03,
   "length": 7.96
  },
  "Bulgarian Split Squat (Lean)": {
@@ -70,8 +70,8 @@
   "length": 7.96
  },
  "Romanian Deadlift": {
-  "time": 1.5,
-  "disp": 2.49,
+  "time": 1.33,
+  "disp": 2.77,
   "length": 7.96
  },
  "Barbell Bench Press": {
@@ -281,7 +281,7 @@
  },
  "Single-Arm Cable Pushdown": {
   "time": 1.33,
-  "disp": 0.38,
+  "disp": 0.47,
   "length": 7.96
  },
  "Overhead Cable Triceps Extension": {
@@ -291,7 +291,7 @@
  },
  "Dumbbell Overhead Triceps Extension": {
   "time": 1.33,
-  "disp": 0.75,
+  "disp": 0.84,
   "length": 7.96
  },
  "Skull Crusher": {
@@ -301,17 +301,17 @@
  },
  "Bench Dip": {
   "time": 1.33,
-  "disp": 0.72,
+  "disp": 0.71,
   "length": 7.96
  },
  "Assisted Dip": {
   "time": 1.33,
-  "disp": 1.81,
+  "disp": 1.77,
   "length": 7.96
  },
  "Dumbbell Romanian Deadlift": {
-  "time": 1.5,
-  "disp": 2.48,
+  "time": 1.33,
+  "disp": 2.83,
   "length": 7.96
  },
  "Stiff-Leg Deadlift": {
@@ -340,8 +340,8 @@
   "length": 7.96
  },
  "Single-Leg Glute Bridge": {
-  "time": 1.33,
-  "disp": 0.69,
+  "time": 1.5,
+  "disp": 0.71,
   "length": 7.96
  },
  "Cable Glute Kickback": {
@@ -370,8 +370,8 @@
   "length": 7.96
  },
  "Step-Up": {
-  "time": 1.17,
-  "disp": 4.18,
+  "time": 1.33,
+  "disp": 3.71,
   "length": 7.96
  },
  "Push-Up": {
@@ -420,8 +420,8 @@
   "length": 7.96
  },
  "Ab Wheel Rollout": {
-  "time": 1.33,
-  "disp": 2.37,
+  "time": 2.17,
+  "disp": 4.39,
   "length": 7.96
  },
  "Side Plank": {
@@ -435,8 +435,8 @@
   "length": 7.96
  },
  "Cable Wood Chop": {
-  "time": 1.33,
-  "disp": 2.19,
+  "time": 1.17,
+  "disp": 4.65,
   "length": 7.96
  },
  "Lunge (Lean)": {
@@ -1121,7 +1121,7 @@
  },
  "Curtsy Lunge": {
   "time": 1.67,
-  "disp": 3.69,
+  "disp": 4.5,
   "length": 7.96
  },
  "Barbell Split Squat": {
@@ -1175,8 +1175,8 @@
   "length": 7.96
  },
  "Barbell Hip Thrust": {
-  "time": 1.5,
-  "disp": 1.25,
+  "time": 1.33,
+  "disp": 1.32,
   "length": 7.96
  },
  "Single-Arm Machine Curl": {
@@ -1321,7 +1321,7 @@
  },
  "Dumbbell Sumo Squat": {
   "time": 1.67,
-  "disp": 3.1,
+  "disp": 3.11,
   "length": 7.96
  },
  "Barbell Sumo Squat": {
@@ -1361,7 +1361,7 @@
  },
  "Landmine Squat": {
   "time": 1.33,
-  "disp": 3.42,
+  "disp": 3.52,
   "length": 7.96
  },
  "Belt Squat": {
@@ -1406,7 +1406,7 @@
  },
  "Heel-Elevated Squat": {
   "time": 1.33,
-  "disp": 3.24,
+  "disp": 3.3,
   "length": 7.96
  },
  "Cyclist Squat": {
@@ -1416,12 +1416,12 @@
  },
  "Pistol Squat": {
   "time": 1.33,
-  "disp": 5.17,
+  "disp": 5.06,
   "length": 7.96
  },
  "Assisted Pistol Squat": {
-  "time": 1.5,
-  "disp": 3.33,
+  "time": 1.33,
+  "disp": 3.22,
   "length": 7.96
  },
  "Standing Calf Raise": {
@@ -1491,7 +1491,7 @@
  },
  "Close-Grip Bench Press": {
   "time": 1.33,
-  "disp": 1.74,
+  "disp": 1.98,
   "length": 7.96
  },
  "Machine Preacher Curl": {
@@ -2082,6 +2082,46 @@
  "Clean and Press": {
   "time": 4.83,
   "disp": 6.88,
+  "length": 7.96
+ },
+ "Single-Leg Extension": {
+  "time": 1.67,
+  "disp": 0.48,
+  "length": 7.96
+ },
+ "Smith Machine Front Squat": {
+  "time": 1.67,
+  "disp": 3.13,
+  "length": 7.96
+ },
+ "Dumbbell Lateral Step-Up": {
+  "time": 1.33,
+  "disp": 4.16,
+  "length": 7.96
+ },
+ "Barbell Step-Up": {
+  "time": 1.5,
+  "disp": 3.91,
+  "length": 7.96
+ },
+ "Hip Adduction Machine": {
+  "time": 0.02,
+  "disp": 1.14,
+  "length": 7.96
+ },
+ "Hack Squat (Stances)": {
+  "time": 3.17,
+  "disp": 2.67,
+  "length": 5.96
+ },
+ "Pendulum Squat (Stances)": {
+  "time": 1.83,
+  "disp": 2.95,
+  "length": 7.96
+ },
+ "Cable Knee-Drive Kickback": {
+  "time": 2.0,
+  "disp": 1.62,
   "length": 7.96
  }
 }

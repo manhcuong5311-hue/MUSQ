@@ -609,6 +609,80 @@ JOBS = {
     "401-500/472_dumbbell_thruster": "Legs/DumbbellThruster",
     "401-500/473_kettlebell_thruster": "Legs/KettlebellThruster",
     "401-500/474_clean_and_press": "Shoulder/CleanAndPress",
+    # Desktop "1-100" folder (2026-10-10): 34 re-exports of models already in the
+    # app, the 22 marked 🟢 (050-099) and twelve of the 30-leg set (01-27). The
+    # folder's female (235-joint) exports were left out; its new and 🔴-named
+    # ones follow below.
+    "1-100-1010/050_close_grip_bench_press": "Triceps/CloseGripBenchPress",
+    "1-100-1010/051_skull_crusher": "Triceps/SkullCrusher",
+    "1-100-1010/052_dumbbell_overhead_triceps_extension": "Triceps/DumbbellOverheadTricepsExtension",
+    "1-100-1010/056_single_arm_cable_pushdown": "Triceps/SingleArmCablePushdown",
+    "1-100-1010/058_bench_dip": "Triceps/BenchDip",
+    "1-100-1010/059_back_squat": "Legs/BackSquat",
+    "1-100-1010/069_step_up": "Legs/StepUp",
+    "1-100-1010/077_barbell_hip_thrust": "Legs/BarbellHipThrust",
+    "1-100-1010/078_glute_bridge": "Legs/GluteBridge",
+    "1-100-1010/079_single_leg_glute_bridge": "Legs/SingleLegGluteBridge",
+    "1-100-1010/080_cable_glute_kickback": "Legs/CableGluteKickback",
+    # 081 is the leaning variant's .blend (as in Legs2/ since 2026-09-27): its
+    # body motion matches HipAbductionMachineLean joint for joint, so it
+    # replaces that model, not the upright Hip Abduction Machine.
+    "1-100-1010/081_hip_abduction_machine": "Legs/HipAbductionMachineLean",
+    "1-100-1010/083_standing_calf_raise": "Legs/StandingCalfRaise",
+    "1-100-1010/084_seated_calf_raise": "Legs/SeatedCalfRaise",
+    "1-100-1010/085_leg_press_calf_raise": "Legs/LegPressCalfRaise",
+    "1-100-1010/087_smith_machine_calf_raise": "Legs/SmithMachineCalfRaise",
+    "1-100-1010/088_crunch": "Abs/Crunch",
+    "1-100-1010/089_cable_crunch": "Abs/CableCrunch",
+    "1-100-1010/090_decline_crunch": "Abs/DeclineCrunch",
+    "1-100-1010/093_captain_s_chair_leg_raise": "Abs/CaptainsChairLegRaise",
+    "1-100-1010/094_reverse_crunch": "Abs/ReverseCrunch",
+    "1-100-1010/099_cable_wood_chop": "Abs/CableWoodChop",
+    "1-100-1010/01_curtsy_lunge": "Legs/CurtsyLunge",
+    "1-100-1010/04_dumbbell_sumo_squat": "Legs/DumbbellSumoSquat",
+    "1-100-1010/05_barbell_sumo_squat": "Legs/BarbellSumoSquat",
+    "1-100-1010/06_kettlebell_goblet_squat": "Legs/KettlebellGobletSquat",
+    "1-100-1010/07_box_squat": "Legs/BoxSquat",
+    "1-100-1010/08_pause_squat": "Legs/PauseSquat",
+    "1-100-1010/09_safety_bar_squat": "Legs/SafetyBarSquat",
+    "1-100-1010/12_landmine_squat": "Legs/LandmineSquat",
+    "1-100-1010/24_heel_elevated_squat": "Legs/HeelElevatedSquat",
+    "1-100-1010/25_cyclist_squat": "Legs/CyclistSquat",
+    "1-100-1010/26_pistol_squat": "Legs/PistolSquat",
+    "1-100-1010/27_assisted_pistol_squat": "Legs/AssistedPistolSquat",
+    # The same folder's five new exercises (2026-10-10, 22, 23 and 28-30 of
+    # the builder's 30-leg set).
+    "1-100-1010/22_single_leg_extension": "Legs/SingleLegExtension",
+    "1-100-1010/23_smith_machine_front_squat": "Legs/SmithMachineFrontSquat",
+    "1-100-1010/28_dumbbell_lateral_step_up": "Legs/DumbbellLateralStepUp",
+    "1-100-1010/29_barbell_step_up": "Legs/BarbellStepUp",
+    "1-100-1010/30_hip_adduction_machine": "Legs/HipAdductionMachine",
+    # The folder's five exports still named 🔴 (057, 062, 068, 071, 072): their
+    # .blend files were fixed and approved (renamed 🟢) and exported right after
+    # the last save; only the export names kept the old notes (owner, 2026-10-10).
+    "1-100-1010/057_assisted_dip": "Triceps/AssistedDip",
+    "1-100-1010/062_bulgarian_split_squat": "Legs/BulgarianSplitSquatUpright",
+    "1-100-1010/068_smith_machine_squat": "Legs/SmithMachineSquat",
+    "1-100-1010/071_romanian_deadlift": "Legs/RomanianDeadlift",
+    "1-100-1010/072_dumbbell_romanian_deadlift": "Legs/DumbbellRomanianDeadlift",
+    # The folder's female-model exports (2026-10-10; a 235-joint rig with its
+    # own textures, slimmed against Shared/AnatomyBodyFemale.usdc): the
+    # pendulum and hack squat in five stances each (pend_04, hack_01 and
+    # hack_03 exported headless from their approved .blend files, which had no
+    # export yet), the ab wheel rollout (it replaces the male model) and the
+    # cable step-down.
+    "female-1010/pend_01_standard_stance": "Legs/FemalePendulumSquatStandard",
+    "female-1010/pend_02_high_foot_position": "Legs/FemalePendulumSquatHigh",
+    "female-1010/pend_03_low_foot_position": "Legs/FemalePendulumSquatLow",
+    "female-1010/pend_04_wide_stance": "Legs/FemalePendulumSquatWide",
+    "female-1010/pend_05_narrow_stance": "Legs/FemalePendulumSquatNarrow",
+    "female-1010/hack_01_standard_stance": "Legs/FemaleHackSquatStandard",
+    "female-1010/hack_02_high_foot_position": "Legs/FemaleHackSquatHigh",
+    "female-1010/hack_03_low_foot_position": "Legs/FemaleHackSquatLow",
+    "female-1010/hack_04_wide_stance": "Legs/FemaleHackSquatWide",
+    "female-1010/hack_05_narrow_stance": "Legs/FemaleHackSquatNarrow",
+    "female-1010/097_ab_wheel_rollout": "Abs/AbWheelRollout",
+    "female-1010/cable_step_downs": "Legs/CableStepDown",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs
@@ -619,6 +693,14 @@ OFF = {
     "190-280/225_cable_upright_row": ["GYM_Cable_Root/GYM_Cable_L_CableToHandle",
                                       "GYM_Cable_Root/GYM_Cable_L_PullOffset",
                                       "GYM_Cable_Root/GYM_Cable_L_CableToStack"],
+    # The female-model exports (2026-10-10) carry their own studio floor, a
+    # large grey plane the app does not hide (it hides only DARK_Floor).
+    **{f"female-1010/pend_{s}": ["PS_Studio_Floor"] for s in
+       ("01_standard_stance", "02_high_foot_position", "03_low_foot_position", "04_wide_stance", "05_narrow_stance")},
+    **{f"female-1010/hack_{s}": ["LS_StudioFloor"] for s in
+       ("01_standard_stance", "02_high_foot_position", "03_low_foot_position", "04_wide_stance", "05_narrow_stance")},
+    "female-1010/097_ab_wheel_rollout": ["Female_Studio_Floor"],
+    "female-1010/cable_step_downs": ["CSD_Floor"],
 }
 
 ONLY = sys.argv[1:]

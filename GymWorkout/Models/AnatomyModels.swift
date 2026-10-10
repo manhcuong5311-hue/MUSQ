@@ -168,7 +168,8 @@ struct FormComparisonCopy: Hashable {
 struct ExerciseContent {
     let annotations: [CueAnnotation]
     let cues: [TechniqueCue]
-    let activation: [MuscleActivation]
+    /// A `var` so the trainer can show a stance's own list (2026-10-10).
+    var activation: [MuscleActivation]
     /// Muscles that steady this lift but fall under the 20% cut for
     /// `activation`, named in the note under the muscle list. Lower case,
     /// e.g. `rotator cuff`. Empty hides the note.

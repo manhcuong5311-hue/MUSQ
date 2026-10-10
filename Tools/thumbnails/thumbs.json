@@ -19,10 +19,10 @@
  },
  "Bulgarian Split Squat": {
   "yaw": 0.0,
-  "zoom": 1.22,
+  "zoom": 1.134,
   "off": [
    0.0,
-   0.192,
+   0.213,
    0.0
   ]
  },
@@ -109,10 +109,10 @@
  },
  "Smith Machine Squat": {
   "yaw": 0.0,
-  "zoom": 0.821,
+  "zoom": 1.119,
   "off": [
    0.0,
-   0.141,
+   0.211,
    0.0
   ]
  },
@@ -130,7 +130,7 @@
   "zoom": 0.782,
   "off": [
    0.0,
-   0.112,
+   0.146,
    0.0
   ]
  },
@@ -523,29 +523,29 @@
  },
  "Dumbbell Overhead Triceps Extension": {
   "yaw": -0.6,
-  "zoom": 0.804,
+  "zoom": 0.771,
   "off": [
-   -0.006,
-   -0.041,
-   0.004
+   0.008,
+   -0.031,
+   -0.005
   ]
  },
  "Skull Crusher": {
   "yaw": -1.0,
-  "zoom": 1.171,
+  "zoom": 0.989,
   "off": [
-   -0.037,
-   0.193,
-   0.057
+   -0.01,
+   0.187,
+   0.015
   ]
  },
  "Bench Dip": {
   "yaw": -1.0,
-  "zoom": 1.196,
+  "zoom": 1.053,
   "off": [
-   0.014,
+   0.032,
    0.24,
-   -0.021
+   -0.05
   ]
  },
  "Assisted Dip": {
@@ -559,11 +559,11 @@
  },
  "Dumbbell Romanian Deadlift": {
   "yaw": -0.8,
-  "zoom": 1.246,
+  "zoom": 1.214,
   "off": [
-   0.054,
-   0.183,
-   -0.055
+   0.028,
+   0.234,
+   -0.028
   ]
  },
  "Stiff-Leg Deadlift": {
@@ -712,11 +712,11 @@
  },
  "Decline Crunch": {
   "yaw": -1.35,
-  "zoom": 1.111,
+  "zoom": 0.929,
   "off": [
-   -0.025,
-   0.194,
-   0.11
+   -0.029,
+   0.133,
+   0.128
   ]
  },
  "Cable Crunch": {
@@ -757,11 +757,11 @@
  },
  "Ab Wheel Rollout": {
   "yaw": -1.35,
-  "zoom": 0.847,
+  "zoom": 0.582,
   "off": [
-   0.026,
-   0.323,
-   -0.115
+   0.009,
+   0.212,
+   -0.041
   ]
  },
  "Side Plank": {
@@ -2116,11 +2116,11 @@
  },
  "Barbell Hip Thrust": {
   "yaw": -0.7,
-  "zoom": 1.03,
+  "zoom": 0.969,
   "off": [
-   -0.067,
-   0.262,
-   0.056
+   -0.062,
+   0.285,
+   0.052
   ]
  },
  "Single-Arm Machine Curl": {
@@ -2530,11 +2530,11 @@
  },
  "Heel-Elevated Squat": {
   "yaw": -1.0,
-  "zoom": 1.197,
+  "zoom": 1.112,
   "off": [
-   -0.034,
-   0.185,
-   0.052
+   -0.021,
+   0.151,
+   0.032
   ]
  },
  "Cyclist Squat": {
@@ -2683,11 +2683,11 @@
  },
  "Close-Grip Bench Press": {
   "yaw": -1.0,
-  "zoom": 0.926,
+  "zoom": 0.869,
   "off": [
-   -0.065,
-   0.112,
-   0.101
+   -0.041,
+   0.12,
+   0.064
   ]
  },
  "Machine Preacher Curl": {
@@ -3750,6 +3750,78 @@
    -0.036,
    -0.087,
    0.037
+  ]
+ },
+ "Single-Leg Extension": {
+  "yaw": -1.0,
+  "zoom": 0.986,
+  "off": [
+   -0.03,
+   0.07,
+   0.047
+  ]
+ },
+ "Smith Machine Front Squat": {
+  "yaw": -1.0,
+  "zoom": 1.139,
+  "off": [
+   0.047,
+   0.218,
+   -0.074
+  ]
+ },
+ "Dumbbell Lateral Step-Up": {
+  "yaw": 0.0,
+  "zoom": 0.827,
+  "off": [
+   -0.161,
+   -0.055,
+   0.0
+  ]
+ },
+ "Barbell Step-Up": {
+  "yaw": -0.9,
+  "zoom": 0.753,
+  "off": [
+   0.037,
+   -0.055,
+   -0.047
+  ]
+ },
+ "Hip Adduction Machine": {
+  "yaw": -0.3,
+  "zoom": 1.082,
+  "off": [
+   -0.049,
+   0.147,
+   0.015
+  ]
+ },
+ "Hack Squat (Stances)": {
+  "yaw": 0.6,
+  "zoom": 0.882,
+  "off": [
+   0.005,
+   0.104,
+   0.003
+  ]
+ },
+ "Pendulum Squat (Stances)": {
+  "yaw": 0.0,
+  "zoom": 1.43,
+  "off": [
+   0.029,
+   -0.059,
+   0.0
+  ]
+ },
+ "Cable Knee-Drive Kickback": {
+  "yaw": -1.0,
+  "zoom": 0.761,
+  "off": [
+   0.029,
+   -0.096,
+   -0.045
   ]
  }
 }

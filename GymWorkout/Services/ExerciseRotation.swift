@@ -21,7 +21,7 @@ enum MovementPattern: String {
     case carry, hold, shrug, cuffRotation, uprightRow, rearDelt, lateralRaise, frontRaise
     case pullover, verticalPull, horizontalPull, verticalPress, horizontalPress, fly, dip
     case armCurl, tricepsExtension, legCurl, quadIsolation, squat, lunge, hinge, bridge
-    case gluteIsolation, calfRaise, tibialisRaise, crunch, legRaise, trunkRotation, rollout
+    case gluteIsolation, hipAdduction, calfRaise, tibialisRaise, crunch, legRaise, trunkRotation, rollout
     case coreStability, olympicLift, other
 
     init(exerciseNamed name: String) {
@@ -57,6 +57,9 @@ enum MovementPattern: String {
         else if has("deadlift", "rack pull", "block pull", "back extension", "good morning") { self = .hinge }
         else if has("bridge", "hip thrust", "frog pump") { self = .bridge }
         else if has("kickback", "abduction", "side kick", "clamshell") { self = .gluteIsolation }
+        // The adduction machine and cable (2026-10-10): single-joint inner-thigh
+        // work, isolation like the abductions, matched first with each other.
+        else if has("adduction") { self = .hipAdduction }
         else if has("crunch", "sit-up", "v-up") { self = .crunch }
         else if has("leg raise", "knee raise", "toe-to-bar", "flutter kick", "scissor kick") { self = .legRaise }
         // Side bends file with the twists and chops: oblique work either way.
@@ -82,8 +85,8 @@ enum MovementPattern: String {
     /// Single-joint work, which takes lighter loads for more reps.
     var isIsolation: Bool {
         [.shrug, .cuffRotation, .rearDelt, .lateralRaise, .frontRaise, .pullover, .fly, .armCurl,
-         .tricepsExtension, .legCurl, .quadIsolation, .gluteIsolation, .calfRaise, .tibialisRaise, .crunch, .legRaise,
-         .trunkRotation]
+         .tricepsExtension, .legCurl, .quadIsolation, .gluteIsolation, .hipAdduction, .calfRaise, .tibialisRaise,
+         .crunch, .legRaise, .trunkRotation]
             .contains(self)
     }
 }

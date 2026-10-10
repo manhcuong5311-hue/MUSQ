@@ -328,3 +328,106 @@ House decisions and open points:
   the mountain climber's front foot never lands.
 - Optional: probe `_bent/_straight` (or `_front/_back`) points for the kicks,
   climbers, marches and twists so their labels follow the working side.
+
+Desktop "1-100" folder (2026-10-10): 34 replaced models (see the
+model-pipeline README). Their content was edited in place in SampleData.swift
+(setup.py and the spec files for the two setup changes), following the paint
+where it changed (owner's call, 2026-10-01: the list follows the model): the
+rear delts as a low secondary on the Skull Crusher and Dumbbell Overhead
+Triceps Extension; the soleus primary on the Standing Calf Raise and the
+gastrocnemius primary on the Seated Calf Raise (the new rig lights the calves
+as one group; the seated raise keeps the gastrocnemius' 0.30 fraction); all
+three glutes primary on the Hip Abduction Machine (Lean), which took the
+folder's 081 export (Gluteus Minimus added; the upright machine kept its
+model and content);
+Trapezius and Forearms secondary on the Step-Up (it carries dumbbells),
+Abdominals secondary on the Barbell Hip Thrust, the front delts, biceps and
+triceps on the Landmine Squat, and the front and rear delts, triceps and
+biceps on the Cable Wood Chop (low; "shoulders" left the stabilisers). The
+Heel-Elevated Squat's setup now leads with the slant board the model stands
+on, and the Curtsy Lunge's no longer says elbows out. Labels were relaid
+where the new motion put pills on the lifter: the Cable Wood Chop's hips and
+brace pills moved left and its pivot dot to the left foot (the one that
+turns), and the Heel-Elevated Squat's bar pill moved left of the head. Left
+as they were: the
+erectors newly lit on the Back, Pause, Safety Bar and Heel-Elevated Squats
+(already secondary rows) and the hamstrings on the Single-Leg Glute Bridge.
+The Barbell Sumo Squat's erectors came back bright, while the Back, Pause,
+Safety Bar and Heel-Elevated Squats light them dim and the other squats not
+at all; the owner re-exported it with them dim (2026-10-10), which its
+Erector Spinae secondary row already matches. The spec files these exercises were generated
+from (spec.py, spec_legs2.py, spec_abs.py, spec_legs30_calf.py,
+spec_legs30_barbell.py) were NOT updated for the activation changes, so
+regenerating them would undo these edits.
+
+The five formerly red-named replacements (Assisted Dip, Bulgarian Split
+Squat, Smith Machine Squat, Romanian and Dumbbell Romanian Deadlift) were
+revised through a Workflow: one reviser per exercise proposed exact edits
+from the old/new stills, trainer shots and ghosts, and two checkers verified
+each set (one per lens: true to the model; house rules and syntax). Applied:
+the Assisted Dip's chest and front delts primary (now painted bright), its
+elbow copy and label for elbows kept over the hands (~10 cm outside the
+shoulders, no longer tucked), its torso pill moved off the hips; the
+Bulgarian Split Squat's Forearms row dropped (no longer painted), torso copy
+for its 10-20° lean, depth pill moved off the back knee; the Smith Machine
+Squat's labels relaid off the new bar and copy for the new rack's fixed bar
+path; both RDLs rewritten for knees that bend from 20° to 42° as the hips go
+back and hold there (the owner's fix), so the knee cue teaches that bend and
+the mistake is now locked knees, the barbell RDL's bar copy no longer claims
+contact with the legs, and the dumbbell RDL's hips pill moved off the arm.
+Not changed, for the owner: bright glutes listed as secondary on the
+Bulgarian Split Squat and Smith Machine Squat (the paint did not change, as
+on the other squats); the dumbbell RDL's path label (31 characters) still
+sits on the forearm, as before the re-export.
+
+The folder's five new exercises (Single-Leg Extension, Smith Machine Front
+Squat, Dumbbell Lateral Step-Up, Barbell Step-Up, Hip Adduction Machine) are
+one family, `spec_1010_legs.py` on `common_1_50.py`, listed by
+`spec_1010.py` (`python3 spec_1010.py legs` validates, `preview_1010.py legs`
+prints the layout), with `notes_1010_legs.md` (claims to sources, and the
+reviewer's claim-by-claim `## Review`). It was drafted by one agent from
+`briefs_1010/` (written by `briefs_legs30/brief.py`) and the lab
+(`Tools/lab/family_1010.sh`), then an independent reviewer re-opened all 55
+claims and re-measured the models, softened what the sources do not say and
+fixed copy, four labels (on three exercises) and two ghosts. `integrate_1010.py <scratch>`
+writes the setup steps, content-map entries, Swift (`// MARK: - Desktop
+1-100 (2026-10-10)`) and fault ghosts between its own BEGIN/END markers.
+House decisions: the other three quad lifts list the quadriceps and the
+glutes primary, as painted (the medius and minimus covered by the Gluteus
+Maximus row or named among the stabilisers); the Single-Leg Extension's
+first export painted the glutes bright, kept as a LOW secondary (0.10) until
+the owner re-exported it with them unlit the same evening, so it now lists
+the quadriceps alone; `part_of()` drops "Gracilis", so the
+adduction machine lists Adductors primary with the gracilis among the
+stabilisers. The copy follows the models where they differ from coaching:
+no model locks the knees out at the top (168° on the extension, 137-150° on
+the step-ups, 163° on the squat), and on both step-ups the trailing foot
+hovers ~2.6 cm over the box at the top.
+
+The female model's lifts (2026-10-10): Hack Squat (Stances), Pendulum Squat
+(Stances) and Cable Step-Down are family `female` in `spec_1010.py`
+(`spec_1010_female.py`, `notes_1010_female.md`), written by one agent and
+reviewed by another in a Workflow, integrated with `integrate_1010.py`. A
+stance set is one exercise: its labels, cues, ghosts and the activation
+recovery counts are written for the standard stance and checked against all
+five; the trainer's stance picker (`SampleData.stancesByExercise`, shown by
+`Exercise3DView`) swaps the model and shows each stance's own note and
+muscle list, which follow that stance's paint. A third agent measured the
+ten stance models for those: the high placements light the glutes and the
+low ones the quads (supported: ExRx; Da Silva 2008 on the leg press); the
+owner's "wide = inner quads, narrow = outer quads" is not (McCaw 1999, Paoli
+2009), so those notes only say what the model lights. The Ab Wheel Rollout's
+content was revised for its female model (rounded back, hips above the
+knee-to-shoulder line, 93 cm roll-out; obliques, lats, triceps and rear
+delts as secondary rows) through a reviser and two checkers. Open: the Cable
+Step-Down's model is a standing cable kickback from a knee drive (nothing
+steps down), so its name may want changing; its library row now says
+GLUTEUS MAXIMUS, as painted. The stance sets' legends sit over the dark
+machine base.
+
+Renamed the same evening (owner's call): Cable Step-Down is now Cable
+Knee-Drive Kickback, since its model drives the knee up and kicks the leg
+back and nothing steps down (the export was named Cable_Step_Downs). The
+resource stays `CableStepDown`; the library row, content, ghosts, still
+times, thumbnail (`lib-cable-knee-drive-kickback`) and tool files use the
+new name, and the movement pattern files it with the glute kickbacks.

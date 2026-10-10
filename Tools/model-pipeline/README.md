@@ -391,3 +391,109 @@ station kept out of the lifter's way), thrusters and the clean and press
 -0.6/-0.8. The Side Plank Hip Lift and Copenhagen Plank are seen side-on
 (+1.5, like the Side Plank): front-on, the solver again returned an
 over-zoomed framing (as for the Toe Touch Crunch).
+
+Desktop "1-100" folder (2026-10-10): 55 exports on `~/Desktop/1-100` (plus
+a `textures/` folder for the female model). 34 re-export models already in
+the app — the 22 male exports marked 🟢 (050-099, the 🟢 copy of 052) and
+twelve of the 30-leg set (01, 04-09, 12, 24-27, unmarked) — and were copied
+to `SourceExports/1-100-1010/` without the marks, converted with
+`convert_all.py 1-100-1010/`, padded and slimmed (all attribute for
+attribute). 081 is the leaning abduction variant's .blend (as in `Legs2/`
+since 2026-09-27): its body matches `HipAbductionMachineLean` joint for joint,
+so it replaced that model; the upright Hip Abduction Machine keeps its
+2026-09-27 model. Left out at first: the exports still named 🔴 (052's older
+copy, 057, 062, 068, 071, 072; see below), five new leg exercises (below)
+and ten exports of the female model (a 235-joint rig with its own textures:
+the 01-05 leg-press stances, three of them also marked 🟢, the 097 ab wheel
+rollout and cable step downs), which the app has no body for. All 34 are
+intact: one 211-joint skeleton (the 205 of the old models plus `toe_L/R` and
+four `FF_` foot helpers), one animation, no cameras. The old models are kept
+in the session scratchpad (`old/`). Sixteen came back with the same body
+motion (Cable Glute Kickback also with the same paint and equipment, only its
+materials restructured; the Lean abduction with a tidied machine), six moved
+by 2-7 cm (the hands on four, the elbows on the Bench Dip, the knees on the
+Landmine Squat), and twelve changed: the Cable Wood Chop is now a long-armed
+high-to-low chop (the hands up to 91 cm from where the old clip had them, the
+whole body also shifted), the Step-Up leans further forward at the start, and
+the Curtsy Lunge, Barbell Hip Thrust, Close-Grip Bench Press, Dumbbell
+Overhead Triceps Extension, Single-Arm Cable Pushdown, Decline Crunch,
+Heel-Elevated Squat (the bar), the two pistols and the Single-Leg Glute
+Bridge moved the arms, the bar or the free leg 11-28 cm. Several got new
+equipment: the GYM bench under the Skull Crusher, Bench Dip, Close-Grip Bench
+Press and Barbell Hip Thrust, an ABB decline bench under the Decline Crunch,
+a slant board in place of the heel wedges, and recoloured mats and pads. The
+twelve, the Bench Dip and the Landmine Squat were checked on old/new trainer
+stills at their framings; all framings were kept.
+The new highlight materials are `FF_Highlight_<Group>_<side>`, one per
+muscle group, so a group lights together (all three glutes on the abduction
+machine, the soleus with the gastrocnemius on the calf raises). Blender
+drives their colour. Most exports carry the level in the diffuse (1.0
+bright, 0.256 dim) with a matching emissive (0.153 / 0.038), the emissive on
+the working side only in one-sided lifts; on the Lean abduction's glutes and
+the Seated Calf Raise's calves the diffuse is capped at 0.15 and only the
+emissive shows the level, which RealityKit still shows as the same hot red.
+`tiers.py` now takes the larger of the diffuse and the emissive / 0.153.
+The same folder's five new exercises (22 single-leg extension, 23 Smith
+machine front squat, 28 dumbbell lateral step-up, 29 barbell step-up, 30 hip
+adduction machine) went in the same evening: copied to
+`SourceExports/1-100-1010/`, converted (`convert_all.py 1-100-1010/22_ …`),
+padded and slimmed (0.8-1.2 MB). The single-leg extension works the left
+leg only (knee 93°->168°, two reps); the lateral step-up's box sits at the
+lifter's left; the barbell step-up plants the left foot on a box in front;
+the adduction machine closes the knees from 0.78 m apart to 0.24 m. Framings
+were picked on stills: the leg extension and Smith front squat at -1.0, the
+lateral step-up front-on (0) so the sideways step reads, the barbell step-up
+at -0.9 like the Step-Up, the adduction machine at -0.3 like the abduction
+machine. The single-leg extension lights the glutes bright with the quads,
+though a seated knee extension barely uses them; the content keeps them a
+low secondary row until the paint is settled.
+The folder's five exports still named 🔴 (057 Assisted Dip, 062 Bulgarian
+Split Squat, 068 Smith Machine Squat, 071/072 Romanian and Dumbbell Romanian
+Deadlift) are the approved versions: their .blend files on the drive are
+renamed 🟢 and were exported right after their last save; only the export
+names kept the old notes (the owner confirmed). They replaced the app's
+models the same way (`SourceExports/1-100-1010/`, converted, padded, slimmed;
+old copies in the scratchpad's `old/`). The two RDLs now bend the knees from
+20° standing to 42° at the bottom of the hinge (18-30° before) and send the
+pelvis 29 cm back (22 cm); the Smith Machine Squat stands in a new Smith rack
+(`GYM_M30_Root`) with a new bar; the Bulgarian Split Squat's rear foot rests
+on a new GYM bench; the Assisted Dip's chest and front delts are now painted
+bright. Framings were kept (checked on old/new stills).
+
+Female model (2026-10-10): the folder's ten female exports are a separate
+235-joint rig (the male rig's joint names plus the same toe/`FF_` foot
+joints) with three JPEG base colours (skin/head, sports bra, shorts). The
+owner asked for them in the main library, with no female mode: the two
+stance sets became one exercise each with a stance picker in the trainer
+(see below), 097 replaced the male Ab Wheel Rollout, and the cable step-down
+is new. The sets are two machines: the Pendulum Squat (`Pendulum Varian🟢`,
+exports 01/02/03/05 at 192 frames; 04 wide had no export and was exported
+headless from its approved .blend) and the Hack Squat (`Done 🟢 HackSquat
+Varians`, exports 02/04/05 🟢 at 144 frames; 01 and 03 exported headless; a
+headless export of 02 matched the owner's attribute for attribute except the
+texture paths). The older 04_wide_stance (01:51) was superseded. All twelve
+go through `female_pipeline.sh`: `convert_all.py female-1010/` (the jobs
+switch off each export's studio floor, which the app does not hide),
+`retex.py` (Flatten() anchors the texture paths to the source folder; they
+are rewritten to bare names, `FemaleShorts/FemaleBra/FemaleHead_basecolor.jpg`,
+copied into `Resources/Models/Shared` so they sit next to every model in the
+bundle; RealityKit shows them), `pad_one.sh`, `rename_rig.py` (the hack-squat
+exports name their rig `Anatomy_MasterRig_001` beside an empty inactive
+`Anatomy_MasterRig`; the rename re-points 293 target lists, joints unchanged)
+and a slim against a female body. The pendulum set, the ab wheel and the
+step-down share `Shared/AnatomyBodyFemale.usdc` (63.5 MB, built from the
+standard pendulum); the hack squat's rig is pressed against its back pad, so
+its meshes differ and it has its own `Shared/AnatomyBodyFemaleHack.usdc`.
+Every model slims to 0.8-1.9 MB, attribute for attribute. `share_body.py`
+now writes the reference to whichever body it slims against.
+Framings: the hack squat from the front-left three-quarter (0.6), so the
+stance width reads; the pendulum side-on (0): from either three-quarter its
+pivot column or its pad hides the lifter; the step-down at -1.0. The
+pendulum's stances light different muscles (high: glutes; low and standard:
+quads; wide: adductors and sartorius; narrow: vastus lateralis), and so do
+the hack squat's.
+
+Re-exports the same evening (owner): 22 Single-Leg Extension with the glutes
+unlit and 05 Barbell Sumo Squat with the erectors dim, like the Back Squat.
+Both came back with the same motion (0.0 cm) and equipment; converted,
+padded, slimmed, and their tiles re-shot.

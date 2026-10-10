@@ -41,6 +41,9 @@ def kind(name):
     if "bear crawl" in n or "march" in n: return "carry"
     if "leg press" in n: return "legpress"        # bottom / top = knees most bent / straightest (the pelvis stays put)
     if "lunge" in n or "squat" in n or "thrust" in n: return "legs"   # bottom / top = pelvis lowest / highest
+    # Desktop "1-100" folder (2026-10-10): step-ups bottom out with the pelvis
+    # lowest (one foot on the box) and top out standing on it.
+    if "step-up" in n: return "legs"
     if "carry" in n or "walk on toes" in n: return "carry"
     if "hold" in n: return "hold"                 # static grip holds: every moment is the same
     if "wrist roller" in n: return "hold"         # 401-500 (2026-10-04): the roller winds all clip; moments are given in seconds

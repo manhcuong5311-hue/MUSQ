@@ -1,0 +1,5 @@
+{
+  "Hack Squat (Stances)": {"feet": "3.3", "pad": "3.3", "knees": "3.3", "depth": "3.3", "top": "1.0"},
+  "Pendulum Squat (Stances)": {"feet": "1.9", "pad": "1.9", "knees": "1.9", "depth": "1.9"},
+  "Cable Knee-Drive Kickback": {"torso": "2.0", "kick": "2.0", "hips": "2.0", "stance": "2.0"}
+}

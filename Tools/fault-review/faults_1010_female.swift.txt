@@ -1,0 +1,111 @@
+// MARK: PIECES
+    // MARK: Desktop 1-100 female pieces (2026-10-10)
+
+    /// Cable Knee-Drive Kickback (a standing cable kickback, the left leg working):
+    /// the lower back arching to swing the leg higher behind. The mid-spine
+    /// sinks 0.16 torso lengths toward the belly and the chest 0.07, and the
+    /// left leg swings 36° further back about the hip. Shown at the back of
+    /// the kick: the strength reads the left hip's bend from the mid-spine
+    /// joint (0.55 at 2.0 s, none with the knee up in front), so on the rig
+    /// the mid-spine sinks ~4.4 cm and the thigh ends ~56° behind vertical
+    /// instead of 36°, the foot ~33 cm higher and further back.
+    private static let fem1010KickArched = FaultPose(
+        chains: [spine, ["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.shift(["spine"], forward: 0.16), .shift(["chest"], forward: 0.07),
+                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: -36)],
+        strength: .whenStraight("thigh_L")
+    )
+
+    /// Cable Knee-Drive Kickback: a short kick, the foot stopping under the hips with
+    /// the knee still bent. The left thigh swings 70° forward about the hip
+    /// and the foot 75° up about the knee (knee flexion); at the back of the
+    /// kick (2.0 s, strength 0.55) the thigh ends about vertical instead of
+    /// 36° behind it and the knee at ~129° instead of 170°, the knee ~31 cm
+    /// further forward. Bones kept.
+    private static let fem1010KickShort = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: 70),
+                .turn(pivot: "shin_L", points: ["foot_L", "foot_L.tip"], axis: .lateral, degrees: -75)],
+        strength: .whenStraight("thigh_L")
+    )
+
+    /// Cable Knee-Drive Kickback: the working hip rolling open, the pelvis turning
+    /// away from the tower on the left and the leg drifting out. The hips
+    /// and the left leg turn 22° about the pelvis (the left hip back), then
+    /// the leg swings 22° out about the hip. At the back of the kick
+    /// (strength 0.55) the left foot ~16 cm out to the side and the hip line
+    /// turned ~12°.
+    private static let fem1010HipOpened = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "pelvis", points: ["thigh_L", "thigh_R", "shin_L", "foot_L", "foot_L.tip"], axis: .up, degrees: -22),
+                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 22)],
+        strength: .whenStraight("thigh_L")
+    )
+
+// MARK: TABLE
+        // MARK: Desktop 1-100 female (2026-10-10)
+        // The female rigs (torso, neck to pelvis, 0.50 m; shifts in torso
+        // lengths). Sizes measured with a Python port of FaultGhost.solve on
+        // the Standard models at each fault's still (femwork/ghost.py in
+        // the session scratchpad): bone lengths kept (the locked knees ~3%
+        // short, as the shared straighten draws them), no knee bent backward.
+        // The stance sets' ghosts read the live joints, so they follow
+        // whichever stance the picker shows. Framings: Hack Squat (Stances)
+        // 0.6 (the hack rig faces -x, so 0 is side-on from the lifter's left
+        // and 0.6 a front-left three-quarter), Pendulum Squat (Stances) 0
+        // (side-on from the left), Cable Knee-Drive Kickback -1.0 (front-left three-
+        // quarter; that rig faces +z).
+        "Hack Squat (Stances)": [
+            // The heels peeling off the plate at the bottom: each heel ~8 cm
+            // up about the toes, the knees driven ~8 cm forward (73° -> 68°).
+            // Turned 0.6 back to a true side view (a total of 0).
+            "feet": heelsUp().seen(-0.6),
+            // The hips and lower back peeling ~6 cm off the back pad at the
+            // bottom, the upper back left on it; side-on.
+            "pad": machineHipsOffPad.seen(-0.6),
+            // The knees caving in ~10 cm each at the bottom, the bones and
+            // knee angle kept. Turned 0.9 toward face-on (a total of 1.5).
+            "knees": thruster500KneesIn(0.2).seen(0.9),
+            // Stopping high: the hips and trunk ~15 cm higher up the sled's
+            // nearly vertical path (2 cm forward), the knees 73° -> ~91°;
+            // side-on.
+            "depth": shallow(0.3, ahead: 0.04).seen(-0.6),
+            // Snapping the knees straight at the top: 150° -> ~174° at the
+            // top hold (strength 0.67), each knee ~10 cm back; side-on.
+            "top": kneesSnapped.seen(-0.6)
+        ],
+        "Pendulum Squat (Stances)": [
+            // The heels lifting off the plate at the bottom: ~8 cm, the
+            // knees ~8 cm forward (67° -> 61°); side-on as framed.
+            "feet": heelsUp(),
+            // The hips and lower back peeling ~6 cm off the pad at the
+            // bottom; side-on as framed.
+            "pad": machineHipsOffPad,
+            // The knees caving in ~10 cm each at the bottom. Turned 1.2
+            // toward face-on.
+            "knees": thruster500KneesIn(0.2).seen(1.2),
+            // Stopping partway down the arc: the hips ~14 cm higher and
+            // ~15 cm further from the plate, near where the arc passes at
+            // 1.0 s on the way down; the knees 67° -> ~100°.
+            "depth": shallow(0.27, ahead: -0.3)
+            // "tempo" has no ghost: bouncing out of the bottom is a matter of
+            // speed, not position.
+        ],
+        "Cable Knee-Drive Kickback": [
+            // The lower back sagging ~4 cm and the leg swung ~20° higher at
+            // the back of the kick. Turned 0.57 toward the lifter's left (a
+            // total of -1.57, side-on).
+            "torso": fem1010KickArched.seen(-0.57),
+            // A short kick: the thigh stopping about vertical, the knee at
+            // ~129° instead of 170°; side-on.
+            "kick": fem1010KickShort.seen(-0.57),
+            // The hip rolling open, the foot ~16 cm out to the side. Turned
+            // 2.1 round to the lifter's back (a total of -3.1), where the
+            // sideways drift shows.
+            "hips": fem1010HipOpened.seen(-2.1),
+            // The standing knee locked straight: 160° -> 180°, the knee ~8 cm
+            // back; side-on.
+            "stance": rearLegPushing("R").seen(-0.57)
+            // "grip" has no ghost: pulling on the tower is a matter of force,
+            // not a position the frame can show.
+        ],

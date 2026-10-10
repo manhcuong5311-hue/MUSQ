@@ -81,6 +81,16 @@ struct USDZViewport: View {
     @State private var dragStartYaw: Double = 0
     @State private var status: Status = .loading
     @State private var tracking: EventSubscription?
+    /// What the per-frame joint tracking reads, rebound in place when the
+    /// model is swapped.
+    @State private var bound = TrackedSkin()
+    /// The model on stage and the resource it came from. A new `resource`
+    /// (a stance picked in the trainer, 2026-10-10) is loaded into this same
+    /// scene and cross-faded in, rather than tearing the scene down: two
+    /// stances share one body file, and a scene released while the next one
+    /// loads could leave the new model's meshes undrawn.
+    @State private var onStage: Entity?
+    @State private var loadedResource: String?
     /// `turn` and `roomBelow` as shown so far while they animate; nil until
     /// either first changes.
     @State private var shown: Staging?
@@ -126,6 +136,8 @@ struct USDZViewport: View {
                     if let tracker {
                         tracking = track(tracker, in: model, content: content)
                     }
+                    onStage = model
+                    loadedResource = resource
                     status = .ready
                 } catch {
                     status = .failed(error.localizedDescription)
@@ -141,6 +153,11 @@ struct USDZViewport: View {
                 pivot.transform.translation = [0, 0.35 * stage.room * height, 0]
             }
             .opacity(status == .ready ? 1 : 0)
+            .task(id: resource) {
+                // The first model is the make closure's; later ones swap in.
+                guard let loadedResource, loadedResource != resource else { return }
+                await swap(to: resource)
+            }
 
             switch status {
             case .loading:
@@ -202,6 +219,66 @@ struct USDZViewport: View {
     /// Blender writes the whole scene's animation as one clip per animated
     /// entity, so this walks the hierarchy rather than assuming it sits on the
     /// root.
+    /// Loads `resource` into the running scene, frames it like the first
+    /// model, and cross-fades it in over the one on stage, which keeps playing
+    /// until the new one is ready.
+    private func swap(to resource: String) async {
+        // A newer pick cancels this task (`.task(id:)`); a model it loaded
+        // never reaches the stage.
+        guard let next = try? await Entity(named: resource, in: .main), !Task.isCancelled else { return }
+        hideStudioProps(in: next)
+        next.components.set(OpacityComponent(opacity: 0))
+        pivot.addChild(next)
+        playAnimations(in: next)
+        await settleFraming(next)
+        guard !Task.isCancelled else { next.removeFromParent(); return }
+        if let tracker { bound.bind(to: next, joints: tracker.joints) }
+        let previous = onStage
+        onStage = next
+        loadedResource = resource
+        for step in 1...8 {
+            try? await Task.sleep(for: .milliseconds(30))
+            let t = Float(step) / 8
+            next.components.set(OpacityComponent(opacity: t))
+            previous?.components.set(OpacityComponent(opacity: 1 - t))
+        }
+        next.components.remove(OpacityComponent.self)
+        previous?.removeFromParent()
+    }
+
+    /// The skinned mesh and joint indices the tracking reads every frame.
+    private final class TrackedSkin {
+        var skin: ModelEntity?
+        var parents: [Int?] = []
+        var targets: [(name: String, index: Int)] = []
+
+        /// Points the tracking at `model`'s rig; false when it has none of
+        /// `joints`.
+        @discardableResult
+        func bind(to model: Entity, joints: [String]) -> Bool {
+            // Looked for under the rig first: some props are skinned too (the
+            // Assisted Nordic Curl's band has a one-joint skeleton of its own,
+            // exported ahead of the rig), and their joints are not the lifter's.
+            guard let skin = USDZViewport.skinnedModel(in: model.findEntity(named: USDZViewport.rigEntityName) ?? model)
+            else { return false }
+            let names = skin.jointNames
+            var indexByPath: [String: Int] = [:]
+            for (i, name) in names.enumerated() { indexByPath[name] = i }
+            let targets: [(name: String, index: Int)] = joints.compactMap { joint in
+                names.firstIndex { $0 == joint || $0.hasSuffix("/" + joint) }
+                    .map { (joint, $0) }
+            }
+            guard !targets.isEmpty else { return false }
+            self.parents = names.map { path in
+                guard let slash = path.lastIndex(of: "/") else { return nil }
+                return indexByPath[String(path[..<slash])]
+            }
+            self.targets = targets
+            self.skin = skin
+            return true
+        }
+    }
+
     private func playAnimations(in root: Entity) {
         func walk(_ entity: Entity) {
             if let clip = entity.availableAnimations.first {
@@ -275,23 +352,7 @@ struct USDZViewport: View {
     private func track(
         _ tracker: JointTracker, in model: Entity, content: RealityViewCameraContent
     ) -> EventSubscription? {
-        // Looked for under the rig first: some props are skinned too (the
-        // Assisted Nordic Curl's band has a one-joint skeleton of its own,
-        // exported ahead of the rig), and their joints are not the lifter's.
-        guard let skin = Self.skinnedModel(in: model.findEntity(named: Self.rigEntityName) ?? model)
-        else { return nil }
-        let names = skin.jointNames
-        var indexByPath: [String: Int] = [:]
-        for (i, name) in names.enumerated() { indexByPath[name] = i }
-        let parents: [Int?] = names.map { path in
-            guard let slash = path.lastIndex(of: "/") else { return nil }
-            return indexByPath[String(path[..<slash])]
-        }
-        let targets: [(name: String, index: Int)] = tracker.joints.compactMap { joint in
-            names.firstIndex { $0 == joint || $0.hasSuffix("/" + joint) }
-                .map { (joint, $0) }
-        }
-        guard !targets.isEmpty else { return nil }
+        guard bound.bind(to: model, joints: tracker.joints) else { return nil }
 
         let distance = distance, fieldOfView = fieldOfView
         tracker.projector = { [weak tracker] p in
@@ -299,7 +360,10 @@ struct USDZViewport: View {
             return Self.project(p, in: tracker.viewSize, distance: distance, fieldOfView: fieldOfView)
         }
 
+        let bound = bound
         return content.subscribe(to: SceneEvents.Update.self) { _ in
+            guard let skin = bound.skin else { return }
+            let parents = bound.parents, targets = bound.targets
             let local = skin.jointTransforms
             var resolved: [Int: simd_float4x4] = [:]
             func meshSpace(_ i: Int) -> simd_float4x4 {
