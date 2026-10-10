@@ -25,14 +25,31 @@ struct RadialGlow: View {
     var cx: CGFloat
     var cy: CGFloat
     var stop: CGFloat = 0.70
+    /// The stage the fractions are measured in, within this view's own
+    /// bounds; nil uses the whole view. Lets an iPad pane keep a glow on the
+    /// phone-shaped stage its fractions were drawn for.
+    var stage: CGRect? = nil
 
     /// Diameter of the unscaled base circle. Arbitrary — it cancels out.
     private let base: CGFloat = 200
 
+    init(color: Color, rx: CGFloat, ry: CGFloat, cx: CGFloat, cy: CGFloat,
+         stop: CGFloat = 0.70, in rect: CGRect? = nil) {
+        self.color = color
+        self.rx = rx
+        self.ry = ry
+        self.cx = cx
+        self.cy = cy
+        self.stop = stop
+        self.stage = rect
+    }
+
     var body: some View {
         GeometryReader { geo in
-            let w = geo.size.width
-            let h = geo.size.height
+            let w = stage?.width ?? geo.size.width
+            let h = stage?.height ?? geo.size.height
+            let x0 = stage?.minX ?? 0
+            let y0 = stage?.minY ?? 0
             Circle()
                 .fill(
                     RadialGradient(
@@ -51,7 +68,7 @@ struct RadialGlow: View {
                     y: max(0.0001, (ry * h) / (base / 2)),
                     anchor: .center
                 )
-                .position(x: cx * w, y: cy * h)
+                .position(x: x0 + cx * w, y: y0 + cy * h)
         }
         .allowsHitTesting(false)
     }
@@ -67,8 +84,23 @@ struct ViewportGround: View {
     var cx: CGFloat
     var cy: CGFloat
     var stop: CGFloat = 0.70
+    /// Keeps the pool round on a frame much wider than tall: `rx` is taken
+    /// of at most 1.2× the height instead of the full width, so an iPad
+    /// pane's studio floor doesn't stretch into a flat band.
+    var aspectLocked: Bool = false
 
     var body: some View {
+        if aspectLocked {
+            GeometryReader { geo in
+                let w = max(geo.size.width, 1)
+                ground(rx: rx * min(w, 1.2 * geo.size.height) / w)
+            }
+        } else {
+            ground(rx: rx)
+        }
+    }
+
+    private func ground(rx: CGFloat) -> some View {
         ZStack {
             outer
             RadialGlow(color: inner, rx: rx, ry: ry, cx: cx, cy: cy, stop: stop)

@@ -66,6 +66,10 @@ final class Ads: NSObject {
     /// The break the ad on screen was shown at, so only an exercise-screen ad
     /// uses up the day's one.
     @ObservationIgnored private var presentingMoment: Moment?
+    /// iPad: the slot width last asked for, and the banner's current width.
+    @ObservationIgnored private var requestedBannerWidth: CGFloat?
+    @ObservationIgnored private var bannerWidth: CGFloat?
+    @ObservationIgnored private var resizing: Task<Void, Never>?
 
     private static let fullScreenGap: TimeInterval = 180
     /// The SDK's anchored sizes are now only the large ones (up to ~150 pt);
@@ -130,13 +134,44 @@ final class Ads: NSObject {
 
     private func loadBanner() {
         guard banner == nil else { return }
-        let width = Self.keyWindow?.bounds.width ?? 390
-        let view = BannerView(adSize: inlineAdaptiveBanner(width: width, maxHeight: Self.bannerMaxHeight))
+        let width = requestedBannerWidth ?? Self.keyWindow?.bounds.width ?? 390
+        bannerWidth = width
+        let view = BannerView(adSize: inlineAdaptiveBanner(width: width, maxHeight: Self.maxHeight(for: width)))
         view.adUnitID = UnitID.banner
         view.delegate = self
         view.rootViewController = Self.topViewController
         view.load(Request())
         banner = view
+    }
+
+    /// iPad only: fits the banner to its slot in the content column, which
+    /// changes with rotation, Split View and the sidebar. Settles for half a
+    /// second first, so a window being dragged doesn't request an ad per
+    /// frame; a change under a point is ignored. iPhone never calls this —
+    /// its banner keeps the width it was created with.
+    func resizeBanner(width: CGFloat) {
+        guard width > 0 else { return }
+        requestedBannerWidth = width
+        resizing?.cancel()
+        resizing = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(0.5))
+            guard !Task.isCancelled, let self else { return }
+            self.applyBannerWidth(width)
+        }
+    }
+
+    private func applyBannerWidth(_ width: CGFloat) {
+        guard let banner, abs((bannerWidth ?? 0) - width) > 1 else { return }
+        bannerWidth = width
+        banner.adSize = inlineAdaptiveBanner(width: width, maxHeight: Self.maxHeight(for: width))
+        banner.load(Request())
+        // The new height arrives with the ad; until then keep the slot as it
+        // was rather than collapsing it.
+    }
+
+    /// A leaderboard-wide slot gets a leaderboard's height.
+    private static func maxHeight(for width: CGFloat) -> CGFloat {
+        width >= 728 ? 90 : bannerMaxHeight
     }
 
     // MARK: - Full screen

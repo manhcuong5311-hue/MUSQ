@@ -16,10 +16,18 @@ struct SectionEyebrow: View {
     var em: CGFloat = 0.10
     var color: Color = DS.silver.opacity(0.45)
 
+    @Environment(\.dsLayout) private var layout
+
+    /// The default size grows to 12 in regular; a size the caller chose is
+    /// left alone.
+    private var resolvedSize: CGFloat {
+        size == 11 && layout.isRegular ? 12 : size
+    }
+
     var body: some View {
         Text(text)
-            .font(.mono(size, .semibold))
-            .trackingEm(em, size: size)
+            .font(.mono(resolvedSize, .semibold))
+            .trackingEm(em, size: resolvedSize)
             .foregroundStyle(color)
     }
 }
@@ -31,25 +39,36 @@ struct MetaLine: View {
     var em: CGFloat = 0.08
     var color: Color = DS.silver.opacity(0.4)
 
+    @Environment(\.dsLayout) private var layout
+
+    /// The default size grows to 10.5 in regular, like `SectionEyebrow`.
+    private var resolvedSize: CGFloat {
+        size == 9.5 && layout.isRegular ? 10.5 : size
+    }
+
     var body: some View {
         Text(text)
-            .font(.mono(size, .medium))
-            .trackingEm(em, size: size)
+            .font(.mono(resolvedSize, .medium))
+            .trackingEm(em, size: resolvedSize)
             .foregroundStyle(color)
     }
 }
 
 // MARK: - Buttons
 
-/// The 34pt circular header control (back, favourite, overflow).
+/// The 34pt circular header control (back, favourite, overflow); 40pt in
+/// regular unless the caller sets a diameter.
 struct CircleIconButton<Content: View>: View {
-    var diameter: CGFloat = 34
+    var diameter: CGFloat? = nil
     var background: Color = DS.silver.opacity(0.08)
     var border: Color? = nil
     var action: () -> Void
     @ViewBuilder var content: () -> Content
 
+    @Environment(\.dsLayout) private var layout
+
     var body: some View {
+        let side = diameter ?? (layout.isRegular ? 40 : 34)
         Button(action: action) {
             ZStack {
                 Circle().fill(background)
@@ -58,19 +77,24 @@ struct CircleIconButton<Content: View>: View {
                 }
                 content()
             }
-            .frame(width: diameter, height: diameter)
+            .frame(width: side, height: side)
         }
         .buttonStyle(.plain)
+        .dsHover(.highlight)
     }
 }
 
-/// Squared glass control that sits inside a viewport (muscles worked, key tips).
+/// Squared glass control that sits inside a viewport (muscles worked, key
+/// tips): 32pt, or 38pt in regular unless the caller sets a side.
 struct GlassSquareButton<Content: View>: View {
-    var side: CGFloat = 32
+    var side: CGFloat? = nil
     var action: () -> Void
     @ViewBuilder var content: () -> Content
 
+    @Environment(\.dsLayout) private var layout
+
     var body: some View {
+        let side = side ?? (layout.isRegular ? 38 : 32)
         Button(action: action) {
             ZStack {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -83,10 +107,13 @@ struct GlassSquareButton<Content: View>: View {
             .background(.ultraThinMaterial.opacity(0.001))
         }
         .buttonStyle(.plain)
+        .dsHover(.highlight, radius: 10)
     }
 }
 
-/// Full-width action button. Silver when prominent, glass otherwise.
+/// Full-width action button. Silver when prominent, glass otherwise. Its
+/// width doesn't change in regular — cap it with `.dsCTA()` where it would
+/// otherwise span a whole iPad column.
 struct WideButton: View {
     var title: String
     var prominent: Bool
@@ -96,13 +123,17 @@ struct WideButton: View {
     var border: Color? = nil
     var action: () -> Void
 
+    @Environment(\.dsLayout) private var layout
+
     var body: some View {
+        let size = layout.isRegular ? (fontSize * 1.1 * 2).rounded() / 2 : fontSize
+        let padding = layout.isRegular ? verticalPadding + 2 : verticalPadding
         Button(action: action) {
             Text(title)
-                .font(.ui(fontSize, .semibold))
+                .font(.ui(size, .semibold))
                 .foregroundStyle(prominent ? DS.ink : DS.silver)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, verticalPadding)
+                .padding(.vertical, padding)
                 .background(
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                         .fill(prominent ? DS.silver : DS.silver.opacity(0.07))
@@ -114,6 +145,7 @@ struct WideButton: View {
                 )
         }
         .buttonStyle(.plain)
+        .dsHover(.highlight, radius: cornerRadius)
     }
 }
 
@@ -124,13 +156,15 @@ struct FilterChip: View {
     var selected: Bool
     var action: () -> Void
 
+    @Environment(\.dsLayout) private var layout
+
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.ui(12.5, .semibold))
+                .font(.ui(layout.isRegular ? 13.5 : 12.5, .semibold))
                 .foregroundStyle(selected ? DS.ink : DS.silver.opacity(0.6))
-                .padding(.horizontal, 13)
-                .padding(.vertical, 7)
+                .padding(.horizontal, layout.isRegular ? 15 : 13)
+                .padding(.vertical, layout.isRegular ? 8 : 7)
                 .background(
                     RoundedRectangle(cornerRadius: 11, style: .continuous)
                         .fill(selected ? DS.silver : DS.silver.opacity(0.05))
@@ -141,6 +175,7 @@ struct FilterChip: View {
                 )
         }
         .buttonStyle(.plain)
+        .dsHover(.highlight, radius: 11)
     }
 }
 
@@ -161,7 +196,10 @@ struct MonoSegmentedControl<Value: Hashable>: View {
     var inactiveBackground: Color = .clear
     var fillsWidth: Bool = false
 
+    @Environment(\.dsLayout) private var layout
+
     var body: some View {
+        let size = layout.isRegular ? fontSize + 1 : fontSize
         HStack(spacing: 4) {
             ForEach(Array(options.enumerated()), id: \.offset) { _, option in
                 let isOn = option.value == selection
@@ -169,18 +207,19 @@ struct MonoSegmentedControl<Value: Hashable>: View {
                     selection = option.value
                 } label: {
                     Text(option.title)
-                        .font(.mono(fontSize, .semibold))
-                        .trackingEm(em, size: fontSize)
+                        .font(.mono(size, .semibold))
+                        .trackingEm(em, size: size)
                         .foregroundStyle(isOn ? DS.ink : DS.silver.opacity(0.5))
                         .frame(maxWidth: fillsWidth ? .infinity : nil)
                         .padding(.horizontal, itemPaddingH)
-                        .padding(.vertical, itemPaddingV)
+                        .padding(.vertical, layout.isRegular ? itemPaddingV + 2 : itemPaddingV)
                         .background(
                             RoundedRectangle(cornerRadius: itemRadius, style: .continuous)
                                 .fill(isOn ? DS.silver : inactiveBackground)
                         )
                 }
                 .buttonStyle(.plain)
+                .dsHover(.highlight, radius: itemRadius)
             }
         }
         .padding(trackPadding)
@@ -188,6 +227,9 @@ struct MonoSegmentedControl<Value: Hashable>: View {
             RoundedRectangle(cornerRadius: trackRadius, style: .continuous)
                 .fill(trackColor)
         )
+        // A full-width track across an iPad column reads as a toolbar, not
+        // a control; nil keeps compact exactly as it was.
+        .frame(maxWidth: fillsWidth && layout.isRegular ? 440 : nil)
     }
 }
 
@@ -211,6 +253,8 @@ struct AnnotationCallout: View {
     var shadowed: Bool = true
     var ringed: Bool = true
 
+    @Environment(\.dsAnnotationScale) private var scale
+
     private var pill: some View {
         CalloutPill(text: text, borderColor: borderColor, fontSize: fontSize,
                     paddingH: paddingH, paddingV: paddingV,
@@ -223,7 +267,7 @@ struct AnnotationCallout: View {
             startPoint: direction == .pointsRight ? .leading : .trailing,
             endPoint: direction == .pointsRight ? .trailing : .leading
         )
-        .frame(width: leaderLength, height: 1)
+        .frame(width: leaderLength * scale, height: 1)
     }
 
     private var dot: some View {
@@ -235,9 +279,9 @@ struct AnnotationCallout: View {
             if direction == .pointsRight {
                 pill
                 leader
-                dot.padding(.leading, -3)
+                dot.padding(.leading, -3 * scale)
             } else {
-                dot.padding(.trailing, -3)
+                dot.padding(.trailing, -3 * scale)
                 leader
                 pill
             }
@@ -255,20 +299,28 @@ struct CalloutPill: View {
     var cornerRadius: CGFloat = 13
     var shadowed: Bool = true
 
+    @Environment(\.dsAnnotationScale) private var scale
+
+    /// Grows with the scale but stops at 13.5: on a big viewport the label
+    /// should read as a label, not a headline.
+    private var resolvedFontSize: CGFloat {
+        scale == 1 ? fontSize : min(fontSize * scale, max(fontSize, 13.5))
+    }
+
     var body: some View {
         Text(text)
-            .font(.ui(fontSize, .semibold))
+            .font(.ui(resolvedFontSize, .semibold))
             .foregroundStyle(DS.silver)
             .lineLimit(1)
             .fixedSize()
-            .padding(.horizontal, paddingH)
-            .padding(.vertical, paddingV)
+            .padding(.horizontal, paddingH * scale)
+            .padding(.vertical, paddingV * scale)
             .background(
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                RoundedRectangle(cornerRadius: cornerRadius * scale, style: .continuous)
                     .fill(DS.glass(0.66))
             )
             .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                RoundedRectangle(cornerRadius: cornerRadius * scale, style: .continuous)
                     .strokeBorder(borderColor, lineWidth: 1)
             )
             .shadow(color: .black.opacity(shadowed ? 0.4 : 0), radius: 8, y: 4)
@@ -280,14 +332,16 @@ struct CalloutDot: View {
     var color: Color = DS.silver
     var ringColor: Color = DS.silver.opacity(0.14)
 
+    @Environment(\.dsAnnotationScale) private var scale
+
     var body: some View {
         Circle()
             .fill(color)
-            .frame(width: 7, height: 7)
+            .frame(width: 7 * scale, height: 7 * scale)
             .background(
                 Circle()
                     .fill(ringColor)
-                    .frame(width: 15, height: 15)
+                    .frame(width: 15 * scale, height: 15 * scale)
             )
     }
 }
@@ -338,6 +392,9 @@ struct TrackedCallout: View {
                     CalloutPill(text: text, borderColor: borderColor)
                 }
                 .buttonStyle(.plain)
+                // On the pill itself: anywhere higher, the hover shape would
+                // cover the whole viewport. iPad only.
+                .dsHover(.highlight)
                 .onGeometryChange(for: CGSize.self) { $0.size } action: { pillSize = $0 }
                 // Pin the label's edge-middle to the anchor.
                 .alignmentGuide(.leading) { d in
@@ -535,7 +592,10 @@ struct MistakeBanner: View {
 struct FaultRing: View {
     var diameter: CGFloat = 112
 
+    @Environment(\.dsAnnotationScale) private var scale
+
     var body: some View {
+        let diameter = diameter * scale
         ZStack {
             Circle()
                 .fill(
@@ -554,6 +614,34 @@ struct FaultRing: View {
         }
         .frame(width: diameter, height: diameter)
         .allowsHitTesting(false)
+    }
+}
+
+// MARK: - Floating panel
+
+/// The only overlay shape on iPad: a floating pane card near the bottom of
+/// its container, as tall as its content up to 80% of the container, then
+/// scrolling. Lay it over the full area it floats in.
+struct FloatingPanel<Content: View>: View {
+    @ViewBuilder var content: () -> Content
+
+    @State private var contentHeight: CGFloat = 0
+
+    var body: some View {
+        GeometryReader { geo in
+            ScrollView {
+                content()
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { contentHeight = $0 }
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .frame(height: min(contentHeight, geo.size.height * 0.8))
+            .frame(maxWidth: max(0, min(560, geo.size.width - 48)))
+            .clipShape(RoundedRectangle(cornerRadius: DS.Layout.paneRadius, style: .continuous))
+            .dsPane()
+            .shadow(color: .black.opacity(0.22), radius: 24, y: 8)
+            .padding(.bottom, 24)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .bottom)
+        }
     }
 }
 

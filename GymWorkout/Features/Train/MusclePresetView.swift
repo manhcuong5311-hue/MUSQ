@@ -15,6 +15,10 @@
 //  the user hasn't done lately (`ExerciseRotation`). Swaps, saving over a
 //  preset and deleting one can all be undone from the toast.
 //
+//  On iPad the list is one centred column, and from 900pt a master/detail:
+//  the list on the left, the chosen exercise's sets (or the group at a
+//  glance) on the right, without pushing anything.
+//
 
 import SwiftUI
 
@@ -28,7 +32,11 @@ struct MusclePresetView: View {
     @Environment(TrainRouter.self) private var router
     @Environment(Purchases.self) private var purchases
     @Environment(Paywall.self) private var paywall
+    @Environment(Ads.self) private var ads
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dsLayout) private var layout
+    /// Set by a host that already shows the rest timer.
+    @Environment(\.restTimerInsetSuppressed) private var hostShowsRest
 
     @State private var level: PresetLevel = .basic
     @State private var preview: [WorkoutExercise] = []
@@ -47,6 +55,12 @@ struct MusclePresetView: View {
     @State private var toast: Toast?
     /// Rows just swapped, outlined for a moment so the change is visible.
     @State private var flashed: Set<UUID> = []
+    /// The exercise open in the wide layout's detail pane. Screen state,
+    /// never a route, and never chosen for the user: opening one plans the
+    /// group, and looking must not change the workout.
+    @State private var selectedID: UUID?
+    /// The row whose target is being edited in a popover (iPad).
+    @State private var targetPopover: WorkoutExercise?
     @Environment(\.accessibilityVoiceOverEnabled) private var voiceOver
 
     /// A short note over the list, with an undo when it follows a change.
@@ -100,42 +114,20 @@ struct MusclePresetView: View {
         ZStack {
             DS.ink.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                header
-                List {
-                    intro
-                        .modifier(PlainRow(top: 4, bottom: 14))
-
-                    listHeader
-                        .modifier(PlainRow(top: 0, bottom: 2))
-
-                    ForEach(rows) { exercise in
-                        row(exercise)
-                            .modifier(PlainRow(top: 5, bottom: 5))
-                            // Logged sets go only through ⋯ Remove, which asks first.
-                            .deleteDisabled(!exercise.completedSets.isEmpty)
-                    }
-                    .onDelete(perform: delete)
-                    .onMove(perform: move)
-
-                    addButton
-                        .modifier(PlainRow(top: 10, bottom: 6))
-
-                    footer
-                        .modifier(PlainRow(top: 14, bottom: 30))
+            if layout.isWide {
+                wide
+            } else {
+                VStack(spacing: 0) {
+                    header
+                    list
                 }
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
-                .environment(\.editMode, $editMode)
-                // Room to scroll the footer clear of the toast.
-                .contentMargins(.bottom, toast == nil ? 0 : 72, for: .scrollContent)
-            }
 
-            if let toast {
-                toastView(toast)
-                    .frame(maxHeight: .infinity, alignment: .bottom)
-                    .padding(.bottom, 18)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                if let toast {
+                    toastView(toast)
+                        .frame(maxHeight: .infinity, alignment: .bottom)
+                        .padding(.bottom, 18)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
             }
         }
         .task(id: toast?.id) {
@@ -152,9 +144,24 @@ struct MusclePresetView: View {
             level = store.suggestedLevel
             if !isPlanned { preview = store.preview(group, level: level) }
         }
+        .onChange(of: rows.map(\.id)) { _, ids in
+            // A level switch, swap, removal or undo took the open exercise
+            // out of the list.
+            if let selectedID, !ids.contains(selectedID) { self.selectedID = nil }
+        }
+        .onChange(of: layout.isWide) { _, isWide in
+            // Narrowed past the split: the open exercise carries on as the
+            // pushed screen it is everywhere else.
+            guard !isWide, let id = selectedID else { return }
+            selectedID = nil
+            router.push(.exercise(id))
+        }
         .toolbar(.hidden, for: .navigationBar)
         .navigationBarBackButtonHidden()
         .restTimerInset()
+        // The split shows the rest under its detail pane instead.
+        .environment(\.restTimerInsetSuppressed, hostShowsRest || layout.isWide)
+        .dsBackShortcuts(backShortcut)
         .onAppear(perform: load)
         .sheet(item: $picker) { mode in
             ExercisePickerView(
@@ -171,56 +178,136 @@ struct MusclePresetView: View {
         }
         .sheet(item: $editingTarget) { exercise in
             TargetEditorSheet(exercise: exercise) { sets, reps in
-                ensurePlanned()
-                store.updateTarget(id: exercise.id, sets: sets, reps: reps)
+                saveTarget(exercise, sets: sets, reps: reps)
             }
         }
-        .confirmationDialog("Remove \(group.title) from \(dayName.lowercased()) workout?",
-                            isPresented: $confirmsRemoval, titleVisibility: .visible) {
-            Button("Remove", role: .destructive) {
+        // iPad anchors each confirmation to the control that asked for it;
+        // the phone's action sheets stay where they always were.
+        .applying(!DS.isPad) { view in
+            view
+                .modifier(groupRemovalDialog)
+                .modifier(exerciseRemovalDialog(isPresented: Binding(get: { removingExercise != nil },
+                                                                      set: { if !$0 { removingExercise = nil } })))
+                .modifier(presetDeletionDialog)
+        }
+    }
+
+    // MARK: - Confirmations
+
+    private var groupRemovalDialog: PresetConfirmation<Bool> {
+        PresetConfirmation(
+            title: "Remove \(group.title) from \(dayName.lowercased()) workout?",
+            isPresented: $confirmsRemoval,
+            presenting: true,
+            action: "Remove",
+            message: { _ in "Sets you've already marked done are removed too." },
+            onConfirm: { _ in
                 store.removeGroup(group, on: day)
                 dismiss()
+            })
+    }
+
+    private func exerciseRemovalDialog(isPresented: Binding<Bool>) -> PresetConfirmation<WorkoutExercise> {
+        PresetConfirmation(
+            title: "Remove \(removingExercise?.exerciseName ?? "Exercise")?",
+            isPresented: isPresented,
+            presenting: removingExercise,
+            action: "Remove",
+            message: { exercise in
+                let done = exercise.completedSets.count
+                return done == 1 ? "The set you've marked done is removed too."
+                    : "The \(done) sets you've marked done are removed too."
+            },
+            onConfirm: { remove($0) })
+    }
+
+    private var presetDeletionDialog: PresetConfirmation<PresetLevel> {
+        PresetConfirmation(
+            title: "Delete \(deletingPreset?.name ?? "Preset") for \(group.title)?",
+            isPresented: Binding(get: { deletingPreset != nil },
+                                 set: { if !$0 { deletingPreset = nil } }),
+            presenting: deletingPreset,
+            action: "Delete",
+            message: { _ in "Days you've already planned keep their exercises." },
+            onConfirm: { deletePreset($0) })
+    }
+
+    // MARK: - List
+
+    private var list: some View {
+        List {
+            intro
+                .modifier(PlainRow(top: 4, bottom: 14, inset: rowInset))
+
+            listHeader
+                .modifier(PlainRow(top: 0, bottom: 2, inset: rowInset))
+
+            ForEach(rows) { exercise in
+                row(exercise)
+                    .modifier(PlainRow(top: 5, bottom: 5, inset: rowInset))
+                    // Logged sets go only through ⋯ Remove, which asks first.
+                    .deleteDisabled(!exercise.completedSets.isEmpty)
             }
-        } message: {
-            Text("Sets you've already marked done are removed too.")
+            .onDelete(perform: delete)
+            .onMove(perform: move)
+
+            addButton
+                .modifier(PlainRow(top: 10, bottom: 6, inset: rowInset))
+
+            footer
+                .modifier(PlainRow(top: 14, bottom: 30, inset: rowInset))
         }
-        .confirmationDialog("Remove \(removingExercise?.exerciseName ?? "Exercise")?",
-                            isPresented: Binding(get: { removingExercise != nil },
-                                                 set: { if !$0 { removingExercise = nil } }),
-                            titleVisibility: .visible, presenting: removingExercise) { exercise in
-            Button("Remove", role: .destructive) { remove(exercise) }
-        } message: { exercise in
-            let done = exercise.completedSets.count
-            Text(done == 1 ? "The set you've marked done is removed too."
-                 : "The \(done) sets you've marked done are removed too.")
-        }
-        .confirmationDialog("Delete \(deletingPreset?.name ?? "Preset") for \(group.title)?",
-                            isPresented: Binding(get: { deletingPreset != nil },
-                                                 set: { if !$0 { deletingPreset = nil } }),
-                            titleVisibility: .visible, presenting: deletingPreset) { preset in
-            Button("Delete", role: .destructive) { deletePreset(preset) }
-        } message: { _ in
-            Text("Days you've already planned keep their exercises.")
-        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .environment(\.editMode, $editMode)
+        // Room to scroll the footer clear of the toast.
+        .contentMargins(.bottom, toast == nil ? 0 : 72, for: .scrollContent)
+    }
+
+    /// The list's side inset. The phone's gutter; on iPad the gutter inside
+    /// a centred 680pt column, so the rows read as one column while the
+    /// whole width still scrolls; in the split's list pane, the pane gap.
+    private var rowInset: CGFloat {
+        guard layout.isRegular else { return DS.Metric.gutter }
+        if layout.isWide { return layout.paneGap }
+        let margin = (layout.containerWidth - DS.Layout.columnWidth) / 2
+        return max(layout.gutter, margin + layout.gutter)
+    }
+
+    /// ⌘[ and Esc: close the open exercise first, then go back — only while
+    /// this is the top of the stack, as the pushed exercise has its own.
+    private func backShortcut() {
+        guard case .preset(let shown, _, _)? = router.path.last, shown == group else { return }
+        if selectedID != nil { closeDetail() } else { back() }
+    }
+
+    private func back() {
+        // Leaving with an exercise open closes it, as Back does on iPhone.
+        if selectedID != nil { ads.moment(.exerciseClosed) }
+        dismiss()
     }
 
     // MARK: - Header
 
     private var header: some View {
-        HStack(spacing: 12) {
-            CircleIconButton(action: { dismiss() }) {
+        let regular = layout.isRegular
+        return HStack(spacing: 12) {
+            CircleIconButton(action: back) {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.system(size: regular ? 15 : 14, weight: .semibold))
                     .foregroundStyle(DS.silver)
             }
             .accessibilityLabel("Back")
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(group.title)
-                    .font(.ui(16, .semibold))
-                    .tracking(-0.25)
+                    .font(.ui(layout.isWide ? 22 : layout.text(.screenTitle), .semibold))
+                    .tracking(regular ? -0.4 : -0.25)
                     .foregroundStyle(DS.silver)
                 MetaLine(text: "\(dayName.uppercased()) WORKOUT · \(rows.count) \(rows.count == 1 ? "EXERCISE" : "EXERCISES")")
+                    // One line in the split's list pane, beside Reorder.
+                    .lineLimit(regular ? 1 : nil)
+                    .minimumScaleFactor(regular ? 0.8 : 1)
                     .padding(.top, 3)
             }
 
@@ -230,14 +317,170 @@ struct MusclePresetView: View {
                 Button(editMode.isEditing ? "Done" : "Reorder") {
                     withAnimation { editMode = editMode.isEditing ? .inactive : .active }
                 }
-                .font(.ui(13, .semibold))
+                .font(.ui(regular ? 14 : 13, .semibold))
                 .foregroundStyle(DS.silver)
                 .buttonStyle(.plain)
+                .padding(.horizontal, regular ? 12 : 0)
+                .padding(.vertical, regular ? 8 : 0)
+                .dsHover(.highlight)
+                // The hover pad overhangs, so the word keeps the rows' edge.
+                .padding(.trailing, regular ? -12 : 0)
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 11)
-        .padding(.bottom, 10)
+        // Regular lines the back button up with the rows' leading edge.
+        .padding(.horizontal, regular ? rowInset : 16)
+        // The same band as the exercise header beside it in the split.
+        .padding(.top, regular ? 14 : 11)
+        .padding(.bottom, regular ? 14 : 10)
+    }
+
+    // MARK: - Wide (iPad, 900pt and up)
+
+    /// The list in a pane of its own beside the open exercise, each under
+    /// its own header on one line, so picking an exercise never pushes.
+    private var wide: some View {
+        // Never under 400: below that a row's name and recovery note wrap
+        // to three lines beside the thumbnail and the row's two buttons.
+        let listWidth = layout.paneWidth(0.36, min: 400, max: DS.Layout.inspectorMax)
+        let detailWidth = max(0, layout.containerWidth - listWidth - 1)
+        return HStack(spacing: 0) {
+            VStack(spacing: 0) {
+                header
+                ZStack {
+                    list
+                    if let toast {
+                        toastView(toast)
+                            .frame(maxHeight: .infinity, alignment: .bottom)
+                            .padding(.bottom, 18)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
+            }
+            .frame(width: listWidth)
+            .environment(\.dsLayout, layout.with(containerWidth: listWidth))
+
+            Rectangle()
+                .fill(DS.silver.opacity(0.07))
+                .frame(width: 1)
+                .ignoresSafeArea(edges: .bottom)
+
+            detail
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .environment(\.dsLayout, layout.with(containerWidth: detailWidth))
+                // The screen's one rest timer, under the pane the sets are
+                // logged in.
+                .restTimerInset()
+                .environment(\.restTimerInsetSuppressed, hostShowsRest)
+        }
+    }
+
+    @ViewBuilder
+    private var detail: some View {
+        if let id = selectedID, let item = rows.first(where: { $0.id == id }) {
+            ExerciseDetailView(workoutExerciseID: id,
+                               presentation: .embedded(onClose: closeDetail,
+                                                       onCompleted: { advance(from: id) }))
+                .restTimerInsetSuppressed()
+                // Rebuilt per exercise (a swap keeps the row's id), so the
+                // 3D model is loaded once for each and not on every edit.
+                .id("\(id)|\(item.exerciseName)")
+                .transition(.opacity)
+        } else {
+            overview
+                .transition(.opacity)
+        }
+    }
+
+    /// Nothing chosen yet: the group at a glance — where it trains, how
+    /// it's recovering, what the preset is — and the step that comes next.
+    private var overview: some View {
+        GeometryReader { geo in
+            ScrollView(showsIndicators: false) {
+                overviewContent(paneHeight: geo.size.height)
+                    .padding(.horizontal, layout.gutter)
+                    .padding(.vertical, layout.sectionSpacing)
+                    .frame(maxWidth: .infinity, minHeight: geo.size.height)
+            }
+        }
+    }
+
+    private func overviewContent(paneHeight: CGFloat) -> some View {
+        let now = referenceTime
+        let lit = Dictionary(group.bodyRegions.map { ($0, DS.activation) }, uniquingKeysWith: { a, _ in a })
+        return VStack(spacing: 0) {
+            BodyMapPair(source: .fills(front: lit, back: lit),
+                        figureHeight: min(300, paneHeight * 0.45))
+
+            VStack(alignment: .leading, spacing: 0) {
+                // A past day's log is a record; recovery is about what's next.
+                if !isPast {
+                    recovery(store.recoveryRecords(at: now)[group], now: now)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(20)
+                    Hairline()
+                }
+                VStack(alignment: .leading, spacing: 6) {
+                    SectionEyebrow(text: "PRESET", size: 10.5)
+                    if levels.contains(level) {
+                        Text(level.name)
+                            .font(.ui(15, .semibold))
+                            .foregroundStyle(DS.silver)
+                    }
+                    Text(levelCaption)
+                        .font(.ui(13.5))
+                        .cssLineHeight(13.5, 1.45)
+                        .foregroundStyle(DS.silver.opacity(0.55))
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(20)
+            }
+            .frame(maxWidth: 440)
+            .dsPane(radius: layout.cardRadius)
+            .padding(.top, 32)
+
+            overviewAction
+                .padding(.top, 28)
+        }
+    }
+
+    @ViewBuilder
+    private var overviewAction: some View {
+        if isPlanned {
+            let share = setsTotal == 0 ? 0 : CGFloat(setsDone) / CGFloat(setsTotal)
+            VStack(spacing: 10) {
+                Text("\(setsDone) of \(setsTotal) sets done")
+                    .font(.ui(15, .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.75))
+                Capsule()
+                    .fill(DS.silver.opacity(0.08))
+                    .frame(width: 240, height: 4)
+                    .overlay(alignment: .leading) {
+                        Capsule()
+                            .fill(DS.silver)
+                            .frame(width: 240 * share)
+                    }
+                    .padding(.vertical, 2)
+                Text("Choose an exercise to log its sets.")
+                    .font(.ui(12.5))
+                    .foregroundStyle(DS.silver.opacity(0.4))
+            }
+            .accessibilityElement(children: .combine)
+        } else if !rows.isEmpty {
+            VStack(spacing: 10) {
+                WideButton(title: "Add to \(dayName) Workout", prominent: true) {
+                    withAnimation { ensurePlanned() }
+                }
+                .dsCTA(360)
+                Text("Or choose an exercise to start logging sets.")
+                    .font(.ui(12.5))
+                    .foregroundStyle(DS.silver.opacity(0.4))
+            }
+        } else {
+            Text("Add an exercise to plan \(group.title).")
+                .font(.ui(13.5))
+                .foregroundStyle(DS.silver.opacity(0.5))
+        }
     }
 
     // MARK: - Intro
@@ -245,15 +488,16 @@ struct MusclePresetView: View {
     private var intro: some View {
         let now = referenceTime
         let levels = levels
-        return VStack(alignment: .leading, spacing: 14) {
+        let regular = layout.isRegular
+        return VStack(alignment: .leading, spacing: regular ? 16 : 14) {
             HStack(alignment: .top, spacing: 12) {
                 // A past day's log is a record; recovery is about what's next.
                 if !isPast {
                     recovery(store.recoveryRecords(at: now)[group], now: now)
                 }
                 Spacer()
-                MiniBodyMap(group: group)
-                    .frame(width: 30, height: 70)
+                MiniBodyMap(group: group, lineWidth: regular ? 0.75 : 0.5)
+                    .frame(width: regular ? 44 : 30, height: regular ? 104 : 70)
             }
 
             // Nothing to pick between for a group with no built-in preset
@@ -270,34 +514,35 @@ struct MusclePresetView: View {
             }
 
             Text(levelCaption)
-                .font(.ui(12.5))
+                .font(.ui(regular ? 13.5 : 12.5))
                 .foregroundStyle(DS.silver.opacity(0.5))
         }
     }
 
     /// The group's recovery as of `now`: the day open, at this time of day.
     private func recovery(_ record: MuscleTrainingRecord?, now: Date) -> some View {
-        VStack(alignment: .leading, spacing: 5) {
-            SectionEyebrow(text: "RECOVERY", size: 9.5)
+        let detail: CGFloat = layout.isRegular ? 13 : 12
+        return VStack(alignment: .leading, spacing: layout.isRegular ? 6 : 5) {
+            SectionEyebrow(text: "RECOVERY", size: layout.isRegular ? 10.5 : 9.5)
             MuscleStateLabel(state: MuscleCardState(record?.status))
             if let record, record.status == .partlyReady {
                 Text("\(RecoveryText.recovering(record.tiredParts.map(\.part))) · \(RecoveryText.ready(record.readyParts).lowercased())")
-                    .font(.ui(12))
+                    .font(.ui(detail))
                     .foregroundStyle(DS.silver.opacity(0.5))
                     .fixedSize(horizontal: false, vertical: true)
             } else if let record, record.status != .ready {
                 Text("\(RecoveryText.trainedAgo(record.lastTrainedAt, now: now)) · est. \(RecoveryText.remaining(record.hoursRemaining))")
-                    .font(.ui(12))
+                    .font(.ui(detail))
                     .foregroundStyle(DS.silver.opacity(0.5))
             } else if let record {
                 // Helping on another group's day isn't "trained".
                 if let note = record.sideNotes.first {
                     Text(RecoveryText.sideNote(note, now: now))
-                        .font(.ui(12))
+                        .font(.ui(detail))
                         .foregroundStyle(DS.silver.opacity(0.5))
                 } else if let last = record.lastCountedAt {
                     Text(RecoveryText.trainedAgo(last, now: now))
-                        .font(.ui(12))
+                        .font(.ui(detail))
                         .foregroundStyle(DS.silver.opacity(0.5))
                 }
             }
@@ -327,28 +572,30 @@ struct MusclePresetView: View {
     // MARK: - Shuffle
 
     private var listHeader: some View {
-        HStack {
-            SectionEyebrow(text: "EXERCISES", size: 9.5)
+        let regular = layout.isRegular
+        return HStack {
+            SectionEyebrow(text: "EXERCISES", size: regular ? 10.5 : 9.5)
             Spacer()
             if canSwapAll {
                 Button(action: shuffleAll) {
                     HStack(spacing: 5) {
                         Image(systemName: "arrow.triangle.2.circlepath")
-                            .font(.system(size: 11, weight: .semibold))
+                            .font(.system(size: regular ? 12 : 11, weight: .semibold))
                         Text("Swap All")
-                            .font(.ui(12.5, .semibold))
+                            .font(.ui(regular ? 13.5 : 12.5, .semibold))
                     }
                     .foregroundStyle(DS.silver)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 7)
+                    .padding(.horizontal, regular ? 14 : 12)
+                    .padding(.vertical, regular ? 8 : 7)
                     .background(Capsule().fill(DS.silver.opacity(0.08)))
                     .contentShape(Capsule())
+                    .dsHover(.highlight)
                 }
                 .buttonStyle(.borderless)
                 .accessibilityHint("Swaps the exercises not started yet for ones you haven't done lately, keeping the sets and the muscles worked.")
             }
         }
-        .frame(minHeight: 32)
+        .frame(minHeight: regular ? 36 : 32)
     }
 
     /// Swapping is for planning: not on a past day's log, not while
@@ -362,15 +609,18 @@ struct MusclePresetView: View {
     // MARK: - Rows
 
     private func row(_ exercise: WorkoutExercise) -> some View {
-        HStack(spacing: 8) {
+        let regular = layout.isRegular
+        return HStack(spacing: 8) {
             Button {
                 open(exercise)
             } label: {
                 PresetExerciseRow(exercise: exercise, caution: caution(for: exercise))
+                    .dsSelected(selectedID == exercise.id, radius: 16)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .strokeBorder(DS.silver.opacity(flashed.contains(exercise.id) ? 0.5 : 0), lineWidth: 1.5)
                     )
+                    .dsHover(.lift, radius: 16)
             }
             .buttonStyle(.borderless)
             .disabled(editMode.isEditing)
@@ -380,21 +630,27 @@ struct MusclePresetView: View {
                     swap(exercise)
                 } label: {
                     Image(systemName: "arrow.triangle.2.circlepath")
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.system(size: regular ? 14 : 13, weight: .semibold))
                         .foregroundStyle(DS.silver.opacity(0.6))
-                        .frame(width: 28, height: 44)
+                        .frame(width: regular ? 32 : 28, height: 44)
                         .contentShape(Rectangle())
+                        .dsHover(.highlight, radius: 10)
                 }
                 .buttonStyle(.borderless)
                 .accessibilityLabel("Swap \(exercise.exerciseName)")
                 .accessibilityHint("Replaces it with a similar exercise you haven't done lately.")
+            } else if regular && !editMode.isEditing {
+                // iPad keeps the swap's slot, so every card is the same
+                // width and the column reads as one edge.
+                Color.clear.frame(width: 32, height: 44)
             }
 
             if !editMode.isEditing {
 
                 Menu {
                     Button(exercise.isTimed ? "Edit Sets & Time" : "Edit Sets & Reps", systemImage: "slider.horizontal.3") {
-                        editingTarget = exercise
+                        // iPad edits in place, in a popover off the row.
+                        if regular { targetPopover = exercise } else { editingTarget = exercise }
                     }
                     Button("Choose Another", systemImage: "list.bullet") {
                         picker = .replace(exercise.id)
@@ -406,34 +662,57 @@ struct MusclePresetView: View {
                     }
                 } label: {
                     Image(systemName: "ellipsis")
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.system(size: regular ? 15 : 14, weight: .semibold))
                         .foregroundStyle(DS.silver.opacity(0.6))
-                        .frame(width: 30, height: 44)
+                        .frame(width: regular ? 34 : 30, height: 44)
                         .contentShape(Rectangle())
+                        .dsHover(.highlight, radius: 10)
                 }
                 .buttonStyle(.borderless)
                 .accessibilityLabel("Options for \(exercise.exerciseName)")
+                .applying(DS.isPad) { menu in
+                    menu.modifier(exerciseRemovalDialog(isPresented: Binding(
+                        get: { removingExercise?.id == exercise.id },
+                        set: { if !$0 { removingExercise = nil } })))
+                }
+            }
+        }
+        .applying(DS.isPad) { row in
+            row.dsPopover(item: Binding(get: { targetPopover?.id == exercise.id ? targetPopover : nil },
+                                        set: { targetPopover = $0 }),
+                          width: 360) { editing in
+                TargetEditorSheet(exercise: editing, style: .popover) { sets, reps in
+                    saveTarget(editing, sets: sets, reps: reps)
+                }
             }
         }
     }
 
+    private func saveTarget(_ exercise: WorkoutExercise, sets: Int, reps: RepRange) {
+        ensurePlanned()
+        store.updateTarget(id: exercise.id, sets: sets, reps: reps)
+    }
+
     private var addButton: some View {
-        Button {
+        let regular = layout.isRegular
+        let radius: CGFloat = regular ? 16 : 14
+        return Button {
             picker = .add
         } label: {
             HStack(spacing: 7) {
                 Image(systemName: "plus")
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.system(size: regular ? 13 : 12, weight: .semibold))
                 Text("Add Exercise")
-                    .font(.ui(14, .semibold))
+                    .font(.ui(regular ? 15 : 14, .semibold))
             }
             .foregroundStyle(DS.silver)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 13)
+            .padding(.vertical, regular ? 15 : 13)
             .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                RoundedRectangle(cornerRadius: radius, style: .continuous)
                     .strokeBorder(DS.silver.opacity(0.18), style: StrokeStyle(lineWidth: 1, dash: [4, 4]))
             )
+            .dsHover(.highlight, radius: radius)
         }
         .buttonStyle(.borderless)
     }
@@ -446,34 +725,43 @@ struct MusclePresetView: View {
         }
     }
 
+    /// The footer's alignment: centred on the phone, on the column's
+    /// leading edge on iPad, under the leading-aligned controls above.
+    private var footerAlignment: HorizontalAlignment { layout.isRegular ? .leading : .center }
+
     @ViewBuilder
     private var dayFooter: some View {
+        let regular = layout.isRegular
         if isPlanned {
-            let done = planned.reduce(0) { $0 + $1.completedSets.count }
-            let total = planned.reduce(0) { $0 + $1.sets.count }
-            VStack(spacing: 12) {
-                Text("\(done) of \(total) sets done")
-                    .font(.ui(13, .semibold))
+            VStack(alignment: footerAlignment, spacing: 12) {
+                Text("\(setsDone) of \(setsTotal) sets done")
+                    .font(.ui(regular ? 14 : 13, .semibold))
                     .foregroundStyle(DS.silver.opacity(0.6))
                 Button("Remove \(group.title) from this workout") { confirmsRemoval = true }
-                    .font(.ui(12.5))
+                    .font(.ui(regular ? 13.5 : 12.5))
                     .foregroundStyle(DS.silver.opacity(0.45))
                     .buttonStyle(.borderless)
+                    .applying(DS.isPad) { $0.modifier(groupRemovalDialog) }
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: Alignment(horizontal: footerAlignment, vertical: .center))
         } else if !rows.isEmpty {
             // An empty list (no built-in preset) has nothing to add yet;
             // Add Exercise plans the group with its first pick.
-            VStack(spacing: 8) {
+            VStack(alignment: footerAlignment, spacing: 8) {
                 WideButton(title: "Add to \(dayName) Workout", prominent: true) {
                     withAnimation { ensurePlanned() }
                 }
-                Text("Or tap an exercise to start logging sets.")
-                    .font(.ui(11.5))
+                .dsCTA(DS.Layout.ctaMaxWidth, alignment: .leading)
+                Text(layout.isWide ? "Or choose an exercise to start logging sets."
+                     : "Or tap an exercise to start logging sets.")
+                    .font(.ui(regular ? 12.5 : 11.5))
                     .foregroundStyle(DS.silver.opacity(0.4))
             }
         }
     }
+
+    private var setsDone: Int { planned.reduce(0) { $0 + $1.completedSets.count } }
+    private var setsTotal: Int { planned.reduce(0) { $0 + $1.sets.count } }
 
     /// Says which preset the list is saved as, or offers to save it as
     /// Preset 1, 2 or 3. Saving only shows while a slot is free, on a saved
@@ -488,7 +776,7 @@ struct MusclePresetView: View {
             if let saved = store.matchingPreset(rows, for: group) {
                 HStack(spacing: 6) {
                     Image(systemName: "bookmark.fill")
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(.system(size: layout.isRegular ? 11 : 10, weight: .semibold))
                     Text("Saved as \(saved.name)")
                     Text("·")
                     Button { deletingPreset = saved } label: {
@@ -499,10 +787,11 @@ struct MusclePresetView: View {
                     .buttonStyle(.borderless)
                     .foregroundStyle(DS.silver.opacity(0.7))
                     .accessibilityLabel("Delete \(saved.name)")
+                    .applying(DS.isPad) { $0.modifier(presetDeletionDialog) }
                 }
-                .font(.ui(12))
+                .font(.ui(layout.isRegular ? 13 : 12))
                 .foregroundStyle(DS.silver.opacity(0.45))
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, alignment: Alignment(horizontal: footerAlignment, vertical: .center))
             } else if store.savedLevels(for: group).count < PresetLevel.saved.count || level.isSaved || isEdited {
                 Menu {
                     Section("Save this list as") {
@@ -524,14 +813,17 @@ struct MusclePresetView: View {
                     }
                 } label: {
                     Label(level.isSaved && !isLocked(level) ? "Update \(level.name)" : "Save as Preset", systemImage: "bookmark")
-                        .font(.ui(12.5, .semibold))
+                        .font(.ui(layout.isRegular ? 13.5 : 12.5, .semibold))
                         .foregroundStyle(DS.silver.opacity(0.75))
                         .padding(.vertical, 8)
                         .padding(.horizontal, 12)
                         .contentShape(Rectangle())
+                        .dsHover(.highlight, radius: 10)
                 }
                 .buttonStyle(.borderless)
-                .frame(maxWidth: .infinity)
+                // Leading-aligned on iPad, the label (not its hit pad) on the edge.
+                .padding(.leading, layout.isRegular ? -12 : 0)
+                .frame(maxWidth: .infinity, alignment: Alignment(horizontal: footerAlignment, vertical: .center))
                 .accessibilityHint(purchases.isPremium
                                    ? "Saves this list as Preset 1, 2 or 3, in the menu next to \(group.title) on Train."
                                    : "Saves this list as Preset 1, in the menu next to \(group.title) on Train. Preset 2 and 3 come with Premium.")
@@ -577,7 +869,7 @@ struct MusclePresetView: View {
         .padding(.trailing, toast.canUndo ? 8 : 16)
         .padding(.vertical, toast.canUndo ? 3 : 11)
         .background(Capsule().fill(DS.silver))
-        .padding(.horizontal, DS.Metric.gutter)
+        .padding(.horizontal, layout.isRegular ? rowInset : DS.Metric.gutter)
         .accessibilityElement(children: .contain)
     }
 
@@ -778,7 +1070,29 @@ struct MusclePresetView: View {
 
     private func open(_ exercise: WorkoutExercise) {
         ensurePlanned()
-        router.push(.exercise(exercise.id))
+        guard layout.isWide else {
+            router.push(.exercise(exercise.id))
+            return
+        }
+        guard selectedID != exercise.id else { return }
+        // Moving on from an open exercise is the iPhone's Back.
+        if selectedID != nil { ads.moment(.exerciseClosed) }
+        withAnimation(.easeOut(duration: 0.2)) { selectedID = exercise.id }
+    }
+
+    private func closeDetail() {
+        ads.moment(.exerciseClosed)
+        withAnimation(.easeOut(duration: 0.2)) { selectedID = nil }
+    }
+
+    /// After Complete Exercise: the next exercise not finished yet, after
+    /// this one and then from the top, or the overview when all are done.
+    /// No ad moment — Complete on iPhone doesn't make one either.
+    private func advance(from id: UUID) {
+        let list = rows
+        let start = (list.firstIndex { $0.id == id } ?? -1) + 1
+        let next = (Array(list[start...]) + Array(list[..<start])).first { $0.id != id && !$0.isCompleted }
+        withAnimation(.easeOut(duration: 0.2)) { selectedID = next?.id }
     }
 
     private func remove(_ exercise: WorkoutExercise) {
@@ -808,51 +1122,57 @@ struct PresetExerciseRow: View {
     /// A recovery heads-up for this exercise, e.g. "FRONT DELTS RECOVERING".
     var caution: String? = nil
 
+    @Environment(\.dsLayout) private var layout
+
     private var libraryExercise: Exercise? { ExerciseCatalog.exercise(named: exercise.exerciseName) }
     private var done: Int { exercise.completedSets.count }
 
     var body: some View {
-        HStack(spacing: 12) {
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
+        let regular = layout.isRegular
+        let thumb: CGFloat = regular ? 64 : 54
+        let thumbRadius: CGFloat = regular ? 14 : 12
+        let tag: CGFloat = regular ? 10 : 9
+        return HStack(spacing: 12) {
+            RoundedRectangle(cornerRadius: thumbRadius, style: .continuous)
                 .fill(DS.surfaceDim)
-                .frame(width: 54, height: 54)
+                .frame(width: thumb, height: thumb)
                 .overlay(
                     RenderSlot(id: libraryExercise?.slotID ?? "")
-                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .clipShape(RoundedRectangle(cornerRadius: thumbRadius, style: .continuous))
                 )
 
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .leading, spacing: regular ? 6 : 5) {
                 Text(exercise.exerciseName)
-                    .font(.ui(14.5, .semibold))
+                    .font(.ui(regular ? 16 : 14.5, .semibold))
                     .foregroundStyle(DS.silver)
                     .multilineTextAlignment(.leading)
                 HStack(spacing: 8) {
                     Text(exercise.targetLabel)
-                        .font(.mono(11, .semibold))
+                        .font(.mono(regular ? 12 : 11, .semibold))
                         .foregroundStyle(DS.silver.opacity(0.7))
                     if exercise.isCompleted || (done > 0 && done == exercise.sets.count) {
                         HStack(spacing: 3) {
                             Image(systemName: "checkmark")
-                                .font(.system(size: 8, weight: .bold))
+                                .font(.system(size: regular ? 9 : 8, weight: .bold))
                             Text("\(done)/\(exercise.sets.count) DONE")
-                                .font(.mono(9, .semibold))
-                                .trackingEm(0.06, size: 9)
+                                .font(.mono(tag, .semibold))
+                                .trackingEm(0.06, size: tag)
                         }
                         .foregroundStyle(DS.silver.opacity(0.7))
                     } else if done > 0 {
                         Text("\(done)/\(exercise.sets.count) DONE")
-                            .font(.mono(9, .semibold))
-                            .trackingEm(0.06, size: 9)
+                            .font(.mono(tag, .semibold))
+                            .trackingEm(0.06, size: tag)
                             .foregroundStyle(DS.silver.opacity(0.5))
                     }
                 }
                 if let caution {
                     HStack(spacing: 4) {
                         Image(systemName: MuscleCardState.recovering.symbol)
-                            .font(.system(size: 7, weight: .semibold))
+                            .font(.system(size: regular ? 8 : 7, weight: .semibold))
                         Text(caution)
-                            .font(.mono(8.5, .semibold))
-                            .trackingEm(0.06, size: 8.5)
+                            .font(.mono(regular ? 9.5 : 8.5, .semibold))
+                            .trackingEm(0.06, size: regular ? 9.5 : 8.5)
                     }
                     .foregroundStyle(DS.silver.opacity(0.5))
                 }
@@ -860,11 +1180,14 @@ struct PresetExerciseRow: View {
 
             Spacer(minLength: 4)
 
-            Image(systemName: "chevron.right")
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundStyle(DS.silver.opacity(0.28))
+            // In the split a row selects in place rather than going on.
+            if !layout.isWide {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: regular ? 12 : 11, weight: .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.28))
+            }
         }
-        .padding(10)
+        .padding(regular ? 12 : 10)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(DS.surfaceAlt)
@@ -881,12 +1204,14 @@ struct PresetExerciseRow: View {
 struct PlainRow: ViewModifier {
     var top: CGFloat
     var bottom: CGFloat
+    /// The side insets; iPad centres a column with them.
+    var inset: CGFloat = DS.Metric.gutter
 
     func body(content: Content) -> some View {
         content
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: top, leading: DS.Metric.gutter, bottom: bottom, trailing: DS.Metric.gutter))
+            .listRowInsets(EdgeInsets(top: top, leading: inset, bottom: bottom, trailing: inset))
     }
 }
 
@@ -894,15 +1219,21 @@ struct PlainRow: ViewModifier {
 
 struct TargetEditorSheet: View {
     var exercise: WorkoutExercise
+    /// A bottom sheet on the phone; on iPad a popover off the row, which
+    /// sizes itself and takes Return and Esc.
+    var style: Style = .sheet
     var onSave: (Int, RepRange) -> Void
+
+    enum Style { case sheet, popover }
 
     @Environment(\.dismiss) private var dismiss
     @State private var sets: Int
     @State private var lower: Int
     @State private var upper: Int
 
-    init(exercise: WorkoutExercise, onSave: @escaping (Int, RepRange) -> Void) {
+    init(exercise: WorkoutExercise, style: Style = .sheet, onSave: @escaping (Int, RepRange) -> Void) {
         self.exercise = exercise
+        self.style = style
         self.onSave = onSave
         _sets = State(initialValue: exercise.sets.count)
         _lower = State(initialValue: exercise.repRange.lower)
@@ -910,6 +1241,25 @@ struct TargetEditorSheet: View {
     }
 
     var body: some View {
+        switch style {
+        case .sheet:
+            form
+                .padding(.horizontal, DS.Metric.gutter)
+                .padding(.top, 26)
+                .onChange(of: lower) { _, new in if upper < new { upper = new } }
+                .presentationDetents([.height(380)])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(DS.surface)
+                .presentationCornerRadius(DS.Metric.sheetRadius)
+        case .popover:
+            form
+                .padding(20)
+                .onChange(of: lower) { _, new in if upper < new { upper = new } }
+                .dsBackShortcuts { dismiss() }
+        }
+    }
+
+    private var form: some View {
         VStack(alignment: .leading, spacing: 0) {
             MetaLine(text: exercise.exerciseName.uppercased(), em: 0.10)
             Text(exercise.isTimed ? "Sets & Time" : "Sets & Reps")
@@ -942,15 +1292,9 @@ struct TargetEditorSheet: View {
                 onSave(sets, RepRange(lower, upper))
                 dismiss()
             }
+            .applying(style == .popover) { $0.keyboardShortcut(.defaultAction) }
             .padding(.top, 20)
         }
-        .padding(.horizontal, DS.Metric.gutter)
-        .padding(.top, 26)
-        .onChange(of: lower) { _, new in if upper < new { upper = new } }
-        .presentationDetents([.height(380)])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(DS.surface)
-        .presentationCornerRadius(DS.Metric.sheetRadius)
     }
 
     private func stepper(_ title: String, value: Binding<Int>, range: ClosedRange<Int>,
@@ -968,5 +1312,37 @@ struct TargetEditorSheet: View {
             }
         }
         .padding(.vertical, 6)
+    }
+}
+
+// MARK: - Helpers
+
+/// One of the screen's destructive confirmations, built once so it can sit
+/// on the screen (iPhone, as an action sheet) or on the control that asked
+/// for it (iPad, where it becomes a popover pointing at that control).
+private struct PresetConfirmation<Item>: ViewModifier {
+    var title: String
+    var isPresented: Binding<Bool>
+    var presenting: Item?
+    var action: String
+    var message: (Item) -> String
+    var onConfirm: (Item) -> Void
+
+    func body(content: Content) -> some View {
+        content.confirmationDialog(title, isPresented: isPresented, titleVisibility: .visible,
+                                  presenting: presenting) { item in
+            Button(action, role: .destructive) { onConfirm(item) }
+        } message: { item in
+            Text(message(item))
+        }
+    }
+}
+
+extension View {
+    /// Applies `transform` only when `condition` holds. For conditions fixed
+    /// for the run (the device), so the view's identity never flips.
+    @ViewBuilder
+    fileprivate func applying<V: View>(_ condition: Bool, _ transform: (Self) -> V) -> some View {
+        if condition { transform(self) } else { self }
     }
 }

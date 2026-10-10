@@ -20,49 +20,9 @@ struct PresetMenu: View {
     var current: PresetLevel? = nil
     var onPick: (PresetLevel) -> Void
 
-    @Environment(WorkoutStore.self) private var store
-    @Environment(Purchases.self) private var purchases
-    @Environment(Paywall.self) private var paywall
-
     var body: some View {
         Menu {
-            Section("Your presets") {
-                ForEach(PresetLevel.saved, id: \.self) { level in
-                    if let items = store.customPreset(for: group, level) {
-                        Button { onPick(level) } label: {
-                            Label(level.name, systemImage: level == current ? "checkmark" : "bookmark")
-                            Text(summary(items))
-                        }
-                    } else if !purchases.isPremium && (level.slot ?? 0) > Premium.freePresets {
-                        Button { paywall.show(.preset) } label: {
-                            Label(level.name, systemImage: "lock.fill")
-                            Text("Premium")
-                        }
-                    } else {
-                        Button {} label: {
-                            Text(level.name)
-                            Text("Empty")
-                        }
-                        .disabled(true)
-                    }
-                }
-            }
-            let builtIn = [PresetLevel.basic, .advanced].filter { PresetProvider.preset(for: group, level: $0) != nil }
-            if !builtIn.isEmpty {
-                Section("Built in") {
-                    ForEach(builtIn, id: \.self) { level in
-                        Button { onPick(level) } label: {
-                            Label(level.name, systemImage: level == current ? "checkmark" : "list.bullet")
-                            Text(level == .basic ? "Machines and cables" : "Free-weight compounds")
-                        }
-                    }
-                }
-            }
-            if store.savedLevels(for: group).isEmpty {
-                Section {
-                    Text("Open \(group.title), then Save as Preset")
-                }
-            }
+            PresetMenuSections(group: group, current: current, onPick: onPick)
         } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 13, weight: .semibold))
@@ -71,9 +31,63 @@ struct PresetMenu: View {
                 .background(Circle().fill(DS.silver.opacity(0.08)))
                 .frame(width: 44, height: 44)
                 .contentShape(Rectangle())
+                // Tells a pointer the ⋯ apart from the card under it.
+                .dsHover(.highlight)
         }
         .menuOrder(.fixed)
         .accessibilityLabel("\(group.title) presets")
+    }
+}
+
+/// The menu's sections on their own, so a card's context menu on iPad
+/// (right-click, or a long press) offers exactly the same choices.
+struct PresetMenuSections: View {
+    var group: MuscleGroup
+    var current: PresetLevel? = nil
+    var onPick: (PresetLevel) -> Void
+
+    @Environment(WorkoutStore.self) private var store
+    @Environment(Purchases.self) private var purchases
+    @Environment(Paywall.self) private var paywall
+
+    var body: some View {
+        Section("Your presets") {
+            ForEach(PresetLevel.saved, id: \.self) { level in
+                if let items = store.customPreset(for: group, level) {
+                    Button { onPick(level) } label: {
+                        Label(level.name, systemImage: level == current ? "checkmark" : "bookmark")
+                        Text(summary(items))
+                    }
+                } else if !purchases.isPremium && (level.slot ?? 0) > Premium.freePresets {
+                    Button { paywall.show(.preset) } label: {
+                        Label(level.name, systemImage: "lock.fill")
+                        Text("Premium")
+                    }
+                } else {
+                    Button {} label: {
+                        Text(level.name)
+                        Text("Empty")
+                    }
+                    .disabled(true)
+                }
+            }
+        }
+        let builtIn = [PresetLevel.basic, .advanced].filter { PresetProvider.preset(for: group, level: $0) != nil }
+        if !builtIn.isEmpty {
+            Section("Built in") {
+                ForEach(builtIn, id: \.self) { level in
+                    Button { onPick(level) } label: {
+                        Label(level.name, systemImage: level == current ? "checkmark" : "list.bullet")
+                        Text(level == .basic ? "Machines and cables" : "Free-weight compounds")
+                    }
+                }
+            }
+        }
+        if store.savedLevels(for: group).isEmpty {
+            Section {
+                Text("Open \(group.title), then Save as Preset")
+            }
+        }
     }
 
     /// "4 exercises · Barbell Bench Press, Cable Fly, …", cut short by the

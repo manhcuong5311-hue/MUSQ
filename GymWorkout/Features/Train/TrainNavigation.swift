@@ -39,7 +39,9 @@ extension View {
             case .preset(let group, let day, let level):
                 MusclePresetView(group: group, day: day, initialLevel: level)
             case .exercise(let id):
-                ExerciseDetailView(workoutExerciseID: id)
+                // Pushed on every device; only the iPad preset screen embeds
+                // it as a pane instead, without a route.
+                ExerciseDetailView(workoutExerciseID: id, presentation: .pushed)
             case .trainer(let name):
                 if let exercise = ExerciseCatalog.exercise(named: name) {
                     Exercise3DView(exercise: exercise)

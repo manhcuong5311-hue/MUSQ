@@ -7,6 +7,9 @@
 //  back down to put it away. It sits outside the viewport, so while it rests
 //  the model and its cues are never covered.
 //
+//  Compact width only: in a regular-width iPad window the steps sit in the
+//  trainer's inspector instead, always open, through `SetupStepList`.
+//
 
 import SwiftUI
 
@@ -96,24 +99,10 @@ struct SetupDrawer: View {
     // MARK: - Steps
 
     private var stepList: some View {
-        VStack(alignment: .leading, spacing: 13) {
-            ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
-                HStack(alignment: .firstTextBaseline, spacing: 12) {
-                    Text(String(format: "%02d", index + 1))
-                        .font(.mono(10, .semibold))
-                        .foregroundStyle(DS.silver.opacity(0.4))
-                    Text(step)
-                        .font(.ui(14))
-                        .cssLineHeight(14, 1.45)
-                        .foregroundStyle(DS.silver.opacity(0.85))
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .accessibilityElement(children: .combine)
-            }
-        }
-        .padding(.top, 2)
-        .padding(.bottom, 22)
-        .accessibilityHidden(!isExpanded)
+        SetupStepList(steps: steps)
+            .padding(.top, 2)
+            .padding(.bottom, 22)
+            .accessibilityHidden(!isExpanded)
     }
 
     // MARK: - Interaction
@@ -134,6 +123,36 @@ struct SetupDrawer: View {
     private func toggle() {
         withAnimation(.spring(response: 0.35, dampingFraction: 0.86)) {
             isExpanded.toggle()
+        }
+    }
+}
+
+// MARK: - Step list
+
+/// The numbered setup steps. The drawer shows them on the phone; on iPad the
+/// trainer's inspector shows them always open, a size up for the longer
+/// reading distance.
+struct SetupStepList: View {
+    var steps: [String]
+
+    @Environment(\.dsLayout) private var layout
+
+    var body: some View {
+        let size: CGFloat = layout.isRegular ? 14.5 : 14
+        VStack(alignment: .leading, spacing: layout.isRegular ? 14 : 13) {
+            ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    Text(String(format: "%02d", index + 1))
+                        .font(.mono(10, .semibold))
+                        .foregroundStyle(DS.silver.opacity(0.4))
+                    Text(step)
+                        .font(.ui(size))
+                        .cssLineHeight(size, 1.45)
+                        .foregroundStyle(DS.silver.opacity(0.85))
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .accessibilityElement(children: .combine)
+            }
         }
     }
 }

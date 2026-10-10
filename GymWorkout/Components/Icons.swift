@@ -58,22 +58,24 @@ struct MoreDotsIcon: View {
 }
 
 /// Tab-bar glyph: the tab's SF Symbol (see `AppTab.symbol(selected:)`), or
-/// the design's rounded-square placeholder when none is given.
+/// the design's rounded-square placeholder when none is given. `size` is the
+/// frame; the symbol is drawn at 82% of it (22 → 18 on the bar, as always).
 struct TabGlyph: View {
     var color: Color
     var symbol: String?
+    var size: CGFloat = 22
 
     var body: some View {
         Group {
             if let symbol {
                 Image(systemName: symbol)
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.system(size: (size * 0.82).rounded(), weight: .medium))
                     .foregroundStyle(color)
             } else {
-                RoundedRectangle(cornerRadius: 7, style: .continuous)
+                RoundedRectangle(cornerRadius: 7 * size / 22, style: .continuous)
                     .strokeBorder(color, lineWidth: 1.6)
             }
         }
-        .frame(width: 22, height: 22)
+        .frame(width: size, height: size)
     }
 }

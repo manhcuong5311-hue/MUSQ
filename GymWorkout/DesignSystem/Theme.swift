@@ -95,6 +95,10 @@ enum DS {
     /// The only interactive accent, and the general foreground colour — near-
     /// white on the dark ground, near-black on the light one.
     static let silver = Color(light: 0x08090A, dark: 0xF5F6F7)
+    /// A chosen row or pane on iPad (see `dsSelected`). Silver, because
+    /// selection is interaction — never `activation`.
+    static let selectionFill = silver.opacity(0.10)
+    static let selectionStroke = silver.opacity(0.5)
 
     // MARK: - Muscle activation (never interactive)
 
@@ -140,6 +144,12 @@ enum DS {
         static let sheetRadius: CGFloat = 26
         /// Inset of the viewport from the screen edge.
         static let viewportInset: CGFloat = 10
+        /// Width over height of the phone's 3D stage, which callout and
+        /// glow fractions are laid out on; iPad viewports keep it so those
+        /// fractions still land on the body.
+        static let designStageAspect: CGFloat = 382.0 / 567.0
+        /// Corner radius of a regular-width 3D viewport.
+        static let viewportRadiusRegular: CGFloat = 30
     }
 }
 

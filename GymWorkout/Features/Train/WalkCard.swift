@@ -13,6 +13,12 @@ struct WalkCard: View {
     var isDone: Bool
     var onDone: (Bool) -> Void
 
+    @Environment(\.dsLayout) private var layout
+
+    /// An iPad column wide enough that a full-width button would only
+    /// stretch; inside the narrow Today pane the phone's layout fits.
+    private var isRoomy: Bool { layout.isRegular && layout.containerWidth >= DS.Layout.formWidth }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
@@ -38,17 +44,20 @@ struct WalkCard: View {
             }
 
             if !isDone {
+                let size: CGFloat = layout.isRegular ? 13.5 : 12.5
                 Text("An easy-paced walk today keeps your weight-loss progress moving. Aim for \(WalkSuggestion.dailySteps.formatted())+ steps across the whole day.")
-                    .font(.ui(12.5))
-                    .cssLineHeight(12.5, 1.45)
+                    .font(.ui(size))
+                    .cssLineHeight(size, 1.45)
                     .foregroundStyle(DS.silver.opacity(0.55))
                     .fixedSize(horizontal: false, vertical: true)
+                    .dsReadable(480, alignment: .leading)
             }
 
             WideButton(title: isDone ? "Undo" : "I've Done My Walk", prominent: !isDone,
                        fontSize: 13, verticalPadding: 10, cornerRadius: 11) {
                 onDone(!isDone)
             }
+            .frame(width: isRoomy ? 220 : nil)
         }
         .padding(14)
         .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(DS.surfaceAlt))

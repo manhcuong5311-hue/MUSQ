@@ -88,6 +88,10 @@ struct BodyMapCanvas: View {
     var fills: [BodyRegion: Color]
     var lineWidth: CGFloat = 0.75
 
+    /// Width over height of one figure, for framing a canvas without
+    /// letterboxing it.
+    static let aspect: CGFloat = 650.0 / 1265.0
+
     var body: some View {
         Canvas { ctx, size in
             let box = BodyMapPaths.contentBox
@@ -114,10 +118,11 @@ struct BodyMapCanvas: View {
 struct BodyMapFigure: View {
     var side: BodySide
     var muscles: [MuscleActivation]
+    var lineWidth: CGFloat = 0.75
 
     var body: some View {
         let lit = litRegions
-        BodyMapCanvas(side: side, fills: lit.mapValues { $0.rank.barColor })
+        BodyMapCanvas(side: side, fills: lit.mapValues { $0.rank.barColor }, lineWidth: lineWidth)
             .accessibilityElement()
             .accessibilityLabel(accessibilityText(lit))
     }
@@ -145,6 +150,64 @@ struct BodyMapFigure: View {
             .map { "\($0.name), \($0.rank.rawValue.lowercased())" }
         let view = side == .front ? "Front of body" : "Back of body"
         return names.isEmpty ? view : "\(view): " + names.joined(separator: "; ")
+    }
+}
+
+// MARK: - Pair
+
+/// Front and back side by side at one height — the iPad heroes, where there
+/// is room for both views at once instead of a FRONT/BACK toggle.
+struct BodyMapPair: View {
+    enum Source {
+        /// Region colours per view, as `BodyMapCanvas` takes them.
+        case fills(front: [BodyRegion: Color], back: [BodyRegion: Color])
+        /// Muscles lit by rank, as `BodyMapFigure` draws them.
+        case muscles([MuscleActivation])
+    }
+
+    var source: Source
+    var figureHeight: CGFloat
+    var showsCaptions: Bool = true
+    /// Outline width in points; nil picks 1.0 for a tall figure, else the
+    /// canvas's own 0.75.
+    var lineWidth: CGFloat? = nil
+
+    init(source: Source, figureHeight: CGFloat, showsCaptions: Bool = true, lineWidth: CGFloat? = nil) {
+        self.source = source
+        self.figureHeight = figureHeight
+        self.showsCaptions = showsCaptions
+        self.lineWidth = lineWidth
+    }
+
+    var body: some View {
+        HStack(alignment: .top, spacing: figureHeight * 0.10) {
+            ForEach(BodySide.allCases, id: \.self) { side in
+                VStack(spacing: 8) {
+                    figure(side)
+                        .frame(width: figureHeight * BodyMapCanvas.aspect, height: figureHeight)
+                    if showsCaptions {
+                        Text(side.title)
+                            .font(.mono(9.5, .semibold))
+                            .trackingEm(0.10, size: 9.5)
+                            .foregroundStyle(DS.silver.opacity(0.4))
+                            .accessibilityHidden(true)
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func figure(_ side: BodySide) -> some View {
+        let width = lineWidth ?? (figureHeight > 450 ? 1.0 : 0.75)
+        switch source {
+        case .fills(let front, let back):
+            BodyMapCanvas(side: side, fills: side == .front ? front : back, lineWidth: width)
+                .accessibilityElement()
+                .accessibilityLabel(side == .front ? "Front of body" : "Back of body")
+        case .muscles(let muscles):
+            BodyMapFigure(side: side, muscles: muscles, lineWidth: width)
+        }
     }
 }
 

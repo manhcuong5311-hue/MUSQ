@@ -8,6 +8,9 @@
 //  estimates, rest timer, card colours), Premium and ad privacy, and Help &
 //  FAQ. The totals, personal records and history live on the Muscles tab.
 //
+//  On iPad the same sections sit under a header that carries the name, goal
+//  and plan, in two columns once the content column reaches 700pt.
+//
 
 import SwiftUI
 
@@ -19,10 +22,14 @@ struct ProfileView: View {
     @Environment(Ads.self) private var ads
     @Environment(Paywall.self) private var paywall
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dsLayout) private var layout
     @State private var editsProfile = false
     /// The name as it's typed; saved when the field is left.
     @State private var nameDraft = ""
     @FocusState private var editsName: Bool
+    /// The About You card's width on iPad, which decides whether its facts
+    /// sit four across or two by two.
+    @State private var aboutWidth: CGFloat = 0
     private let cardColors = CardColorPrefs()
 
     var body: some View {
@@ -31,30 +38,34 @@ struct ProfileView: View {
                 DS.ink.ignoresSafeArea()
 
                 ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("Profile")
-                            .font(.ui(28, .semibold))
-                            .tracking(-0.7)
-                            .foregroundStyle(DS.silver)
+                    if layout.isRegular {
+                        regularPage
+                    } else {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("Profile")
+                                .font(.ui(28, .semibold))
+                                .tracking(-0.7)
+                                .foregroundStyle(DS.silver)
 
-                        if !purchases.isPremium {
-                            PremiumHeroCard()
-                                .padding(.top, 18)
-                                .transition(.opacity)
+                            if !purchases.isPremium {
+                                PremiumHeroCard()
+                                    .padding(.top, 18)
+                                    .transition(.opacity)
+                            }
+                            aboutYou
+                                .padding(.top, purchases.isPremium ? 18 : 28)
+                            settings
+                                .padding(.top, 28)
+                            cardColorSettings
+                                .padding(.top, 28)
+                            premiumAndPrivacy
+                                .padding(.top, 28)
                         }
-                        aboutYou
-                            .padding(.top, purchases.isPremium ? 18 : 28)
-                        settings
-                            .padding(.top, 28)
-                        cardColorSettings
-                            .padding(.top, 28)
-                        premiumAndPrivacy
-                            .padding(.top, 28)
+                        .padding(.horizontal, DS.Metric.gutter)
+                        .padding(.top, 22)
+                        .padding(.bottom, 24)
+                        .animation(.easeOut(duration: 0.3), value: purchases.isPremium)
                     }
-                    .padding(.horizontal, DS.Metric.gutter)
-                    .padding(.top, 22)
-                    .padding(.bottom, 24)
-                    .animation(.easeOut(duration: 0.3), value: purchases.isPremium)
                 }
                 .scrollDismissesKeyboard(.interactively)
             }
@@ -65,10 +76,172 @@ struct ProfileView: View {
             .toolbar(.hidden, for: .navigationBar)
         }
         .tint(DS.silver)
-        .fullScreenCover(isPresented: $editsProfile) {
+        // A full-screen cover on iPhone; a page sheet on iPad that a stray
+        // swipe can't close with the answers half changed.
+        .dsCover(isPresented: $editsProfile) {
             OnboardingView(isEditing: true, onClose: { editsProfile = false })
                 .environment(store)
                 .environment(purchases)
+                .dsLayoutRoot()
+        }
+    }
+
+    // MARK: - iPad
+
+    /// Two columns from a 700pt content column, one readable column below
+    /// it. `DSColumns` only moves the sections between the two, so the name
+    /// field keeps its focus and the hero its loaded price through a rotation
+    /// or a Split View drag.
+    private var regularPage: some View {
+        let columns = layout.containerWidth >= 700 ? 2 : 1
+        return VStack(alignment: .leading, spacing: 0) {
+            header
+
+            if !purchases.isPremium {
+                PremiumHeroCard(layout: layout.isWide ? .wide : .stacked)
+                    .padding(.top, 24)
+                    .transition(.opacity)
+            }
+
+            DSColumns(columns: columns, spacing: 24, rowSpacing: 28) {
+                // Source order is the one-column order; in two columns the
+                // left takes you and your settings, the right the Train
+                // colours and Premium, which keeps the two about level.
+                aboutYouRegular
+                    .dsColumn(0)
+                settings
+                    .dsColumn(0)
+                cardColorSettings
+                    .dsColumn(1)
+                premiumSection
+                    .dsColumn(1)
+                supportSection
+                    .dsColumn(0)
+                legalLinks
+                    // The links belong to the card above them, not a section
+                    // of their own: pulled up from the column's 28 to 12.
+                    .padding(.top, -16)
+                    .dsColumn(1)
+            }
+            .padding(.top, purchases.isPremium ? 28 : layout.sectionSpacing)
+        }
+        .dsReadable(columns == 2 ? 1120 : 620)
+        .dsGutter()
+        .padding(.top, 28)
+        .padding(.bottom, 32)
+        .animation(.easeOut(duration: 0.3), value: purchases.isPremium)
+    }
+
+    /// The tab title with who this is underneath, and the way into the
+    /// answers beside it, where the About You eyebrow keeps it on iPhone.
+    private var header: some View {
+        HStack(alignment: .center, spacing: 16) {
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Profile")
+                    .font(.ui(layout.text(.largeTitle), .semibold))
+                    .tracking(layout.largeTitleTracking)
+                    .foregroundStyle(DS.silver)
+                MetaLine(text: headerMeta)
+                    .lineLimit(1)
+            }
+            Spacer(minLength: 16)
+            if store.profile != nil {
+                Button { editsProfile = true } label: {
+                    HStack(spacing: 7) {
+                        Image(systemName: "pencil")
+                            .font(.system(size: 12, weight: .semibold))
+                        Text("Edit Profile")
+                            .font(.ui(14, .semibold))
+                    }
+                    .foregroundStyle(DS.silver)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(Capsule().fill(DS.silver.opacity(0.07)))
+                    .overlay(Capsule().strokeBorder(DS.silver.opacity(0.10), lineWidth: 1))
+                    .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .dsHover()
+            }
+        }
+    }
+
+    /// "SAM · BUILD MUSCLE · FREE"
+    private var headerMeta: String {
+        var parts: [String] = []
+        if let name = store.profile?.name, !name.isEmpty { parts.append(name.uppercased()) }
+        if let goal = store.profile?.goal { parts.append(goal.title.uppercased()) }
+        parts.append(purchases.isPremium ? "PREMIUM" : "FREE")
+        return parts.joined(separator: " · ")
+    }
+
+    @ViewBuilder
+    private var aboutYouRegular: some View {
+        if let profile = store.profile {
+            let factColumns = aboutWidth >= 500 ? 4 : 2
+            VStack(alignment: .leading, spacing: 10) {
+                SectionEyebrow(text: "ABOUT YOU")
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack(spacing: 14) {
+                        avatar
+                        nameField
+                    }
+                    Hairline(opacity: 0.06)
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12, alignment: .topLeading),
+                                             count: factColumns),
+                              alignment: .leading, spacing: 14) {
+                        fact("GOAL", profile.goal.title)
+                        fact("SEX", profile.sex == .unspecified ? "–" : profile.sex.title)
+                        fact("HEIGHT", store.unit.height(profile.heightCm))
+                        fact("WEIGHT", store.unit.total(profile.weightKg))
+                    }
+                    Hairline(opacity: 0.06)
+                    Text(planSummary(profile))
+                        .font(.ui(14))
+                        .cssLineHeight(14, 1.5)
+                        .foregroundStyle(DS.silver.opacity(0.55))
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(18)
+                .background(card)
+                .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { aboutWidth = $0 }
+            }
+        }
+    }
+
+    /// The name's first letter in the avatar well, live as it's typed.
+    private var avatar: some View {
+        let initial = nameDraft.trimmingCharacters(in: .whitespacesAndNewlines).first.map { String($0).uppercased() }
+        return ZStack {
+            Circle().fill(DS.surfaceRaised)
+            Circle().strokeBorder(DS.silver.opacity(0.08), lineWidth: 1)
+            if let initial {
+                Text(initial)
+                    .font(.ui(22, .semibold))
+                    .foregroundStyle(DS.silver)
+            } else {
+                Image(systemName: "person.fill")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundStyle(DS.silver.opacity(0.45))
+            }
+        }
+        .frame(width: 56, height: 56)
+        .accessibilityHidden(true)
+    }
+
+    /// Premium and ad privacy without the FAQ row and links, which take
+    /// their own places in the columns.
+    private var premiumSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionEyebrow(text: "PREMIUM & PRIVACY")
+            premiumRows
+        }
+    }
+
+    private var supportSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionEyebrow(text: "SUPPORT")
+            faqLink
         }
     }
 
@@ -114,11 +287,11 @@ struct ProfileView: View {
     /// left or Return is pressed; cleared, it takes the name away.
     private var nameField: some View {
         VStack(alignment: .leading, spacing: 3) {
-            MetaLine(text: "NAME", size: 8.5)
+            MetaLine(text: "NAME", size: layout.value(8.5, 10))
                 .accessibilityHidden(true)
             TextField("Add your name", text: $nameDraft)
                 .accessibilityLabel("Name")
-                .font(.ui(15, .semibold))
+                .font(.ui(layout.value(15, 20), .semibold))
                 .foregroundStyle(DS.silver)
                 .textContentType(.givenName)
                 .textInputAutocapitalization(.words)
@@ -151,9 +324,9 @@ struct ProfileView: View {
 
     private func fact(_ label: String, _ value: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            MetaLine(text: label, size: 8.5)
+            MetaLine(text: label, size: layout.value(8.5, 10))
             Text(value)
-                .font(.ui(15, .semibold))
+                .font(.ui(layout.value(15, 17), .semibold))
                 .foregroundStyle(DS.silver)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -185,7 +358,7 @@ struct ProfileView: View {
                         options: WeightUnit.allCases.map { ($0, $0.symbol.uppercased()) },
                         selection: $store.unit,
                         fontSize: 10,
-                        itemPaddingH: 13,
+                        itemPaddingH: layout.value(13, 15),
                         itemPaddingV: 7
                     )
                 }
@@ -201,8 +374,8 @@ struct ProfileView: View {
                     menu(selection: $store.rest, options: RestSetting.allCases, title: \.title)
                 }
             }
-            .padding(.horizontal, 14)
-            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
+            .padding(.horizontal, cardPadding)
+            .background(card)
         }
     }
 
@@ -239,8 +412,8 @@ struct ProfileView: View {
                     }
                 }
             }
-            .padding(.horizontal, 14)
-            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
+            .padding(.horizontal, cardPadding)
+            .background(card)
         }
     }
 
@@ -268,56 +441,67 @@ struct ProfileView: View {
     private var premiumAndPrivacy: some View {
         VStack(alignment: .leading, spacing: 10) {
             SectionEyebrow(text: "PREMIUM & PRIVACY")
-            VStack(spacing: 0) {
-                settingRow("MUSQ Premium", detail: premiumDetail) {
-                    pillButton(purchases.isPremium ? "ACTIVE" : "UPGRADE", prominent: !purchases.isPremium) {
-                        paywall.show(.profile)
-                    }
-                }
-                if ads.privacyOptionsRequired {
-                    Hairline(opacity: 0.06)
-                    settingRow("Privacy choices", detail: "Change what you agreed to for ads.") {
-                        pillButton("OPEN") { Task { await ads.presentPrivacyOptions() } }
-                    }
-                }
-            }
-            .padding(.horizontal, 14)
-            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
-
-            NavigationLink {
-                FAQView()
-            } label: {
-                HStack(spacing: 12) {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("Help & FAQ")
-                            .font(.ui(14.5, .semibold))
-                            .foregroundStyle(DS.silver)
-                        Text("Premium, billing, recovery, your data, and contact.")
-                            .font(.ui(12))
-                            .foregroundStyle(DS.silver.opacity(0.5))
-                    }
-                    Spacer(minLength: 8)
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundStyle(DS.silver.opacity(0.28))
-                }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 13)
-                .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-
-            HStack(spacing: 14) {
-                Link("Privacy Policy", destination: AppLinks.privacy)
-                Link("Terms of Use", destination: AppLinks.terms)
-                Link("Support", destination: AppLinks.support)
-            }
-            .font(.ui(12, .semibold))
-            .foregroundStyle(DS.silver.opacity(0.55))
-            .padding(.horizontal, 4)
-            .padding(.top, 2)
+            premiumRows
+            faqLink
+            legalLinks
         }
+    }
+
+    private var premiumRows: some View {
+        VStack(spacing: 0) {
+            settingRow("MUSQ Premium", detail: premiumDetail) {
+                pillButton(purchases.isPremium ? "ACTIVE" : "UPGRADE", prominent: !purchases.isPremium) {
+                    paywall.show(.profile)
+                }
+            }
+            if ads.privacyOptionsRequired {
+                Hairline(opacity: 0.06)
+                settingRow("Privacy choices", detail: "Change what you agreed to for ads.") {
+                    pillButton("OPEN") { Task { await ads.presentPrivacyOptions() } }
+                }
+            }
+        }
+        .padding(.horizontal, cardPadding)
+        .background(card)
+    }
+
+    private var faqLink: some View {
+        NavigationLink {
+            FAQView()
+        } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Help & FAQ")
+                        .font(.ui(layout.value(14.5, 16), .semibold))
+                        .foregroundStyle(DS.silver)
+                    Text("Premium, billing, recovery, your data, and contact.")
+                        .font(.ui(layout.value(12, 13.5)))
+                        .foregroundStyle(DS.silver.opacity(0.5))
+                }
+                Spacer(minLength: 8)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: layout.value(11, 12), weight: .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.28))
+            }
+            .padding(.horizontal, cardPadding)
+            .padding(.vertical, layout.value(13, 16))
+            .background(card)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .dsHover(.highlight, radius: layout.cardRadius)
+    }
+
+    private var legalLinks: some View {
+        HStack(spacing: layout.value(14, 18)) {
+            Link("Privacy Policy", destination: AppLinks.privacy)
+            Link("Terms of Use", destination: AppLinks.terms)
+            Link("Support", destination: AppLinks.support)
+        }
+        .font(.ui(layout.value(12, 13), .semibold))
+        .foregroundStyle(DS.silver.opacity(0.55))
+        .padding(.horizontal, 4)
+        .padding(.top, 2)
     }
 
     private var premiumDetail: String {
@@ -332,70 +516,112 @@ struct ProfileView: View {
         }
     }
 
+    // MARK: - Pieces
+
+    /// Every settings card: 16pt corners and 14pt sides on iPhone, the
+    /// tier's 20 and 18 on iPad.
+    private var card: some View {
+        RoundedRectangle(cornerRadius: layout.cardRadius, style: .continuous).fill(DS.surfaceAlt)
+    }
+
+    private var cardPadding: CGFloat { layout.value(14, 18) }
+
     /// A small capsule action; prominent (silver) when it's an offer.
     private func pillButton(_ title: String, prominent: Bool = false,
                             action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        let size: CGFloat = layout.value(10, 11)
+        return Button(action: action) {
             Text(title)
-                .font(.mono(10, .semibold))
-                .trackingEm(0.08, size: 10)
+                .font(.mono(size, .semibold))
+                .trackingEm(0.08, size: size)
                 .foregroundStyle(prominent ? DS.ink : DS.silver.opacity(0.8))
-                .padding(.horizontal, 11)
-                .padding(.vertical, 8)
+                .padding(.horizontal, layout.value(11, 14))
+                .padding(.vertical, layout.value(8, 9))
                 .background(Capsule().fill(prominent ? DS.silver : DS.silver.opacity(0.07)))
         }
         .buttonStyle(.plain)
+        .dsHover()
     }
 
+    /// Title and what it does, then the control. On iPad the text stops at
+    /// 380pt, so in a wide column the control stays near the words it sets
+    /// instead of drifting to the far edge.
     private func settingRow<Control: View>(_ title: String, detail: String,
                                            @ViewBuilder control: () -> Control) -> some View {
         HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
-                    .font(.ui(14.5, .semibold))
+                    .font(.ui(layout.value(14.5, 16), .semibold))
                     .foregroundStyle(DS.silver)
                 Text(detail)
-                    .font(.ui(12))
-                    .cssLineHeight(12, 1.4)
+                    .font(.ui(layout.value(12, 13.5)))
+                    .cssLineHeight(layout.value(12, 13.5), 1.4)
                     .foregroundStyle(DS.silver.opacity(0.5))
                     .fixedSize(horizontal: false, vertical: true)
             }
+            // Bounds are nil in compact, which leaves the phone's layout as
+            // it was.
+            .frame(maxWidth: layout.isRegular ? 380 : nil, alignment: .leading)
             Spacer(minLength: 8)
             control()
         }
-        .padding(.vertical, 13)
+        .padding(.vertical, layout.value(13, 16))
     }
 
     private func menu<Value: Hashable & Identifiable>(selection: Binding<Value>, options: [Value],
                                                       title: KeyPath<Value, String>) -> some View {
-        Menu {
+        let size: CGFloat = layout.value(10, 11)
+        return Menu {
             Picker(selection: selection) {
                 ForEach(options) { Text($0[keyPath: title]).tag($0) }
             } label: { EmptyView() }
         } label: {
             HStack(spacing: 5) {
                 Text(selection.wrappedValue[keyPath: title].uppercased())
-                    .font(.mono(10, .semibold))
-                    .trackingEm(0.08, size: 10)
+                    .font(.mono(size, .semibold))
+                    .trackingEm(0.08, size: size)
                 Image(systemName: "chevron.up.chevron.down")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(.system(size: layout.value(8, 9), weight: .bold))
             }
             .foregroundStyle(DS.silver.opacity(0.8))
-            .padding(.horizontal, 11)
-            .padding(.vertical, 8)
+            .padding(.horizontal, layout.value(11, 14))
+            .padding(.vertical, layout.value(8, 9))
             .background(Capsule().fill(DS.silver.opacity(0.07)))
         }
+        .dsHover()
     }
 
     private func moreButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .font(.ui(13, .semibold))
+                .font(.ui(layout.value(13, 14), .semibold))
                 .foregroundStyle(DS.silver.opacity(0.7))
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
+                .padding(.vertical, layout.value(10, 13))
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }
+}
+
+#Preview("Profile · iPad mini portrait") {
+    let purchases = Purchases()
+    return ProfileView(tab: .constant(.profile))
+        .environment(WorkoutStore())
+        .environment(RestTimer())
+        .environment(purchases)
+        .environment(Ads(purchases: purchases))
+        .environment(Paywall())
+        .dsPreview(.mini660)
+}
+
+#Preview("Profile · 13-inch landscape") {
+    let purchases = Purchases()
+    return ProfileView(tab: .constant(.profile))
+        .environment(WorkoutStore())
+        .environment(RestTimer())
+        .environment(purchases)
+        .environment(Ads(purchases: purchases))
+        .environment(Paywall())
+        .dsPreview(.pad13Landscape1110)
 }

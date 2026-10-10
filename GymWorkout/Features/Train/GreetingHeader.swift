@@ -17,6 +17,8 @@ import SwiftUI
 struct GreetingHeader: View {
     /// What the picked day calls for (see `Greeting`).
     var greeting: Greeting
+    /// 28 on the phone; the iPad's wider header takes a larger line.
+    var fontSize: CGFloat = 28
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var text: String
@@ -25,8 +27,9 @@ struct GreetingHeader: View {
     private static var greetedDays: Set<Date> = []
     private static var playedKeys: Set<String> = []
 
-    init(greeting: Greeting) {
+    init(greeting: Greeting, fontSize: CGFloat = 28) {
         self.greeting = greeting
+        self.fontSize = fontSize
         _text = State(initialValue: Self.hasPlayed(greeting)
                       ? greeting.lines.last ?? ""
                       : Self.sequence(for: greeting).first ?? "")
@@ -46,8 +49,9 @@ struct GreetingHeader: View {
     var body: some View {
         ZStack(alignment: .leading) {
             Text(text)
-                .font(.ui(28, .semibold))
-                .tracking(-0.7)
+                .font(.ui(fontSize, .semibold))
+                // -0.7 at the phone's 28, in proportion above it.
+                .tracking(-0.7 * (fontSize / 28))
                 .foregroundStyle(DS.silver)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
@@ -134,14 +138,16 @@ struct Greeting: Equatable {
     /// - Parameters:
     ///   - selected: the day picked on the calendar.
     ///   - next: the split day the planner suggests for it, e.g. "Lower".
+    ///   - roomy: the header has an iPad's width, so a longer name still fits
+    ///     the line.
     init(name: String?, sessions: [WorkoutSession], selected: Date, next: String?,
-         now: Date = Date(), calendar: Calendar = .current) {
+         roomy: Bool = false, now: Date = Date(), calendar: Calendar = .current) {
         let today = calendar.startOfDay(for: now)
         let day = calendar.startOfDay(for: selected)
         let you = name.map { ", \($0)" } ?? ""
         // Lines longer than a hello only take the name when it's short, so
         // they still fit the header's one line.
-        let shortYou = (name?.count ?? 0) <= 10 ? you : ""
+        let shortYou = (name?.count ?? 0) <= (roomy ? 18 : 10) ? you : ""
         // Changes daily, so the lines do; steady through the day, so a
         // redraw never swaps them.
         let ordinal = calendar.ordinality(of: .day, in: .era, for: day) ?? 0

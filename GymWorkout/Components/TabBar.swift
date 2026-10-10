@@ -42,17 +42,28 @@ struct TabBarView: View {
     @Binding var selection: AppTab
     var style: Style = .chrome
 
+    @Environment(\.dsChrome) private var windowChrome
     @State private var appeared = false
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Every tab root carries the bar, so the running rest rides on it
-            // and stays visible whichever tab is open.
-            RestTimerBar()
-            // Pinned to the tab bar, below the rest: the rest coming and
-            // going never slides the ad under a finger reaching for Skip.
-            AdBanner()
-            bar
+        if windowChrome.isSidebar {
+            // The sidebar does the navigating; the rest and the ad still
+            // ride at the foot of the content column, and take no space
+            // while neither is showing.
+            VStack(spacing: 0) {
+                RestTimerBar()
+                AdBanner()
+            }
+        } else {
+            VStack(spacing: 0) {
+                // Every tab root carries the bar, so the running rest rides on it
+                // and stays visible whichever tab is open.
+                RestTimerBar()
+                // Pinned to the tab bar, below the rest: the rest coming and
+                // going never slides the ad under a finger reaching for Skip.
+                AdBanner()
+                bar
+            }
         }
     }
 
@@ -63,26 +74,12 @@ struct TabBarView: View {
                 Button {
                     selection = tab
                 } label: {
-                    VStack(spacing: 4) {
-                        TabGlyph(
-                            color: isOn ? DS.silver : DS.silver.opacity(0.45),
-                            symbol: tab.symbol(selected: isOn)
-                        )
-                        // Each tab root draws its own bar, so the new tab's
-                        // icon bounces as its bar appears.
-                        .symbolEffect(.bounce, value: isOn && appeared)
-                        .frame(width: 54, height: 30)
-                        .background {
-                            if isOn {
-                                Capsule().fill(DS.silver.opacity(0.09))
-                            }
-                        }
-                        Text(tab.rawValue)
-                            .font(.ui(10, isOn ? .semibold : .medium))
-                            .foregroundStyle(isOn ? DS.silver : DS.silver.opacity(0.45))
-                    }
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle())
+                    // Each tab root draws its own bar, so the new tab's icon
+                    // bounces as its bar appears.
+                    TabItemLabel(tab: tab, isOn: isOn, layout: .bar,
+                                 bounce: isOn && appeared ? 1 : 0)
+                        .frame(maxWidth: .infinity)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(tab.rawValue)
@@ -106,4 +103,105 @@ struct TabBarView: View {
         }
         .onAppear { appeared = true }
     }
+}
+
+/// One tab's glyph and name, as the bottom bar, the sidebar rail or the
+/// expanded sidebar draws it. Same symbols and the same silver weights
+/// everywhere, so a tab reads the same whichever chrome is showing.
+struct TabItemLabel: View {
+    enum Placement {
+        /// The bottom bar: glyph in a 54×30 capsule over a 10pt name.
+        case bar
+        /// The sidebar rail: glyph in a 48×40 capsule over a 10pt name.
+        case rail
+        /// The expanded sidebar: a 46pt row, glyph beside a 15pt name.
+        case row
+    }
+
+    var tab: AppTab
+    var isOn: Bool
+    var layout: Placement
+    /// The glyph bounces whenever this changes.
+    var bounce: Int = 0
+
+    var body: some View {
+        switch layout {
+        case .bar:
+            VStack(spacing: 4) {
+                TabGlyph(color: isOn ? DS.silver : DS.silver.opacity(0.45),
+                         symbol: tab.symbol(selected: isOn))
+                    .symbolEffect(.bounce, value: bounce)
+                    .frame(width: 54, height: 30)
+                    .background {
+                        if isOn {
+                            Capsule().fill(DS.silver.opacity(0.09))
+                        }
+                    }
+                Text(tab.rawValue)
+                    .font(.ui(10, isOn ? .semibold : .medium))
+                    .foregroundStyle(isOn ? DS.silver : DS.silver.opacity(0.45))
+            }
+        case .rail:
+            VStack(spacing: 4) {
+                TabGlyph(color: isOn ? DS.silver : DS.silver.opacity(0.45),
+                         symbol: tab.symbol(selected: isOn), size: 24)
+                    .symbolEffect(.bounce, value: bounce)
+                    .frame(width: 48, height: 40)
+                    .background {
+                        if isOn {
+                            Capsule().fill(DS.silver.opacity(0.09))
+                        }
+                    }
+                Text(tab.rawValue)
+                    .font(.ui(10, isOn ? .semibold : .medium))
+                    .foregroundStyle(isOn ? DS.silver : DS.silver.opacity(0.45))
+                    .lineLimit(1)
+                    .fixedSize()
+            }
+        case .row:
+            HStack(spacing: 12) {
+                TabGlyph(color: isOn ? DS.silver : DS.silver.opacity(0.55),
+                         symbol: tab.symbol(selected: isOn), size: 20)
+                    .symbolEffect(.bounce, value: bounce)
+                Text(tab.rawValue)
+                    .font(.ui(15, isOn ? .semibold : .medium))
+                    .foregroundStyle(isOn ? DS.silver : DS.silver.opacity(0.55))
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 14)
+            .frame(height: 46)
+            .background {
+                if isOn {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(DS.silver.opacity(0.09))
+                }
+            }
+        }
+    }
+}
+
+#Preview("Tab bar · bottom") {
+    @Previewable @State var tab: AppTab = .train
+    VStack {
+        Spacer()
+        TabBarView(selection: $tab)
+    }
+    .environment(RestTimer())
+    .environment(Ads(purchases: Purchases()))
+    .dsPreview(.phone)
+}
+
+#Preview("Tab bar · sidebar") {
+    @Previewable @State var tab: AppTab = .train
+    VStack {
+        Spacer()
+        Text("With the sidebar the bar draws only the rest and the ad.")
+            .font(.ui(13))
+            .foregroundStyle(DS.silver.opacity(0.5))
+        Spacer()
+        TabBarView(selection: $tab)
+    }
+    .environment(RestTimer())
+    .environment(Ads(purchases: Purchases()))
+    .dsPreview(.pad13Portrait940)
 }

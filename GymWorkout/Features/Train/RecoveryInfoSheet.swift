@@ -11,8 +11,13 @@
 import SwiftUI
 
 struct RecoveryInfoSheet: View {
+    /// A bottom sheet on iPhone; on iPad a popover pointing at the tapped
+    /// card, which sizes itself and closes with a tap outside or Esc.
+    enum Presentation { case sheet, popover }
+
     var group: MuscleGroup
     var record: MuscleTrainingRecord
+    var presentation: Presentation = .sheet
     var onViewExercises: () -> Void
     var onTrainAnyway: () -> Void
 
@@ -20,6 +25,37 @@ struct RecoveryInfoSheet: View {
     @State private var height: CGFloat = 440
 
     var body: some View {
+        switch presentation {
+        case .sheet:
+            content(showsCancel: true)
+                .padding(.horizontal, DS.Metric.gutter)
+                .padding(.top, 26)
+                .padding(.bottom, 12)
+                // Fit the sheet to its content: the part list is longer for Back than
+                // for Triceps.
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height = $0 + 20 }
+                .presentationDetents([.height(height)])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(DS.surface)
+                .presentationCornerRadius(DS.Metric.sheetRadius)
+        case .popover:
+            // A popover hugs its content, so there is nothing to measure;
+            // a tap outside replaces Cancel, and Esc does the same.
+            content(showsCancel: false)
+                .padding(20)
+                .fixedSize(horizontal: false, vertical: true)
+                .background {
+                    Button("Close") { dismiss() }
+                        .keyboardShortcut(.cancelAction)
+                        .frame(width: 0, height: 0)
+                        .opacity(0)
+                        .accessibilityHidden(true)
+                        .allowsHitTesting(false)
+                }
+        }
+    }
+
+    private func content(showsCancel: Bool) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             MetaLine(text: group.title.uppercased(), em: 0.10)
             Text(record.status.title)
@@ -57,23 +93,15 @@ struct RecoveryInfoSheet: View {
             }
             .padding(.top, 22)
 
-            Button("Cancel") { dismiss() }
-                .font(.ui(13.5, .semibold))
-                .foregroundStyle(DS.silver.opacity(0.6))
-                .frame(maxWidth: .infinity)
-                .padding(.top, 14)
-                .buttonStyle(.plain)
+            if showsCancel {
+                Button("Cancel") { dismiss() }
+                    .font(.ui(13.5, .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.6))
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 14)
+                    .buttonStyle(.plain)
+            }
         }
-        .padding(.horizontal, DS.Metric.gutter)
-        .padding(.top, 26)
-        .padding(.bottom, 12)
-        // Fit the sheet to its content: the part list is longer for Back than
-        // for Triceps.
-        .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height = $0 + 20 }
-        .presentationDetents([.height(height)])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(DS.surface)
-        .presentationCornerRadius(DS.Metric.sheetRadius)
     }
 
     // MARK: - Single part

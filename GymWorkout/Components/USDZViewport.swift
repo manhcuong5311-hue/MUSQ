@@ -65,6 +65,13 @@ struct USDZViewport: View {
     var roomBelow: Float = 0
     /// Joints to project to screen for overlays, if any.
     var tracker: JointTracker? = nil
+    /// Caps the width a swipe is measured against, so a full turn on an iPad
+    /// pane doesn't need a 900pt drag; nil uses the viewport's width.
+    var dragReferenceWidth: CGFloat? = nil
+    /// The viewer's turn, when a host drives it with its own drag over a
+    /// larger surface (`Viewport`'s staged layout). The model then takes no
+    /// drag of its own.
+    var externalYaw: Double? = nil
     /// Camera distance in model units.
     var distance: Float = 2.05
     var fieldOfView: Float = 32
@@ -126,7 +133,7 @@ struct USDZViewport: View {
             } update: { _ in
                 let stage = shown ?? Staging(turn: turn, room: roomBelow)
                 pivot.transform.rotation =
-                    simd_quatf(angle: Float(yaw) + framing.yaw + stage.turn, axis: [0, 1, 0])
+                    simd_quatf(angle: Float(externalYaw ?? yaw) + framing.yaw + stage.turn, axis: [0, 1, 0])
                 // Scaled about the middle of the view, then lifted by a share
                 // of its height at the model's depth.
                 let height = 2 * distance * tan(fieldOfView * .pi / 360)
@@ -165,10 +172,12 @@ struct USDZViewport: View {
         .gesture(
             DragGesture(minimumDistance: 2)
                 .onChanged { value in
-                    let turns = Double(value.translation.width / max(width, 1))
+                    let reference = min(width, dragReferenceWidth ?? width)
+                    let turns = Double(value.translation.width / max(reference, 1))
                     yaw = dragStartYaw + turns * 2 * .pi
                 }
-                .onEnded { _ in dragStartYaw = yaw }
+                .onEnded { _ in dragStartYaw = yaw },
+            isEnabled: externalYaw == nil
         )
     }
 

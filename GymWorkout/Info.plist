@@ -8,6 +8,11 @@
 	<false/>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Your data is used to show ads that are more relevant to you. Saying no doesn't change anything else in MUSQ.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

@@ -15,7 +15,11 @@ struct FaultGhost: View {
     var fault: FaultPose
     var tracker: JointTracker
 
+    /// Line widths, rings and dots grow with an iPad viewport (1 on iPhone).
+    @Environment(\.dsAnnotationScale) private var scale
+
     var body: some View {
+        let s = scale
         Canvas { context, _ in
             guard let pose = FaultGhost.solve(fault, tracker.transforms) else { return }
             let project = { (p: SIMD3<Float>) in tracker.projector?(p) }
@@ -27,8 +31,8 @@ struct FaultGhost: View {
                 guide.move(to: a)
                 guide.addLine(to: b)
                 context.stroke(guide, with: .color(DS.fault.opacity(0.7)),
-                               style: StrokeStyle(lineWidth: 1.2, dash: [3, 3]))
-                context.stroke(Path(ellipseIn: CGRect(x: a.x - 3, y: a.y - 3, width: 6, height: 6)),
+                               style: StrokeStyle(lineWidth: 1.2 * s, dash: [3, 3]))
+                context.stroke(Path(ellipseIn: CGRect(x: a.x - 3 * s, y: a.y - 3 * s, width: 6 * s, height: 6 * s)),
                                with: .color(DS.fault.opacity(0.7)), lineWidth: 1)
             }
 
@@ -44,16 +48,16 @@ struct FaultGhost: View {
 
             // A dark underlay keeps yellow legible on the light ground, the
             // glow carries it on the dark one.
-            let round = StrokeStyle(lineWidth: 3.4, lineCap: .round, lineJoin: .round)
-            context.stroke(limbs, with: .color(DS.faultShade), style: StrokeStyle(lineWidth: 6.5, lineCap: .round, lineJoin: .round))
+            let round = StrokeStyle(lineWidth: 3.4 * s, lineCap: .round, lineJoin: .round)
+            context.stroke(limbs, with: .color(DS.faultShade), style: StrokeStyle(lineWidth: 6.5 * s, lineCap: .round, lineJoin: .round))
             context.drawLayer { glow in
-                glow.addFilter(.shadow(color: DS.fault.opacity(0.9), radius: 5))
+                glow.addFilter(.shadow(color: DS.fault.opacity(0.9), radius: 5 * s))
                 glow.stroke(limbs, with: .color(DS.fault), style: round)
             }
             for point in joints {
-                let dot = Path(ellipseIn: CGRect(x: point.x - 4.5, y: point.y - 4.5, width: 9, height: 9))
+                let dot = Path(ellipseIn: CGRect(x: point.x - 4.5 * s, y: point.y - 4.5 * s, width: 9 * s, height: 9 * s))
                 context.fill(dot, with: .color(DS.fault))
-                context.stroke(dot, with: .color(DS.faultShade), lineWidth: 1.2)
+                context.stroke(dot, with: .color(DS.faultShade), lineWidth: 1.2 * s)
             }
         }
         .allowsHitTesting(false)
