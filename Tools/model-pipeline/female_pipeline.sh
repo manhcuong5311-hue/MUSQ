@@ -10,6 +10,7 @@ export PXR_AR_DEFAULT_SEARCH_PATH=$M/Shared
 cd $HERE && $PY convert_all.py female-1010/ 2>&1 | grep -v Warning | grep -v "^       "
 FILES=($M/Legs/FemalePendulumSquat{Standard,High,Low,Wide,Narrow}.usdc $M/Legs/FemaleHackSquat{Standard,High,Low,Wide,Narrow}.usdc $M/Abs/AbWheelRollout.usdc $M/Legs/CableStepDown.usdc)
 $PY retex.py $FILES 2>&1 | grep -v Warning | sed 's#.*/##'
+$PY one_side_tiers.py $FILES 2>&1 | grep -v Warning
 for f in $FILES; do zsh pad_one.sh $f 2>&1 | grep -v Warning | cut -c1-60; done
 $PY rename_rig.py $M/Legs/FemaleHackSquat*.usdc 2>&1 | grep -v Warning | sed 's#.*/##'
 slim() {  # model body

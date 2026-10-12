@@ -9,6 +9,8 @@ Run with Blender's Python, which ships `pxr` and numpy:
    off-stage props deactivated, BasisCurves rebuilt as meshes, flattened into
    `GymWorkout/Resources/Models/<Group>/<Name>.usdc`. Edit `JOBS` per batch.
    Raw exports are read from `SourceExports/`, never from `Resources/`.
+   Then `one_side_tiers.py <model.usdc> ...` on every converted model (see
+   "One-sided highlights" below); it leaves two-sided lifts alone.
 3. `framer.py` / `solve_all.py` / `solve_yaws.py` — fit yaw/zoom/offset for
    `ModelFraming` by projecting joints + equipment through the viewport camera.
 4. `shot2.sh` + `montage.swift` — simulator screenshots (needs the harness in
@@ -630,3 +632,20 @@ app drew the body in its standing rest pose. `convert_all.py` now keeps a
 SkelRoot type on the wrapper when the export's /root has one; 398 was
 re-converted, padded and slimmed (the other 37 exports keep their SkelRoot
 on the rig, as before).
+
+One-sided highlights (2026-10-12): the owner paints one-sided lifts on the
+working side only, but the app lit both sides. In the .blend the
+`FF_Highlight_<Group>_<side>` materials take their Base Color from a
+side-aware "Fitness side color" mix (the resting side's factor is 0, so it is
+the mix's Color1, the unlit 0.0075 grey), while the Principled BSDF's Base
+Color socket still carries an older side-blind driver. The USD exporter cannot
+follow the mix, so it writes that stale socket value: the resting side came
+out as red as the working one (1.0 bright, 0.206-0.256 dim), and only the
+emissive (0.18 x the side factor) kept the side. Re-exporting does not help (a
+fresh Cable_Step_Downs export the same evening had it too).
+`one_side_tiers.py` sets a group's diffuse to the unlit grey when it is lit
+with no emissive while its other side glows; 58 models changed (every
+one-sided lift: single-arm rows, curls and presses, split squats, step-ups,
+single-leg hinges and curls, kickbacks, abductions, side planks and bends),
+each differing from before only in those diffuse values (`equiv.py`). Their
+57 library tiles were re-shot. Run it after `convert_all.py` on every batch.
