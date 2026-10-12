@@ -13,6 +13,7 @@
 //  beside the muscle groups. The phone keeps its own tree untouched.
 //
 
+import StoreKit
 import SwiftUI
 
 struct TrainView: View {
@@ -22,6 +23,7 @@ struct TrainView: View {
     @Environment(Ads.self) private var ads
     @Environment(Paywall.self) private var paywall
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.requestReview) private var requestReview
     @Environment(\.dsLayout) private var layout
     @State private var router = TrainRouter()
     @State private var selectedDay = Calendar.current.startOfDay(for: Date())
@@ -564,6 +566,7 @@ struct TrainView: View {
         WideButton(title: "Complete Workout", prominent: session.hasCompletedSets) {
             withAnimation(.easeOut(duration: 0.2)) { store.completeWorkout(on: selectedDay) }
             ads.moment(.workoutCompleted)
+            ReviewPrompt.workoutCompleted(count: store.completedWorkoutCount, request: requestReview)
         }
         .disabled(!session.hasCompletedSets)
         .opacity(session.hasCompletedSets ? 1 : 0.5)
