@@ -18,5 +18,5 @@ slim() {  # model body
   local res=$($PY equiv.py $f $tmp 2>&1 | grep -v Warning | head -1)
   if [[ "$res" == *"missing 0 extra 0 different 0"* ]]; then mv $tmp $f; echo "slim ok ${f:t}"; else rm -f $tmp; echo "KEPT ORIGINAL ${f:t}: $res"; fi
 }
-for f in $M/Legs/FemalePendulumSquat*.usdc $M/Abs/AbWheelRollout.usdc $M/Legs/CableStepDown.usdc; do slim $f $M/Shared/AnatomyBodyFemale.usdc & done; wait
-for f in $M/Legs/FemaleHackSquat*.usdc; do slim $f $M/Shared/AnatomyBodyFemaleHack.usdc & done; wait
+# slimming skipped (owner, 2026-10-12): the female models ship whole
+

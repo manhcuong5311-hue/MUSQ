@@ -576,7 +576,15 @@ RDL's 63 cm from the pulley with the stack 3 cm clear; the Cable Standing
 Leg Curl's pulley in front of the midline; the Smith RDL's carriage resting
 on the safety stops at the bottom; the Banded Hip Abduction's band over the
 kneecaps and hands on the thighs; the Dumbbell Hip Thrust's knees at 100° at
-the top; the Cable Hip Adduction facing into the station. The spec files
+the top; the Cable Hip Adduction facing into the station. The owner
+confirmed all of these, and the new families' model points below, as
+intended (2026-10-12), so the copy keeps following the models; the
+Glute-Ham Raise's pad cue, label, setup and comparison were then rewritten
+for the model's setting (the kneecaps and tops of the shins on the pad, the
+lab studies' higher setting named as the alternative if the pad presses on
+the kneecaps), its mistake now a footplate set so close that the pad sits
+under the shins (the existing ghost already draws the lifter ~9 cm
+forward). The spec files
 these exercises were generated from (spec_300_350_*, spec_400_*,
 spec_500_hip.py) were NOT updated, so regenerating them would undo these
 edits.

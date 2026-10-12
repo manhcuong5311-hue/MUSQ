@@ -238,7 +238,9 @@ nearer the M29's pulley), kept in `faults_1012_revA.swift.txt` and pasted by
 torso and leg ghosts are seen from -1.4 (the station's columns hid them from
 the front three-quarters); the Banded Hip Abduction lost its grip ghost (its
 new hands mistake is a force); the three lunges' stills moved to 2.08 s,
-where their new clips bottom out.
+where their new clips bottom out. The Glute-Ham Raise's pad ghost
+(`hingeGHRKneesOnPad`, the lifter ~9 cm forward) now shows the pad slipping
+under the shins: the owner's new GHD rests the kneecaps on the pad.
 The twelve new exercises' ghosts are in `faults_1012_{thrust,hipext,kb}.swift.txt`
 (new pieces prefixed `r1012<family>`), their moments in
 `fault_moments_1012_*.json` (merged into bottoms.json by `fault_times.py`;

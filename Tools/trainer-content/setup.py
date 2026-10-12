@@ -1761,9 +1761,9 @@ SETUP = {
         "Kneel tall with your hips straight and your hands loose in front of your chest.",
     ],
     "Glute-Ham Raise": [
-        "Set the footplate so your knees sit just behind the pad when your feet are against the plate.",
+        "Set the footplate so your kneecaps rest on the pad when your feet are against the plate.",
         "Step onto the plate and lock your ankles between the rollers.",
-        "Rest your lower thighs on the pad and kneel up tall, hips straight, hands in front of your chest.",
+        "Kneel up tall with your knees on the pad, hips straight, hands in front of your chest.",
         "Press the balls of your feet into the plate and brace before each rep.",
     ],
     "Standing Leg Curl": [

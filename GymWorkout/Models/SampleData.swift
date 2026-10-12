@@ -3213,7 +3213,7 @@ enum SampleData {
                 title: "Leg Drive",
                 intro: "The incline angle makes the base easier to lose than on a flat bench.",
                 why: "Driving the feet down keeps the hips pinned and the upper back tight against the incline.",
-                mistake: "Feet drifting or lifting as the steeper angle pulls the body toward the head of the bench.",
+                mistake: "Feet drifting or lifting, so the hips slide down the incline and the upper back loses its set.",
                 correct: "Plant both feet flat and push down through every rep, keeping the hips on the bench."
             )
         ],
@@ -3477,7 +3477,7 @@ enum SampleData {
                 title: "Leg Drive",
                 intro: "The incline still needs a solid floor connection to press against.",
                 why: "Driving the feet down keeps the hips anchored against the incline instead of sliding up it.",
-                mistake: "Feet lifting or sliding as the angle pulls the body toward the top of the bench.",
+                mistake: "Feet lifting or sliding, so the hips shift on the incline and the press loses its base.",
                 correct: "Plant both feet flat and push down through the whole set."
             )
         ],
@@ -3932,8 +3932,8 @@ enum SampleData {
                 id: "feet",
                 title: "Stance",
                 intro: "Constant cable pull needs a braced base to work against.",
-                why: "A split stance with a soft front knee resists the forward pull of the cables and keeps the torso still.",
-                mistake: "Standing square with locked knees, so the cables pull the body forward mid-rep.",
+                why: "A split stance with a soft front knee resists the backward pull of the cables and keeps the torso still.",
+                mistake: "Standing square with locked knees, so the cables pull the body back toward the stacks mid-rep.",
                 correct: "Stagger the feet, soften the front knee, and brace before starting the set."
             )
         ],
@@ -4023,7 +4023,7 @@ enum SampleData {
             TechniqueCue(
                 id: "feet",
                 title: "Stance",
-                intro: "The upward pull needs a stance that resists being pulled forward and up.",
+                intro: "The low pulleys pull down and back, so the stance must resist being pulled backward.",
                 why: "A staggered stance with a soft front knee keeps the torso still against the low pulleys' pull.",
                 mistake: "Standing square, which lets the cables rock the body during the sweep.",
                 correct: "Split the stance, soften the front knee, and keep the torso still through the sweep."
@@ -4924,7 +4924,7 @@ enum SampleData {
             TechniqueCue(
                 id: "scapula",
                 title: "Scapular Position",
-                intro: "With the elbows locked out, the shoulder blades carry the whole exercise.",
+                intro: "With the elbows fixed, the arms move only at the shoulder, so set the blades first.",
                 why: "Setting the blades down and back before pulling — 'proud chest' — creates the stable base the lats pull against.",
                 mistake: "Letting the shoulders round forward as the cable resists at the top.",
                 correct: "Set the shoulder blades down and back, chest lifted, before starting the pull."
@@ -4949,7 +4949,7 @@ enum SampleData {
                 id: "barpath",
                 title: "Handle Path",
                 intro: "The handles trace a wide arc from shoulder height to the thighs.",
-                why: "Sweeping the straight arms down in an arc, finishing near the thighs, takes the lats through a long range of shoulder extension a bent-elbow pull cannot match.",
+                why: "Sweeping the straight arms down in an arc, finishing near the thighs, works the lats through shoulder extension with no help from the biceps.",
                 mistake: "Pushing the handles straight down toward the floor instead of sweeping them in an arc.",
                 correct: "Sweep the arms down and back in an arc until the hands reach the thighs."
             ),
@@ -5021,7 +5021,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The landmine-style bar fixes the path, but the elbows still decide the target.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handle close to the body.",
+                why: "Driving the elbows back close to the sides brings the lats in alongside the mid-back and rear delts, the row's strongest line of pull, and keeps the handle close to the body.",
                 mistake: "Elbows flaring out wide to the sides as the handle comes up.",
                 correct: "Keep the elbows tucked to the sides as they drive back."
             ),
@@ -5501,7 +5501,7 @@ enum SampleData {
                 id: "torso",
                 title: "Torso Angle",
                 intro: "A front squat is built to be lifted with a near-vertical torso.",
-                why: "Any forward lean tips the bar off the front rack, so the torso has to stay upright for the whole rep — exactly why this variation hits the quads so directly.",
+                why: "Too much forward lean tips the bar off the front rack, so the torso has to stay close to upright for the whole rep — exactly why this variation hits the quads so directly.",
                 mistake: "Leaning forward at the bottom the way a back squat allows, which the front rack position cannot tolerate.",
                 correct: "Keep the chest lifted and the torso close to vertical from the top of the rep to the bottom."
             ),
@@ -7025,7 +7025,7 @@ enum SampleData {
                 id: "height",
                 title: "Range of Motion",
                 intro: "Lift to shoulder height and no higher.",
-                why: "The lateral deltoid does its work up to about 90° of abduction; above that the upper trapezius takes over.",
+                why: "Up to about 90° of abduction the lateral deltoid does the lifting; above that the upper trapezius joins in more to rotate the shoulder blade.",
                 mistake: "Driving the pads above shoulder height, or cutting reps short at the bottom.",
                 correct: "Raise until the arms are level with the shoulders, pause, and lower under control."
             ),
@@ -7090,7 +7090,7 @@ enum SampleData {
                 id: "height",
                 title: "Range of Motion",
                 intro: "The anterior deltoid lifts the arm forward to about shoulder height.",
-                why: "Raising to shoulder level trains the front deltoid through its working range; above that the upper trapezius and serratus take over.",
+                why: "Raising to shoulder level loads the front deltoid hardest; above that its load falls and the upper trapezius and serratus do more of the work.",
                 mistake: "Swinging the dumbbells up to overhead height.",
                 correct: "Lift until the arms are about parallel to the floor, pause, and lower slowly."
             ),
@@ -7463,7 +7463,7 @@ enum SampleData {
                 title: "Setup",
                 intro: "The pulleys set the plane of the movement.",
                 why: "With the pulleys at shoulder height and the cables crossed, the rear deltoids are loaded from a stretched start all the way to the finish.",
-                mistake: "Pulleys set low, so the arms pull downward like a straight-arm pulldown.",
+                mistake: "Pulleys set high, so the arms pull downward like a straight-arm pulldown.",
                 correct: "Set both pulleys at shoulder height, take the left handle in the right hand and the right in the left, and step back to the middle."
             ),
             TechniqueCue(
@@ -7671,7 +7671,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Lockout",
                 intro: "Every rep finishes with straight arms.",
-                why: "The triceps reach full contraction at full elbow extension, so cutting reps short skips the hardest part of the lift.",
+                why: "The triceps reach full contraction at full elbow extension, so cutting reps short leaves out the end of their range.",
                 mistake: "Stopping each rep with the elbows still bent.",
                 correct: "Push down until the arms are fully straight, pause briefly, then let the handle rise under control."
             ),
@@ -7842,7 +7842,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Lockout",
                 intro: "Every rep finishes with a straight arm.",
-                why: "The triceps reach full contraction at full elbow extension, so cutting reps short skips the hardest part of the lift.",
+                why: "The triceps reach full contraction at full elbow extension, so cutting reps short leaves out the end of their range.",
                 mistake: "Stopping each rep with the elbow still bent.",
                 correct: "Push down until the arm is fully straight, pause briefly, then let the handle rise under control."
             ),
@@ -8290,7 +8290,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Lockout",
                 intro: "Each rep finishes with straight arms.",
-                why: "Full elbow extension at the top is where the triceps contract hardest.",
+                why: "Full elbow extension at the top takes the triceps through the end of their range, where they are fully shortened.",
                 mistake: "Stopping short of lockout and bouncing out of the bottom.",
                 correct: "Press until the arms are straight and the shoulders are down, then lower under control."
             ),
@@ -9985,7 +9985,7 @@ enum SampleData {
             TechniqueCue(
                 id: "feet",
                 title: "Leg Position",
-                intro: "Bent knees take the hip flexors out of it.",
+                intro: "Feet flat and free keep the hip flexors quiet.",
                 why: "With the feet flat and unanchored, the hip flexors have little to pull against, so the abs do the curling.",
                 mistake: "Hooking the feet under something, which lets the hip flexors turn it into a sit-up.",
                 correct: "Bend the knees to about 90° with the feet flat and free."
@@ -10531,7 +10531,7 @@ enum SampleData {
                 id: "arms",
                 title: "Support",
                 intro: "The forearms carry the body.",
-                why: "Supporting yourself on the forearms frees the hands and keeps the shoulders stable.",
+                why: "Supporting yourself on the forearms takes your body weight off your grip and keeps the shoulders stable.",
                 mistake: "Shrugging the shoulders up toward the ears.",
                 correct: "Rest the forearms on the pads, grip the handles and push the shoulders down."
             ),
@@ -11474,7 +11474,7 @@ enum SampleData {
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
             "Set a flat bench under the bar so it lowers to your lower chest.",
-            "Lie back with your feet planted and your eyes just below the bar.",
+            "Lie back with your feet planted and the bar over your lower chest.",
             "Grip slightly wider than shoulder-width and pull your shoulder blades together.",
             "Unhook the bar by turning it back off the hooks."
         ],
@@ -15055,7 +15055,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hip Position",
                 intro: "The start is deeper than a deadlift.",
-                why: "Lower hips keep the shins close to vertical and the torso steep enough to hold the wide grip without rounding.",
+                why: "Lower hips, with more bend at the knees, keep the torso steep enough to hold the wide grip without rounding.",
                 mistake: "Starting with the hips high, as in a conventional deadlift, then rounding to reach the bar.",
                 correct: "Sit the hips down until the arms are straight and the chest is up, then push the floor away."
             ),
@@ -15864,7 +15864,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbow drives back toward the hip.",
-                why: "Driving the elbow back close to the side keeps the mid-back and rear delt pulling, with the lat helping.",
+                why: "Driving the elbow back close to the side brings the lat in alongside the mid-back and rear delt, the row's strongest line of pull.",
                 mistake: "Winging the elbow out to the side.",
                 correct: "Row the elbow back past the torso toward the hip, bell close to the body."
             ),
@@ -15950,7 +15950,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "A close grip keeps the elbows tight.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handle close to the body.",
+                why: "Driving the elbows back close to the sides brings the lats in alongside the mid-back and rear delts, the row's strongest line of pull, and keeps the handle close to the body.",
                 mistake: "Flaring the elbows out wide.",
                 correct: "Pull the elbows back past the torso, close to the ribs."
             ),
@@ -16166,7 +16166,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The rowing elbow drives back to the hip.",
-                why: "Driving the elbow back close to the side keeps the mid-back and rear delt pulling, with the lat helping, while the supporting arm and trunk hold the plank.",
+                why: "Driving the elbow back close to the side brings the lat in alongside the mid-back and rear delt, the row's strongest line of pull, while the supporting arm and trunk hold the plank.",
                 mistake: "Winging the elbow out to the side.",
                 correct: "Row the dumbbell to the hip bone, elbow close to the ribs, then set it down under control."
             ),
@@ -16269,7 +16269,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "Each row drives the elbow to the hip.",
-                why: "Driving the elbow back close to the side keeps the mid-back and rear delt pulling, with the lat helping.",
+                why: "Driving the elbow back close to the side brings the lat in alongside the mid-back and rear delt, the row's strongest line of pull.",
                 mistake: "Winging the elbow out to the side.",
                 correct: "Row one bell back toward the hip, elbow close to the ribs, then set it down."
             ),
@@ -18388,7 +18388,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows lead the row.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handle close to the body.",
+                why: "Driving the elbows back close to the sides brings the lats in alongside the mid-back and rear delts, the row's strongest line of pull, and keeps the handle close to the body.",
                 mistake: "Winging the elbows out to the sides, or curling the handle in with the elbows staying forward.",
                 correct: "Pull the elbows back past the torso, close to the sides, and pause."
             ),
@@ -18589,7 +18589,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows lead the row.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the bar close to the body.",
+                why: "Driving the elbows back close to the sides brings the lats in alongside the mid-back and rear delts, the row's strongest line of pull, and keeps the bar close to the body.",
                 mistake: "Winging the elbows out to the sides, or curling the bar in with the elbows staying forward.",
                 correct: "Pull the elbows back past the torso, close to the sides, and pause."
             ),
@@ -18689,7 +18689,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows lead the row.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handles close to the body.",
+                why: "Driving the elbows back close to the sides brings the lats in alongside the mid-back and rear delts, the row's strongest line of pull, and keeps the handles close to the body.",
                 mistake: "Winging the elbows out to the sides, or curling the handle in with the elbows staying forward.",
                 correct: "Pull the elbows back past the torso, close to the sides, and pause."
             ),
@@ -18783,7 +18783,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbow drives back to the hip.",
-                why: "Driving the elbow back close to the side keeps the mid-back and rear delt pulling, with the lat helping.",
+                why: "Driving the elbow back close to the side brings the lat in alongside the mid-back and rear delt, the row's strongest line of pull.",
                 mistake: "Winging the elbow out to the side.",
                 correct: "Row the elbow back past the torso toward the hip, close to the ribs."
             ),
@@ -18880,7 +18880,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbow drives back to the hip.",
-                why: "Driving the elbow back close to the side keeps the mid-back and rear delt pulling, with the lat helping.",
+                why: "Driving the elbow back close to the side brings the lat in alongside the mid-back and rear delt, the row's strongest line of pull.",
                 mistake: "Winging the elbow out to the side.",
                 correct: "Row the elbow back past the torso toward the hip, close to the ribs."
             ),
@@ -18978,7 +18978,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows lead the row.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handles close to the body.",
+                why: "Driving the elbows back close to the sides brings the lats in alongside the mid-back and rear delts, the row's strongest line of pull, and keeps the handles close to the body.",
                 mistake: "Winging the elbows out to the sides, or curling the handle in with the elbows staying forward.",
                 correct: "Pull the elbows back past the torso, close to the sides, and pause."
             ),
@@ -19078,7 +19078,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows lead the row.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handles close to the body.",
+                why: "Driving the elbows back close to the sides brings the lats in alongside the mid-back and rear delts, the row's strongest line of pull, and keeps the handles close to the body.",
                 mistake: "Winging the elbows out to the sides, or curling the handle in with the elbows staying forward.",
                 correct: "Pull the elbows back past the torso, close to the sides, and pause."
             ),
@@ -19179,7 +19179,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The working elbow leads the row.",
-                why: "Driving the elbow back close to the side keeps the mid-back and rear delt pulling, with the lat helping, and the handle close to the body.",
+                why: "Driving the elbow back close to the side brings the lat in alongside the mid-back and rear delt, the row's strongest line of pull, and keeps the handle close to the body.",
                 mistake: "Winging the elbow out to the side, or curling the handle in with the elbow staying forward.",
                 correct: "Pull the elbow back past the torso, close to the side, and pause."
             ),
@@ -23508,7 +23508,7 @@ enum SampleData {
                 title: "Seat and Pivot",
                 intro: "The elbows line up with the machine's pivot.",
                 why: "With the elbows on the lever's axis, the handle travels the same arc as the forearms, so the resistance stays square to them through the whole rep.",
-                mistake: "The seat set too low, so the elbows sit below the pivot and the handle slides along the palms.",
+                mistake: "The seat set too low or too high, so the elbows sit off the pivot and the handle slides along the palms.",
                 correct: "Adjust the seat until the backs of the arms rest on the pad and the elbows sit level with the pivot on each side."
             ),
             TechniqueCue(
@@ -25302,7 +25302,7 @@ enum SampleData {
                 title: "Seat and Pivot",
                 intro: "The working elbow lines up with the machine's pivot.",
                 why: "With the elbow on the lever's axis, the handle travels the same arc as the forearm, so the resistance stays square to it through the whole rep.",
-                mistake: "The seat set too low, so the elbow sits below the pivot and the handle drags along the hand.",
+                mistake: "The seat set too low or too high, so the elbow sits off the pivot and the handle drags along the hand.",
                 correct: "Adjust the seat until the back of the arm rests on the pad and the elbow sits level with the pivot on that side."
             )
         ],
@@ -28432,7 +28432,7 @@ enum SampleData {
                 id: "torso",
                 title: "Torso Position",
                 intro: "The chest stays up and the trunk close to upright.",
-                why: "With the bar overhead, the trunk has to stay nearly upright to keep the bar over the feet. Any forward lean takes the bar forward with it, which is why this squat asks for good hip, ankle and shoulder mobility.",
+                why: "With the bar overhead, the trunk has to stay nearly upright to keep the bar over the feet. Too much forward lean takes the bar forward with it, which is why this squat asks for good hip, ankle and shoulder mobility.",
                 mistake: "The chest dropping forward at the bottom, taking the bar out in front of the feet.",
                 correct: "Brace, keep the chest up and sit the hips down between the heels rather than back."
             ),
@@ -30929,7 +30929,7 @@ enum SampleData {
                 title: "Pivot Alignment",
                 intro: "Each elbow lines up with the lever's pivot on that side.",
                 why: "The lever turns about those two pivots. With the elbows on the same axis, the handle travels the same arc as the hands, so it stays put in the palms from bottom to top; with the elbows off the axis, the handle slides along the hands as it turns.",
-                mistake: "The seat set too low, the elbows sitting below the pivots so the handle slides along the palms as it turns.",
+                mistake: "The seat at the wrong height, the elbows sitting above or below the pivots so the handle slides along the palms as it turns.",
                 correct: "Before the first set, raise or lower the seat until both elbows sit level with the round pivots at the sides of the pad, then check again with the handle in your hands."
             ),
             TechniqueCue(
@@ -32185,7 +32185,7 @@ enum SampleData {
 
     static let gluteHamRaiseContent = ExerciseContent(
         annotations: [
-            CueAnnotation(cueID: "pad", label: "Knees just behind the pad",
+            CueAnnotation(cueID: "pad", label: "Knees rest on the pad",
                           labelPoint: CGPoint(x: 0.536, y: 0.80),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "patella_L"),
@@ -32208,10 +32208,10 @@ enum SampleData {
             TechniqueCue(
                 id: "pad",
                 title: "Pad Position",
-                intro: "The lower thighs rest on the pad with the knees just behind it.",
-                why: "With the kneecaps clear of the pad, the knees are free to bend and straighten while the pad carries the thighs as you lower. The studies set the knees just behind the pad; one put them about 4 cm behind its top.",
-                mistake: "Setting up with the knees on top of the pad, so it presses on the kneecaps and gets in the way of the knees bending.",
-                correct: "Adjust the footplate so that, with your ankles locked in, your knees sit just behind the pad and your lower thighs rest on it."
+                intro: "The kneecaps and the tops of the shins rest on the pad, the ankles locked behind the rollers.",
+                why: "The pad is what the body swings around. Set as on this machine, it sits under the kneecaps and the tops of the shins, so the knees rest on it while the ankles stay locked in. The lab studies set it a little higher, the knees just behind the pad and the lower thighs on it; if the pad presses into your kneecaps, use that setting.",
+                mistake: "Setting the footplate too close, so the pad sits under the shins and the knees hang off its front edge.",
+                correct: "Adjust the footplate so that, with your ankles locked in, your kneecaps rest on the pad and it does not slip down onto your shins."
             ),
             TechniqueCue(
                 id: "feet",
@@ -32253,18 +32253,18 @@ enum SampleData {
         ],
         stabilisers: ["erector spinae", "obliques", "core"],
         setup: [
-            "Set the footplate so your knees sit just behind the pad when your feet are against the plate.",
+            "Set the footplate so your kneecaps rest on the pad when your feet are against the plate.",
             "Step onto the plate and lock your ankles between the rollers.",
-            "Rest your lower thighs on the pad and kneel up tall, hips straight, hands in front of your chest.",
+            "Kneel up tall with your knees on the pad, hips straight, hands in front of your chest.",
             "Press the balls of your feet into the plate and brace before each rep."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
-            mistakeBadge: "KNEES ON THE PAD",
-            correctCue: "Knees just behind the pad",
-            mistakeCue: "Kneecaps on top of the pad",
-            correctNote: "With the knees just behind the pad, they bend freely and the pad carries the thighs, so the hamstrings work through the whole swing.",
-            mistakeNote: "With the kneecaps on the pad, it presses into the knees and gets in the way of them bending, and it no longer carries the thighs."
+            mistakeBadge: "PAD ON THE SHINS",
+            correctCue: "Knees rest on the pad",
+            mistakeCue: "Pad under the shins",
+            correctNote: "With the knees on the pad and the ankles locked in, the body swings around the knees while the hamstrings lower and raise it.",
+            mistakeNote: "With the footplate set too close, the pad sits under the shins and the knees hang off its front edge as you lower."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.52, cy: 0.49),
@@ -38035,7 +38035,7 @@ enum SampleData {
                 title: "Base of Support",
                 intro: "Feet flat and about hip-width apart.",
                 why: "ACE widens the feet when balance is a challenge and moves them closer together as balance improves, to make it harder. The ball already adds work for the trunk: in one study, curl-ups with the upper torso on a ball raised rectus abdominis activity from 21% to 35% of maximum.",
-                mistake: "Feet drawn close together, leaving a narrow base on the ball.",
+                mistake: "Feet drawn close together before your balance is ready, leaving a narrow base on the ball.",
                 correct: "Plant both feet flat about hip-width apart, knees bent about 90 degrees, and press evenly through them."
             ),
             TechniqueCue(
@@ -39882,7 +39882,7 @@ enum SampleData {
                 title: "Top Leg",
                 intro: "Your top leg rests on the bench at the ankle, knee straight, and holds you up.",
                 why: "With the bench at the ankle the top leg is a long lever, and its adductors hold the pelvis up by pressing that leg down into the bench. In a modelling study driven by EMG, the long-lever Copenhagen exercise put every adductor muscle it modelled, adductor longus, magnus and gracilis among them, in the top tier of eight adductor exercises.",
-                mistake: "Resting the knee, not the ankle, on the bench, which shortens the lever and makes it the easier, short-lever hold.",
+                mistake: "Resting the knee, not the ankle, on the bench when you mean to do the full hold, which shortens the lever and makes it the easier, short-lever version.",
                 correct: "Rest the inside of your top foot and ankle on the bench, knee straight, and press down into it. If this is too hard, use the bench under the knee until you can hold it."
             ),
             TechniqueCue(
@@ -43233,7 +43233,7 @@ enum SampleData {
                 intro: "The feet stand well wider than the shoulders with the toes turned out about 35 degrees, the bell on the floor between them.",
                 why: "Wide feet with the toes turned out give the knees room to open over the feet, so the hips can sink between the heels and the bell can pass between the legs. Sumo pullers in competition stood about twice as wide as conventional ones and turned their feet out about 42 degrees.",
                 mistake: "Standing wide with the toes pointing straight ahead, so the knees cannot follow the feet.",
-                correct: "Set your feet just outside your shoulders, turn the toes out about 30 to 45 degrees and centre the bell between your feet, level with their middle."
+                correct: "Set your feet well wider than your shoulders, turn the toes out about 30 to 45 degrees and centre the bell between your feet, level with their middle."
             ),
             TechniqueCue(
                 id: "knees",

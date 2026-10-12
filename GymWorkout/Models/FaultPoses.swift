@@ -3012,9 +3012,11 @@ enum FaultPoses {
         strength: hingeNordicLowered
     )
 
-    /// Glute-ham raise: set up too far forward, the kneecaps on the pad. The
-    /// whole lifter 0.15 torso lengths (~9 cm) further forward down to the
-    /// ankles (the footplate set too close). The toe tips are left out: moved
+    /// Glute-ham raise: set up too far forward. The whole lifter 0.15 torso
+    /// lengths (~9 cm) further forward down to the ankles (the footplate set
+    /// too close). Since the 2026-10-12 model rests the kneecaps on the pad
+    /// (the owner's setting), this puts the pad under the shins, the knees
+    /// hanging off its front edge. The toe tips are left out: moved
     /// along they would hang ~9 cm off the real footplate, which reads as the
     /// loose-feet fault.
     private static let hingeGHRKneesOnPad = FaultPose(

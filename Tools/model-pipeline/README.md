@@ -615,11 +615,14 @@ hip extension -1.8 (the M29 tower is in front of the lifter, and from -1.0 to
 -1.35 it covered them), the reverse hyper -1.4, both back-extension benches
 -1.9 like the Back Extension, the sumo kettlebell deadlift -0.5 and the
 kettlebell deadlift -0.8 like the dumbbell deadlifts.
-Disk (2026-10-12): the volume ran full during this round, so the raw copies
-in `SourceExports/100-200-1011/` (77), `1-100-1010/` (44) and nine of
-`female-1010/` are now hard links to their byte-identical originals on the
-Desktop (about 3 GB freed): re-exporting over a Desktop file in place would
-change the linked copy too.
+Disk (2026-10-12): the volume ran full during this round. The raw copies in
+`SourceExports/` were first hard-linked to their byte-identical Desktop
+originals, then (owner's call, after the round) the `1-100-1010`,
+`100-200-1011`, `300-400-1012`, `151-190`, `241-300`, `300-350`, `401-500`
+and `Calf` folders were moved to the Trash; re-copy the exports (or
+re-export from the drive's .blend files) before re-converting any of them.
+`1-50/` and `Shoulder/` (headless re-exports kept nowhere else) and
+`female-1010/` stay.
 398's export put the SkelRoot on /root rather than on the rig (its mini band
 is now skinned to the rig's skeleton, outside `Anatomy_MasterRig`), and the
 wrapper's `/root` Xform overrode it, so nothing was under a SkelRoot and the
