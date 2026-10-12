@@ -30,7 +30,14 @@ BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Gri
              # Desktop "1-100" folder (2026-10-10): the Smith rack left the front
              # squat's lifter a third of the tile, as for the seated raise, and
              # the Smith Machine Squat's new rack did the same.
-             "Smith Machine Front Squat", "Smith Machine Squat"}
+             "Smith Machine Front Squat", "Smith Machine Squat",
+             # Desktop "100-200" folder (2026-10-11): the M29 dual pulley (2.34 m
+             # tall, 3.1 m wide) left the kneeling lifters a third of the tile.
+             "Kneeling Lat Pulldown", "Half-Kneeling Cable Row",
+             # Part 2: the Smith rack, the M29 station and the N29 frame left
+             # these lifters small in the tile.
+             "Inverted Row", "Cable Shoulder Press", "Single-Arm Cable Shoulder Press",
+             "Iso-Lateral Chest Press", "Plate-Loaded Chest Press"}
 # Held parts a lift lets crop (401-500, 2026-10-04): the landmine chest press's
 # 1.9 m bar, as in its trainer framing.
 CROP = {"Landmine Chest Press": ("LandmineBar",)}

@@ -178,3 +178,20 @@ pose times and square framings the usual way, and the Ab Wheel Rollout's
 tile was re-shot on its female model. The library now has 425 exercises.
 The Cable Step-Down was renamed Cable Knee-Drive Kickback (its tile is now
 `lib-cable-knee-drive-kickback`).
+Desktop "100-200" folder, part 1 (2026-10-11): the 46 replaced models with
+unchanged motion were re-shot with `Tools/lab/shots.sh photo`, at their
+stored pose times. The 26 in new equipment (Smith M30, GYM bench, M29 dual
+pulley, N11 decline bench, M04 with the lat pad set) took `thumbsolve.py`'s
+new square framing; the twenty shoulder, curl and wrist models kept theirs.
+The M29 left the kneeling lifters a third of the tile, so the Kneeling Lat
+Pulldown and Half-Kneeling Cable Row joined `BODY_ONLY`.
+Desktop "100-200" folder, part 2 (2026-10-11): the 27 models whose motion
+changed, the Inverted Row (now its Smith low bar) and the new Concentration
+Curl got fresh pose times (`posetime.py <names…>`) and square framings
+(`thumbsolve.py thumbs.json <names…>`) and were shot with
+`Tools/lab/shots.sh photo`; the Single-Arm Dumbbell Shoulder Press was
+re-shot for its re-painted front delt. The Smith rack, the M29 station and
+the N29 frame left five lifters small, so the Inverted Row, both cable
+shoulder presses, the Iso-Lateral and the Plate-Loaded Chest Press joined
+`BODY_ONLY`. New tile `lib-concentration-curl`; the library now has 426
+exercises, all with a thumbnail.

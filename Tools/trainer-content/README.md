@@ -431,3 +431,96 @@ back and nothing steps down (the export was named Cable_Step_Downs). The
 resource stays `CableStepDown`; the library row, content, ghosts, still
 times, thumbnail (`lib-cable-knee-drive-kickback`) and tool files use the
 new name, and the movement pattern files it with the glute kickbacks.
+
+Desktop "100-200" folder, part 1 (2026-10-11): 46 replaced models with
+unchanged body motion (see the model-pipeline README). Their content was
+edited in place in SampleData.swift where the paint changed, the ranks
+following the paint and the fractions left where the EMG put them (a
+primary at 0.40-0.56 and a secondary at 0.85-0.88 both have precedent):
+the triceps and front delt primary on the Single-Arm Dumbbell Bench Press
+and Single-Arm Cable Chest Press, the triceps primary on the Decline Cable
+Press, the front delt primary on the Single-Arm Cable Fly with the biceps
+(now dim) moved from the stabilisers to a LOW 0.24 secondary row as on the
+other cable flies, the side delt primary (MODERATE 0.50, a judgement call)
+on the Landmine Shoulder Press and Half-Kneeling Landmine Press, and on the
+Single-Arm Dumbbell Shoulder Press the triceps primary beside both delts
+(its first export painted the front delt dim, a slip the owner confirmed;
+it was re-painted bright and re-exported the same day, with the two cable
+shoulder presses, from the drive's `Fix_FrontDelt_20261011`). The
+three preacher curls whose brachialis went from bright to dim and the
+Cable Y-Raise and Lu Raise whose trapezius went to dim already listed them
+as secondary rows. An independent review (one reviewer per dimension, a
+skeptic on every finding) also brought the Single-Arm Lat Pulldown in line
+with its family: its trapezius, dim since the 2026-09-30 model, leaves the
+stabilisers as a Trapezius secondary row (0.46), as on the Wide-Grip,
+Kneeling and Iso-Lateral pulldowns; that realign had been missed. No copy
+changed: the 26 models in new equipment keep its layout (the lifters still
+face away from the cable stacks on the presses and side-on on the one-arm
+fly, the decline bench has leg rollers, the Smith has hooks, the adjustable
+bench sits at 30-33° on the incline lifts), and every cue still reads.
+Left for the owner (paint unchanged, so not part of this round): the dim
+trapezius and rhomboids on both landmine presses and the dim front delt on
+the Cable Y-Raise and Lu Raise have no row; the Y-Raise's bright front delt
+has none either; the Chest-Supported Lateral Raise lists its bright rear
+delt as secondary, and the curls their bright brachialis (a family-wide
+convention); the Smith Machine Decline Press's setup says about 15°
+head-down where its bench is set to 12° (`Decline_Angle`), as before.
+
+Desktop "100-200" folder, part 2 (2026-10-11): the 27 models whose motion
+changed with their new machines, plus the Inverted Row and Single-Arm Lat
+Pulldown stance sets, were revised through a Workflow: one reviser per
+family (chest machines; dips and the machine pull-up; pulldowns; lever
+pulldowns and the machine pullover; cable rows; machine rows and the
+Inverted Row; shoulder presses) worked from `$LAB/r1011/REVISER_BRIEF.md`
+(old and new motion briefs, paint, the owner's fix notes on the drive,
+viewport stills and the trainer and ghost shots at the final framings) and
+proposed exact edits; one checker per family re-measured, corrected and
+type-checked them (192 edits, none rejected outright, several corrected).
+Edited in place in SampleData.swift, FaultPoses.swift (new pieces prefixed
+`r1011`), bottoms.json and setup.py. Highlights:
+- Chest machines: handles, foot platforms and the torso reclined on the pad
+  as the new machines show (palms-in upright handles on N29, angled handles
+  on N28, the deep start on the wide press); the Decline press relaid for
+  its front view, with its press-path and arched-back ghosts turned (-0.6,
+  -1.0) so depth reads; `r1011HandlesHigh` for the seat-too-low mistakes.
+- Dips: the rounded upper back and 35->50° lean described as the model's
+  form (no benefit claimed), the top almost straight (166°), the triceps a
+  secondary row (painted dim now), a new `r1011DipShruggedRise` ghost.
+  Machine Pull-Up: the kneeling pad machine, kipping off the pad as the
+  body mistake.
+- Pulldowns: 169/170 teach the ~30° lean and the bar to the upper chest
+  (Buonsenso et al. 2025); the Rope's trapezius (dim now) joins as a
+  secondary row; the V-bar's angled grips. Lever pulldowns: the shortened
+  levers' path, the bar-path ghost window fixed. Machine Pullover: the bar
+  to the stomach.
+- Cable rows: torso upright and still (the models keep it at 0°), the
+  Single-Arm Cable Row's biceps primary (bright now), the Low Cable Row's
+  underhand bar to the belly (Vasconcelos et al. 2023's supinated set).
+- Machine rows: the three on the plate-loaded iso-lateral machine with the
+  library's neutral-grip fractions; 187's reach-then-row and its free hand
+  on the new bar in front of the chest pad.
+- Shoulder presses: the Seated Dumbbell Press on its tall back pad; the
+  cable presses rewritten for the new station (hip-height pulleys 2.4 m
+  apart pull the handles out to the sides), with the front delt primary
+  after the owner's re-paint.
+- Stance sets (`stancesByExercise`): Inverted Row "Low Bar" (default,
+  75 cm) and "High Bar" (1.08 m), the content rewritten for the Smith low
+  bar; Single-Arm Lat Pulldown "Upright" and "Side Lean". Each stance has its
+  note and the list its model's paint gives.
+The checkers' questions for the owner (model choices such as the dips'
+rounded back, the Low Cable Row's underhand grip and name, 176's single
+rep then hold, the pulldowns' differing leans) are listed in the session
+report. The Concentration Curl (237, new) is family `curl` of
+`spec_1011.py` (`spec_1011_curl.py`, `notes_1011_curl.md` with the
+reviewer's `## Review`), drafted by one agent and reviewed by another, and
+integrated with `integrate_1011.py` (`// MARK: - Desktop 100-200
+(2026-10-11)`); its biceps 0.92 rests on one sponsored study (ACE 2014).
+The same inspection moved or shortened pills that sat on the lifter, a
+moving lever or the banner in the trainer or mistake views (pulldown grip
+and bar labels, the lever pulldowns' "Shoulder-width", the Machine
+Pull-Up's "Wide grip" and "No shrug", the dips' and rows' elbow pills, the
+Seated Dumbbell Press and cable shoulder press pills), retitled the Rope
+and V-Bar bar-path cues for their handles, and gave the Seated Dumbbell
+Press (zoom 0.755) and the Single-Arm Cable Shoulder Press (0.72, offset
+y -0.08) a little headroom so the lockout dumbbells and handle clear the
+mistake banner; `probe.py` carries both framings.

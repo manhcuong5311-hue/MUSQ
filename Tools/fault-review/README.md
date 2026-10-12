@@ -192,3 +192,36 @@ The female model's lifts (2026-10-10): ghosts in `faults_1010_female.swift.txt`
 standard stance. The Ab Wheel Rollout's hips and ribs ghosts were resized for
 the female torso (0.44-0.49 m against 0.58 m) and its return ghost moved to
 the return phase.
+
+Desktop "100-200" folder, part 1 (2026-10-11): the 26 models re-exported in
+new equipment with unchanged motion had their trainer (1.5 s) and every
+ghost shot at its stored still with `Tools/lab/shoot_ex.sh`; every ghost
+still reads over the new benches, racks and cable stations, so the ghosts
+and `bottoms.json` were kept. The twenty other models kept motion and
+equipment, so their ghosts stand.
+
+Desktop "100-200" folder, part 2 (2026-10-11): the 27 models whose motion
+changed and the Inverted Row (Smith low bar) had their trainer and every
+ghost shot at the final framings before and after the family revisions
+(`Tools/lab/shoot_ex.sh`). New pieces are prefixed `r1011`
+(`r1011HandlesHigh` for the chest machines' seat-too-low mistakes,
+`r1011DipShruggedRise`, and others the families wrote); stills moved in
+bottoms.json where the rep timing changed; the Decline Chest Press
+Machine's press-path and arched-back ghosts turn the model (-0.6, -1.0)
+since it is now seen from the front. The Concentration Curl's ghosts are
+in `faults_1011_curl.swift.txt` (existing curl pieces, nothing new), its
+moments in `fault_moments_1011_curl.json` (1.6 s for all four).
+A final inspection of those shots (two inspectors, 32 findings, then a
+re-check) fixed ghosts that ran along the line of sight from these
+behind-the-lifter and front three-quarter framings: the Machine Pull-Up's
+short rep is now `hangingShort` (the craned chin lay on the spine); the
+wrist ghosts of the V-Bar, Rope and Neutral-Grip pulldowns turn side-on;
+the machine rows' chest-off-pad ghosts use a stronger, turned piece; the
+seated chest presses' arched-back ghosts are larger and turned a little
+(-0.35, -0.2: further round the feet left the frame or the plate hid the
+trunk); the Machine Pullover's arch is deeper (0.18) and unturned (turned,
+the cam disc hid the lifter); the Iso-Lateral Lat Pulldown shrugs the
+working side only; the Decline press-path ghost draws the far arm only (the
+near one lay on the yellow lever); both cable shoulder presses' brace ghosts
+are drawn without the arms (the overhead hands ran into the banner); the
+Wide-Grip Seated Cable Row's elbow ghost is `elbowsFlared(35)`.

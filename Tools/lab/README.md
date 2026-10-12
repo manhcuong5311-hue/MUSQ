@@ -27,6 +27,9 @@ except `add_rows_r3.py` (one-off) — mirrors, builds and shots go to `$LAB`.
 - `family_1010.sh check|shoot <family>` — the same for the Desktop "1-100"
   folder's five new legs (2026-10-10), with `integrate_1010.py` / `spec_1010.py`
   and `fault_moments_1010_<family>.json`.
+- `shoot_ex.sh <out> <stills> "<Exercise>" ...` (2026-10-11) — trainer stills and
+  every cue's mistake ghost for exercises already in the library (no
+  integration step), from the installed harness app; for replaced models.
 - `sheet.py` — contact sheets.
 - `AGENT_BRIEF.md` — the brief content agents work from (house rules, inputs,
   files to write, tools, process).

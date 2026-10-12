@@ -1,0 +1,41 @@
+// MARK: PIECES
+    // MARK: Desktop 100-200 curl pieces (2026-10-11)
+    // None: the Concentration Curl's ghosts reuse the curl pieces above
+    // (curlArmsOffPad, preacherRockedBack, curlStoppedShortOfTop,
+    // curlWristsCurled), each drawn for the working left arm only.
+
+// MARK: TABLE
+        // MARK: Desktop 100-200 concentration curl (2026-10-11)
+        // Seated across a flat bench, the trunk 63° forward, the LEFT upper
+        // arm hanging 16° from vertical against the inner thigh; framed from
+        // the front-left at yaw -1.2, close enough to side-on (moves in the
+        // lifter's front-back plane show at ~93% of their length) that no
+        // fault turns. Torso (neck to pelvis) 0.584 m. Sizes measured with a
+        // Python port of FaultGhost.solve on the rig at 1.6 s, the middle of
+        // the top hold (curl/ghost.py in the session scratchpad), in points
+        // of the 382x655 viewport; bone lengths kept, no elbow past straight.
+        "Concentration Curl": [
+            // The elbow coming off the thigh: the upper arm swung 30° forward
+            // about the shoulder (16° behind vertical to 14° in front), the
+            // elbow ~15 cm (~48 pt) forward, the hand ~11 cm; drawn to the
+            // wrist. Grows with the elbow's bend: strongest at the top.
+            "elbow": curlArmsOffPad(30, side: "L"),
+            // Sitting up to heave the dumbbell: the trunk tipped 18° back
+            // about the hips (63° to 45° forward of vertical), the head
+            // ~21 cm (~68 pt), the working arm carried with it, its elbow
+            // ~12 cm up off the thigh. Only the spine and the left arm are
+            // drawn and moved, so the right hand stays on the knee.
+            "torso": preacherRockedBack(18, side: "L"),
+            // Stopping with the forearm at or just below level: unfolded 40°
+            // (elbow 48° to ~88°, the forearm ~14° below level), the hand
+            // ~17 cm (~60 pt) lower. Zero until shoulder-to-wrist falls
+            // below 0.6 torso lengths (elbow ~81°), full at 0.42 (the top is
+            // 0.38), so it shows only over the top of the curl.
+            "top": curlStoppedShortOfTop("L", from: 0.6, to: 0.42),
+            // The wrist curled in at the top: the hand tip folded 60° toward
+            // the palm, ~12 cm toward the chin. 60° rather than the default
+            // 50°, as on the Spider Curl: the mistake view shrinks the
+            // lifter and the hand is short, so 50° read as a slight kink.
+            "wrist": curlWristsCurled("L", degrees: 60)
+            // "lower" (tempo) has no ghost: it falls back to the red ring.
+        ],

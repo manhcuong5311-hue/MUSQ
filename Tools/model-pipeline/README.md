@@ -497,3 +497,82 @@ Re-exports the same evening (owner): 22 Single-Leg Extension with the glutes
 unlit and 05 Barbell Sumo Squat with the erectors dim, like the Back Squat.
 Both came back with the same motion (0.0 cm) and equipment; converted,
 padded, slimmed, and their tiles re-shot.
+
+Desktop "100-200" folder, part 1 (2026-10-11): `~/Desktop/100-200` holds 77
+exports, 103-200 and a few of 201-272, all re-tuned by the owner in Blender
+(machines swapped for the `Gym_CacMayMoi` library ones, red notes fixed,
+muscles re-painted); the owner asked for every file to replace its model,
+the unchanged ones too, since their paint changed. The 46 whose body motion
+matches the app model went first: copied to `SourceExports/100-200-1011/`
+without the spaces in their names, converted with
+`convert_all.py 100-200-1011/`, padded and slimmed (all attribute for
+attribute, 68 MB for the 46). All intact: one 211-joint skeleton, one
+animation over 1-192, no cameras. The old models are kept in the session
+scratchpad (`old/`). Against the app models (world-space hands, feet,
+forearms, shins, head and pelvis every 4 frames): 40 within 0.9 cm; 241-243
+within 2-7.5 cm; 105, 116 and 120 lift the whole lifter 25 cm onto the N11
+decline bench (the drive's `Fix_101_120` round) with the joint motion
+otherwise unchanged. Equipment: Smith M30 on 103-105, the GYM bench under
+106-112, 115, 119, 138, 139 and under the hands or feet of 131/132, the
+M29 dual pulley on 113-120, 174, 181 and 182 (3.1 m wide and 2.34 m tall
+where the old towers were 2.5 m and 2.05 m; the single-arm lifts now stand
+in the whole station, and the pulldown and rows have it in front of the
+lifter), the N11 decline bench on 105/116/120, and M04 with the shared lat
+pad set on 173. The twenty shoulder, curl and wrist models (198-272) kept
+their equipment. Paint: 34 kept their tiers; twelve changed (triceps and
+front delts bright on the one-arm and decline presses, the side delt on the
+landmine presses, the front delt on the one-arm cable fly, the side delt and
+triceps on the Single-Arm Dumbbell Shoulder Press with the front delt dim,
+the trapezius and rhomboids down to dim on the Cable Y-Raise and Lu Raise,
+the brachialis down to dim on three curls). Every trainer framing was kept:
+old/new viewport stills at 0 and 2 s show each lifter clear of the new
+machines and nothing cropped (`solve_pick.py`, which counts the new
+`toe_`/`FF_` joints as body, would have zoomed the bench lifts out 5-10%).
+Part 2 is the other 31 files: 27 whose motion changed (122-126, 129, 130,
+168-172, 175-180, 183-187, 190, 196, 202, 203), the 158 Smith high/low and
+173 side-lean variants (to join their exercises as pickers, owner's call)
+and 237 Concentration Curl (new).
+
+Desktop "100-200" folder, part 2 (2026-10-11): the other 31 files went to
+`SourceExports/100-200-1011/` and were converted, padded and slimmed the
+same way (all attribute for attribute, 81 MB): 27 re-exports whose motion
+changed with their new machines and the owner's red-note fixes, the two 158
+Smith inverted rows (`Back/InvertedRowSmithLow`, bar 0.75 m;
+`Back/InvertedRowSmithHigh`, bar 1.08 m), the 173 side-lean pulldown
+(`Back/SingleArmLatPulldownSideLean`) and 237 (`Biceps/ConcentrationCurl`,
+new). All intact (211 joints, one animation over 1-192, no cameras). The 27
+moved hands, feet or head 12-70 cm against the app models (world space):
+the chest machines now sit the lifter on N29 (iso-lateral, plate-loaded),
+the rebuilt incline press, N28 (decline) and the rebuilt wide press with
+the torso leaned onto the back pad; the dips round the upper back (torso
+40->57°); 168 kneels on N32; 169-175 share the black rounded seat and thigh
+rollers (169/170 lean back to ~30° and pull the bar to the upper chest);
+176/177 pull N24's shortened levers; 178-180/184 sit on the seated-row
+station, 183 on M29; 185-187 row the plate-loaded iso-lateral machine; 190
+uses a new pullover machine; 196, 202 and 203 were re-made by the owner on
+2026-10-10. Paint changed on eight: the dips' triceps down to dim, the Rope
+Lat Pulldown's trapezius and rhomboids down to dim, the biceps bright on
+the two one-arm rows, the trapezius and rhomboids newly dim on the Seated
+Dumbbell Press, and the triceps bright on the Single-Arm Cable Shoulder
+Press. Both cable shoulder presses and part 1's Single-Arm Dumbbell
+Shoulder Press had come with the front delt dim, a paint slip (owner,
+2026-10-11): `MH_FrontDelt` was set back to 2 in the three .blend files
+headless, saved in place and re-exported with the owner's settings
+(`usd_export(export_animation=True, selected_objects_only=False)`; a test
+export of an untouched file matched his own except UV noise of 6e-8 and the
+environment texture path), the new exports differing from his only in the
+front delt colours; they replaced his files in `~/Desktop/100-200` and the
+app models (drive folder `Fix_FrontDelt_20261011`, with backups).
+Framings: old/new viewport stills at 0-5 s and solver candidates. Nineteen
+kept theirs; the dips (head at the top edge with the deeper lean), the
+Machine Pull-Up (hands above the frame), the Machine and Iso-Lateral Lat
+Pulldowns (hands above the frame), the Seated Dumbbell Press (dumbbells at
+the top edge) and the Cable Shoulder Press (a small lifter in the M29) took
+`solve_pick.py`'s; the Decline Chest Press Machine is now seen from the
+front (yaw 0), since N28's yellow lever arms hid the lifter from -0.7, 0.7
+and ±1.3. The Inverted Row now shows the Smith low bar, from behind the
+head (-2.2; side-on the near plate hid the lifter), with the low and high
+bars as stances; the old bar-stand model (`Back/InvertedRow`) is no longer
+used. The side lean joins the Single-Arm Lat Pulldown as a second stance at
+its framing (-2.6). The Concentration Curl is framed at -1.2, the working
+left arm toward the camera. `probe.py` carries the new framings.

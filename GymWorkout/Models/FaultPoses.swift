@@ -387,6 +387,17 @@ enum FaultPoses {
         moves: [.shift(["hand_*", "hand_*.tip"], up: 0.14), .shift(["forearm_*"], up: 0.1)]
     )
 
+    /// Seated press with the seat set too low, sized for the 2026-10-11 chest
+    /// machine re-exports: both hands start `up` torso lengths higher up the
+    /// trunk and the elbows are re-seated between shoulder and hand, so the
+    /// arms keep their length. `handsHigh` lifts the hands 0.14, which on these
+    /// reclined models (handles starting 8-31 cm below the shoulders) never
+    /// reached the shoulders the mistake names.
+    private static func r1011HandlesHigh(_ up: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: up), .resolve(["forearm_*"])])
+    }
+
     /// Seated press: the back arched off the pad, the heels up.
     private static let seatedArched = FaultPose(
         chains: [["pelvis", "spine", "chest", "neck"], legs],
@@ -394,6 +405,18 @@ enum FaultPoses {
             .shift(["spine"], forward: 0.07),
             .shift(["chest", "neck"], forward: 0.1),
             .shift(["foot_*"], up: 0.07)
+        ]
+    )
+
+    /// `seatedArched` drawn larger (the lower back ~7 cm and the chest ~10 cm
+    /// off the pad, the heels ~6 cm up), for presses that show it side-on in
+    /// the smaller mistake viewport (2026-10-11 shots).
+    private static let seatedArchedLarge = FaultPose(
+        chains: [["pelvis", "spine", "chest", "neck"], legs],
+        moves: [
+            .shift(["spine"], forward: 0.12),
+            .shift(["chest", "neck"], forward: 0.16),
+            .shift(["foot_*"], up: 0.1)
         ]
     )
 
@@ -641,6 +664,20 @@ enum FaultPoses {
         "scapula": shrugged
     ]
 
+    /// Inverted Row on the Smith low bar (2026-10-11): the elbows flared out
+    /// toward 90°. `elbowsWinged` moved them only 8-9 px seen from behind the
+    /// head, and only to ~49° from the trunk line against the model's own
+    /// ~41°. Pushed out and re-seated between the shoulder and the hand (both
+    /// bones keep their length), they open to ~78° from the trunk line at the
+    /// top of the pull; `view` -0.6 turns the model so the shoulders run
+    /// more across the screen and the flare shows (34-43 px at the trainer's
+    /// size).
+    private static func r1011ElbowsFlaredWide(view: Float) -> FaultPose {
+        FaultPose(chains: [arms],
+                  moves: [.shift(["forearm_*"], outward: 1.2), .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"), view: view)
+    }
+
     // MARK: Batch 161-190 pieces (2026-09-25)
 
     /// Hanging pulls: the elbows drifting forward, curling the body up.
@@ -683,8 +720,10 @@ enum FaultPoses {
     /// the raised hands (~70°, as the model holds them when its own bar passes
     /// the chin). 0.14 up put the bar only at the collarbones. Shown near the
     /// bottom only: none by a shoulder-to-wrist distance of 0.53 torso lengths
-    /// (the model's bar passing the chin), all of it by 0.47 (the model's
-    /// bottom is 0.45-0.48).
+    /// (the model's bar passing the chin), all of it by 0.47 (the earlier
+    /// model's bottom was 0.45-0.48). The 2026-10-11 Reverse-Grip model pulls
+    /// to the chest (0.38 at its bottom, 0.40 at its still) and the Rope Lat
+    /// Pulldown uses it too (0.41-0.44), both at full strength.
     private static let pulldownShort = FaultPose(
         chains: [armsToGrip],
         moves: [.shift(["hand_*", "hand_*.tip"], forward: 0.15, up: 0.32), .resolve(["forearm_*"])],
@@ -694,15 +733,19 @@ enum FaultPoses {
     /// Lever pulldowns, short reps: the elbows stopping above the shoulders
     /// (Machine Lat Pulldown). The hands end 0.72 torso lengths (~43 cm)
     /// higher and 0.18 (~11 cm) further forward than the model's bottom, level
-    /// with the top of the head, and the re-seated elbows ~5 cm above the
-    /// shoulders at ~124°, the model's own pose ~0.45 s into the pull. Shown
-    /// near the bottom only: none by a shoulder-to-wrist distance of 0.72
-    /// torso lengths, all of it by 0.56 (the model's bottom is 0.53), so the
-    /// ghost never passes the top of the rep.
+    /// with the top of the head, and the re-seated elbows ~16 cm above the
+    /// shoulders at ~104°, close to the model's own pose 0.5 s into the pull.
+    /// Shown near the bottom only: none by a shoulder-to-wrist distance of
+    /// 0.40 torso lengths, all of it by 0.31. The 2026-10-11 model bends the
+    /// elbows to 33° with the hands at shoulder height (0.27 at the bottom,
+    /// 0.46 already 0.75 s into the pull), so the first window (0.72 to 0.56)
+    /// drew straight ghost arms stretched up to 20 cm past their length and
+    /// 17 cm over the top of the rep mid-pull; this one shows the ghost from
+    /// ~0.85 s to ~2.4 s only, under the top and within reach.
     private static let leverPulldownShort = FaultPose(
         chains: [armsToGrip],
         moves: [.shift(["hand_*", "hand_*.tip"], forward: 0.18, up: 0.72), .resolve(["forearm_*"])],
-        strength: .between("upper_arm_L", "hand_L", from: 0.72, to: 0.56)
+        strength: .between("upper_arm_L", "hand_L", from: 0.40, to: 0.31)
     )
 
     /// Rows: the handle pulled low, toward the belly, instead of the chest.
@@ -1945,6 +1988,15 @@ enum FaultPoses {
         chains: [spine, arms],
         moves: [.shift(["chest", "upper_arm_*", "forearm_*", "hand_*"], forward: -0.1),
                 .shift(["neck", "head"], forward: -0.14)]
+    )
+
+    /// `chestOffPad` as far as the Seal Row draws it (the chest and head
+    /// ~10-13 cm off the pad), for the machine rows, turned side-on while it
+    /// shows (2026-10-11 shots).
+    private static let chestOffPadFar = FaultPose(
+        chains: [spine, arms],
+        moves: [.shift(["chest", "upper_arm_*", "forearm_*", "hand_*"], forward: -0.16),
+                .shift(["neck", "head"], forward: -0.22)]
     )
 
     // MARK: Leg pieces
@@ -4316,6 +4368,30 @@ enum FaultPoses {
                   strength: .withBend("forearm_L"))
     }
 
+    /// Bar dips leaning ~50° with a rounded upper back (the 2026-10-11 Chest
+    /// Dip): the shoulders shrugged up toward the ears, both shoulder joints
+    /// raised `rise` torso lengths straight up (the room's up) with the hands
+    /// left on the bars and the elbows re-seated (bone lengths kept); the
+    /// trunk and head stay where they are. Seen head-on, the trunk's own up
+    /// axis tips toward the camera, so `chest500DipShrugged` rose only ~6 cm
+    /// on screen and stayed below the base of the neck; straight up, the
+    /// shoulder line rises past it into a V. Grows with the left elbow's
+    /// bend.
+    private static func r1011DipShruggedRise(_ rise: Float) -> FaultPose {
+        FaultPose(chains: [shoulders, arms],
+                  moves: [.shift(["upper_arm_*"], rise: rise), .resolve(["forearm_*"])],
+                  strength: .withBend("forearm_L"))
+    }
+
+    /// Wide-handle pull-ups (the 2026-10-11 Machine Pull-Up): the hands
+    /// drawn in `inward` torso lengths each toward a shoulder-width grip and
+    /// raised `up`, so the arms stay about as long as the model's, the
+    /// elbows re-seated (bone lengths kept).
+    private static func r1011GripDrawnIn(_ inward: Float, up: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip],
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: up, outward: -inward), .resolve(["forearm_*"])])
+    }
+
     /// Bar dips with the knees bent behind: the knees kicked forward, both
     /// legs swung `degrees` forward about the hips with the knee bend kept.
     /// Grows with the left elbow's bend, as the kick comes out of the
@@ -5872,6 +5948,12 @@ enum FaultPoses {
                 .shift(["spine"], forward: -0.07)]
     )
     // END Desktop 1-100 (2026-10-10) pieces
+    // BEGIN Desktop 100-200 (2026-10-11) pieces
+    // MARK: Desktop 100-200 curl pieces (2026-10-11)
+    // None: the Concentration Curl's ghosts reuse the curl pieces above
+    // (curlArmsOffPad, preacherRockedBack, curlStoppedShortOfTop,
+    // curlWristsCurled), each drawn for the working left arm only.
+    // END Desktop 100-200 (2026-10-11) pieces
     // MARK: Exercises 1-50 redo pieces (2026-09-29)
     // MARK: Exercises 1-50 redo: Pendlay Row and Close-Grip Bench Press (2026-09-29)
 
@@ -6282,7 +6364,10 @@ enum FaultPoses {
             "feet": benchFeet
         ],
         "Iso-Lateral Chest Press": [
-            "wrist": handsHigh,
+            // Seat too low: the handles start level with the shoulders. The
+            // 2026-10-11 model's hands start 20 cm below them along the trunk
+            // (0.33 torso lengths); the elbows fold to about 60 degrees.
+            "wrist": r1011HandlesHigh(0.33),
             "elbow": elbowsFlared(34),
             // Each press cut short, the elbow still bent: a fault of the
             // lockout, on the left arm, which presses first (0-4 s) while the
@@ -6294,24 +6379,46 @@ enum FaultPoses {
             "scapula": shrugged
         ],
         "Incline Chest Press Machine": [
-            "wrist": handsHigh,
+            // Seat too low: the handles start above the shoulders. The 2026-10-11
+            // model's hands start 8 cm below them along the trunk; 0.22 torso
+            // lengths puts them 5 cm above.
+            "wrist": r1011HandlesHigh(0.22),
             "elbow": elbowsFlared(34),
             "barpath": pressCutShort,
             "feet": seatedArched,
             "scapula": shrugged
         ],
         "Decline Chest Press Machine": [
-            "wrist": handsHigh,
+            // Seat set so the handles start at the shoulders: the 2026-10-11
+            // model's hands start 31 cm below them along the trunk (0.45 torso
+            // lengths brings them within 4 cm).
+            "wrist": r1011HandlesHigh(0.45),
             "elbow": elbowsFlared(34),
-            "barpath": pressCutShort,
-            "feet": seatedArched,
+            // Seen from the front since the 2026-10-11 reframe, the press and the
+            // arch both run along the line of sight, so the model turns to show
+            // its left side while these two show.
+            // 2026-10-11 shots: turned, the near (left) yellow lever ran
+            // across the near ghost arm, so only the far arm is drawn
+            // (`pressCutShort` on the right side alone).
+            "barpath": FaultPose(chains: [arm("R")],
+                                 moves: [.shift(["hand_R", "hand_R.tip"], forward: -0.2), .resolve(["forearm_R"])],
+                                 strength: .whenStraight("forearm_R")).seen(-0.6),
+            "feet": seatedArched.seen(-1.0),
             "scapula": shrugged
         ],
         "Plate-Loaded Chest Press": [
-            "wrist": handsHigh,
+            // Seat too low: the handles start level with the shoulders, 20 cm
+            // above where the 2026-10-11 model's hands start (0.33 torso lengths).
+            "wrist": r1011HandlesHigh(0.33),
             "elbow": elbowsFlared(34),
             "barpath": pressCutShort,
-            "feet": seatedArched,
+            // 2026-10-11 shots: from the front-left framing (yaw -0.7) the arch
+            // and the heel rise ran mostly along the line of sight (the ghost
+            // 7-13 px off the lifter); turned side-on (total -1.3) and drawn
+            // larger, the back bows off the pad across the screen. Turned only
+            // -0.35 (total -1.05): further round, the feet left the frame and
+            // the head met the banner.
+            "feet": seatedArchedLarge.seen(-0.35),
             "scapula": shrugged
         ],
         "Wide-Grip Chest Press Machine": [
@@ -6322,7 +6429,11 @@ enum FaultPoses {
             "elbow": FaultPose(chains: [arms], moves: [.shift(["forearm_*"], up: 0.3), .resolve(["forearm_*"])],
                                strength: .withBend("forearm_L")),
             "barpath": pressCutShort,
-            "feet": seatedArched,
+            // 2026-10-11 shots: turned side-on and drawn larger, as on the
+            // Plate-Loaded Chest Press (the arch ran along the line of sight
+            // from yaw -0.7). Turned only -0.2 (total -0.9): further round, the
+            // near lever's plate covered the trunk.
+            "feet": seatedArchedLarge.seen(-0.2),
             "scapula": shrugged
         ],
         "Cable Chest Press": [
@@ -6651,7 +6762,9 @@ enum FaultPoses {
                                    moves: [.turn(pivot: "pelvis", points: trunk, axis: .up, degrees: -20)]),
             "scapula": shouldersForward
         ],
-        "Inverted Row": invertedRowFaults,
+        // The Smith low bar (2026-10-11), seen from behind the head: a wider
+        // elbow flare, turned so it runs across the screen.
+        "Inverted Row": invertedRowFaults.merging(["elbow": r1011ElbowsFlaredWide(view: -0.6)]) { _, variant in variant },
         "Feet-Elevated Inverted Row": invertedRowFaults,
         "Underhand Inverted Row": invertedRowFaults,
 
@@ -6696,11 +6809,23 @@ enum FaultPoses {
         "Machine Pull-Up": [
             "scapula": shrugged,
             "elbow": elbowsForward.seen(0.5),
-            "grip": gripTooNarrow(withBar: false),
-            "barpath": chinCraned.seen(0.5),
-            // Knees bending to push off the platform, turned so the knees
-            // come forward across the view instead of into it.
-            "feet": FaultPose(chains: [legs, hips], moves: [.shift(["shin_*"], forward: 0.22)], view: 0.5)
+            // Gripping narrow: the 2026-10-11 model holds the wide handles
+            // ~0.87 m apart, and `gripTooNarrow` only drew the hands in to
+            // ~0.70 m, wider than the old model's own grip. The hands ~13 cm
+            // in each, to ~0.61 m (about the outer shoulders), and ~4 cm up
+            // so the arms stay long, the elbows re-seated (166° -> ~160°).
+            // Stilled at the dead hang (4.0 s), where the grip reads.
+            "grip": r1011GripDrawnIn(0.22, up: 0.07),
+            // Short reps: the body stops low under the handles. 2026-10-11
+            // shots: `chinCraned`, seen from behind, drew one straight line up
+            // the lifter's own spine and neck and nothing read; the drop of
+            // the body and the longer arms read from behind.
+            "barpath": hangingShort.seen(0.5),
+            // Swinging the knees forward off the pad to heave up (the model
+            // now kneels on the pad): the kipping piece, the knees ~26 cm
+            // forward and ~12 cm up off the pad, the feet swinging under;
+            // turned 0.5 (a total of -2.1) so the swing crosses the view.
+            "feet": kipping.seen(0.5)
         ],
         "Neutral-Grip Chin-Up": [
             "scapula": shrugged,
@@ -6722,6 +6847,8 @@ enum FaultPoses {
         // seat faults are drawn as a rise (`risenOffSeat`), which reads from
         // behind.
         "Wide-Grip Lat Pulldown": [
+            // Throwing the trunk back past 30°: the 2026-10-11 model leans
+            // 15-30° as it pulls, the ghost 26° more (~53° at the still).
             "spine": trunkLifted(26).seen(0.9),
             "elbow": pulldownFlared,
             "grip": gripTooWide(withBar: true),
@@ -6729,6 +6856,8 @@ enum FaultPoses {
             "feet": risenOffSeat
         ],
         "Reverse-Grip Lat Pulldown": [
+            // Throwing the trunk back past 30°, as on the Wide-Grip (the model
+            // leans 16-30°, the ghost 26° more).
             "spine": trunkLifted(26).seen(0.9),
             "elbow": pulldownFlared,
             "grip": gripTooWide(withBar: true),
@@ -6738,14 +6867,22 @@ enum FaultPoses {
         "Neutral-Grip Lat Pulldown": [
             "spine": trunkLifted(26).seen(0.9),
             "elbow": pulldownFlared,
-            "grip": wristBentBack(withBar: false),
+            // 2026-10-11 shots: palms in, so the wrists bend back outward, about
+            // the chest's axis, as on the kettlebell rack; from behind that
+            // crosses the screen at the hands beside the head, where
+            // wristBentBack's turn ran along the line of sight (a ~5 px kink).
+            "grip": thruster500WristsBentBack(60),
             "barpath": pulledBehindNeck,
             "feet": risenOffSeat
         ],
         "V-Bar Lat Pulldown": [
             "spine": trunkLifted(26).seen(0.9),
             "elbow": pulldownFlared,
-            "grip": wristBentBack(withBar: false),
+            // 2026-10-11 shots: at the still the hands are at the chest, hidden
+            // behind the torso from this framing; turned like the lean fault
+            // (total -1.7, nearly the left side) they sit in front of the chest
+            // and the bend crosses the screen.
+            "grip": wristBentBack(withBar: false).seen(0.9),
             "barpath": pulledPastChest,
             "feet": risenOffSeat
         ],
@@ -6759,14 +6896,24 @@ enum FaultPoses {
                               moves: [.shift(["pelvis", "thigh_*"], forward: -0.14, up: -0.08), .shift(["spine"], forward: -0.07)])
         ],
         "Rope Lat Pulldown": [
-            "spine": trunkLifted(26),
+            // Turned like the other pulldowns' lean faults; unturned, the trunk
+            // tipped back along the line of sight.
+            "spine": trunkLifted(26).seen(0.9),
             "elbow": pulldownFlared,
-            "grip": wristBentBack(withBar: false),
-            // The hands kept together instead of splitting the rope.
-            "barpath": FaultPose(chains: [armsToGrip],
-                                 moves: [.shift(["hand_*", "hand_*.tip"], outward: -0.1), .shift(["forearm_*"], outward: -0.05)],
-                                 strength: .withBend("forearm_L")),
-            "feet": slidForward
+            // 2026-10-11 shots: the hands are at the chest at the still, hidden
+            // behind the torso from behind; turned like the lean fault, the
+            // near hand sits in front of the chest and the bend crosses the
+            // screen.
+            "grip": wristBentBack(withBar: false).seen(0.9),
+            // The rope stopped at the face. The 2026-10-11 model pulls the
+            // hands straight down together to the upper chest, so the old
+            // hands-together ghost drew its own path. Its bottom (shoulder to
+            // wrist 0.41-0.44 torso lengths) sits in the piece's full-strength
+            // range, as the Reverse-Grip's does.
+            "barpath": pulldownShort,
+            // Lifting off the seat, the mistake the copy names, as on the other
+            // seated pulldowns (`slidForward` ran along the line of sight).
+            "feet": risenOffSeat
         ],
         "Machine Lat Pulldown": [
             "spine": trunkLifted(26).seen(0.9),
@@ -6778,10 +6925,18 @@ enum FaultPoses {
         "Iso-Lateral Lat Pulldown": [
             "spine": trunkLifted(26).seen(0.9),
             "elbow": pulldownFlared,
-            "grip": shrugged,
-            // Leaning over to the working side.
+            // 2026-10-11 shots: at the still (1.25 s) only the left arm pulls,
+            // and the shared shrug lifted the straight right arm 0.12 above
+            // its fixed handle and into the grip pill. The working side alone
+            // shrugs, as on the Single-Arm Machine Row.
+            "grip": leftShrugged,
+            // Leaning over to the working side: the lean is to the left, so it
+            // shows only while the left arm is down (shoulder to wrist under
+            // 0.62 torso lengths, all of it by 0.40), not during the right
+            // arm's pull (the 2026-10-11 model: left 0-4 s, right 4-8 s).
             "barpath": FaultPose(chains: [spine, shoulders],
-                                 moves: [.turn(pivot: "pelvis", points: trunk, axis: .forward, degrees: -12)]),
+                                 moves: [.turn(pivot: "pelvis", points: trunk, axis: .forward, degrees: -12)],
+                                 strength: .between("upper_arm_L", "hand_L", from: 0.62, to: 0.40)),
             "feet": risenOffSeat
         ],
         "Single-Arm Lat Pulldown": [
@@ -6793,9 +6948,13 @@ enum FaultPoses {
         ],
         "Wide-Grip Seated Cable Row": [
             "scapula": shouldersForward,
-            "elbow": elbowsWinged,
-            "grip": gripTooNarrow(withBar: false),
-            "barpath": rowedLow(withBar: false),
+            // 2026-10-11 shots: the model already rows with the elbows ~55 deg
+            // out, so the shared outward push looked like its own flare; as on
+            // the Barbell Bent-Over Row, the upper arms swing up toward
+            // shoulder height, the mistake the copy names.
+            "elbow": elbowsFlared(35),
+            "grip": gripTooNarrow(withBar: true),
+            "barpath": rowedLow(withBar: true),
             "torso": trunkLifted(18)
         ],
         "Close-Grip Seated Cable Row": [
@@ -6815,8 +6974,10 @@ enum FaultPoses {
         "Low Cable Row": [
             "scapula": shouldersForward,
             "elbow": elbowsWinged,
-            "grip": backRounded(),
-            "barpath": rowedHigh(withBar: false),
+            // Palms up (the 2026-10-11 model rows underhand), so tipping the
+            // hands toward the face draws the wrists curling up.
+            "grip": wristBentBack(withBar: true),
+            "barpath": rowedHigh(withBar: true),
             "torso": trunkLifted(18)
         ],
         "Standing Cable Row": [
@@ -6841,7 +7002,11 @@ enum FaultPoses {
             "stance": lowerBackArched(0.1)
         ],
         "Machine Seated Row": [
-            "pad": chestOffPad,
+            // 2026-10-11 shots: from behind-left (yaw -2.4) the lean off the pad
+            // ran toward the camera and the ghost traced the lifter's own back;
+            // turned to the left side (total -1.6) and drawn as far as the Seal
+            // Row's, the trunk tips back across the screen.
+            "pad": chestOffPadFar.seen(0.8),
             "elbow": elbowsWinged,
             "grip": shouldersForward,
             "barpath": rowedShort,
@@ -6855,9 +7020,14 @@ enum FaultPoses {
             "scapula": shrugged
         ],
         "Single-Arm Machine Row": [
-            "pad": chestOffPad,
+            // 2026-10-11 shots: turned side-on and drawn larger, as on the
+            // Machine Seated Row (the lean ran toward the camera from behind).
+            "pad": chestOffPadFar.seen(0.8),
             "elbow": leftElbowWinged,
-            "grip": leftShoulderForward,
+            // The 2026-10-11 model reaches with the working shoulder at the
+            // start by design, so the grip mistake is now the bent wrist, as on
+            // the Single-Arm Cable Row.
+            "grip": leftWristBentBack,
             "brace": leftTwistedOpen,
             "scapula": leftShrugged
         ],
@@ -6892,7 +7062,11 @@ enum FaultPoses {
                              moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -35),
                                      .turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: 35)],
                              strength: .between("hand_L", "pelvis", from: 1.0, to: 1.5)),
-            "spine": lowerBackArched(0.1),
+            // Arching off the pad. 2026-10-11 shots: from the front-left
+            // framing (yaw -0.9) the 0.1 arch read as a straight line, and
+            // turned side-on the cam disc and the A-frame leg hid the lifter;
+            // unturned and deeper (0.18, the table's largest), it bows clear.
+            "spine": lowerBackArched(0.18),
             "scapula": shrugged
         ],
 
@@ -8133,8 +8307,12 @@ enum FaultPoses {
             "depth": FaultPose(chains: [armsToGrip],
                                moves: [.shift(["hand_*", "hand_*.tip"], up: 0.16), .resolve(["forearm_*"])],
                                strength: .withBend("forearm_L")),
-            // Leaning back toward the pad, the lower back arched.
-            "torso": leanedBack(12, arch: 0.08).seen(-1.0),
+            // Arching the lower back off the pad. The 2026-10-11 model sits back
+            // on a tall pad set about 84 deg (trunk 9 deg reclined on it), so
+            // leaning back is now the model's own posture; the arch is drawn a
+            // little stronger than the other seated presses' 0.12 so it reads
+            // in the smaller mistake viewport (~9 cm at the lower back).
+            "torso": lowerBackArched(0.16).seen(-1.0),
             "feet": pressFeetTucked.seen(-1.0)
         ],
         "Neutral-Grip Dumbbell Shoulder Press": [
@@ -8158,20 +8336,45 @@ enum FaultPoses {
             "stance": pressKneesDipped
         ],
         "Cable Shoulder Press": [
-            // The cables dragging the elbows back behind the shoulders.
-            "elbow": pressElbowsDraggedBack("*"),
-            // The cables pulling the arms back behind the head at lockout.
-            "lockout": armsTurned(.lateral, 14, strength: .whenStraight("forearm_L")).seen(-0.8),
-            "brace": leanedBack(12, arch: 0.08).seen(-0.8),
+            // The 2026-10-11 station's pulleys sit at hip height 1.2 m out to
+            // each side, so the cables pull the handles out and down. Elbow:
+            // the cables pulling the handles out past the elbows at the
+            // bottom, the forearms tilted 30 deg out (hands ~13 cm out).
+            "elbow": elbowsFolded(.forward, -30, strength: .withBend("forearm_L")),
+            // Lockout: the arms pulled apart into a V at the top, the hands
+            // 0.28 out and 0.05 down, elbows re-seated (as the Seated Dumbbell
+            // Press's path fault; hands ~16 cm out each). Seen face-on.
+            "lockout": FaultPose(chains: [armsToGrip],
+                                 moves: [.shift(["hand_*", "hand_*.tip"], up: -0.05, outward: 0.28), .resolve(["forearm_*"])],
+                                 strength: .whenStraight("forearm_L")),
+            // Turned -0.4 (total -0.9): at -0.8 the near upright and stack hid
+            // the lifter.
+            // 2026-10-11 shots: `leanedBack(12, arch: 0.08)` drawn without the
+            // arms, whose overhead hands ran up into the mistake banner; the
+            // lean reads from the trunk and shoulder line alone.
+            "brace": FaultPose(chains: [spine, shoulders],
+                               moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: 12),
+                                       .shift(["spine"], forward: 0.08), .shift(["chest"], forward: 0.036)]).seen(-0.4),
             "stance": cableFeetTogetherLocked,
-            "wrist": wristBentBack(withBar: false).seen(-0.8)
+            "wrist": wristBentBack(withBar: false).seen(-0.4)
         ],
         "Single-Arm Cable Shoulder Press": [
             "core": pressLeanedAway,
-            "elbow": pressElbowsDraggedBack("L"),
-            // The cable pulling the arm back behind the head at lockout.
-            "lockout": armsTurned(.lateral, 14, side: "L", strength: .whenStraight("forearm_L")).seen(-0.8),
-            "brace": leanedBack(12, arch: 0.08).seen(-0.8),
+            // The 2026-10-11 pulley sits at hip height 1.2 m out on the left,
+            // so the cable pulls the handle out and down. Elbow: the left
+            // forearm tilted 30 deg out at the bottom (hand ~13 cm out).
+            "elbow": elbowsFolded(.forward, -30, side: "L", strength: .withBend("forearm_L")),
+            // Lockout: the left arm pulled out to the side at the top, the
+            // hand 0.28 out and 0.05 down, elbow re-seated. Seen face-on.
+            "lockout": FaultPose(chains: [arm("L")],
+                                 moves: [.shift(["hand_L", "hand_L.tip"], up: -0.05, outward: 0.28), .resolve(["forearm_L"])],
+                                 strength: .whenStraight("forearm_L")),
+            // Turned -0.4 (total -0.9): at -0.8 the near upright and stack hid
+            // the lifter. 2026-10-11 shots: drawn without the arms, as on the
+            // Cable Shoulder Press; the overhead hand ran into the banner.
+            "brace": FaultPose(chains: [spine, shoulders],
+                               moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: 12),
+                                       .shift(["spine"], forward: 0.08), .shift(["chest"], forward: 0.036)]).seen(-0.4),
             "stance": cableFeetTogetherLocked
         ],
         // MARK: Batch 191-240 lateral and cuff (2026-09-26)
@@ -10974,40 +11177,43 @@ enum FaultPoses {
             "depth": chest500PushUpHigh(0.28)
         ],
         "Chest Dip": [
-            // Staying upright: the trunk tipped 20° back about the pelvis at
-            // the bottom (33° -> ~13° forward), the head ~24 cm (~52 pt) and
-            // the shoulders ~18 cm back over the hands, the elbows re-seated.
-            "lean": chest500DipUpright(20),
-            // Half reps: the body 0.32 torso lengths (~19 cm, ~48 pt) higher
-            // at the bottom, the elbows 76° -> ~130°.
+            // Staying upright: the trunk tipped 40° back about the pelvis at
+            // the bottom (53° -> ~13° forward on the 2026-10-11 model; 20°
+            // left it at 33°, the old model's own lean), the head ~35 cm back
+            // and ~27 cm up, the shoulders ~24 cm back over the hands, the
+            // elbows re-seated (78° -> ~100°).
+            "lean": chest500DipUpright(40),
+            // Half reps: the body 0.32 torso lengths (~18 cm) higher at the
+            // bottom, the elbows 78° -> ~124°.
             "depth": chest500DipHeldHigh(0.32),
             // Elbows splaying out past the bars: ~9 cm out and re-seated.
             // Turned head-on (view +1.0, a total of 0), where both elbows
             // move ~20 pt across the screen; from the framing the near one
             // moved ~2 pt.
             "elbow": chest500DipElbowsOut(0.2).seen(1.0),
-            // Shrugging: both shoulder joints ~11 cm (0.18 torso lengths) up
-            // toward the ears at the bottom, the hands on the bars, the
-            // elbows re-seated (76° -> ~107°). Turned head-on (view +1.0, a
-            // total of 0), where the shoulders rise ~24 pt past the base of
-            // the neck into a V. The first version, the trunk sinking
-            // between fixed shoulders, only flattened the shoulder line.
-            "shoulders": chest500DipShrugged(0.18).seen(1.0),
+            // Shrugging: both shoulder joints ~13 cm (0.24 torso lengths)
+            // straight up at the bottom, the hands on the bars, the elbows
+            // re-seated (78° -> ~109°). Turned head-on (view +1.0, a total of
+            // 0), where they rise ~4 cm past the base of the neck into a V,
+            // as the first ghost did on the old model. On the 2026-10-11
+            // model (lean 53°, upper back rounded, shoulders ~11 cm below the
+            // neck) `chest500DipShrugged(0.18)` stayed ~4 cm below the neck.
+            "shoulders": r1011DipShruggedRise(0.24).seen(1.0),
             // Kicking out of the bottom: the legs swung 15° forward, the
             // knees ~12 cm (~24 pt) and the feet ~18 cm (~38 pt) forward.
             "legs": chest500KneesKicked(15)
         ],
         "Weighted Chest Dip": [
             // "belt" has no ghost: where the plate hangs.
-            // Staying upright under the plate: as the Chest Dip (33° -> ~13°
-            // at the bottom).
-            "lean": chest500DipUpright(20),
+            // Staying upright under the plate: as the Chest Dip (53° -> ~13°
+            // at the bottom on the 2026-10-11 model).
+            "lean": chest500DipUpright(40),
             // Sinking too deep: the Assisted Dip's piece with the legs
-            // riding, the body ~8 cm (~20 pt) lower at the bottom, the
-            // shoulders ~10 cm below the elbows, the elbows 76° -> ~65°.
+            // riding, the body ~8 cm lower at the bottom, the shoulders ~14
+            // cm below the elbows (the model's ~4 cm), the elbows 82° -> ~74°.
             "depth": dipSunk(-0.14, legsRide: true, strength: .withBend("forearm_L")),
-            // Stopping short of lockout: at the top the body ~7 cm (~16 pt)
-            // lower, the elbows 175° -> ~123°.
+            // Stopping well short of the top: at the top the body ~6 cm
+            // lower, the elbows 166° -> ~126°.
             "lockout": dipSunk(-0.12, legsRide: true, strength: .whenStraight("forearm_L")),
             // Kicking out of the bottom: as the Chest Dip (knees ~12 cm).
             "legs": chest500KneesKicked(15)
@@ -12529,6 +12735,42 @@ enum FaultPoses {
             "grip": seatedRocked(-14).seen(-0.9)
         ],
         // END Desktop 1-100 (2026-10-10)
+        // BEGIN Desktop 100-200 (2026-10-11)
+        // MARK: Desktop 100-200 concentration curl (2026-10-11)
+        // Seated across a flat bench, the trunk 63° forward, the LEFT upper
+        // arm hanging 16° from vertical against the inner thigh; framed from
+        // the front-left at yaw -1.2, close enough to side-on (moves in the
+        // lifter's front-back plane show at ~93% of their length) that no
+        // fault turns. Torso (neck to pelvis) 0.584 m. Sizes measured with a
+        // Python port of FaultGhost.solve on the rig at 1.6 s, the middle of
+        // the top hold (curl/ghost.py in the session scratchpad), in points
+        // of the 382x655 viewport; bone lengths kept, no elbow past straight.
+        "Concentration Curl": [
+            // The elbow coming off the thigh: the upper arm swung 30° forward
+            // about the shoulder (16° behind vertical to 14° in front), the
+            // elbow ~15 cm (~48 pt) forward, the hand ~11 cm; drawn to the
+            // wrist. Grows with the elbow's bend: strongest at the top.
+            "elbow": curlArmsOffPad(30, side: "L"),
+            // Sitting up to heave the dumbbell: the trunk tipped 18° back
+            // about the hips (63° to 45° forward of vertical), the head
+            // ~21 cm (~68 pt), the working arm carried with it, its elbow
+            // ~12 cm up off the thigh. Only the spine and the left arm are
+            // drawn and moved, so the right hand stays on the knee.
+            "torso": preacherRockedBack(18, side: "L"),
+            // Stopping with the forearm at or just below level: unfolded 40°
+            // (elbow 48° to ~88°, the forearm ~14° below level), the hand
+            // ~17 cm (~60 pt) lower. Zero until shoulder-to-wrist falls
+            // below 0.6 torso lengths (elbow ~81°), full at 0.42 (the top is
+            // 0.38), so it shows only over the top of the curl.
+            "top": curlStoppedShortOfTop("L", from: 0.6, to: 0.42),
+            // The wrist curled in at the top: the hand tip folded 60° toward
+            // the palm, ~12 cm toward the chin. 60° rather than the default
+            // 50°, as on the Spider Curl: the mistake view shrinks the
+            // lifter and the hand is short, so 50° read as a slight kink.
+            "wrist": curlWristsCurled("L", degrees: 60)
+            // "lower" (tempo) has no ghost: it falls back to the red ring.
+        ],
+        // END Desktop 100-200 (2026-10-11)
         // MARK: Exercises 1-50 redo (2026-09-29)
         // MARK: Exercises 1-50 redo: Pendlay Row and Close-Grip Bench Press (2026-09-29)
         // Pendlay Row is framed from behind on the lifter's left (yaw -2.0,

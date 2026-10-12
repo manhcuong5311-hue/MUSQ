@@ -297,6 +297,11 @@ enum SampleData {
         Exercise(name: "Cable Knee-Drive Kickback", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
                  difficulty: .intermediate),
+        // The Desktop "100-200" folder's new exercise (2026-10-11): 237, a seated
+        // one-arm curl, the elbow braced against the inner thigh.
+        Exercise(name: "Concentration Curl", category: .arms,
+                 primaryMuscle: "BICEPS BRACHII", equipment: "DUMBBELL",
+                 difficulty: .beginner),
         // From the drive's "401-500" folder, 445-474 (2026-10-05).
         Exercise(name: "Barbell Thruster", category: .legs,
                  primaryMuscle: "QUADS + SHOULDERS", equipment: "BARBELL",
@@ -1765,6 +1770,9 @@ enum SampleData {
         "Pendulum Squat (Stances)": pendulumSquatStancesContent,
         "Cable Knee-Drive Kickback": cableKneeDriveKickbackContent,
         // END Desktop 1-100 (2026-10-10)
+        // BEGIN Desktop 100-200 (2026-10-11)
+        "Concentration Curl": concentrationCurlContent,
+        // END Desktop 100-200 (2026-10-11)
     ]
 
     static func content(for exercise: Exercise) -> ExerciseContent? {
@@ -2106,8 +2114,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.7, zoom: 0.820, offset: [-0.002, -0.003, 0.002])),
         "Incline Chest Press Machine":         ExerciseModel(resource: "InclineChestPressMachine",
                                         framing: ModelFraming(yaw: -0.7, zoom: 0.952, offset: [-0.002, 0.082, 0.002])),
+        // Seen from the front since the 2026-10-11 re-export: from the old
+        // front-left view the new machine's yellow lever arms hid the lifter.
         "Decline Chest Press Machine":         ExerciseModel(resource: "DeclineChestPressMachine",
-                                        framing: ModelFraming(yaw: -0.7, zoom: 0.910, offset: [0.062, 0.106, -0.052])),
+                                        framing: ModelFraming(yaw: 0, zoom: 1.056, offset: [0.0, 0.195, 0.0])),
         "Plate-Loaded Chest Press":            ExerciseModel(resource: "PlateLoadedChestPress",
                                         framing: ModelFraming(yaw: -0.7, zoom: 0.950, offset: [0.041, 0.107, -0.035])),
         "Wide-Grip Chest Press Machine":       ExerciseModel(resource: "WideGripChestPressMachine",
@@ -2189,8 +2199,11 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.566, offset: [-0.009, 0.148, 0.032])),
         "Gorilla Row":                         ExerciseModel(resource: "GorillaRow",
                                         framing: ModelFraming(yaw: -2.0, zoom: 1.089, offset: [-0.025, 0.271, -0.054])),
-        "Inverted Row":                        ExerciseModel(resource: "InvertedRow",
-                                        framing: ModelFraming(yaw: -1.35, zoom: 0.582, offset: [0.010, 0.131, -0.043])),
+        // A Smith machine since the Desktop "100-200" folder (2026-10-11): the
+        // low bar here; `stancesByExercise` has the low and high bars. Seen
+        // from behind the head (-2.2): side-on, the near plate hid the lifter.
+        "Inverted Row":                        ExerciseModel(resource: "InvertedRowSmithLow",
+                                        framing: ModelFraming(yaw: -2.2, zoom: 0.572, offset: [-0.017, 0.152, -0.023])),
         "Feet-Elevated Inverted Row":          ExerciseModel(resource: "FeetElevatedInvertedRow",
                                         framing: ModelFraming(yaw: -1.35, zoom: 0.558, offset: [0.009, 0.096, -0.038])),
         "Underhand Inverted Row":              ExerciseModel(resource: "UnderhandInvertedRow",
@@ -2215,7 +2228,7 @@ enum SampleData {
         "Weighted Chin-Up":                    ExerciseModel(resource: "WeightedChinUp",
                                         framing: ModelFraming(yaw: -2.6, zoom: 0.580, offset: [0.009, -0.083, 0.005])),
         "Machine Pull-Up":                     ExerciseModel(resource: "MachinePullUp",
-                                        framing: ModelFraming(yaw: -2.6, zoom: 0.580, offset: [0.009, -0.077, 0.005])),
+                                        framing: ModelFraming(yaw: -2.6, zoom: 0.794, offset: [0.001, -0.3, 0.001])),
         "Wide-Grip Lat Pulldown":              ExerciseModel(resource: "WideGripLatPulldown",
                                         framing: ModelFraming(yaw: -2.6, zoom: 0.916, offset: [0.017, 0.066, 0.010])),
         "Reverse-Grip Lat Pulldown":           ExerciseModel(resource: "ReverseGripLatPulldown",
@@ -2229,9 +2242,9 @@ enum SampleData {
         "Rope Lat Pulldown":                   ExerciseModel(resource: "RopeLatPulldown",
                                         framing: ModelFraming(yaw: -2.6, zoom: 0.801, offset: [0.011, -0.002, 0.006])),
         "Machine Lat Pulldown":                ExerciseModel(resource: "MachineLatPulldown",
-                                        framing: ModelFraming(yaw: -2.6, zoom: 0.881, offset: [0.006, 0.045, 0.004])),
+                                        framing: ModelFraming(yaw: -2.6, zoom: 0.87, offset: [0.038, 0.003, 0.023])),
         "Iso-Lateral Lat Pulldown":            ExerciseModel(resource: "IsoLateralLatPulldown",
-                                        framing: ModelFraming(yaw: -2.6, zoom: 0.886, offset: [0.004, 0.048, 0.002])),
+                                        framing: ModelFraming(yaw: -2.6, zoom: 0.87, offset: [0.033, 0.003, 0.02])),
         "Single-Arm Lat Pulldown":             ExerciseModel(resource: "SingleArmLatPulldown",
                                         framing: ModelFraming(yaw: -2.6, zoom: 0.899, offset: [0.022, 0.056, 0.013])),
         "Wide-Grip Seated Cable Row":          ExerciseModel(resource: "WideGripSeatedCableRow",
@@ -2278,8 +2291,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.5, zoom: 0.742, offset: [0.013, -0.053, -0.007])),
         "Standing Dumbbell Press":            ExerciseModel(resource: "StandingDumbbellPress",
                                         framing: ModelFraming(yaw: -0.5, zoom: 0.728, offset: [-0.005, -0.051, 0.003])),
+        // 2026-10-11 shots: lowered 0.047 so the lockout dumbbells clear the
+        // mistake banner (its labels moved down with it).
         "Seated Dumbbell Press":              ExerciseModel(resource: "SeatedDumbbellPress",
-                                        framing: ModelFraming(yaw: -0.5, zoom: 0.833, offset: [-0.001, 0.016, 0.000])),
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.755, offset: [0.029, -0.01, -0.016])),
         "Neutral-Grip Dumbbell Shoulder Press": ExerciseModel(resource: "NeutralGripDumbbellShoulderPress",
                                         framing: ModelFraming(yaw: -0.6, zoom: 0.783, offset: [0.001, 0.045, 0.0])),
         "Single-Arm Dumbbell Shoulder Press": ExerciseModel(resource: "SingleArmDumbbellShoulderPress",
@@ -2291,9 +2306,11 @@ enum SampleData {
         "Half-Kneeling Landmine Press":       ExerciseModel(resource: "KneelingLandminePress",
                                         framing: ModelFraming(yaw: -1.0, zoom: 0.863, offset: [0.002, 0.078, -0.003])),
         "Cable Shoulder Press":               ExerciseModel(resource: "CableShoulderPress",
-                                        framing: ModelFraming(yaw: -0.5, zoom: 0.679, offset: [-0.089, -0.032, 0.049])),
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.739, offset: [-0.004, -0.036, 0.002])),
+        // 2026-10-11 shots: smaller and lower so the handle at lockout clears
+        // the mistake banner.
         "Single-Arm Cable Shoulder Press":    ExerciseModel(resource: "SingleArmCableShoulderPress",
-                                        framing: ModelFraming(yaw: -0.5, zoom: 0.760, offset: [-0.026, -0.043, 0.014])),
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.720, offset: [-0.026, -0.080, 0.014])),
         "Smith Machine Shoulder Press":       ExerciseModel(resource: "SmithMachineShoulderPress",
                                         framing: ModelFraming(yaw: -0.6, zoom: 0.843, offset: [0.031, 0.061, -0.021])),
         "Viking Press":                       ExerciseModel(resource: "VikingPress",
@@ -2573,9 +2590,9 @@ enum SampleData {
         "Landmine Chest Press":               ExerciseModel(resource: "LandmineChestPress",
                                         framing: ModelFraming(yaw: -0.8, zoom: 0.807, offset: [0.054, 0.036, -0.056])),
         "Chest Dip":                          ExerciseModel(resource: "ChestDip",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.785, offset: [-0.045, -0.039, 0.069])),
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.17, 0.05])),
         "Weighted Chest Dip":                 ExerciseModel(resource: "WeightedChestDip",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.785, offset: [-0.045, -0.039, 0.069])),
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.179, 0.049])),
         "Decline Push-Up":                    ExerciseModel(resource: "DeclinePushUp",
                                         framing: ModelFraming(yaw: -1.2, zoom: 0.521, offset: [-0.025, 0.166, 0.063])),
         "Plyometric Push-Up":                 ExerciseModel(resource: "PlyometricPushUp",
@@ -2754,6 +2771,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.35, zoom: 0.456, offset: [-0.009, 0.089, 0.039])),
         "Alternating V-Up":                   ExerciseModel(resource: "AlternatingVUp",
                                         framing: ModelFraming(yaw: -0.8, zoom: 0.521, offset: [-0.015, 0.098, 0.015])),
+        // Desktop "100-200" folder (2026-10-11): the new concentration curl,
+        // the working (left) arm turned toward the camera.
+        "Concentration Curl":                 ExerciseModel(resource: "ConcentrationCurl",
+                                        framing: ModelFraming(yaw: -1.2, zoom: 1.03, offset: [0.031, 0.278, -0.081])),
     ]
 
     static func model(for exercise: Exercise) -> ExerciseModel? {
@@ -2851,6 +2872,69 @@ enum SampleData {
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+                           ]),
+        ],
+        // The owner's side-lean variant of the Single-Arm Lat Pulldown
+        // (Fix_173_side_crunch, 2026-10-11): the left arm pulls as on the
+        // upright model while the trunk curls toward it at the ribs, the
+        // shoulder line tilting from 4° at the top to 11° at the bottom; the
+        // left palm turns up toward the bottom, the free right hand holds the
+        // left waist and the left elbow finishes about 4 cm lower. Both
+        // models light the same muscles (the lat bright; trapezius,
+        // rhomboids, rear delt, cuff, biceps and forearms dim; obliques and
+        // teres major unlit), so both lists read that paint as the Wide-Grip
+        // Lat Pulldown does, its Teres Major row included. The exercise's
+        // own Obliques row, which recovery still counts, is left off both:
+        // neither model lights the obliques, and a fourth secondary row would
+        // overflow the one-line legend. The content, labels and ghosts are
+        // written for the upright model.
+        "Single-Arm Lat Pulldown": [
+            ExerciseStance(label: "Upright", model: ExerciseModel(resource: "SingleArmLatPulldown", framing: ModelFraming(yaw: -2.6, zoom: 0.899, offset: [0.022, 0.056, 0.013])),
+                           note: "Torso upright and square, free hand on your waist; the model lights the lat",
+                           activation: [
+                MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.88),
+                MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.56),
+                MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46),
+                MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.46)
+                           ]),
+            ExerciseStance(label: "Side Lean", model: ExerciseModel(resource: "SingleArmLatPulldownSideLean", framing: ModelFraming(yaw: -2.6, zoom: 0.899, offset: [0.022, 0.056, 0.013])),
+                           note: "Ribs curl toward the pulling arm, palm turning up; the elbow ends about 4 cm lower",
+                           activation: [
+                MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.88),
+                MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.56),
+                MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46),
+                MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.46)
+                           ]),
+        ],
+        // The Inverted Row on a Smith machine (Desktop "100-200" folder,
+        // 2026-10-11), the bar hooked at two heights. The low bar (75 cm)
+        // starts the body about 7° off the floor and ends it at 24°; the high
+        // bar (1.08 m) starts it at about 29° and ends it at 46°, the arms
+        // moving the same way. A higher bar makes the row easier, a more level
+        // body harder (ExRx, Inverted Row and Inverted Row (high bar), via the
+        // Wayback Machine). Both models light the trapezius, rhomboids and
+        // rear delts bright and the lats and biceps dim; the high bar also
+        // lights the rotator cuff bright (dim on the low one), which the rows
+        // name with the stabilisers, so the two lists match. No EMG by bar
+        // height was found, so both keep the exercise's fractions.
+        "Inverted Row": [
+            ExerciseStance(label: "Low Bar", model: ExerciseModel(resource: "InvertedRowSmithLow", framing: ModelFraming(yaw: -2.2, zoom: 0.572, offset: [-0.017, 0.152, -0.023])),
+                           note: "Bar about 75 cm up: the body starts almost level, which makes the row harder",
+                           activation: [
+                MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.80),
+                MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.72),
+                MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.52),
+                MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.74),
+                MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56)
+                           ]),
+            ExerciseStance(label: "High Bar", model: ExerciseModel(resource: "InvertedRowSmithHigh", framing: ModelFraming(yaw: -2.2, zoom: 0.637, offset: [-0.044, 0.078, -0.06])),
+                           note: "Bar about 1.08 m up: the body starts about 30° off the floor, an easier row",
+                           activation: [
+                MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.80),
+                MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.72),
+                MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.52),
+                MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.74),
+                MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56)
                            ]),
         ],
     ]
@@ -11654,9 +11738,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the triceps and front delt bright with
+            // the chest (dim before), so they are primary rows; the fractions
+            // stay where the EMG put them.
             MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.52),
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.46),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["rotator cuff", "quadratus lumborum", "serratus anterior"],
@@ -12235,29 +12322,32 @@ enum SampleData {
     )
 
     static let isoLateralChestPressContent = ExerciseContent(
-        // Relaid 2026-09-30 (QA of the redone model): the handles label ran under the
-        // eye button, the No shrugging dot (far shoulder blade) landed on the breastbone
-        // 4 pt from the press-path dot, and the feet label sat under the mistake sheet.
-        // The shrug cue now points at the near shoulder from the right, the feet label
-        // sits above the sheet.
+        // Relaid 2026-10-11 for the re-exported model (plate-loaded machine with
+        // upright handles gripped palms-in, torso reclined about 23 degrees on the pad,
+        // feet on the machine's foot platform with the knees bent only about 30
+        // degrees): the elbow pill sat on the right lever's upright, the press-path
+        // pill on the left lever's lower arm, and the grip leader crossed the head.
+        // Grip and elbow now point at the far (right) arm from the open top left, high
+        // enough to clear the seat-too-low ghost's raised hand and the lifted model in
+        // their mistake views; the press-path pill sits on the static base frame. The
+        // feet copy names the foot platform.
         annotations: [
             CueAnnotation(cueID: "wrist", label: "Handles at mid-chest",
-                          labelPoint: CGPoint(x: 0.590, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.41, y: 0.20),
+                          leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows ~45°",
-                          labelPoint: CGPoint(x: 0.259, y: 0.50),
+                          labelPoint: CGPoint(x: 0.47, y: 0.13),
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "barpath", label: "One arm at a time",
-                          labelPoint: CGPoint(x: 0.653, y: 0.68),
+                          labelPoint: CGPoint(x: 0.655, y: 0.74),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "support_PectoralisMajor_Sternal_L"),
-            CueAnnotation(cueID: "feet", label: "Feet flat, back on pad",
-                          labelPoint: CGPoint(x: 0.580, y: 0.80),
+            CueAnnotation(cueID: "feet", label: "Feet planted, back on pad",
+                          labelPoint: CGPoint(x: 0.52, y: 0.80),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
             CueAnnotation(cueID: "scapula", label: "No shrugging",
-                          labelPoint: CGPoint(x: 0.712, y: 0.26),
+                          labelPoint: CGPoint(x: 0.712, y: 0.21),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L")
         ],
@@ -12268,7 +12358,7 @@ enum SampleData {
                 intro: "The seat sets where the handles meet the chest.",
                 why: "Handles level with the mid-chest line the press up with the pecs; too high and the shoulders lift, too low and the elbows drop.",
                 mistake: "Sitting so low that the handles start at the shoulders.",
-                correct: "Adjust the seat so the handles sit level with the middle of the chest, then grip with the wrists straight."
+                correct: "Adjust the seat so the handles sit level with the middle of the chest, then grip them with the palms facing in and the wrists straight."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -12290,9 +12380,9 @@ enum SampleData {
                 id: "feet",
                 title: "Base Position",
                 intro: "Seated pressing still needs a base.",
-                why: "Feet flat and the back on the pad let you push hard without the torso sliding or arching.",
+                why: "Feet set on the foot platform and the back on the pad let you push hard without the torso sliding or arching.",
                 mistake: "Arching the lower back off the pad or lifting the heels to force the last reps.",
-                correct: "Keep both feet flat on the floor and the whole back against the pad for every rep."
+                correct: "Keep both feet on the foot platform and the whole back against the pad for every rep."
             ),
             TechniqueCue(
                 id: "scapula",
@@ -12311,8 +12401,8 @@ enum SampleData {
         stabilisers: ["rotator cuff", "obliques"],
         setup: [
             "Set the seat so the handles line up with your mid-chest.",
-            "Sit tall with your back on the pad and your feet flat.",
-            "Grip both handles; press with one arm at a time."
+            "Sit back against the pad with your feet on the foot platform.",
+            "Grip both upright handles, palms facing in; press one arm at a time."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -12330,28 +12420,31 @@ enum SampleData {
     )
 
     static let inclineChestPressMachineContent = ExerciseContent(
-        // Relaid 2026-09-30 (QA of the redone model): the handles label ran under the eye
-        // button and, in its mistake view, lay on the ghost's raised hand; the No shrugging
-        // dot (far shoulder blade) landed on the breastbone next to the press-path dot; the
-        // feet label sat under the mistake sheet. The grip cue now points at the far hand
-        // from the top left, the shrug cue at the near shoulder from the right.
+        // Relaid 2026-10-11 for the re-exported model (a new plate-loaded incline
+        // machine with independent levers, back pad reclined 38.5 degrees, feet on the
+        // machine's angled foot platform): the grip pill sat on the right lever's plate
+        // and the shrug pill on the lifter's side. Grip and elbow now point at the far
+        // (right) arm from the open space left of it, above the thighs even when the
+        // mistake view lifts the model (the grip label shortened to fit beside the
+        // forearm); the shrug pill sits on the static incline beam. The feet copy names
+        // the foot platform.
         annotations: [
-            CueAnnotation(cueID: "wrist", label: "Handles at upper chest",
-                          labelPoint: CGPoint(x: 0.45, y: 0.12),
+            CueAnnotation(cueID: "wrist", label: "Upper-chest grip",
+                          labelPoint: CGPoint(x: 0.35, y: 0.355),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows ~45–60°",
-                          labelPoint: CGPoint(x: 0.303, y: 0.50),
+                          labelPoint: CGPoint(x: 0.33, y: 0.425),
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "barpath", label: "Press up and forward",
-                          labelPoint: CGPoint(x: 0.609, y: 0.68),
+                          labelPoint: CGPoint(x: 0.592, y: 0.68),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "support_PectoralisMajor_Sternal_L"),
-            CueAnnotation(cueID: "feet", label: "Feet flat, back on pad",
-                          labelPoint: CGPoint(x: 0.580, y: 0.80),
+            CueAnnotation(cueID: "feet", label: "Feet planted, back on pad",
+                          labelPoint: CGPoint(x: 0.52, y: 0.80),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
             CueAnnotation(cueID: "scapula", label: "No shrugging",
-                          labelPoint: CGPoint(x: 0.712, y: 0.44),
+                          labelPoint: CGPoint(x: 0.717, y: 0.54),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L")
         ],
@@ -12384,9 +12477,9 @@ enum SampleData {
                 id: "feet",
                 title: "Base Position",
                 intro: "Seated pressing still needs a base.",
-                why: "Feet flat and the back on the pad let you push hard without the torso sliding or arching.",
+                why: "Feet set on the foot platform and the back on the pad let you push hard without the torso sliding or arching.",
                 mistake: "Arching the lower back off the pad or lifting the heels to force the last reps.",
-                correct: "Keep both feet flat on the floor and the whole back against the pad for every rep."
+                correct: "Keep both feet on the foot platform and the whole back against the pad for every rep."
             ),
             TechniqueCue(
                 id: "scapula",
@@ -12405,7 +12498,7 @@ enum SampleData {
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
             "Set the seat so the handles line up with your upper chest.",
-            "Sit back against the angled pad with your feet flat.",
+            "Sit back against the angled pad with your feet on the foot platform.",
             "Grip the handles with your wrists straight."
         ],
         comparison: FormComparisonCopy(
@@ -12424,28 +12517,32 @@ enum SampleData {
     )
 
     static let declineChestPressMachineContent = ExerciseContent(
-        // Relaid 2026-09-30 (QA of the redone model): the handles label ran under the eye
-        // button and, in its mistake view, over the lifted head; the No shrugging dot (far
-        // shoulder blade) landed on the breastbone next to the press-path dot; the feet
-        // label sat under the mistake sheet. The grip cue now points at the far hand from
-        // the top left, the shrug cue at the near shoulder from the right.
+        // Relaid 2026-10-11 for the front view (yaw 0) the re-exported model took (a
+        // converging plate-loaded decline machine whose yellow levers hang from above,
+        // torso leaned back on the pad): the lifter fills the middle and the levers the
+        // upper corners, so the arm, shrug and feet pills sit at the sides below the
+        // lever ends (grip and feet labels shortened to fit there) and the press-path
+        // pill below the feet, clear of the mistake sheet. Each side's pills point at
+        // that side's limbs so no leader crosses another; the feet pill stays clear of
+        // the legs when the arched-back mistake turns the model.
         annotations: [
-            CueAnnotation(cueID: "wrist", label: "Handles at lower chest",
-                          labelPoint: CGPoint(x: 0.44, y: 0.12),
+            CueAnnotation(cueID: "wrist", label: "Low handles",
+                          labelPoint: CGPoint(x: 0.27, y: 0.43),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows ~45°",
-                          labelPoint: CGPoint(x: 0.259, y: 0.50),
-                          leaderLength: 40, joint: "forearm_R"),
+                          labelPoint: CGPoint(x: 0.717, y: 0.43),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "barpath", label: "Press level with lower chest",
-                          labelPoint: CGPoint(x: 0.492, y: 0.68),
+                          labelPoint: CGPoint(x: 0.495, y: 0.86),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "support_PectoralisMajor_Sternal_L"),
-            CueAnnotation(cueID: "feet", label: "Feet flat, back on pad",
-                          labelPoint: CGPoint(x: 0.580, y: 0.80),
+            CueAnnotation(cueID: "feet", label: "Feet flat",
+                          labelPoint: CGPoint(x: 0.76, y: 0.66),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "No shrugging",
-                          labelPoint: CGPoint(x: 0.712, y: 0.44),
+            CueAnnotation(cueID: "scapula", label: "No shrug",
+                          labelPoint: CGPoint(x: 0.77, y: 0.51),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L")
         ],
@@ -12469,7 +12566,7 @@ enum SampleData {
             TechniqueCue(
                 id: "barpath",
                 title: "Press Path",
-                intro: "The handles travel out in line with the lower chest.",
+                intro: "The handles travel out from the lower chest and draw together as they go.",
                 why: "Pressing to soft elbows along the lower-chest line works the lower fibres through their full range.",
                 mistake: "Short reps that never reach straight arms.",
                 correct: "Press out until the arms are straight with soft elbows, then return until the handles are just short of the chest."
@@ -12499,7 +12596,7 @@ enum SampleData {
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
             "Set the seat so the handles line up with your lower chest.",
-            "Sit tall with your back on the pad and your feet flat.",
+            "Sit back against the pad with your feet flat.",
             "Grip the handles with your wrists straight."
         ],
         comparison: FormComparisonCopy(
@@ -12518,29 +12615,33 @@ enum SampleData {
     )
 
     static let plateLoadedChestPressContent = ExerciseContent(
-        // Relaid 2026-09-30 (QA of the redone model): the handles label ran under the eye
-        // button, touched the head and, in its mistake view, lay on the ghost's raised
-        // hand and the lifted head; the No shrugging dot (far shoulder blade) landed on the
-        // breastbone next to the press-path dot; the feet label sat under the mistake
-        // sheet. The grip cue now points at the far hand from the top left, the shrug cue
-        // at the near shoulder from the right.
+        // Relaid 2026-10-11 for the re-exported model (the iso-lateral press's
+        // plate-loaded machine, both arms together, upright palms-in handles, torso
+        // reclined about 23 degrees, feet on the foot platform): the elbow pill sat on
+        // the right lever's upright, the shrug pill on the left lever and its plates and
+        // the press-path pill on the left lever's lower arm. Grip and elbow now share the
+        // open top row (the grip label shortened to fit, and above the seat-too-low
+        // ghost's raised hand), pointing at the far (right) arm; the shrug, press-path
+        // and feet pills sit on the static base, below the levers. The feet copy names
+        // the foot platform.
         annotations: [
-            CueAnnotation(cueID: "wrist", label: "Handles at mid-chest",
-                          labelPoint: CGPoint(x: 0.41, y: 0.12),
+            CueAnnotation(cueID: "wrist", label: "Mid-chest handles",
+                          labelPoint: CGPoint(x: 0.356, y: 0.115),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows ~45°",
-                          labelPoint: CGPoint(x: 0.259, y: 0.50),
+                          labelPoint: CGPoint(x: 0.385, y: 0.115),
+                          labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "barpath", label: "Press to soft elbows",
-                          labelPoint: CGPoint(x: 0.609, y: 0.68),
+                          labelPoint: CGPoint(x: 0.50, y: 0.775),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "support_PectoralisMajor_Sternal_L"),
-            CueAnnotation(cueID: "feet", label: "Feet flat, back on pad",
-                          labelPoint: CGPoint(x: 0.580, y: 0.80),
+            CueAnnotation(cueID: "feet", label: "Feet planted, back on pad",
+                          labelPoint: CGPoint(x: 0.52, y: 0.825),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
             CueAnnotation(cueID: "scapula", label: "No shrugging",
-                          labelPoint: CGPoint(x: 0.712, y: 0.44),
+                          labelPoint: CGPoint(x: 0.60, y: 0.725),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L")
         ],
@@ -12551,7 +12652,7 @@ enum SampleData {
                 intro: "The seat sets where the handles meet the chest.",
                 why: "Handles level with the mid-chest line the press up with the pecs.",
                 mistake: "Sitting too low, so the handles start at the shoulders.",
-                correct: "Adjust the seat so the handles sit level with the middle of the chest, wrists straight."
+                correct: "Adjust the seat so the handles sit level with the middle of the chest; grip them palms facing in, wrists straight."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -12573,9 +12674,9 @@ enum SampleData {
                 id: "feet",
                 title: "Base Position",
                 intro: "Seated pressing still needs a base.",
-                why: "Feet flat and the back on the pad let you push hard without the torso sliding or arching.",
+                why: "Feet set on the foot platform and the back on the pad let you push hard without the torso sliding or arching.",
                 mistake: "Arching the lower back off the pad or lifting the heels to force the last reps.",
-                correct: "Keep both feet flat on the floor and the whole back against the pad for every rep."
+                correct: "Keep both feet on the foot platform and the whole back against the pad for every rep."
             ),
             TechniqueCue(
                 id: "scapula",
@@ -12595,8 +12696,8 @@ enum SampleData {
         setup: [
             "Load the same plates on both sides.",
             "Set the seat so the handles line up with your mid-chest.",
-            "Sit tall with your back on the pad and your feet flat.",
-            "Grip the handles with your wrists straight."
+            "Sit back against the pad with your feet on the foot platform.",
+            "Grip the upright handles, palms facing in, wrists straight."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -12614,40 +12715,44 @@ enum SampleData {
     )
 
     static let wideGripChestPressMachineContent = ExerciseContent(
-        // Relaid 2026-09-30 (QA of the redone model): the grip label ran under the eye
-        // button and, in its mistake view, over the lifted head and the ghost's bent-back
-        // hand; the No shrugging dot (far shoulder blade) landed on the breastbone next to
-        // the press-path dot; the feet label sat under the mistake sheet. The grip cue now
-        // points at the far hand from the top left, the shrug cue at the near shoulder
-        // from the right.
+        // Relaid 2026-10-11 for the re-exported model (a new plate-loaded wide machine,
+        // long overhand handles 0.71 m apart, levers swinging from an overhead beam with
+        // plates on both sides, torso reclined about 22 degrees, a deep start with the
+        // elbows behind the torso): the elbow pill sat on the right lever's plate and the
+        // shrug pill on the left arm. The elbow cue now points at the far (right) elbow
+        // from the gap between the levers, above the lifted head of its mistake view;
+        // the others sit on the static seat frame and stored plates, the grip cue at the
+        // near hand, the shrug cue at the far shoulder (grip and elbow labels shortened
+        // to fit).
         annotations: [
-            CueAnnotation(cueID: "wrist", label: "Wide grip, wrists straight",
-                          labelPoint: CGPoint(x: 0.48, y: 0.12),
-                          leaderLength: 40, joint: "hand_R"),
-            CueAnnotation(cueID: "elbow", label: "Elbows below the shoulders",
-                          labelPoint: CGPoint(x: 0.479, y: 0.50),
+            CueAnnotation(cueID: "wrist", label: "Wrists straight",
+                          labelPoint: CGPoint(x: 0.98, y: 0.64),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "elbow", label: "Elbows stay low",
+                          labelPoint: CGPoint(x: 0.463, y: 0.12),
+                          labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "barpath", label: "Press to soft elbows",
-                          labelPoint: CGPoint(x: 0.609, y: 0.68),
+                          labelPoint: CGPoint(x: 0.60, y: 0.70),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "support_PectoralisMajor_Sternal_L"),
             CueAnnotation(cueID: "feet", label: "Feet flat, back on pad",
-                          labelPoint: CGPoint(x: 0.580, y: 0.80),
+                          labelPoint: CGPoint(x: 0.586, y: 0.82),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
             CueAnnotation(cueID: "scapula", label: "No shrugging",
-                          labelPoint: CGPoint(x: 0.712, y: 0.44),
+                          labelPoint: CGPoint(x: 0.575, y: 0.76),
                           labelSide: .trailing,
-                          leaderLength: 40, joint: "scapula_L")
+                          leaderLength: 40, joint: "upper_arm_R")
         ],
         cues: [
             TechniqueCue(
                 id: "wrist",
                 title: "Grip",
-                intro: "The outer handles, wider than the shoulders.",
+                intro: "Long horizontal handles, set well wider than the shoulders.",
                 why: "A wide grip puts the pecs on a longer stretch and shifts some work away from the triceps.",
                 mistake: "Bending the wrists back to hold the wide handles.",
-                correct: "Take the outer handles with the wrists straight and the knuckles in line with the forearms."
+                correct: "Grip the handles overhand with the wrists straight and the knuckles in line with the forearms."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -12655,7 +12760,7 @@ enum SampleData {
                 intro: "A wide grip still needs the elbows below the shoulders.",
                 why: "Keeping the elbows a little below shoulder height protects the front of the shoulder at the stretch.",
                 mistake: "Elbows riding up level with or above the shoulders at the back of the rep.",
-                correct: "Keep the elbows slightly below the shoulders, and stop the return when the upper arms are level with the torso."
+                correct: "Keep the elbows slightly below the shoulders as the handles come back beside the chest."
             ),
             TechniqueCue(
                 id: "barpath",
@@ -12663,7 +12768,7 @@ enum SampleData {
                 intro: "The press stops just short of lockout.",
                 why: "Stopping with a soft bend keeps tension on the pecs, which a wide grip works hardest in the middle of the range.",
                 mistake: "Short reps that never leave the stretch, or slamming the elbows straight.",
-                correct: "Press out until the elbows are almost straight, then return under control until the upper arms are level with the torso."
+                correct: "Press out until the elbows are almost straight, then return under control until the handles are back beside the chest."
             ),
             TechniqueCue(
                 id: "feet",
@@ -12690,8 +12795,8 @@ enum SampleData {
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
             "Set the seat so the handles line up with your mid-chest.",
-            "Sit tall with your back on the pad and your feet flat.",
-            "Take the outer handles, wider than your shoulders."
+            "Sit back against the pad with your feet flat.",
+            "Grip the handles overhand, well wider than your shoulders."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -12859,9 +12964,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the front delt and triceps bright with
+            // the chest (dim before), so they are primary rows; the fractions
+            // stay as they were.
             MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.52),
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.46),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["transversus abdominis", "rotator cuff", "serratus anterior"],
@@ -13039,8 +13147,10 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the triceps bright (dim before), so
+            // they are a primary row; the front delt stays dim.
             MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.52),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["latissimus dorsi", "rotator cuff", "core"],
@@ -13230,11 +13340,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the front delt bright (dim before) and
+            // the biceps dim, as on the High-to-Low and Incline Cable Flies, so
+            // the front delt is a primary row and the biceps, which hold the
+            // slight elbow bend, leave the stabilisers as a LOW secondary row
+            // at those lifts' 0.24.
             MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.28)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.28),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
-        stabilisers: ["core", "biceps brachii", "rotator cuff"],
+        stabilisers: ["core", "rotator cuff"],
         setup: [
             "Set one pulley at shoulder height and stand side-on to the stack.",
             "Take the handle in the near hand and step away until the cable is tight.",
@@ -16121,24 +16237,26 @@ enum SampleData {
     )
 
     static let invertedRowContent = ExerciseContent(
+        // Relaid 2026-10-11 for the Smith machine model seen from behind the head
+        // (-2.2): the grip, elbow and chest pills above the bar, the body and
+        // shoulder-blade pills below the rack base. The grip tracks the right
+        // hand, since the left one sits behind the near upright.
         annotations: [
             CueAnnotation(cueID: "body", label: "Heels to head in one line",
-                          labelPoint: CGPoint(x: 0.464, y: 0.87),
+                          labelPoint: CGPoint(x: 0.464, y: 0.78),
                           leaderLength: 40, joint: "pelvis"),
-            CueAnnotation(cueID: "grip", label: "Overhand, a bit wider than shoulders",
-                          labelPoint: CGPoint(x: 0.374, y: 0.15),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "grip", label: "Overhand, outside shoulders",
+                          labelPoint: CGPoint(x: 0.51, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows ~45° from the body",
-                          labelPoint: CGPoint(x: 0.536, y: 0.75),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.49, y: 0.23),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "barpath", label: "Chest to the bar",
-                          labelPoint: CGPoint(x: 0.668, y: 0.28),
+                          labelPoint: CGPoint(x: 0.668, y: 0.24),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "support_PectoralisMajor_Sternal_L"),
             CueAnnotation(cueID: "scapula", label: "Squeeze shoulder blades",
-                          labelPoint: CGPoint(x: 0.565, y: 0.63),
+                          labelPoint: CGPoint(x: 0.565, y: 0.66),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L")
         ],
@@ -16173,7 +16291,7 @@ enum SampleData {
                 intro: "The chest comes up to the bar every rep.",
                 why: "Rowing all the way up works the mid-back through the squeeze; the bottom hang stretches it.",
                 mistake: "Short reps that stop with the chest well below the bar.",
-                correct: "Pull until the chest touches or nearly touches the bar, pause, then lower to straight arms."
+                correct: "Pull until the chest touches or nearly touches the bar, pause, then lower until the arms are nearly straight."
             ),
             TechniqueCue(
                 id: "scapula",
@@ -16185,14 +16303,26 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model (a Smith machine, the bar about 75 cm up)
+            // lights the trapezius, rhomboids and rear delts bright and the
+            // lats, biceps, forearms and rotator cuff dim, so the rhomboids and
+            // rear delts join the middle trapezius as primary rows and the lats
+            // move to a secondary one, as on the other rows (the cuff is named
+            // with the stabilisers). The fractions are kept; the rhomboids,
+            // which share the middle trapezius' electrode site in Lehman et al.
+            // 2004 (Dyn Med 3:4), take 0.72 as on the Seal Row, also overhand
+            // with the middle trapezius at 0.80.
             MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.74),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.52)
+            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.52),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.74),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56)
         ],
-        stabilisers: ["glutes", "core", "forearms"],
+        stabilisers: ["rotator cuff", "glutes", "core", "forearms"],
+        // A higher bar makes the row easier, a more level body harder (ExRx,
+        // Inverted Row and Inverted Row (high bar), via the Wayback Machine).
         setup: [
-            "Set a bar at about hip height in a rack or Smith machine.",
+            "Set the Smith machine bar about 75 cm off the floor; a higher bar is easier.",
             "Lie under it and grip overhand, a little wider than your shoulders.",
             "Straighten your body from heels to head, heels on the floor."
         ],
@@ -17057,23 +17187,30 @@ enum SampleData {
     )
 
     static let machinePullUpContent = ExerciseContent(
+        // The 2026-10-11 model kneels on the pad of a weight-assisted
+        // chin/dip machine, facing it, and grips its wide handles ~0.9 m
+        // apart (about one and a half outer shoulder-widths); it no longer
+        // stands on a platform. Labels relaid for it: the shoulders pill had
+        // sat on the left thigh and the rising pad, the chin pill on the
+        // right arm.
         annotations: [
-            CueAnnotation(cueID: "scapula", label: "Shoulders down first",
-                          labelPoint: CGPoint(x: 0.400, y: 0.66),
-                          leaderLength: 40, joint: "scapula_L"),
+            CueAnnotation(cueID: "scapula", label: "No shrug",
+                          labelPoint: CGPoint(x: 0.770, y: 0.44),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "scapula_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
                           labelPoint: CGPoint(x: 0.362, y: 0.50),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Slightly wide",
-                          labelPoint: CGPoint(x: 0.290, y: 0.12),
+            CueAnnotation(cueID: "grip", label: "Wide grip",
+                          labelPoint: CGPoint(x: 0.250, y: 0.075),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Chin over the bar",
-                          labelPoint: CGPoint(x: 0.653, y: 0.32),
+            CueAnnotation(cueID: "barpath", label: "Chin over handles",
+                          labelPoint: CGPoint(x: 0.620, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "head"),
-            CueAnnotation(cueID: "feet", label: "Feet on the platform",
-                          labelPoint: CGPoint(x: 0.391, y: 0.86),
-                          leaderLength: 40, joint: "foot_L")
+            CueAnnotation(cueID: "feet", label: "Knees on the pad",
+                          labelPoint: CGPoint(x: 0.330, y: 0.58),
+                          leaderLength: 40, joint: "patella_L")
         ],
         cues: [
             TechniqueCue(
@@ -17095,26 +17232,26 @@ enum SampleData {
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Overhand, a little wider than the shoulders.",
-                why: "The same grip as the free pull-up, so the strength carries over.",
+                intro: "Overhand on the wide handles, about one and a half shoulder-widths.",
+                why: "The machine's wide handles set the grip of a wide-grip pull-up, so the strength carries over; StrengthLog calls grip width largely personal preference and warns against one so wide that it cuts the lats' range short.",
                 mistake: "Gripping narrow and curling the body up with the arms.",
-                correct: "Grip overhand just outside shoulder-width, thumbs around the bar."
+                correct: "Grip the wide handles overhand, hands about one and a half shoulder-widths apart, thumbs around them."
             ),
             TechniqueCue(
                 id: "barpath",
                 title: "Range of Motion",
-                intro: "Every rep goes from a full hang to the chin over the bar.",
+                intro: "Every rep goes from almost straight arms to the chin over the handles.",
                 why: "The full range stretches the lats at the bottom and finishes them at the top; half reps skip both.",
                 mistake: "Short reps, or craning the neck to get the chin over.",
-                correct: "Lower to straight arms each rep, then pull until the chin clears the bar with the neck neutral."
+                correct: "Lower until your arms are almost straight each rep, then pull until the chin clears the handles with the neck neutral."
             ),
             TechniqueCue(
                 id: "feet",
                 title: "Body Control",
-                intro: "The feet rest on the platform; the legs stay straight.",
-                why: "The counterweight takes part of the body's weight, so the back still pulls through the whole range.",
-                mistake: "Bending the knees and pushing off the platform.",
-                correct: "Stand on the platform with the legs straight and together; pull with the back."
+                intro: "The knees rest on the pad; the body stays still.",
+                why: "The counterweight lifts the pad under your knees and takes part of your weight, so the back still pulls through the whole range; swinging the legs and trunk for momentum, as in a kipping pull-up, lets the lower body do part of the work.",
+                mistake: "Swinging the knees forward off the pad to heave the body up.",
+                correct: "Kneel with both knees on the pad, shins along it and feet hanging off the back, and keep your hips still; pull with your back."
             )
         ],
         activation: [
@@ -17128,16 +17265,16 @@ enum SampleData {
         stabilisers: ["rotator cuff", "forearms", "core"],
         setup: [
             "Set the counterweight: more weight gives more help.",
-            "Grip the bar overhand, a little wider than your shoulders.",
-            "Stand on the platform and hang with straight arms."
+            "Face the machine and grip the wide handles overhand, about one and a half shoulder-widths apart.",
+            "Kneel on the pad, shins along it, and hang with your arms almost straight."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
-            mistakeBadge: "PUSHING WITH THE LEGS",
-            correctCue: "Legs straight, back pulling",
-            mistakeCue: "Knees bend and push",
-            correctNote: "Standing still on the platform lets the counterweight help while the back pulls.",
-            mistakeNote: "Bending and driving the knees turns the assist into a leg push."
+            mistakeBadge: "SWINGING OFF THE PAD",
+            correctCue: "Knees resting, back pulling",
+            mistakeCue: "Knees swing to heave up",
+            correctNote: "Kneeling still on the pad lets the counterweight help while the back pulls.",
+            mistakeNote: "Swinging the knees off the pad turns the rep into a kip, the legs and trunk lending momentum to the pull."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.14, ry: 0.09, cx: 0.53, cy: 0.35),
@@ -17148,19 +17285,18 @@ enum SampleData {
 
     static let wideGripLatPulldownContent = ExerciseContent(
         annotations: [
-            CueAnnotation(cueID: "spine", label: "Lean back ~10–15°",
+            CueAnnotation(cueID: "spine", label: "Lean back to ~30°",
                           labelPoint: CGPoint(x: 0.653, y: 0.68),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
-                          labelPoint: CGPoint(x: 0.362, y: 0.50),
+                          labelPoint: CGPoint(x: 0.362, y: 0.54),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Wide overhand grip",
-                          labelPoint: CGPoint(x: 0.638, y: 0.14),
-                          labelSide: .trailing,
+            CueAnnotation(cueID: "grip", label: "Wide grip",
+                          labelPoint: CGPoint(x: 0.235, y: 0.07),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Bar to upper chest",
-                          labelPoint: CGPoint(x: 0.638, y: 0.55),
+            CueAnnotation(cueID: "barpath", label: "Bar to chest",
+                          labelPoint: CGPoint(x: 0.728, y: 0.55),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Thighs locked under pads",
@@ -17171,10 +17307,10 @@ enum SampleData {
             TechniqueCue(
                 id: "spine",
                 title: "Torso Position",
-                intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the bar clear the face and come to the upper chest, with the lats pulling straight down.",
-                mistake: "Rocking back further on every rep to swing the weight down.",
-                correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
+                intro: "The torso leans back as the bar comes down, to about 30°.",
+                why: "Leaning back with the chest lifted lets the bar pass the face to the upper chest; at a 30° lean the lats work as hard as sitting upright, the rear delts harder.",
+                mistake: "Throwing the torso far back past 30° to swing the weight down.",
+                correct: "Lift the chest and lean back from the hips as you pull, to about 30°, then come back to about 15° as the bar rises."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -17220,7 +17356,13 @@ enum SampleData {
             // 10(3):345), and grip width changed neither (Andersen et al. 2014,
             // J Strength Cond Res 28(4):1135-1142). In a wide overhand pulldown
             // the middle trapezius/rhomboid site read 22.7% MVC to the biceps'
-            // 15.2% (Lehman et al. 2004, Dyn Med 3:4).
+            // 15.2% (Lehman et al. 2004, Dyn Med 3:4). The 2026-10-11 model
+            // leans back from about 15° to 30° as it pulls (the owner's fix);
+            // with a 30° lean on the wide overhand pulldown overall muscle
+            // activity did not differ from upright, the rear delts worked harder
+            // and the lats and middle trapezius shared the work more evenly
+            // (Buonsenso et al. 2025), so the rows stand (paint unchanged) and
+            // the dim rear delts stay off the one-line legend.
             MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.58),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.46),
@@ -17249,18 +17391,18 @@ enum SampleData {
 
     static let reverseGripLatPulldownContent = ExerciseContent(
         annotations: [
-            CueAnnotation(cueID: "spine", label: "Lean back ~10–15°",
+            CueAnnotation(cueID: "spine", label: "Lean back to ~30°",
                           labelPoint: CGPoint(x: 0.653, y: 0.68),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
-                          labelPoint: CGPoint(x: 0.362, y: 0.50),
+                          labelPoint: CGPoint(x: 0.362, y: 0.545),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Underhand, shoulder-width",
-                          labelPoint: CGPoint(x: 0.464, y: 0.14),
+            CueAnnotation(cueID: "grip", label: "Underhand",
+                          labelPoint: CGPoint(x: 0.256, y: 0.07),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Bar to lower chest",
-                          labelPoint: CGPoint(x: 0.638, y: 0.55),
+            CueAnnotation(cueID: "barpath", label: "Bar to chest",
+                          labelPoint: CGPoint(x: 0.728, y: 0.55),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Thighs locked under pads",
@@ -17271,10 +17413,10 @@ enum SampleData {
             TechniqueCue(
                 id: "spine",
                 title: "Torso Position",
-                intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the bar clear the face and come to the lower chest, with the lats pulling straight down.",
-                mistake: "Rocking back further on every rep to swing the weight down.",
-                correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
+                intro: "The torso leans back as the bar comes down, to about 30°.",
+                why: "Leaning back with the chest lifted lets the bar pass the face and come down to the upper chest.",
+                mistake: "Throwing the torso far back past 30° to swing the weight down.",
+                correct: "Lift the chest and lean back from the hips as you pull, to about 30°, then come back to about 15° as the bar rises."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -17295,10 +17437,10 @@ enum SampleData {
             TechniqueCue(
                 id: "barpath",
                 title: "Bar Path",
-                intro: "The bar comes down to the bottom of the chest.",
-                why: "With tucked elbows the bar naturally finishes lower, where the lats are fully shortened.",
+                intro: "The bar comes down in front of the face to the upper chest.",
+                why: "With the chest lifted to meet it, the bar reaches the chest and the elbows finish by the ribs, the lats fully shortened.",
                 mistake: "Stopping at the chin, well short of the chest.",
-                correct: "Pull the bar to the lower chest, elbows by the ribs, then return to straight arms."
+                correct: "Pull the bar to the upper chest, elbows by the ribs, then let it rise until the elbows are only slightly bent."
             ),
             TechniqueCue(
                 id: "feet",
@@ -17318,14 +17460,14 @@ enum SampleData {
         setup: [
             "Adjust the thigh pads so your legs are locked in.",
             "Grip the bar underhand at shoulder-width.",
-            "Sit down tall with your arms straight overhead."
+            "Sit down tall with your arms overhead, elbows slightly bent."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "PARTIAL RANGE",
-            correctCue: "Bar to the lower chest",
+            correctCue: "Bar to the upper chest",
             mistakeCue: "Stopping at the chin",
-            correctNote: "A full pull to the lower chest shortens the lats all the way.",
+            correctNote: "A full pull to the upper chest shortens the lats all the way.",
             mistakeNote: "Stopping at the chin leaves the hardest part of the rep undone."
         ),
         glows: [
@@ -17342,14 +17484,15 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
-                          labelPoint: CGPoint(x: 0.362, y: 0.50),
+                          labelPoint: CGPoint(x: 0.362, y: 0.535),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Palms facing, shoulder-width",
-                          labelPoint: CGPoint(x: 0.492, y: 0.14),
+            CueAnnotation(cueID: "grip", label: "Palms facing in",
+                          labelPoint: CGPoint(x: 0.68, y: 0.19),
                           labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Handles to upper chest",
-                          labelPoint: CGPoint(x: 0.420, y: 0.56),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "barpath", label: "Handles to chest",
+                          labelPoint: CGPoint(x: 0.665, y: 0.55),
+                          labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Thighs locked under pads",
                           labelPoint: CGPoint(x: 0.450, y: 0.86),
@@ -17439,13 +17582,13 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
-                          labelPoint: CGPoint(x: 0.362, y: 0.50),
+                          labelPoint: CGPoint(x: 0.362, y: 0.52),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Close V-handle, palms in",
-                          labelPoint: CGPoint(x: 0.450, y: 0.14),
+            CueAnnotation(cueID: "grip", label: "V-bar grips",
+                          labelPoint: CGPoint(x: 0.26, y: 0.155),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Handle to the chest",
-                          labelPoint: CGPoint(x: 0.624, y: 0.55),
+            CueAnnotation(cueID: "barpath", label: "Handle to chest",
+                          labelPoint: CGPoint(x: 0.675, y: 0.55),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Thighs locked under pads",
@@ -17467,19 +17610,19 @@ enum SampleData {
                 intro: "The elbows drive down to the ribs.",
                 why: "Pulling the elbows down toward the sides keeps the lats doing the work.",
                 mistake: "Flaring the elbows out and forward so the biceps and rear delts take over.",
-                correct: "Pull the elbows down and slightly back, finishing beside the ribs."
+                correct: "Pull the elbows down close to the body, finishing beside the ribs."
             ),
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Both hands on a V-handle, palms facing.",
-                why: "A close neutral grip keeps the elbows tight and lets you pull the handle to the chest.",
+                intro: "Both hands on the V-bar's two angled grips, close together.",
+                why: "A close grip keeps the elbows tight and lets you pull the handle to the chest.",
                 mistake: "Gripping loosely with the wrists bent.",
-                correct: "Hold the V-handle deep in the palms, wrists straight."
+                correct: "Hold the angled grips deep in the palms, wrists straight."
             ),
             TechniqueCue(
                 id: "barpath",
-                title: "Bar Path",
+                title: "Handle Path",
                 intro: "The handle comes down to the middle of the chest.",
                 why: "Pulling the handle to the sternum with the chest up finishes the lats and mid-back.",
                 mistake: "Pulling the handle past the chest to the stomach by leaning back.",
@@ -17502,7 +17645,7 @@ enum SampleData {
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
             "Attach a V-handle to the high pulley and adjust the thigh pads.",
-            "Hold the handle with both hands, palms facing.",
+            "Hold the two angled grips, hands close together.",
             "Sit down tall with your arms straight overhead."
         ],
         comparison: FormComparisonCopy(
@@ -17620,18 +17763,17 @@ enum SampleData {
     static let ropeLatPulldownContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "spine", label: "Lean back ~10–15°",
-                          labelPoint: CGPoint(x: 0.653, y: 0.68),
+                          labelPoint: CGPoint(x: 0.62, y: 0.78),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
-                          labelPoint: CGPoint(x: 0.638, y: 0.50),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.345, y: 0.50),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "grip", label: "Hands on the rope ends",
                           labelPoint: CGPoint(x: 0.420, y: 0.14),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Rope apart to the shoulders",
-                          labelPoint: CGPoint(x: 0.506, y: 0.32),
+            CueAnnotation(cueID: "barpath", label: "Rope to chest",
+                          labelPoint: CGPoint(x: 0.69, y: 0.185),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Thighs locked under pads",
@@ -17643,7 +17785,7 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the rope clear the face and come down to the shoulders, with the lats pulling straight down.",
+                why: "About 10-15° of lean lets the rope clear the face and come down to the upper chest, with the lats pulling straight down.",
                 mistake: "Rocking back further on every rep to swing the weight down.",
                 correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
             ),
@@ -17652,24 +17794,24 @@ enum SampleData {
                 title: "Elbow Path",
                 intro: "The elbows drive down to the ribs.",
                 why: "Pulling the elbows down toward the sides keeps the lats doing the work.",
-                mistake: "Flaring the elbows out and forward so the biceps and rear delts take over.",
-                correct: "Pull the elbows down and slightly back, finishing beside the ribs."
+                mistake: "Flaring the elbows out to the sides as the rope comes down.",
+                correct: "Pull the elbows straight down, close to the body, finishing beside the ribs."
             ),
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
                 intro: "One hand on each end of the rope, palms in.",
-                why: "The rope lets the hands travel apart at the bottom, so the elbows can finish behind the body.",
-                mistake: "Gripping the rope in the middle, which limits the range.",
-                correct: "Hold each end just above the stoppers, palms facing each other."
+                why: "A palms-in grip on the rope lets the elbows come straight down close to the body.",
+                mistake: "Hanging from the fingers with the wrists bent back.",
+                correct: "Hold each end just above the stoppers, palms facing each other, wrists straight."
             ),
             TechniqueCue(
                 id: "barpath",
-                title: "Bar Path",
-                intro: "The hands pull down and apart to the shoulders.",
-                why: "Splitting the rope at the bottom lets the elbows drive past the torso for a harder lat squeeze.",
-                mistake: "Keeping the hands together, as with a bar.",
-                correct: "Pull down and spread the rope so the hands finish beside the shoulders, then return."
+                title: "Rope Path",
+                intro: "The hands come straight down in front of the face to the upper chest, close together.",
+                why: "Pulling all the way to the chest brings the elbows down to the sides, where the lats are fully shortened.",
+                mistake: "Stopping with the hands at the face, short of the chest.",
+                correct: "Pull the rope straight down to the top of the chest, hands close together, then return to nearly straight arms."
             ),
             TechniqueCue(
                 id: "feet",
@@ -17681,11 +17823,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model lights the trapezius and rhomboids dim (the
+            // 2026-09-30 one lit them bright, with no row), as on the Wide-Grip
+            // Lat Pulldown, so the trapezius leaves the stabilisers as a
+            // secondary row the same way, on the same evidence: the lats stayed
+            // the primary muscle in every pulldown grip tested, the neutral ones
+            // included (Buonsenso et al. 2025, J Funct Morphol Kinesiol
+            // 10(3):345). The row takes the seated pulldowns' value.
             MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.46)
         ],
-        stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
+        stabilisers: ["rotator cuff", "forearms"],
         setup: [
             "Attach a rope to the high pulley and adjust the thigh pads.",
             "Hold each end of the rope, palms facing.",
@@ -17693,11 +17843,11 @@ enum SampleData {
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
-            mistakeBadge: "HANDS STAY TOGETHER",
-            correctCue: "Rope split at the bottom",
-            mistakeCue: "Hands kept together",
-            correctNote: "Spreading the rope lets the elbows pass the torso and fully shorten the lats.",
-            mistakeNote: "Pulling with the hands together stops the elbows short, like a bar with half the range."
+            mistakeBadge: "PARTIAL RANGE",
+            correctCue: "Rope to the upper chest",
+            mistakeCue: "Stopping at the face",
+            correctNote: "A full pull brings the hands to the upper chest and the elbows down to the sides.",
+            mistakeNote: "Stopping at the face leaves the bottom of the rep, where the lats shorten most, undone."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.14, ry: 0.09, cx: 0.58, cy: 0.54),
@@ -17707,20 +17857,28 @@ enum SampleData {
     )
 
     static let machineLatPulldownContent = ExerciseContent(
+        // The 2026-10-11 model (reframed lower and further left) pulls both
+        // fixed overhand lever handles from arms reaching up (elbows 165°)
+        // down to shoulder height, the elbows sweeping out and then in to the
+        // ribs (33° at the bottom). Labels sit clear of that sweep in the
+        // trainer view: the elbow pill under the left elbow's lowest point,
+        // the handle pill right of the body, the grip pill above the hands at
+        // the top.
         annotations: [
             CueAnnotation(cueID: "spine", label: "Lean back ~10–15°",
-                          labelPoint: CGPoint(x: 0.653, y: 0.68),
+                          labelPoint: CGPoint(x: 0.653, y: 0.69),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
-                          labelPoint: CGPoint(x: 0.362, y: 0.50),
+                          labelPoint: CGPoint(x: 0.355, y: 0.59),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Handles at shoulder-width",
-                          labelPoint: CGPoint(x: 0.35, y: 0.11),
+            CueAnnotation(cueID: "grip", label: "Shoulder-width",
+                          labelPoint: CGPoint(x: 0.565, y: 0.095),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Handles to the shoulders",
-                          labelPoint: CGPoint(x: 0.420, y: 0.56),
+            CueAnnotation(cueID: "barpath", label: "To the shoulders",
+                          labelPoint: CGPoint(x: 0.655, y: 0.585),
+                          labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Thighs locked under pads",
                           labelPoint: CGPoint(x: 0.450, y: 0.86),
@@ -17731,22 +17889,22 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets the handles clear the face and come to the shoulders, with the lats pulling straight down.",
+                why: "Holding a small lean still keeps the pull on the lats as the handles come down to the shoulders, with no swing from the trunk.",
                 mistake: "Rocking back further on every rep to swing the weight down.",
                 correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
             ),
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Path",
-                intro: "The elbows drive down to the ribs.",
+                intro: "The elbows sweep out and down to the ribs.",
                 why: "Pulling the elbows down toward the sides keeps the lats doing the work.",
-                mistake: "Flaring the elbows out and forward so the biceps and rear delts take over.",
-                correct: "Pull the elbows down and slightly back, finishing beside the ribs."
+                mistake: "Finishing with the elbows still flared out wide instead of at your sides.",
+                correct: "Let the elbows travel out and down with the levers, finishing beside the ribs, slightly behind the shoulders."
             ),
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Hold the lever handles at about shoulder-width.",
+                intro: "Hold the lever handles overhand, about shoulder-width apart.",
                 why: "The handles' angle sets the arms in the lats' line of pull.",
                 mistake: "Gripping the far ends of the handles and reaching with the shoulders.",
                 correct: "Hold the handles firmly, wrists straight, shoulders down."
@@ -17783,8 +17941,8 @@ enum SampleData {
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "forearms"],
         setup: [
-            "Set the seat and thigh pad so the handles are just within reach.",
-            "Sit tall and grip both handles.",
+            "Face the machine and set the seat and thigh pads so the handles are just within reach.",
+            "Sit tall and take both handles overhand.",
             "Start with your arms overhead, elbows slightly bent, shoulders down."
         ],
         comparison: FormComparisonCopy(
@@ -17803,20 +17961,27 @@ enum SampleData {
     )
 
     static let isoLateralLatPulldownContent = ExerciseContent(
+        // The 2026-10-11 model (reframed lower and further left) pulls one
+        // fixed overhand lever handle at a time from arms reaching up (elbows
+        // 165°) down to shoulder height, the elbow sweeping out and then in to
+        // the ribs (33° at the bottom). Labels sit clear of that sweep in the
+        // trainer view: the elbow pill under the left elbow's lowest point,
+        // the one-side pill right of the body (below the right elbow when it
+        // pulls), the grip pill above the hands at the top.
         annotations: [
             CueAnnotation(cueID: "spine", label: "Lean back ~10–15°",
-                          labelPoint: CGPoint(x: 0.653, y: 0.68),
+                          labelPoint: CGPoint(x: 0.653, y: 0.69),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
-                          labelPoint: CGPoint(x: 0.362, y: 0.50),
+                          labelPoint: CGPoint(x: 0.355, y: 0.59),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Handles at shoulder-width",
-                          labelPoint: CGPoint(x: 0.35, y: 0.11),
+            CueAnnotation(cueID: "grip", label: "Shoulder-width",
+                          labelPoint: CGPoint(x: 0.565, y: 0.095),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "barpath", label: "One side at a time",
-                          labelPoint: CGPoint(x: 0.638, y: 0.55),
+                          labelPoint: CGPoint(x: 0.655, y: 0.585),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Thighs locked under pads",
@@ -17828,22 +17993,22 @@ enum SampleData {
                 id: "spine",
                 title: "Torso Position",
                 intro: "A small, fixed lean back.",
-                why: "About 10-15° of lean lets each handle clear the face and come to the shoulder, with the lats pulling straight down.",
+                why: "Holding a small lean still keeps the pull on the lat as each handle comes down to the shoulder, with no swing from the trunk.",
                 mistake: "Rocking back further on every rep to swing the weight down.",
                 correct: "Sit tall, lean back slightly from the hips, and hold that angle for the set."
             ),
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Path",
-                intro: "The elbows drive down to the ribs.",
+                intro: "Each elbow sweeps out and down to the ribs.",
                 why: "Pulling the elbows down toward the sides keeps the lats doing the work.",
-                mistake: "Flaring the elbows out and forward so the biceps and rear delts take over.",
-                correct: "Pull the elbows down and slightly back, finishing beside the ribs."
+                mistake: "Finishing with the elbow still flared out wide instead of at your side.",
+                correct: "Let the working elbow travel out and down with its lever, finishing beside the ribs, slightly behind the shoulder."
             ),
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Hold each lever handle at about shoulder-width.",
+                intro: "Hold each lever handle overhand, about shoulder-width apart.",
                 why: "Independent handles let each arm follow its own path.",
                 mistake: "Reaching up with the shoulders to take the handles.",
                 correct: "Hold the handles firmly, wrists straight, shoulders down."
@@ -17882,8 +18047,8 @@ enum SampleData {
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
-            "Set the seat and thigh pad so the handles are just within reach.",
-            "Sit tall and grip both handles.",
+            "Face the machine and set the seat and thigh pads so the handles are just within reach.",
+            "Sit tall and take both handles overhand.",
             "Pull one handle at a time, the other held overhead."
         ],
         comparison: FormComparisonCopy(
@@ -17926,7 +18091,7 @@ enum SampleData {
                 id: "core",
                 title: "Anti-Rotation",
                 intro: "The trunk stays square while one arm works.",
-                why: "Holding the shoulders level and the hips square makes the lat pull the handle instead of a twist of the trunk.",
+                why: "Keeping the chest facing forward and the hips square makes the lat pull the handle instead of a twist of the trunk.",
                 mistake: "Twisting the torso open to heave the handle back.",
                 correct: "Brace the core and keep both shoulders facing forward as the arm pulls and returns."
             ),
@@ -17944,7 +18109,7 @@ enum SampleData {
                 intro: "A single D-handle, palm facing in.",
                 why: "A neutral grip lets the elbow come straight down beside the body.",
                 mistake: "Hanging from the fingers with the wrist bent.",
-                correct: "Hold the handle deep in the palm, wrist straight, the free hand on the thigh."
+                correct: "Hold the handle deep in the palm, wrist straight, the free hand on your waist."
             ),
             TechniqueCue(
                 id: "barpath",
@@ -17964,16 +18129,24 @@ enum SampleData {
             )
         ],
         activation: [
+            // Lit as on the Wide-Grip Lat Pulldown (the lats alone bright; the
+            // trapezius, rhomboids, rear delts, cuff, biceps and forearms dim),
+            // so the trapezius leaves the stabilisers as a secondary row, as on
+            // the Iso-Lateral Lat Pulldown: the lats stayed the primary muscle in
+            // every pulldown grip tested, clearly ahead of the middle trapezius
+            // with the torso upright (Buonsenso et al. 2025, J Funct Morphol
+            // Kinesiol 10(3):345). The row takes the seated pulldowns' value.
             MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.56),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.46),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["lower trapezius", "rotator cuff", "core"],
+        stabilisers: ["rotator cuff", "core"],
         setup: [
             "Attach a single D-handle to the high pulley.",
             "Adjust the thigh pads and take the handle in one hand.",
-            "Sit tall, arm straight overhead, free hand on your thigh."
+            "Sit tall, arm straight overhead, free hand on your waist."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -17995,13 +18168,13 @@ enum SampleData {
             CueAnnotation(cueID: "scapula", label: "Reach, then squeeze",
                           labelPoint: CGPoint(x: 0.522, y: 0.14),
                           leaderLength: 40, joint: "scapula_L"),
-            CueAnnotation(cueID: "elbow", label: "Elbows back past the torso",
-                          labelPoint: CGPoint(x: 0.519, y: 0.20),
+            CueAnnotation(cueID: "elbow", label: "Elbows past the torso",
+                          labelPoint: CGPoint(x: 0.43, y: 0.20),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Wide overhand handles",
-                          labelPoint: CGPoint(x: 0.347, y: 0.50),
+            CueAnnotation(cueID: "grip", label: "Wide overhand grip",
+                          labelPoint: CGPoint(x: 0.420, y: 0.265),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Handles to the lower chest",
+            CueAnnotation(cueID: "barpath", label: "Bar to the lower chest",
                           labelPoint: CGPoint(x: 0.481, y: 0.72),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
@@ -18016,47 +18189,49 @@ enum SampleData {
                 title: "Scapular Position",
                 intro: "Each rep starts with a reach and ends with a squeeze.",
                 why: "Letting the shoulder blades move forward at the stretch and pulling them together at the finish works the mid-back through its range.",
-                mistake: "Shoulders staying rounded forward, so only the arms move the handle.",
+                mistake: "Shoulders staying rounded forward, so only the arms move the bar.",
                 correct: "Let the shoulders reach toward the stack, then pull the shoulder blades back and together as you row."
             ),
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows lead the row.",
-                why: "Driving the elbows back past the torso, out about 60° from the sides, puts the pull on the mid-back and rear delts; tucking them in hands more of it to the lats.",
-                mistake: "Flaring the elbows out toward shoulder height, or curling the handles in with the elbows staying forward.",
-                correct: "Pull the elbows back past the torso, out about 60° from the sides, and pause."
+                why: "Driving the elbows back past the torso, well out from the sides, puts the pull on the mid-back and rear delts; tucking them in hands more of it to the lats.",
+                mistake: "Flaring the elbows out toward shoulder height, or curling the bar in with the elbows staying forward.",
+                correct: "Pull the elbows back past the torso, out about 55° from the sides, and pause."
             ),
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Two handles, overhand, wider than the shoulders.",
+                intro: "A straight bar, overhand, hands wider than the shoulders.",
                 why: "A wide grip flares the elbows, moving the work to the upper back and rear delts.",
                 mistake: "Letting the grip creep in toward shoulder-width.",
-                correct: "Grip the handles overhand about one and a half shoulder-widths apart, wrists straight."
+                correct: "Grip the bar overhand with the hands outside the shoulders."
             ),
             TechniqueCue(
                 id: "barpath",
                 title: "Row Path",
-                intro: "The handles come to the bottom of the chest, elbows out.",
+                intro: "The bar comes to the bottom of the chest, elbows out.",
                 why: "With the elbows flared, pulling to the lower chest lines the row up with the upper back.",
                 mistake: "Rowing to the stomach with the elbows tucked.",
-                correct: "Row the handles to the lower chest with the elbows out, pause, then extend fully."
+                correct: "Row the bar to the lower chest with the elbows out, pause, then let the arms reach forward again."
             ),
             TechniqueCue(
                 id: "torso",
                 title: "Torso Position",
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
-                mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                mistake: "Leaning far back at the finish to swing the bar in.",
+                correct: "Sit tall and keep the torso upright and still as the arms reach and pull."
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit: upper back, rear delts and
-            // rotator cuff bright, lats, biceps and forearms dim. The model rows
-            // with the elbows about 60° out from the sides; seated cable rows at
-            // 60° of abduction worked the upper and middle trapezius (130.9,
+            // Ranked as the model is lit: upper back, rear delts and rotator cuff
+            // bright, lats, biceps and forearms dim (the 2026-10-11 model, a
+            // straight bar on a seated row station, kept the 2026-09-30 paint).
+            // It rows with the elbows about 55° out from the sides (57° before);
+            // seated cable rows at 60° of abduction (the nearest angle tested)
+            // worked the upper and middle trapezius (130.9,
             // 109.8 %MVIC) and the posterior deltoid (98.6) harder and the upper
             // and lower lats (42.3, 35.8) less than with the elbows in
             // (Vasconcelos et al. 2023, Int J Strength Cond 3(1)), and a wide
@@ -18072,16 +18247,16 @@ enum SampleData {
         ],
         stabilisers: ["rotator cuff", "erector spinae", "forearms", "core"],
         setup: [
-            "Set both pulleys at waist height and clip a handle to each.",
+            "Clip a straight bar to the cable of a seated row station.",
             "Sit with your feet on the footplate, knees soft.",
-            "Grip the handles overhand, wide, and sit tall with your arms straight."
+            "Grip the bar overhand, wide, and sit tall with your arms reaching forward."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "EXCESSIVE BACK LEAN",
             correctCue: "Torso still, arms pull",
             mistakeCue: "Leaning back to swing",
-            correctNote: "Keeping the torso still makes the back muscles pull the handle.",
+            correctNote: "Keeping the torso still makes the back muscles pull the bar.",
             mistakeNote: "Leaning far back swings the weight with the hips and lower back."
         ),
         glows: [
@@ -18099,11 +18274,11 @@ enum SampleData {
             CueAnnotation(cueID: "elbow", label: "Elbows back past the torso",
                           labelPoint: CGPoint(x: 0.519, y: 0.77),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Handles close, palms in",
+            CueAnnotation(cueID: "grip", label: "Grips close, palms in",
                           labelPoint: CGPoint(x: 0.450, y: 0.25),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Handles to the navel",
-                          labelPoint: CGPoint(x: 0.419, y: 0.50),
+            CueAnnotation(cueID: "barpath", label: "Handle to the navel",
+                          labelPoint: CGPoint(x: 0.450, y: 0.67),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "torso", label: "Torso still, sit tall",
                           labelPoint: CGPoint(x: 0.594, y: 0.86),
@@ -18123,25 +18298,25 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows lead the row.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handles close to the body.",
+                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handle close to the body.",
                 mistake: "Winging the elbows out to the sides, or curling the handle in with the elbows staying forward.",
                 correct: "Pull the elbows back past the torso, close to the sides, and pause."
             ),
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Two handles held close together, palms facing each other.",
+                intro: "A double-D handle, its two grips close together, palms facing each other.",
                 why: "A close neutral grip keeps the elbows by the sides, bringing the lats in with the mid-back.",
                 mistake: "Gripping loosely with the wrists bent.",
-                correct: "Hold the handles deep in the palms, wrists straight."
+                correct: "Hold the grips deep in the palms, wrists straight."
             ),
             TechniqueCue(
                 id: "barpath",
                 title: "Row Path",
-                intro: "The handles come to the upper stomach.",
+                intro: "The handle comes to the upper stomach.",
                 why: "Pulling low with the elbows tight finishes the mid-back and rear delts, with the lats helping.",
-                mistake: "Pulling the handles up to the chest with the shoulders shrugging.",
-                correct: "Row the handles to just above the navel, elbows brushing the ribs, then extend fully."
+                mistake: "Pulling the handle up to the chest with the shoulders shrugging.",
+                correct: "Row the handle to just above the navel, elbows brushing the ribs, then extend fully."
             ),
             TechniqueCue(
                 id: "torso",
@@ -18149,7 +18324,7 @@ enum SampleData {
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
                 mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                correct: "Sit tall and keep the torso upright and still as the arms reach and pull."
             )
         ],
         activation: [
@@ -18172,9 +18347,9 @@ enum SampleData {
         ],
         stabilisers: ["rotator cuff", "erector spinae", "forearms", "core"],
         setup: [
-            "Set both pulleys at waist height and clip a handle to each.",
+            "Clip a double-D handle to the cable of a seated row station.",
             "Sit with your feet on the footplate, knees soft.",
-            "Hold the handles close together, palms facing, and sit tall with your arms straight."
+            "Hold both grips of the handle, palms facing, and sit tall with your arms straight."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -18197,13 +18372,14 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.432, y: 0.12),
                           leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "elbow", label: "Elbows back past the torso",
-                          labelPoint: CGPoint(x: 0.519, y: 0.50),
+                          labelPoint: CGPoint(x: 0.519, y: 0.825),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "grip", label: "Palms facing in",
                           labelPoint: CGPoint(x: 0.335, y: 0.41),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "barpath", label: "Handles to the chest",
-                          labelPoint: CGPoint(x: 0.560, y: 0.77),
+                          labelPoint: CGPoint(x: 0.580, y: 0.70),
+                          labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "torso", label: "Torso still, sit tall",
                           labelPoint: CGPoint(x: 0.594, y: 0.86),
@@ -18249,7 +18425,7 @@ enum SampleData {
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
                 mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                correct: "Sit tall and keep the torso upright and still as the arms reach and pull."
             )
         ],
         activation: [
@@ -18272,7 +18448,7 @@ enum SampleData {
         ],
         stabilisers: ["rotator cuff", "erector spinae", "forearms", "core"],
         setup: [
-            "Set both pulleys high and sit facing them on the bench.",
+            "Set both pulleys high and sit facing them on a flat bench, feet on the floor.",
             "Take a handle in each hand, palms facing in.",
             "Sit tall with your arms reaching up and forward."
         ],
@@ -18299,14 +18475,14 @@ enum SampleData {
             CueAnnotation(cueID: "elbow", label: "Elbows back past the torso",
                           labelPoint: CGPoint(x: 0.519, y: 0.25),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Palms in, shoulder-width",
-                          labelPoint: CGPoint(x: 0.450, y: 0.50),
+            CueAnnotation(cueID: "grip", label: "Underhand grip",
+                          labelPoint: CGPoint(x: 0.350, y: 0.30),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Handles to the stomach",
+            CueAnnotation(cueID: "barpath", label: "Bar to the upper belly",
                           labelPoint: CGPoint(x: 0.519, y: 0.77),
                           leaderLength: 40, joint: "hand_R"),
-            CueAnnotation(cueID: "torso", label: "Torso still, sit tall",
-                          labelPoint: CGPoint(x: 0.594, y: 0.86),
+            CueAnnotation(cueID: "torso", label: "Sit tall, slight lean back",
+                          labelPoint: CGPoint(x: 0.550, y: 0.86),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine")
         ],
@@ -18316,65 +18492,73 @@ enum SampleData {
                 title: "Scapular Position",
                 intro: "Each rep starts with a reach and ends with a squeeze.",
                 why: "Letting the shoulder blades move forward at the stretch and pulling them together at the finish works the mid-back through its range.",
-                mistake: "Shoulders staying rounded forward, so only the arms move the handle.",
+                mistake: "Shoulders staying rounded forward, so only the arms move the bar.",
                 correct: "Let the shoulders reach toward the stack, then pull the shoulder blades back and together as you row."
             ),
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows lead the row.",
-                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the handles close to the body.",
-                mistake: "Winging the elbows out to the sides, or curling the handle in with the elbows staying forward.",
+                why: "Driving the elbows back close to the sides keeps the mid-back and rear delts pulling, with the lats helping, and the bar close to the body.",
+                mistake: "Winging the elbows out to the sides, or curling the bar in with the elbows staying forward.",
                 correct: "Pull the elbows back past the torso, close to the sides, and pause."
             ),
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Handles from a floor pulley, palms facing in.",
-                why: "Pulling up and back from low down keeps the elbows by the sides, where the lats help the most.",
-                mistake: "Reaching for the handles with the back rounded.",
-                correct: "Hold the handles at shoulder-width, wrists straight, arms long toward the floor pulley."
+                intro: "A straight bar held underhand, palms up.",
+                why: "Palms up keep the elbows close and the upper arms moving along the lats' line of pull, with the biceps helping more; curling the wrists turns part of the row into a wrist curl.",
+                mistake: "Letting the wrists curl up as the bar comes in.",
+                correct: "Hold the bar underhand, a little wider than the shoulders, wrists in line with the forearms."
             ),
             TechniqueCue(
                 id: "barpath",
                 title: "Row Path",
-                intro: "The handles travel up and back to the stomach.",
-                why: "Rowing up and back to the stomach keeps the elbows by the sides as the shoulder blades draw together.",
-                mistake: "Pulling the handles up to the chest.",
-                correct: "Row the handles back to the stomach, elbows close, then extend fully."
+                intro: "The bar travels straight back to the upper belly.",
+                why: "Rowing back to the belly keeps the elbows by the sides as the shoulder blades draw together.",
+                mistake: "Pulling the bar up to the chest.",
+                correct: "Row the bar back until it touches the upper belly, elbows close, then let the arms reach forward again."
             ),
             TechniqueCue(
                 id: "torso",
                 title: "Torso Position",
-                intro: "The torso stays still and upright.",
-                why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
-                mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                intro: "The torso stays tall and moves only a few degrees.",
+                why: "A nearly still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
+                mistake: "Leaning far back at the finish to swing the bar in.",
+                correct: "Sit tall with a slight forward lean at the stretch, let the torso tip back only slightly as the bar touches, and keep the back straight."
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit (upper back, rear delts and
-            // rotator cuff bright, lats dim); the neutral handles and elbows by
-            // the sides match the Close-Grip Seated Cable Row, so sources and
-            // fractions as there.
-            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.65),
-            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.65),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
+            // Ranked as the model is lit (upper back, rear delts and rotator cuff
+            // bright, lats and biceps dim; the 2026-10-11 model kept the paint).
+            // That model rows a straight bar underhand to the belly with the
+            // elbows by the sides, so the fractions are the supinated-grip seated
+            // row's (posterior deltoid 67.0 %MVIC, middle trapezius 63.2, upper
+            // and lower lats 67.8 and 58.9; Vasconcelos et al. 2023, Int J
+            // Strength Cond 3(1)), as on the Barbell Yates Row, and the lats'
+            // secondary rank follows the model more than the EMG. Biceps activity
+            // there was among the rows' highest with both the supinated and the
+            // neutral grip, so the biceps keep their 0.48. The rhomboids share
+            // the middle trapezius' electrode site in Lehman et al. 2004 (Dyn
+            // Med 3:4).
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.67),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.63),
+            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.63),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.62),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["rotator cuff", "erector spinae", "forearms", "core"],
         setup: [
-            "Set both pulleys at the floor and sit facing them.",
+            "Clip a straight bar to the cable of a seated row station.",
             "Put your feet on the footplate, knees soft.",
-            "Take a handle in each hand and sit tall, arms reaching down."
+            "Grip the bar underhand, a little wider than your shoulders, and sit tall."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "EXCESSIVE BACK LEAN",
-            correctCue: "Torso still, arms pull",
+            correctCue: "Tall torso, arms pull",
             mistakeCue: "Leaning back to swing",
-            correctNote: "Keeping the torso still makes the back muscles pull the handle.",
+            correctNote: "Keeping the torso nearly still makes the back muscles pull the bar.",
             mistakeNote: "Leaning far back swings the weight with the hips and lower back."
         ),
         glows: [
@@ -18482,7 +18666,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.402, y: 0.14),
                           leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "elbow", label: "Elbow to the hip",
-                          labelPoint: CGPoint(x: 0.332, y: 0.50),
+                          labelPoint: CGPoint(x: 0.400, y: 0.67),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "grip", label: "Handle, palm in",
                           labelPoint: CGPoint(x: 0.335, y: 0.25),
@@ -18535,26 +18719,29 @@ enum SampleData {
                 intro: "The torso stays still and upright.",
                 why: "A still torso keeps the back muscles moving the weight; rocking turns the row into a swing that loads the lower back.",
                 mistake: "Leaning far back at the finish to swing the handle in.",
-                correct: "Sit tall with a slight forward lean at the stretch, and keep the torso still as the arms pull."
+                correct: "Sit tall and keep the torso upright and still as the arm reaches and pulls."
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit (upper back, rear delts and
-            // rotator cuff bright, lats dim); the neutral handle and elbow by
-            // the side match the Close-Grip Seated Cable Row, so sources and
-            // fractions as there.
+            // Ranked as the model is lit (upper back, rear delts and rotator cuff
+            // bright, lats dim); the neutral handle and elbow by the side match
+            // the Close-Grip Seated Cable Row, so sources and fractions as there.
+            // The 2026-10-11 model paints the biceps bright (dim before), so they
+            // move to a primary row and keep their fraction (a primary at
+            // 0.40-0.56 has precedent); they follow the back muscles so the
+            // one-line legend still leads with those.
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.72),
             MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.65),
             MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.65),
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.46),
             MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["rotator cuff", "erector spinae", "forearms", "core"],
         setup: [
-            "Attach a single handle to the low pulley.",
+            "Attach a D-handle to the cable of a seated row station.",
             "Sit with your feet on the footplate, knees soft.",
-            "Take the handle in one hand and sit tall, arm straight."
+            "Take the handle in one hand, rest the other on your thigh, and sit tall."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -18666,18 +18853,21 @@ enum SampleData {
     )
 
     static let machineSeatedRowContent = ExerciseContent(
+        // Relaid 2026-10-11 for the plate-loaded iso-lateral machine, whose lever
+        // arms sweep the left of the frame where the elbow pill sat: the elbow
+        // and grip pills now stack under the shoulder-blade pill, top left.
         annotations: [
             CueAnnotation(cueID: "pad", label: "Chest on the pad",
                           labelPoint: CGPoint(x: 0.668, y: 0.86),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
-            CueAnnotation(cueID: "elbow", label: "Elbows back past the torso",
-                          labelPoint: CGPoint(x: 0.479, y: 0.50),
+            CueAnnotation(cueID: "elbow", label: "Elbows past the torso",
+                          labelPoint: CGPoint(x: 0.42, y: 0.21),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Overhand grip",
-                          labelPoint: CGPoint(x: 0.301, y: 0.20),
+            CueAnnotation(cueID: "grip", label: "Palms facing in",
+                          labelPoint: CGPoint(x: 0.32, y: 0.28),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Row to the ribs",
+            CueAnnotation(cueID: "barpath", label: "Row to the belly",
                           labelPoint: CGPoint(x: 0.665, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
@@ -18692,7 +18882,7 @@ enum SampleData {
                 intro: "The chest stays on the pad.",
                 why: "The pad takes the lower back and legs out of the row, so only the back and arms move the handles.",
                 mistake: "Lifting the chest off the pad to lean into the pull.",
-                correct: "Set the seat so the handles are at mid-chest, rest the chest on the pad and keep it there."
+                correct: "Set the seat so the handles line up with your lower chest, rest the chest on the pad and keep it there."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -18705,18 +18895,18 @@ enum SampleData {
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Palms down on the handles.",
-                why: "An overhand grip on the horizontal handles keeps the wrists straight and in line with the forearms.",
+                intro: "Palms face each other on the swivel handles.",
+                why: "A neutral grip keeps the wrists straight and the elbows close.",
                 mistake: "Reaching for the handles with the shoulders rounded.",
                 correct: "Hold the handles deep in the palms, wrists straight, shoulders back."
             ),
             TechniqueCue(
                 id: "barpath",
                 title: "Handle Path",
-                intro: "The handles come back to the lower ribs.",
+                intro: "The handles come back to the sides of your upper belly.",
                 why: "A full pull with the chest on the pad finishes the mid-back and rear delts, with the lats helping.",
                 mistake: "Short reps that stop well in front of the body.",
-                correct: "Row until the hands reach the ribs, pause, then return to straight arms."
+                correct: "Row until the hands reach the sides of your belly, pause, then return until the arms are nearly straight."
             ),
             TechniqueCue(
                 id: "scapula",
@@ -18728,20 +18918,24 @@ enum SampleData {
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit (upper back, rear delts and
-            // rotator cuff bright, lats dim); the overhand handles and elbows
-            // near the sides match the Barbell Bent-Over Row, so sources as there.
-            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.76),
+            // Ranked as the model is lit (upper back, rear delts and rotator cuff
+            // bright, lats, biceps and forearms dim; the paint is unchanged on
+            // the 2026-10-11 plate-loaded iso-lateral machine). That machine's
+            // swivel handles are held palms in with the elbows by the sides, as
+            // on the Close-Grip Seated Cable Row, so sources and fractions as
+            // there, the biceps keeping 0.46; they were the overhand Barbell
+            // Bent-Over Row's.
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.65),
+            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.65),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
-            "Set the seat so the handles are at mid-chest height.",
-            "Sit with your chest against the pad, feet flat.",
-            "Reach forward and take the handles with straight arms."
+            "Set the seat so the handles line up with your lower chest.",
+            "Sit with your chest on the pad and your feet on the foot plate.",
+            "Reach forward and take the handles, palms facing in, arms nearly straight."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -18759,16 +18953,19 @@ enum SampleData {
     )
 
     static let isoLateralRowMachineContent = ExerciseContent(
+        // Relaid 2026-10-11 for the plate-loaded iso-lateral machine, whose lever
+        // arms sweep the left of the frame where the elbow pill sat: the elbow
+        // and grip pills now stack under the shoulder-blade pill, top left.
         annotations: [
             CueAnnotation(cueID: "pad", label: "Chest on the pad",
                           labelPoint: CGPoint(x: 0.668, y: 0.86),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
-            CueAnnotation(cueID: "elbow", label: "Elbows back past the torso",
-                          labelPoint: CGPoint(x: 0.519, y: 0.50),
+            CueAnnotation(cueID: "elbow", label: "Elbows past the torso",
+                          labelPoint: CGPoint(x: 0.42, y: 0.21),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Overhand grip",
-                          labelPoint: CGPoint(x: 0.301, y: 0.20),
+            CueAnnotation(cueID: "grip", label: "Palms facing in",
+                          labelPoint: CGPoint(x: 0.32, y: 0.28),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "barpath", label: "Alternate sides",
                           labelPoint: CGPoint(x: 0.665, y: 0.16),
@@ -18785,7 +18982,7 @@ enum SampleData {
                 intro: "The chest stays on the pad.",
                 why: "The pad takes the lower back and legs out of the row, so only the back and arms move the handles.",
                 mistake: "Lifting the chest off the pad to lean into the pull.",
-                correct: "Set the seat so the handles are at mid-chest, rest the chest on the pad and keep it there."
+                correct: "Set the seat so the handles line up with your lower chest, rest the chest on the pad and keep it there."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -18798,8 +18995,8 @@ enum SampleData {
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Palms down on the handles.",
-                why: "An overhand grip on the horizontal handles keeps the wrists straight and in line with the forearms.",
+                intro: "Palms face each other on the swivel handles.",
+                why: "A neutral grip keeps the wrists straight and the elbows close.",
                 mistake: "Reaching for the handles with the shoulders rounded.",
                 correct: "Hold the handles deep in the palms, wrists straight, shoulders back."
             ),
@@ -18809,7 +19006,7 @@ enum SampleData {
                 intro: "Each handle moves on its own.",
                 why: "Rowing one side at a time stops the stronger side from carrying the weaker one.",
                 mistake: "Twisting toward the working arm to finish the row.",
-                correct: "Row one handle to the ribs, return it under control, then row the other, chest still on the pad."
+                correct: "Row one handle to the side of your belly, return it under control, then row the other, chest still on the pad."
             ),
             TechniqueCue(
                 id: "scapula",
@@ -18821,20 +19018,24 @@ enum SampleData {
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit (upper back, rear delts and
-            // rotator cuff bright, lats dim); the overhand handles and elbows
-            // near the sides match the Barbell Bent-Over Row, so sources as there.
-            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.76),
+            // Ranked as the model is lit (upper back, rear delts and rotator cuff
+            // bright, lats, biceps and forearms dim; the paint is unchanged on
+            // the 2026-10-11 plate-loaded iso-lateral machine). Its swivel
+            // handles are held palms in with the elbows by the sides, as on the
+            // Close-Grip Seated Cable Row, so sources and fractions as there,
+            // the biceps keeping 0.46; they were the overhand Barbell Bent-Over
+            // Row's.
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.65),
+            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.65),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
-            "Set the seat so the handles are at mid-chest height.",
-            "Sit with your chest against the pad, feet flat.",
-            "Take both handles; row one side at a time."
+            "Set the seat so the handles line up with your lower chest.",
+            "Sit with your chest on the pad and your feet on the foot plate.",
+            "Take both handles, palms facing in; row one side at a time."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -18852,18 +19053,23 @@ enum SampleData {
     )
 
     static let singleArmMachineRowContent = ExerciseContent(
+        // Relaid 2026-10-11 for the plate-loaded iso-lateral machine, whose lever
+        // arms sweep the left of the frame where the elbow pill sat: the elbow
+        // and grip pills now stack under the free-hand pill, top left. The free
+        // hand holds a bar in front of the chest pad, hidden behind the lifter
+        // here, so its dot sits on the back.
         annotations: [
             CueAnnotation(cueID: "pad", label: "Chest on the pad",
                           labelPoint: CGPoint(x: 0.668, y: 0.86),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
-            CueAnnotation(cueID: "elbow", label: "Elbow back past the torso",
-                          labelPoint: CGPoint(x: 0.519, y: 0.50),
+            CueAnnotation(cueID: "elbow", label: "Elbow past the torso",
+                          labelPoint: CGPoint(x: 0.42, y: 0.205),
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Overhand grip",
-                          labelPoint: CGPoint(x: 0.302, y: 0.25),
+            CueAnnotation(cueID: "grip", label: "Handle, palm in",
+                          labelPoint: CGPoint(x: 0.31, y: 0.27),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "brace", label: "Free hand on the support",
+            CueAnnotation(cueID: "brace", label: "Free hand on the front bar",
                           labelPoint: CGPoint(x: 0.486, y: 0.14),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "scapula", label: "Squeeze, don't shrug",
@@ -18877,7 +19083,7 @@ enum SampleData {
                 intro: "The chest stays on the pad.",
                 why: "The pad takes the lower back and legs out of the row, so only the back and arms move the handles.",
                 mistake: "Lifting the chest off the pad to lean into the pull.",
-                correct: "Set the seat so the handles are at mid-chest, rest the chest on the pad and keep it there."
+                correct: "Set the seat so the handle lines up with your lower chest, rest the chest on the pad and keep it there."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -18890,10 +19096,10 @@ enum SampleData {
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Palm down on the handle.",
-                why: "An overhand grip on the horizontal handle keeps the wrist straight and in line with the forearm.",
-                mistake: "Reaching for the handle with the working shoulder rounded.",
-                correct: "Hold the handle deep in the palm, wrist straight, shoulders back."
+                intro: "A single swivel handle, palm facing in.",
+                why: "A neutral grip keeps the wrist straight and the elbow close.",
+                mistake: "Hanging from the fingers with the wrist bent.",
+                correct: "Hold the handle deep in the palm, wrist straight, from the reach to the finish."
             ),
             TechniqueCue(
                 id: "brace",
@@ -18901,32 +19107,40 @@ enum SampleData {
                 intro: "The trunk stays square while one arm works.",
                 why: "Holding the shoulders level and the hips square makes the back pull the handle instead of a twist of the trunk.",
                 mistake: "Twisting the torso open to heave the handle back.",
-                correct: "Brace the core and keep both shoulders facing forward as the arm pulls and returns."
+                correct: "Hold the front bar with the free hand, brace the core and keep the chest square on the pad as the arm reaches and rows."
             ),
             TechniqueCue(
                 id: "scapula",
                 title: "Scapular Position",
-                intro: "The shoulder blades squeeze together, not up.",
-                why: "Retracting without shrugging keeps the mid-traps and rhomboids doing the work.",
-                mistake: "Shrugging the shoulders up at the end of the row.",
-                correct: "At the finish, pull the shoulder blades back and together, keeping them down."
+                intro: "The shoulder blade reaches forward at the start, then squeezes back, not up.",
+                why: "Reaching lets the lat and mid-back stretch at the start of each rep; retracting without shrugging keeps the mid-traps and rhomboids doing the work at the finish.",
+                mistake: "Shrugging the shoulder up at the end of the row.",
+                correct: "Let the shoulder reach toward the handle with the arm nearly straight, then pull the shoulder blade back and down as you row."
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit (upper back, rear delts and
-            // rotator cuff bright, lats dim); the overhand handles and elbows
-            // near the sides match the Barbell Bent-Over Row, so sources as there.
-            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.76),
+            // Ranked as the 2026-10-11 model is lit: upper back, rear delts,
+            // rotator cuff and now the biceps bright, lats and forearms dim. Its
+            // swivel handle is held palm in with the elbow by the side, as on
+            // the Close-Grip Seated Cable Row, so sources and fractions as there,
+            // the biceps keeping 0.46 (they were the overhand Barbell Bent-Over
+            // Row's). The biceps stay a secondary row, as on the Gorilla Row:
+            // in the seated row they worked at about half the lats' and
+            // mid-back's share of their maximum (19.9 %MVC against 37.1 and
+            // 35.5; Lehman et al. 2004, Dyn Med 3:4), and a fourth primary
+            // would overrun the one-line legend.
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.65),
+            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.65),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "forearms"],
         setup: [
-            "Set the seat so the handle is at mid-chest height.",
-            "Sit with your chest against the pad, feet flat.",
-            "Take the handle in one hand and hold the support with the other."
+            "Set the seat so the handle lines up with your lower chest.",
+            "Set the chest pad so you reach the handle only at full stretch.",
+            "Sit with your chest on the pad, feet on the foot plate, and hold the bar in front of the pad with one hand.",
+            "Take the handle in the other hand, palm facing in."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -19150,6 +19364,13 @@ enum SampleData {
     )
 
     static let machinePulloverContent = ExerciseContent(
+        // The 2026-10-11 model sits in a cam pullover machine (lever pivots
+        // on the shoulder axis, elbow rollers, a crossbar, seat belt, foot
+        // pedal) and sweeps the upper arms from 155° overhead until the bar
+        // reaches the stomach, the elbows ~12 cm behind the shoulders,
+        // holding there about half a second.
+        // ExRx's Lever Pullover stops with the elbows at the sides; the copy
+        // follows the model. Framing, labels and ghosts stand.
         annotations: [
             CueAnnotation(cueID: "elbow", label: "Drive with the elbows",
                           labelPoint: CGPoint(x: 0.594, y: 0.68),
@@ -19193,7 +19414,7 @@ enum SampleData {
                 intro: "The arms start high overhead.",
                 why: "The overhead stretch is where the pullover loads the lats most.",
                 mistake: "Starting with the arms only halfway up, cutting the stretch.",
-                correct: "Let the lever take the arms up until you feel the lats stretch, then drive down until the arms reach the sides."
+                correct: "Let the lever take the arms up until you feel the lats stretch, then drive down until the bar reaches your stomach."
             ),
             TechniqueCue(
                 id: "spine",
@@ -19201,7 +19422,7 @@ enum SampleData {
                 intro: "The back stays against the pad.",
                 why: "A flat back and ribs held down keep the arc at the shoulders rather than the spine.",
                 mistake: "Arching away from the pad at the top.",
-                correct: "Sit with the back flat on the pad, belt or seat set so the shoulders line up with the machine's pivot."
+                correct: "Sit with the back flat on the pad, the belt fastened and the seat set so the shoulders line up with the machine's pivot."
             ),
             TechniqueCue(
                 id: "scapula",
@@ -19231,7 +19452,7 @@ enum SampleData {
         stabilisers: ["serratus anterior", "core", "rotator cuff"],
         setup: [
             "Set the seat so your shoulders line up with the machine's pivot.",
-            "Sit with your back on the pad and fasten the belt if there is one.",
+            "Sit with your back on the pad and fasten the belt across your lap.",
             "Place your upper arms on the pads and rest your hands on the bar."
         ],
         comparison: FormComparisonCopy(
@@ -19731,20 +19952,30 @@ enum SampleData {
     )
 
     static let seatedDumbbellPressContent = ExerciseContent(
+        // The 2026-10-11 model (reframed, zoom 0.792) holds the dumbbells at
+        // v 0.14-0.23 at lockout and its arms and trunk fill u 0.29-0.84 at
+        // v 0.42-0.52, so the top pills (on the dumbbells at lockout) and the
+        // v 0.52 pills (on the arms and trunk) moved beside the arms: the path
+        // label at v 0.28 left of the right forearm, the depth label under the
+        // right elbow pointing at the right shoulder, the elbow and back labels
+        // right of the trunk over the bench back. 2026-10-11 shots: the model
+        // came down 0.047 so the lockout dumbbells clear the mistake banner,
+        // and every label but the feet one moved down 0.04 with it; the depth
+        // label, shortened, stays left of the thigh in its smaller mistake view.
         annotations: [
-            CueAnnotation(cueID: "elbow", label: "Elbows slightly forward",
-                          labelPoint: CGPoint(x: 0.565, y: 0.48),
+            CueAnnotation(cueID: "elbow", label: "Elbows forward",
+                          labelPoint: CGPoint(x: 0.675, y: 0.54),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "path", label: "Press up and slightly in",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "depth", label: "Lower to the shoulders",
-                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+            CueAnnotation(cueID: "path", label: "Up and slightly in",
+                          labelPoint: CGPoint(x: 0.420, y: 0.28),
                           leaderLength: 40, joint: "hand_R"),
-            CueAnnotation(cueID: "torso", label: "Sit tall, trunk upright",
-                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+            CueAnnotation(cueID: "depth", label: "Full range",
+                          labelPoint: CGPoint(x: 0.24, y: 0.54),
+                          leaderLength: 40, joint: "upper_arm_R"),
+            CueAnnotation(cueID: "torso", label: "Back on the pad",
+                          labelPoint: CGPoint(x: 0.675, y: 0.62),
+                          labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "feet", label: "Feet flat and wide",
                           labelPoint: CGPoint(x: 0.638, y: 0.80),
@@ -19778,11 +20009,11 @@ enum SampleData {
             ),
             TechniqueCue(
                 id: "torso",
-                title: "Torso Position",
-                intro: "The short back pad stops at the shoulder blades, and the lifter sits tall in front of it without leaning on it.",
-                why: "An upright trunk keeps the press vertical over the shoulders; leaning back tilts it toward an incline press and loads the lower back.",
-                mistake: "Leaning back toward the pad with the lower back arched.",
-                correct: "Sit tall in the middle of the seat with the ribs down, and keep the trunk upright over the hips for every rep."
+                title: "Back Support",
+                intro: "The bench back is set almost upright, and the lifter sits with the hips back and the whole back against the tall pad.",
+                why: "With the back on the pad, the shoulders do the pressing; arching away from it tilts the press toward an incline and loads the lower back.",
+                mistake: "Arching the lower back off the pad to push the dumbbells up.",
+                correct: "Sit with the hips back and the back against the pad, ribs down, for every rep."
             ),
             TechniqueCue(
                 id: "feet",
@@ -19790,29 +20021,35 @@ enum SampleData {
                 intro: "The feet anchor the seated body.",
                 why: "Flat feet set wide give a stable base, so balancing two dumbbells does not pull the hips around.",
                 mistake: "Feet tucked under the seat or up on the toes, so the hips shift with every rep.",
-                correct: "Plant both feet flat, wider than the hips and a little in front of the knees, and keep them still."
+                correct: "Plant both feet flat, wider than the hips with the shins about vertical, and keep them still."
             )
         ],
         activation: [
+            // The 2026-10-11 model lights the whole trapezius and the rhomboids
+            // dim (unlit before), so the trapezius row is named whole, as on
+            // the Standing Dumbbell Press; LOW 0.36 stays (Paoli et al. 2010,
+            // J Strength Cond Res 24(6):1578-1583; Luczak et al. 2013, J Sports
+            // Med 2013:612650). The rhomboids, which ExRx does not list for the
+            // press, stay unnamed.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.66),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "core"],
         setup: [
-            "Sit tall in the middle of a low-backed seat.",
+            "Set an adjustable bench almost upright and sit with your back on the pad.",
             "Plant your feet flat and wider than your hips.",
             "Kick the dumbbells up to shoulder height, palms forward.",
             "Elbows under your wrists, ribs down."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
-            mistakeBadge: "LEANING BACK",
-            correctCue: "Trunk upright over the hips",
-            mistakeCue: "Leaning back toward the pad",
-            correctNote: "An upright trunk keeps the press vertical, the deltoids moving the dumbbells straight up over the shoulders.",
-            mistakeNote: "Leaning back from the hips arches the lower back and turns the lift into an incline press; clear of the pad, only the braced trunk keeps the lifter upright."
+            mistakeBadge: "BACK ARCHED",
+            correctCue: "Back flat on the pad",
+            mistakeCue: "Lower back arched off the pad",
+            correctNote: "With the back on the near-upright pad, the deltoids press the dumbbells straight up over the shoulders.",
+            mistakeNote: "Arching the lower back off the pad tilts the chest up, turning the lift toward an incline press and loading the lower back."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.06, cx: 0.54, cy: 0.39),
@@ -19990,20 +20227,23 @@ enum SampleData {
             )
         ],
         activation: [
-            // Lit as the Standing Dumbbell Press (front and side delts bright;
-            // triceps, trapezius and rhomboids dim), so the trapezius joins
-            // the secondary rows as there: ExRx lists its middle and lower
+            // The trapezius and rhomboids are lit dim, as on the Standing
+            // Dumbbell Press, so the trapezius joins the secondary rows as
+            // there: ExRx lists its middle and lower
             // parts as synergists of the dumbbell shoulder press, it worked
             // harder when a loaded seated press went to straight arms (Paoli
             // et al. 2010, J Strength Cond Res 24(6):1578-1583), and an 85°
             // dumbbell press drew far more upper trapezius than a flat press
             // (Luczak et al. 2013, J Sports Med 2013:612650). LOW 0.36 is an
             // estimate, as there. The rhomboids, which ExRx does not list for
-            // the press, stay unnamed so the legend keeps three secondary
-            // names.
+            // the press, stay unnamed.
+            // The 2026-10-11 model paints the front and side delts and the
+            // triceps bright (the owner's re-export the same day put the front
+            // delt back to bright after a paint slip), so the triceps join the
+            // primary rows at their EMG fraction.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.52),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.42),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
@@ -20185,7 +20425,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the side delt bright beside the front
+            // delt (unlit before), so it is a primary row. MODERATE 0.50 is a
+            // judgement call: the angled landmine path sits between a vertical
+            // dumbbell press (Seated Dumbbell Press 0.66) and a front raise.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.50),
             MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.32)
@@ -20275,7 +20520,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the side delt bright beside the front
+            // delt (unlit before), so it is a primary row. MODERATE 0.50 is a
+            // judgement call: the angled landmine path sits between a vertical
+            // dumbbell press (Seated Dumbbell Press 0.66) and a front raise.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.50),
             MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.32)
@@ -20302,23 +20552,25 @@ enum SampleData {
     )
 
     static let cableShoulderPressContent = ExerciseContent(
+        // The 2026-10-11 model (reframed, zoom 0.739) fills u 0.24-0.80 with
+        // its arms at the bottom and u 0.35-0.70 with arms and handles at the
+        // top, and its cables cross the sides above v 0.42, so the pills sit in
+        // the free bands beside the trunk and legs (v 0.48-0.78) and the wrist
+        // label keeps the top-left corner; the labels were shortened to fit.
         annotations: [
-            CueAnnotation(cueID: "elbow", label: "Elbows under the handles",
-                          labelPoint: CGPoint(x: 0.550, y: 0.32),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "lockout", label: "Handles over shoulders",
-                          labelPoint: CGPoint(x: 0.580, y: 0.16),
+            CueAnnotation(cueID: "elbow", label: "Elbows under handles",
+                          labelPoint: CGPoint(x: 0.410, y: 0.48),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "lockout", label: "Over the shoulders",
+                          labelPoint: CGPoint(x: 0.634, y: 0.48),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "brace", label: "Ribs down, glutes tight",
-                          labelPoint: CGPoint(x: 0.565, y: 0.48),
-                          labelSide: .trailing,
+            CueAnnotation(cueID: "brace", label: "Ribs down, braced",
+                          labelPoint: CGPoint(x: 0.365, y: 0.60),
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "stance", label: "Hip-width, knees soft",
-                          labelPoint: CGPoint(x: 0.594, y: 0.64),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "patella_L"),
+                          labelPoint: CGPoint(x: 0.390, y: 0.78),
+                          leaderLength: 40, joint: "patella_R"),
             CueAnnotation(cueID: "wrist", label: "Wrists straight",
                           labelPoint: CGPoint(x: 0.318, y: 0.16),
                           leaderLength: 40, joint: "hand_R")
@@ -20327,34 +20579,34 @@ enum SampleData {
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Position",
-                intro: "The elbows stay under the handles while the cables pull back.",
-                why: "The cables run down and back to the low pulleys, so they pull the handles back as well as down; elbows under the handles and a little forward keep the press in the scapular plane.",
-                mistake: "Letting the cables pull the elbows back behind the shoulders at the bottom.",
+                intro: "The elbows stay under the handles while the cables pull out to the sides.",
+                why: "The cables run out and down to pulleys at about hip height on either side, so they pull the handles outward as well as down; forearms vertical under the handles, elbows a little in front of the body, keep the press in the scapular plane.",
+                mistake: "Letting the cables pull the handles out past the elbows at the bottom, the forearms tilting outward.",
                 correct: "Hold the handles at the shoulders with the forearms vertical and the elbows slightly in front of the body."
             ),
             TechniqueCue(
                 id: "lockout",
                 title: "Lockout",
-                intro: "The handles finish over the shoulders, not behind the head.",
-                why: "Because the cables pull down and back, they draw the arms behind the head at the top; holding the handles over the shoulders keeps the arms in line with the trunk instead of the shoulders and lower back arching back to follow the cables.",
-                mistake: "The arms drifting back behind the head at lockout.",
+                intro: "The handles finish over the shoulders, not out wide.",
+                why: "Because the cables run out to the sides, they pull the straight arms apart at the top; pressing up and slightly in until the handles sit over the shoulders keeps the arms stacked over the joints instead of held out in a V.",
+                mistake: "The arms drifting out wide at the top, the handles well outside the shoulders.",
                 correct: "Press up and slightly in until the arms are straight, the handles over the shoulders and the biceps beside the ears."
             ),
             TechniqueCue(
                 id: "brace",
                 title: "Trunk Bracing",
-                intro: "The cables pull back as well as down, so the trunk stays braced.",
-                why: "Braced abs and tight glutes keep the ribs over the pelvis; with the pull coming from behind, a loose trunk is drawn into a lean with the lower back arched.",
-                mistake: "Leaning back with the lower back arched as the handles go up.",
+                intro: "Standing, the trunk is the base the press pushes from.",
+                why: "Standing makes the abs work far harder than sitting; braced abs and tight glutes keep the ribs over the pelvis, so the shoulders press straight up instead of the lower back arching into an incline press.",
+                mistake: "Leaning back from the hips with the lower back arched to get the weight up.",
                 correct: "Brace the abs, squeeze the glutes and keep the ribs stacked over the pelvis on every rep."
             ),
             TechniqueCue(
                 id: "stance",
                 title: "Stance",
-                intro: "Stand centred between the pulleys, a small step in front of them.",
-                why: "Hip-width feet and soft knees give a steady base against the cables' backward pull.",
-                mistake: "Feet drawn together and knees locked, so the cables rock the body back.",
-                correct: "Stand with the feet hip-width, knees soft and the weight over the middle of the feet, centred between the pulleys."
+                intro: "Stand centred between the two stacks, in line with them.",
+                why: "Hip-width feet and soft knees give a steady base while the cables pull out to both sides.",
+                mistake: "Feet drawn together and knees locked, a narrow base that rocks as the handles go up.",
+                correct: "Stand with the feet hip-width, knees soft and the weight over the middle of the feet, centred between the stacks."
             ),
             TechniqueCue(
                 id: "wrist",
@@ -20366,15 +20618,28 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model (a dual adjustable-pulley station) paints
+            // the front and side delts bright and the triceps, trapezius and
+            // rhomboids dim (its first export painted the front delt dim, a
+            // slip the owner confirmed; the re-export the same day put it back
+            // to bright). The trapezius, until now a stabiliser, joins the
+            // secondary rows as on the Standing Dumbbell Press: LOW 0.36, an
+            // estimate (ExRx lists its middle and lower parts as synergists;
+            // Paoli et al. 2010, J Strength Cond Res 24(6):1578-1583; Luczak
+            // et al. 2013, J Sports Med 2013:612650). The rhomboids, which ExRx
+            // does not list for the press, stay unnamed so the legend keeps
+            // three secondary names; the rectus abdominis row stays, as there,
+            // though the model leaves it unlit.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["rotator cuff", "serratus anterior", "upper trapezius", "glutes"],
+        stabilisers: ["rotator cuff", "serratus anterior", "glutes"],
         setup: [
-            "Set both pulleys at the bottom and attach a handle to each.",
-            "Stand centred between them, a small step in front.",
+            "Set both pulleys at about hip height and attach a handle to each.",
+            "Stand centred between the stacks, in line with them.",
             "Bring the handles up to your shoulders, palms forward.",
             "Brace your core, knees soft."
         ],
@@ -20382,9 +20647,9 @@ enum SampleData {
             correctBadge: "CORRECT FORM",
             mistakeBadge: "LEANING BACK",
             correctCue: "Ribs down, handles overhead",
-            mistakeCue: "Leaning back into the cables",
-            correctNote: "Staying braced and upright keeps the handles rising over the shoulders against the cables' backward pull.",
-            mistakeNote: "Leaning back lets the cables pull the body into an arch and turns the press into a steep incline press."
+            mistakeCue: "Leaning back, lower back arched",
+            correctNote: "Staying braced and upright keeps the handles rising straight up over the shoulders.",
+            mistakeNote: "Leaning back arches the lower back and turns the press into a steep incline press."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.15, ry: 0.06, cx: 0.36, cy: 0.36),
@@ -20394,25 +20659,30 @@ enum SampleData {
     )
 
     static let singleArmCableShoulderPressContent = ExerciseContent(
+        // The 2026-10-11 model's working arm and handle fill u 0.58-0.73 above
+        // v 0.42 and its cable crosses the right side there, so the elbow,
+        // brace and stance pills sit right of the trunk and legs (v 0.48-0.80)
+        // and the core label left of it, clear of the hand on the hip; the
+        // labels were shortened to fit.
         annotations: [
-            CueAnnotation(cueID: "core", label: "Stay tall, no side lean",
-                          labelPoint: CGPoint(x: 0.565, y: 0.48),
-                          labelSide: .trailing,
+            CueAnnotation(cueID: "core", label: "No side lean",
+                          labelPoint: CGPoint(x: 0.340, y: 0.48),
                           leaderLength: 40, joint: "spine"),
-            CueAnnotation(cueID: "elbow", label: "Elbow under the handle",
-                          labelPoint: CGPoint(x: 0.580, y: 0.32),
+            CueAnnotation(cueID: "elbow", label: "Elbow under handle",
+                          labelPoint: CGPoint(x: 0.632, y: 0.51),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "lockout", label: "Handle over the shoulder",
                           labelPoint: CGPoint(x: 0.450, y: 0.16),
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "brace", label: "Ribs down, glutes tight",
-                          labelPoint: CGPoint(x: 0.565, y: 0.64),
+            CueAnnotation(cueID: "brace", label: "Ribs down, braced",
+                          labelPoint: CGPoint(x: 0.625, y: 0.64),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "pelvis"),
-            CueAnnotation(cueID: "stance", label: "Hip-width, knees soft",
-                          labelPoint: CGPoint(x: 0.406, y: 0.80),
-                          leaderLength: 40, joint: "patella_R")
+            CueAnnotation(cueID: "stance", label: "Hip-width stance",
+                          labelPoint: CGPoint(x: 0.655, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L")
         ],
         cues: [
             TechniqueCue(
@@ -20426,17 +20696,17 @@ enum SampleData {
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Position",
-                intro: "The working elbow stays under the handle while the cable pulls back.",
-                why: "The cable runs down and back to the low pulley, so it pulls the handle back as well as down; the elbow under the handle and a little forward keeps the press in the scapular plane.",
-                mistake: "Letting the cable pull the elbow back behind the shoulder at the bottom.",
+                intro: "The working elbow stays under the handle while the cable pulls out to the side.",
+                why: "The cable runs out and down to a pulley at about hip height on the pressing side, so it pulls the handle outward as well as down; the forearm vertical under the handle and the elbow a little forward keep the press in the scapular plane.",
+                mistake: "Letting the cable pull the handle out past the elbow at the bottom, the forearm tilting outward.",
                 correct: "Hold the handle at the shoulder with the forearm vertical and the elbow slightly in front of the body."
             ),
             TechniqueCue(
                 id: "lockout",
                 title: "Lockout",
-                intro: "The handle finishes over the shoulder, not behind the head.",
-                why: "Because the cable pulls down and back, it draws the arm behind the head at the top; holding the handle over the shoulder keeps the arm in line with the trunk instead of the shoulder and lower back arching back to follow the cable.",
-                mistake: "The arm drifting back behind the head at lockout.",
+                intro: "The handle finishes over the shoulder, not out to the side.",
+                why: "Because the cable runs out to the side, it pulls the straight arm outward at the top; pressing until the handle sits over the shoulder keeps the arm stacked over the joint instead of held out at an angle.",
+                mistake: "The arm drifting out to the side at the top, the handle well outside the shoulder.",
                 correct: "Press up until the arm is straight, the handle over the shoulder and the biceps beside the ear."
             ),
             TechniqueCue(
@@ -20450,24 +20720,36 @@ enum SampleData {
             TechniqueCue(
                 id: "stance",
                 title: "Stance",
-                intro: "Stand a small step in front of the pulley, feet hip-width.",
-                why: "Hip-width feet and soft knees give a steady base against the cable's pull down and back on one side.",
+                intro: "Stand in the middle of the station, feet hip-width.",
+                why: "Hip-width feet and soft knees give a steady base against the cable's pull out and down on one side.",
                 mistake: "Feet drawn together and knees locked, so the cable rocks the body.",
                 correct: "Stand with the feet hip-width, knees soft and the weight over the middle of the feet."
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the front and side delts and the
+            // triceps bright (its first export painted the front delt dim, a
+            // slip the owner confirmed; the re-export the same day put it back
+            // to bright) and the trapezius and rhomboids dim, as on the
+            // Single-Arm Dumbbell Shoulder Press. The triceps join the primary
+            // rows at their EMG fraction, and the trapezius joins the
+            // secondary rows as there: LOW 0.36, an estimate (ExRx lists its
+            // middle and lower parts as synergists; Paoli et al. 2010, J
+            // Strength Cond Res 24(6):1578-1583; Luczak et al. 2013, J Sports
+            // Med 2013:612650). The rhomboids, which ExRx does not list for
+            // the press, stay unnamed.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.42),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["quadratus lumborum", "rotator cuff", "serratus anterior", "glutes"],
         setup: [
-            "Set one pulley at the bottom and attach a handle.",
-            "Stand beside it, a small step in front, feet hip-width.",
-            "Bring the handle to the near shoulder, palm forward.",
-            "Let your free arm hang by your side and brace."
+            "Set one pulley at about hip height and attach a handle.",
+            "Stand in the middle of the station, feet hip-width.",
+            "Bring the handle to the shoulder on the pulley side, palm forward.",
+            "Rest your free hand on your hip and brace."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -33222,7 +33504,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "elbow", label: "Forearms upright",
-                          labelPoint: CGPoint(x: 0.668, y: 0.40),
+                          labelPoint: CGPoint(x: 0.668, y: 0.50),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "shoulders", label: "Shoulders down",
@@ -33240,15 +33522,15 @@ enum SampleData {
                 intro: "The chest tips forward as you lower.",
                 why: "Leaning forward lets you sink deep while the shoulder bends back less: in a lab study of bar dips, the lean supplied part of the depth that the shoulder would otherwise have to give. ExRx's chest dip bends at the hips and knees and targets the chest, where its triceps dip keeps the hips straight.",
                 mistake: "Holding the trunk bolt upright all the way down, as in a triceps dip.",
-                correct: "Start with a slight forward lean and let it grow to about 30° at the bottom, then come back to the start lean as you press up."
+                correct: "Start leaning well forward, about 35°, with your upper back rounded and chin tucked; let the lean grow to about 50° at the bottom, then come back to the start lean as you press up."
             ),
             TechniqueCue(
                 id: "depth",
                 title: "Depth",
                 intro: "Lower until the shoulders reach elbow height.",
-                why: "In competition a dip usually counts once the shoulders pass below the elbows; this model goes just past elbow height, the elbows bent to about 75°. Lifters in lab studies used most, but not all, of their shoulders' backward range at the bottom of a bar dip.",
+                why: "In competition a dip usually counts once the shoulders pass below the elbows; this model goes just past elbow height, the elbows bent to just under 80°. Lifters in lab studies used most, but not all, of their shoulders' backward range at the bottom of a bar dip.",
                 mistake: "Half reps that turn back with the elbows barely bent.",
-                correct: "Lower until your shoulders are level with your elbows, then press back up to straight arms."
+                correct: "Lower until your shoulders are level with your elbows, then press back up until your arms are almost straight."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -33264,7 +33546,7 @@ enum SampleData {
                 intro: "The shoulders stay down, away from the ears.",
                 why: "Shrugging lets the body hang from the shoulders at the bottom, which makes the dip less efficient and adds stress to the shoulder joint.",
                 mistake: "The shoulders shrugging up toward the ears as you sink.",
-                correct: "Push the bars down and keep your neck long, shoulders down and back, from the top to the bottom."
+                correct: "Push the bars down and keep your shoulders down, away from your ears, from the top to the bottom, even as your upper back rounds forward."
             ),
             TechniqueCue(
                 id: "legs",
@@ -33276,21 +33558,25 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the triceps dim (bright before) with
+            // the chest and front delts bright, so the triceps row moves to
+            // secondary and keeps its 0.82 (a secondary at 0.85-0.88 has
+            // precedent; no %MVIC exists for the bar dip).
             MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.66)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.82)
         ],
         stabilisers: ["pectoralis minor", "latissimus dorsi", "rhomboids", "lower trapezius"],
         setup: [
             "Stand between parallel bars set about shoulder width or a little wider.",
-            "Grip the bars, palms facing in, and press up to straight arms.",
+            "Grip the bars, palms facing in, and press up until your arms are almost straight.",
             "Bend your knees so your feet hang behind you.",
-            "Lean your chest slightly forward, shoulders down."
+            "Lean well forward, upper back rounded, chin tucked, shoulders down."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "STAYING UPRIGHT",
-            correctCue: "Chest tips forward to ~30°",
+            correctCue: "Chest tips forward to ~50°",
             mistakeCue: "Trunk stays upright",
             correctNote: "With the trunk leaning, part of the depth comes from the lean, and the chest, front shoulders and triceps press together.",
             mistakeNote: "Bolt upright, more of the depth has to come from the shoulders bending back, and the chest dip turns toward a triceps dip."
@@ -33315,7 +33601,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.624, y: 0.24),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "upper_arm_L"),
-            CueAnnotation(cueID: "lockout", label: "Finish straight",
+            CueAnnotation(cueID: "lockout", label: "Finish almost straight",
                           labelPoint: CGPoint(x: 0.682, y: 0.32),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
@@ -33337,25 +33623,25 @@ enum SampleData {
                 id: "lean",
                 title: "Trunk Angle",
                 intro: "Let the trunk lean forward as the plate goes down.",
-                why: "The plate changes the load, not the movement: the lean grows from about 12° at the top to about 33° at the bottom, as in the bodyweight chest dip, so the lean shares the depth with the shoulders.",
+                why: "The plate changes the load, not the movement: the lean grows from about 35° at the top to about 50° at the bottom, as in the bodyweight chest dip, so the lean shares the depth with the shoulders.",
                 mistake: "Staying upright under the plate, so the shoulders must bend back further for the same depth.",
-                correct: "Lean slightly forward before the first rep and let the chest tip further forward as you sink."
+                correct: "Lean well forward before the first rep, upper back rounded and chin tucked, and let the chest tip further forward as you sink."
             ),
             TechniqueCue(
                 id: "depth",
                 title: "Depth",
-                intro: "Stop with the shoulders at elbow height.",
+                intro: "Stop with the shoulders just below elbow height.",
                 why: "The bottom, where the shoulders are bent furthest back, is the dip's most vulnerable position. A pectoralis major tear during weighted dips has been reported, and dip researchers caution that added load or fatigue may raise the risk of pec injury.",
                 mistake: "Sinking well below elbow height to chase a deeper stretch under the plate.",
-                correct: "Lower under control until your shoulders reach elbow height, then press up; add weight only while that depth stays smooth."
+                correct: "Lower under control until your shoulders are just below your elbows, then press up; add weight only while that depth stays smooth."
             ),
             TechniqueCue(
                 id: "lockout",
-                title: "Lockout",
-                intro: "Finish every rep on straight arms.",
-                why: "Pressing all the way to straight elbows completes the triceps' share of the dip and gives you a steady top position to reset the lean and the plate before the next rep.",
+                title: "Top Position",
+                intro: "Finish every rep with your arms almost straight.",
+                why: "Pressing back up to almost straight elbows, about 165° on this model, completes the triceps' share of the dip and gives you a steady top position to reset the lean and the plate before the next rep.",
                 mistake: "Cutting the press short with the elbows still bent and sinking straight into the next rep.",
-                correct: "Press until your arms are straight and your shoulders are down, pause for a moment, then start the next rep."
+                correct: "Press until your arms are almost straight and your shoulders are down, pause for a moment, then start the next rep."
             ),
             TechniqueCue(
                 id: "legs",
@@ -33367,23 +33653,27 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-11 model paints the triceps dim (bright before) with
+            // the chest and front delts bright, so the triceps row moves to
+            // secondary and keeps its 0.88 (a secondary at 0.85-0.88 has
+            // precedent; no EMG exists for the weighted dip).
             MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.72)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.88)
         ],
         stabilisers: ["pectoralis minor", "latissimus dorsi", "lower trapezius", "core"],
         setup: [
             "Fasten a dip belt low around your hips and hang a plate from its chain.",
-            "Stand between the bars, grip them palms in and press up to straight arms.",
+            "Stand between the bars, grip them palms in and press up until your arms are almost straight.",
             "Let the plate hang still in front of your thighs, knees bent behind you.",
-            "Lean slightly forward, shoulders down, before the first rep."
+            "Lean well forward, upper back rounded, chin tucked and shoulders down, before the first rep."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "SINKING TOO DEEP",
-            correctCue: "Shoulders stop at elbow height",
-            mistakeCue: "Shoulders sink below the elbows",
-            correctNote: "Stopping at elbow height keeps the loaded chest and shoulders working through the range the dip is built on.",
+            correctCue: "Shoulders stop near elbow height",
+            mistakeCue: "Shoulders sink well below elbows",
+            correctNote: "Stopping near elbow height keeps the loaded chest and shoulders working through the range the dip is built on.",
             mistakeNote: "Sinking deeper under a plate takes the loaded shoulder further back toward the end of its range, where dip researchers see the most risk."
         ),
         glows: [
@@ -41768,4 +42058,104 @@ enum SampleData {
         ]
     )
     // END Desktop 1-100 (2026-10-10) content
+    // BEGIN Desktop 100-200 (2026-10-11) content
+
+    // MARK: - Desktop 100-200 (2026-10-11)
+    //
+    // The Desktop "100-200" folder's new exercise, the concentration curl.
+    // Generated by `Tools/trainer-content/gen.py` from `spec_1011.py`; the
+    // family file's header lists what its model shows and its sources, and
+    // `notes_1011_curl.md` maps the copy's claims to them.
+
+    static let concentrationCurlContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "elbow", label: "Upper arm on inner thigh",
+                          labelPoint: CGPoint(x: 0.450, y: 0.12),
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "torso", label: "Chest stays forward",
+                          labelPoint: CGPoint(x: 0.624, y: 0.19),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "top", label: "Pause at the top",
+                          labelPoint: CGPoint(x: 0.668, y: 0.53),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "lower", label: "Lower slowly",
+                          labelPoint: CGPoint(x: 0.726, y: 0.63),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "wrist", label: "Wrist straight",
+                          labelPoint: CGPoint(x: 0.303, y: 0.78),
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "elbow",
+                title: "Arm on the Thigh",
+                intro: "The back of your upper arm rests on your inner thigh, just above the knee, and stays there.",
+                why: "Pressed against the leg, the upper arm cannot sway, so bending the elbow is the only motion. In one study of eight biceps exercises, this curl drew the most biceps activity, with less front-shoulder activity than the barbell curl; the researchers suggested the pinned upper arm was the reason.",
+                mistake: "The elbow lifting off the thigh and swinging forward as the dumbbell rises, so the shoulder helps lift it.",
+                correct: "Press the back of your upper arm into your inner thigh, let it hang almost straight down and move only your forearm."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Trunk Position",
+                intro: "Your chest stays leaning well forward over your thighs; only your forearm moves.",
+                why: "Sitting up or rocking back as you curl swings the dumbbell up with your trunk and pulls the arm off the thigh, so your trunk does part of the work through the middle of the curl, where the dumbbell pulls hardest. Needing to rock is a sign the weight is too heavy.",
+                mistake: "Sitting up and rocking the trunk back to heave the dumbbell past the middle of the curl.",
+                correct: "Lean forward over your thighs, brace your free hand on your right knee and keep your chest still from the first rep to the last."
+            ),
+            TechniqueCue(
+                id: "top",
+                title: "Top of the Curl",
+                intro: "Curl until the dumbbell is just under your chin, then hold it there for a moment.",
+                why: "With the upper arm hanging down, the dumbbell pulls hardest as the forearm passes level and still at about nine-tenths of that at the top, so the last part of the curl is still hard work; stopping at level leaves it out.",
+                mistake: "Turning each rep round with the forearm at or just below level, well short of the top.",
+                correct: "Curl toward the front of your shoulder until the dumbbell is just under your chin, your upper arm still on your thigh, pause for a beat, then lower."
+            ),
+            TechniqueCue(
+                id: "lower",
+                title: "Lowering",
+                intro: "Lower the dumbbell more slowly than you lifted it.",
+                why: "The lowering half trains the biceps as well: in a review of training studies, lowering-only work built as much muscle as lifting-only work, or slightly more. With sets taken to failure, rep durations from half a second to eight seconds built similar muscle, so lower under control rather than to a slow count.",
+                mistake: "Letting the dumbbell drop so the arm snaps straight at the bottom.",
+                correct: "Take about a second to curl up and about one and a half to lower, stopping with your elbow still bent and the dumbbell just inside your left lower leg."
+            ),
+            TechniqueCue(
+                id: "wrist",
+                title: "Grip and Wrist",
+                intro: "Your forearm stays turned palm-up from bottom to top, the wrist straight.",
+                why: "The biceps both bends the elbow and turns the palm up, and in competitive bodybuilders it has worked harder in palm-up curls than in palm-in or palm-down ones. Letting the wrist curl in draws the dumbbell back toward the elbow, so the top of the rep gets easier, and a bent wrist can take an unnecessary load.",
+                mistake: "Curling the wrist in toward the forearm as the dumbbell nears the top.",
+                correct: "Hold the handle firmly in the middle, palm up, and keep your knuckles in line with your forearm from the bottom to the top."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["erector spinae", "obliques", "upper trapezius", "middle trapezius"],
+        setup: [
+            "Sit on a flat bench, feet flat and wider than your shoulders.",
+            "Pick up a dumbbell in your left hand, palm facing forward.",
+            "Lean forward and rest the back of your upper arm on your inner thigh, just above the knee.",
+            "Brace your right hand on your right knee, the dumbbell hanging just inside your left lower leg.",
+            "Do every rep with the left arm, then switch sides."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOW OFF THE THIGH",
+            correctCue: "Upper arm pinned to the thigh",
+            mistakeCue: "Elbow swings forward off it",
+            correctNote: "The thigh holds the upper arm in place, so the dumbbell rises only as the elbow bends and the elbow flexors do the lifting.",
+            mistakeNote: "When the elbow comes off the thigh and swings forward, the shoulder starts to help lift and the curl loses the brace that makes it strict."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.07, cx: 0.52, cy: 0.36),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.04, ry: 0.05, cx: 0.54, cy: 0.43)
+        ]
+    )
+    // END Desktop 100-200 (2026-10-11) content
 }

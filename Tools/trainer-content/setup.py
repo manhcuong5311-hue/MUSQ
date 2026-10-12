@@ -543,29 +543,29 @@ SETUP = {
     ],
     "Iso-Lateral Chest Press": [
         "Set the seat so the handles line up with your mid-chest.",
-        "Sit tall with your back on the pad and your feet flat.",
-        "Grip both handles; press with one arm at a time.",
+        "Sit back against the pad with your feet on the foot platform.",
+        "Grip both upright handles, palms facing in; press one arm at a time.",
     ],
     "Incline Chest Press Machine": [
         "Set the seat so the handles line up with your upper chest.",
-        "Sit back against the angled pad with your feet flat.",
+        "Sit back against the angled pad with your feet on the foot platform.",
         "Grip the handles with your wrists straight.",
     ],
     "Decline Chest Press Machine": [
         "Set the seat so the handles line up with your lower chest.",
-        "Sit tall with your back on the pad and your feet flat.",
+        "Sit back against the pad with your feet flat.",
         "Grip the handles with your wrists straight.",
     ],
     "Plate-Loaded Chest Press": [
         "Load the same plates on both sides.",
         "Set the seat so the handles line up with your mid-chest.",
-        "Sit tall with your back on the pad and your feet flat.",
-        "Grip the handles with your wrists straight.",
+        "Sit back against the pad with your feet on the foot platform.",
+        "Grip the upright handles, palms facing in, wrists straight.",
     ],
     "Wide-Grip Chest Press Machine": [
         "Set the seat so the handles line up with your mid-chest.",
-        "Sit tall with your back on the pad and your feet flat.",
-        "Take the outer handles, wider than your shoulders.",
+        "Sit back against the pad with your feet flat.",
+        "Grip the handles overhand, well wider than your shoulders.",
     ],
     "Cable Chest Press": [
         "Set both pulleys at chest height and take a handle in each hand.",
@@ -760,7 +760,7 @@ SETUP = {
         "Grip both handles, back flat, arms straight.",
     ],
     "Inverted Row": [
-        "Set a bar at about hip height in a rack or Smith machine.",
+        "Set the Smith machine bar about 75 cm off the floor; a higher bar is easier.",
         "Lie under it and grip overhand, a little wider than your shoulders.",
         "Straighten your body from heels to head, heels on the floor.",
     ],
@@ -812,8 +812,8 @@ SETUP = {
     ],
     "Machine Pull-Up": [
         "Set the counterweight: more weight gives more help.",
-        "Grip the bar overhand, a little wider than your shoulders.",
-        "Stand on the platform and hang with straight arms.",
+        "Face the machine and grip the wide handles overhand, about one and a half shoulder-widths apart.",
+        "Kneel on the pad, shins along it, and hang with your arms almost straight.",
     ],
     "Wide-Grip Lat Pulldown": [
         "Adjust the thigh pads so your legs are locked in.",
@@ -823,7 +823,7 @@ SETUP = {
     "Reverse-Grip Lat Pulldown": [
         "Adjust the thigh pads so your legs are locked in.",
         "Grip the bar underhand at shoulder-width.",
-        "Sit down tall with your arms straight overhead.",
+        "Sit down tall with your arms overhead, elbows slightly bent.",
     ],
     "Neutral-Grip Lat Pulldown": [
         "Attach a neutral-grip bar and adjust the thigh pads.",
@@ -832,13 +832,13 @@ SETUP = {
     ],
     "V-Bar Lat Pulldown": [
         "Attach a V-handle to the high pulley and adjust the thigh pads.",
-        "Hold the handle with both hands, palms facing.",
+        "Hold the two angled grips, hands close together.",
         "Sit down tall with your arms straight overhead.",
     ],
     "Single-Arm Lat Pulldown": [
         "Attach a single D-handle to the high pulley.",
         "Adjust the thigh pads and take the handle in one hand.",
-        "Sit tall, arm straight overhead, free hand on your thigh.",
+        "Sit tall, arm straight overhead, free hand on your waist.",
     ],
     "Kneeling Lat Pulldown": [
         "Set a bar on the high pulley and a mat in front of the stack.",
@@ -851,29 +851,29 @@ SETUP = {
         "Sit down tall with your arms straight overhead.",
     ],
     "Machine Lat Pulldown": [
-        "Set the seat and thigh pad so the handles are just within reach.",
-        "Sit tall and grip both handles.",
+        "Face the machine and set the seat and thigh pads so the handles are just within reach.",
+        "Sit tall and take both handles overhand.",
         "Start with your arms overhead, elbows slightly bent, shoulders down.",
     ],
     "Iso-Lateral Lat Pulldown": [
-        "Set the seat and thigh pad so the handles are just within reach.",
-        "Sit tall and grip both handles.",
+        "Face the machine and set the seat and thigh pads so the handles are just within reach.",
+        "Sit tall and take both handles overhand.",
         "Pull one handle at a time, the other held overhead.",
     ],
     "Wide-Grip Seated Cable Row": [
-        "Set both pulleys at waist height and clip a handle to each.",
+        "Clip a straight bar to the cable of a seated row station.",
         "Sit with your feet on the footplate, knees soft.",
-        "Grip the handles overhand, wide, and sit tall with your arms straight.",
+        "Grip the bar overhand, wide, and sit tall with your arms reaching forward.",
     ],
     "Close-Grip Seated Cable Row": [
-        "Set both pulleys at waist height and clip a handle to each.",
+        "Clip a double-D handle to the cable of a seated row station.",
         "Sit with your feet on the footplate, knees soft.",
-        "Hold the handles close together, palms facing, and sit tall with your arms straight.",
+        "Hold both grips of the handle, palms facing, and sit tall with your arms straight.",
     ],
     "Single-Arm Cable Row": [
-        "Attach a single handle to the low pulley.",
+        "Attach a D-handle to the cable of a seated row station.",
         "Sit with your feet on the footplate, knees soft.",
-        "Take the handle in one hand and sit tall, arm straight.",
+        "Take the handle in one hand, rest the other on your thigh, and sit tall.",
     ],
     "Standing Cable Row": [
         "Set both pulleys just below hip height and take a handle in each hand.",
@@ -886,29 +886,30 @@ SETUP = {
         "Take the handle in one hand, arm straight, glutes squeezed.",
     ],
     "High Cable Row": [
-        "Set both pulleys high and sit facing them on the bench.",
+        "Set both pulleys high and sit facing them on a flat bench, feet on the floor.",
         "Take a handle in each hand, palms facing in.",
         "Sit tall with your arms reaching up and forward.",
     ],
     "Low Cable Row": [
-        "Set both pulleys at the floor and sit facing them.",
+        "Clip a straight bar to the cable of a seated row station.",
         "Put your feet on the footplate, knees soft.",
-        "Take a handle in each hand and sit tall, arms reaching down.",
+        "Grip the bar underhand, a little wider than your shoulders, and sit tall.",
     ],
     "Machine Seated Row": [
-        "Set the seat so the handles are at mid-chest height.",
-        "Sit with your chest against the pad, feet flat.",
-        "Reach forward and take the handles with straight arms.",
+        "Set the seat so the handles line up with your lower chest.",
+        "Sit with your chest on the pad and your feet on the foot plate.",
+        "Reach forward and take the handles, palms facing in, arms nearly straight.",
     ],
     "Iso-Lateral Row Machine": [
-        "Set the seat so the handles are at mid-chest height.",
-        "Sit with your chest against the pad, feet flat.",
-        "Take both handles; row one side at a time.",
+        "Set the seat so the handles line up with your lower chest.",
+        "Sit with your chest on the pad and your feet on the foot plate.",
+        "Take both handles, palms facing in; row one side at a time.",
     ],
     "Single-Arm Machine Row": [
-        "Set the seat so the handle is at mid-chest height.",
-        "Sit with your chest against the pad, feet flat.",
-        "Take the handle in one hand and hold the support with the other.",
+        "Set the seat so the handle lines up with your lower chest.",
+        "Set the chest pad so you reach the handle only at full stretch.",
+        "Sit with your chest on the pad, feet on the foot plate, and hold the bar in front of the pad with one hand.",
+        "Take the handle in the other hand, palm facing in.",
     ],
     "Reverse-Grip T-Bar Row": [
         "Wedge one end of a bar in a landmine and load the other end.",
@@ -922,7 +923,7 @@ SETUP = {
     ],
     "Machine Pullover": [
         "Set the seat so your shoulders line up with the machine's pivot.",
-        "Sit with your back on the pad and fasten the belt if there is one.",
+        "Sit with your back on the pad and fasten the belt across your lap.",
         "Place your upper arms on the pads and rest your hands on the bar.",
     ],
     # Batch 191-240 (2026-09-26): written to each model (see spec_191_240_*.py).
@@ -957,7 +958,7 @@ SETUP = {
         "Squeeze your glutes and brace your core.",
     ],
     "Seated Dumbbell Press": [
-        "Sit tall in the middle of a low-backed seat.",
+        "Set an adjustable bench almost upright and sit with your back on the pad.",
         "Plant your feet flat and wider than your hips.",
         "Kick the dumbbells up to shoulder height, palms forward.",
         "Elbows under your wrists, ribs down.",
@@ -993,16 +994,16 @@ SETUP = {
         "Rest your free hand on your hip and squeeze the glute of the down leg.",
     ],
     "Cable Shoulder Press": [
-        "Set both pulleys at the bottom and attach a handle to each.",
-        "Stand centred between them, a small step in front.",
+        "Set both pulleys at about hip height and attach a handle to each.",
+        "Stand centred between the stacks, in line with them.",
         "Bring the handles up to your shoulders, palms forward.",
         "Brace your core, knees soft.",
     ],
     "Single-Arm Cable Shoulder Press": [
-        "Set one pulley at the bottom and attach a handle.",
-        "Stand beside it, a small step in front, feet hip-width.",
-        "Bring the handle to the near shoulder, palm forward.",
-        "Let your free arm hang by your side and brace.",
+        "Set one pulley at about hip height and attach a handle.",
+        "Stand in the middle of the station, feet hip-width.",
+        "Bring the handle to the shoulder on the pulley side, palm forward.",
+        "Rest your free hand on your hip and brace.",
     ],
     "Smith Machine Shoulder Press": [
         "Set a bench under the Smith bar with the back pad just short of upright.",
@@ -1856,15 +1857,15 @@ SETUP = {
     ],
     "Chest Dip": [
         "Stand between parallel bars set about shoulder width or a little wider.",
-        "Grip the bars, palms facing in, and press up to straight arms.",
+        "Grip the bars, palms facing in, and press up until your arms are almost straight.",
         "Bend your knees so your feet hang behind you.",
-        "Lean your chest slightly forward, shoulders down.",
+        "Lean well forward, upper back rounded, chin tucked, shoulders down.",
     ],
     "Weighted Chest Dip": [
         "Fasten a dip belt low around your hips and hang a plate from its chain.",
-        "Stand between the bars, grip them palms in and press up to straight arms.",
+        "Stand between the bars, grip them palms in and press up until your arms are almost straight.",
         "Let the plate hang still in front of your thighs, knees bent behind you.",
-        "Lean slightly forward, shoulders down, before the first rep.",
+        "Lean well forward, upper back rounded, chin tucked and shoulders down, before the first rep.",
     ],
     "Landmine Chest Press": [
         "Load the free end of a landmine bar and fit a crossbar handle to it.",
@@ -2423,4 +2424,13 @@ SETUP = {
         "Bring your left knee up in front with the cable taut before the first rep.",
     ],
     # END Desktop 1-100 (2026-10-10)
+    # BEGIN Desktop 100-200 (2026-10-11)
+    "Concentration Curl": [
+        "Sit on a flat bench, feet flat and wider than your shoulders.",
+        "Pick up a dumbbell in your left hand, palm facing forward.",
+        "Lean forward and rest the back of your upper arm on your inner thigh, just above the knee.",
+        "Brace your right hand on your right knee, the dumbbell hanging just inside your left lower leg.",
+        "Do every rep with the left arm, then switch sides.",
+    ],
+    # END Desktop 100-200 (2026-10-11)
 }
