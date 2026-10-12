@@ -1,0 +1,19 @@
+// MARK: PIECES
+    // MARK: Desktop 300-400 reviser A pieces (2026-10-12)
+
+    /// Cable RDL on the M29 station (2026-10-12): standing too close to the
+    /// low pulley. The whole lifter, feet and bar included, drawn 0.3 torso
+    /// lengths (~18 cm) nearer the machine in the same pose. The new model
+    /// stands with its ankles ~63 cm from the pulley and its stack only ~3 cm
+    /// clear of its rest at the bottom, so ~7 cm closer already lands the
+    /// stack before the bottom; at 18 cm the ghost's bar ends ~16 cm from
+    /// the pulley at the bottom, the ghost ~45 pt from the model in the
+    /// trainer view at the fault's turn (total yaw -1.2). `rdl4CloserToPulley`'s
+    /// 0.6 (~34 cm), sized for the old tower ~0.9 m ahead, now puts the
+    /// ghost's hands on the pulley.
+    private static let r1012revACloserToPulley = FaultPose(
+        chains: [spine, armsToGrip, legs, hips, bar],
+        moves: [.shift(carried + ["shin_*", "foot_*", "foot_*.tip"], ahead: 0.3)]
+    )
+
+// MARK: TABLE

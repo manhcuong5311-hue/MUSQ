@@ -54,9 +54,13 @@ enum MovementPattern: String {
         else if has("leg extension", "sissy squat") { self = .quadIsolation }
         else if has("lunge", "split squat", "step-up") { self = .lunge }
         else if has("squat", "leg press") { self = .squat }
-        else if has("deadlift", "rack pull", "block pull", "back extension", "good morning") { self = .hinge }
+        // The pull-through, reverse hyper, 45-degree hip extension and swing
+        // hinge at the hips like the back extension (2026-10-12); the standing
+        // cable hip extension swings one leg back, a kickback.
+        else if has("deadlift", "rack pull", "block pull", "back extension", "good morning", "pull-through",
+                    "reverse hyperextension", "45-degree hip extension", "kettlebell swing") { self = .hinge }
         else if has("bridge", "hip thrust", "frog pump") { self = .bridge }
-        else if has("kickback", "abduction", "side kick", "clamshell") { self = .gluteIsolation }
+        else if has("kickback", "abduction", "side kick", "clamshell", "cable hip extension") { self = .gluteIsolation }
         // The adduction machine and cable (2026-10-10): single-joint inner-thigh
         // work, isolation like the abductions, matched first with each other.
         else if has("adduction") { self = .hipAdduction }

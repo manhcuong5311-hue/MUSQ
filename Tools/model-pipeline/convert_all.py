@@ -3,7 +3,7 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from curves2mesh import replace_curves
-from pxr import Usd, UsdGeom, UsdLux, Sdf, Gf
+from pxr import Usd, UsdGeom, UsdLux, UsdSkel, Sdf, Gf
 
 SRC = "/Users/sammanhcuong/Developer/GymWorkout/SourceExports"
 OUT = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models"
@@ -768,6 +768,47 @@ JOBS = {
     "100-200-1011/202_cable_shoulder_press": "Shoulder/CableShoulderPress",
     "100-200-1011/203_single_arm_cable_shoulder_press": "Shoulder/SingleArmCableShoulderPress",
     "100-200-1011/237_concentration_curl": "Biceps/ConcentrationCurl",
+    # Desktop "300-400" folder (2026-10-12): 26 re-exports of models in the
+    # app (the owner's re-tuned 318-400 legs) and twelve new hip thrusts,
+    # hip extensions and kettlebell lifts.
+    "300-400-1012/318_smith_machine_split_squat": "Legs/SmithMachineSplitSquat",
+    "300-400-1012/319_barbell_bulgarian_split_squat": "Legs/BarbellBulgarianSplitSquat",
+    "300-400-1012/320_smith_machine_bulgarian_split_squat": "Legs/SmithMachineBulgarianSplitSquat",
+    "300-400-1012/322_rear_foot_elevated_split_squat": "Legs/RearFootElevatedSplitSquat",
+    "300-400-1012/323_forward_lunge": "Legs/ForwardLunge",
+    "300-400-1012/324_barbell_lunge": "Legs/BarbellLunge",
+    "300-400-1012/325_smith_machine_lunge": "Legs/SmithMachineReverseLunge",
+    "300-400-1012/356_single_leg_romanian_deadlift": "Legs/SingleLegRomanianDeadlift",
+    "300-400-1012/358_dumbbell_single_leg_romanian_deadlift": "Legs/DumbbellSingleLegRomanianDeadlift",
+    "300-400-1012/359_b_stance_romanian_deadlift": "Legs/BStanceRomanianDeadlift",
+    "300-400-1012/360_smith_machine_romanian_deadlift": "Legs/SmithMachineRomanianDeadlift",
+    "300-400-1012/361_cable_romanian_deadlift": "Legs/CableRomanianDeadlift",
+    "300-400-1012/362_kettlebell_romanian_deadlift": "Legs/KettlebellRomanianDeadlift",
+    "300-400-1012/364_seated_good_morning": "Legs/SeatedGoodMorning",
+    "300-400-1012/365_smith_machine_good_morning": "Legs/SmithMachineGoodMorning",
+    "300-400-1012/368_glute_ham_raise": "Legs/GluteHamRaise",
+    "300-400-1012/369_standing_leg_curl_machine": "Legs/StandingLegCurl",
+    "300-400-1012/370_kneeling_leg_curl": "Legs/KneelingLegCurl",
+    "300-400-1012/371_cable_standing_leg_curl": "Legs/CableStandingLegCurl",
+    "300-400-1012/376_dumbbell_hip_thrust": "Legs/DumbbellHipThrust",
+    "300-400-1012/393_dumbbell_deadlift": "Legs/DumbbellDeadlift",
+    "300-400-1012/395_hip_adduction_cable": "Legs/CableHipAdduction",
+    "300-400-1012/396_standing_hip_abduction": "Legs/StandingHipAbduction",
+    "300-400-1012/397_side_lying_hip_abduction": "Legs/SideLyingHipAbduction",
+    "300-400-1012/398_banded_hip_abduction": "Legs/BandedHipAbduction",
+    "300-400-1012/400_clamshell": "Legs/Clamshell",
+    "300-400-1012/377_smith_machine_hip_thrust": "Legs/SmithMachineHipThrust",
+    "300-400-1012/378_machine_hip_thrust": "Legs/MachineHipThrust",
+    "300-400-1012/379_single_leg_hip_thrust": "Legs/SingleLegHipThrust",
+    "300-400-1012/380_b_stance_hip_thrust": "Legs/BStanceHipThrust",
+    "300-400-1012/383_cable_pull_through": "Legs/CablePullThrough",
+    "300-400-1012/387_standing_cable_hip_extension": "Legs/StandingCableHipExtension",
+    "300-400-1012/388_reverse_hyperextension": "Legs/ReverseHyperextension",
+    "300-400-1012/389_single_leg_back_extension": "Legs/SingleLegBackExtension",
+    "300-400-1012/390_45_degree_hip_extension": "Legs/HipExtension45",
+    "300-400-1012/391_kettlebell_swing": "Legs/KettlebellSwing",
+    "300-400-1012/392_sumo_kettlebell_deadlift": "Legs/SumoKettlebellDeadlift",
+    "300-400-1012/394_kettlebell_deadlift": "Legs/KettlebellDeadlift",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs
@@ -834,7 +875,14 @@ for raw, name in JOBS.items():
     UsdGeom.SetStageMetersPerUnit(stage, 1)
     stage.SetStartTimeCode(start); stage.SetEndTimeCode(end)
     stage.SetTimeCodesPerSecond(rawStage.GetTimeCodesPerSecond())
-    root = UsdGeom.Xform.Define(stage, "/root")
+    # A prop skinned to the rig's skeleton outside the rig (2026-10-12: 398
+    # Banded Hip Abduction's mini band) makes Blender put the SkelRoot on
+    # /root itself. The wrapper keeps that type: as a plain Xform nothing was
+    # under a SkelRoot, and the app drew the body in its standing rest pose.
+    if rawStage.GetPrimAtPath("/root").IsA(UsdSkel.Root):
+        root = UsdSkel.Root.Define(stage, "/root")
+    else:
+        root = UsdGeom.Xform.Define(stage, "/root")
     stage.SetDefaultPrim(root.GetPrim())
     root.GetPrim().GetReferences().AddReference(src, "/root")
     root.AddRotateXOp().Set(-90)

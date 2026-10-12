@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib--degree-hip-extension.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

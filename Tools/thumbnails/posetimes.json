@@ -1106,17 +1106,17 @@
  },
  "Forward Lunge": {
   "time": 6.0,
-  "disp": 7.23,
+  "disp": 7.17,
   "length": 7.96
  },
  "Barbell Lunge": {
   "time": 6.0,
-  "disp": 7.26,
+  "disp": 7.2,
   "length": 7.96
  },
  "Smith Machine Reverse Lunge": {
-  "time": 2.0,
-  "disp": 3.71,
+  "time": 2.17,
+  "disp": 3.68,
   "length": 7.96
  },
  "Curtsy Lunge": {
@@ -1516,22 +1516,22 @@
  },
  "B-Stance Romanian Deadlift": {
   "time": 1.83,
-  "disp": 2.21,
+  "disp": 2.87,
   "length": 7.96
  },
  "Smith Machine Romanian Deadlift": {
   "time": 1.83,
-  "disp": 2.63,
+  "disp": 2.74,
   "length": 7.96
  },
  "Cable Romanian Deadlift": {
   "time": 1.83,
-  "disp": 2.8,
+  "disp": 3.12,
   "length": 7.96
  },
  "Kettlebell Romanian Deadlift": {
   "time": 1.83,
-  "disp": 2.7,
+  "disp": 3.1,
   "length": 7.96
  },
  "Good Morning": {
@@ -1540,8 +1540,8 @@
   "length": 7.96
  },
  "Seated Good Morning": {
-  "time": 2.0,
-  "disp": 2.07,
+  "time": 1.83,
+  "disp": 2.13,
   "length": 7.96
  },
  "Smith Machine Good Morning": {
@@ -1611,7 +1611,7 @@
  },
  "Cable Hip Adduction": {
   "time": 1.83,
-  "disp": 0.96,
+  "disp": 0.93,
   "length": 7.96
  },
  "Standing Hip Abduction": {
@@ -1626,7 +1626,7 @@
  },
  "Banded Hip Abduction": {
   "time": 1.83,
-  "disp": 0.36,
+  "disp": 0.69,
   "length": 7.96
  },
  "Clamshell": {
@@ -1716,7 +1716,7 @@
  },
  "Dumbbell Hip Thrust": {
   "time": 1.5,
-  "disp": 1.25,
+  "disp": 1.71,
   "length": 7.96
  },
  "Dumbbell Standing Calf Raise": {
@@ -2127,6 +2127,66 @@
  "Concentration Curl": {
   "time": 1.5,
   "disp": 0.36,
+  "length": 7.96
+ },
+ "Cable Pull-Through": {
+  "time": 1.67,
+  "disp": 2.32,
+  "length": 7.96
+ },
+ "Standing Cable Hip Extension": {
+  "time": 1.83,
+  "disp": 0.9,
+  "length": 7.96
+ },
+ "Reverse Hyperextension": {
+  "time": 1.83,
+  "disp": 3.81,
+  "length": 7.96
+ },
+ "Single-Leg Back Extension": {
+  "time": 2.0,
+  "disp": 2.75,
+  "length": 7.96
+ },
+ "45-Degree Hip Extension": {
+  "time": 2.0,
+  "disp": 2.55,
+  "length": 7.96
+ },
+ "Kettlebell Swing": {
+  "time": 1.0,
+  "disp": 3.75,
+  "length": 7.96
+ },
+ "Sumo Kettlebell Deadlift": {
+  "time": 1.83,
+  "disp": 3.67,
+  "length": 7.96
+ },
+ "Kettlebell Deadlift": {
+  "time": 2.0,
+  "disp": 3.73,
+  "length": 7.96
+ },
+ "Smith Machine Hip Thrust": {
+  "time": 2.0,
+  "disp": 1.44,
+  "length": 7.96
+ },
+ "Machine Hip Thrust": {
+  "time": 1.83,
+  "disp": 1.38,
+  "length": 7.96
+ },
+ "Single-Leg Hip Thrust": {
+  "time": 1.5,
+  "disp": 2.04,
+  "length": 7.96
+ },
+ "B-Stance Hip Thrust": {
+  "time": 1.5,
+  "disp": 1.64,
   "length": 7.96
  }
 }

@@ -1,0 +1,7 @@
+{
+  "Cable Pull-Through": {"hinge": "1.8", "back": "1.8", "top": "3.6", "arms": "3.6", "stance": "1.8"},
+  "Standing Cable Hip Extension": {"kick": "1.9", "torso": "1.9", "hips": "1.9", "knee": "1.9", "grip": "1.9"},
+  "Reverse Hyperextension": {"lift": "1.9", "back": "1.9", "knees": "1.9", "lower": "4.0", "grip": "1.9"},
+  "Single-Leg Back Extension": {"hinge": "1.9", "top": "4.0", "free": "1.0", "arms": "2.6"},
+  "45-Degree Hip Extension": {"hinge": "1.9", "top": "4.0", "depth": "1.9", "arms": "2.6"}
+}

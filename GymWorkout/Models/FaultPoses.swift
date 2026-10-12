@@ -5954,6 +5954,382 @@ enum FaultPoses {
     // (curlArmsOffPad, preacherRockedBack, curlStoppedShortOfTop,
     // curlWristsCurled), each drawn for the working left arm only.
     // END Desktop 100-200 (2026-10-11) pieces
+    // BEGIN Desktop 300-400 (2026-10-12) pieces
+    // MARK: Desktop 300-400 hip extension pieces (2026-10-12)
+
+    /// The back rounding at the bottom of a hinge, larger than
+    /// `rdl4BackRounded`: the mid-spine humps 0.18 torso lengths (~11 cm)
+    /// and the chest 0.15 toward the back, the neck and head drop toward
+    /// the front and draw in along the spine (head ~16 cm). Sized on the
+    /// hipext rigs (one body, torso 0.592 m); lab round 1's 0.16 / 0.12 /
+    /// 0.20 read only as a low arc on the small bench figures (zoom 0.55).
+    /// Shifts, so the short pelvis-spine segment draws ~5 cm longer.
+    private static func r1012hipextBackRounded(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.shift(["spine"], forward: -0.18),
+                          .shift(["chest"], forward: -0.15, up: -0.03),
+                          .shift(["neck"], forward: 0.08, up: -0.07),
+                          .shift(["head"], forward: 0.24, up: -0.12)],
+                  strength: strength)
+    }
+
+    /// Cable Pull-Through: rowing the rope up with the arms as you stand.
+    /// The upper arms swing 20° back and the elbows bend 95° more, faded in
+    /// as the hips straighten (the hip reads ~0.67 straight at the model's
+    /// top): at 3.6 s the elbows 156° -> ~102°, the hands ~15 cm higher, up
+    /// in front of the stomach.
+    private static let r1012hipextArmsRowed = FaultPose(
+        chains: [armsToGrip],
+        moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -20),
+                .turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: 95)],
+        strength: .whenStraight("thigh_L")
+    )
+
+    /// Cable Pull-Through: standing too close to the low pulley behind. The
+    /// whole lifter, rope ends included, drawn 0.4 torso lengths (~24 cm)
+    /// nearer the column in the same pose (the model stands ~0.96 m from
+    /// the pulley and keeps the pinned plates only ~3 cm off the stack at
+    /// the bottom, so any step back lets them settle).
+    private static let r1012hipextCloserToPulley = FaultPose(
+        chains: [spine, armsToGrip, legs, hips],
+        moves: [.shift(carried + ["shin_*", "foot_*", "foot_*.tip"], ahead: -0.4)]
+    )
+
+    /// Standing Cable Hip Extension: how far the left leg is back. The
+    /// ankles are 0.32-0.38 torso lengths apart with the leg forward or
+    /// under the body and 0.82 at the back of the kick: none forward, all
+    /// of it from about 0.8 (the back's hold, 1.67-2.17 s).
+    private static let r1012hipextLegBack = FaultStrength.between("foot_L", "foot_R", from: 0.45, to: 0.8)
+
+    /// Standing Cable Hip Extension: a short kick, the left leg swung 26°
+    /// forward about the hip, so at the back the thigh stops about 2° behind
+    /// vertical instead of 28° and the foot ~36 cm further forward, under
+    /// the hips.
+    private static let r1012hipextKickShort = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: 26)],
+        strength: r1012hipextLegBack
+    )
+
+    /// Standing Cable Hip Extension: the lower back arching to swing the leg
+    /// higher. The mid-spine sinks 0.12 torso lengths (~7 cm) toward the
+    /// belly and the chest 0.05, and the left leg swings 14° further back,
+    /// the foot ~13 cm higher at the back of the kick.
+    private static let r1012hipextKickArched = FaultPose(
+        chains: [spine, ["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.shift(["spine"], forward: 0.12), .shift(["chest"], forward: 0.05),
+                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: -14)],
+        strength: r1012hipextLegBack
+    )
+
+    /// Standing Cable Hip Extension: the left hip rolling open, the hips and
+    /// left leg turned 22° about the pelvis (the left hip back) and the leg
+    /// swung 22° out about the hip: at the back of the kick the left foot
+    /// ~17 cm out to the side. The drift runs across the lifter, along the
+    /// line of sight in the trainer's framing, so the table turns it round
+    /// to the lifter's back.
+    private static let r1012hipextHipOpened = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "pelvis", points: ["thigh_L", "thigh_R", "shin_L", "foot_L", "foot_L.tip"], axis: .up, degrees: -22),
+                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 22)],
+        strength: r1012hipextLegBack
+    )
+
+    /// Standing Cable Hip Extension: the knee bending at the back of the
+    /// kick, the heel flicked up toward the glutes: the left foot turned 55°
+    /// up about the knee, 174° -> ~119° at the back, the ankle ~32 cm
+    /// higher.
+    private static let r1012hipextKneeCurled = FaultPose(
+        chains: [leg("L")],
+        moves: [.turn(pivot: "shin_L", points: ["foot_L", "foot_L.tip"], axis: .lateral, degrees: -55)],
+        strength: r1012hipextLegBack
+    )
+
+    /// Standing Cable Hip Extension: pulling on the upright to twist into
+    /// the kick, the trunk and shoulders turned 30° about the vertical, the
+    /// left shoulder back (~10 cm each shoulder), the elbows re-seated with
+    /// the hands still on the upright: the left arm straightens (117° ->
+    /// ~159°) and the right pulls in (-> ~92°). Lab round 1 drew the trunk
+    /// and shoulders alone (25°), which barely read from behind-left.
+    private static let r1012hipextTwistedOnUpright = FaultPose(
+        chains: [spine, shoulders, arms],
+        moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .up, degrees: -30),
+                .resolve(["forearm_*"])]
+    )
+
+    /// Reverse Hyperextension: how far the legs are up, from the neck's
+    /// distance to the left ankle (1.72 torso lengths hanging, 2.42 at the
+    /// top): none until the legs pass about halfway, all of it at the top.
+    private static let r1012hipextLegsUp = FaultStrength.between("neck", "foot_L", from: 2.0, to: 2.4)
+    /// The other way round: all of it hanging, none from about halfway up.
+    private static let r1012hipextLegsDown = FaultStrength.between("neck", "foot_L", from: 2.0, to: 1.75)
+
+    /// Reverse Hyperextension: stopping halfway, both legs 45° lower about
+    /// the hips at the top, about 42° below level instead of 3° above, the
+    /// feet ~60 cm lower.
+    private static let r1012hipextLegsShort = FaultPose(
+        chains: [legs, hips],
+        moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: 45)],
+        strength: r1012hipextLegsUp
+    )
+
+    /// Reverse Hyperextension: arching the lower back to fling the legs
+    /// higher, the mid-spine sagging 0.10 torso lengths (~6 cm) toward the
+    /// floor and the legs 22° higher, about 25° above level (the feet ~30
+    /// cm higher).
+    private static let r1012hipextLegsFlung = FaultPose(
+        chains: [spine, legs, hips],
+        moves: [.shift(["spine"], forward: 0.10),
+                .turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -22)],
+        strength: r1012hipextLegsUp
+    )
+
+    /// Reverse Hyperextension: the knees bending as the legs come up, the
+    /// feet turned 50° toward the ceiling about the knees: 176° -> ~126° at
+    /// the top, the ankles ~28 cm higher (60° in lab round 1 lifted the toes
+    /// into the cue's own label).
+    private static let r1012hipextKneesCurledProne = FaultPose(
+        chains: [legs],
+        moves: [.turn(pivot: "shin_*", points: ["foot_*", "foot_*.tip"], axis: .lateral, degrees: -50)],
+        strength: r1012hipextLegsUp
+    )
+
+    /// Reverse Hyperextension: the pendulum swinging the legs on under the
+    /// pad at the bottom, both legs 32° further toward the head about the
+    /// hips (the feet ~44 cm forward, under the pad).
+    private static let r1012hipextLegsSwungUnder = FaultPose(
+        chains: [legs, hips],
+        moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: 32)],
+        strength: r1012hipextLegsDown
+    )
+
+    /// Reverse Hyperextension: pushing up on the grips, the chest, head and
+    /// shoulders lifted 20° off the pad about the mid-spine (the head ~20 cm
+    /// up), the elbows re-seated so the hands stay on the grips (the arms
+    /// pushed straight). The model's arms are already near straight (167°),
+    /// so the rising shoulders leave the grips out of reach and the two arm
+    /// bones draw ~11 cm longer in all (~6 + ~5 cm); any lift that reads
+    /// does this (14° still stretches them ~7.5 cm).
+    private static let r1012hipextChestOffPad = FaultPose(
+        chains: [spine, arms],
+        moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*"], axis: .lateral, degrees: 20),
+                .resolve(["forearm_*"])],
+        strength: r1012hipextLegsUp
+    )
+
+    /// The 45-degree bench lifts: the neck's distance to the left ankle is
+    /// 2.425 torso lengths in the straight-line top and 2.0-2.08 at the
+    /// bottom. `Top`: none below 2.38 (within ~0.2 s of the top), all of it
+    /// in the top's hold. `Bottom`: none at the top, all of it from 2.08.
+    private static let r1012hipextBenchTop = FaultStrength.between("neck", "foot_L", from: 2.38, to: 2.425)
+    private static let r1012hipextBenchBottom = FaultStrength.between("neck", "foot_L", from: 2.40, to: 2.08)
+
+    /// The 45-degree bench lifts: arching past the straight line at the
+    /// top, the chest turned 16° back about the mid-spine and the head and
+    /// neck a further 14° about the chest (the head ~26 cm up and back).
+    /// Drawn without the crossed arms, as the library's Back Extension.
+    private static let r1012hipextArchedTop = FaultPose(
+        chains: [spine],
+        moves: [.turn(pivot: "spine", points: ["chest", "neck", "head"], axis: .lateral, degrees: 16),
+                .turn(pivot: "chest", points: ["neck", "head"], axis: .lateral, degrees: 14)],
+        strength: r1012hipextBenchTop
+    )
+
+    /// The 45-degree bench lifts: the arms uncrossed and flung out ahead to
+    /// throw the trunk up, the library Back Extension's grip ghost (the
+    /// hands 0.38 torso lengths out of the chest, 0.48 toward the head and
+    /// 0.58 out to the side, ~50 cm) with the elbows then re-seated between
+    /// the shoulders and the flung hands, so both arm bones keep their
+    /// lengths: on these rigs the crossed arms sit unevenly, and the shifts
+    /// alone drew the right upper arm ~10 cm short and its forearm ~8 cm
+    /// long (review, 2026-10-12). Elbows ~79-90° -> ~141-145° (left) and
+    /// ~115° (right).
+    private static let r1012hipextArmsFlung = FaultPose(
+        chains: [arms],
+        moves: [.shift(["hand_*"], forward: 0.38, up: 0.48, outward: 0.58),
+                .shift(["forearm_*"], forward: -0.08, up: 0.32, outward: 0.2),
+                .resolve(["forearm_*"])]
+    )
+
+    /// 45-Degree Hip Extension: stopping high, the trunk and crossed arms
+    /// turned 35° back up toward the straight line about the pelvis at the
+    /// bottom (the hips folded ~30° instead of 65°, the head ~42 cm higher).
+    private static let r1012hipextBenchShort = FaultPose(
+        chains: [spine, arms],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 35)],
+        strength: r1012hipextBenchBottom
+    )
+
+    /// Single-Leg Back Extension: the free right foot set down on the plate,
+    /// the right knee straightened 62° (115° -> ~177°), the foot ~40 cm
+    /// lower, beside the left one.
+    private static let r1012hipextFreeFootDown = FaultPose(
+        chains: [leg("R")],
+        moves: [.turn(pivot: "shin_R", points: ["foot_R", "foot_R.tip"], axis: .lateral, degrees: 62)]
+    )
+    // MARK: Desktop 300-400 kettlebell pieces (2026-10-12)
+
+    /// Kettlebell Swing: raising the bell with the arms and shoulders, like a
+    /// front raise. The arms, kept straight, swing `degrees` further up about
+    /// the shoulders. None while the hands are near the hips (hand to pelvis
+    /// under 0.8 torso lengths, the lower half of the arc), all of it from
+    /// 1.1 (the model's top is ~1.15), so it shows only as the bell rises to
+    /// the top: at the top 22° takes the arms from ~9° below level to ~13°
+    /// above it, the hands ~20 cm higher, from 1.34 m to ~1.55 m (between the
+    /// neck and head joints). The mistake view shrinks and lifts the model,
+    /// so on the lab shots 50° drew the arms past the head into the mistake
+    /// banner and 32° (hands at eye level) still reached its edge.
+    private static func r1012kbFrontRaise(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: degrees)],
+                  strength: .between("hand_L", "pelvis", from: 0.8, to: 1.1))
+    }
+
+    /// Kettlebell lifts: leaning back past upright at the top, the trunk,
+    /// arms and bell turned `degrees` back about the hips once they are
+    /// straight. On these rigs the spine-hip-knee angle reads ~150° standing,
+    /// so `.whenStraight("thigh_L")` gives 0.67-0.75 of it at the top: 20°
+    /// shows as ~13-15° (the shared `leanedBackAtLockout`'s 16° drew ~11°).
+    private static func r1012kbLeanedBack(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, bar],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)],
+                  strength: .whenStraight("thigh_L"))
+    }
+    // MARK: Desktop 300-400 reviser A pieces (2026-10-12)
+
+    /// Cable RDL on the M29 station (2026-10-12): standing too close to the
+    /// low pulley. The whole lifter, feet and bar included, drawn 0.3 torso
+    /// lengths (~18 cm) nearer the machine in the same pose. The new model
+    /// stands with its ankles ~63 cm from the pulley and its stack only ~3 cm
+    /// clear of its rest at the bottom, so ~7 cm closer already lands the
+    /// stack before the bottom; at 18 cm the ghost's bar ends ~16 cm from
+    /// the pulley at the bottom, the ghost ~45 pt from the model in the
+    /// trainer view at the fault's turn (total yaw -1.2). `rdl4CloserToPulley`'s
+    /// 0.6 (~34 cm), sized for the old tower ~0.9 m ahead, now puts the
+    /// ghost's hands on the pulley.
+    private static let r1012revACloserToPulley = FaultPose(
+        chains: [spine, armsToGrip, legs, hips, bar],
+        moves: [.shift(carried + ["shin_*", "foot_*", "foot_*.tip"], ahead: 0.3)]
+    )
+    // MARK: Desktop 300-400 thrust pieces (2026-10-12)
+    //
+    // Hip thrust ghosts for the Smith, machine, single-leg and B-stance
+    // thrusts. All four rigs share the barbell lift's trunk motion (trunk up
+    // 44 degrees at the bottom, level at the top), so the Barbell hip thrust
+    // pieces' rule holds: moves along the floor use the body's own `up` or
+    // the room's `rise`, never `ahead`, and faults of the top read
+    // `thrustLockout` (the left pelvis-to-ankle distance: 0.88-0.91 torso
+    // lengths at the bottom, 1.10-1.13 at the top on these rigs).
+
+    /// The Machine Hip Thrust's lockout, read like `thrustLockout`: its feet
+    /// sit on a raised footplate, so the left pelvis-to-ankle distance is
+    /// 0.92 torso lengths at the bottom (where `thrustLockout` would show 16%
+    /// of a fault of the top) and 1.16 at the top.
+    private static let r1012thrustMachineLockout = FaultStrength.between("pelvis", "foot_L", from: 0.93, to: 1.06)
+
+    /// `hipsShortOfLockout` with the elbows kept bending the way they bend:
+    /// the hips, and the bar, dumbbell or lever handles resting on them, hang
+    /// `drop` torso lengths below the line of the knees and shoulders, and
+    /// the elbows ride half as far down as the hands before they re-seat.
+    /// Re-seated from where they stand, near-straight elbows (the Smith's
+    /// 155 degrees at the top, the B-stance's 149) cross the new
+    /// shoulder-to-hand line and fold the wrong way (the Smith's bend plane
+    /// turns ~160 degrees, the B-stance's ~80); this way it turns 2-11.
+    private static func r1012thrustHipsShort(_ drop: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, armsToGrip, bar],
+                  moves: [.shift(["pelvis", "thigh_*", "hand_*", "hand_*.tip"], rise: -drop),
+                          .shift(["forearm_*"], rise: -drop / 2),
+                          .shift(["spine"], rise: -drop * 0.8),
+                          .shift(["chest"], rise: -drop * 0.5),
+                          .resolve(["shin_*"]),
+                          .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// `thrustArched` (the lumbar spine ~7 cm above the line of the pelvis
+    /// and chest at lockout) read from another lockout.
+    private static func r1012thrustArched(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.shift(["spine"], rise: 0.12), .shift(["chest"], rise: 0.05)],
+                  strength: strength)
+    }
+
+    /// Hip thrust feet set too far out, one side or both (`*`): the foot sits
+    /// `reach` torso lengths further from the hips along the trunk's line
+    /// (level at lockout), the knee opening behind it. `thrustFeetFar` for
+    /// one leg, or with another lockout.
+    private static func r1012thrustFootFar(_ side: String, _ reach: Float,
+                                           strength: FaultStrength = thrustLockout) -> FaultPose {
+        FaultPose(chains: [leg(side), hips],
+                  moves: [.shift(["foot_\(side)", "foot_\(side).tip"], up: -reach), .resolve(["shin_\(side)"])],
+                  strength: strength)
+    }
+
+    /// `slidUpBench` for a lever machine: the back sliding `slide` torso
+    /// lengths up the back pad as the hips rise, the feet planted and the
+    /// knees opening, read from another lockout. The hands stay on the
+    /// lever's handles (they hold the machine, not a bar on the hips), so
+    /// the shoulders slide away from them and the elbows open behind.
+    private static func r1012thrustSlidUpPad(_ slide: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*", "spine", "chest", "neck", "head", "upper_arm_*"], up: slide),
+                          .resolve(["shin_*"]),
+                          .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// Single-leg hip thrust stopped short: the hips `drop` torso lengths
+    /// below the line of the knee and shoulders, the free right leg carried
+    /// down with them (it is held off the floor), the working left knee
+    /// re-seated over its planted foot. Unlike `hipsShortOfLockout` the arms
+    /// stay put: they rest on the bench, not on a bar.
+    private static func r1012thrustOneLegShort(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, leg("L"), leg("R"), hips],
+                  moves: [.shift(["pelvis", "thigh_*", "shin_R", "foot_R", "foot_R.tip"], rise: -drop),
+                          .shift(["spine"], rise: -drop * 0.8),
+                          .shift(["chest"], rise: -drop * 0.5),
+                          .resolve(["shin_L"])],
+                  strength: thrustLockout)
+    }
+
+    /// One-leg hip thrust: the hip on the right side sags at the top, the
+    /// pelvis rolling `degrees` about the body's long axis through the
+    /// working left hip, so the hip line keeps its width (a straight drop
+    /// would stretch it). With `planted` the right foot stays down (the
+    /// B-stance kickstand) and its knee re-seats; otherwise the free right
+    /// leg is carried down with the hip, by the hip's own move (the hip
+    /// joints sit 0.307 torso lengths apart on these rigs).
+    private static func r1012thrustRightHipSags(_ degrees: Float, planted: Bool) -> FaultPose {
+        let angle: Float = degrees * .pi / 180
+        let drop: Float = 0.307 * sin(angle)
+        let inward: Float = 0.307 * (1 - cos(angle))
+        let roll: FaultMove = .turn(pivot: "thigh_L", points: ["pelvis", "thigh_R"], axis: .up, degrees: degrees)
+        let rest: [FaultMove] = planted
+            ? [.resolve(["shin_R"])]
+            : [.shift(["shin_R", "foot_R", "foot_R.tip"], forward: -drop, outward: -inward)]
+        return FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("R")],
+                         moves: [roll] + rest,
+                         strength: thrustLockout)
+    }
+
+    /// Single-leg hip thrust: the free right leg swung `degrees` away from
+    /// the chest about the hip, toward the feet, the knee kept bent, instead
+    /// of held still. Read from hip height, so it shows near the top, where
+    /// the thigh stands upright; at the bottom the swung foot would near the
+    /// floor.
+    private static func r1012thrustFreeLegSwing(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("R"), hips],
+                  moves: [.turn(pivot: "thigh_R", points: ["shin_R", "foot_R", "foot_R.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: thrustLockout)
+    }
+
+    /// B-stance hip thrust: the front (right) foot flattened, the toes turned
+    /// `degrees` down about the ankle onto the floor, so it can push.
+    private static func r1012thrustKickstandFlat(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("R")],
+                  moves: [.turn(pivot: "foot_R", points: ["foot_R.tip"], axis: .lateral, degrees: -degrees)])
+    }
+    // END Desktop 300-400 (2026-10-12) pieces
     // MARK: Exercises 1-50 redo pieces (2026-09-29)
     // MARK: Exercises 1-50 redo: Pendlay Row and Close-Grip Bench Press (2026-09-29)
 
@@ -8899,10 +9275,13 @@ enum FaultPoses {
         // MARK: Batch 300-350 split squats and Bulgarian split squats (2026-09-26)
         // Every model keeps the LEFT foot forward for both reps and is framed
         // from the left: yaw -1.3 (barbell, dumbbell, front-foot-elevated and
-        // rear-foot-elevated split squats) or -1.0 (the two Smith lifts and the
-        // barbell Bulgarian). Sagittal faults need no turn at -1.3 and turn -0.4
-        // (a total of -1.4) at -1.0; the front knee caving in turns toward
-        // face-on, a total of about -0.2 (faceOn at -1.3, 0.8 at -1.0).
+        // rear-foot-elevated split squats), -1.0 (the barbell Bulgarian) or
+        // -0.7 (the two Smith lifts, in the M30 rack since 2026-10-12).
+        // Sagittal faults need no turn at -1.3 and turn -0.4 (a total of -1.4)
+        // at -1.0; the Smith lifts' stay as framed, since turned further the
+        // rack's near front upright crosses the lifter (at -1.1 it ran through
+        // the trunk). The front knee caving in turns toward face-on, a total
+        // of about -0.2 (faceOn at -1.3, 0.8 at -1.0) or 0.1 (0.8 at -0.7).
         "Barbell Split Squat": [
             // The bar slid down the back, the chest tipping to balance it.
             "bar": barSlidLow,
@@ -8922,15 +9301,15 @@ enum FaultPoses {
         ],
         "Smith Machine Split Squat": [
             // The bar low on the back, held on its track: the chest tips, the
-            // hips slide back.
-            "bar": barLowOnTrack.seen(-0.4),
+            // hips slide back (~8 cm, ~13 pt as framed).
+            "bar": barLowOnTrack,
             // Hips back behind the fixed bar, the chest folding under it.
-            "torso": hipsBehindFixedBar(14).seen(-0.4),
+            "torso": hipsBehindFixedBar(14),
             "knee": kneesIn("L").seen(0.8),
             // Stopping high on the track: straight up, the bar on its rails.
-            "depth": shallow(0.18, withBar: true).seen(-0.4),
+            "depth": shallow(0.18, withBar: true),
             // Front foot too close to the bar: the heel peels up.
-            "stance": frontFootTooClose.seen(-0.4)
+            "stance": frontFootTooClose
         ],
         "Front-Foot-Elevated Split Squat": [
             "grip": armsSwungForward(28, strength: .withBend("shin_L")),
@@ -8957,11 +9336,13 @@ enum FaultPoses {
             "rear": rearFootOnToes.seen(-0.4)
         ],
         "Smith Machine Bulgarian Split Squat": [
-            "bar": barLowOnTrack.seen(-0.4),
-            "torso": hipsBehindFixedBar(14).seen(-0.4),
+            // Seen as framed (-0.7), as on the Smith split squat: turned
+            // further, the near front upright crosses the back thigh and trunk.
+            "bar": barLowOnTrack,
+            "torso": hipsBehindFixedBar(14),
             "knee": kneesIn("L").seen(0.8),
-            "depth": shallow(0.18, withBar: true).seen(-0.4),
-            "rear": rearFootOnToes.seen(-0.4)
+            "depth": shallow(0.18, withBar: true),
+            "rear": rearFootOnToes
         ],
         // MARK: Legs 300-350 lunges (2026-09-26)
         // All four alternate legs, so every fault names the `front` and
@@ -8971,9 +9352,10 @@ enum FaultPoses {
         // total). Barbell Lunge is framed at -0.6: its sagittal faults turn
         // only to -1.05, since side-on the near plate hides the head, and its
         // frontal ones turn face-on. Smith Machine Reverse Lunge is framed at
-        // -1.0, already showing the sagittal plane; its sagittal faults stay
-        // unturned so the rails and plates stay off the lifter, and knee
-        // caving turns face-on. Curtsy Lunge is framed at -0.5: sagittal
+        // -0.7 since 2026-10-12 (in the M30 rack, whose near upright crossed
+        // the lifter at -1.0); its sagittal faults stay unturned so the rails
+        // and plates stay off the lifter, and knee caving turns 1.0, a total
+        // of 0.3. Curtsy Lunge is framed at -0.5: sagittal
         // faults turn to -1.3, frontal ones face-on, and the hips turning
         // open (a turn about the vertical, which swings the back hip and
         // shoulder backward) also turn to -1.3, where that swing lies across
@@ -9018,8 +9400,8 @@ enum FaultPoses {
             "lean": backRounded(.withBend("shin_front")),
             "knee": kneesIn("front").seen(1.0),
             // Standing up off the back leg: its knee straightens first.
-            // Turned to -0.7 so the straightened knee clears the label on
-            // the right.
+            // Turned 0.3 (a total of -0.4): as framed (-0.7) the
+            // straightened knee runs into the label on the right.
             "drive": lungeBackLegPushing(strength: .withBend("shin_front")).seen(0.3)
         ],
         "Curtsy Lunge": [
@@ -10072,15 +10454,24 @@ enum FaultPoses {
             "range": hingeGMShort(40, hingeSeatedLean).seen(0.9)
         ],
         "Smith Machine Good Morning": [
-            "bar": hingeSmithBarLow.seen(-0.4),
+            // In the M30 rack and framed from behind-left (yaw -2.5) since
+            // 2026-10-12, so no fault turns: the old -0.4 (total -2.9, nearly
+            // from behind) left the front-back moves ~15 pt; turned toward
+            // side-on, the rack's near rear upright crosses the trunk (at
+            // -2.0 to -2.2) and the near plate covers the head and shoulders
+            // (from -1.9 round to side-on). From the framing those moves show
+            // at ~60% of their length: in the trainer view the locked knees
+            // sit ~24 pt off the model's, the feet ~35 pt, the dropped head
+            // ~26 pt.
+            "bar": hingeSmithBarLow,
             // Feet ~21 cm forward, out in front of the bar (read at the top).
-            "feet": hingeSmithFeetForward.seen(-0.4),
+            "feet": hingeSmithFeetForward,
             // Squatting the bar down the rails.
-            "hips": hingeSmithSquatted.seen(-0.4),
+            "hips": hingeSmithSquatted,
             // The upper back rounding, the chest caving and the head dropping.
-            "back": headDropped(hingeSmithLean).seen(-0.4),
+            "back": headDropped(hingeSmithLean),
             // Knees locked straight all rep.
-            "knee": FaultPose(chains: [legs], moves: [.straighten(["shin_*"])], view: -0.4)
+            "knee": FaultPose(chains: [legs], moves: [.straighten(["shin_*"])])
         ],
         "Nordic Hamstring Curl": [
             "line": hingeNordicHipsBent,
@@ -10150,17 +10541,22 @@ enum FaultPoses {
             "knees": hipFrogKneesIn.seen(0.9)
         ],
         "Cable Hip Adduction": [
-            // Twisting toward the standing leg as the foot crosses, seen
-            // from the front-right so the shoulders open toward the camera.
-            "torso": hipCableTwist.seen(1.3),
+            // The 2026-10-12 model stands between the two columns of the M29
+            // dual cable station, which rise in front of its left and right:
+            // from the front-left (-0.9) or the front-right (1.0) a column hid
+            // the lifter. Its twisting and forward-and-back faults are seen
+            // from the lifter's left side, just behind it (-1.4, a total of
+            // -1.7), clear of the left column.
+            // Twisting toward the standing leg as the foot crosses: side-on,
+            // the ghost's shoulders open while the lifter's stay end-on.
+            "torso": hipCableTwist.seen(-1.4),
             // Hauling on the post, the trunk tipping toward the stack.
             "grip": hipCableHauled,
             // The pelvis tilting down on the working side at the crossing,
             // the foot carried further across.
             "hips": hipCableHipDropped,
-            // The knee bending, the lower leg swinging back, seen from the
-            // front-left, clear of the post and stack.
-            "leg": hipCableKneeBent.seen(-0.6),
+            // The knee bending, the lower leg swinging back, seen side-on.
+            "leg": hipCableKneeBent.seen(-1.4),
             // Stopping at the midline.
             "sweep": hipCableShort
         ],
@@ -10183,11 +10579,13 @@ enum FaultPoses {
             "head": hipSideHeadUp
         ],
         "Banded Hip Abduction": [
-            // Rocking the trunk back 12 deg, seen near side-on.
+            // Rocking the trunk back 12 deg, seen near side-on; the hands stay
+            // on the thighs and the elbows open.
             "torso": seatedRocked(12).seen(-1.1),
-            // Pressing through the hands, the hips and trunk lifting off the
-            // bench between the arms: seen face-on.
-            "grip": hipBandHipsUp,
+            // The 2026-10-12 model rests its hands on the thighs (on the bench
+            // beside the hips before), so the grip cue's mistake, shoving the
+            // thighs apart with them, is a force rather than a pose: no ghost,
+            // the red ring, as on the band cue.
             "knees": hipBandShort,
             // The heels lifting as the knees push out.
             "feet": heelsUp().seen(-1.1)
@@ -10450,8 +10848,10 @@ enum FaultPoses {
             "lockout": leanedBackAtLockout(withBar: true).seen(-0.2),
             "arms": rdl4ArmsDragged.seen(-0.2),
             "knee": rdl4KneesLocked.seen(-0.2),
-            // Standing too close to the pulley.
-            "stance": rdl4CloserToPulley.seen(-0.2)
+            // Standing too close to the pulley: ~18 cm nearer
+            // (`r1012revACloserToPulley`); the shared 34 cm put the ghost's
+            // hands on the M29's pulley, now ~63 cm ahead of the ankles.
+            "stance": r1012revACloserToPulley.seen(-0.2)
         ],
         "Kettlebell Romanian Deadlift": [
             "back": rdl4BackRounded(.withBend("thigh_L")).seen(-0.4),
@@ -11632,22 +12032,27 @@ enum FaultPoses {
         // five are faults of the top, read from hip height. The knees sit
         // ~3 cm inside the ankles each side at the top, so, as on the barbell
         // lift, there is no knee cue. Sizes from a Python port of
-        // FaultGhost.solve on the rig at the top (1.75 s).
+        // FaultGhost.solve on the rig at the top (1.75 s), re-measured on the
+        // 2026-10-12 model: on the GYM flat bench (pad 0.41 m) the hips top
+        // out ~6 cm higher, the knees at 100 degrees and the elbows at 146,
+        // and the pelvis-to-ankle reading runs 0.91 -> 1.13 torso lengths, so
+        // `thrustLockout` is full from ~1.1 s (~6% at the bottom).
         "Dumbbell Hip Thrust": [
             // Stopping short: the hips and dumbbell ~15 cm (~28 pt) below the
-            // line of the knees and shoulders, the knees 90 -> ~74 degrees.
+            // line of the knees and shoulders, the knees 100 -> ~82 degrees.
             "hips": hipsShortOfLockout(0.25, strength: thrustLockout),
             // The lower back humping up above the line: the lumbar spine
             // ~7 cm (~13 pt) up, the chest ~3 cm.
             "ribs": thrustArched,
-            // Feet ~13 cm (~19 pt) too far out: the shins slope away, the
-            // knees open to ~111 degrees.
+            // Feet ~13 cm (~20 pt) too far out: the shins slope away, the
+            // knees open to ~124 degrees.
             "feet": thrustFeetFar(0.22),
-            // The back sliding ~12 cm (~15 pt) up the bench as the hips rise,
-            // the knees opening to ~109 degrees.
+            // The back sliding ~12 cm (~13-16 pt) up the bench as the hips
+            // rise, the edge ending under the middle of the back, the knees
+            // opening to ~121 degrees.
             "bench": slidUpBench(0.2),
-            // The dumbbell rolled ~17 cm (~20 pt) up onto the stomach near
-            // the top, the hands with it, the elbows 132 -> ~85 degrees.
+            // The dumbbell rolled ~17 cm (~21 pt) up onto the stomach near
+            // the top, the hands with it, the elbows 146 -> ~92 degrees.
             "dumbbell": barRolledUp(0.28, strength: thrustLockout),
         ],
         // MARK: 401-500 leg raises and kicks (2026-10-05)
@@ -12771,6 +13176,245 @@ enum FaultPoses {
             // "lower" (tempo) has no ghost: it falls back to the red ring.
         ],
         // END Desktop 100-200 (2026-10-11)
+        // BEGIN Desktop 300-400 (2026-10-12)
+        // MARK: Desktop 300-400 hip extensions (2026-10-12)
+        // One body (torso, neck to pelvis, 0.592 m; shifts in torso lengths).
+        // Sized with a Python port of FaultGhost.solve on the rigs at each
+        // fault's still ($LAB/r1012/hipext/ghost.py, gdefs.py): bone lengths
+        // kept except where noted, no knee bent backward. Framings: Cable
+        // Pull-Through -1.3 (from the lifter's left, a little behind), Standing
+        // Cable Hip Extension -1.8 (behind-left), Reverse Hyperextension -1.4
+        // (side-on), the two 45-degree bench lifts -1.9 (behind-left).
+        "Cable Pull-Through": [
+            // Squatting the rope back: the hips ~12 cm lower and ~5 cm
+            // forward, the trunk 22° more upright, the knees 155° -> ~111°.
+            "hinge": hingeSquatted(withBar: false),
+            // The back rounding at the bottom: the mid-back ~10 cm up, the
+            // head ~15 cm down.
+            "back": r1012hipextBackRounded(.withBend("thigh_L")),
+            // Stopping short of standing: the trunk ~21° forward at the top
+            // (32° faded by the hip, ~0.67 straight there), the head ~25 cm
+            // forward.
+            "top": leanedForward(32, strength: .whenStraight("thigh_L")),
+            // Rowing the rope up: elbows 156° -> ~102°, the hands ~15 cm
+            // higher at the top.
+            "arms": r1012hipextArmsRowed,
+            // Standing ~24 cm closer to the column.
+            "stance": r1012hipextCloserToPulley
+        ],
+        "Standing Cable Hip Extension": [
+            // A short kick: the thigh stopping about vertical at the back
+            // (2° behind instead of 28°), the foot ~36 cm forward.
+            "kick": r1012hipextKickShort,
+            // The lower back arching (~7 cm) and the leg ~14° higher.
+            "torso": r1012hipextKickArched,
+            // The hip rolling open, the foot ~17 cm out to the side. Turned
+            // 1.34 round to the lifter's back (a total of -3.14), where the
+            // sideways drift crosses the screen.
+            "hips": r1012hipextHipOpened.seen(-1.34),
+            // The knee bending to ~119° at the back, the heel ~32 cm higher.
+            "knee": r1012hipextKneeCurled,
+            // The trunk twisted 30° on the upright, the left shoulder back,
+            // the right arm pulling.
+            "grip": r1012hipextTwistedOnUpright
+        ],
+        "Reverse Hyperextension": [
+            // Stopping halfway: the legs about 42° below level at the top.
+            "lift": r1012hipextLegsShort,
+            // The lower back sagging ~6 cm and the legs ~25° above level.
+            "back": r1012hipextLegsFlung,
+            // The knees bending to ~126° at the top.
+            "knees": r1012hipextKneesCurledProne,
+            // The legs swung 32° on under the pad at the bottom.
+            "lower": r1012hipextLegsSwungUnder,
+            // The chest and head pushed ~20 cm up off the pad, arms straight
+            // (their bones drawn ~11 cm long to keep the hands on the grips).
+            "grip": r1012hipextChestOffPad
+        ],
+        "Single-Leg Back Extension": [
+            // The back rounding over the pad at the bottom: the mid-back ~11
+            // cm up, the head ~16 cm down.
+            "hinge": r1012hipextBackRounded(r1012hipextBenchBottom),
+            // Arching past the straight line at the top: the head ~26 cm up
+            // and back.
+            "top": r1012hipextArchedTop,
+            // "pad" has no ghost: where the pad sits is the bench's setting,
+            // not a body position.
+            // The right foot set down on the plate, knee straight.
+            "free": r1012hipextFreeFootDown,
+            // The arms uncrossed and flung out ahead, the hands moved ~50 cm
+            // off the chest, the arm bones kept.
+            "arms": r1012hipextArmsFlung
+        ],
+        "45-Degree Hip Extension": [
+            "hinge": r1012hipextBackRounded(r1012hipextBenchBottom),
+            "top": r1012hipextArchedTop,
+            // "pad" has no ghost: where the pad sits is the bench's setting,
+            // not a body position.
+            // Stopping high: the hips folded ~30° instead of 65°.
+            "depth": r1012hipextBenchShort,
+            "arms": r1012hipextArmsFlung
+        ],
+        // MARK: Desktop 300-400 kettlebell lifts (2026-10-12)
+        // One body (torso, neck to pelvis, 0.592 m; shifts in torso lengths).
+        // Sizes measured with a Python port of FaultGhost.solve on the rigs
+        // at each fault's still (kb/ghost.py in the session scratchpad), in
+        // points of the 382x655 trainer viewport (turned views included):
+        // bone lengths kept, no knee bent backward, nothing through the floor
+        // beyond the 1 cm the real toe tips already sit at. Framings: the
+        // swing -1.3 (side-on from the lifter's left), the sumo deadlift -0.5
+        // and the kettlebell deadlift -0.8 (front three-quarter from the
+        // left), so the deadlifts' front-to-back faults turn toward side-on.
+        "Kettlebell Swing": [
+            // Squatting the swing at the bottom, where it grows with the hip
+            // bend to 0.82 of the move: the trunk ~18° more upright (60° to
+            // 42°), the hips ~11 cm lower and ~5 cm forward, the knees
+            // re-seated (153° to ~114°), the grip carried ~14 cm (~36 pt)
+            // forward.
+            "hinge": hingeSquatted(withBar: true),
+            // The bell swinging low: the trunk, arms and bell tipped ~16°
+            // further toward the floor about the hips at the bottom, the head
+            // ~20 cm (~52 pt) lower, the hands ~6 cm lower (still ~10 cm above
+            // the knee joints) and the grip down to knee height.
+            "hike": leanedForward(20, withBar: true, strength: .withBend("thigh_L")),
+            // The back rounding at the bottom: the RDLs' deeper hump, the head
+            // ~7 cm (~19 pt) down and in.
+            "back": rdl4BackRounded(.withBend("thigh_L")),
+            // Lifting the bell with the arms: ~13° above level at the top
+            // instead of ~9° below, the hands ~20 cm (~55 pt) higher, toward
+            // head height; nothing in the lower half of the arc.
+            "drive": r1012kbFrontRaise(22),
+            // Leaning back at the top: ~14° past upright (0.70 of 20°), the
+            // head ~17 cm (~42 pt) back, the arms and bell turned with it.
+            "top": r1012kbLeanedBack(20)
+        ],
+        "Sumo Kettlebell Deadlift": [
+            // The toes turned to point straight ahead (35° in about each
+            // ankle), the knees left out: the toe tips ~12 cm (~30 pt).
+            // Shown standing (0.3 s), where the turn is about the vertical;
+            // at the bottom the body's up axis tips 49° and the toes dipped
+            // ~4 cm into the floor. Turned 0.3 toward face-on (a total of
+            // -0.2), as the library Dumbbell Sumo Squat's.
+            "stance": wideToesForward.seen(0.3),
+            // The knees caving in at the bottom, each ~11 cm toward the
+            // midline, re-seated so the bones and the 89° knee angle stay.
+            // Turned 0.3 toward face-on (a total of -0.2).
+            "knees": thruster500KneesIn(0.2).seen(0.3),
+            // The chest dropping toward the bell: the trunk turned 15° further
+            // forward and rounded (neck over pelvis 49° to ~66°), the head
+            // ~24 cm (~65 pt) down.
+            // Turned -0.8 (a total of -1.3, near side-on).
+            "torso": chestDropped(15, withBar: true).seen(-0.8),
+            // The hips shooting up first: the hips ~26 cm up and back, the
+            // knees opening 89° to ~160°, the head and hands still.
+            "hips": rdl4HipsShotUp.seen(-0.8),
+            // Leaning back at lockout: ~15° past upright (0.75 of 20°), the
+            // head ~18 cm (~47 pt).
+            "lockout": r1012kbLeanedBack(20).seen(-0.8)
+        ],
+        "Kettlebell Deadlift": [
+            // Squatting it: the hips ~13 cm lower and ~6 cm forward, the
+            // trunk 22° more upright, the knees 104° to ~77°, the arms and
+            // bell ~19 cm (~48 pt) forward. Turned -0.4 (a total of -1.2).
+            "hinge": hingeSquatted(withBar: true).seen(-0.4),
+            // The bell drifting out in front of the toes: the arms swung ~19°
+            // forward about the shoulders (0.85 of 22°), the hands ~17 cm
+            // (~44 pt) forward.
+            "bell": armsSwungForward(22, withBar: true, strength: .withBend("shin_L")).seen(-0.4),
+            // The back rounding at the bottom, the head ~7 cm (~20 pt).
+            "back": rdl4BackRounded(.withBend("shin_L")).seen(-0.4),
+            // The knees caving in, each ~10 cm, bones and knee angle kept.
+            // Turned 0.6 toward face-on (a total of -0.2).
+            "knees": thruster500KneesIn(0.2).seen(0.6),
+            // Leaning back at lockout: ~13° past upright (0.67 of 20°), the
+            // head ~16 cm (~39 pt).
+            "lockout": r1012kbLeanedBack(20).seen(-0.4)
+        ],
+
+        // MARK: Desktop 300-400 hip thrusts (2026-10-12)
+        // All four are framed three-quarter from the feet on the lifter's
+        // left (yaw -0.7), as the barbell and dumbbell thrusts, and no fault
+        // turns the model: the hips and spine move up and down the screen and
+        // moves along the trunk's line show at about two-thirds of their
+        // length. Every ghost is a fault of the top, shown at the top. Sizes
+        // from ghost.py (a Python port of FaultGhost.solve) on each rig at
+        // the shot moment; limb lengths and the hip line kept, no knee or
+        // elbow folding the wrong way (the library's `hipsShortOfLockout` and
+        // `thrustArched` stretch the trunk's joint-to-joint lines 1-1.3 cm,
+        // as on the barbell and dumbbell thrusts).
+        "Smith Machine Hip Thrust": [
+            // Stopping short: the hips, bar and hands ~15 cm (~37 pt) below
+            // the line of the knees and shoulders, the knees 100 -> ~82, the
+            // elbows 155 -> ~131 still bending the right way.
+            "hips": r1012thrustHipsShort(0.25, strength: thrustLockout),
+            // The lower back humping ~7 cm (~17 pt) above the line.
+            "ribs": thrustArched,
+            // Feet ~13 cm (~24 pt) too far out: the shins slope away, the
+            // knees open to ~124.
+            "feet": thrustFeetFar(0.22),
+            // The back sliding ~12 cm up the bench as the hips rise, the
+            // knees opening to ~121.
+            "bench": slidUpBench(0.2),
+            // The pad ~17 cm toward the head, on the stomach at the top, the
+            // hands with it (elbows 155 -> ~90). A Smith bar cannot roll along
+            // the body; the same picture is a bench set too close to the
+            // bar's track.
+            "bar": barRolledUp(0.28, strength: thrustLockout),
+        ],
+        "Machine Hip Thrust": [
+            // Stopping short: the hips and the handles ~15 cm (~35 pt) below
+            // the line, the knees 105 -> ~85, the elbows 100 -> ~87.
+            "hips": r1012thrustHipsShort(0.25, strength: r1012thrustMachineLockout),
+            // The lower back humping ~7 cm (~17 pt) above the line.
+            "ribs": r1012thrustArched(r1012thrustMachineLockout),
+            // Feet ~13 cm (~24 pt) too far up the footplate, the knees opening
+            // to ~130.
+            "feet": r1012thrustFootFar("*", 0.22, strength: r1012thrustMachineLockout),
+            // The back sliding ~12 cm (~15-16 pt) up the back pad, the knees
+            // to ~127; the hands stay on the handles, the elbows opening
+            // 100 -> ~143.
+            "pad": r1012thrustSlidUpPad(0.2, strength: r1012thrustMachineLockout),
+            // "roller": where the roller pad sits has no ghost; the app falls
+            // back to the red ring on its dot.
+        ],
+        "Single-Leg Hip Thrust": [
+            // Stopping short: the hips ~15 cm (~30 pt) below the line, the
+            // held right leg with them, the working knee 97 -> ~80; the arms
+            // stay on the bench.
+            "hips": r1012thrustOneLegShort(0.25),
+            // The free side's hip sagging ~11 cm (~22 pt), the right leg
+            // carried down with it, the pelvis rolling 36 degrees about the
+            // left hip (exaggerated so it reads on the small figure).
+            "level": r1012thrustRightHipSags(36, planted: false),
+            // The free leg swung 30 degrees away from the chest, toward the
+            // feet: the knee ~23 cm and the foot ~38 cm (~72 pt) toward the
+            // feet, kept below the free-leg pill in the mistake view.
+            "free": r1012thrustFreeLegSwing(30),
+            // The working foot ~13 cm (~20 pt) too far out, the knee opening
+            // to ~121.
+            "foot": r1012thrustFootFar("L", 0.22),
+            // The lower back humping ~7 cm (~14 pt) above the line.
+            "ribs": thrustArched,
+        ],
+        "B-Stance Hip Thrust": [
+            // Stopping short: the hips, dumbbell and hands ~15 cm (~32 pt)
+            // below the line, the knees 100 -> ~82 and 137 -> ~115, the
+            // elbows 149 -> ~115.
+            "hips": r1012thrustHipsShort(0.25, strength: thrustLockout),
+            // The front foot flattened: its toes ~9 cm (~22 pt) down onto the
+            // floor.
+            "kickstand": r1012thrustKickstandFlat(24),
+            // The working foot ~13 cm (~21 pt) too far out, the knee to ~124.
+            "foot": r1012thrustFootFar("L", 0.22),
+            // The kickstand side's hip sagging ~11 cm (~23 pt), the pelvis
+            // rolling 36 degrees about the left hip, the right knee re-seating
+            // over its planted heel (137 -> ~121).
+            "level": r1012thrustRightHipSags(36, planted: true),
+            // The dumbbell rolled ~17 cm (~21 pt) up onto the stomach near the
+            // top, the hands with it (elbows 149 -> ~93).
+            "dumbbell": barRolledUp(0.28, strength: thrustLockout),
+        ],
+        // END Desktop 300-400 (2026-10-12)
         // MARK: Exercises 1-50 redo (2026-09-29)
         // MARK: Exercises 1-50 redo: Pendlay Row and Close-Grip Bench Press (2026-09-29)
         // Pendlay Row is framed from behind on the lifter's left (yaw -2.0,

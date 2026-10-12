@@ -576,3 +576,54 @@ bars as stances; the old bar-stand model (`Back/InvertedRow`) is no longer
 used. The side lean joins the Single-Arm Lat Pulldown as a second stance at
 its framing (-2.6). The Concentration Curl is framed at -1.2, the working
 left arm toward the camera. `probe.py` carries the new framings.
+
+Desktop "300-400" folder (2026-10-12): `~/Desktop/300-400` holds 38 exports
+(318-400): 26 re-exports of legs in the app, re-tuned by the owner (machines
+swapped for the `Gym_CacMayMoi` ones, red notes fixed, muscles re-painted),
+and twelve new: 377 Smith Machine, 378 Machine, 379 Single-Leg and 380
+B-Stance Hip Thrusts, 383 Cable Pull-Through, 387 Standing Cable Hip
+Extension, 388 Reverse Hyperextension, 389 Single-Leg Back Extension, 390
+45-Degree Hip Extension (`Legs/HipExtension45`), 391 Kettlebell Swing, 392
+Sumo Kettlebell Deadlift and 394 Kettlebell Deadlift, all into `Legs/`.
+`SourceExports/300-400-1012/` holds them as hard links to the Desktop files
+(byte-identical; the disk was full), converted with
+`convert_all.py 300-400-1012/`, padded and slimmed (all attribute for
+attribute, 0.7-2.4 MB each). All intact: one 211-joint skeleton, one
+animation over 1-192; 320 carried a camera, switched off. The old models are
+kept in the session scratchpad (`old/`). Against the app models (world-space
+hands, elbows, feet, knees, head, pelvis, hips and chest every 4 frames): 13
+within 1 cm (318-320, 322, 356, 358, 365, 368, 370, 393, 396, 397, 400); 364
+and 360 shift the whole lifter 6-7 cm in their new bench and rack; 362, 361
+and 359 hinge with the hands and head 10-16 cm off; 325, 323 and 324 change
+the step (knees and feet 12-19 cm); 376 moves the head and elbows 14-15 cm on its new
+bench; 371 and 395 hold the new station elsewhere (the hands and the left
+elbow 12-27 cm); 398 rests the hands elsewhere (26-30 cm); 369's working foot
+runs up to 31 cm from the old clip's. Equipment: the M30 Smith rack on
+318, 320, 325, 360 and 365; the M29 dual station on 361 (with a new straight
+bar), 371 and 395; the GYM bench under 364, 376 and 398, and moved on 319; a
+new GHD on 368; 369's chest pad moved. Paint changed on five: the glutes now
+bright on 319, 320 and 322 (adductors unlit; 320 also lights the hamstrings
+dim), the quadriceps dim on 356, and the quadriceps bright with the forearms
+dim on 393. Framings: the M30's near upright crossed the lifter at -1.0, so
+318, 320 and 325 are now -0.7, 360 -0.6 and 365 -2.5 (behind-left, like the
+other good mornings); the M29 tower hid 371's lifter at -1.3, so it is -2.1.
+The others kept theirs (old/new viewport stills at 0-3 s). The new twelve
+were solved with `solve_pick.py` and picked on stills: the hip thrusts at
+-0.7 like the Dumbbell Hip Thrust (the Smith rack's plate hid the lifter
+further round), the pull-through and swing side-on (-1.3), the standing cable
+hip extension -1.8 (the M29 tower is in front of the lifter, and from -1.0 to
+-1.35 it covered them), the reverse hyper -1.4, both back-extension benches
+-1.9 like the Back Extension, the sumo kettlebell deadlift -0.5 and the
+kettlebell deadlift -0.8 like the dumbbell deadlifts.
+Disk (2026-10-12): the volume ran full during this round, so the raw copies
+in `SourceExports/100-200-1011/` (77), `1-100-1010/` (44) and nine of
+`female-1010/` are now hard links to their byte-identical originals on the
+Desktop (about 3 GB freed): re-exporting over a Desktop file in place would
+change the linked copy too.
+398's export put the SkelRoot on /root rather than on the rig (its mini band
+is now skinned to the rig's skeleton, outside `Anatomy_MasterRig`), and the
+wrapper's `/root` Xform overrode it, so nothing was under a SkelRoot and the
+app drew the body in its standing rest pose. `convert_all.py` now keeps a
+SkelRoot type on the wrapper when the export's /root has one; 398 was
+re-converted, padded and slimmed (the other 37 exports keep their SkelRoot
+on the rig, as before).

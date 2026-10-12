@@ -195,3 +195,19 @@ the N29 frame left five lifters small, so the Inverted Row, both cable
 shoulder presses, the Iso-Lateral and the Plate-Loaded Chest Press joined
 `BODY_ONLY`. New tile `lib-concentration-curl`; the library now has 426
 exercises, all with a thumbnail.
+
+Desktop "300-400" folder (2026-10-12): the 26 replaced legs and the twelve
+new exercises were shot with `Tools/lab/shots.sh photo`. The 13 models whose
+motion changed and the twelve new got fresh pose times (`posetime.py
+<names…>`); they, the five in new equipment with unchanged motion (the Smith
+Machine Split Squat, Smith Machine Bulgarian Split Squat, Barbell Bulgarian
+Split Squat, Smith Machine Good Morning and Glute-Ham Raise) and the trainer
+re-framings took `thumbsolve.py`'s new square framings; the eight whose
+motion, equipment and framing held kept theirs and were re-shot for the new
+paint. The M30 Smith rack and the M29 station left eight lifters a third of
+the tile or less, so the Smith Machine Split Squat, Bulgarian Split Squat,
+Reverse Lunge and Good Morning, the Cable Standing Leg Curl, Standing Cable
+Hip Extension, Cable Hip Adduction and Cable Pull-Through joined
+`BODY_ONLY`. Twelve new tiles (the 45-Degree Hip Extension's slot is
+`lib--degree-hip-extension`, as for the 45-Degree Leg Press); the library
+now has 438 exercises, all with a thumbnail.

@@ -1,0 +1,205 @@
+// MARK: PIECES
+
+    // MARK: Desktop 300-400 thrust pieces (2026-10-12)
+    //
+    // Hip thrust ghosts for the Smith, machine, single-leg and B-stance
+    // thrusts. All four rigs share the barbell lift's trunk motion (trunk up
+    // 44 degrees at the bottom, level at the top), so the Barbell hip thrust
+    // pieces' rule holds: moves along the floor use the body's own `up` or
+    // the room's `rise`, never `ahead`, and faults of the top read
+    // `thrustLockout` (the left pelvis-to-ankle distance: 0.88-0.91 torso
+    // lengths at the bottom, 1.10-1.13 at the top on these rigs).
+
+    /// The Machine Hip Thrust's lockout, read like `thrustLockout`: its feet
+    /// sit on a raised footplate, so the left pelvis-to-ankle distance is
+    /// 0.92 torso lengths at the bottom (where `thrustLockout` would show 16%
+    /// of a fault of the top) and 1.16 at the top.
+    private static let r1012thrustMachineLockout = FaultStrength.between("pelvis", "foot_L", from: 0.93, to: 1.06)
+
+    /// `hipsShortOfLockout` with the elbows kept bending the way they bend:
+    /// the hips, and the bar, dumbbell or lever handles resting on them, hang
+    /// `drop` torso lengths below the line of the knees and shoulders, and
+    /// the elbows ride half as far down as the hands before they re-seat.
+    /// Re-seated from where they stand, near-straight elbows (the Smith's
+    /// 155 degrees at the top, the B-stance's 149) cross the new
+    /// shoulder-to-hand line and fold the wrong way (the Smith's bend plane
+    /// turns ~160 degrees, the B-stance's ~80); this way it turns 2-11.
+    private static func r1012thrustHipsShort(_ drop: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, armsToGrip, bar],
+                  moves: [.shift(["pelvis", "thigh_*", "hand_*", "hand_*.tip"], rise: -drop),
+                          .shift(["forearm_*"], rise: -drop / 2),
+                          .shift(["spine"], rise: -drop * 0.8),
+                          .shift(["chest"], rise: -drop * 0.5),
+                          .resolve(["shin_*"]),
+                          .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// `thrustArched` (the lumbar spine ~7 cm above the line of the pelvis
+    /// and chest at lockout) read from another lockout.
+    private static func r1012thrustArched(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.shift(["spine"], rise: 0.12), .shift(["chest"], rise: 0.05)],
+                  strength: strength)
+    }
+
+    /// Hip thrust feet set too far out, one side or both (`*`): the foot sits
+    /// `reach` torso lengths further from the hips along the trunk's line
+    /// (level at lockout), the knee opening behind it. `thrustFeetFar` for
+    /// one leg, or with another lockout.
+    private static func r1012thrustFootFar(_ side: String, _ reach: Float,
+                                           strength: FaultStrength = thrustLockout) -> FaultPose {
+        FaultPose(chains: [leg(side), hips],
+                  moves: [.shift(["foot_\(side)", "foot_\(side).tip"], up: -reach), .resolve(["shin_\(side)"])],
+                  strength: strength)
+    }
+
+    /// `slidUpBench` for a lever machine: the back sliding `slide` torso
+    /// lengths up the back pad as the hips rise, the feet planted and the
+    /// knees opening, read from another lockout. The hands stay on the
+    /// lever's handles (they hold the machine, not a bar on the hips), so
+    /// the shoulders slide away from them and the elbows open behind.
+    private static func r1012thrustSlidUpPad(_ slide: Float, strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, legs, hips],
+                  moves: [.shift(["pelvis", "thigh_*", "spine", "chest", "neck", "head", "upper_arm_*"], up: slide),
+                          .resolve(["shin_*"]),
+                          .resolve(["forearm_*"])],
+                  strength: strength)
+    }
+
+    /// Single-leg hip thrust stopped short: the hips `drop` torso lengths
+    /// below the line of the knee and shoulders, the free right leg carried
+    /// down with them (it is held off the floor), the working left knee
+    /// re-seated over its planted foot. Unlike `hipsShortOfLockout` the arms
+    /// stay put: they rest on the bench, not on a bar.
+    private static func r1012thrustOneLegShort(_ drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, leg("L"), leg("R"), hips],
+                  moves: [.shift(["pelvis", "thigh_*", "shin_R", "foot_R", "foot_R.tip"], rise: -drop),
+                          .shift(["spine"], rise: -drop * 0.8),
+                          .shift(["chest"], rise: -drop * 0.5),
+                          .resolve(["shin_L"])],
+                  strength: thrustLockout)
+    }
+
+    /// One-leg hip thrust: the hip on the right side sags at the top, the
+    /// pelvis rolling `degrees` about the body's long axis through the
+    /// working left hip, so the hip line keeps its width (a straight drop
+    /// would stretch it). With `planted` the right foot stays down (the
+    /// B-stance kickstand) and its knee re-seats; otherwise the free right
+    /// leg is carried down with the hip, by the hip's own move (the hip
+    /// joints sit 0.307 torso lengths apart on these rigs).
+    private static func r1012thrustRightHipSags(_ degrees: Float, planted: Bool) -> FaultPose {
+        let angle: Float = degrees * .pi / 180
+        let drop: Float = 0.307 * sin(angle)
+        let inward: Float = 0.307 * (1 - cos(angle))
+        let roll: FaultMove = .turn(pivot: "thigh_L", points: ["pelvis", "thigh_R"], axis: .up, degrees: degrees)
+        let rest: [FaultMove] = planted
+            ? [.resolve(["shin_R"])]
+            : [.shift(["shin_R", "foot_R", "foot_R.tip"], forward: -drop, outward: -inward)]
+        return FaultPose(chains: [["thigh_L", "pelvis", "thigh_R"], leg("R")],
+                         moves: [roll] + rest,
+                         strength: thrustLockout)
+    }
+
+    /// Single-leg hip thrust: the free right leg swung `degrees` away from
+    /// the chest about the hip, toward the feet, the knee kept bent, instead
+    /// of held still. Read from hip height, so it shows near the top, where
+    /// the thigh stands upright; at the bottom the swung foot would near the
+    /// floor.
+    private static func r1012thrustFreeLegSwing(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("R"), hips],
+                  moves: [.turn(pivot: "thigh_R", points: ["shin_R", "foot_R", "foot_R.tip"], axis: .lateral, degrees: -degrees)],
+                  strength: thrustLockout)
+    }
+
+    /// B-stance hip thrust: the front (right) foot flattened, the toes turned
+    /// `degrees` down about the ankle onto the floor, so it can push.
+    private static func r1012thrustKickstandFlat(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [leg("R")],
+                  moves: [.turn(pivot: "foot_R", points: ["foot_R.tip"], axis: .lateral, degrees: -degrees)])
+    }
+
+// MARK: TABLE
+        // MARK: Desktop 300-400 hip thrusts (2026-10-12)
+        // All four are framed three-quarter from the feet on the lifter's
+        // left (yaw -0.7), as the barbell and dumbbell thrusts, and no fault
+        // turns the model: the hips and spine move up and down the screen and
+        // moves along the trunk's line show at about two-thirds of their
+        // length. Every ghost is a fault of the top, shown at the top. Sizes
+        // from ghost.py (a Python port of FaultGhost.solve) on each rig at
+        // the shot moment; limb lengths and the hip line kept, no knee or
+        // elbow folding the wrong way (the library's `hipsShortOfLockout` and
+        // `thrustArched` stretch the trunk's joint-to-joint lines 1-1.3 cm,
+        // as on the barbell and dumbbell thrusts).
+        "Smith Machine Hip Thrust": [
+            // Stopping short: the hips, bar and hands ~15 cm (~37 pt) below
+            // the line of the knees and shoulders, the knees 100 -> ~82, the
+            // elbows 155 -> ~131 still bending the right way.
+            "hips": r1012thrustHipsShort(0.25, strength: thrustLockout),
+            // The lower back humping ~7 cm (~17 pt) above the line.
+            "ribs": thrustArched,
+            // Feet ~13 cm (~24 pt) too far out: the shins slope away, the
+            // knees open to ~124.
+            "feet": thrustFeetFar(0.22),
+            // The back sliding ~12 cm up the bench as the hips rise, the
+            // knees opening to ~121.
+            "bench": slidUpBench(0.2),
+            // The pad ~17 cm toward the head, on the stomach at the top, the
+            // hands with it (elbows 155 -> ~90). A Smith bar cannot roll along
+            // the body; the same picture is a bench set too close to the
+            // bar's track.
+            "bar": barRolledUp(0.28, strength: thrustLockout),
+        ],
+        "Machine Hip Thrust": [
+            // Stopping short: the hips and the handles ~15 cm (~35 pt) below
+            // the line, the knees 105 -> ~85, the elbows 100 -> ~87.
+            "hips": r1012thrustHipsShort(0.25, strength: r1012thrustMachineLockout),
+            // The lower back humping ~7 cm (~17 pt) above the line.
+            "ribs": r1012thrustArched(r1012thrustMachineLockout),
+            // Feet ~13 cm (~24 pt) too far up the footplate, the knees opening
+            // to ~130.
+            "feet": r1012thrustFootFar("*", 0.22, strength: r1012thrustMachineLockout),
+            // The back sliding ~12 cm (~15-16 pt) up the back pad, the knees
+            // to ~127; the hands stay on the handles, the elbows opening
+            // 100 -> ~143.
+            "pad": r1012thrustSlidUpPad(0.2, strength: r1012thrustMachineLockout),
+            // "roller": where the roller pad sits has no ghost; the app falls
+            // back to the red ring on its dot.
+        ],
+        "Single-Leg Hip Thrust": [
+            // Stopping short: the hips ~15 cm (~30 pt) below the line, the
+            // held right leg with them, the working knee 97 -> ~80; the arms
+            // stay on the bench.
+            "hips": r1012thrustOneLegShort(0.25),
+            // The free side's hip sagging ~11 cm (~22 pt), the right leg
+            // carried down with it, the pelvis rolling 36 degrees about the
+            // left hip (exaggerated so it reads on the small figure).
+            "level": r1012thrustRightHipSags(36, planted: false),
+            // The free leg swung 30 degrees away from the chest, toward the
+            // feet: the knee ~23 cm and the foot ~38 cm (~72 pt) toward the
+            // feet, kept below the free-leg pill in the mistake view.
+            "free": r1012thrustFreeLegSwing(30),
+            // The working foot ~13 cm (~20 pt) too far out, the knee opening
+            // to ~121.
+            "foot": r1012thrustFootFar("L", 0.22),
+            // The lower back humping ~7 cm (~14 pt) above the line.
+            "ribs": thrustArched,
+        ],
+        "B-Stance Hip Thrust": [
+            // Stopping short: the hips, dumbbell and hands ~15 cm (~32 pt)
+            // below the line, the knees 100 -> ~82 and 137 -> ~115, the
+            // elbows 149 -> ~115.
+            "hips": r1012thrustHipsShort(0.25, strength: thrustLockout),
+            // The front foot flattened: its toes ~9 cm (~22 pt) down onto the
+            // floor.
+            "kickstand": r1012thrustKickstandFlat(24),
+            // The working foot ~13 cm (~21 pt) too far out, the knee to ~124.
+            "foot": r1012thrustFootFar("L", 0.22),
+            // The kickstand side's hip sagging ~11 cm (~23 pt), the pelvis
+            // rolling 36 degrees about the left hip, the right knee re-seating
+            // over its planted heel (137 -> ~121).
+            "level": r1012thrustRightHipSags(36, planted: true),
+            // The dumbbell rolled ~17 cm (~21 pt) up onto the stomach near the
+            // top, the hands with it (elbows 149 -> ~93).
+            "dumbbell": barRolledUp(0.28, strength: thrustLockout),
+        ],

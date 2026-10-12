@@ -27,6 +27,12 @@ except `add_rows_r3.py` (one-off) — mirrors, builds and shots go to `$LAB`.
 - `family_1010.sh check|shoot <family>` — the same for the Desktop "1-100"
   folder's five new legs (2026-10-10), with `integrate_1010.py` / `spec_1010.py`
   and `fault_moments_1010_<family>.json`.
+- `family_1012.sh check|shoot <family>` (2026-10-12) — the same for the
+  Desktop "300-400" folder's three new families, with `integrate_1012.py` /
+  `spec_1012.py` and `fault_moments_1012_<family>.json`. That round ran its
+  lab through a wrapper holding the simulator lock of another session working
+  in the same checkout (`lock.sh` locks per `$LAB`, and `build.sh` installs
+  without a lock), since each install replaces the other's app.
 - `shoot_ex.sh <out> <stills> "<Exercise>" ...` (2026-10-11) — trainer stills and
   every cue's mistake ghost for exercises already in the library (no
   integration step), from the installed harness app; for replaced models.

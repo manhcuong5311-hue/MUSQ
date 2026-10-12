@@ -1,0 +1,6 @@
+{
+  "Smith Machine Hip Thrust": {"hips": "top", "ribs": "top", "feet": "top", "bench": "top", "bar": "top"},
+  "Machine Hip Thrust": {"hips": "top", "ribs": "top", "feet": "top", "pad": "top"},
+  "Single-Leg Hip Thrust": {"hips": "top", "level": "top", "free": "top", "foot": "top", "ribs": "top"},
+  "B-Stance Hip Thrust": {"hips": "top", "kickstand": "top", "foot": "top", "level": "top", "dumbbell": "top"}
+}

@@ -1003,6 +1003,19 @@ enum SampleData {
         Exercise(name: "Dumbbell Hip Thrust", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "DUMBBELL",
                  difficulty: .beginner),
+        // From the Desktop "300-400" folder (2026-10-12): the builder's 377-380.
+        Exercise(name: "Smith Machine Hip Thrust", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Machine Hip Thrust", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Single-Leg Hip Thrust", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BENCH",
+                 difficulty: .intermediate),
+        Exercise(name: "B-Stance Hip Thrust", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
         Exercise(name: "Cable Glute Kickback", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
                  difficulty: .beginner),
@@ -1076,8 +1089,34 @@ enum SampleData {
         Exercise(name: "Weighted Frog Pump", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "DUMBBELL",
                  difficulty: .beginner),
+        // From the Desktop "300-400" folder (2026-10-12): the builder's 383-392.
+        Exercise(name: "Cable Pull-Through", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
+                 difficulty: .beginner),
+        Exercise(name: "Standing Cable Hip Extension", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
+                 difficulty: .beginner),
+        Exercise(name: "Reverse Hyperextension", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "MACHINE",
+                 difficulty: .intermediate),
+        Exercise(name: "Single-Leg Back Extension", category: .legs,
+                 primaryMuscle: "POSTERIOR CHAIN", equipment: "BODYWEIGHT",
+                 difficulty: .intermediate),
+        Exercise(name: "45-Degree Hip Extension", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BODYWEIGHT",
+                 difficulty: .beginner),
+        Exercise(name: "Kettlebell Swing", category: .legs,
+                 primaryMuscle: "POSTERIOR CHAIN", equipment: "KETTLEBELL",
+                 difficulty: .intermediate),
+        Exercise(name: "Sumo Kettlebell Deadlift", category: .legs,
+                 primaryMuscle: "GLUTES + QUADS", equipment: "KETTLEBELL",
+                 difficulty: .beginner),
         Exercise(name: "Dumbbell Deadlift", category: .legs,
                  primaryMuscle: "POSTERIOR CHAIN", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        // From the Desktop "300-400" folder (2026-10-12): the builder's 394.
+        Exercise(name: "Kettlebell Deadlift", category: .legs,
+                 primaryMuscle: "POSTERIOR CHAIN", equipment: "KETTLEBELL",
                  difficulty: .beginner),
         Exercise(name: "Cable Hip Adduction", category: .legs,
                  primaryMuscle: "ADDUCTORS", equipment: "CABLE",
@@ -1773,6 +1812,20 @@ enum SampleData {
         // BEGIN Desktop 100-200 (2026-10-11)
         "Concentration Curl": concentrationCurlContent,
         // END Desktop 100-200 (2026-10-11)
+        // BEGIN Desktop 300-400 (2026-10-12)
+        "Smith Machine Hip Thrust": smithMachineHipThrustContent,
+        "Machine Hip Thrust": machineHipThrustContent,
+        "Single-Leg Hip Thrust": singleLegHipThrustContent,
+        "B-Stance Hip Thrust": bStanceHipThrustContent,
+        "Cable Pull-Through": cablePullThroughContent,
+        "Standing Cable Hip Extension": standingCableHipExtensionContent,
+        "Reverse Hyperextension": reverseHyperextensionContent,
+        "Single-Leg Back Extension": singleLegBackExtensionContent,
+        "45-Degree Hip Extension": hipExtension45Content,
+        "Kettlebell Swing": kettlebellSwingContent,
+        "Sumo Kettlebell Deadlift": sumoKettlebellDeadliftContent,
+        "Kettlebell Deadlift": kettlebellDeadliftContent,
+        // END Desktop 300-400 (2026-10-12)
     ]
 
     static func content(for exercise: Exercise) -> ExerciseContent? {
@@ -1998,8 +2051,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.599, offset: [-0.024, 0.011, 0.087])),
         "B-Stance Romanian Deadlift":          ExerciseModel(resource: "BStanceRomanianDeadlift",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.897, offset: [0.011, 0.019, -0.04])),
+        // In the M30 Smith rack since 2026-10-12: turned to -0.6 so the near
+        // upright clears the lifter.
         "Smith Machine Romanian Deadlift":     ExerciseModel(resource: "SmithMachineRomanianDeadlift",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.915, offset: [0.021, 0.025, -0.032])),
+                                        framing: ModelFraming(yaw: -0.6, zoom: 0.878, offset: [-0.001, 0.049, 0.001])),
         "Cable Romanian Deadlift":             ExerciseModel(resource: "CableRomanianDeadlift",
                                         framing: ModelFraming(yaw: -1.0, zoom: 0.902, offset: [0.031, 0.021, -0.048])),
         "Kettlebell Romanian Deadlift":        ExerciseModel(resource: "KettlebellRomanianDeadlift",
@@ -2008,8 +2063,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -2.3, zoom: 0.644, offset: [-0.032, 0.012, -0.035])),
         "Seated Good Morning":                 ExerciseModel(resource: "SeatedGoodMorning",
                                         framing: ModelFraming(yaw: -2.3, zoom: 0.593, offset: [-0.026, 0.057, -0.029])),
+        // In the M30 Smith rack since 2026-10-12: from -1.0 the near upright hid
+        // the trunk, so it is seen from behind-left like the other good mornings.
         "Smith Machine Good Morning":          ExerciseModel(resource: "SmithMachineGoodMorning",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.926, offset: [-0.04, 0.019, 0.062])),
+                                        framing: ModelFraming(yaw: -2.5, zoom: 0.874, offset: [0.035, 0.051, 0.026])),
         "Nordic Hamstring Curl":               ExerciseModel(resource: "NordicHamstringCurl",
                                         framing: ModelFraming(yaw: -1.4, zoom: 0.556, offset: [0.016, 0.027, -0.096])),
         "Assisted Nordic Curl":                ExerciseModel(resource: "AssistedNordicCurl",
@@ -2020,8 +2077,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.901, offset: [-0.016, 0.002, 0.059])),
         "Kneeling Leg Curl":                   ExerciseModel(resource: "KneelingLegCurl",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.815, offset: [0.002, 0.043, -0.006])),
+        // On the M29 station since 2026-10-12: from -1.3 its tower hid the
+        // lifter's front, so it is seen from behind-left.
         "Cable Standing Leg Curl":             ExerciseModel(resource: "CableStandingLegCurl",
-                                        framing: ModelFraming(yaw: -1.3, zoom: 0.921, offset: [-0.017, 0.012, 0.06])),
+                                        framing: ModelFraming(yaw: -2.1, zoom: 0.866, offset: [0.032, 0.039, 0.055])),
         "Swiss Ball Leg Curl":                 ExerciseModel(resource: "SwissBallLegCurl",
                                         framing: ModelFraming(yaw: -1.35, zoom: 0.603, offset: [-0.013, 0.129, 0.057])),
         "Sliding Leg Curl":                    ExerciseModel(resource: "SlidingLegCurl",
@@ -2032,8 +2091,24 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.57, zoom: 0.722, offset: [0.0, 0.282, 0.125])),
         "Weighted Frog Pump":                  ExerciseModel(resource: "WeightedFrogPump",
                                         framing: ModelFraming(yaw: -1.57, zoom: 0.722, offset: [0.0, 0.239, 0.125])),
+        "Cable Pull-Through":                  ExerciseModel(resource: "CablePullThrough",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.849, offset: [0.003, 0.051, -0.011])),
+        "Standing Cable Hip Extension":        ExerciseModel(resource: "StandingCableHipExtension",
+                                        framing: ModelFraming(yaw: -1.8, zoom: 0.884, offset: [0.012, 0.034, 0.053])),
+        "Reverse Hyperextension":              ExerciseModel(resource: "ReverseHyperextension",
+                                        framing: ModelFraming(yaw: -1.4, zoom: 0.501, offset: [-0.006, 0.063, 0.034])),
+        "Single-Leg Back Extension":           ExerciseModel(resource: "SingleLegBackExtension",
+                                        framing: ModelFraming(yaw: -1.9, zoom: 0.553, offset: [0.022, 0.054, 0.063])),
+        "45-Degree Hip Extension":             ExerciseModel(resource: "HipExtension45",
+                                        framing: ModelFraming(yaw: -1.9, zoom: 0.555, offset: [0.022, 0.054, 0.064])),
+        "Kettlebell Swing":                    ExerciseModel(resource: "KettlebellSwing",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.85, offset: [0.013, 0.051, -0.046])),
+        "Sumo Kettlebell Deadlift":            ExerciseModel(resource: "SumoKettlebellDeadlift",
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.859, offset: [0.01, 0.052, -0.005])),
         "Dumbbell Deadlift":                   ExerciseModel(resource: "DumbbellDeadlift",
                                         framing: ModelFraming(yaw: -0.8, zoom: 0.901, offset: [0.021, 0.018, -0.021])),
+        "Kettlebell Deadlift":                 ExerciseModel(resource: "KettlebellDeadlift",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.848, offset: [0.008, 0.045, -0.008])),
         "Cable Hip Adduction":                 ExerciseModel(resource: "CableHipAdduction",
                                         framing: ModelFraming(yaw: -0.3, zoom: 0.918, offset: [-0.04, 0.019, 0.012])),
         "Standing Hip Abduction":              ExerciseModel(resource: "StandingHipAbduction",
@@ -2389,24 +2464,31 @@ enum SampleData {
         // outer ends of the bar may crop so the lifter stays large.
         "Barbell Lunge":                      ExerciseModel(resource: "BarbellLunge",
                                         framing: ModelFraming(yaw: -0.6, zoom: 0.690, offset: [0.057, 0.057, -0.039])),
+        // In the M30 Smith rack since 2026-10-12: turned to -0.7 so the near
+        // upright clears the lifter.
         "Smith Machine Reverse Lunge":        ExerciseModel(resource: "SmithMachineReverseLunge",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.885, offset: [-0.095, 0.042, 0.148])),
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.883, offset: [-0.092, 0.049, 0.078])),
         "Curtsy Lunge":                       ExerciseModel(resource: "CurtsyLunge",
                                         framing: ModelFraming(yaw: -0.5, zoom: 0.892, offset: [0.008, 0.031, -0.004])),
         "Barbell Split Squat":                ExerciseModel(resource: "BarbellSplitSquat",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.861, offset: [-0.014, 0.050, 0.051])),
         "Dumbbell Split Squat":               ExerciseModel(resource: "DumbbellSplitSquat",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.893, offset: [-0.012, 0.067, 0.042])),
+        // In the M30 Smith rack since the Desktop "300-400" folder (2026-10-12):
+        // from -1.0 its near upright crossed the lifter; at -0.7 the uprights stay
+        // beside them.
         "Smith Machine Split Squat":          ExerciseModel(resource: "SmithMachineSplitSquat",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.903, offset: [-0.017, 0.075, 0.026])),
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.885, offset: [-0.041, 0.082, 0.035])),
         "Front-Foot-Elevated Split Squat":    ExerciseModel(resource: "FrontFootElevatedSplitSquat",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.905, offset: [-0.020, 0.044, 0.071])),
         "Rear-Foot-Elevated Split Squat":     ExerciseModel(resource: "RearFootElevatedSplitSquat",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.834, offset: [-0.006, 0.063, 0.023])),
         "Barbell Bulgarian Split Squat":      ExerciseModel(resource: "BarbellBulgarianSplitSquat",
                                         framing: ModelFraming(yaw: -1.0, zoom: 0.793, offset: [-0.032, 0.057, 0.051])),
+        // In the M30 Smith rack since 2026-10-12: turned to -0.7 so the near
+        // upright clears the lifter.
         "Smith Machine Bulgarian Split Squat": ExerciseModel(resource: "SmithMachineBulgarianSplitSquat",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.897, offset: [-0.007, 0.076, 0.011])),
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.873, offset: [-0.015, 0.081, 0.012])),
         // Late additions (2026-09-27), solved at 382×655: the seated lateral
         // raise and dumbbell upright row from the front-left like their
         // neighbours, the cable rear-delt row from behind-left so both elbows
@@ -2621,6 +2703,14 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.7, zoom: 0.87, offset: [0.035, 0.045, -0.029])),
         "Dumbbell Hip Thrust":                ExerciseModel(resource: "DumbbellHipThrust",
                                         framing: ModelFraming(yaw: -0.7, zoom: 0.663, offset: [-0.037, 0.213, 0.031])),
+        "Smith Machine Hip Thrust":           ExerciseModel(resource: "SmithMachineHipThrust",
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.801, offset: [0.02, 0.252, -0.017])),
+        "Machine Hip Thrust":                 ExerciseModel(resource: "MachineHipThrust",
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.767, offset: [0.015, 0.204, -0.012])),
+        "Single-Leg Hip Thrust":              ExerciseModel(resource: "SingleLegHipThrust",
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.659, offset: [-0.029, 0.143, 0.024])),
+        "B-Stance Hip Thrust":                ExerciseModel(resource: "BStanceHipThrust",
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.697, offset: [0.019, 0.211, -0.016])),
         "Dumbbell Standing Calf Raise":       ExerciseModel(resource: "DumbbellStandingCalfRaise",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.833, offset: [0.009, 0.02, -0.033])),
         "Single-Leg Dumbbell Calf Raise":     ExerciseModel(resource: "SingleLegDumbbellCalfRaise",
@@ -23800,7 +23890,7 @@ enum SampleData {
                 intro: "Each rep starts with one long step forward.",
                 why: "A step long enough for both knees to reach about 90° keeps the front shin close to upright; in a lunge study, a short step put more load on the front of the knee near the bottom than a long step did. A fully upright shin shifts some of that load to the back knee, so aim for 90° at both knees, not the longest step you can take.",
                 mistake: "Taking a short step, so the front knee has to travel well past the toes to reach depth.",
-                correct: "Step further than a normal walking stride, land heel first and let the whole foot settle before you lower."
+                correct: "Step further than a normal walking stride, land heel first and let the whole foot settle as you sink into the lunge."
             ),
             TechniqueCue(
                 id: "torso",
@@ -23891,7 +23981,7 @@ enum SampleData {
                 intro: "Each rep starts with one long step forward, the bar riding with you.",
                 why: "A step long enough for both knees to reach about 90° keeps the front shin near upright and the bar over the middle of the stance; in a lunge study, a short step loaded the front of the knee more near the bottom. A fully upright shin shifts some load to the back knee, so aim for 90° at both knees, not the longest step.",
                 mistake: "Taking a short step, so the front knee has to travel well past the toes to reach depth.",
-                correct: "Step further than a normal walking stride, land heel first and let the whole foot settle before you lower."
+                correct: "Step further than a normal walking stride, land heel first and let the whole foot settle as you sink into the lunge."
             ),
             TechniqueCue(
                 id: "torso",
@@ -23956,7 +24046,7 @@ enum SampleData {
     static let smithMachineReverseLungeContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "stance", label: "Feet ahead of bar",
-                          labelPoint: CGPoint(x: 0.653, y: 0.16),
+                          labelPoint: CGPoint(x: 0.530, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "step", label: "Step back",
@@ -24039,8 +24129,8 @@ enum SampleData {
             mistakeNote: "With the front foot under the bar, the rails keep the bar over it, so reaching depth tips the weight onto the front toes or folds the chest over the knee."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.07, cx: 0.39, cy: 0.59),
-            .init(DS.activationSoft.opacity(0.35), rx: 0.07, ry: 0.06, cx: 0.53, cy: 0.54)
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.07, cx: 0.43, cy: 0.59),
+            .init(DS.activationSoft.opacity(0.35), rx: 0.07, ry: 0.06, cx: 0.56, cy: 0.55)
         ]
     )
 
@@ -24396,8 +24486,8 @@ enum SampleData {
             mistakeNote: "Tucked under the fixed bar, the front knee has to travel well forward and the heel peels up, tipping the load onto the toes."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.46, cy: 0.58),
-            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.58, cy: 0.53)
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.45, cy: 0.57),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.53, cy: 0.52)
         ]
     )
 
@@ -24554,8 +24644,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-12 model paints the three glutes bright as one group
+            // (dim before) and no longer lights the adductors, so the Gluteus
+            // Maximus row is primary, its fraction left where the EMG put it;
+            // the medius, lit with it, keeps its secondary row (the library's
+            // glute-group convention, as on the Single-Leg Glute Bridge).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
             MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48),
             MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44)
         ],
@@ -24644,8 +24739,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-12 model paints the three glutes bright as one group
+            // (dim before) and no longer lights the adductors, so the Gluteus
+            // Maximus row is primary, its fraction left where the EMG put it;
+            // the medius, lit with it, keeps its secondary row (the library's
+            // glute-group convention, as on the Single-Leg Glute Bridge).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
             MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48),
             MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44)
         ],
@@ -24734,8 +24834,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-12 model paints the three glutes bright as one group
+            // (dim before), the hamstrings dim and the adductors no longer, so
+            // the Gluteus Maximus row is primary, its fraction left where the
+            // EMG put it; the medius, lit with it, keeps its secondary row (the
+            // library's glute-group convention, as on the Single-Leg Glute Bridge).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.42),
             MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.34)
         ],
@@ -24755,8 +24860,8 @@ enum SampleData {
             mistakeNote: "Half reps skip the bottom third of the rep, where the glutes, hamstrings and quadriceps work hardest in this lift."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.41, cy: 0.58),
-            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.54, cy: 0.54)
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.06, cx: 0.45, cy: 0.57),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.06, cx: 0.53, cy: 0.54)
         ]
     )
 
@@ -30964,7 +31069,11 @@ enum SampleData {
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.60),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.60),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.34)
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.34),
+            // The 2026-10-12 model paints the quadriceps dim (unlit before). An
+            // estimate: the Romanian Deadlift's 0.36 (Lee et al. 2018's rectus
+            // femoris) scaled as this bodyweight lift's hamstrings are (0.62/0.88).
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.25)
         ],
         stabilisers: ["adductors", "obliques", "calves", "core"],
         setup: [
@@ -31199,16 +31308,16 @@ enum SampleData {
             TechniqueCue(
                 id: "hinge",
                 title: "Hip Hinge",
-                intro: "The hips push back over the front heel while the front knee stays soft.",
+                intro: "The hips push back over the front heel while the front shin stays near upright.",
                 why: "Sending the hips back stretches the front leg's hamstrings and glute under load. Sinking straight down instead bends both knees and turns the rep into a split squat.",
                 mistake: "Bending both knees and sinking straight down, the chest staying upright.",
-                correct: "Keep the front knee soft and fixed, push the hips back as far as they will go, and let the dumbbells lower as a result."
+                correct: "Unlock the front knee and let it bend further as you push the hips back as far as they will go, and let the dumbbells lower as a result."
             ),
             TechniqueCue(
                 id: "path",
                 title: "Dumbbell Path",
                 intro: "The dumbbells hang from long arms, one on each side, and travel straight down to about the knees.",
-                why: "Weights that travel straight down stay over the front foot and keep the lever on the lower back short. In the model they reach about knee height, where the front hip has hinged as far as it goes.",
+                why: "Weights that travel straight down stay over the front foot and keep the lever on the lower back short. In the model they reach just below the knee, where the front hip has hinged as far as it goes.",
                 mistake: "Letting the dumbbells drift out in front of the knee as the chest lowers.",
                 correct: "Keep the arms long and the shoulders back, and lower the dumbbells straight down to about the knee or a little below."
             ),
@@ -31251,8 +31360,8 @@ enum SampleData {
             mistakeNote: "When the back heel drops and that leg pushes, the load spreads over both legs and the rep becomes an ordinary split-stance RDL."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.08, cx: 0.65, cy: 0.57),
-            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.05, cx: 0.66, cy: 0.46)
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.08, cx: 0.65, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.05, cx: 0.67, cy: 0.48)
         ]
     )
 
@@ -31260,7 +31369,7 @@ enum SampleData {
         annotations: [
             CueAnnotation(cueID: "back", label: "Flat back",
                           labelPoint: CGPoint(x: 0.230, y: 0.16),
-                          leaderLength: 40, joint: "chest"),
+                          leaderLength: 40, joint: "neck"),
             CueAnnotation(cueID: "hinge", label: "Hips back",
                           labelPoint: CGPoint(x: 0.770, y: 0.16),
                           labelSide: .trailing,
@@ -31288,7 +31397,7 @@ enum SampleData {
             TechniqueCue(
                 id: "hinge",
                 title: "Hip Hinge",
-                intro: "The hips push back while the knees stay soft, and the weight lowers only as the hips go back.",
+                intro: "The hips push back while the shins stay upright, and the weight lowers only as the hips go back.",
                 why: "Sending the hips back stretches the hamstrings and glutes under load, which is where an RDL does its work; in comparisons of hamstring exercises the RDL drew some of the highest hamstring activity. The track does the balancing, so the whole rep can go into that hinge.",
                 mistake: "Bending the knees and sinking under the bar, which turns the rep into a squat.",
                 correct: "Push the hips straight back and let the bar slide down its track close to the thighs, then drive the hips forward to stand."
@@ -31312,10 +31421,10 @@ enum SampleData {
             TechniqueCue(
                 id: "knee",
                 title: "Knee Angle",
-                intro: "The knees stay soft and bend only slightly as the hips go back.",
-                why: "The hamstrings cross the knee as well as the hip, so locked knees put them on stretch sooner and the hips run out of hinge earlier; a soft bend lets the hips travel further back before the stretch stops them.",
+                intro: "The knees start soft and bend further as the hips go back, to about 40° at the bottom.",
+                why: "The hamstrings cross the knee as well as the hip, so locked knees put them on stretch sooner and the hips run out of hinge earlier; bending the knees lets the hips travel further back before the stretch stops them.",
                 mistake: "Locking the knees straight at the bottom of the rep.",
-                correct: "Unlock the knees before you unhook the bar and keep them soft, letting them bend only a little as the hips travel back."
+                correct: "Unlock the knees before you unhook the bar and let them bend further as the hips travel back, the shins staying upright."
             )
         ],
         activation: [
@@ -31339,8 +31448,8 @@ enum SampleData {
             mistakeNote: "Standing back from a bar the rails hold in place puts it out over the toes, so the arms reach forward and the lower back holds the load on a longer lever."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.09, cx: 0.65, cy: 0.60),
-            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.65, cy: 0.42)
+            .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.09, cx: 0.57, cy: 0.57),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.57, cy: 0.41)
         ]
     )
 
@@ -31370,7 +31479,7 @@ enum SampleData {
             TechniqueCue(
                 id: "hinge",
                 title: "Hip Hinge",
-                intro: "The hips push back while the knees stay soft, and the weight lowers only as the hips go back.",
+                intro: "The hips push back while the shins stay near upright, and the weight lowers only as the hips go back.",
                 why: "Sending the hips back stretches the hamstrings and glutes under load, which is where an RDL does its work; in comparisons of hamstring exercises the RDL drew some of the highest hamstring activity. The cable pulls toward the machine as well as down, so the hips also have to hold you back against it.",
                 mistake: "Bending the knees and sinking the hips, which turns the rep into a squat and slackens the stretch.",
                 correct: "Push the hips back and sit back against the cable's pull as the chest lowers, then drive the hips forward to stand."
@@ -31394,18 +31503,18 @@ enum SampleData {
             TechniqueCue(
                 id: "knee",
                 title: "Knee Angle",
-                intro: "The knees stay soft and nearly still, bending only a little as the hips go back.",
-                why: "The hamstrings cross the knee as well as the hip: with the knees locked they reach full stretch sooner and the hips stop short, while a soft bend lets the hips sit further back against the cable.",
+                intro: "The knees start soft and bend further as the hips go back, to about 40° at the bottom.",
+                why: "The hamstrings cross the knee as well as the hip: with the knees locked they reach full stretch sooner and the hips stop short, while bending them lets the hips sit further back against the cable.",
                 mistake: "Locking the knees straight at the bottom, where the cable pulls hardest toward the machine.",
-                correct: "Unlock the knees before the first rep and keep that soft bend, letting it grow only slightly at the bottom."
+                correct: "Unlock the knees before the first rep and let them bend further as the hips go back, the shins staying near upright."
             ),
             TechniqueCue(
                 id: "stance",
                 title: "Distance",
                 intro: "Stand far enough back that the weight stack stays lifted at the bottom of every rep.",
-                why: "The bar comes closer to the low pulley as you hinge, so the stack sinks toward its rest at the bottom, right where the hamstrings are stretched. Standing back keeps the load on there; the model stands about a metre from the pulley.",
+                why: "The bar comes closer to the low pulley as you hinge, so the stack sinks toward its rest at the bottom, right where the hamstrings are stretched. Standing back keeps the load on there; the model stands with its ankles about 60 cm from the pulley, and its stack stays about 3 cm clear at the bottom.",
                 mistake: "Standing too close to the pulley, so the stack touches down as you hinge and the hamstrings lose the load at the stretch.",
-                correct: "Hold the bar, then walk back until the stack stays clear of its rest with the bar at your knees."
+                correct: "Hold the bar, then walk back until the stack stays clear of its rest with the bar lowered past your knees."
             )
         ],
         activation: [
@@ -31417,7 +31526,7 @@ enum SampleData {
         setup: [
             "Set the pulley at its lowest point and clip on a straight bar.",
             "Face the machine and take the bar overhand, hands just outside your thighs.",
-            "Walk back about a metre from the pulley, feet hip-width, until the stack lifts clear.",
+            "Walk back until your ankles are about 60 cm from the pulley and the stack lifts clear, feet hip-width.",
             "Stand tall with the knees soft, shoulders back, and brace."
         ],
         comparison: FormComparisonCopy(
@@ -31429,8 +31538,8 @@ enum SampleData {
             mistakeNote: "Leaning back to fight the cable bends the lower back at the top instead of finishing the hips."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.09, cx: 0.63, cy: 0.60),
-            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.62, cy: 0.42)
+            .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.09, cx: 0.64, cy: 0.60),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.64, cy: 0.43)
         ]
     )
 
@@ -31467,7 +31576,7 @@ enum SampleData {
             TechniqueCue(
                 id: "hinge",
                 title: "Hip Hinge",
-                intro: "The hips push back while the knees stay soft, and the weight lowers only as the hips go back.",
+                intro: "The hips push back while the shins stay near upright, and the weight lowers only as the hips go back.",
                 why: "Sending the hips back stretches the hamstrings and glutes under load, which is where an RDL does its work; in comparisons of hamstring exercises the RDL drew some of the highest hamstring activity. With one bell hanging in front of the legs, the hips travel back to counterbalance it.",
                 mistake: "Bending the knees and sinking the hips toward the bell, the chest rising, which turns the rep into a squat.",
                 correct: "Push the hips back and let the bell hang from long arms as the chest lowers, then drive the hips forward to stand."
@@ -31486,15 +31595,15 @@ enum SampleData {
                 intro: "The bell hangs from long arms and travels straight down in front of the legs, never swinging out.",
                 why: "The closer the bell stays to the legs, the shorter the lever on the lower back; the further it hangs from the body, the more the lower back has to hold.",
                 mistake: "Letting the bell swing out away from the shins as the chest lowers.",
-                correct: "Hold the handle overhand with both hands, keep the arms long and the lats tight, and lower the bell straight down to about mid-shin."
+                correct: "Hold the handle overhand with both hands, keep the arms long and the lats tight, and lower the bell straight down until it hangs in front of the lower shins."
             ),
             TechniqueCue(
                 id: "knee",
                 title: "Knee Angle",
-                intro: "The knees stay soft and nearly still, bending only a little as the hips go back.",
-                why: "Straight knees stretch the hamstrings sooner, since they cross the knee as well as the hip, and stop the hips early; a soft bend lets the hips travel further back before the stretch stops them.",
+                intro: "The knees start soft and bend further as the hips go back, to about 40° at the bottom.",
+                why: "Straight knees stretch the hamstrings sooner, since they cross the knee as well as the hip, and stop the hips early; bending them lets the hips travel further back before the stretch stops them.",
                 mistake: "Locking the knees straight as the hips go back.",
-                correct: "Unlock the knees before the first rep and keep that soft bend, so the bell can hang in front of the shins without the knees pushing into its path."
+                correct: "Unlock the knees before the first rep and let them bend further as the hips go back, the shins staying near upright so the knees stay out of the bell's path."
             )
         ],
         activation: [
@@ -31519,7 +31628,7 @@ enum SampleData {
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.09, cx: 0.62, cy: 0.60),
-            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.60, cy: 0.42)
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.62, cy: 0.43)
         ]
     )
 
@@ -31587,11 +31696,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The 2026-10-12 model paints the quadriceps bright and the forearms
+            // dim (both unlit before). Estimates: the quadriceps a little under
+            // the Trap Bar Deadlift's 0.78 (the load at the sides, as with a hex
+            // bar, raises vastus lateralis work; Camara et al. 2016) for the
+            // lighter dumbbells; the forearms as on the Trap Bar and Sumo
+            // Deadlifts.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.56),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.54)
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.45)
         ],
-        stabilisers: ["adductors", "forearms", "trapezius", "core"],
+        stabilisers: ["adductors", "trapezius", "core"],
         setup: [
             "Stand with your feet about hip-width, toes forward, a dumbbell beside each foot.",
             "Push the hips back, bend the knees and grip the dumbbells with the palms facing in.",
@@ -31784,31 +31901,40 @@ enum SampleData {
             mistakeNote: "Curling the upper back and dropping the head makes the lean look deeper, but the hips hardly fold and the pelvis barely tips on the bench."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.07, cx: 0.58, cy: 0.48),
-            .init(DS.activation.opacity(0.45), rx: 0.11, ry: 0.05, cx: 0.53, cy: 0.55),
-            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.05, cx: 0.60, cy: 0.53)
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.07, cx: 0.58, cy: 0.50),
+            .init(DS.activation.opacity(0.45), rx: 0.11, ry: 0.05, cx: 0.53, cy: 0.56),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.05, cx: 0.60, cy: 0.55)
         ]
     )
 
     static let smithMachineGoodMorningContent = ExerciseContent(
+        // Relaid 2026-10-12 for the M30 rack's behind-left framing (yaw
+        // -2.5), where the lifter's left side is on screen left: each leader
+        // now reaches its joint from the near side. Before, the bar label's
+        // leader ran from the right across the whole back to the left hand,
+        // and the feet and knee leaders crossed a foot and a calf. The bar
+        // label sits top left over the static upright, under the eye row and
+        // above the left plate; the hips label (now short, to fit right of the
+        // glutes at the bottom, u ~0.80) points at the right hip; the plates
+        // sweep both edges from v ~0.17 to 0.40, so no pill sits there.
         annotations: [
             CueAnnotation(cueID: "bar", label: "High bar",
-                          labelPoint: CGPoint(x: 0.785, y: 0.64),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.215, y: 0.14),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "feet", label: "Feet under bar",
                           labelPoint: CGPoint(x: 0.697, y: 0.80),
                           labelSide: .trailing,
-                          leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "hips", label: "Push hips back",
-                          labelPoint: CGPoint(x: 0.303, y: 0.64),
-                          leaderLength: 40, joint: "pelvis"),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "hips", label: "Hips back",
+                          labelPoint: CGPoint(x: 0.770, y: 0.60),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "thigh_R"),
             CueAnnotation(cueID: "back", label: "Flat back",
                           labelPoint: CGPoint(x: 0.230, y: 0.47),
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "knee", label: "Knees stay soft",
-                          labelPoint: CGPoint(x: 0.318, y: 0.80),
-                          leaderLength: 40, joint: "patella_R")
+                          labelPoint: CGPoint(x: 0.318, y: 0.64),
+                          leaderLength: 40, joint: "patella_L")
         ],
         cues: [
             TechniqueCue(
@@ -31873,9 +31999,9 @@ enum SampleData {
             mistakeNote: "With the feet out in front, the hips run out of room, the weight goes to the heels and the rep turns into leaning on the bar."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.07, cx: 0.53, cy: 0.57),
-            .init(DS.activation.opacity(0.45), rx: 0.06, ry: 0.07, cx: 0.52, cy: 0.41),
-            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.05, cx: 0.56, cy: 0.49)
+            .init(DS.activation.opacity(0.55), rx: 0.12, ry: 0.07, cx: 0.53, cy: 0.55),
+            .init(DS.activation.opacity(0.45), rx: 0.06, ry: 0.07, cx: 0.53, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.05, cx: 0.56, cy: 0.46)
         ]
     )
 
@@ -32323,23 +32449,34 @@ enum SampleData {
     )
 
     static let cableStandingLegCurlContent = ExerciseContent(
+        // Relaid 2026-10-12 for the M29 station's behind-left framing (yaw
+        // -2.1): the start label's leader ran from the top right across the
+        // whole back to the knee, and the trunk, hips and knee pills touched
+        // the left shoulder, hip and knee. The start and cuff labels now sit
+        // bottom right, clear of the swinging foot (it reaches u ~0.62 on the
+        // 0.80 row) and of the mistake card, their leaders up to the ankle;
+        // the trunk label top right, its leader to the neck; the hips and
+        // knee labels left over the static station, short of the body. Laid
+        // out on the trainer shots: in the app this model sits ~0.06 left of
+        // probe.py's projection (joints.json).
         annotations: [
-            CueAnnotation(cueID: "range", label: "Stop short of straight",
-                          labelPoint: CGPoint(x: 0.580, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "shin_L"),
-            CueAnnotation(cueID: "trunk", label: "Trunk upright",
-                          labelPoint: CGPoint(x: 0.288, y: 0.24),
-                          leaderLength: 40, joint: "chest"),
-            CueAnnotation(cueID: "cuff", label: "Cuff on the ankle",
-                          labelPoint: CGPoint(x: 0.653, y: 0.36),
+            CueAnnotation(cueID: "range", label: "Short of straight",
+                          labelPoint: CGPoint(x: 0.653, y: 0.80),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "hips", label: "Hips stay put",
-                          labelPoint: CGPoint(x: 0.288, y: 0.48),
+            CueAnnotation(cueID: "trunk", label: "Trunk upright",
+                          labelPoint: CGPoint(x: 0.712, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "neck"),
+            CueAnnotation(cueID: "cuff", label: "Cuff on the ankle",
+                          labelPoint: CGPoint(x: 0.653, y: 0.86),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "hips", label: "Hips still",
+                          labelPoint: CGPoint(x: 0.244, y: 0.48),
                           leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "thigh", label: "Knee points down",
-                          labelPoint: CGPoint(x: 0.332, y: 0.64),
+                          labelPoint: CGPoint(x: 0.332, y: 0.68),
                           leaderLength: 40, joint: "patella_L")
         ],
         cues: [
@@ -32347,7 +32484,7 @@ enum SampleData {
                 id: "range",
                 title: "Start of the Rep",
                 intro: "Each rep starts with the left knee a little short of straight.",
-                why: "On this setup the cable pulls almost square to the lower leg while the knee is nearly straight and runs almost through the knee at the top, so the start is the hardest part of the curl. Stopping just short of straight keeps the hamstrings loaded there.",
+                why: "On this setup the cable pulls almost square to the lower leg while the knee is nearly straight and passes about half as far from the knee at the top, so the start is the hardest part of the curl. Stopping just short of straight keeps the hamstrings loaded there.",
                 mistake: "Letting the leg swing all the way straight between reps and resting there.",
                 correct: "Lower until the knee is just short of straight with the cable still pulling, then curl the heel up until the lower leg passes level."
             ),
@@ -32355,9 +32492,9 @@ enum SampleData {
                 id: "trunk",
                 title: "Upper Body",
                 intro: "Stand tall, the hands only steadying you.",
-                why: "A still, upright trunk keeps the curl at the knee, with the frame only there for balance. Tipping forward mid-rep turns part of the lift into a swing at the hip.",
-                mistake: "Bending forward over the frame as the heel comes up.",
-                correct: "Stand upright with the chest lifted and rest your hands on the frame handles, arms relaxed."
+                why: "A still, upright trunk keeps the curl at the knee, with the hands on the upright only for balance. Tipping forward mid-rep turns part of the lift into a swing at the hip.",
+                mistake: "Bending forward toward the machine as the heel comes up.",
+                correct: "Stand upright with the chest lifted and hold the station's upright lightly with both hands, arms relaxed."
             ),
             TechniqueCue(
                 id: "cuff",
@@ -32365,7 +32502,7 @@ enum SampleData {
                 intro: "The cuff goes round the ankle, the cable straight to the pulley.",
                 why: "A cuff at the ankle pulls on the end of the lower leg, the longest lever for the hamstrings, and a snug fit stops it sliding up the calf mid-rep.",
                 mistake: "A loose cuff that slides up the calf as the heel rises.",
-                correct: "Strap the cuff snugly round your left ankle, just above the heel, and face the pulley so the cable runs straight forward."
+                correct: "Strap the cuff snugly round your left ankle, just above the heel, and stand facing the pulley so the cable runs forward to it."
             ),
             TechniqueCue(
                 id: "hips",
@@ -32392,7 +32529,7 @@ enum SampleData {
         stabilisers: ["gluteus maximus", "gluteus minimus", "quadratus lumborum", "obliques"],
         setup: [
             "Strap the cuff round your left ankle and clip it to the low pulley.",
-            "Face the stack and hold the frame handles in front of you.",
+            "Face the low pulley and hold the station's upright above it with both hands.",
             "Stand on your right foot, knee soft, the left foot hanging just behind it.",
             "Start with the left knee a little bent and the cable taut."
         ],
@@ -32405,8 +32542,8 @@ enum SampleData {
             mistakeNote: "When the knee drifts forward the hip bends too, so the heel rises partly by swinging the thigh rather than by curling the knee."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.09, cx: 0.50, cy: 0.58),
-            .init(DS.activationSoft.opacity(0.20), rx: 0.07, ry: 0.07, cx: 0.61, cy: 0.71)
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.09, cx: 0.44, cy: 0.55),
+            .init(DS.activationSoft.opacity(0.20), rx: 0.07, ry: 0.07, cx: 0.54, cy: 0.68)
         ]
     )
 
@@ -32864,7 +33001,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "grip", label: "Hand on the post",
-                          labelPoint: CGPoint(x: 0.668, y: 0.26),
+                          labelPoint: CGPoint(x: 0.700, y: 0.40),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "hips", label: "Hips level",
@@ -32927,7 +33064,7 @@ enum SampleData {
         stabilisers: ["standing-leg gluteus medius", "obliques", "core"],
         setup: [
             "Attach an ankle cuff to a low pulley and strap it around the ankle nearest the stack.",
-            "Stand side-on to the stack, far enough away that the cable draws the cuffed leg out to the side.",
+            "Stand side-on to the low pulley, far enough away that the cable draws the cuffed leg out to the side.",
             "Hold the support post or the machine frame with the hand nearest the stack.",
             "Stand tall on your right leg, knee slightly soft; the left leg, nearest the stack, works in this demo."
         ],
@@ -33126,7 +33263,7 @@ enum SampleData {
             CueAnnotation(cueID: "torso", label: "Sit tall, trunk still",
                           labelPoint: CGPoint(x: 0.406, y: 0.16),
                           leaderLength: 40, joint: "chest"),
-            CueAnnotation(cueID: "band", label: "Band above knees",
+            CueAnnotation(cueID: "band", label: "Band around knees",
                           labelPoint: CGPoint(x: 0.668, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "patella_L"),
@@ -33152,18 +33289,18 @@ enum SampleData {
             TechniqueCue(
                 id: "band",
                 title: "Band Position",
-                intro: "The band sits around the thighs, just above the knees.",
-                why: "Just above the knees the band sits where the thighs spread furthest. In band walks, moving it down to the ankles and feet raised gluteal activity, but seated with the feet planted a band at the ankles would barely stretch, so progress with a heavier band instead.",
-                mistake: "Letting the band roll down onto the kneecaps partway through the set.",
-                correct: "Loop a mini band around both thighs just above the knees, lay it flat and check it has not moved between sets."
+                intro: "The band sits around both knees.",
+                why: "At the knees the band sits where the legs spread furthest, so it stretches the most as they open. In band walks, moving it down to the ankles and feet raised gluteal activity, but seated with the feet planted a band at the ankles would barely stretch, so progress with a heavier band instead.",
+                mistake: "Looping the band high on the thighs, near the hips, where it barely stretches as the knees open.",
+                correct: "Loop a mini band around both legs at the knees and check it has not moved between sets."
             ),
             TechniqueCue(
                 id: "grip",
                 title: "Hands",
-                intro: "The hands rest on the bench beside the hips.",
-                why: "Resting hands steady the trunk without doing any of the work. Pushing down through them lifts the hips off the bench and turns the rep into a shove.",
-                mistake: "Pressing down through the hands so the hips lift off the bench.",
-                correct: "Rest the hands on the bench beside the hips, arms relaxed, and keep the hips down on the bench."
+                intro: "The hands rest on the thighs.",
+                why: "Resting hands steady the trunk without doing any of the work. Pushing the thighs apart with them makes the arms do part of the opening the side glutes are there to do.",
+                mistake: "Pushing the thighs apart with the hands as the knees open.",
+                correct: "Rest the hands lightly on the thighs, arms relaxed, and let them ride out and back with the knees."
             ),
             TechniqueCue(
                 id: "knees",
@@ -33188,9 +33325,9 @@ enum SampleData {
         ],
         stabilisers: ["hip flexors", "core"],
         setup: [
-            "Loop a mini band around both thighs just above the knees.",
+            "Loop a mini band around both legs at the knees.",
             "Sit tall on a flat bench with your feet flat under your knees, about shoulder-width apart.",
-            "Rest your hands on the bench beside your hips.",
+            "Rest your hands on your thighs.",
             "Let the knees come in until the band is just taut before the first rep."
         ],
         comparison: FormComparisonCopy(
@@ -33202,8 +33339,8 @@ enum SampleData {
             mistakeNote: "Rocking back throws the knees apart with momentum, so the glutes do less of the work against the band."
         ),
         glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.05, cx: 0.68, cy: 0.48),
-            .init(DS.activation.opacity(0.50), rx: 0.05, ry: 0.05, cx: 0.43, cy: 0.48)
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.05, cx: 0.68, cy: 0.50),
+            .init(DS.activation.opacity(0.50), rx: 0.05, ry: 0.05, cx: 0.43, cy: 0.50)
         ]
     )
 
@@ -35912,7 +36049,7 @@ enum SampleData {
     static let dumbbellHipThrustContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "hips", label: "Hips up to a level torso",
-                          labelPoint: CGPoint(x: 0.450, y: 0.27),
+                          labelPoint: CGPoint(x: 0.450, y: 0.22),
                           leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "ribs", label: "Ribs down, spine neutral",
                           labelPoint: CGPoint(x: 0.450, y: 0.16),
@@ -35959,8 +36096,8 @@ enum SampleData {
                 title: "Bench Contact",
                 intro: "The upper back pivots on the edge of the bench.",
                 why: "Hinging on one spot lets the hips rise around a fixed point; sliding along the bench moves the hips away from the feet and changes the knee angle mid-rep.",
-                mistake: "Sliding the back up the bench as the hips rise, until the edge sits near the bottom of the shoulder blades.",
-                correct: "Rest your upper back across the bench edge near the top of your shoulder blades and let the torso rock over that spot without sliding."
+                mistake: "Sliding the back up the bench as the hips rise, until the edge sits under the middle of the back.",
+                correct: "Rest your upper back across the bench edge just below your shoulder blades and let the torso rock over that spot without sliding."
             ),
             TechniqueCue(
                 id: "dumbbell",
@@ -35979,10 +36116,10 @@ enum SampleData {
         ],
         stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "core"],
         setup: [
-            "Sit on the floor with your upper back against the long side of a low bench, secured so it cannot slide.",
+            "Sit on the floor with your upper back against the long side of a flat bench, secured so it cannot slide.",
             "Lay a dumbbell across the crease of your hips and hold it by both heads.",
             "Plant your feet flat about shoulder-width apart, toes turned out a little, close enough that your shins will be vertical at the top.",
-            "Lean back so the bench edge sits near the top of your shoulder blades."
+            "Lean back so the bench edge sits just below your shoulder blades."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -42158,4 +42295,1098 @@ enum SampleData {
         ]
     )
     // END Desktop 100-200 (2026-10-11) content
+    // BEGIN Desktop 300-400 (2026-10-12) content
+
+    // MARK: - Desktop 300-400 (2026-10-12)
+    //
+    // The Desktop "300-400" folder's twelve new exercises: four hip thrusts,
+    // five hip extensions and three kettlebell lifts. Generated by
+    // `Tools/trainer-content/gen.py` from `spec_1012.py`; each family file's
+    // header lists what its models show and its sources, and
+    // `notes_1012_<family>.md` maps the copy's claims to them.
+
+    static let smithMachineHipThrustContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hips", label: "Hips up, torso level",
+                          labelPoint: CGPoint(x: 0.391, y: 0.18),
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "ribs", label: "Ribs down, spine neutral",
+                          labelPoint: CGPoint(x: 0.450, y: 0.12),
+                          leaderLength: 40, joint: "support_PectoralisMajor_Abdominal_R"),
+            CueAnnotation(cueID: "feet", label: "Shins vertical at the top",
+                          labelPoint: CGPoint(x: 0.464, y: 0.74),
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "bench", label: "Back pivots on the bench",
+                          labelPoint: CGPoint(x: 0.550, y: 0.74),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "scapula_L"),
+            CueAnnotation(cueID: "bar", label: "Pad on the hip crease",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hips",
+                title: "Hip Extension",
+                intro: "The hips rise until the torso is level with the floor.",
+                why: "The gluteus maximus is the main hip extensor in this lift, and a rep ends only when the hips are straight; stopping short leaves out the end of the range, where the glutes are at their shortest.",
+                mistake: "Stopping short of lockout, the hips hanging below the line of the knees and shoulders.",
+                correct: "Drive through your whole foot until your knees, hips and shoulders line up, pause for a moment, then lower until your seat is just off the floor."
+            ),
+            TechniqueCue(
+                id: "ribs",
+                title: "Spine Position",
+                intro: "The height comes from the hips, not the lower back.",
+                why: "With the ribs down and the trunk braced, the hips do the lifting. Arching the lower back or tipping the pelvis forward adds height through the spine instead of the hips.",
+                mistake: "Flaring the ribs and arching the lower back at the top, so the lower back bows up above the line of the hips and shoulders.",
+                correct: "Brace before each rep, keep your ribs down and your trunk rigid, and stop when the torso is level."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Foot Position",
+                intro: "Set the feet so the shins are vertical at the top.",
+                why: "With the knees bent close to a right angle at the top, the hamstrings are shortened at the knee and can help less, so the glutes take more of the hip extension; feet set further out hand more of it to the hamstrings.",
+                mistake: "Setting the feet too far out, so the shins slope away and the knees open well past a right angle at the top.",
+                correct: "Plant your feet flat about shoulder-width apart, toes turned out a little, close enough that your shins stand about vertical at the top."
+            ),
+            TechniqueCue(
+                id: "bench",
+                title: "Bench Contact",
+                intro: "The upper back pivots on the edge of the bench.",
+                why: "Hinging on one spot lets the hips rise around a fixed point; sliding moves the hips away from the feet and changes the knee angle mid-rep.",
+                mistake: "Sliding the back up the bench as the hips rise, until the edge sits under the middle of the back.",
+                correct: "Rest your upper back across the bench edge under the lower tips of your shoulder blades and let your torso rock over that spot without sliding."
+            ),
+            TechniqueCue(
+                id: "bar",
+                title: "Bar Position",
+                intro: "The padded bar runs straight up and down its track and sits across the hip crease at the top.",
+                why: "A Smith bar runs in a fixed track and cannot roll along your body, so where it meets you is set by where you sit. Over the hip crease it loads hip extension directly and the thick pad spreads the pressure on the pelvis; the hands only steady it.",
+                mistake: "Setting the bench too close to the bar, so at the top the pad presses into the stomach instead of the hips.",
+                correct: "Sit so the pad starts on the tops of your thighs just below the hip crease and settles onto the crease as you rise; hold the bar just outside the pad."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+        ],
+        stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "core"],
+        setup: [
+            "Set a flat bench about 40 cm high lengthwise behind the Smith bar, far enough back that the bar will sit over your hips.",
+            "Wrap the middle of the bar in a thick pad and set the safety stops just below the bar's lowest point.",
+            "Sit on the floor with your back to the bench and slide under the bar until the pad rests on the tops of your thighs, just below the hip crease.",
+            "Plant your feet flat about shoulder-width apart, toes turned out a little, and rest your upper back on the bench edge under your shoulder blades.",
+            "Hold the bar just outside the pad and turn it off its hooks."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "HIPS STOPPING SHORT",
+            correctCue: "Knees, hips and shoulders in line",
+            mistakeCue: "Hips hang below the line",
+            correctNote: "Finishing with the torso level takes the hips all the way to straight, the end of the range where the glutes are shortest.",
+            mistakeNote: "Stopping with the hips low cuts off the top of the range, so each rep ends before the glutes finish straightening the hips."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.58, cy: 0.52),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.04, cx: 0.53, cy: 0.45)
+        ]
+    )
+
+    static let machineHipThrustContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hips", label: "Hips up to a level torso",
+                          labelPoint: CGPoint(x: 0.450, y: 0.12),
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "ribs", label: "Ribs down, spine neutral",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_PectoralisMajor_Abdominal_R"),
+            CueAnnotation(cueID: "feet", label: "Shins vertical at the top",
+                          labelPoint: CGPoint(x: 0.464, y: 0.74),
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "pad", label: "Back pivots on the pad",
+                          labelPoint: CGPoint(x: 0.580, y: 0.74),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "scapula_L"),
+            CueAnnotation(cueID: "roller", label: "Roller on hip crease",
+                          labelPoint: CGPoint(x: 0.609, y: 0.21),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hips",
+                title: "Hip Extension",
+                intro: "The hips rise until the torso is level with the floor.",
+                why: "The gluteus maximus is the main hip extensor in this lift, and a rep ends only when the hips are straight; stopping short leaves out the end of the range, where the glutes are at their shortest.",
+                mistake: "Stopping short of lockout, the hips hanging below the line of the knees and shoulders.",
+                correct: "Drive through your whole foot until your knees, hips and shoulders line up, pause for a moment, then lower until you just touch the seat."
+            ),
+            TechniqueCue(
+                id: "ribs",
+                title: "Spine Position",
+                intro: "The height comes from the hips, not the lower back.",
+                why: "With the ribs down and the trunk braced, the hips do the lifting. Arching the lower back or tipping the pelvis forward adds height through the spine instead of the hips.",
+                mistake: "Flaring the ribs and arching the lower back at the top, so the lower back bows up above the line of the hips and shoulders.",
+                correct: "Brace before each rep, keep your ribs down and your trunk rigid, and stop when the torso is level."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Foot Position",
+                intro: "Set the feet so the shins are vertical at the top.",
+                why: "With the knees bent close to a right angle at the top, the hamstrings are shortened at the knee and can help less, so the glutes take more of the hip extension; feet set further out hand more of it to the hamstrings.",
+                mistake: "Setting the feet too far up the footplate, so the shins slope away and the knees open well past a right angle at the top.",
+                correct: "Plant your feet flat on the footplate about shoulder-width apart, toes turned out a little, where your shins stand about vertical at the top."
+            ),
+            TechniqueCue(
+                id: "pad",
+                title: "Back Pad",
+                intro: "The upper back pivots on the edge of the back pad.",
+                why: "Hinging on one spot lets the hips rise around a fixed point; sliding moves the hips away from the feet and changes the knee angle mid-rep.",
+                mistake: "Sliding the back up the pad as the hips rise, until the edge sits under the middle of the back.",
+                correct: "Rest your upper back across the pad's edge under the lower tips of your shoulder blades and let your torso rock over it without sliding."
+            ),
+            TechniqueCue(
+                id: "roller",
+                title: "Roller Pad",
+                intro: "The padded roller sits across the crease of the hips and rides up with them.",
+                why: "The lever carries the roller on a fixed arc, so it stays where you set it; across the hip crease it loads hip extension directly, as the bar does in a barbell hip thrust.",
+                mistake: "Starting with the roller on the stomach instead of the hip crease, so it presses into the stomach at the top.",
+                correct: "Settle the roller onto the crease of your hips before the first rep and hold the handles beside it."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+        ],
+        stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "core"],
+        setup: [
+            "Load plates on the machine's horn and sit on its low seat with your back to the back pad.",
+            "Lean back so the edge of the back pad sits under the lower tips of your shoulder blades.",
+            "Bring the roller down onto the crease of your hips and hold the handles on either side of it.",
+            "Plant your feet flat on the footplate about shoulder-width apart, toes turned out a little."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "HIPS STOPPING SHORT",
+            correctCue: "Knees, hips and shoulders in line",
+            mistakeCue: "Hips hang below the line",
+            correctNote: "Finishing with the torso level takes the hips all the way to straight, the end of the range where the glutes are shortest.",
+            mistakeNote: "Stopping with the hips low cuts off the top of the range, so each rep ends before the glutes finish straightening the hips."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.57, cy: 0.52),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.04, cx: 0.52, cy: 0.46)
+        ]
+    )
+
+    static let singleLegHipThrustContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hips", label: "Hips up to a level torso",
+                          labelPoint: CGPoint(x: 0.550, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "thigh_L"),
+            CueAnnotation(cueID: "level", label: "Pelvis level, no hip drop",
+                          labelPoint: CGPoint(x: 0.464, y: 0.80),
+                          leaderLength: 40, joint: "thigh_R"),
+            CueAnnotation(cueID: "free", label: "Free knee up and still",
+                          labelPoint: CGPoint(x: 0.420, y: 0.16),
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "foot", label: "Shin vertical at top",
+                          labelPoint: CGPoint(x: 0.391, y: 0.72),
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "ribs", label: "Ribs down, spine neutral",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "support_PectoralisMajor_Abdominal_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hips",
+                title: "Hip Extension",
+                intro: "The working hip straightens until the torso is level with the floor.",
+                why: "The gluteus maximus is the main hip extensor, and here one leg's glutes lift the hips with no help from the other; stopping short leaves out the end of the range, where the glute is at its shortest.",
+                mistake: "Stopping short of lockout, the hips hanging below the line of the knee and shoulders.",
+                correct: "Drive through your whole left foot until your left knee, hips and shoulders line up, pause for a moment, then lower under control."
+            ),
+            TechniqueCue(
+                id: "level",
+                title: "Pelvis Level",
+                intro: "Both hip bones stay at the same height, up and down.",
+                why: "With one foot down, the pelvis tends to sag on the free side; the working side's gluteus medius steadies it, so the lift stays square over the working leg.",
+                mistake: "Letting the hip on the free side sag as you rise.",
+                correct: "Keep both hip bones level and square from the bottom of the rep to the top."
+            ),
+            TechniqueCue(
+                id: "free",
+                title: "Free Leg",
+                intro: "The free knee stays bent and drawn up toward the chest.",
+                why: "A still free leg keeps momentum out of the lift, so the planted leg does the work. In a study of single-leg bridges, holding the free thigh upright with the knee bent, instead of the leg out straight, cut the free leg's front-thigh activity by about two-thirds with glute activity about the same.",
+                mistake: "Letting the free leg swing away from the chest to help heave the hips up.",
+                correct: "Lift your right knee toward your chest, bent, and hold it there, still, as the hips move."
+            ),
+            TechniqueCue(
+                id: "foot",
+                title: "Foot Position",
+                intro: "The working foot sits under the knee at the top.",
+                why: "With the shin vertical, the knee is bent close to a right angle at the top, so the hamstrings help less and the glutes do more of the hip extension; a foot set further out hands more of it to the hamstrings.",
+                mistake: "Planting the foot too far out, so the shin slopes away and the knee opens well past a right angle at the top.",
+                correct: "Plant your left foot flat, toes pointing ahead, where your shin stands about vertical at the top."
+            ),
+            TechniqueCue(
+                id: "ribs",
+                title: "Spine Position",
+                intro: "The height comes from the hips, not the lower back.",
+                why: "With the ribs down and the trunk braced, the hips do the lifting. Arching the lower back or tipping the pelvis forward adds height through the spine instead of the hips.",
+                mistake: "Flaring the ribs and arching the lower back at the top, so the lower back bows up above the line of the hips and shoulders.",
+                correct: "Brace before each rep, keep your ribs down and your trunk rigid, and stop when the torso is level."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+        ],
+        stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "obliques"],
+        setup: [
+            "Sit on the floor with your upper back against the long side of a flat bench about 40 cm high.",
+            "Plant your left foot flat in line with your left hip, knee bent; the left leg works in this demo.",
+            "Lean back so the bench edge sits under the lower tips of your shoulder blades, and spread your arms along the bench.",
+            "Lift your right knee toward your chest and hold it there, bent; switch sides for the next set."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "HIP DROPPING",
+            correctCue: "Hip bones level, knee to shoulders in line",
+            mistakeCue: "Free side's hip sags",
+            correctNote: "With the pelvis level, the working leg's glutes straighten the hip all the way while the free leg stays still.",
+            mistakeNote: "Letting the free side sag tips the pelvis off level, the drop the working side's gluteus medius is there to stop."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.49, cy: 0.57),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.04, cx: 0.43, cy: 0.51)
+        ]
+    )
+
+    static let bStanceHipThrustContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hips", label: "Hips up to a level torso",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "thigh_L"),
+            CueAnnotation(cueID: "kickstand", label: "Front foot on its heel",
+                          labelPoint: CGPoint(x: 0.420, y: 0.74),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "foot", label: "Back shin vertical at top",
+                          labelPoint: CGPoint(x: 0.536, y: 0.74),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "level", label: "Hips level and square",
+                          labelPoint: CGPoint(x: 0.406, y: 0.27),
+                          leaderLength: 40, joint: "thigh_R"),
+            CueAnnotation(cueID: "dumbbell", label: "Dumbbell in the hip crease",
+                          labelPoint: CGPoint(x: 0.521, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hips",
+                title: "Hip Extension",
+                intro: "The hips rise until the torso is level with the floor.",
+                why: "The gluteus maximus is the main hip extensor in this lift, and here the back leg's glutes do most of the work; stopping short leaves out the end of the range, where the glutes are at their shortest.",
+                mistake: "Stopping short of lockout, the hips hanging below the line of the back knee and shoulders.",
+                correct: "Drive through your whole left foot until your left knee, hips and shoulders line up, pause for a moment, then lower under control."
+            ),
+            TechniqueCue(
+                id: "kickstand",
+                title: "Kickstand Foot",
+                intro: "The front foot rests on its heel with the toes up, a little ahead of the working foot.",
+                why: "On its heel with the toes pulled up, the front foot is a helper: it steadies you and assists a little, so the back leg does most of the work; the further ahead the kickstand sits, the harder the lift becomes.",
+                mistake: "Planting the front foot flat and pushing through it, so the lift turns back into a two-leg hip thrust.",
+                correct: "Set your right heel about level with the ball of your left foot, pull the toes up and keep most of the push in your left foot."
+            ),
+            TechniqueCue(
+                id: "foot",
+                title: "Working Foot",
+                intro: "The back foot sits flat, the shin vertical at the top.",
+                why: "Pressing through the whole back foot keeps the load on the working leg; with its shin vertical, the knee is bent close to a right angle at the top, so the hamstrings help less and the glutes do more of the hip extension.",
+                mistake: "Setting the back foot too far out, so its shin slopes away and the knee opens well past a right angle at the top.",
+                correct: "Plant your left foot flat, toes turned out a little, where its shin stands about vertical at the top, and push through it."
+            ),
+            TechniqueCue(
+                id: "level",
+                title: "Pelvis Level",
+                intro: "Both hip bones stay at the same height, up and down.",
+                why: "With most of the load on one leg, the load can shift and tip the pelvis toward the lighter side; keeping the hips level and square keeps the lift on the working leg's glutes.",
+                mistake: "Letting the hip on the kickstand side sag as the hips rise.",
+                correct: "Keep both hip bones level and square from the bottom of the rep to the top."
+            ),
+            TechniqueCue(
+                id: "dumbbell",
+                title: "Dumbbell Position",
+                intro: "The dumbbell lies across the hip crease, held at both ends.",
+                why: "Across the hip crease the dumbbell loads hip extension directly. Holding it by both heads keeps it there, instead of letting it roll toward the stomach as the hips rise and the trunk levels out.",
+                mistake: "Letting the dumbbell roll off the hip crease and up onto the stomach near the top.",
+                correct: "Lay the dumbbell across the crease of your hips, hold one head in each hand and keep it in place from the first rep to the last."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+        ],
+        stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "core"],
+        setup: [
+            "Sit on the floor with your upper back against the long side of a flat bench about 40 cm high.",
+            "Lay a dumbbell across the crease of your hips and hold it by both heads.",
+            "Plant your left foot flat with the knee bent; the left leg works in this demo.",
+            "Set your right foot a little ahead, its heel about level with the ball of your left foot, and pull its toes up.",
+            "Lean back so the bench edge sits under the lower tips of your shoulder blades; switch sides for the next set."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "KICKSTAND PUSHING",
+            correctCue: "Back leg drives, front heel steadies",
+            mistakeCue: "Both feet flat and pushing",
+            correctNote: "With the front foot up on its heel, the back leg's glutes and thigh do most of the lifting.",
+            mistakeNote: "Pushing through a flat front foot shares the load between the legs, so the working side does less."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.57, cy: 0.53),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.04, cx: 0.53, cy: 0.46)
+        ]
+    )
+
+    static let cablePullThroughContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hinge", label: "Hips back",
+                          labelPoint: CGPoint(x: 0.770, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "back", label: "Back flat",
+                          labelPoint: CGPoint(x: 0.770, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "top", label: "Stand tall at the top",
+                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          leaderLength: 40, joint: "head"),
+            CueAnnotation(cueID: "arms", label: "Arms stay long",
+                          labelPoint: CGPoint(x: 0.303, y: 0.48),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "stance", label: "Cable tight",
+                          labelPoint: CGPoint(x: 0.741, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hinge",
+                title: "Hip Hinge",
+                intro: "The hips push back and the chest tips forward while the rope travels back between the thighs.",
+                why: "The pull-through is a hip hinge: the bend comes at the hips, which stretches the glutes and hamstrings against the cable. Here the trunk tips about 75 degrees forward while the knees go only from about 16 to 25 degrees of bend and the shins stay upright. Leading with the knees instead turns the rep into a squat.",
+                mistake: "Bending the knees and sinking the hips straight down as the rope goes back, so the rep becomes a squat.",
+                correct: "Push the hips straight back with soft knees until you feel the hamstrings stretch, pause briefly, then drive the hips forward to stand."
+            ),
+            TechniqueCue(
+                id: "back",
+                title: "Back Position",
+                intro: "The back stays flat from the hips to the head, the shoulders set back and down.",
+                why: "A flat back keeps the bending at the hips, so the glutes and hamstrings move the load while the back only holds its shape. In a study of three hinges at half of each lift's estimated maximum, the pull-through worked the lower-back muscles less than a Romanian deadlift did.",
+                mistake: "Rounding the back at the bottom to reach the hands further back between the legs.",
+                correct: "Brace before each rep, keep the chest open and the shoulders pulled back and down, and hinge only as far as the back stays flat."
+            ),
+            TechniqueCue(
+                id: "top",
+                title: "Lockout",
+                intro: "Each rep ends standing tall, the trunk upright and the glutes squeezed.",
+                why: "Stopping short of standing leaves out the end of the hip's range, where the glutes are at their shortest. Because the cable pulls from behind, the hips are still loaded at the top, where a free weight would hang straight under the shoulders; here the stand between reps lasts about a second.",
+                mistake: "Stopping each rep with the trunk still tipped forward, the hips never coming all the way through.",
+                correct: "Drive the hips forward until you stand straight with the knees still soft, squeeze the glutes for a moment, then start the next rep."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms stay long and only hold the rope; the hips move it.",
+                why: "The arms just connect the rope to the body, so the glutes and hamstrings should do the pulling. Nearly straight arms also let the rope run back between the legs without rubbing. Here the elbows stay close to straight all rep, about 156 degrees standing and 142 at the bottom.",
+                mistake: "Bending the elbows to row the rope up toward the stomach as you stand, the arms finishing the rep.",
+                correct: "Hold the rope ends with the palms facing each other and the elbows almost straight, and let the hips, not the arms, bring the rope forward."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Set-Up",
+                intro: "Stand facing away from a low pulley, feet about shoulder-width, far enough out that the stack stays lifted.",
+                why: "Walking out until the stack lifts keeps the load on for the whole rep; one coach calls not stepping far enough forward the biggest set-up mistake. Here the lifter stands about a metre in front of the pulley, so even at the bottom of the hinge the lifted plates stay about 3 cm above the rest of the stack. The feet need room for the rope to pass between them.",
+                mistake: "Standing so close to the pulley that the weight settles back onto the stack at the bottom of each hinge.",
+                correct: "Hold the rope between your legs, walk forward until the stack lifts, and set your feet about shoulder-width with the toes turned out a little."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.70),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.34)
+        ],
+        stabilisers: ["adductors", "gluteus medius", "core", "forearms"],
+        setup: [
+            "Attach a rope to a low pulley and stand facing away from the stack.",
+            "Reach down and take the rope ends between your legs, palms facing each other.",
+            "Walk forward until the weight lifts off the stack, then set your feet about shoulder-width, toes turned out a little.",
+            "Stand tall with your arms long and your knees soft, and brace before the first rep."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SQUATTING THE ROPE",
+            correctCue: "Hips back, shins upright",
+            mistakeCue: "Knees bend, hips sink",
+            correctNote: "Pushing the hips back on soft knees keeps the rep a hinge, so the glutes and hamstrings stretch against the cable and drive you back up.",
+            mistakeNote: "Bending the knees and sinking straight down turns the rep into a squat: the hips barely travel back and the glutes and hamstrings lose their stretch."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.68, cy: 0.43),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.08, cx: 0.66, cy: 0.54),
+            .init(DS.activationSoft.opacity(0.22), rx: 0.05, ry: 0.04, cx: 0.65, cy: 0.41)
+        ]
+    )
+
+    static let standingCableHipExtensionContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "kick", label: "Drive the leg back",
+                          labelPoint: CGPoint(x: 0.638, y: 0.40),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "torso", label: "Trunk still, slight lean",
+                          labelPoint: CGPoint(x: 0.550, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "hips", label: "Hips square",
+                          labelPoint: CGPoint(x: 0.741, y: 0.30),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "knee", label: "Leg long",
+                          labelPoint: CGPoint(x: 0.785, y: 0.49),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "shin_L"),
+            CueAnnotation(cueID: "grip", label: "Hold the upright",
+                          labelPoint: CGPoint(x: 0.332, y: 0.16),
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "kick",
+                title: "Hip Extension",
+                intro: "The left leg swings back from the hip, from about 18 degrees in front of vertical to about 28 behind it, and pauses there.",
+                why: "Driving the thigh back is hip extension, with the gluteus maximus as the target muscle and the hamstrings helping. The pause at the back holds the glute at its shortest; here the leg stays there for about half a second before it swings forward.",
+                mistake: "Stopping the kick with the foot under the hips, so the thigh never gets behind the body.",
+                correct: "Push the heel back until the thigh is well behind you, hold for a moment, then let the leg swing forward under control."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Position",
+                intro: "The trunk keeps a slight forward lean, about 9 degrees, and stays still while the leg moves.",
+                why: "Keeping the body still keeps the movement at the hip; when the lower back arches, the leg rises higher but the extra range comes from the spine. In a study of face-down leg lifts, drawing the belly in cut the pelvis's forward tip from about 10 degrees to 3 and more than doubled the glute's activity, while the lower-back muscles worked far less.",
+                mistake: "Arching the lower back and tipping the pelvis forward to swing the leg higher behind.",
+                correct: "Brace before each rep, keep the ribs down and the chest still, and let the leg stop where the hip stops."
+            ),
+            TechniqueCue(
+                id: "hips",
+                title: "Hip Position",
+                intro: "Both hip bones keep facing the column as the left leg goes back.",
+                why: "Square hips keep the leg moving straight back, so the glute extends the hip instead of the pelvis turning open to let the leg travel further. One guide's cue for cable kickbacks is to push the leg only as far as it goes without the hips rotating.",
+                mistake: "Letting the left hip roll open as the leg goes back, the foot drifting out to the side.",
+                correct: "Keep both hip bones pointing at the column and move the left leg straight back in line with the hip."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Leg Position",
+                intro: "The knee softens as the foot passes under you and straightens as the leg reaches back.",
+                why: "Here the knee goes from about 160 degrees at the start to 149 as the foot swings under the body, then to about 174, nearly straight, at the back. Reaching long through the heel keeps the cuff low and far from the hip; bending the knee to flick the heel up lifts the cuff and shortens the cable's leverage on the hip, so the end of the rep gets easier without the hip going further.",
+                mistake: "Bending the knee at the back of the kick and lifting the heel toward the glutes.",
+                correct: "Let the knee soften as the foot passes under you, then reach long through the heel as the thigh goes back."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Support",
+                intro: "Both hands hold the column's upright at about waist height while you stand tall on the right leg.",
+                why: "Holding on takes balance out of the lift so the left glute can do the work, while the right leg stays almost straight and still under you. The hands only steady you: pulling on the upright twists the body into the kick.",
+                mistake: "Pulling on the upright to twist the shoulders and trunk round as the leg goes back.",
+                correct: "Hold the upright lightly with both hands, elbows bent, stand tall on the right leg and keep the shoulders square to the column."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.36)
+        ],
+        stabilisers: ["gluteus medius", "erector spinae", "obliques", "quadratus lumborum"],
+        setup: [
+            "Fasten an ankle cuff just above your left ankle and clip it to the low pulley.",
+            "Face the column and hold its upright with both hands at about waist height.",
+            "Step back until the cable is tight, standing tall on your right leg with the left foot just off the floor in front of you.",
+            "Lean forward slightly and brace before the first rep."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ARCHING THE BACK",
+            correctCue: "Leg moves, back stays still",
+            mistakeCue: "Lower back arches to lift the leg",
+            correctNote: "With the trunk braced and still, the leg stops where the hip stops, so the glute does the extending.",
+            mistakeNote: "Arching the lower back lifts the leg higher, but the extra height comes from the spine, not the glute."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.56, cy: 0.45),
+            .init(DS.activationSoft.opacity(0.22), rx: 0.05, ry: 0.07, cx: 0.54, cy: 0.56)
+        ]
+    )
+
+    static let reverseHyperextensionContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "lift", label: "Legs up to level",
+                          labelPoint: CGPoint(x: 0.668, y: 0.72),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "back", label: "Belly braced, back still",
+                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "knees", label: "Legs long, knees soft",
+                          labelPoint: CGPoint(x: 0.594, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "lower", label: "Lower slowly, no swing",
+                          labelPoint: CGPoint(x: 0.580, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "shin_L"),
+            CueAnnotation(cueID: "grip", label: "Hold the grips",
+                          labelPoint: CGPoint(x: 0.303, y: 0.80),
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "lift",
+                title: "Range of Motion",
+                intro: "The legs rise from hanging straight down until they are level with the body or a little above.",
+                why: "Raising the legs against the strap is hip extension, the glutes' main job, and the rep is complete once the legs reach the line of the body. Here they travel about 97 degrees, from hanging straight down to about 3 degrees above level, and pause there for just under half a second.",
+                mistake: "Stopping halfway, the legs swinging up only to about 45 degrees below level.",
+                correct: "Raise the legs until they line up with your body or a touch higher, squeeze the glutes for a moment, then lower."
+            ),
+            TechniqueCue(
+                id: "back",
+                title: "Back Position",
+                intro: "The trunk stays still on the pad while the legs move from the hips.",
+                why: "Some lifters also bend through the lower back, which hands part of the lift to the back muscles; guides ask for a braced belly and tight glutes so the lower back does not overarch as the legs come up. In a study of face-down leg lifts, drawing the belly in cut the pelvis's forward tip from about 10 degrees to 3 and more than doubled the glute's activity.",
+                mistake: "Arching the lower back to fling the legs higher than the body, the belly sagging past the end of the pad.",
+                correct: "Brace the belly and squeeze the glutes before each lift, and stop the legs at the line of your body."
+            ),
+            TechniqueCue(
+                id: "knees",
+                title: "Leg Position",
+                intro: "The legs stay long, the knees almost straight, and move together as one.",
+                why: "Straight legs keep the hamstrings pulling alongside the glutes: in maximal hip-extension tests, the hamstrings' share was highest with the knee fully straight. Here the knees hold about 176 degrees all rep.",
+                mistake: "Bending the knees as the legs come up, the heels curling toward the glutes.",
+                correct: "Keep the knees soft but long and the feet level with each other, and lift through the heels."
+            ),
+            TechniqueCue(
+                id: "lower",
+                title: "Lowering Control",
+                intro: "The legs come back down under control and hang still before the next lift.",
+                why: "The glutes and hamstrings keep working as they lower the legs: in a study of a pendulum reverse hyper like this one, worked at two seconds up and two seconds down, both stayed active on the way down. Here the lowering takes about 1.6 seconds against 1.4 up, and the legs hang for about half a second. Some coaches let the legs swing under the bench and use the rebound; this version does not.",
+                mistake: "Dropping the legs and letting the pendulum swing them forward under the bench to bounce into the next rep.",
+                correct: "Lower the legs under control until they hang straight down, pause, then start the next lift without a swing."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Upper Body",
+                intro: "The chest stays down on the pad and the hands hold the grips at the front, arms long.",
+                why: "The pad and the grips hold the trunk still, so the hips have a fixed base to lift the legs from. Here the chest rests on the pad, the hips are well past its end so the legs hang free, and the arms stay nearly straight on the grips.",
+                mistake: "Pushing up on the grips and lifting the chest off the pad as the legs come up.",
+                correct: "Lie with your chest on the pad and your hips off its end, hold the grips with long arms, and keep your chest down for every rep."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.90),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50)
+        ],
+        stabilisers: ["rectus abdominis", "obliques"],
+        setup: [
+            "Fasten the strap around your lower legs, just above the ankles.",
+            "Lie face down with your chest on the pad and your hips off its end, legs hanging straight down.",
+            "Hold the grips at the front of the machine with your arms long.",
+            "Brace your belly and squeeze your glutes before the first lift."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ARCHING THE LOWER BACK",
+            correctCue: "Legs stop at the body's line",
+            mistakeCue: "Back arches to throw the legs higher",
+            correctNote: "Stopping the legs at the line of the body with the belly braced keeps the lift at the hips, where the glutes and hamstrings do it.",
+            mistakeNote: "Arching the lower back sends the legs higher, but the extra height comes from the spine and the back muscles take over part of the lift."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.04, cx: 0.49, cy: 0.38),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.04, ry: 0.03, cx: 0.54, cy: 0.40),
+            .init(DS.activationSoft.opacity(0.25), rx: 0.04, ry: 0.03, cx: 0.44, cy: 0.38)
+        ]
+    )
+
+    static let singleLegBackExtensionContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hinge", label: "Fold at the hips, back flat",
+                          labelPoint: CGPoint(x: 0.506, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "top", label: "Stop in a straight line",
+                          labelPoint: CGPoint(x: 0.435, y: 0.12),
+                          leaderLength: 40, joint: "neck"),
+            CueAnnotation(cueID: "pad", label: "Pad below the hip crease",
+                          labelPoint: CGPoint(x: 0.550, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "thigh_R"),
+            CueAnnotation(cueID: "free", label: "Right leg off the plate",
+                          labelPoint: CGPoint(x: 0.565, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "arms", label: "Arms crossed on chest",
+                          labelPoint: CGPoint(x: 0.406, y: 0.80),
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hinge",
+                title: "Hip Hinge",
+                intro: "The trunk folds forward at the hips while the back keeps its shape, from a straight line to about 27 degrees below level.",
+                why: "Bending at the hips with a still spine puts the work on the hip extensors: in a lab study on a 45-degree bench, the hip-led version loaded the hips and lower back more than curling down through the spine. That study set the bottom of each rep just before the spine started to bend; here the hips fold about 72 degrees.",
+                mistake: "Rounding the back over the pad at the bottom to go lower, the head dropping toward the floor.",
+                correct: "Fold at the hips with your chest open and your head in line, and stop just before the back would start to round."
+            ),
+            TechniqueCue(
+                id: "top",
+                title: "Top Position",
+                intro: "Each rep ends with the body in one straight line, the trunk back in line with the legs.",
+                why: "The rep is complete once the trunk lines up with the legs, where a lab study of this lift set the top. Lifting further mostly arches the lower back, so the extra height comes from the spine rather than the hips.",
+                mistake: "Arching up past the straight line at the top, the chest lifting and the lower back bending backward.",
+                correct: "Rise until your body is straight, squeeze the glutes, hold for a moment and lower again."
+            ),
+            TechniqueCue(
+                id: "pad",
+                title: "Pad Height",
+                intro: "The pad carries the upper thighs, its top edge a little below the hip crease.",
+                why: "With the hips clear of the pad they can fold over its edge, so the bend comes at the hips. Set too high, the pad presses into the belly and blocks the fold, and the back curls over it instead. Here its top edge sits about 9 cm below the hip joints.",
+                mistake: "Setting the pad up at the hip bones or the belly, so the hips cannot fold and the back curls over the pad.",
+                correct: "Adjust the pad so its top edge sits just below your hip crease, your thighs resting along it."
+            ),
+            TechniqueCue(
+                id: "free",
+                title: "Free Leg",
+                intro: "Only the left leg works: its foot sits under the roller while the right leg stays off the plate, knee bent and foot lifted behind.",
+                why: "With one leg anchored, that hip lifts the whole upper body. In a lab study, doing these back extensions on one leg raised the peak load on the working hip by more than a third and its glute activity with it; with both legs the same lift is easier.",
+                mistake: "Setting the right foot back down on the plate to help push you up.",
+                correct: "Keep the right knee bent and the foot lifted behind you for the whole set, then switch legs."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms stay crossed on the chest for the whole set.",
+                why: "The higher the arms sit on the body, the harder each rep: hands low by the hips make it easiest, crossed on the chest harder, at the head harder still. Kept still, they leave the lifting to the hips; flung forward, they throw the trunk up with momentum.",
+                mistake: "Uncrossing the arms and flinging them forward to throw the body up.",
+                correct: "Cross your arms over your chest and keep them still from the first rep to the last; move them up only once the reps get easy."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.46)
+        ],
+        stabilisers: ["gluteus medius", "adductor magnus"],
+        setup: [
+            "Set the pad so its top edge sits just below your hip crease.",
+            "Step in with your thighs on the pad and your left foot flat on the plate, the roller behind your lower calf.",
+            "Lift your right foot off the plate, knee bent, and keep it up behind you.",
+            "Cross your arms over your chest and start with your body in a straight line."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "BACK ROUNDING",
+            correctCue: "Flat back, fold at the hips",
+            mistakeCue: "Back curls over the pad",
+            correctNote: "Keeping the back flat and folding at the hips loads the working hip, so its glute and hamstrings lower and lift the trunk.",
+            mistakeNote: "Curling the back over the pad to get lower moves the bend into the spine, so the hip does less and the back more."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.05, cx: 0.48, cy: 0.42),
+            .init(DS.activation.opacity(0.50), rx: 0.07, ry: 0.04, cx: 0.50, cy: 0.48),
+            .init(DS.activationSoft.opacity(0.25), rx: 0.05, ry: 0.04, cx: 0.41, cy: 0.41)
+        ]
+    )
+
+    static let hipExtension45Content = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hinge", label: "Fold at the hips, back flat",
+                          labelPoint: CGPoint(x: 0.506, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "top", label: "Stop in a straight line",
+                          labelPoint: CGPoint(x: 0.435, y: 0.12),
+                          leaderLength: 40, joint: "neck"),
+            CueAnnotation(cueID: "pad", label: "Pad below the hip crease",
+                          labelPoint: CGPoint(x: 0.550, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "thigh_R"),
+            CueAnnotation(cueID: "depth", label: "Lower to a stretch",
+                          labelPoint: CGPoint(x: 0.638, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "arms", label: "Arms crossed on chest",
+                          labelPoint: CGPoint(x: 0.406, y: 0.80),
+                          leaderLength: 40, joint: "hand_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hinge",
+                title: "Hip Hinge",
+                intro: "The trunk folds forward at the hips while the back keeps its shape, from a straight line to about 20 degrees below level.",
+                why: "Bending at the hips with a still spine puts the work on the hip extensors: in a lab study on a 45-degree bench, the hip-led version loaded the hips and lower back more than curling down through the spine. In another study, heavy 45-degree extensions done with a straight back drew more activity from the biceps femoris, one of the hamstrings, than Romanian deadlifts did, and more glute activity in the top half of the rep. Here the hips fold about 65 degrees.",
+                mistake: "Rounding the back over the pad at the bottom to go lower, the head dropping toward the floor.",
+                correct: "Fold at the hips with your chest open and your head in line, and stop just before the back would start to round."
+            ),
+            TechniqueCue(
+                id: "top",
+                title: "Top Position",
+                intro: "Each rep ends with the body in one straight line, the trunk back in line with the legs.",
+                why: "The rep is complete once the trunk lines up with the legs, where a lab study of this lift set the top. Lifting further mostly arches the lower back, so the extra height comes from the spine rather than the hips.",
+                mistake: "Arching up past the straight line at the top, the chest lifting and the lower back bending backward.",
+                correct: "Rise until your body is straight, squeeze the glutes, hold for a moment and lower again."
+            ),
+            TechniqueCue(
+                id: "pad",
+                title: "Pad Height",
+                intro: "The pad carries the upper thighs, its top edge a little below the hip crease.",
+                why: "With the hips clear of the pad they can fold over its edge, so the bend comes at the hips. Set too high, the pad presses into the belly and blocks the fold, and the back curls over it instead. Here its top edge sits about 9 cm below the hip joints.",
+                mistake: "Setting the pad up at the hip bones or the belly, so the hips cannot fold and the back curls over the pad.",
+                correct: "Adjust the pad so its top edge sits just below your hip crease, your thighs resting along it."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Range of Motion",
+                intro: "Each rep lowers until the trunk is about 20 degrees below level, a fold of about 65 degrees at the hips.",
+                why: "The hips work hardest around where the trunk passes level and sticks out furthest from them, which on this bench comes in the lower part of the rep, so a short dip skips it. The lab version lowered until just before the spine began to bend; another guide stops at a mild stretch or with the trunk about square to the legs.",
+                mistake: "Stopping after a short dip, the trunk still well above level, so the hips barely fold.",
+                correct: "Lower slowly until you feel the hamstrings stretch or your back is about to round, pause, then rise to the straight line."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arm Position",
+                intro: "The arms stay crossed on the chest for the whole set.",
+                why: "The higher the arms sit on the body, the harder each rep: hands low by the hips make it easiest, crossed on the chest harder, at the head harder still. Kept still, they leave the lifting to the hips; flung forward, they throw the trunk up with momentum.",
+                mistake: "Uncrossing the arms and flinging them forward to throw the body up.",
+                correct: "Cross your arms over your chest and keep them still from the first rep to the last; move them up only once the reps get easy."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.90),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.42)
+        ],
+        stabilisers: ["adductor magnus", "gluteus medius"],
+        setup: [
+            "Set the pad so its top edge sits just below your hip crease.",
+            "Step in with your thighs on the pad and both feet flat on the plate, the roller behind your lower calves.",
+            "Cross your arms over your chest.",
+            "Start with your body in a straight line from head to heels, braced."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "BACK ROUNDING",
+            correctCue: "Flat back, fold at the hips",
+            mistakeCue: "Back curls over the pad",
+            correctNote: "Keeping the back flat and folding at the hips loads the hips, so the glutes and hamstrings lower and lift the trunk.",
+            mistakeNote: "Curling the back over the pad to get lower moves the bend into the spine, so the hips do less and the back more."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.05, cx: 0.47, cy: 0.42),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.04, cx: 0.50, cy: 0.48),
+            .init(DS.activationSoft.opacity(0.25), rx: 0.05, ry: 0.04, cx: 0.41, cy: 0.40)
+        ]
+    )
+
+    static let kettlebellSwingContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hinge", label: "Hips back",
+                          labelPoint: CGPoint(x: 0.770, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "hike", label: "Hike above the knees",
+                          labelPoint: CGPoint(x: 0.391, y: 0.64),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "back", label: "Flat back",
+                          labelPoint: CGPoint(x: 0.770, y: 0.30),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "drive", label: "Arms guide",
+                          labelPoint: CGPoint(x: 0.756, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "top", label: "Stand tall",
+                          labelPoint: CGPoint(x: 0.244, y: 0.12),
+                          leaderLength: 40, joint: "head")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hinge",
+                title: "Hip Hinge",
+                intro: "As the bell swings back, the hips push back and the chest tips forward while the knees bend only a little and the shins stay upright.",
+                why: "The swing is a hip hinge, not a squat: the glutes and hamstrings stretch as the hips fold, then snap them straight. In one study a hinge-style swing drew more hamstring activity than a squat-style swing. The model folds its hips to about 90 degrees but bends its knees only about 27.",
+                mistake: "Squatting the bell down: the knees bend further and push forward, the hips sink and the chest stays more upright.",
+                correct: "Push the hips straight back, keep the shins close to vertical and the knees soft, and let the chest tip forward over the bell."
+            ),
+            TechniqueCue(
+                id: "hike",
+                title: "Backswing",
+                intro: "The bell swings back between the legs at knee height, the hands staying above the knees and the forearms close to the inner thighs.",
+                why: "The hips have to stop the bell and throw it forward again, so it should arrive close to them. The further a load swings from the hips, the longer its lever on the lower back; a bell that drops low drags the chest and back down after it.",
+                mistake: "Letting the hands sink to the knees and the bell swing low, the chest diving toward the floor after it.",
+                correct: "Hike the bell back between your thighs with the hands above your knees and the forearms close to your inner thighs, and keep the chest from following it down."
+            ),
+            TechniqueCue(
+                id: "back",
+                title: "Flat Back",
+                intro: "The back keeps its standing shape at the bottom and the top, long from the hips to the head, the neck in line.",
+                why: "The swing loads the spine quickly: in a lab study, swings with a 16 kg bell put about 3,200 newtons of compression on the lower back while the back muscles worked at about half their maximum. A long, braced spine leaves the bending to the hips.",
+                mistake: "Rounding the back and dropping the head as the bell swings between the legs.",
+                correct: "Brace before every swing, keep the spine long and the neck in line, and fold only at the hips."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Hip Drive",
+                intro: "The hips snap straight and the bell floats up to about chest height on straight arms.",
+                why: "The hips, not the shoulders, throw the bell. In the model they are straight by the time the bell passes hip height, and it keeps rising on its own for about another third of a second. Lifting it with the arms turns the top of each swing into a front raise and takes the work away from the hips.",
+                mistake: "Raising the bell with the arms and shoulders, like a front raise, up toward head height.",
+                correct: "Drive the hips forward hard, keep the elbows straight and let the arms only guide the bell as it floats to about chest height."
+            ),
+            TechniqueCue(
+                id: "top",
+                title: "Stand Tall",
+                intro: "At the top the hips and knees are straight and the body stands in one line from the heels to the head, with no lean back.",
+                why: "Straightening the hips is what finishes the swing; with the abs braced the trunk stays still while the bell floats. Leaning back past upright bends the lower back instead of the hips.",
+                mistake: "Leaning back as the bell rises, the hips pushed forward past the shoulders.",
+                correct: "Finish with the knees and hips straight, glutes and abs tight and the shoulders over the hips, then let the bell drop."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.35),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["gluteus medius", "adductors", "trapezius", "core"],
+        setup: [
+            "Stand with your feet a little wider than your shoulders, toes turned slightly out, the kettlebell on the floor about a foot in front of you.",
+            "Hinge forward with a flat back and grip the handle with both hands, palms facing down.",
+            "Brace, then hike the bell back between your thighs, like a football snap, to start the first swing.",
+            "At the end of the set, let the bell swing back once more and guide it down to the floor in front of you."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SQUATTING THE SWING",
+            correctCue: "Hips back, shins upright",
+            mistakeCue: "Knees forward, hips sink",
+            correctNote: "With the hips pushed back and the shins upright, the hips fold and then snap straight to throw the bell.",
+            mistakeNote: "Squatting the bell down moves the bend to the knees; in one study a squat-style swing drew less hamstring activity than a hinge."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.09, cx: 0.64, cy: 0.57),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.62, cy: 0.41)
+        ]
+    )
+
+    static let sumoKettlebellDeadliftContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "stance", label: "Toes out",
+                          labelPoint: CGPoint(x: 0.215, y: 0.64),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "knees", label: "Knees out",
+                          labelPoint: CGPoint(x: 0.770, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "torso", label: "Chest up, back flat",
+                          labelPoint: CGPoint(x: 0.624, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "hips", label: "Rise together",
+                          labelPoint: CGPoint(x: 0.712, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "thigh_L"),
+            CueAnnotation(cueID: "lockout", label: "Stand tall",
+                          labelPoint: CGPoint(x: 0.244, y: 0.16),
+                          leaderLength: 40, joint: "head")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "The feet stand well wider than the shoulders with the toes turned out about 35 degrees, the bell on the floor between them.",
+                why: "Wide feet with the toes turned out give the knees room to open over the feet, so the hips can sink between the heels and the bell can pass between the legs. Sumo pullers in competition stood about twice as wide as conventional ones and turned their feet out about 42 degrees.",
+                mistake: "Standing wide with the toes pointing straight ahead, so the knees cannot follow the feet.",
+                correct: "Set your feet just outside your shoulders, turn the toes out about 30 to 45 degrees and centre the bell between your feet, level with their middle."
+            ),
+            TechniqueCue(
+                id: "knees",
+                title: "Knee Tracking",
+                intro: "The knees push out over the turned-out toes on the way down and the way up.",
+                why: "In a wide stance the knees have to travel out as well as forward to stay over the feet, which keeps the hips open and the load straight through each knee. Knees caving in is a common kettlebell deadlift mistake, and weak control at the hip has been linked to the knee drifting inward.",
+                mistake: "The knees caving in toward each other as you sink or stand up.",
+                correct: "Push the knees out in line with the toes all the way down and up, the arms hanging inside them."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Chest Up",
+                intro: "The chest stays up and the back flat, the trunk leaning only about halfway forward at the bottom.",
+                why: "The wide stance is what lets the trunk stay this upright: sumo pullers keep the trunk more vertical than conventional ones, and the model leans about 49 degrees at the bottom. A flat, braced back passes the drive from the legs to the bell; a chest that drops to meet the bell rounds the back.",
+                mistake: "The chest dropping toward the bell and the back rounding at the bottom.",
+                correct: "Pull the chest up and the shoulders back, engage the lats, and sink the hips between the heels rather than folding over."
+            ),
+            TechniqueCue(
+                id: "hips",
+                title: "Hips and Chest",
+                intro: "The hips and chest rise at the same rate, the trunk righting itself steadily from the bottom.",
+                why: "Rising together keeps the trunk upright and the work shared between the thighs and the hips. When the hips shoot up first, the knees straighten early and the chest stays low, so the back is left to lift the bell the rest of the way.",
+                mistake: "The hips shooting up out of the bottom while the chest stays low over the bell.",
+                correct: "Drive through the whole foot, push the knees out and let the hips and shoulders rise together until you stand tall."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "Finish standing tall with the hips and knees straight and the glutes squeezed.",
+                why: "The lift is complete when the hips and knees are straight; leaning back past upright only bends the lower back under the load.",
+                mistake: "Leaning back at the top, the hips pushed forward past the shoulders.",
+                correct: "Squeeze the glutes as you stand and stop with the shoulders over the hips, ribs down, then lower the bell the way it came up."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.56),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.35)
+        ],
+        stabilisers: ["adductors", "lats", "trapezius", "core"],
+        setup: [
+            "Stand with your feet well wider than your shoulders, toes turned out about 35 degrees, as the model does.",
+            "Set the kettlebell on the floor between your feet, centred and level with the middle of your feet.",
+            "Sink your hips, push your knees out over your toes and grip the handle with both hands, palms facing you.",
+            "Chest up, back flat, arms straight inside your knees; brace and stand up with the bell."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "KNEES CAVING IN",
+            correctCue: "Knees out over the toes",
+            mistakeCue: "Knees collapse inward",
+            correctNote: "Knees pushed out over the turned-out toes keep the hips open, so the thighs and glutes drive the bell up with the chest up.",
+            mistakeNote: "When the knees cave in over wide, turned-out feet, the knees take the load at an angle and the chest tips forward."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.09, cx: 0.54, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.56, cy: 0.44),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.06, ry: 0.08, cx: 0.67, cy: 0.57),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.06, ry: 0.08, cx: 0.43, cy: 0.56)
+        ]
+    )
+
+    static let kettlebellDeadliftContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hinge", label: "Hips back",
+                          labelPoint: CGPoint(x: 0.770, y: 0.27),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "bell", label: "Bell mid-foot",
+                          labelPoint: CGPoint(x: 0.288, y: 0.72),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "back", label: "Chest up, back flat",
+                          labelPoint: CGPoint(x: 0.624, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "knees", label: "Knees over toes",
+                          labelPoint: CGPoint(x: 0.682, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "lockout", label: "Stand tall",
+                          labelPoint: CGPoint(x: 0.244, y: 0.16),
+                          leaderLength: 40, joint: "head")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hinge",
+                title: "Hip Hinge",
+                intro: "The hips push back first, and the knees bend only as far as it takes to reach the handle with a flat back.",
+                why: "Sending the hips back loads the glutes and hamstrings, the main movers here. In the model the hips fold to about 50 degrees while the knees bend to about 104, the shins staying close to upright; sinking the hips straight down instead turns the rep into a squat.",
+                mistake: "Squatting the bell up: the hips sink straight down, the knees push forward and the chest stays more upright.",
+                correct: "Push the hips back as you lower, let the knees bend only as much as you need, and keep the shins nearly vertical."
+            ),
+            TechniqueCue(
+                id: "bell",
+                title: "Bell Position",
+                intro: "At the bottom of each rep the bell touches down on the floor between the feet, its handle over the middle of the feet.",
+                why: "With the bell between the feet the load sits in line with the body, as with a trap bar, where the lower back and hips are loaded less than with a bar in front of the legs. A bell out in front of the toes pulls the arms and chest forward and lengthens the lever on the lower back.",
+                mistake: "Letting the bell drift out in front of the toes, the arms reaching forward to it.",
+                correct: "Line the handle up with the middle of your feet, keep the arms long and the lats tight, and keep the bell close to your shins as it leaves and returns to the floor."
+            ),
+            TechniqueCue(
+                id: "back",
+                title: "Flat Back",
+                intro: "The chest stays up and the back flat from the floor to the top.",
+                why: "A flat back lets the hips and legs do the lifting while the spine just holds its shape. Rounding the lower back on the way down is a common kettlebell deadlift mistake.",
+                mistake: "The lower back rounding at the bottom as the bell nears the floor.",
+                correct: "Brace before each rep, pull the chest up and the shoulders back, and only go as low as you can with a flat back."
+            ),
+            TechniqueCue(
+                id: "knees",
+                title: "Knee Tracking",
+                intro: "The knees bend in line with the feet, never caving inward.",
+                why: "Knees that follow the toes take the load straight through the joint. Letting them cave in is a common mistake, and weak control at the hip has been linked to the knee drifting inward.",
+                mistake: "The knees caving in toward each other at the bottom or as you stand.",
+                correct: "Keep each knee over the middle toes as you lower the bell and as you drive up."
+            ),
+            TechniqueCue(
+                id: "lockout",
+                title: "Lockout",
+                intro: "Stand tall at the top with the hips and knees straight and the glutes squeezed.",
+                why: "The lift is complete when the hips and knees are straight. Hyperextending at the top is a common mistake: leaning back past upright only bends the lower back under the load.",
+                mistake: "Leaning back at the top, the hips pushed forward past the shoulders.",
+                correct: "Squeeze the glutes as you stand and stop with the shoulders over the hips, ribs down."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.35)
+        ],
+        stabilisers: ["adductors", "lats", "trapezius", "core"],
+        setup: [
+            "Stand with your feet about shoulder-width apart, toes turned slightly out, as the model does.",
+            "Set the kettlebell on the floor between your feet, the handle over the middle of your feet.",
+            "Push your hips back, bend your knees and grip the handle with both hands, palms facing you.",
+            "Pull your shoulders back and your chest up, brace and stand up with the bell."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SQUATTING, NOT HINGING",
+            correctCue: "Hips back, shins near upright",
+            mistakeCue: "Hips sink, knees push forward",
+            correctNote: "Pushing the hips back to reach the bell loads the glutes and hamstrings while the back stays flat.",
+            mistakeNote: "Sinking the hips straight down with the chest upright turns the deadlift into a squat, so the thighs do the work the hips should."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.09, cx: 0.57, cy: 0.58),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.57, cy: 0.43)
+        ]
+    )
+    // END Desktop 300-400 (2026-10-12) content
 }

@@ -225,3 +225,25 @@ working side only; the Decline press-path ghost draws the far arm only (the
 near one lay on the yellow lever); both cable shoulder presses' brace ghosts
 are drawn without the arms (the overhead hands ran into the banner); the
 Wide-Grip Seated Cable Row's elbow ghost is `elbowsFlared(35)`.
+
+Desktop "300-400" folder (2026-10-12): the 26 replaced legs had their
+trainer (0, 1.5 and 3 s) and every ghost shot at their stills before and
+after the revisions (`Tools/lab/shoot_ex.sh`). The re-framed Smith split
+squat, Bulgarian split squat and good morning dropped their `.seen(-0.4)`
+turns (on the new framings the turn put the M30's near upright across the
+trunk, or looked from almost straight behind, where the moves barely show);
+the Cable RDL's stance ghost is the new `r1012revACloserToPulley` (18 cm
+nearer the M29's pulley), kept in `faults_1012_revA.swift.txt` and pasted by
+`integrate_1012.py` with the families' pieces; the Cable Hip Adduction's
+torso and leg ghosts are seen from -1.4 (the station's columns hid them from
+the front three-quarters); the Banded Hip Abduction lost its grip ghost (its
+new hands mistake is a force); the three lunges' stills moved to 2.08 s,
+where their new clips bottom out.
+The twelve new exercises' ghosts are in `faults_1012_{thrust,hipext,kb}.swift.txt`
+(new pieces prefixed `r1012<family>`), their moments in
+`fault_moments_1012_*.json` (merged into bottoms.json by `fault_times.py`;
+the hip extensions and the swing are given in seconds, since their kinds
+fall through to the press rule). The library's Back Extension arms ghost and
+the Dumbbell and Barbell Hip Thrusts' `hipsShortOfLockout` distort the arms
+on their own rigs (the hipext and thrust families use corrected copies);
+left for a later pass.

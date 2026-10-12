@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-cable-pull-through.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

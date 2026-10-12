@@ -1,0 +1,5 @@
+{
+  "Kettlebell Swing": {"hinge": "2.0", "hike": "2.0", "back": "2.0", "drive": "3.0", "top": "3.0"},
+  "Sumo Kettlebell Deadlift": {"stance": "0.3", "knees": "bottom", "torso": "bottom", "hips": "bottom", "lockout": "lockout"},
+  "Kettlebell Deadlift": {"hinge": "bottom", "bell": "bottom", "back": "bottom", "knees": "bottom", "lockout": "lockout"}
+}

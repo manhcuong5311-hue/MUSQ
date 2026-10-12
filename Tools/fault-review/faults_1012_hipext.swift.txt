@@ -1,0 +1,293 @@
+// MARK: PIECES
+    // MARK: Desktop 300-400 hip extension pieces (2026-10-12)
+
+    /// The back rounding at the bottom of a hinge, larger than
+    /// `rdl4BackRounded`: the mid-spine humps 0.18 torso lengths (~11 cm)
+    /// and the chest 0.15 toward the back, the neck and head drop toward
+    /// the front and draw in along the spine (head ~16 cm). Sized on the
+    /// hipext rigs (one body, torso 0.592 m); lab round 1's 0.16 / 0.12 /
+    /// 0.20 read only as a low arc on the small bench figures (zoom 0.55).
+    /// Shifts, so the short pelvis-spine segment draws ~5 cm longer.
+    private static func r1012hipextBackRounded(_ strength: FaultStrength) -> FaultPose {
+        FaultPose(chains: [spine],
+                  moves: [.shift(["spine"], forward: -0.18),
+                          .shift(["chest"], forward: -0.15, up: -0.03),
+                          .shift(["neck"], forward: 0.08, up: -0.07),
+                          .shift(["head"], forward: 0.24, up: -0.12)],
+                  strength: strength)
+    }
+
+    /// Cable Pull-Through: rowing the rope up with the arms as you stand.
+    /// The upper arms swing 20° back and the elbows bend 95° more, faded in
+    /// as the hips straighten (the hip reads ~0.67 straight at the model's
+    /// top): at 3.6 s the elbows 156° -> ~102°, the hands ~15 cm higher, up
+    /// in front of the stomach.
+    private static let r1012hipextArmsRowed = FaultPose(
+        chains: [armsToGrip],
+        moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -20),
+                .turn(pivot: "forearm_*", points: ["hand_*", "hand_*.tip"], axis: .lateral, degrees: 95)],
+        strength: .whenStraight("thigh_L")
+    )
+
+    /// Cable Pull-Through: standing too close to the low pulley behind. The
+    /// whole lifter, rope ends included, drawn 0.4 torso lengths (~24 cm)
+    /// nearer the column in the same pose (the model stands ~0.96 m from
+    /// the pulley and keeps the pinned plates only ~3 cm off the stack at
+    /// the bottom, so any step back lets them settle).
+    private static let r1012hipextCloserToPulley = FaultPose(
+        chains: [spine, armsToGrip, legs, hips],
+        moves: [.shift(carried + ["shin_*", "foot_*", "foot_*.tip"], ahead: -0.4)]
+    )
+
+    /// Standing Cable Hip Extension: how far the left leg is back. The
+    /// ankles are 0.32-0.38 torso lengths apart with the leg forward or
+    /// under the body and 0.82 at the back of the kick: none forward, all
+    /// of it from about 0.8 (the back's hold, 1.67-2.17 s).
+    private static let r1012hipextLegBack = FaultStrength.between("foot_L", "foot_R", from: 0.45, to: 0.8)
+
+    /// Standing Cable Hip Extension: a short kick, the left leg swung 26°
+    /// forward about the hip, so at the back the thigh stops about 2° behind
+    /// vertical instead of 28° and the foot ~36 cm further forward, under
+    /// the hips.
+    private static let r1012hipextKickShort = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: 26)],
+        strength: r1012hipextLegBack
+    )
+
+    /// Standing Cable Hip Extension: the lower back arching to swing the leg
+    /// higher. The mid-spine sinks 0.12 torso lengths (~7 cm) toward the
+    /// belly and the chest 0.05, and the left leg swings 14° further back,
+    /// the foot ~13 cm higher at the back of the kick.
+    private static let r1012hipextKickArched = FaultPose(
+        chains: [spine, ["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.shift(["spine"], forward: 0.12), .shift(["chest"], forward: 0.05),
+                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: -14)],
+        strength: r1012hipextLegBack
+    )
+
+    /// Standing Cable Hip Extension: the left hip rolling open, the hips and
+    /// left leg turned 22° about the pelvis (the left hip back) and the leg
+    /// swung 22° out about the hip: at the back of the kick the left foot
+    /// ~17 cm out to the side. The drift runs across the lifter, along the
+    /// line of sight in the trainer's framing, so the table turns it round
+    /// to the lifter's back.
+    private static let r1012hipextHipOpened = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "pelvis", points: ["thigh_L", "thigh_R", "shin_L", "foot_L", "foot_L.tip"], axis: .up, degrees: -22),
+                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 22)],
+        strength: r1012hipextLegBack
+    )
+
+    /// Standing Cable Hip Extension: the knee bending at the back of the
+    /// kick, the heel flicked up toward the glutes: the left foot turned 55°
+    /// up about the knee, 174° -> ~119° at the back, the ankle ~32 cm
+    /// higher.
+    private static let r1012hipextKneeCurled = FaultPose(
+        chains: [leg("L")],
+        moves: [.turn(pivot: "shin_L", points: ["foot_L", "foot_L.tip"], axis: .lateral, degrees: -55)],
+        strength: r1012hipextLegBack
+    )
+
+    /// Standing Cable Hip Extension: pulling on the upright to twist into
+    /// the kick, the trunk and shoulders turned 30° about the vertical, the
+    /// left shoulder back (~10 cm each shoulder), the elbows re-seated with
+    /// the hands still on the upright: the left arm straightens (117° ->
+    /// ~159°) and the right pulls in (-> ~92°). Lab round 1 drew the trunk
+    /// and shoulders alone (25°), which barely read from behind-left.
+    private static let r1012hipextTwistedOnUpright = FaultPose(
+        chains: [spine, shoulders, arms],
+        moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .up, degrees: -30),
+                .resolve(["forearm_*"])]
+    )
+
+    /// Reverse Hyperextension: how far the legs are up, from the neck's
+    /// distance to the left ankle (1.72 torso lengths hanging, 2.42 at the
+    /// top): none until the legs pass about halfway, all of it at the top.
+    private static let r1012hipextLegsUp = FaultStrength.between("neck", "foot_L", from: 2.0, to: 2.4)
+    /// The other way round: all of it hanging, none from about halfway up.
+    private static let r1012hipextLegsDown = FaultStrength.between("neck", "foot_L", from: 2.0, to: 1.75)
+
+    /// Reverse Hyperextension: stopping halfway, both legs 45° lower about
+    /// the hips at the top, about 42° below level instead of 3° above, the
+    /// feet ~60 cm lower.
+    private static let r1012hipextLegsShort = FaultPose(
+        chains: [legs, hips],
+        moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: 45)],
+        strength: r1012hipextLegsUp
+    )
+
+    /// Reverse Hyperextension: arching the lower back to fling the legs
+    /// higher, the mid-spine sagging 0.10 torso lengths (~6 cm) toward the
+    /// floor and the legs 22° higher, about 25° above level (the feet ~30
+    /// cm higher).
+    private static let r1012hipextLegsFlung = FaultPose(
+        chains: [spine, legs, hips],
+        moves: [.shift(["spine"], forward: 0.10),
+                .turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: -22)],
+        strength: r1012hipextLegsUp
+    )
+
+    /// Reverse Hyperextension: the knees bending as the legs come up, the
+    /// feet turned 50° toward the ceiling about the knees: 176° -> ~126° at
+    /// the top, the ankles ~28 cm higher (60° in lab round 1 lifted the toes
+    /// into the cue's own label).
+    private static let r1012hipextKneesCurledProne = FaultPose(
+        chains: [legs],
+        moves: [.turn(pivot: "shin_*", points: ["foot_*", "foot_*.tip"], axis: .lateral, degrees: -50)],
+        strength: r1012hipextLegsUp
+    )
+
+    /// Reverse Hyperextension: the pendulum swinging the legs on under the
+    /// pad at the bottom, both legs 32° further toward the head about the
+    /// hips (the feet ~44 cm forward, under the pad).
+    private static let r1012hipextLegsSwungUnder = FaultPose(
+        chains: [legs, hips],
+        moves: [.turn(pivot: "thigh_*", points: ["shin_*", "foot_*", "foot_*.tip"], axis: .lateral, degrees: 32)],
+        strength: r1012hipextLegsDown
+    )
+
+    /// Reverse Hyperextension: pushing up on the grips, the chest, head and
+    /// shoulders lifted 20° off the pad about the mid-spine (the head ~20 cm
+    /// up), the elbows re-seated so the hands stay on the grips (the arms
+    /// pushed straight). The model's arms are already near straight (167°),
+    /// so the rising shoulders leave the grips out of reach and the two arm
+    /// bones draw ~11 cm longer in all (~6 + ~5 cm); any lift that reads
+    /// does this (14° still stretches them ~7.5 cm).
+    private static let r1012hipextChestOffPad = FaultPose(
+        chains: [spine, arms],
+        moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*"], axis: .lateral, degrees: 20),
+                .resolve(["forearm_*"])],
+        strength: r1012hipextLegsUp
+    )
+
+    /// The 45-degree bench lifts: the neck's distance to the left ankle is
+    /// 2.425 torso lengths in the straight-line top and 2.0-2.08 at the
+    /// bottom. `Top`: none below 2.38 (within ~0.2 s of the top), all of it
+    /// in the top's hold. `Bottom`: none at the top, all of it from 2.08.
+    private static let r1012hipextBenchTop = FaultStrength.between("neck", "foot_L", from: 2.38, to: 2.425)
+    private static let r1012hipextBenchBottom = FaultStrength.between("neck", "foot_L", from: 2.40, to: 2.08)
+
+    /// The 45-degree bench lifts: arching past the straight line at the
+    /// top, the chest turned 16° back about the mid-spine and the head and
+    /// neck a further 14° about the chest (the head ~26 cm up and back).
+    /// Drawn without the crossed arms, as the library's Back Extension.
+    private static let r1012hipextArchedTop = FaultPose(
+        chains: [spine],
+        moves: [.turn(pivot: "spine", points: ["chest", "neck", "head"], axis: .lateral, degrees: 16),
+                .turn(pivot: "chest", points: ["neck", "head"], axis: .lateral, degrees: 14)],
+        strength: r1012hipextBenchTop
+    )
+
+    /// The 45-degree bench lifts: the arms uncrossed and flung out ahead to
+    /// throw the trunk up, the library Back Extension's grip ghost (the
+    /// hands 0.38 torso lengths out of the chest, 0.48 toward the head and
+    /// 0.58 out to the side, ~50 cm) with the elbows then re-seated between
+    /// the shoulders and the flung hands, so both arm bones keep their
+    /// lengths: on these rigs the crossed arms sit unevenly, and the shifts
+    /// alone drew the right upper arm ~10 cm short and its forearm ~8 cm
+    /// long (review, 2026-10-12). Elbows ~79-90° -> ~141-145° (left) and
+    /// ~115° (right).
+    private static let r1012hipextArmsFlung = FaultPose(
+        chains: [arms],
+        moves: [.shift(["hand_*"], forward: 0.38, up: 0.48, outward: 0.58),
+                .shift(["forearm_*"], forward: -0.08, up: 0.32, outward: 0.2),
+                .resolve(["forearm_*"])]
+    )
+
+    /// 45-Degree Hip Extension: stopping high, the trunk and crossed arms
+    /// turned 35° back up toward the straight line about the pelvis at the
+    /// bottom (the hips folded ~30° instead of 65°, the head ~42 cm higher).
+    private static let r1012hipextBenchShort = FaultPose(
+        chains: [spine, arms],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 35)],
+        strength: r1012hipextBenchBottom
+    )
+
+    /// Single-Leg Back Extension: the free right foot set down on the plate,
+    /// the right knee straightened 62° (115° -> ~177°), the foot ~40 cm
+    /// lower, beside the left one.
+    private static let r1012hipextFreeFootDown = FaultPose(
+        chains: [leg("R")],
+        moves: [.turn(pivot: "shin_R", points: ["foot_R", "foot_R.tip"], axis: .lateral, degrees: 62)]
+    )
+
+// MARK: TABLE
+        // MARK: Desktop 300-400 hip extensions (2026-10-12)
+        // One body (torso, neck to pelvis, 0.592 m; shifts in torso lengths).
+        // Sized with a Python port of FaultGhost.solve on the rigs at each
+        // fault's still ($LAB/r1012/hipext/ghost.py, gdefs.py): bone lengths
+        // kept except where noted, no knee bent backward. Framings: Cable
+        // Pull-Through -1.3 (from the lifter's left, a little behind), Standing
+        // Cable Hip Extension -1.8 (behind-left), Reverse Hyperextension -1.4
+        // (side-on), the two 45-degree bench lifts -1.9 (behind-left).
+        "Cable Pull-Through": [
+            // Squatting the rope back: the hips ~12 cm lower and ~5 cm
+            // forward, the trunk 22° more upright, the knees 155° -> ~111°.
+            "hinge": hingeSquatted(withBar: false),
+            // The back rounding at the bottom: the mid-back ~10 cm up, the
+            // head ~15 cm down.
+            "back": r1012hipextBackRounded(.withBend("thigh_L")),
+            // Stopping short of standing: the trunk ~21° forward at the top
+            // (32° faded by the hip, ~0.67 straight there), the head ~25 cm
+            // forward.
+            "top": leanedForward(32, strength: .whenStraight("thigh_L")),
+            // Rowing the rope up: elbows 156° -> ~102°, the hands ~15 cm
+            // higher at the top.
+            "arms": r1012hipextArmsRowed,
+            // Standing ~24 cm closer to the column.
+            "stance": r1012hipextCloserToPulley
+        ],
+        "Standing Cable Hip Extension": [
+            // A short kick: the thigh stopping about vertical at the back
+            // (2° behind instead of 28°), the foot ~36 cm forward.
+            "kick": r1012hipextKickShort,
+            // The lower back arching (~7 cm) and the leg ~14° higher.
+            "torso": r1012hipextKickArched,
+            // The hip rolling open, the foot ~17 cm out to the side. Turned
+            // 1.34 round to the lifter's back (a total of -3.14), where the
+            // sideways drift crosses the screen.
+            "hips": r1012hipextHipOpened.seen(-1.34),
+            // The knee bending to ~119° at the back, the heel ~32 cm higher.
+            "knee": r1012hipextKneeCurled,
+            // The trunk twisted 30° on the upright, the left shoulder back,
+            // the right arm pulling.
+            "grip": r1012hipextTwistedOnUpright
+        ],
+        "Reverse Hyperextension": [
+            // Stopping halfway: the legs about 42° below level at the top.
+            "lift": r1012hipextLegsShort,
+            // The lower back sagging ~6 cm and the legs ~25° above level.
+            "back": r1012hipextLegsFlung,
+            // The knees bending to ~126° at the top.
+            "knees": r1012hipextKneesCurledProne,
+            // The legs swung 32° on under the pad at the bottom.
+            "lower": r1012hipextLegsSwungUnder,
+            // The chest and head pushed ~20 cm up off the pad, arms straight
+            // (their bones drawn ~11 cm long to keep the hands on the grips).
+            "grip": r1012hipextChestOffPad
+        ],
+        "Single-Leg Back Extension": [
+            // The back rounding over the pad at the bottom: the mid-back ~11
+            // cm up, the head ~16 cm down.
+            "hinge": r1012hipextBackRounded(r1012hipextBenchBottom),
+            // Arching past the straight line at the top: the head ~26 cm up
+            // and back.
+            "top": r1012hipextArchedTop,
+            // "pad" has no ghost: where the pad sits is the bench's setting,
+            // not a body position.
+            // The right foot set down on the plate, knee straight.
+            "free": r1012hipextFreeFootDown,
+            // The arms uncrossed and flung out ahead, the hands moved ~50 cm
+            // off the chest, the arm bones kept.
+            "arms": r1012hipextArmsFlung
+        ],
+        "45-Degree Hip Extension": [
+            "hinge": r1012hipextBackRounded(r1012hipextBenchBottom),
+            "top": r1012hipextArchedTop,
+            // "pad" has no ghost: where the pad sits is the bench's setting,
+            // not a body position.
+            // Stopping high: the hips folded ~30° instead of 65°.
+            "depth": r1012hipextBenchShort,
+            "arms": r1012hipextArmsFlung
+        ],

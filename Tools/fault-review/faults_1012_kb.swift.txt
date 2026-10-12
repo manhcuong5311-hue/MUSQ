@@ -1,0 +1,106 @@
+// MARK: PIECES
+    // MARK: Desktop 300-400 kettlebell pieces (2026-10-12)
+
+    /// Kettlebell Swing: raising the bell with the arms and shoulders, like a
+    /// front raise. The arms, kept straight, swing `degrees` further up about
+    /// the shoulders. None while the hands are near the hips (hand to pelvis
+    /// under 0.8 torso lengths, the lower half of the arc), all of it from
+    /// 1.1 (the model's top is ~1.15), so it shows only as the bell rises to
+    /// the top: at the top 22° takes the arms from ~9° below level to ~13°
+    /// above it, the hands ~20 cm higher, from 1.34 m to ~1.55 m (between the
+    /// neck and head joints). The mistake view shrinks and lifts the model,
+    /// so on the lab shots 50° drew the arms past the head into the mistake
+    /// banner and 32° (hands at eye level) still reached its edge.
+    private static func r1012kbFrontRaise(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: degrees)],
+                  strength: .between("hand_L", "pelvis", from: 0.8, to: 1.1))
+    }
+
+    /// Kettlebell lifts: leaning back past upright at the top, the trunk,
+    /// arms and bell turned `degrees` back about the hips once they are
+    /// straight. On these rigs the spine-hip-knee angle reads ~150° standing,
+    /// so `.whenStraight("thigh_L")` gives 0.67-0.75 of it at the top: 20°
+    /// shows as ~13-15° (the shared `leanedBackAtLockout`'s 16° drew ~11°).
+    private static func r1012kbLeanedBack(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, armsToGrip, bar],
+                  moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: degrees)],
+                  strength: .whenStraight("thigh_L"))
+    }
+
+// MARK: TABLE
+        // MARK: Desktop 300-400 kettlebell lifts (2026-10-12)
+        // One body (torso, neck to pelvis, 0.592 m; shifts in torso lengths).
+        // Sizes measured with a Python port of FaultGhost.solve on the rigs
+        // at each fault's still (kb/ghost.py in the session scratchpad), in
+        // points of the 382x655 trainer viewport (turned views included):
+        // bone lengths kept, no knee bent backward, nothing through the floor
+        // beyond the 1 cm the real toe tips already sit at. Framings: the
+        // swing -1.3 (side-on from the lifter's left), the sumo deadlift -0.5
+        // and the kettlebell deadlift -0.8 (front three-quarter from the
+        // left), so the deadlifts' front-to-back faults turn toward side-on.
+        "Kettlebell Swing": [
+            // Squatting the swing at the bottom, where it grows with the hip
+            // bend to 0.82 of the move: the trunk ~18° more upright (60° to
+            // 42°), the hips ~11 cm lower and ~5 cm forward, the knees
+            // re-seated (153° to ~114°), the grip carried ~14 cm (~36 pt)
+            // forward.
+            "hinge": hingeSquatted(withBar: true),
+            // The bell swinging low: the trunk, arms and bell tipped ~16°
+            // further toward the floor about the hips at the bottom, the head
+            // ~20 cm (~52 pt) lower, the hands ~6 cm lower (still ~10 cm above
+            // the knee joints) and the grip down to knee height.
+            "hike": leanedForward(20, withBar: true, strength: .withBend("thigh_L")),
+            // The back rounding at the bottom: the RDLs' deeper hump, the head
+            // ~7 cm (~19 pt) down and in.
+            "back": rdl4BackRounded(.withBend("thigh_L")),
+            // Lifting the bell with the arms: ~13° above level at the top
+            // instead of ~9° below, the hands ~20 cm (~55 pt) higher, toward
+            // head height; nothing in the lower half of the arc.
+            "drive": r1012kbFrontRaise(22),
+            // Leaning back at the top: ~14° past upright (0.70 of 20°), the
+            // head ~17 cm (~42 pt) back, the arms and bell turned with it.
+            "top": r1012kbLeanedBack(20)
+        ],
+        "Sumo Kettlebell Deadlift": [
+            // The toes turned to point straight ahead (35° in about each
+            // ankle), the knees left out: the toe tips ~12 cm (~30 pt).
+            // Shown standing (0.3 s), where the turn is about the vertical;
+            // at the bottom the body's up axis tips 49° and the toes dipped
+            // ~4 cm into the floor. Turned 0.3 toward face-on (a total of
+            // -0.2), as the library Dumbbell Sumo Squat's.
+            "stance": wideToesForward.seen(0.3),
+            // The knees caving in at the bottom, each ~11 cm toward the
+            // midline, re-seated so the bones and the 89° knee angle stay.
+            // Turned 0.3 toward face-on (a total of -0.2).
+            "knees": thruster500KneesIn(0.2).seen(0.3),
+            // The chest dropping toward the bell: the trunk turned 15° further
+            // forward and rounded (neck over pelvis 49° to ~66°), the head
+            // ~24 cm (~65 pt) down.
+            // Turned -0.8 (a total of -1.3, near side-on).
+            "torso": chestDropped(15, withBar: true).seen(-0.8),
+            // The hips shooting up first: the hips ~26 cm up and back, the
+            // knees opening 89° to ~160°, the head and hands still.
+            "hips": rdl4HipsShotUp.seen(-0.8),
+            // Leaning back at lockout: ~15° past upright (0.75 of 20°), the
+            // head ~18 cm (~47 pt).
+            "lockout": r1012kbLeanedBack(20).seen(-0.8)
+        ],
+        "Kettlebell Deadlift": [
+            // Squatting it: the hips ~13 cm lower and ~6 cm forward, the
+            // trunk 22° more upright, the knees 104° to ~77°, the arms and
+            // bell ~19 cm (~48 pt) forward. Turned -0.4 (a total of -1.2).
+            "hinge": hingeSquatted(withBar: true).seen(-0.4),
+            // The bell drifting out in front of the toes: the arms swung ~19°
+            // forward about the shoulders (0.85 of 22°), the hands ~17 cm
+            // (~44 pt) forward.
+            "bell": armsSwungForward(22, withBar: true, strength: .withBend("shin_L")).seen(-0.4),
+            // The back rounding at the bottom, the head ~7 cm (~20 pt).
+            "back": rdl4BackRounded(.withBend("shin_L")).seen(-0.4),
+            // The knees caving in, each ~10 cm, bones and knee angle kept.
+            // Turned 0.6 toward face-on (a total of -0.2).
+            "knees": thruster500KneesIn(0.2).seen(0.6),
+            // Leaning back at lockout: ~13° past upright (0.67 of 20°), the
+            // head ~16 cm (~39 pt).
+            "lockout": r1012kbLeanedBack(20).seen(-0.4)
+        ],

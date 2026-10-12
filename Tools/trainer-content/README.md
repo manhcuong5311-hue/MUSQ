@@ -524,3 +524,114 @@ and V-Bar bar-path cues for their handles, and gave the Seated Dumbbell
 Press (zoom 0.755) and the Single-Arm Cable Shoulder Press (0.72, offset
 y -0.08) a little headroom so the lockout dumbbells and handle clear the
 mistake banner; `probe.py` carries both framings.
+
+Desktop "300-400" folder (2026-10-12): 26 replaced legs (see the
+model-pipeline README) and twelve new exercises. Where the paint changed the
+lists were edited in place, the ranks following the paint and the fractions
+left where the EMG put them: the three split squats whose glutes went from dim
+to bright (Barbell Bulgarian, Smith Machine Bulgarian, Rear-Foot-Elevated)
+list the Gluteus Maximus primary, the medius keeping its secondary row as on
+the Single-Leg Glute Bridge; the Single-Leg Romanian Deadlift's newly dim
+quadriceps are a Quadriceps row at 0.25 (an estimate: the Romanian
+Deadlift's 0.36 scaled as this lift's hamstrings are, 0.62/0.88); the
+Dumbbell Deadlift's newly bright quadriceps are primary at 0.70 (an
+estimate under the Trap Bar Deadlift's 0.78; Camara et al. 2016 for the
+direction) and its newly dim forearms a Forearms row at 0.45, out of the
+stabilisers. Then two revisers (hinges and hamstring curls; split squats,
+lunges and hip work) worked from `$LAB/r1012/REVISER_BRIEF.md` (old and new
+motion briefs, paint, viewport stills and the trainer and ghost shots at the
+final framings) and proposed exact edits, 63 in all, applied by the
+coordinator and checked on new trainer and ghost shots. Highlights:
+- The Smith, Kettlebell, Cable and B-Stance RDLs now bend the knees from
+  about 19° to 41° as the hips go back 21-30 cm: the hinge intros and knee
+  cues say so. The Kettlebell RDL's bell reaches the lower shins; the Cable
+  RDL stands ~60 cm from the M29's low pulley (stance copy and setup), and
+  its stance ghost is the new `r1012revACloserToPulley` (18 cm; the old
+  34 cm put the ghost's hands on the pulley).
+- Re-framed lifts: the Smith Machine Good Morning's labels relaid for its
+  view from behind-left and its ghosts unturned; the Smith RDL's back label
+  points at the neck; the Cable Standing Leg Curl relaid for -2.1 (the app
+  draws it ~0.06 left of `probe.py`'s projection, so its labels were laid on
+  the app's positions), its hands on the station's upright; the Smith split
+  squats' ghosts unturned (turned, the M30's near upright crossed the
+  trunk) and the reverse lunge's feet pill moved off the plate.
+- The lunges keep lowering through the landing: the step cue says to let
+  the foot settle as you sink, and their bottoms moved to 2.08 s.
+- Dumbbell Hip Thrust on the taller flat bench: the edge sits just below
+  the shoulder blades (Healthline), setup on a flat bench.
+- Cable Hip Adduction faces into the M29 station: its torso and leg ghosts
+  are seen from -1.4 (the columns hid them), the hand pill moved, the setup
+  stands side-on to the low pulley.
+- Banded Hip Abduction: the hands now rest on the thighs and the band sits
+  at the knees, so the copy follows (the old band mistake is now the model's
+  placement, and the new hands mistake, pushing the thighs apart, is a force,
+  so its ghost was dropped for the red ring). Its export put the SkelRoot on
+  /root (the band is skinned to the rig), which the conversion had dropped;
+  it was re-converted (see the model-pipeline README).
+- Glows moved to the re-probed joints where the motion or framing changed.
+Questions for the owner, from the revisers: the new GHD's pad sits under
+the knees (the copy still teaches the knees just behind the pad); is the
+RDLs' deeper knee bend intended; the Kettlebell RDL's lower bell; the Cable
+RDL's 63 cm from the pulley with the stack 3 cm clear; the Cable Standing
+Leg Curl's pulley in front of the midline; the Smith RDL's carriage resting
+on the safety stops at the bottom; the Banded Hip Abduction's band over the
+kneecaps and hands on the thighs; the Dumbbell Hip Thrust's knees at 100° at
+the top; the Cable Hip Adduction facing into the station. The spec files
+these exercises were generated from (spec_300_350_*, spec_400_*,
+spec_500_hip.py) were NOT updated, so regenerating them would undo these
+edits.
+The folder's twelve new exercises are three families in `spec_1012.py`
+(`spec_1012_{thrust,hipext,kb}.py` on `common_1_50.py`, `notes_1012_*.md`
+with each reviewer's `## Review`): `python3 spec_1012.py [family]` validates,
+`preview_1012.py <family>` prints the layout, `integrate_1012.py <scratch>`
+writes the setup steps, content-map entries, Swift (`// MARK: - Desktop
+300-400 (2026-10-12)`) and fault ghosts between its own BEGIN/END markers
+(it also pastes the replaced models' reviser pieces,
+`faults_1012_rev*.swift.txt`). Each family was drafted by one agent from
+`briefs_1012/` and the lab (`Tools/lab/family_1012.sh`, two to four shoot
+rounds), then an independent reviewer re-opened every source, re-measured
+the models and the ghosts and fixed what it found. House decisions:
+- Hip thrusts: the Smith, machine and B-stance thrusts take the Dumbbell
+  Hip Thrust's rows (Gluteus Maximus 0.90 and Quadriceps 0.55 primary, as
+  painted; hamstrings and erector spinae 0.45 secondary; the medius and
+  minimus among the stabilisers). The Single-Leg Hip Thrust also lists Hip
+  Flexors primary at 0.40 (painted bright on the raised leg; legend-only)
+  and the hamstrings at 0.50 (Sorensen et al. 2021). The B-stance's right
+  foot is a helper on its heel that steadies and assists a little. New
+  ghost `r1012thrustHipsShort`: the library's `hipsShortOfLockout` turned
+  the elbows' bend plane on these rigs (it does so on the Dumbbell and
+  Barbell Hip Thrusts too; left as it was).
+- Hip extensions: the Cable Pull-Through's fractions scale the library
+  RDL's by Dicus et al. 2023 (gluteus maximus 0.70 primary; hamstrings 0.60
+  and erector spinae 0.34 secondary); the Reverse Hyperextension (0.86
+  glutes primary, 0.90 hamstrings secondary as painted, Dicus 2023) and the
+  45-Degree Hip Extension (0.76 glutes primary, 0.90 hamstrings secondary,
+  Andersen et al. 2021) keep the bright/dim paint even where the EMG puts
+  the hamstrings higher; the Single-Leg Back Extension lists hamstrings
+  0.92 and glutes 0.84 primary (painted bright; Schellenberg et al. 2017);
+  the Standing Cable Hip Extension lists the glutes at 0.84 like the cable
+  kickbacks and its faint hamstrings as a LOW 0.36 row.
+- Kettlebell lifts: the swing's gluteus maximus 0.80 and hamstrings 0.76
+  primary (McGill and Marshall 2012, Van Gelder et al. 2015, Zebis et al.
+  2013); the sumo kettlebell deadlift's glutes, quadriceps and hamstrings
+  primary (0.76, 0.74, 0.56) and the kettlebell deadlift's glutes and
+  hamstrings (0.74, 0.66) are judgement calls anchored on the library's
+  deadlifts, as no kettlebell deadlift EMG exists.
+- Copy follows the models where coaching differs: the standing cable hip
+  extension's knee bends as the foot passes under the body; the single-leg
+  back extension's free leg is bent and held ~22 cm above the roller; both
+  back-extension benches fold 65-72° at the hips with a rigid spine; the
+  swing loops from the bottom (the setup describes the start and finish);
+  the kettlebell deadlift's knees bend to 104°.
+- `fault_times.py` files the hip extensions and the swing as presses, so
+  their moments are given in seconds.
+Open points for the owner (models): the Reverse Hyperextension's torso pad
+is short (the hips are 18 cm past it, the belly floats); the Standing Cable
+Hip Extension paints the hamstrings only faint; both kettlebell deadlifts
+hold the arms 27-28° forward at lockout; the Machine Hip Thrust carries one
+plate on a right-side horn; the mistake banner can run under the record
+button with a long cue title (a shared fix in the banner). The library rows
+and model map went in with the models; `ExerciseRotation` files the
+pull-through, reverse hyper, 45-degree hip extension and swing as hinges
+and the standing cable hip extension as glute isolation. The library now
+has 438 exercises.

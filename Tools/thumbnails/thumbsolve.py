@@ -37,7 +37,13 @@ BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Gri
              # Part 2: the Smith rack, the M29 station and the N29 frame left
              # these lifters small in the tile.
              "Inverted Row", "Cable Shoulder Press", "Single-Arm Cable Shoulder Press",
-             "Iso-Lateral Chest Press", "Plate-Loaded Chest Press"}
+             "Iso-Lateral Chest Press", "Plate-Loaded Chest Press",
+             # Desktop "300-400" folder (2026-10-12): the M30 Smith rack and the
+             # M29 station left these lifters a third of the tile or less.
+             "Smith Machine Split Squat", "Smith Machine Bulgarian Split Squat",
+             "Smith Machine Reverse Lunge", "Smith Machine Good Morning",
+             "Cable Standing Leg Curl", "Standing Cable Hip Extension", "Cable Hip Adduction",
+             "Cable Pull-Through"}
 # Held parts a lift lets crop (401-500, 2026-10-04): the landmine chest press's
 # 1.9 m bar, as in its trainer framing.
 CROP = {"Landmine Chest Press": ("LandmineBar",)}

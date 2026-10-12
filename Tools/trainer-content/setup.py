@@ -1715,7 +1715,7 @@ SETUP = {
     "Cable Romanian Deadlift": [
         "Set the pulley at its lowest point and clip on a straight bar.",
         "Face the machine and take the bar overhand, hands just outside your thighs.",
-        "Walk back about a metre from the pulley, feet hip-width, until the stack lifts clear.",
+        "Walk back until your ankles are about 60 cm from the pulley and the stack lifts clear, feet hip-width.",
         "Stand tall with the knees soft, shoulders back, and brace.",
     ],
     "Kettlebell Romanian Deadlift": [
@@ -1780,7 +1780,7 @@ SETUP = {
     ],
     "Cable Standing Leg Curl": [
         "Strap the cuff round your left ankle and clip it to the low pulley.",
-        "Face the stack and hold the frame handles in front of you.",
+        "Face the low pulley and hold the station's upright above it with both hands.",
         "Stand on your right foot, knee soft, the left foot hanging just behind it.",
         "Start with the left knee a little bent and the cable taut.",
     ],
@@ -1813,7 +1813,7 @@ SETUP = {
     ],
     "Cable Hip Adduction": [
         "Attach an ankle cuff to a low pulley and strap it around the ankle nearest the stack.",
-        "Stand side-on to the stack, far enough away that the cable draws the cuffed leg out to the side.",
+        "Stand side-on to the low pulley, far enough away that the cable draws the cuffed leg out to the side.",
         "Hold the support post or the machine frame with the hand nearest the stack.",
         "Stand tall on your right leg, knee slightly soft; the left leg, nearest the stack, works in this demo.",
     ],
@@ -1830,9 +1830,9 @@ SETUP = {
         "Point the toes of the top leg forward; the top leg lifts in this demo.",
     ],
     "Banded Hip Abduction": [
-        "Loop a mini band around both thighs just above the knees.",
+        "Loop a mini band around both legs at the knees.",
         "Sit tall on a flat bench with your feet flat under your knees, about shoulder-width apart.",
-        "Rest your hands on the bench beside your hips.",
+        "Rest your hands on your thighs.",
         "Let the knees come in until the band is just taut before the first rep.",
     ],
     "Clamshell": [
@@ -2017,10 +2017,10 @@ SETUP = {
         "Unhook the bar by rotating it, with the safety stops set below your lowest point.",
     ],
     "Dumbbell Hip Thrust": [
-        "Sit on the floor with your upper back against the long side of a low bench, secured so it cannot slide.",
+        "Sit on the floor with your upper back against the long side of a flat bench, secured so it cannot slide.",
         "Lay a dumbbell across the crease of your hips and hold it by both heads.",
         "Plant your feet flat about shoulder-width apart, toes turned out a little, close enough that your shins will be vertical at the top.",
-        "Lean back so the bench edge sits near the top of your shoulder blades.",
+        "Lean back so the bench edge sits just below your shoulder blades.",
     ],
     "Elevated Calf Raise": [
         "Stand on a sturdy step that will not tip, near a wall or rail you can touch for balance.",
@@ -2433,4 +2433,80 @@ SETUP = {
         "Do every rep with the left arm, then switch sides.",
     ],
     # END Desktop 100-200 (2026-10-11)
+    # BEGIN Desktop 300-400 (2026-10-12)
+    "Smith Machine Hip Thrust": [
+        "Set a flat bench about 40 cm high lengthwise behind the Smith bar, far enough back that the bar will sit over your hips.",
+        "Wrap the middle of the bar in a thick pad and set the safety stops just below the bar's lowest point.",
+        "Sit on the floor with your back to the bench and slide under the bar until the pad rests on the tops of your thighs, just below the hip crease.",
+        "Plant your feet flat about shoulder-width apart, toes turned out a little, and rest your upper back on the bench edge under your shoulder blades.",
+        "Hold the bar just outside the pad and turn it off its hooks.",
+    ],
+    "Machine Hip Thrust": [
+        "Load plates on the machine's horn and sit on its low seat with your back to the back pad.",
+        "Lean back so the edge of the back pad sits under the lower tips of your shoulder blades.",
+        "Bring the roller down onto the crease of your hips and hold the handles on either side of it.",
+        "Plant your feet flat on the footplate about shoulder-width apart, toes turned out a little.",
+    ],
+    "Single-Leg Hip Thrust": [
+        "Sit on the floor with your upper back against the long side of a flat bench about 40 cm high.",
+        "Plant your left foot flat in line with your left hip, knee bent; the left leg works in this demo.",
+        "Lean back so the bench edge sits under the lower tips of your shoulder blades, and spread your arms along the bench.",
+        "Lift your right knee toward your chest and hold it there, bent; switch sides for the next set.",
+    ],
+    "B-Stance Hip Thrust": [
+        "Sit on the floor with your upper back against the long side of a flat bench about 40 cm high.",
+        "Lay a dumbbell across the crease of your hips and hold it by both heads.",
+        "Plant your left foot flat with the knee bent; the left leg works in this demo.",
+        "Set your right foot a little ahead, its heel about level with the ball of your left foot, and pull its toes up.",
+        "Lean back so the bench edge sits under the lower tips of your shoulder blades; switch sides for the next set.",
+    ],
+    "Cable Pull-Through": [
+        "Attach a rope to a low pulley and stand facing away from the stack.",
+        "Reach down and take the rope ends between your legs, palms facing each other.",
+        "Walk forward until the weight lifts off the stack, then set your feet about shoulder-width, toes turned out a little.",
+        "Stand tall with your arms long and your knees soft, and brace before the first rep.",
+    ],
+    "Standing Cable Hip Extension": [
+        "Fasten an ankle cuff just above your left ankle and clip it to the low pulley.",
+        "Face the column and hold its upright with both hands at about waist height.",
+        "Step back until the cable is tight, standing tall on your right leg with the left foot just off the floor in front of you.",
+        "Lean forward slightly and brace before the first rep.",
+    ],
+    "Reverse Hyperextension": [
+        "Fasten the strap around your lower legs, just above the ankles.",
+        "Lie face down with your chest on the pad and your hips off its end, legs hanging straight down.",
+        "Hold the grips at the front of the machine with your arms long.",
+        "Brace your belly and squeeze your glutes before the first lift.",
+    ],
+    "Single-Leg Back Extension": [
+        "Set the pad so its top edge sits just below your hip crease.",
+        "Step in with your thighs on the pad and your left foot flat on the plate, the roller behind your lower calf.",
+        "Lift your right foot off the plate, knee bent, and keep it up behind you.",
+        "Cross your arms over your chest and start with your body in a straight line.",
+    ],
+    "45-Degree Hip Extension": [
+        "Set the pad so its top edge sits just below your hip crease.",
+        "Step in with your thighs on the pad and both feet flat on the plate, the roller behind your lower calves.",
+        "Cross your arms over your chest.",
+        "Start with your body in a straight line from head to heels, braced.",
+    ],
+    "Kettlebell Swing": [
+        "Stand with your feet a little wider than your shoulders, toes turned slightly out, the kettlebell on the floor about a foot in front of you.",
+        "Hinge forward with a flat back and grip the handle with both hands, palms facing down.",
+        "Brace, then hike the bell back between your thighs, like a football snap, to start the first swing.",
+        "At the end of the set, let the bell swing back once more and guide it down to the floor in front of you.",
+    ],
+    "Sumo Kettlebell Deadlift": [
+        "Stand with your feet well wider than your shoulders, toes turned out about 35 degrees, as the model does.",
+        "Set the kettlebell on the floor between your feet, centred and level with the middle of your feet.",
+        "Sink your hips, push your knees out over your toes and grip the handle with both hands, palms facing you.",
+        "Chest up, back flat, arms straight inside your knees; brace and stand up with the bell.",
+    ],
+    "Kettlebell Deadlift": [
+        "Stand with your feet about shoulder-width apart, toes turned slightly out, as the model does.",
+        "Set the kettlebell on the floor between your feet, the handle over the middle of your feet.",
+        "Push your hips back, bend your knees and grip the handle with both hands, palms facing you.",
+        "Pull your shoulders back and your chest up, brace and stand up with the bell.",
+    ],
+    # END Desktop 300-400 (2026-10-12)
 }
