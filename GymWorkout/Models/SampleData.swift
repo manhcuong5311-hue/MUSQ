@@ -911,6 +911,11 @@ enum SampleData {
         Exercise(name: "Overhead Cable Triceps Extension", category: .arms,
                  primaryMuscle: "TRICEPS BRACHII", equipment: "CABLE",
                  difficulty: .intermediate),
+        // SSD "1-500/1-100" folder (2026-10-17): 055B, new; model only for
+        // now (no trainer content yet).
+        Exercise(name: "Bent-Over Cable Overhead Triceps Extension", category: .arms,
+                 primaryMuscle: "TRICEPS BRACHII", equipment: "CABLE",
+                 difficulty: .intermediate),
         Exercise(name: "Dumbbell Overhead Triceps Extension", category: .arms,
                  primaryMuscle: "TRICEPS BRACHII", equipment: "DUMBBELL",
                  difficulty: .beginner),
@@ -1309,6 +1314,12 @@ enum SampleData {
         Exercise(name: "Cable Wood Chop", category: .core,
                  primaryMuscle: "OBLIQUES", equipment: "CABLE",
                  difficulty: .intermediate),
+        // SSD "1-500/1-100" folder (2026-10-17): 100, new; model only for now
+        // (no trainer content yet). The model lights the obliques and the
+        // rectus abdominis.
+        Exercise(name: "Pallof Press", category: .core,
+                 primaryMuscle: "OBLIQUES", equipment: "CABLE",
+                 difficulty: .beginner),
         // From the drive's "401-500" folder, 445-474 (2026-10-05).
         Exercise(name: "Cable Side Bend", category: .core,
                  primaryMuscle: "OBLIQUES", equipment: "CABLE",
@@ -1907,7 +1918,7 @@ enum SampleData {
         "Hack Squat":            ExerciseModel(resource: "HackSquat",
                                         framing: ModelFraming(yaw: -0.6, zoom: 1.013, offset: [0.015, 0.112, -0.010])),
         "Leg Extension":         ExerciseModel(resource: "LegExtension",
-                                        framing: ModelFraming(yaw: -0.5, zoom: 0.972, offset: [0.043, 0.076, -0.023])),
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.911, offset: [0.043, 0.076, -0.023])),
         "Smith Machine Squat":   ExerciseModel(resource: "SmithMachineSquat",
                                         framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0])),
         "Sissy Squat":           ExerciseModel(resource: "SissySquat",
@@ -2004,6 +2015,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.6, zoom: 0.88, offset: [0.016, 0.025, -0.011])),
         "Overhead Cable Triceps Extension":    ExerciseModel(resource: "OverheadCableTricepsExtension",
                                         framing: ModelFraming(yaw: -0.6, zoom: 0.802, offset: [-0.027, -0.05, 0.018])),
+        // SSD "1-500/1-100" folder (2026-10-17), new: solved at the Overhead
+        // Cable Triceps Extension's yaw.
+        "Bent-Over Cable Overhead Triceps Extension": ExerciseModel(resource: "BentOverCableOverheadTricepsExtension",
+                                        framing: ModelFraming(yaw: -0.6, zoom: 0.798, offset: [0.114, 0.104, -0.078])),
         "Dumbbell Overhead Triceps Extension": ExerciseModel(resource: "DumbbellOverheadTricepsExtension",
                                         framing: ModelFraming(yaw: -0.6, zoom: 0.766, offset: [-0.016, -0.039, 0.011])),
         "Skull Crusher":                       ExerciseModel(resource: "SkullCrusher",
@@ -2140,7 +2155,7 @@ enum SampleData {
         "Decline Crunch":                      ExerciseModel(resource: "DeclineCrunch",
                                         framing: ModelFraming(yaw: -1.35, zoom: 0.682, offset: [-0.018, 0.132, 0.081])),
         "Cable Crunch":                        ExerciseModel(resource: "CableCrunch",
-                                        framing: ModelFraming(yaw: -1.35, zoom: 0.874, offset: [-0.015, 0.124, 0.066])),
+                                        framing: ModelFraming(yaw: -1.35, zoom: 0.874, offset: [0.028, 0.073, -0.125])),
         "Hanging Knee Raise":                  ExerciseModel(resource: "HangingKneeRaise",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.674, offset: [-0.002, -0.075, 0.006])),
         "Hanging Leg Raise":                   ExerciseModel(resource: "HangingLegRaise",
@@ -2155,6 +2170,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.5, zoom: 0.512, offset: [0.006, 0.142, -0.003])),
         "Cable Wood Chop":                     ExerciseModel(resource: "CableWoodChop",
                                         framing: ModelFraming(yaw: -0.3, zoom: 0.899, offset: [0.011, 0.033, -0.003])),
+        // SSD "1-500/1-100" folder (2026-10-17), new: solved at the Cable Wood
+        // Chop's yaw.
+        "Pallof Press":                        ExerciseModel(resource: "PallofPress",
+                                        framing: ModelFraming(yaw: -0.3, zoom: 0.862, offset: [0.01, 0.041, -0.003])),
         // Chest batch 101-131 (2026-09-25), solved at the trainer's real aspect
         // (382×655). Bench, floor and pullover lifts are seen three-quarter from
         // the lifter's left like `.bench` (pullovers a little more side-on so the
@@ -3026,6 +3045,31 @@ enum SampleData {
                 MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.74),
                 MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.56)
                            ]),
+        ],
+        // SSD "1-500/1-100" folder (2026-10-17): the owner's foot placements
+        // for the Belt Squat (13 high/low/narrow/wide), the 45-Degree Leg Press
+        // (18 high/low; narrow and wide are the Narrow- and Wide-Stance Leg
+        // Press models, which stay exercises of their own) and the Smith
+        // Machine Squat (068 narrow/wide). Models only for now: no notes, and
+        // each stance keeps the exercise's muscle list.
+        "Belt Squat": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "BeltSquat", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
+            ExerciseStance(label: "High", model: ExerciseModel(resource: "BeltSquatHigh", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
+            ExerciseStance(label: "Low", model: ExerciseModel(resource: "BeltSquatLow", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "BeltSquatWide", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "BeltSquatNarrow", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
+        ],
+        "45-Degree Leg Press": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "LegPress45", framing: ModelFraming(yaw: -2.0, zoom: 0.681, offset: [0.049, 0.122, 0.108]))),
+            ExerciseStance(label: "High", model: ExerciseModel(resource: "LegPress45High", framing: ModelFraming(yaw: -2.0, zoom: 0.681, offset: [0.049, 0.122, 0.108]))),
+            ExerciseStance(label: "Low", model: ExerciseModel(resource: "LegPress45Low", framing: ModelFraming(yaw: -2.0, zoom: 0.656, offset: [0.049, 0.122, 0.108]))),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "WideStanceLegPress", framing: ModelFraming(yaw: -2.0, zoom: 0.656, offset: [0.043, 0.119, 0.094]))),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "NarrowStanceLegPress", framing: ModelFraming(yaw: -2.0, zoom: 0.704, offset: [0.055, 0.127, 0.121]))),
+        ],
+        "Smith Machine Squat": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "SmithMachineSquat", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "SmithMachineSquatWide", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "SmithMachineSquatNarrow", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
         ],
     ]
 

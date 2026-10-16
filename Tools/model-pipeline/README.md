@@ -649,3 +649,33 @@ one-sided lift: single-arm rows, curls and presses, split squats, step-ups,
 single-leg hinges and curls, kickbacks, abductions, side planks and bends),
 each differing from before only in those diffuse values (`equiv.py`). Their
 57 library tiles were re-shot. Run it after `convert_all.py` on every batch.
+
+SSD "1-500/1-100" folder (2026-10-17): the owner re-saved all 99 exports
+on 2026-10-14..16. They went in as plain swaps, to be re-tuned again
+later; trainer content (cues, muscle rows, labels), fault ghosts and
+library tiles were left as they were (owner's call). Copied to
+`SourceExports/1-100-1017/` without the emoji and spaces in their names
+(`_names.tsv` maps them back); the older non-🟢 `068_smith_machine_squat_narrow`
+duplicate was left out. Against the app models (`drive_diff.py`, joints
+both rigs have): 14 unchanged, 22 paint only, 14 equipment only, 38 with
+new motion (5-70 cm), and 097 (the female ab wheel). 081 is still the leaning
+abduction variant; 18 narrow/wide replace the Narrow-/Wide-Stance Leg Press
+models. New: the Belt Squat (13 high/low/narrow/wide), 45-Degree Leg Press
+(18 high/low) and Smith Machine Squat (068 narrow/wide) stances, joined to
+their exercises as stance pickers with the base framing (Low leg press
+zoomed out 4%), and two exercises with a model only: 055B Bent-Over Cable
+Overhead Triceps Extension and 100 Pallof Press (framings from
+`solve_pick.py`). The drive's `Single 🟢-Leg_Glute_Bridge` now differs from
+079 (11 cm) and was left out; 079 still feeds the Single-Leg Glute Bridge.
+The exports carry a bigger rig (219-225 joints with toe/`FF_` foot joints),
+so their skin joint indices no longer match `Shared/AnatomyBody.usdc` and a
+slim kept ~3 MB of body per model. `Shared/AnatomyBodyV2.usdc` (built with
+`share_body.py body` from the new Back Squat) brings them back to 0.1-2.1
+MB, attribute for attribute (the Assisted Dip stays ~20 MB, as before); `slim_one.sh` takes `BODY=` for it. Older
+models keep `AnatomyBody.usdc`. 097 was retextured and slimmed against
+`AnatomyBodyFemale.usdc` (3.3 MB; the female rig changed too). Framings were
+kept: `solve_pick.py` at each current yaw, old vs new clip, moved by the
+toe joints' ~5% (zoom) and ~3 cm (offset) everywhere; more only on the Leg
+Extension (zoom 0.972 -> 0.911), the Cable Crunch (the lifter kneels 20 cm
+from the old spot; offset shifted by that). The Russian Twist (8 cm by the
+solver) kept its framing: on a still the old one was still centred.
