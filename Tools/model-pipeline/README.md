@@ -679,3 +679,24 @@ toe joints' ~5% (zoom) and ~3 cm (offset) everywhere; more only on the Leg
 Extension (zoom 0.972 -> 0.911), the Cable Crunch (the lifter kneels 20 cm
 from the old spot; offset shifted by that). The Russian Twist (8 cm by the
 solver) kept its framing: on a still the old one was still centred.
+
+X-ray scapula demo (2026-10-17): `Chest/XRayScapulaBenchSetup.usdc`, opened from
+the "Retract scapula" cue of the bench-type presses (`XRayDemos.swift`,
+`XRayDemoView.swift`, `XRayViewport.swift`). Built in Blender on a copy of the
+male master: sit on the end of a flat bench, squeeze the shoulder blades back
+and down, release, lie back (the chest_series 01 lying pose), lock them and
+arch, press three empty-handed reps, sit up — 384 frames at 24 fps, looping.
+The muscles are see-through and the master's own bone meshes (SKELETON
+collection, skinned to the rig) are drawn: scapulae, clavicles, humeri, rib
+cage, sternum and spine. Source, notes and QA live on the SSD in
+`BLENDER/_co_mo_xuong_ba_vai_20261017/` (README_VI.md). Steps:
+`xray/export_usd_xray.py` (in Blender, on the demo .blend: freezes the
+driver-based see-through materials to constants, shows the bones, exports USD;
+Blender 5.1 always writes `opacity = 1`, so it also writes a material ->
+colour/alpha JSON), then `xray/usd_for_app.py raw.usdc materials.json out.usdc`
+(convert_all's wrapper — Y-up, lights, cameras and the animated helper empties
+off — then the opacities written into the UsdPreviewSurfaces), then
+`pad_one.sh`. It is **not** slimmed: its materials and bone meshes differ
+from the shared body, so it carries the whole body (25 MB). The app hides the
+rib cage and sternum while the camera is overhead, where they would cover the
+shoulder blades.

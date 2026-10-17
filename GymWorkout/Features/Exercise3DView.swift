@@ -66,6 +66,8 @@ struct Exercise3DView: View {
     /// same target be asked for twice in a row.
     @State private var inspectorTarget: String?
     @State private var inspectorRequests = 0
+    /// The x-ray demo a cue opened, full screen.
+    @State private var xray: XRayDemo?
 
     private enum SheetKind { case muscles, cue }
     private enum InspectorTab: Hashable { case cues, setup, muscles }
@@ -111,6 +113,12 @@ struct Exercise3DView: View {
     /// The selected cue's mistake as limbs to draw, when one is authored.
     private var fault: FaultPose? { FaultPoses.fault(exercise: exercise.name, cue: cueID) }
 
+    /// Opens the selected cue's x-ray demo, when it has one.
+    private var showXRay: (() -> Void)? {
+        guard let demo = XRayDemos.demo(for: exercise, cue: cueID) else { return nil }
+        return { xray = demo }
+    }
+
     var body: some View {
         Group {
             if layout.isRegular {
@@ -120,6 +128,9 @@ struct Exercise3DView: View {
             }
         }
         .animation(.easeOut(duration: 0.22), value: toast)
+        .fullScreenCover(item: $xray) { demo in
+            XRayDemoView(demo: demo, exerciseName: exercise.name)
+        }
         .toolbar(.hidden, for: .navigationBar)
         .navigationBarBackButtonHidden()
         .onAppear {
@@ -587,6 +598,7 @@ struct Exercise3DView: View {
                     number: content.cueNumber(cueID),
                     mode: cueMode,
                     mistakeLocked: !purchases.isPremium,
+                    onShowXRay: showXRay,
                     onSelectMode: selectMode,
                     onDone: closeSheet
                 )
@@ -967,6 +979,7 @@ struct Exercise3DView: View {
                     mistakeLocked: !purchases.isPremium,
                     showsMistake: showingMistake,
                     drawsGhost: fault != nil,
+                    onShowXRay: showXRay,
                     onSelectMode: selectMode,
                     onClose: closeSheet
                 )

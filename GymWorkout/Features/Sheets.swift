@@ -226,6 +226,8 @@ struct CueSheet: View {
     /// The mistake view is Premium's: the button wears a lock, and selecting
     /// it is the caller's cue to open the paywall.
     var mistakeLocked: Bool = false
+    /// Opens the cue's x-ray demo; nil when the cue has none.
+    var onShowXRay: (() -> Void)? = nil
     var onSelectMode: (FormMode) -> Void
     var onDone: () -> Void
 
@@ -233,6 +235,7 @@ struct CueSheet: View {
         SheetScaffold {
             CueDetailContent(cue: cue, number: number, mode: mode,
                              mistakeLocked: mistakeLocked,
+                             onShowXRay: onShowXRay,
                              onSelectMode: onSelectMode, onClose: onDone)
         }
     }
@@ -256,6 +259,8 @@ struct CueDetailContent: View {
     var showsMistake: Bool = false
     /// Whether that mistake has a yellow ghost over the model to key.
     var drawsGhost: Bool = false
+    /// Opens the cue's x-ray demo (`XRayDemos`); nil draws no button.
+    var onShowXRay: (() -> Void)? = nil
     var onSelectMode: (FormMode) -> Void
     /// The sheet's Done, or the card's collapse; nil draws neither.
     var onClose: (() -> Void)? = nil
@@ -321,6 +326,11 @@ struct CueDetailContent: View {
                 }
             }
             .padding(.top, 22)
+
+            if let onShowXRay {
+                XRayButton(action: onShowXRay)
+                    .padding(.top, 9)
+            }
         }
     }
 
@@ -405,6 +415,11 @@ struct CueDetailContent: View {
 
             FormModeToggle(mode: mode, mistakeLocked: mistakeLocked, onSelect: onSelectMode)
                 .padding(.top, 20)
+
+            if let onShowXRay, !showsMistake {
+                XRayButton(action: onShowXRay)
+                    .padding(.top, 10)
+            }
         }
     }
 
@@ -424,6 +439,39 @@ struct CueDetailContent: View {
                 .padding(.top, 7)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+/// Opens a cue's x-ray demo: the glass `WideButton`, with a see-through cube
+/// ahead of its title.
+private struct XRayButton: View {
+    var action: () -> Void
+
+    @Environment(\.dsLayout) private var layout
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 7) {
+                Image(systemName: "cube.transparent")
+                    .font(.system(size: layout.isRegular ? 14 : 13, weight: .semibold))
+                Text("See It in 3D X-Ray")
+                    .font(.ui(layout.isRegular ? 15 : 13.5, .semibold))
+            }
+            .foregroundStyle(DS.silver)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, layout.isRegular ? 15 : 13)
+            .background(
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .fill(DS.silver.opacity(0.07))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .strokeBorder(DS.silver.opacity(0.10), lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .dsHover(.highlight, radius: 13)
+        .accessibilityHint("Shows the bones under see-through muscle, from any angle and in slow motion")
     }
 }
 
