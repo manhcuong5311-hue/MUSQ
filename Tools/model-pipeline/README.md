@@ -680,6 +680,48 @@ Extension (zoom 0.972 -> 0.911), the Cable Crunch (the lifter kneels 20 cm
 from the old spot; offset shifted by that). The Russian Twist (8 cm by the
 solver) kept its framing: on a still the old one was still centred.
 
+Desktop "101-200" folder (2026-10-17): `~/Desktop/101-200` holds
+95 exports (101-190, re-saved by the owner that day; no 159 or 165, 158 only
+as the Smith high bar). The chest half, 101-140, went in first as plain swaps
+like the SSD 1-100 round (cues, muscle rows, fault ghosts and library tiles
+left for later): 46 files cloned (`cp -c`) to `SourceExports/101-200-1017/`
+(103's name had a space; `_names.tsv`), converted, `one_side_tiers.py`
+(106, 114, 118, 128 changed), padded and slimmed against
+`AnatomyBodyV2.usdc` (all attribute for attribute, 0.9-5.3 MB, 85 MB). All
+intact: one 224-228-joint skeleton, one animation over 1-192, no cameras.
+Against the app models (`drive_diff.py`; the nine older models without toe
+joints, 101, 102, 121, 128, 133-135, 137 and 140, were diffed without them):
+paint changed on every one (mostly the secondary pectoral heads bright to
+dim); 127, 128, 131 and 132 kept their motion; most others moved 3-9 cm;
+more on 113/114/117/118 (head 25 cm, the M29), 121 (34 cm, a new cable
+station), 129/130 (the AC32 dip station, the lifter 12 cm higher), 105/116
+(the new decline bench) and 140 (a GYM bench, hands 42 cm). Six variants
+are new stances (models only, the exercise's muscle list):
+`InclineCablePressStraightUp`, `DeclineCablePressStraightUp`,
+`HighToLowCableFlyToThighs` (hands down to the thighs),
+`PlateLoadedChestPressHighHandles`, `ChestDipStraightLegs` and
+`WeightedChestDipStraightLegs` (straight legs on a rack's dip handles).
+Framings: solve at each current yaw, old vs new clip, then viewport stills
+(new 40 at 0/2 s, old vs new for the eight largest changes). All kept except
+the dips (body solve: offset y -0.17 -> -0.218 and -0.179 -> -0.225) and the
+Decline Cable Press (hands ran off the right edge: zoom 0.692 -> 0.633). The
+variants keep their base framing except the Decline Cable Press (solver's
+own), the Plate-Loaded high handles (zoom 0.88, the head touched the top)
+and the straight-leg dips (body solve).
+The back half, 141-190 (49 files, the last saved at 22:27; nothing newer by
+23:10), went in the same way the same evening, all 49 replacing their models
+(173 with its side-lean stance, 158 the Smith high bar; the low bar is not in
+the folder): `one_side_tiers.py` changed 151, 153, 156, 173 (both), 180, 182
+and 187; slimmed 0.8-6.9 MB (93 MB). Against the app models: 143-146 and
+187 kept their motion and changed paint (the quadriceps bright on 143-145,
+the forearms unlit); the rows and pulldowns moved 1-7 cm on the
+new rig; more on 141/142 (head 17-20 cm), 151-153 (the landmine rows, a
+new pivot on 151), 155 (hands 47 cm), the five pull-ups and chin-ups
+161-167 (legs hang straighter, feet 26-49 cm; new chains on the weighted
+ones) and 176 (hands 63 cm on the Panatta pulldown). Every framing was kept:
+old/new stills at 0/2 s for the fifteen largest changes matched (the
+solver's 20% on the pull-ups was the old clip's bent legs).
+
 X-ray scapula demo (2026-10-17): `Chest/XRayScapulaBenchSetup.usdc`, opened from
 the "Retract scapula" cue of the bench-type presses (`XRayDemos.swift`,
 `XRayDemoView.swift`, `XRayViewport.swift`). Built in Blender on a copy of the

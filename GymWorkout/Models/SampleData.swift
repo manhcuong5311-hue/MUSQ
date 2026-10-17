@@ -2222,8 +2222,10 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.7, zoom: 0.896, offset: [-0.017, 0.036, 0.015])),
         "Incline Cable Press":                 ExerciseModel(resource: "InclineCablePress",
                                         framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013])),
+        // Zoomed out with the Desktop "101-200" re-export (2026-10-17): on the
+        // new decline bench the hands and handles ran off the right edge.
         "Decline Cable Press":                 ExerciseModel(resource: "DeclineCablePress",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.692, offset: [0.003, 0.154, -0.004])),
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.633, offset: [0.003, -0.052, -0.004])),
         "High-to-Low Cable Fly":               ExerciseModel(resource: "HighToLowCableFly",
                                         framing: ModelFraming(yaw: 0, zoom: 0.629, offset: [0.000, 0.025, 0.000])),
         "Single-Arm Cable Fly":                ExerciseModel(resource: "SingleArmCableFly",
@@ -2690,10 +2692,13 @@ enum SampleData {
         // ASPECT=0.5832) and checked on viewport stills.
         "Landmine Chest Press":               ExerciseModel(resource: "LandmineChestPress",
                                         framing: ModelFraming(yaw: -0.8, zoom: 0.807, offset: [0.054, 0.036, -0.056])),
+        // The dips moved onto the AC32 dip station with the Desktop "101-200"
+        // re-export (2026-10-17), the lifter about 12 cm higher: the offsets
+        // follow the body solve so the lifter stays clear of the top edge.
         "Chest Dip":                          ExerciseModel(resource: "ChestDip",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.17, 0.05])),
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.218, 0.05])),
         "Weighted Chest Dip":                 ExerciseModel(resource: "WeightedChestDip",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.179, 0.049])),
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.225, 0.049])),
         "Decline Push-Up":                    ExerciseModel(resource: "DeclinePushUp",
                                         framing: ModelFraming(yaw: -1.2, zoom: 0.521, offset: [-0.025, 0.166, 0.063])),
         "Plyometric Push-Up":                 ExerciseModel(resource: "PlyometricPushUp",
@@ -3070,6 +3075,38 @@ enum SampleData {
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "SmithMachineSquat", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
             ExerciseStance(label: "Wide", model: ExerciseModel(resource: "SmithMachineSquatWide", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
             ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "SmithMachineSquatNarrow", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
+        ],
+        // Desktop "101-200" folder (2026-10-17): the owner's variants of six
+        // chest lifts. The incline and decline cable presses drive the
+        // handles straight up over the chest, the high-to-low fly finishes
+        // with the hands down in front of the thighs, the plate-loaded press
+        // takes the upper handles, and both dips hang with straight legs on
+        // a rack's dip handles. Models only for now: no notes, and each
+        // stance keeps the exercise's muscle list. Variant framings were
+        // picked on viewport stills.
+        "Incline Cable Press": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "InclineCablePress", framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013]))),
+            ExerciseStance(label: "Straight Up", model: ExerciseModel(resource: "InclineCablePressStraightUp", framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013]))),
+        ],
+        "Decline Cable Press": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "DeclineCablePress", framing: ModelFraming(yaw: -1.0, zoom: 0.633, offset: [0.003, -0.052, -0.004]))),
+            ExerciseStance(label: "Straight Up", model: ExerciseModel(resource: "DeclineCablePressStraightUp", framing: ModelFraming(yaw: -1.0, zoom: 0.674, offset: [-0.058, -0.049, 0.090]))),
+        ],
+        "High-to-Low Cable Fly": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "HighToLowCableFly", framing: ModelFraming(yaw: 0, zoom: 0.629, offset: [0.000, 0.025, 0.000]))),
+            ExerciseStance(label: "To Thighs", model: ExerciseModel(resource: "HighToLowCableFlyToThighs", framing: ModelFraming(yaw: 0, zoom: 0.629, offset: [0.000, 0.025, 0.000]))),
+        ],
+        "Plate-Loaded Chest Press": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "PlateLoadedChestPress", framing: ModelFraming(yaw: -0.7, zoom: 0.950, offset: [0.041, 0.107, -0.035]))),
+            ExerciseStance(label: "High Handles", model: ExerciseModel(resource: "PlateLoadedChestPressHighHandles", framing: ModelFraming(yaw: -0.7, zoom: 0.880, offset: [0.040, 0.050, -0.034]))),
+        ],
+        "Chest Dip": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "ChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.218, 0.05]))),
+            ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "ChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.032, 0.05]))),
+        ],
+        "Weighted Chest Dip": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "WeightedChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.225, 0.049]))),
+            ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "WeightedChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.035, 0.049]))),
         ],
     ]
 
