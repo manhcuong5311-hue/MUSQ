@@ -722,6 +722,50 @@ ones) and 176 (hands 63 cm on the Panatta pulldown). Every framing was kept:
 old/new stills at 0/2 s for the fifteen largest changes matched (the
 solver's 20% on the pull-ups was the old clip's bent legs).
 
+Desktop "From 191" folder (2026-10-18): `~/Desktop/From 191` holds 90
+exports (191-280, re-saved by the owner on 2026-10-18 00:54-14:06; no 238
+Spider Curl). All went in as plain swaps like the 101-200 round (cues, muscle
+rows, fault ghosts and library tiles left for later): cloned (`cp -c`) to
+`SourceExports/191-280-1018/`, converted, `one_side_tiers.py` (15 changed:
+the one-arm presses, raises, rotations and curls, the landmine presses and
+the Suitcase Carry), `inplace.py` for the three carries (they walk 2.74 m
+again), padded and slimmed against `AnatomyBodyV2.usdc` (all attribute for
+attribute, 0.6-3.4 MB, 118 MB). All intact: one 223/227-joint skeleton, one
+animation over 1-192 (1-1056 for the two 21s), no cameras. 225's export
+still carries the three stray left-cable pieces on the floor, so `OFF`
+switches them off for this folder too. Against the app models
+(`drive_diff.py`; 194 without the toe joints): 44 kept their motion (under
+1 cm), 20 moved 1-5 cm, 14 moved 5-15 cm, and nine more: 194 (hands 22 cm),
+204 (35 cm), 205 (30 cm, the landmine bar moved), 221 (a new machine,
+`RM_CTRL_RowMG3000`, the lifter 17 cm higher), 222 (39 cm, the cable
+station moved), 245 (head 22 cm) and the three carries (walking). Equipment
+moved on most (dumbbells and bars 2-12 cm, cable stations up to 65 cm); 280
+has new towels. Paint changed on 23 (on the converted models): the front
+delt down to dim, only the side delt bright, on eight overhead presses (191,
+192, 194-196, 198, 202, 203; on 2026-10-11 this pattern was a slip, but
+this time the owner confirmed it is intended, as is every other paint change
+here); the side delt down to dim
+on the landmine presses; the front delt unlit on the lateral raises; the
+trapezius and rhomboids down to dim on 210 and 220; the triceps bright on
+204; the rotator cuff bright on 222; the forearms unlit on 230, 232 and the
+Farmer's and Suitcase Carries; the upper back unlit on 280. New: 215B
+(`Shoulder/CableFrontRaiseRope`) joins the Cable Front Raise as a "Rope"
+stance, and 259 Lying Cable Curl (`Biceps/LyingCableCurl`, on a floor mat)
+and 261 Cable Reverse Curl (`Biceps/CableReverseCurl`) are new exercises
+with a model only. Framings: solve at each current yaw, old vs new clip, then
+viewport stills (all 87 at 2 s; 0-5 s for the six largest changes). Every
+framing was kept. The solver's 40-56% on the carries was spurious: the new
+rig's `FF_` foot pivots sit under `CTRL_foot_ik_*`, keep walking after
+`inplace.py` (it holds only the pelvis), and `framer.py` filters joints by
+their own name, not their parents', so it counted them; without joints under
+`CTRL`/`MCH` the carries solve within 3 cm of their framings. The Machine Rear
+Delt Row's new machine seats the lifter 17 cm higher (the body solve wants
+zoom 0.828), but on stills the head stays clear of the top. The new ones were
+solved at the related exercises' yaws and picked on stills: the rope stance
+at the Cable Front Raise's -0.55, the Lying Cable Curl side-on at -1.3 like
+the floor lifts (at -1.0 the stack covered the feet), the Cable Reverse Curl
+at -1.4 like the Cable Curl.
+
 X-ray scapula demo (2026-10-17): `Chest/XRayScapulaBenchSetup.usdc`, opened from
 the "Retract scapula" cue of the bench-type presses (`XRayDemos.swift`,
 `XRayDemoView.swift`, `XRayViewport.swift`). Built in Blender on a copy of the

@@ -849,6 +849,14 @@ enum SampleData {
         Exercise(name: "Cable Drag Curl", category: .arms,
                  primaryMuscle: "BICEPS BRACHII", equipment: "CABLE",
                  difficulty: .intermediate),
+        // Desktop "From 191" folder (2026-10-18): 259 and 261, new; models
+        // only for now (no trainer content yet).
+        Exercise(name: "Lying Cable Curl", category: .arms,
+                 primaryMuscle: "BICEPS BRACHII", equipment: "CABLE",
+                 difficulty: .intermediate),
+        Exercise(name: "Cable Reverse Curl", category: .arms,
+                 primaryMuscle: "BRACHIORADIALIS", equipment: "CABLE",
+                 difficulty: .beginner),
         Exercise(name: "Reverse Preacher Curl", category: .arms,
                  primaryMuscle: "BRACHIORADIALIS", equipment: "EZ BAR",
                  difficulty: .intermediate),
@@ -2551,6 +2559,12 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.3, zoom: 0.891, offset: [-0.012, 0.038, 0.004])),
         "Cable Drag Curl":                    ExerciseModel(resource: "CableDragCurl",
                                         framing: ModelFraming(yaw: 1.1, zoom: 0.874, offset: [0.023, 0.039, 0.046])),
+        // Desktop "From 191" folder (2026-10-18), new: solved, yaws picked on
+        // viewport stills.
+        "Lying Cable Curl":                   ExerciseModel(resource: "LyingCableCurl",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.613, offset: [-0.035, 0.23, 0.127])),
+        "Cable Reverse Curl":                 ExerciseModel(resource: "CableReverseCurl",
+                                        framing: ModelFraming(yaw: -1.4, zoom: 0.866, offset: [0.0, 0.042, 0.0])),
         "Reverse Preacher Curl":              ExerciseModel(resource: "ReversePreacherCurl",
                                         framing: ModelFraming(yaw: -0.8, zoom: 1.0, offset: [-0.02, 0.123, 0.02])),
         "Barbell Preacher Curl":              ExerciseModel(resource: "BarbellPreacherCurl",
@@ -3107,6 +3121,14 @@ enum SampleData {
         "Weighted Chest Dip": [
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "WeightedChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.225, 0.049]))),
             ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "WeightedChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.035, 0.049]))),
+        ],
+        // Desktop "From 191" folder (2026-10-18): 215B raises a rope instead
+        // of the straight bar. Model only for now: no notes, and the stance
+        // keeps the exercise's muscle list; framed by the solver at the
+        // exercise's yaw.
+        "Cable Front Raise": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "CableFrontRaise", framing: ModelFraming(yaw: -0.55, zoom: 0.882, offset: [0.064, 0.040, -0.039]))),
+            ExerciseStance(label: "Rope", model: ExerciseModel(resource: "CableFrontRaiseRope", framing: ModelFraming(yaw: -0.55, zoom: 0.872, offset: [0.043, 0.045, -0.026]))),
         ],
     ]
 
