@@ -766,6 +766,35 @@ at the Cable Front Raise's -0.55, the Lying Cable Curl side-on at -1.3 like
 the floor lifts (at -1.0 the stack covered the feet), the Cable Reverse Curl
 at -1.4 like the Cable Curl.
 
+Desktop "Women exsercise" folder (2026-10-18): eight female-model exports
+saved 2026-10-12/13. Cable Step Downs was already in the app (the Cable
+Knee-Drive Kickback, converted three minutes after this export; same motion,
+the paint and M29 differences are `one_side_tiers.py` and the cable tubes).
+The other seven are new, each from a .blend in `~/Desktop/Model and Female
+Exsercise/Blender Model WOmen/` saved just before its export: the vertical
+hack squat in five stances (`Vertical Hack Squat/`, not marked 🟢; a
+different machine, `VHS_*`, from the app's female Hack Squat, and 192
+frames) and two 🟢 glute kickbacks, the Standing Hinge Kickback (90°, left
+leg, the step-down's M29 and ankle cuff) and the Incline Bench Cable Kickback
+(kneeling on the BRTW DZ83 bench, right leg). Cloned to
+`SourceExports/women-1018/` with plain names, converted (each export's studio
+floor off: `VHS_StudioFloor`, `CSD_Floor`, `IBK_Floor`), `retex.py`,
+`one_side_tiers.py` (the resting leg on both kickbacks), padded, the garments
+given their rest shapes (`bake_rest.py` headless on each .blend, then
+`merge_rest.py`) and slimmed against `AnatomyBodyFemale.usdc` (1.2 MB for the
+stances, 2.2 and 3.3 MB for the kickbacks, attribute for attribute; against
+`AnatomyBodyFemaleHack.usdc` they stayed 62-65 MB). Paint: the stances light
+the quads and glutes (standard), the glutes (high), the quads (low), the
+inner quad (wide) and the outer quad (narrow), like the Hack Squat set; the
+kickbacks light the working side's glutes and hamstrings. New exercises with
+a model only: Vertical Hack Squat (its five stances in `stancesByExercise`,
+shown in the trainer once it has content), Standing Hinge Kickback, Incline
+Bench Cable Kickback. Framings picked on stills (the female body takes ~10 s
+to load on the simulator, so shoot with `WAIT=11`): the vertical hack squat
+from the front-left three-quarter (-1.0; the lifter faces +x), so the stance
+width reads; the hinge kickback at -1.0 like the step-down; the bench
+kickback side-on at -1.3.
+
 X-ray scapula demo (2026-10-17): `Chest/XRayScapulaBenchSetup.usdc`, opened from
 the "Retract scapula" cue of the bench-type presses (`XRayDemos.swift`,
 `XRayDemoView.swift`, `XRayViewport.swift`). Built in Blender on a copy of the

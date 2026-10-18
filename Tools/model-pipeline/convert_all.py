@@ -1108,6 +1108,18 @@ JOBS = {
     "191-280-1018/215B_cable_rope_front_raise": "Shoulder/CableFrontRaiseRope",
     "191-280-1018/259_lying_cable_curl": "Biceps/LyingCableCurl",
     "191-280-1018/261_cable_reverse_curl": "Biceps/CableReverseCurl",
+    # Desktop "Women exsercise" folder (2026-10-18): the female model's
+    # vertical hack squat in five stances (exported 2026-10-12 from
+    # `Blender Model WOmen/Vertical Hack Squat`) and two glute kickbacks
+    # (🟢 folders). The garments' rest shapes come from bake_rest.py on each
+    # .blend (merge_rest.py after converting).
+    "women-1018/vhs_01_standard_stance": "Legs/FemaleVerticalHackSquatStandard",
+    "women-1018/vhs_02_high_foot_position": "Legs/FemaleVerticalHackSquatHigh",
+    "women-1018/vhs_03_low_foot_position": "Legs/FemaleVerticalHackSquatLow",
+    "women-1018/vhs_04_wide_stance": "Legs/FemaleVerticalHackSquatWide",
+    "women-1018/vhs_05_narrow_stance": "Legs/FemaleVerticalHackSquatNarrow",
+    "women-1018/standing_hinge_kickback_90": "Legs/StandingHingeKickback",
+    "women-1018/incline_bench_cable_kickback": "Legs/InclineBenchCableKickback",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs
@@ -1127,6 +1139,10 @@ OFF = {
     "female-1010/097_ab_wheel_rollout": ["Female_Studio_Floor"],
     "female-1010/cable_step_downs": ["CSD_Floor"],
     "1-100-1017/097_Ab_Wheel_Rollout": ["Female_Studio_Floor"],
+    **{f"women-1018/vhs_{s}": ["VHS_StudioFloor"] for s in
+       ("01_standard_stance", "02_high_foot_position", "03_low_foot_position", "04_wide_stance", "05_narrow_stance")},
+    "women-1018/standing_hinge_kickback_90": ["CSD_Floor"],
+    "women-1018/incline_bench_cable_kickback": ["IBK_Floor"],
 }
 
 ONLY = sys.argv[1:]

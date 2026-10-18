@@ -297,6 +297,18 @@ enum SampleData {
         Exercise(name: "Cable Knee-Drive Kickback", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
                  difficulty: .intermediate),
+        // Desktop "Women exsercise" folder (2026-10-18): the female model's
+        // vertical hack squat in five stances and two glute kickbacks; models
+        // only for now (no trainer content yet).
+        Exercise(name: "Vertical Hack Squat", category: .legs,
+                 primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
+                 difficulty: .intermediate),
+        Exercise(name: "Standing Hinge Kickback", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
+                 difficulty: .intermediate),
+        Exercise(name: "Incline Bench Cable Kickback", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
+                 difficulty: .beginner),
         // The Desktop "100-200" folder's new exercise (2026-10-11): 237, a seated
         // one-arm curl, the elbow braced against the inner thigh.
         Exercise(name: "Concentration Curl", category: .arms,
@@ -2672,6 +2684,14 @@ enum SampleData {
                                         framing: ModelFraming(yaw: 0, zoom: 0.75, offset: [-0.008, -0.122, 0])),
         "Cable Knee-Drive Kickback":                    ExerciseModel(resource: "CableStepDown",
                                         framing: ModelFraming(yaw: -1.0, zoom: 0.773, offset: [-0.046, 0.012, 0.072])),
+        // Desktop "Women exsercise" folder (2026-10-18), new: solved, yaws
+        // picked on viewport stills.
+        "Vertical Hack Squat":                ExerciseModel(resource: "FemaleVerticalHackSquatStandard",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103])),
+        "Standing Hinge Kickback":            ExerciseModel(resource: "StandingHingeKickback",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.556, offset: [-0.042, 0.049, 0.066])),
+        "Incline Bench Cable Kickback":       ExerciseModel(resource: "InclineBenchCableKickback",
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.518, offset: [-0.023, 0.044, 0.081])),
         "Standing Calf Raise":                ExerciseModel(resource: "StandingCalfRaise",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.76, offset: [-0.003, -0.038, 0.01])),
         "Seated Calf Raise":                  ExerciseModel(resource: "SeatedCalfRaise",
@@ -2965,6 +2985,16 @@ enum SampleData {
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.89),
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.44)
                            ]),
+        ],
+        // Desktop "Women exsercise" folder (2026-10-18): the female model's
+        // vertical hack squat stances. Models only for now: no notes, and
+        // each stance keeps the exercise's muscle list.
+        "Vertical Hack Squat": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "FemaleVerticalHackSquatStandard", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
+            ExerciseStance(label: "High", model: ExerciseModel(resource: "FemaleVerticalHackSquatHigh", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
+            ExerciseStance(label: "Low", model: ExerciseModel(resource: "FemaleVerticalHackSquatLow", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "FemaleVerticalHackSquatWide", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "FemaleVerticalHackSquatNarrow", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
         ],
         "Pendulum Squat (Stances)": [
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "FemalePendulumSquatStandard", framing: ModelFraming(yaw: 0, zoom: 0.75, offset: [-0.008, -0.122, 0])),
