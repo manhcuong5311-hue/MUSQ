@@ -24,6 +24,7 @@ struct TrainerUnavailableView: View {
     var exercise: Exercise
 
     @Environment(\.dsLayout) private var layout
+    @Environment(\.colorScheme) private var colorScheme
     /// The iPad viewport pane, for the stage its ground is measured on.
     @State private var paneSize: CGSize = .zero
 
@@ -67,8 +68,11 @@ struct TrainerUnavailableView: View {
     private var compactBody: some View {
         VStack(spacing: 0) {
             ZStack {
+                // A model stands on the dark model ground, as in `Viewport`;
+                // the caption alone keeps the studio ground.
                 ViewportGround(
-                    inner: DS.viewportInner, outer: DS.viewportOuter,
+                    inner: model == nil ? DS.viewportInner : DS.modelGroundInner,
+                    outer: model == nil ? DS.viewportOuter : DS.modelGroundOuter,
                     rx: 1.10, ry: 0.70, cx: 0.5, cy: 0.5
                 )
 
@@ -86,6 +90,7 @@ struct TrainerUnavailableView: View {
                     )
                     .padding(10)
                     .allowsHitTesting(false)
+                    .environment(\.colorScheme, model == nil ? colorScheme : .dark)
 
                 if model == nil {
                     caption.padding(28)

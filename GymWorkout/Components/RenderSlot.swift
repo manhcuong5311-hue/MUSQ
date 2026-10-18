@@ -81,8 +81,8 @@ struct Viewport<Overlay: View, Chrome: View>: View {
     /// Share of the viewport's height a panel covers at the bottom, for the
     /// model to rise clear of.
     var roomBelow: Float = 0
-    var inner: Color = DS.viewportInner
-    var outer: Color = DS.viewportOuter
+    var inner: Color = DS.modelGroundInner
+    var outer: Color = DS.modelGroundOuter
     var rx: CGFloat = 1.20
     var ry: CGFloat = 0.72
     var cx: CGFloat = 0.50
@@ -115,9 +115,14 @@ struct Viewport<Overlay: View, Chrome: View>: View {
                     ViewportGround(inner: inner, outer: outer,
                                    rx: rx, ry: ry, cx: cx, cy: cy, stop: stop)
 
-                    stage(size: geo.size, yaw: nil)
+                    ZStack {
+                        stage(size: geo.size, yaw: nil)
 
-                    chrome()
+                        chrome()
+                    }
+                    // The ground stays dark in Light Mode too, so whatever
+                    // sits on it takes the dark appearance.
+                    .environment(\.colorScheme, .dark)
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
             }
@@ -158,10 +163,13 @@ struct Viewport<Overlay: View, Chrome: View>: View {
                                rx: rx, ry: ry, cx: cx, cy: cy, stop: stop,
                                aspectLocked: true)
 
-                ZStack { stage(size: fit, yaw: model == nil ? nil : paneYaw) }
-                    .frame(width: fit.width, height: fit.height)
+                ZStack {
+                    ZStack { stage(size: fit, yaw: model == nil ? nil : paneYaw) }
+                        .frame(width: fit.width, height: fit.height)
 
-                chrome()
+                    chrome()
+                }
+                .environment(\.colorScheme, .dark)
             }
             .frame(width: geo.size.width, height: geo.size.height)
             // The drag covers the pane, not just the stage: on a wide iPad
@@ -200,8 +208,8 @@ extension Viewport where Chrome == EmptyView {
         still: TimeInterval? = nil,
         turn: Float = 0,
         roomBelow: Float = 0,
-        inner: Color = DS.viewportInner,
-        outer: Color = DS.viewportOuter,
+        inner: Color = DS.modelGroundInner,
+        outer: Color = DS.modelGroundOuter,
         rx: CGFloat = 1.20,
         ry: CGFloat = 0.72,
         cx: CGFloat = 0.50,
@@ -231,8 +239,8 @@ extension Viewport where Overlay == EmptyView, Chrome == EmptyView {
         model: String? = nil,
         framing: ModelFraming = .standing,
         speed: Float = 1,
-        inner: Color = DS.viewportInner,
-        outer: Color = DS.viewportOuter,
+        inner: Color = DS.modelGroundInner,
+        outer: Color = DS.modelGroundOuter,
         rx: CGFloat = 1.20,
         ry: CGFloat = 0.72,
         cx: CGFloat = 0.50,

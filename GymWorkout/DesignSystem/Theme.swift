@@ -79,6 +79,14 @@ enum DS {
     static let viewportInner = Color(light: 0xFFFFFF, dark: 0x1E2126)
     static let viewportOuter = Color(light: 0xEDEEF0, dark: 0x0A0B0D)
 
+    /// The ground behind a live 3D model: dark in either appearance, since
+    /// the lifter washes out on a pale one (owner, 2026-10-18) — near-black
+    /// in Dark Mode, a mid grey in Light Mode (the owner's pick of five
+    /// shades). `Viewport` draws the labels and buttons over it in the dark
+    /// appearance.
+    static let modelGroundInner = Color(light: 0x8A8F97, dark: 0x1E2126)
+    static let modelGroundOuter = Color(light: 0x62666D, dark: 0x0A0B0D)
+
     /// Translucent glass fill for chips and pills that float over a viewport.
     static func glass(_ opacity: Double = 0.66) -> Color {
         Color(light: 0xFFFFFF, dark: 0x0C0D0F, opacity: opacity)
