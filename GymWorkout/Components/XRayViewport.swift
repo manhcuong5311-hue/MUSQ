@@ -10,10 +10,10 @@
 //  turns about the vertical and never zooms, and its framing, callouts and
 //  fault ghosts depend on that fixed camera. Here the camera stays put too,
 //  but the model is turned (yaw, then pitch) and scaled on a pivot, and kept
-//  centred on what the cue is about — the shoulder blades, or the hips for
-//  the whole-body side view — by following those joints every frame. So a
-//  pinch always closes in on the shoulder blades, even as the lifter lies
-//  back onto the bench.
+//  centred on what the cue is about — the shoulder blades, the hips for the
+//  whole-body side view, or the left hand for the grip — by following those
+//  joints every frame. So a pinch always closes in on the shoulder blades,
+//  even as the lifter lies back onto the bench.
 //
 //  The muscles' see-through look comes from the model itself (each
 //  UsdPreviewSurface carries its opacity); nothing is recoloured here.
@@ -65,6 +65,10 @@ final class XRayStage {
     /// upper arms, while the shoulder blades and collarbones have their own.
     @ObservationIgnored private var contextBones: [(entity: Entity, slots: [Int], originals: [any RealityKit.Material])] = []
     @ObservationIgnored private var bonesHidden = false
+    /// The demo's parts on the model's left side (`XRayDemo.sideHiddenPrefix`),
+    /// off while the camera looks from that side.
+    @ObservationIgnored private var sideParts: [Entity] = []
+    @ObservationIgnored private var sideHidden = false
     @ObservationIgnored var subscription: EventSubscription?
     /// The viewer's own turn, tilt and pinch on top of the picked angle.
     @ObservationIgnored var dragYaw: Float = 0
@@ -76,6 +80,7 @@ final class XRayStage {
 
     init(demo: XRayDemo) {
         self.demo = demo
+        self.speed = demo.speed
     }
 
     // MARK: Controls
@@ -107,6 +112,7 @@ final class XRayStage {
     func attach(_ model: Entity) {
         func walk(_ entity: Entity) {
             if entity.name == "DARK_Floor" { entity.isEnabled = false }
+            if let prefix = demo.sideHiddenPrefix, entity.name.hasPrefix(prefix) { sideParts.append(entity) }
             if let model = entity.components[ModelComponent.self] {
                 let slots = model.materials.indices.filter { (model.materials[$0].name ?? "").contains("DARK_Anatomy_Bone") }
                 if !slots.isEmpty { contextBones.append((entity, slots, model.materials)) }
@@ -141,7 +147,7 @@ final class XRayStage {
             guard let slash = path.lastIndex(of: "/") else { return nil }
             return index[String(path[..<slash])]
         }
-        for joint in ["scapula_L", "scapula_R", "pelvis"] {
+        for joint in ["scapula_L", "scapula_R", "pelvis", "hand_L", "MCH_finger_middle_01_L"] {
             if let i = names.firstIndex(where: { $0 == joint || $0.hasSuffix("/" + joint) }) { joints[joint] = i }
         }
         self.skin = skin
@@ -173,6 +179,11 @@ final class XRayStage {
             // whole lifter stays in frame lying down as well as sitting.
             guard let h = point("pelvis"), let l = point("scapula_L"), let r = point("scapula_R") else { return nil }
             return (h + (l + r) / 2) / 2
+        case .hand:
+            // Six tenths of the way from the wrist to the middle knuckle:
+            // where the bar sits in a closed grip.
+            guard let w = point("hand_L"), let k = point("MCH_finger_middle_01_L") else { return nil }
+            return w + (k - w) * 0.6
         }
     }
 
@@ -190,7 +201,7 @@ final class XRayStage {
         let widen = min(max(aspect / 0.77, 1), 1.6)
         let goal = (yaw: pose.yaw + dragYaw,
                     pitch: min(max(pose.pitch + dragPitch, -0.35), .pi / 2),
-                    zoom: pose.zoom * pinch * widen)
+                    zoom: pose.zoom * (demo.zoomScale[target] ?? 1) * pinch * widen)
         let k = Float(1 - exp(-dt * 5))
         var now = shown ?? goal
         var dYaw = (goal.yaw - now.yaw).truncatingRemainder(dividingBy: 2 * .pi)
@@ -215,6 +226,18 @@ final class XRayStage {
                 guard var model = entity.components[ModelComponent.self] else { continue }
                 for i in slots where i < model.materials.count { model.materials[i] = overhead ? clear : originals[i] }
                 entity.components.set(model)
+            }
+        }
+        // How far the camera has come round to the model's left (+X): 1 from
+        // straight out to that side, 0.89 from the hand close-up, 0 from
+        // behind. A band between the two thresholds stops the parts
+        // flickering on a slow drag.
+        if !sideParts.isEmpty {
+            let fromLeft = -cos(now.pitch) * sin(now.yaw)
+            let hide = sideHidden ? fromLeft > 0.7 : fromLeft > 0.8
+            if hide != sideHidden {
+                sideHidden = hide
+                for part in sideParts { part.isEnabled = !hide }
             }
         }
     }

@@ -643,3 +643,33 @@ and model map went in with the models; `ExerciseRotation` files the
 pull-through, reverse hyper, 45-degree hip extension and swing as hinges
 and the standing cable hip extension as glute isolation. The library now
 has 438 exercises.
+
+Back-bar grip and shoulder-blade cue (2026-10-20): the owner asked for a
+callout on the hands and shoulder blades on every back-loaded barbell lift,
+opening the x-ray back-bar set-up demo (`XRayDemos.backBarSetup`, model
+`Legs/XRayBackBarSetup.usdc`). The 13 lifts whose `bar` callout puts the bar
+on the upper back (Back, Box, Pause, Barbell Sumo and Heel-Elevated Squat;
+barbell and Smith Split and Bulgarian Split Squat; Good Morning, Seated and
+Smith Good Morning; Barbell Step-Up) got a sixth cue, `shelf` ("Grip &
+Shoulder Blades", cue 02 after Bar Position), with one callout. That breaks
+the five-cue rule, at the owner's request. Edited in SampleData.swift
+directly; no spec file holds these.
+- Sources for the copy: Catalyst Athletics, "Back Squat Bar Placement"
+  (shoulder blades squeezed together gather the upper traps into a muscular
+  shelf; elbows down and slightly behind the bar; elbows that rise round the
+  upper back and tip the trunk forward); J. Szymanowski for Torokhtiy,
+  "Perfect Squat Hand Position" (2024: thumbs around the bar, wrists neutral
+  in line with the forearms, elbows pointed down and back).
+- The callout reads "Grip tight, elbows down" and tracks the near fist
+  (`CTRL_finger_middle_01_L`; `_R` on the Smith Good Morning, seen from
+  behind), or the elbow (`forearm_L`) on the Barbell Split Squat, whose near
+  plate hides the fist, and the Good Morning. On the Box and Pause Squats it
+  reads "Squeeze shoulder blades" and tracks `scapula_L`: their near hand
+  passes under the right-hand pill, and any leader to it crosses that pill's.
+- To make room, the bar pill moved to the top row on the Barbell Sumo
+  Squat and the four split squats, anchored right of the head so its
+  leader clears the face; the Back Squat's bar pill moved 2 pt.
+- No fault ghost: the mistake view falls back to the red ring.
+- Layout: `Tools/lab/label_space_1020/` (free-space search over the rep,
+  leader checks every 0.25 s). Checked on the harness's trainer shots at
+  the top and the bottom of each lift.

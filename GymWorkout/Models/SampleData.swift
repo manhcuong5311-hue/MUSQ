@@ -5541,8 +5541,11 @@ enum SampleData {
         // the rep, so the bar label sits above them and the rest below.
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.406, y: 0.07),
+                          labelPoint: CGPoint(x: 0.401, y: 0.07),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.418, y: 0.07),
+                          labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "brace", label: "Brace your core",
                           labelPoint: CGPoint(x: 0.682, y: 0.64),
                           labelSide: .trailing, leaderLength: 40, joint: "spine"),
@@ -5564,6 +5567,14 @@ enum SampleData {
                 why: "A high-bar position sits the bar over the middle of the foot with a more upright torso, keeping the quads in the primary role this variation is built for.",
                 mistake: "Letting the bar drift down onto the rear deltoids, which forces a much deeper forward lean and turns the lift into a de facto low-bar squat.",
                 correct: "Set the bar across the traps just below the base of the neck and keep the chest tall through the whole rep."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "brace",
@@ -24388,9 +24399,11 @@ enum SampleData {
     static let barbellSplitSquatContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.594, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.564, y: 0.07),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.557, y: 0.20),
+                          labelSide: .trailing, leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "torso", label: "Stay tall",
                           labelPoint: CGPoint(x: 0.230, y: 0.32),
                           leaderLength: 40, joint: "chest"),
@@ -24413,6 +24426,14 @@ enum SampleData {
                 why: "A high bar keeps the torso upright over the split stance, which suits this quadriceps-led lift; in back squats a lower bar brings more forward lean.",
                 mistake: "The bar sliding down onto the back of the shoulders, the chest tipping forward to balance it.",
                 correct: "Set the bar across the upper traps just below the neck, hands wider than the shoulders, and keep the chest tall under it."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "torso",
@@ -24566,9 +24587,11 @@ enum SampleData {
     static let smithMachineSplitSquatContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.594, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.502, y: 0.07),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.557, y: 0.20),
+                          labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "torso", label: "Chest up, hips under",
                           labelPoint: CGPoint(x: 0.391, y: 0.32),
                           leaderLength: 40, joint: "chest"),
@@ -24591,6 +24614,14 @@ enum SampleData {
                 why: "The rails hold the bar's line, so the body has to stay stacked under it. With the bar high on the traps the torso can stay upright while the legs do the work.",
                 mistake: "Setting the bar low on the back of the shoulders, so the chest tips forward and the hips slide back under the fixed bar.",
                 correct: "Rest the bar across the upper traps, hands wider than the shoulders, brace, then turn the bar to unhook it."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "torso",
@@ -24839,9 +24870,11 @@ enum SampleData {
     static let barbellBulgarianSplitSquatContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.594, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.451, y: 0.07),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.557, y: 0.20),
+                          labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "torso", label: "Stay tall",
                           labelPoint: CGPoint(x: 0.230, y: 0.32),
                           leaderLength: 40, joint: "chest"),
@@ -24865,6 +24898,14 @@ enum SampleData {
                 why: "A high bar keeps the torso upright over the split stance, which suits this quadriceps-led lift; in back squats a lower bar brings more forward lean.",
                 mistake: "The bar sliding down onto the back of the shoulders, the chest tipping forward to balance it.",
                 correct: "Set the bar across the upper traps just below the neck, hands wider than the shoulders, and keep the chest tall under it."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "torso",
@@ -24934,9 +24975,11 @@ enum SampleData {
     static let smithMachineBulgarianSplitSquatContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.594, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.473, y: 0.07),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.557, y: 0.20),
+                          labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "torso", label: "Stay tall",
                           labelPoint: CGPoint(x: 0.230, y: 0.32),
                           leaderLength: 40, joint: "chest"),
@@ -24960,6 +25003,14 @@ enum SampleData {
                 why: "The rails hold the bar's line, so the body has to stay stacked under it. With the bar high on the traps the torso can stay upright while the legs do the work.",
                 mistake: "Setting the bar low on the back of the shoulders, so the chest tips forward and the hips slide back under the fixed bar.",
                 correct: "Rest the bar across the upper traps, hands wider than the shoulders, brace, then turn the bar to unhook it."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "torso",
@@ -28022,9 +28073,11 @@ enum SampleData {
     static let barbellSumoSquatContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.594, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.492, y: 0.07),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.557, y: 0.20),
+                          labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "torso", label: "Chest up",
                           labelPoint: CGPoint(x: 0.215, y: 0.16),
                           leaderLength: 40, joint: "chest"),
@@ -28048,6 +28101,14 @@ enum SampleData {
                 why: "A high bar sits over the middle of the feet and lets the trunk stay fairly upright; in back squats a lower bar brings more forward lean.",
                 mistake: "The bar sliding down onto the back of the shoulders, the chest tipping forward to balance it.",
                 correct: "Set the bar across the upper traps just below the neck, hands wider than the shoulders and elbows pointing down, and keep the chest up."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "torso",
@@ -28201,6 +28262,9 @@ enum SampleData {
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
                           labelPoint: CGPoint(x: 0.406, y: 0.16),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Squeeze shoulder blades",
+                          labelPoint: CGPoint(x: 0.509, y: 0.10),
+                          leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "back", label: "Back flat",
                           labelPoint: CGPoint(x: 0.230, y: 0.32),
                           leaderLength: 40, joint: "chest"),
@@ -28224,6 +28288,14 @@ enum SampleData {
                 why: "A high bar lets the torso stay more upright and keeps the quadriceps doing much of the work; in back squats a lower bar brings more forward lean.",
                 mistake: "The bar sliding down onto the back of the shoulders, the chest tipping further forward to balance it.",
                 correct: "Set the bar across the upper traps just below the neck, hands wider than the shoulders, and squeeze the upper back tight under it."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "back",
@@ -28289,6 +28361,9 @@ enum SampleData {
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
                           labelPoint: CGPoint(x: 0.406, y: 0.16),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Squeeze shoulder blades",
+                          labelPoint: CGPoint(x: 0.501, y: 0.10),
+                          leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "brace", label: "Chest up",
                           labelPoint: CGPoint(x: 0.215, y: 0.32),
                           leaderLength: 40, joint: "chest"),
@@ -28312,6 +28387,14 @@ enum SampleData {
                 why: "A high bar lets the torso stay more upright and keeps the quadriceps doing much of the work; in back squats a lower bar brings more forward lean.",
                 mistake: "The bar sliding down onto the back of the shoulders, the chest tipping further forward to balance it.",
                 correct: "Set the bar across the upper traps just below the neck, hands wider than the shoulders, and squeeze the upper back tight under it."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "brace",
@@ -29444,6 +29527,9 @@ enum SampleData {
             CueAnnotation(cueID: "bar", label: "Bar high on traps",
                           labelPoint: CGPoint(x: 0.30, y: 0.16),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.585, y: 0.07),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "torso", label: "Chest up",
                           labelPoint: CGPoint(x: 0.215, y: 0.60),
                           leaderLength: 40, joint: "chest"),
@@ -29467,6 +29553,14 @@ enum SampleData {
                 why: "A high bar lets the torso stay upright over the raised heels, which suits a squat built around the knees.",
                 mistake: "The bar sliding down onto the back of the shoulders, the chest tipping forward to balance it.",
                 correct: "Set the bar across the upper traps just below the neck, hands wider than the shoulders, and keep the chest tall under it."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "torso",
@@ -31895,6 +31989,9 @@ enum SampleData {
             CueAnnotation(cueID: "bar", label: "Bar on the traps",
                           labelPoint: CGPoint(x: 0.332, y: 0.16),
                           leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.444, y: 0.47),
+                          leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "back", label: "Neutral spine",
                           labelPoint: CGPoint(x: 0.712, y: 0.16),
                           labelSide: .trailing,
@@ -31918,6 +32015,14 @@ enum SampleData {
                 why: "The upper back carries the bar, not the neck or the hands. Set on the upper traps with the shoulder blades squeezed together, the spot the good mornings in the lab studies used, it has a shelf of muscle to sit on as the chest tips toward the floor.",
                 mistake: "Setting the bar low on the back of the shoulders, where the hands have to hold it on and it shifts as the chest drops.",
                 correct: "Set the bar across the upper traps, squeeze the shoulder blades together and pull the bar down into your back with the hands."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "back",
@@ -31985,6 +32090,9 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.594, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.444, y: 0.26),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "back", label: "Back set tight",
                           labelPoint: CGPoint(x: 0.303, y: 0.56),
                           leaderLength: 40, joint: "spine"),
@@ -32007,6 +32115,14 @@ enum SampleData {
                 why: "Seated, the whole trunk is the lever and the upper back holds the bar in place as the chest tips toward the knees. Set on the upper traps with the shoulder blades squeezed, the bar has a shelf of muscle to sit on and stays put through the lean.",
                 mistake: "Letting the bar slide down onto the backs of the shoulders, where the hands end up holding it in place.",
                 correct: "Set the bar across the upper traps, squeeze the shoulder blades together and pull the bar down into your back before each rep."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "back",
@@ -32082,6 +32198,9 @@ enum SampleData {
             CueAnnotation(cueID: "bar", label: "High bar",
                           labelPoint: CGPoint(x: 0.215, y: 0.14),
                           leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.703, y: 0.07),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_R"),
             CueAnnotation(cueID: "feet", label: "Feet under bar",
                           labelPoint: CGPoint(x: 0.697, y: 0.80),
                           labelSide: .trailing,
@@ -32105,6 +32224,14 @@ enum SampleData {
                 why: "The rails fix the bar's path straight up and down, so where it sits on your back decides how you have to lean under it. High on the traps, it rests on muscle and the hips can travel back while the bar stays over the feet.",
                 mistake: "Setting the bar low on the back of the shoulders, so the hands have to hold it there and the chest tips further forward under the fixed bar.",
                 correct: "Set the hooks just below shoulder height, step under and let the bar rest across the upper traps; squeeze the shoulder blades and pull the bar into your back."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "feet",
@@ -41926,6 +42053,9 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.653, y: 0.50),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
+                          labelPoint: CGPoint(x: 0.608, y: 0.10),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "foot", label: "Whole foot on the box",
                           labelPoint: CGPoint(x: 0.406, y: 0.80),
                           leaderLength: 40, joint: "foot_L"),
@@ -41948,6 +42078,14 @@ enum SampleData {
                 why: "Here the bar rests across the upper back at the base of the neck, with the hands about 78 cm apart, well outside the shoulders. Held there, it stays over the body as the trunk tips forward at the start; a bar slipping down the back pulls the chest forward to balance it.",
                 mistake: "The bar sliding down the back during the set, the chest tipping forward under it.",
                 correct: "Set the bar across your upper back at the base of your neck, take a wide grip well outside your shoulders and pull it into place."
+            ),
+            TechniqueCue(
+                id: "shelf",
+                title: "Grip & Shoulder Blades",
+                intro: "Your hands, elbows and shoulder blades build the shelf the bar sits on.",
+                why: "Squeezing the shoulder blades together bunches the upper traps into a firm, muscular shelf for the bar, and elbows held down and slightly back keep the upper back tight. Elbows that rise let it round and tip the trunk forward.",
+                mistake: "Holding the bar loosely with the wrists bent back and the elbows drifting up or forward, so the shoulder blades relax and the bar rests on a soft upper back.",
+                correct: "Wrap your thumbs around the bar, keep the wrists in line with the forearms, squeeze the shoulder blades together and pull the elbows down and back before the first rep."
             ),
             TechniqueCue(
                 id: "foot",

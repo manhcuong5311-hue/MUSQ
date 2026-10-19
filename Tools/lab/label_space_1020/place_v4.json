@@ -1,0 +1,135 @@
+{
+ "Back Squat": {
+  "x": 0.418,
+  "y": 0.07,
+  "side": "trailing",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip tight, elbows down",
+  "move": {
+   "Bar high on the traps": {
+    "x": 0.401,
+    "y": 0.07,
+    "side": "leading"
+   }
+  }
+ },
+ "Box Squat": {
+  "x": 0.509,
+  "y": 0.103,
+  "side": "leading",
+  "joint": "scapula_L",
+  "label": "Squeeze shoulder blades"
+ },
+ "Pause Squat": {
+  "x": 0.501,
+  "y": 0.103,
+  "side": "leading",
+  "joint": "scapula_L",
+  "label": "Squeeze shoulder blades"
+ },
+ "Barbell Sumo Squat": {
+  "x": 0.557,
+  "y": 0.2,
+  "side": "trailing",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip tight, elbows down",
+  "move": {
+   "Bar high on the traps": {
+    "x": 0.492,
+    "y": 0.07,
+    "side": "leading"
+   }
+  }
+ },
+ "Heel-Elevated Squat": {
+  "x": 0.585,
+  "y": 0.07,
+  "side": "leading",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip tight, elbows down"
+ },
+ "Barbell Split Squat": {
+  "x": 0.557,
+  "y": 0.2,
+  "side": "trailing",
+  "joint": "forearm_L",
+  "label": "Grip tight, elbows down",
+  "move": {
+   "Bar high on the traps": {
+    "x": 0.564,
+    "y": 0.07,
+    "side": "leading"
+   }
+  }
+ },
+ "Smith Machine Split Squat": {
+  "x": 0.557,
+  "y": 0.2,
+  "side": "trailing",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip tight, elbows down",
+  "move": {
+   "Bar high on the traps": {
+    "x": 0.502,
+    "y": 0.07,
+    "side": "leading"
+   }
+  }
+ },
+ "Barbell Bulgarian Split Squat": {
+  "x": 0.557,
+  "y": 0.2,
+  "side": "trailing",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip tight, elbows down",
+  "move": {
+   "Bar high on the traps": {
+    "x": 0.451,
+    "y": 0.07,
+    "side": "leading"
+   }
+  }
+ },
+ "Smith Machine Bulgarian Split Squat": {
+  "x": 0.557,
+  "y": 0.2,
+  "side": "trailing",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip tight, elbows down",
+  "move": {
+   "Bar high on the traps": {
+    "x": 0.473,
+    "y": 0.07,
+    "side": "leading"
+   }
+  }
+ },
+ "Good Morning": {
+  "x": 0.444,
+  "y": 0.469,
+  "side": "leading",
+  "joint": "forearm_L",
+  "label": "Grip tight, elbows down"
+ },
+ "Seated Good Morning": {
+  "x": 0.444,
+  "y": 0.263,
+  "side": "leading",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip tight, elbows down"
+ },
+ "Smith Machine Good Morning": {
+  "x": 0.703,
+  "y": 0.075,
+  "side": "leading",
+  "joint": "CTRL_finger_middle_01_R",
+  "label": "Grip tight, elbows down"
+ },
+ "Barbell Step-Up": {
+  "x": 0.608,
+  "y": 0.103,
+  "side": "leading",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip tight, elbows down"
+ }
+}

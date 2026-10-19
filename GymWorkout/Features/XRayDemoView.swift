@@ -101,7 +101,7 @@ struct XRayDemoView: View {
 
             SectionEyebrow(text: "ANGLE", size: 9.5)
             MonoSegmentedControl(
-                options: XRayView.allCases.map { ($0, $0.title) },
+                options: demo.angles.map { ($0, $0.title) },
                 selection: Binding(get: { stage.view }, set: { stage.pick($0) }),
                 fillsWidth: true
             )
