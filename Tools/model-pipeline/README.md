@@ -795,6 +795,43 @@ from the front-left three-quarter (-1.0; the lifter faces +x), so the stance
 width reads; the hinge kickback at -1.0 like the step-down; the bench
 kickback side-on at -1.3.
 
+Desktop "From 316" folder (2026-10-19): `~/Desktop/From 316` holds 52
+exports (316-325 and 356-400, re-saved by the owner 2026-10-18/19; no 357,
+which keeps its model, and 386/387 are dropped: the female model's
+kickbacks cover them). Plain swaps like the "From 191" round (cues, muscle rows, fault
+ghosts and library tiles left for later): cloned to
+`SourceExports/316-400-1019/`, converted (320's camera off),
+`one_side_tiers.py` (18 changed; on every one the lit side is the moving left
+leg), padded and slimmed against `AnatomyBodyV2.usdc` (all attribute for
+attribute, 0.6-3.0 MB, 62 MB). All intact: one 227/228-joint skeleton (367
+also carries its partner's), one animation over 1-192, 398/399 with the
+SkelRoot on /root. Against the app models (`drive_diff.py`; the old-rig 363,
+366, 367, 373-375, 381 and 382 without toe joints): 26 kept their motion, 7
+moved 1-5 cm, 11 moved 8-13 cm (the barbell and Smith split squats and
+lunges, the good mornings, 382, 395, 396), and 356/358 (head 15 cm), 379
+(arms 28 cm) and 388 (the legs, 84 cm) more. The M29's 97-115 cm on 361,
+371, 383 and 395 is the cable-tube conversion, not a move. Paint changed on
+36: the split squats and lunges light the glutes bright with the adductors
+unlit; the RDLs light the erectors bright and the adductors dim; the good
+mornings the glutes bright; the hip thrusts and frog pumps drop the quads
+and erectors; the kettlebell and dumbbell deadlifts drop the forearms; the
+swing's hamstrings go dim; the nordics drop the glutes; the 45-degree hip
+extension lights the hamstrings bright and the reverse hyper the erectors;
+the Single-Leg Sliding Curl now lights its working left leg (the right
+before). New exercises with a model only: 372 Dumbbell Lying Leg Curl
+(`Legs/DumbbellLyingLegCurl`, a dumbbell between the feet on a bench), 384
+Machine Glute Press and 385 Machine Glute Kickback (`Legs/MachineGlutePress`,
+`Legs/MachineGluteKickback`, the left leg) and 399 Banded Glute Bridge
+(`Legs/BandedGluteBridge`). Framings: solve at each current yaw, old vs new
+(with `framer.py` taking no joints under CTRL/MCH), then viewport stills of
+all 48 at 2 s and 0-5 s for the largest changes; every framing was kept (the
+solver's 5-9% on 356/358, 373, 379, 381 and 382 is mostly the new rig's toe
+joints; on stills the lifters stay clear; the Swiss Ball Leg Curl's ball
+touched the left edge before too). The new ones were picked on stills: the
+lying curl side-on at -1.35 like the Lying Leg Curl, the two machines side-on
+at -1.35 so the leg drives back in profile, the banded bridge at -0.8 so the
+band at the knees reads.
+
 X-ray scapula demo (2026-10-17): `Chest/XRayScapulaBenchSetup.usdc`, opened from
 the "Retract scapula" cue of the bench-type presses (`XRayDemos.swift`,
 `XRayDemoView.swift`, `XRayViewport.swift`). Built in Blender on a copy of the

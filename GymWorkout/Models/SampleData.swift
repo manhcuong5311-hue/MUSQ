@@ -1108,11 +1108,27 @@ enum SampleData {
         Exercise(name: "Single-Leg Sliding Curl", category: .legs,
                  primaryMuscle: "HAMSTRINGS", equipment: "SLIDERS",
                  difficulty: .advanced),
+        // Desktop "From 316" folder (2026-10-19): 372, new; model only for now
+        // (no trainer content yet).
+        Exercise(name: "Dumbbell Lying Leg Curl", category: .legs,
+                 primaryMuscle: "HAMSTRINGS", equipment: "DUMBBELL",
+                 difficulty: .intermediate),
         Exercise(name: "Frog Pump", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BODYWEIGHT",
                  difficulty: .beginner),
         Exercise(name: "Weighted Frog Pump", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "DUMBBELL",
+                 difficulty: .beginner),
+        // Desktop "From 316" folder (2026-10-19): 384, 385 and 399, new;
+        // models only for now (no trainer content yet).
+        Exercise(name: "Machine Glute Press", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Machine Glute Kickback", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "MACHINE",
+                 difficulty: .beginner),
+        Exercise(name: "Banded Glute Bridge", category: .legs,
+                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BAND",
                  difficulty: .beginner),
         // From the Desktop "300-400" folder (2026-10-12): the builder's 383-392.
         Exercise(name: "Cable Pull-Through", category: .legs,
@@ -2122,10 +2138,22 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.35, zoom: 0.507, offset: [-0.015, 0.177, 0.069])),
         "Single-Leg Sliding Curl":             ExerciseModel(resource: "SingleLegSlidingCurl",
                                         framing: ModelFraming(yaw: -1.35, zoom: 0.511, offset: [-0.016, 0.132, 0.071])),
+        // Desktop "From 316" folder (2026-10-19), new: solved, yaws picked on
+        // viewport stills.
+        "Dumbbell Lying Leg Curl":             ExerciseModel(resource: "DumbbellLyingLegCurl",
+                                        framing: ModelFraming(yaw: -1.35, zoom: 0.518, offset: [-0.011, 0.066, 0.049])),
         "Frog Pump":                           ExerciseModel(resource: "FrogPump",
                                         framing: ModelFraming(yaw: -1.57, zoom: 0.722, offset: [0.0, 0.282, 0.125])),
         "Weighted Frog Pump":                  ExerciseModel(resource: "WeightedFrogPump",
                                         framing: ModelFraming(yaw: -1.57, zoom: 0.722, offset: [0.0, 0.239, 0.125])),
+        // Desktop "From 316" folder (2026-10-19), new: solved, yaws picked on
+        // viewport stills.
+        "Machine Glute Press":                 ExerciseModel(resource: "MachineGlutePress",
+                                        framing: ModelFraming(yaw: -1.35, zoom: 0.691, offset: [-0.012, 0.018, 0.052])),
+        "Machine Glute Kickback":              ExerciseModel(resource: "MachineGluteKickback",
+                                        framing: ModelFraming(yaw: -1.35, zoom: 0.566, offset: [-0.003, 0.025, 0.012])),
+        "Banded Glute Bridge":                 ExerciseModel(resource: "BandedGluteBridge",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.745, offset: [-0.004, 0.268, 0.004])),
         "Cable Pull-Through":                  ExerciseModel(resource: "CablePullThrough",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.849, offset: [0.003, 0.051, -0.011])),
         "Standing Cable Hip Extension":        ExerciseModel(resource: "StandingCableHipExtension",
