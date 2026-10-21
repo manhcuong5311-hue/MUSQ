@@ -199,8 +199,9 @@ final class XRayStage {
         // The presets are set for a phone in portrait; a wider view has room
         // to come in closer.
         let widen = min(max(aspect / 0.77, 1), 1.6)
-        let goal = (yaw: pose.yaw + dragYaw,
-                    pitch: min(max(pose.pitch + dragPitch, -0.35), .pi / 2),
+        let turn = demo.turn[target] ?? XRayTurn()
+        let goal = (yaw: pose.yaw + turn.yaw + dragYaw,
+                    pitch: min(max(pose.pitch + turn.pitch + dragPitch, -0.35), .pi / 2),
                     zoom: pose.zoom * (demo.zoomScale[target] ?? 1) * pinch * widen)
         let k = Float(1 - exp(-dt * 5))
         var now = shown ?? goal

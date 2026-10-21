@@ -37,6 +37,10 @@ struct XRayDemo: Identifiable, Hashable {
     /// both hands in frame, and comes in on the trunk from the side, as the
     /// lifter stands rather than lies.
     var zoomScale: [XRayView: Float] = [:]
+    /// Turn and tilt on top of an angle's own: the deadlift's grip is seen
+    /// from in front of the hand, as it reaches down to a bar on the floor,
+    /// and its back view rises over the bent-over lifter.
+    var turn: [XRayView: XRayTurn] = [:]
     /// The playback speed the demo opens at.
     var speed: Float = 1
     /// Name prefix of the parts on the model's left (+X) side, outside the
@@ -121,6 +125,12 @@ enum XRayView: String, CaseIterable, Hashable {
 
 enum XRayFocus { case shoulders, body, hand }
 
+/// Radians added to an angle's yaw and pitch for one demo.
+struct XRayTurn: Hashable {
+    var yaw: Float = 0
+    var pitch: Float = 0
+}
+
 enum XRayDemos {
     static let benchScapula = XRayDemo(
         resource: "XRayScapulaBenchSetup",
@@ -195,6 +205,59 @@ enum XRayDemos {
         sideHiddenPrefix: "XRSIDE_"
     )
 
+    /// The deadlift set-up (2026-10-21): standing with the bar over mid-foot,
+    /// the lifter hinges down with the back rounding (the wrong way), reaches
+    /// in from the front and closes all five fingers round the bar, pulls the
+    /// shoulders down so the lats tighten, braces until the spine stacks
+    /// straight (chest up, hips down, shins to the bar), pushes the floor
+    /// away with the bar rising straight up the legs, and locks out with the
+    /// shoulders still down. Built in Blender on the back-bar set-up's rig,
+    /// grip and spine tool, without the rack; the bar starts on the floor
+    /// with 45 cm plates. Sources and notes in `/Volumes/HIKSEMI/BLENDER/
+    /// 300-400 🔴/quads_series🟢/DL_nam_thanh_deadlift_co_mo/`.
+    static let deadliftSetup = XRayDemo(
+        resource: "XRayDeadliftSetup",
+        title: "Deadlift Set-Up in X-Ray",
+        summary: "Grip the bar, pull the shoulders down to tighten the lats, brace the back flat, then push the floor away.",
+        phases: [
+            .init(chip: "Stance", caption: "Bar over mid-foot, about 3 cm from the shins",
+                  start: 0, jump: 0.3,
+                  views: [(0, .side)]),
+            .init(chip: "Not set", caption: "Not set: the hips go back, but the back rounds",
+                  start: 14.0 / 24, jump: 30.0 / 24, views: []),
+            .init(chip: "Grip", caption: "Hands in from the front: close all five fingers round the bar",
+                  start: 50.0 / 24, jump: 50.0 / 24,
+                  views: [(46.0 / 24, .hand)]),
+            .init(chip: "Lats", caption: "Pull the shoulders down: the lats tie the bar to the legs",
+                  start: 80.0 / 24, jump: 82.0 / 24,
+                  views: [(80.0 / 24, .back)]),
+            .init(chip: "Brace", caption: "Brace: the spine straightens, chest up, shins to the bar",
+                  start: 112.0 / 24, jump: 112.0 / 24,
+                  views: [(112.0 / 24, .side)]),
+            .init(chip: "Pull", caption: "Push the floor away: the bar rises straight, close to the legs",
+                  start: 136.0 / 24, jump: 138.0 / 24, views: []),
+            .init(chip: "Lockout", caption: "Lock out: hips through, shoulders still down",
+                  start: 190.0 / 24, jump: 190.0 / 24,
+                  views: [(190.0 / 24, .backThreeQuarter)]),
+        ],
+        duration: 230.0 / 24,
+        boneLabel: "Spine, shoulder blades & hands",
+        muscleLabel: "Lats, forearms, core & lower back",
+        angles: [.auto, .back, .backThreeQuarter, .side, .hand],
+        zoomScale: [.back: 0.8, .backThreeQuarter: 0.7, .side: 0.95, .hand: 0.85],
+        turn: [.back: XRayTurn(pitch: 0.45), .hand: XRayTurn(yaw: 0.95, pitch: 0.2)],
+        speed: 0.5,
+        sideHiddenPrefix: "XRSIDE_"
+    )
+
+    /// The barbell lifts held in the hands from a hip hinge whose grip-and-lats
+    /// cue (`lats`) and spine cue open the deadlift set-up.
+    static let deadliftLifts: Set<String> = [
+        "Deadlift", "Sumo Deadlift", "Deficit Deadlift", "Snatch-Grip Deadlift", "Rack Pull", "Block Pull",
+        "Trap Bar Deadlift", "Romanian Deadlift", "Stiff-Leg Deadlift", "Smith Machine Romanian Deadlift",
+        "Barbell Single-Leg Romanian Deadlift",
+    ]
+
     /// Callouts on the back-loaded barbell lifts that say where the bar sits.
     private static let backBarLabels: Set<String> = [
         "Bar high on the traps", "Bar high on traps", "Bar on the traps", "High bar", "Bar on upper back",
@@ -206,9 +269,15 @@ enum XRayDemos {
     /// the grip and shoulder-blade cue (`shelf`) and for every lift whose bar
     /// callout puts the bar on the upper back (the back, box, pause, sumo and
     /// heel-elevated squats, the barbell and Smith split and Bulgarian split
-    /// squats, the good mornings and the barbell step-up).
+    /// squats, the good mornings and the barbell step-up); the deadlift
+    /// set-up for the grip-and-lats cue (`lats`) and the spine cue (`spine`,
+    /// or `back` on the Romanian deadlifts) of the deadlifts and barbell
+    /// Romanian deadlifts.
     static func demo(for exercise: Exercise, cue: String) -> XRayDemo? {
         guard let content = SampleData.content(for: exercise) else { return nil }
+        if deadliftLifts.contains(exercise.name), ["lats", "spine", "back"].contains(cue) {
+            return deadliftSetup
+        }
         switch cue {
         case "scapula":
             let retracts = content.annotations.contains { $0.cueID == cue && $0.label == "Retract scapula" }

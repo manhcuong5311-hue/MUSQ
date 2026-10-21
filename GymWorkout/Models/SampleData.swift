@@ -4405,7 +4405,10 @@ enum SampleData {
             // The mid-foot label ends just left of the foot and the spine label
             // starts just right of it, so the foot dot shows between them.
             backAnnotation("feet", "Bar over mid-foot", "foot_L", slot: (x: 226.0 / 382.0, y: 473.0 / 567.0), leader: 40),
-            backAnnotation("spine", "Neutral spine", "spine", slot: (x: 262.0 / 382.0, y: 473.0 / 567.0), side: .trailing, leader: 46)
+            backAnnotation("spine", "Neutral spine", "spine", slot: (x: 262.0 / 382.0, y: 473.0 / 567.0), side: .trailing, leader: 46),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.369, y: 0.359),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_L")
         ],
         cues: [
             TechniqueCue(
@@ -4415,6 +4418,14 @@ enum SampleData {
                 why: "A neutral spine transmits force through the skeleton; a rounded one asks the lumbar discs to do a job they are poor at.",
                 mistake: "The lower back rounding as the bar leaves the floor, usually because the hips shot up too early.",
                 correct: "Take the slack out of the bar, brace the core, and keep the chest tall so the spine stays neutral throughout."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hips",
@@ -6624,6 +6635,9 @@ enum SampleData {
             CueAnnotation(cueID: "back", label: "Flat, neutral back",
                           labelPoint: CGPoint(x: 0.24, y: 0.14),
                           labelSide: .trailing, leaderLength: 46, joint: "chest"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.338, y: 0.387),
+                          leaderLength: 40, joint: "scapula_R"),
             CueAnnotation(cueID: "hinge", label: "Push the hips back",
                           labelPoint: CGPoint(x: 0.595, y: 0.23),
                           labelSide: .trailing, leaderLength: 48, joint: "thigh_L"),
@@ -6672,6 +6686,14 @@ enum SampleData {
                 why: "A flat, neutral back transmits force evenly through the spine; a rounded back concentrates that same load onto the lower discs.",
                 mistake: "Letting the lower back round as the hips reach the end of their range, usually a sign of going past the hamstrings' available stretch.",
                 correct: "Set a neutral spine before the first rep and keep the chest and hips moving together to preserve it through the whole set."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "stretch",
@@ -8964,6 +8986,9 @@ enum SampleData {
             CueAnnotation(cueID: "spine", label: "Flat back throughout",
                           labelPoint: CGPoint(x: 0.391, y: 0.14),
                           leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.330, y: 0.263),
+                          leaderLength: 40, joint: "scapula_R"),
             CueAnnotation(cueID: "hips", label: "Push the hips back",
                           labelPoint: CGPoint(x: 0.63, y: 0.32),
                           labelSide: .trailing,
@@ -8988,6 +9013,14 @@ enum SampleData {
                 why: "Keeping the back flat lets the hamstrings take the stretch; with the knees nearly straight, any rounding loads the spine quickly.",
                 mistake: "Letting the upper back round forward as the bar passes the knees.",
                 correct: "Brace the trunk, keep the shoulders pulled back and hold a flat back from the first rep to the last."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hips",
@@ -14912,6 +14945,9 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.624, y: 0.32),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.330, y: 0.382),
+                          leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "hips", label: "Hips drive through",
                           labelPoint: CGPoint(x: 0.362, y: 0.50),
                           leaderLength: 40, joint: "pelvis"),
@@ -14935,6 +14971,14 @@ enum SampleData {
                 why: "A shorter pull lets you handle more than a full deadlift, so the back has to be braced flat before the bar leaves its support.",
                 mistake: "Yanking the bar off the pins with the upper back rounding.",
                 correct: "Hinge to the bar with a flat back, pull the slack out until the bar is about to leave the pins, then stand."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hips",
@@ -15003,6 +15047,9 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.624, y: 0.32),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.330, y: 0.350),
+                          leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "hips", label: "Hips drive through",
                           labelPoint: CGPoint(x: 0.362, y: 0.50),
                           leaderLength: 40, joint: "pelvis"),
@@ -15025,6 +15072,14 @@ enum SampleData {
                 why: "A shorter pull lets you handle more than a full deadlift, so the back has to be braced flat before the bar leaves its support.",
                 mistake: "Yanking the bar off the blocks with the upper back rounding.",
                 correct: "Hinge to the bar with a flat back, pull the slack out until the bar is about to leave the blocks, then stand."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hips",
@@ -15109,6 +15164,9 @@ enum SampleData {
             CueAnnotation(cueID: "spine", label: "Chest up, back flat",
                           labelPoint: CGPoint(x: 0.370, y: 0.13),
                           leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.330, y: 0.368),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_R"),
             CueAnnotation(cueID: "hips", label: "Hips rise with chest",
                           labelPoint: CGPoint(x: 0.978, y: 0.32),
                           leaderLength: 40, joint: "pelvis")
@@ -15145,6 +15203,14 @@ enum SampleData {
                 why: "A neutral spine lets the hips and legs move the bar while the back holds it; a rounding back takes the load onto the spinal discs and ligaments.",
                 mistake: "The lower or upper back rounding as the bar leaves the floor.",
                 correct: "Brace hard before each rep, pull the slack out of the bar, and keep the chest up and the back flat as you stand."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hips",
@@ -15223,6 +15289,9 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.624, y: 0.32),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.579, y: 0.263),
+                          labelSide: .trailing, leaderLength: 40, joint: "scapula_R"),
             CueAnnotation(cueID: "hips", label: "Push the floor away",
                           labelPoint: CGPoint(x: 0.624, y: 0.40),
                           labelSide: .trailing,
@@ -15255,6 +15324,14 @@ enum SampleData {
                 why: "A neutral spine lets the hips and legs move the bar while the back holds it; a rounding back takes the load onto the spinal discs and ligaments.",
                 mistake: "The lower or upper back rounding as the bar leaves the floor.",
                 correct: "Brace hard before each rep, pull the slack out of the bar, and keep the chest up and the back flat as you stand."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hips",
@@ -15327,8 +15404,11 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.300, y: 0.71),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "spine", label: "Upper back tight, flat",
-                          labelPoint: CGPoint(x: 0.410, y: 0.13),
+                          labelPoint: CGPoint(x: 0.555, y: 0.126),
                           leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.393, y: 0.309),
+                          leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "hips", label: "Hips sit lower",
                           labelPoint: CGPoint(x: 0.978, y: 0.30),
                           leaderLength: 40, joint: "pelvis"),
@@ -15357,6 +15437,14 @@ enum SampleData {
                 why: "Keeping the shoulder blades set and the upper back flat is what builds the traps and rhomboids in this variation.",
                 mistake: "The upper back rounding as the wide grip drags the shoulders forward.",
                 correct: "Pull the shoulders back and down, lats tight, and keep the chest up from the floor to lockout."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hips",
@@ -15435,6 +15523,9 @@ enum SampleData {
             CueAnnotation(cueID: "spine", label: "Flat back from the floor",
                           labelPoint: CGPoint(x: 0.430, y: 0.13),
                           leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.416, y: 0.313),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_R"),
             CueAnnotation(cueID: "hips", label: "Hips rise with chest",
                           labelPoint: CGPoint(x: 0.978, y: 0.28),
                           leaderLength: 40, joint: "pelvis"),
@@ -15462,6 +15553,14 @@ enum SampleData {
                 why: "Keeping a neutral spine at the extra depth keeps the load on the legs and hips instead of the lower back.",
                 mistake: "Rounding the lower back to reach the bar at the bottom.",
                 correct: "Sit the hips down, chest up, brace hard and pull the slack out before the bar leaves the floor."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hips",
@@ -31495,10 +31594,12 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.770, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.641, y: 0.423),
+                          labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "hinge", label: "Hips back, leg back",
-                          labelPoint: CGPoint(x: 0.624, y: 0.32),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "pelvis"),
+                          labelPoint: CGPoint(x: 0.602, y: 0.341),
+                          labelSide: .trailing, leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "knee", label: "Soft knee",
                           labelPoint: CGPoint(x: 0.230, y: 0.72),
                           leaderLength: 40, joint: "patella_L"),
@@ -31523,6 +31624,14 @@ enum SampleData {
                 why: "A neutral spine keeps the bend at the hips, so the hamstrings and glutes lengthen and do the lifting. Letting the back round is one of the most common RDL errors, often once the hips have run out of hinge and the hands keep reaching.",
                 mistake: "Rounding the upper back and dropping the head to get the weight lower.",
                 correct: "Brace before each rep, keep the chest open and the chin lightly tucked, and let the trunk tip only as far as the hips can hinge."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hinge",
@@ -31760,6 +31869,9 @@ enum SampleData {
             CueAnnotation(cueID: "back", label: "Flat back",
                           labelPoint: CGPoint(x: 0.230, y: 0.16),
                           leaderLength: 40, joint: "neck"),
+            CueAnnotation(cueID: "lats", label: "Grip & lats tight",
+                          labelPoint: CGPoint(x: 0.613, y: 0.080),
+                          leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "hinge", label: "Hips back",
                           labelPoint: CGPoint(x: 0.770, y: 0.16),
                           labelSide: .trailing,
@@ -31783,6 +31895,14 @@ enum SampleData {
                 why: "A neutral spine keeps the bend at the hips, so the hamstrings and glutes lengthen and do the lifting. Letting the back round is one of the most common RDL errors, often once the hips have run out of hinge and the hands keep reaching.",
                 mistake: "Rounding the upper back and dropping the head to get the weight lower.",
                 correct: "Brace before each rep, keep the chest open and the chin lightly tucked, and let the trunk tip only as far as the hips can hinge."
+            ),
+            TechniqueCue(
+                id: "lats",
+                title: "Grip & Lats",
+                intro: "Your grip and your lats tie the bar to your body before it moves.",
+                why: "Pulling the shoulders down towards the hips tightens the lats, which hold the bar against the legs so it travels straight. A bar that drifts forward pulls the hips up and rounds the back.",
+                mistake: "Grabbing the bar with loose hands and relaxed shoulders, so the bar swings away from the legs and the upper back rounds as the weight comes up.",
+                correct: "Close all five fingers round the bar, pull the shoulders down to tighten the lats, brace until the back is flat, and keep the bar against your legs the whole rep."
             ),
             TechniqueCue(
                 id: "hinge",

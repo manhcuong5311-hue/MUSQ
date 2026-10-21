@@ -9,6 +9,9 @@
 //  Paywall from the environment, so the harness injects them.
 //  HARNESS_RESOURCE (2026-10-10): with HARNESS_VIEW/PHOTO, load that model
 //  resource instead of the exercise's own (e.g. one stance of a stance set).
+//  HARNESS_XRAY (2026-10-21): an x-ray demo's viewport by resource name, at
+//  HARNESS_XRAY_VIEW (an XRayView raw value, default auto), paused at
+//  HARNESS_STILL seconds once the model has loaded (shoot after ~8 s).
 //
 
 import SwiftUI
@@ -57,8 +60,40 @@ struct ContentView: View {
                 .environment(purchases)
                 .environment(Ads(purchases: purchases))
                 .environment(Paywall())
+        } else if let res = env["HARNESS_XRAY"],
+                  let demo = [XRayDemos.benchScapula, XRayDemos.backBarSetup, XRayDemos.deadliftSetup]
+                      .first(where: { $0.resource == res }) {
+            XRayHarness(demo: demo, view: XRayView(rawValue: env["HARNESS_XRAY_VIEW"] ?? "") ?? .auto, still: still)
         } else {
             RootView()
         }
+    }
+}
+
+struct XRayHarness: View {
+    let demo: XRayDemo
+    let view: XRayView
+    let still: TimeInterval?
+    @State private var stage: XRayStage
+
+    init(demo: XRayDemo, view: XRayView, still: TimeInterval?) {
+        self.demo = demo; self.view = view; self.still = still
+        _stage = State(initialValue: XRayStage(demo: demo))
+    }
+
+    var body: some View {
+        // The demo screen's viewport on a phone: full width, between the
+        // header and the controls.
+        XRayViewport(stage: stage)
+            .frame(width: 402, height: 560)
+            .background(Color(white: 0.1))
+            .task {
+                stage.pick(view)
+                try? await Task.sleep(for: .seconds(4))
+                if let still {
+                    stage.seek(to: still)
+                    if !stage.paused { stage.togglePause() }
+                }
+            }
     }
 }

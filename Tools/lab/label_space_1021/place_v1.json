@@ -1,0 +1,93 @@
+{
+ "Deadlift": {
+  "x": 0.369,
+  "y": 0.359,
+  "side": "leading",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip & lats tight"
+ },
+ "Sumo Deadlift": {
+  "x": 0.33,
+  "y": 0.368,
+  "side": "leading",
+  "joint": "CTRL_finger_middle_01_R",
+  "label": "Grip & lats tight"
+ },
+ "Deficit Deadlift": {
+  "x": 0.416,
+  "y": 0.313,
+  "side": "leading",
+  "joint": "CTRL_finger_middle_01_R",
+  "label": "Grip & lats tight"
+ },
+ "Snatch-Grip Deadlift": {
+  "x": 0.393,
+  "y": 0.309,
+  "side": "leading",
+  "joint": "scapula_L",
+  "label": "Grip & lats tight",
+  "move": {
+   "Upper back tight, flat": {
+    "x": 0.555,
+    "y": 0.126,
+    "side": "leading"
+   }
+  }
+ },
+ "Rack Pull": {
+  "x": 0.33,
+  "y": 0.382,
+  "side": "leading",
+  "joint": "scapula_L",
+  "label": "Grip & lats tight"
+ },
+ "Block Pull": {
+  "x": 0.33,
+  "y": 0.35,
+  "side": "leading",
+  "joint": "scapula_L",
+  "label": "Grip & lats tight"
+ },
+ "Trap Bar Deadlift": {
+  "x": 0.579,
+  "y": 0.263,
+  "side": "trailing",
+  "joint": "scapula_R",
+  "label": "Grip & lats tight"
+ },
+ "Romanian Deadlift": {
+  "x": 0.338,
+  "y": 0.387,
+  "side": "leading",
+  "joint": "scapula_R",
+  "label": "Grip & lats tight"
+ },
+ "Stiff-Leg Deadlift": {
+  "x": 0.33,
+  "y": 0.263,
+  "side": "leading",
+  "joint": "scapula_R",
+  "label": "Grip & lats tight"
+ },
+ "Smith Machine Romanian Deadlift": {
+  "x": 0.613,
+  "y": 0.08,
+  "side": "leading",
+  "joint": "scapula_L",
+  "label": "Grip & lats tight"
+ },
+ "Barbell Single-Leg Romanian Deadlift": {
+  "x": 0.641,
+  "y": 0.423,
+  "side": "trailing",
+  "joint": "CTRL_finger_middle_01_L",
+  "label": "Grip & lats tight",
+  "move": {
+   "Hips back, leg back": {
+    "x": 0.602,
+    "y": 0.341,
+    "side": "trailing"
+   }
+  }
+ }
+}

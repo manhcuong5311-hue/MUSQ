@@ -673,3 +673,35 @@ directly; no spec file holds these.
 - Layout: `Tools/lab/label_space_1020/` (free-space search over the rep,
   leader checks every 0.25 s). Checked on the harness's trainer shots at
   the top and the bottom of each lift.
+
+Deadlift grip-and-lats cue (2026-10-21): the owner asked for the x-ray
+deadlift set-up (`XRayDemos.deadliftSetup`, model
+`Back/XRayDeadliftSetup.usdc`) on the lifts that hold the bar in the hands;
+on their pick it went to the 11 barbell deadlifts and Romanian deadlifts
+(`XRayDemos.deadliftLifts`: Deadlift, Sumo, Deficit, Snatch-Grip and Trap
+Bar Deadlift, Rack and Block Pull, Romanian, Stiff-Leg, Smith Machine
+Romanian and Barbell Single-Leg Romanian Deadlift). Each got a sixth cue,
+`lats` ("Grip & Lats", right after the spine cue), with one callout, "Grip &
+lats tight"; it and the lift's spine cue (`spine`, or `back` on the Romanian
+deadlifts) open the demo. Like the back-bar `shelf` cue, this breaks the
+five-cue rule at the owner's request. Edited in SampleData.swift with
+`Tools/lab/label_space_1021/apply_lats.py`; no spec file holds these.
+- Sources for the copy: E. Robertson, "Setting up for a Big Deadlift"
+  (Robertson Training Systems: tight lats and arms tucked against the body
+  stop the bar drifting forward, which lets the hips rise and the back
+  round); EliteFTS, "3 cues for tight lats and a big deadlift" (pull the bar
+  in towards you to set the lats); StrongFirst forum coaching (take the
+  slack out of the bar and the body before the pull). The cue's "pull the
+  shoulders down" follows the demo, which depresses the shoulder blades and
+  only retracts them a little.
+- The callout tracks the near shoulder blade (`scapula_L`, `_R` on the
+  Trap Bar, Romanian and Stiff-Leg Deadlifts) where a pill fits beside it,
+  and the near fist (`CTRL_finger_middle_01_L/R`) on the Deadlift, Sumo,
+  Deficit and Single-Leg Romanian Deadlifts, whose space by the shoulder
+  blade is taken.
+- To make room, the Snatch-Grip Deadlift's spine pill moved 55 pt right on
+  the top row and the Single-Leg Romanian Deadlift's hinge pill 16 pt.
+- No fault ghost: the mistake view falls back to the red ring.
+- Layout: `Tools/lab/label_space_1021/`; checked on the harness's trainer
+  shots at the start and the bottom of each lift, and the cue card's "See It
+  in 3D X-Ray" button opens the demo.

@@ -924,3 +924,25 @@ off — then the opacities written into the UsdPreviewSurfaces), then
 from the shared body, so it carries the whole body (25 MB). The app hides the
 rib cage and sternum while the camera is overhead, where they would cover the
 shoulder blades.
+
+X-ray deadlift set-up (2026-10-21): `Back/XRayDeadliftSetup.usdc`, opened
+from the grip-and-lats and spine cues of the barbell deadlifts and Romanian
+deadlifts (`XRayDemos.deadliftSetup`). The owner built it in Blender on the
+back-bar set-up's file (316B, 2026-10-19): the same see-through muscle,
+ivory bones and five-finger grip, no rack, the bar on the floor with 45 cm
+plates; 230 frames at 24 fps. Stand over the bar, hinge down with the back
+rounding (the wrong way), grip, pull the shoulders down, brace until the
+spine stacks straight, pull, lock out. Source and QA on the SSD in
+`BLENDER/300-400 🔴/quads_series🟢/DL_nam_thanh_deadlift_co_mo/`
+(README_VI.md). Steps: `xray/export_usd_xray_deadlift.py` (in Blender, on a
+copy of the .blend; like the back-bar export, but the 24 vertebra bones
+follow the straightening shape key frame by frame, 1 → 0 over frames 16-36
+and back to 1 over 112-132, within 0.7 mm; the highlight is frozen with the
+lats, forearms, abs and lower back bright and the upper back, teres major,
+obliques, glutes and hamstrings dim; the bar's near sleeve and plate are
+`XRSIDE_`), then `xray/usd_for_app.py` and `pad_one.sh` (the bar is
+animated as an object, keyed 1-190, and padding makes its clip as long as
+the skeleton's). `usd_for_app.py` now also turns off the `XRAY_LightRig`
+empty and any top-level prop parked more than 5 m off stage: both demo
+files carried the dumbbells 12.5 m to the side, which drew two specks in
+the side view. The back-bar file had them turned off in place.

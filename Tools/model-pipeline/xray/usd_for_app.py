@@ -17,8 +17,11 @@ stage.SetDefaultPrim(root.GetPrim())
 root.GetPrim().GetReferences().AddReference(src, '/root')
 root.AddRotateXOp().Set(-90)
 # animated helper empties (camera orbit, light follow) would each become a clip of their own in RealityKit
-helpers = [Sdf.Path(x) for x in ('/root/VIDEO_CameraOrbit', '/root/DARK_FollowPelvis') if raw.GetPrimAtPath(x)]
-for path in lights + cameras + helpers:
+helpers = [Sdf.Path(x) for x in ('/root/VIDEO_CameraOrbit', '/root/DARK_FollowPelvis', '/root/XRAY_LightRig') if raw.GetPrimAtPath(x)]
+# props parked far off stage in the demo files (the dumbbells, 12.5 m to the side) still draw as two specks in the side view
+parked = [c.GetPath() for c in raw.GetPrimAtPath('/root').GetChildren() if c.IsA(UsdGeom.Xformable) and not c.IsA(UsdSkel.Root)
+          and UsdGeom.Xformable(c).ComputeLocalToWorldTransform(start).ExtractTranslation().GetLength() > 5]
+for path in lights + cameras + helpers + parked:
     stage.OverridePrim(path).SetActive(False)
 flat = stage.Flatten()
 flat.Export(out)
@@ -33,4 +36,4 @@ for p in st.Traverse():
             sh.CreateInput('diffuseColor', Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(*v['color']))
             n += 1
 st.GetRootLayer().Save()
-print('APP_USD', out, 'lights off', len(lights), 'cameras off', len(cameras), 'materials', n, 'time', start, end, raw.GetTimeCodesPerSecond())
+print('APP_USD', out, 'lights off', len(lights), 'cameras off', len(cameras), 'parked off', [str(x) for x in parked], 'materials', n, 'time', start, end, raw.GetTimeCodesPerSecond())
