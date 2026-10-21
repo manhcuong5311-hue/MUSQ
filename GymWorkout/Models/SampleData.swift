@@ -1204,11 +1204,10 @@ enum SampleData {
         Exercise(name: "Banded Glute Bridge", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "BAND",
                  difficulty: .beginner),
-        // From the Desktop "300-400" folder (2026-10-12): the builder's 383-392.
+        // From the Desktop "300-400" folder (2026-10-12): the builder's 383-392
+        // (387, the Standing Cable Hip Extension, dropped on 2026-10-19: the
+        // female model's kickbacks cover it).
         Exercise(name: "Cable Pull-Through", category: .legs,
-                 primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
-                 difficulty: .beginner),
-        Exercise(name: "Standing Cable Hip Extension", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
                  difficulty: .beginner),
         Exercise(name: "Reverse Hyperextension", category: .legs,
@@ -1952,7 +1951,6 @@ enum SampleData {
         "Single-Leg Hip Thrust": singleLegHipThrustContent,
         "B-Stance Hip Thrust": bStanceHipThrustContent,
         "Cable Pull-Through": cablePullThroughContent,
-        "Standing Cable Hip Extension": standingCableHipExtensionContent,
         "Reverse Hyperextension": reverseHyperextensionContent,
         "Single-Leg Back Extension": singleLegBackExtensionContent,
         "45-Degree Hip Extension": hipExtension45Content,
@@ -2243,8 +2241,6 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.8, zoom: 0.745, offset: [-0.004, 0.268, 0.004])),
         "Cable Pull-Through":                  ExerciseModel(resource: "CablePullThrough",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.849, offset: [0.003, 0.051, -0.011])),
-        "Standing Cable Hip Extension":        ExerciseModel(resource: "StandingCableHipExtension",
-                                        framing: ModelFraming(yaw: -1.8, zoom: 0.884, offset: [0.012, 0.034, 0.053])),
         "Reverse Hyperextension":              ExerciseModel(resource: "ReverseHyperextension",
                                         framing: ModelFraming(yaw: -1.4, zoom: 0.501, offset: [-0.006, 0.063, 0.034])),
         "Single-Leg Back Extension":           ExerciseModel(resource: "SingleLegBackExtension",
@@ -43190,95 +43186,6 @@ enum SampleData {
             .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.68, cy: 0.43),
             .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.08, cx: 0.66, cy: 0.54),
             .init(DS.activationSoft.opacity(0.22), rx: 0.05, ry: 0.04, cx: 0.65, cy: 0.41)
-        ]
-    )
-
-    static let standingCableHipExtensionContent = ExerciseContent(
-        annotations: [
-            CueAnnotation(cueID: "kick", label: "Drive the leg back",
-                          labelPoint: CGPoint(x: 0.638, y: 0.40),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "patella_L"),
-            CueAnnotation(cueID: "torso", label: "Trunk still, slight lean",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "chest"),
-            CueAnnotation(cueID: "hips", label: "Hips square",
-                          labelPoint: CGPoint(x: 0.741, y: 0.30),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "pelvis"),
-            CueAnnotation(cueID: "knee", label: "Leg long",
-                          labelPoint: CGPoint(x: 0.785, y: 0.49),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "shin_L"),
-            CueAnnotation(cueID: "grip", label: "Hold the upright",
-                          labelPoint: CGPoint(x: 0.332, y: 0.16),
-                          leaderLength: 40, joint: "hand_L")
-        ],
-        cues: [
-            TechniqueCue(
-                id: "kick",
-                title: "Hip Extension",
-                intro: "The left leg swings back from the hip, from about 18 degrees in front of vertical to about 28 behind it, and pauses there.",
-                why: "Driving the thigh back is hip extension, with the gluteus maximus as the target muscle and the hamstrings helping. The pause at the back holds the glute at its shortest; here the leg stays there for about half a second before it swings forward.",
-                mistake: "Stopping the kick with the foot under the hips, so the thigh never gets behind the body.",
-                correct: "Push the heel back until the thigh is well behind you, hold for a moment, then let the leg swing forward under control."
-            ),
-            TechniqueCue(
-                id: "torso",
-                title: "Torso Position",
-                intro: "The trunk keeps a slight forward lean, about 9 degrees, and stays still while the leg moves.",
-                why: "Keeping the body still keeps the movement at the hip; when the lower back arches, the leg rises higher but the extra range comes from the spine. In a study of face-down leg lifts, drawing the belly in cut the pelvis's forward tip from about 10 degrees to 3 and more than doubled the glute's activity, while the lower-back muscles worked far less.",
-                mistake: "Arching the lower back and tipping the pelvis forward to swing the leg higher behind.",
-                correct: "Brace before each rep, keep the ribs down and the chest still, and let the leg stop where the hip stops."
-            ),
-            TechniqueCue(
-                id: "hips",
-                title: "Hip Position",
-                intro: "Both hip bones keep facing the column as the left leg goes back.",
-                why: "Square hips keep the leg moving straight back, so the glute extends the hip instead of the pelvis turning open to let the leg travel further. One guide's cue for cable kickbacks is to push the leg only as far as it goes without the hips rotating.",
-                mistake: "Letting the left hip roll open as the leg goes back, the foot drifting out to the side.",
-                correct: "Keep both hip bones pointing at the column and move the left leg straight back in line with the hip."
-            ),
-            TechniqueCue(
-                id: "knee",
-                title: "Leg Position",
-                intro: "The knee softens as the foot passes under you and straightens as the leg reaches back.",
-                why: "Here the knee goes from about 160 degrees at the start to 149 as the foot swings under the body, then to about 174, nearly straight, at the back. Reaching long through the heel keeps the cuff low and far from the hip; bending the knee to flick the heel up lifts the cuff and shortens the cable's leverage on the hip, so the end of the rep gets easier without the hip going further.",
-                mistake: "Bending the knee at the back of the kick and lifting the heel toward the glutes.",
-                correct: "Let the knee soften as the foot passes under you, then reach long through the heel as the thigh goes back."
-            ),
-            TechniqueCue(
-                id: "grip",
-                title: "Support",
-                intro: "Both hands hold the column's upright at about waist height while you stand tall on the right leg.",
-                why: "Holding on takes balance out of the lift so the left glute can do the work, while the right leg stays almost straight and still under you. The hands only steady you: pulling on the upright twists the body into the kick.",
-                mistake: "Pulling on the upright to twist the shoulders and trunk round as the leg goes back.",
-                correct: "Hold the upright lightly with both hands, elbows bent, stand tall on the right leg and keep the shoulders square to the column."
-            )
-        ],
-        activation: [
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.36)
-        ],
-        stabilisers: ["gluteus medius", "erector spinae", "obliques", "quadratus lumborum"],
-        setup: [
-            "Fasten an ankle cuff just above your left ankle and clip it to the low pulley.",
-            "Face the column and hold its upright with both hands at about waist height.",
-            "Step back until the cable is tight, standing tall on your right leg with the left foot just off the floor in front of you.",
-            "Lean forward slightly and brace before the first rep."
-        ],
-        comparison: FormComparisonCopy(
-            correctBadge: "CORRECT FORM",
-            mistakeBadge: "ARCHING THE BACK",
-            correctCue: "Leg moves, back stays still",
-            mistakeCue: "Lower back arches to lift the leg",
-            correctNote: "With the trunk braced and still, the leg stops where the hip stops, so the glute does the extending.",
-            mistakeNote: "Arching the lower back lifts the leg higher, but the extra height comes from the spine, not the glute."
-        ),
-        glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.56, cy: 0.45),
-            .init(DS.activationSoft.opacity(0.22), rx: 0.05, ry: 0.07, cx: 0.54, cy: 0.56)
         ]
     )
 

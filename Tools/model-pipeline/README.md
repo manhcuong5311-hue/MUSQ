@@ -795,6 +795,17 @@ from the front-left three-quarter (-1.0; the lifter faces +x), so the stance
 width reads; the hinge kickback at -1.0 like the step-down; the bench
 kickback side-on at -1.3.
 
+Dropped male kickbacks (2026-10-19): the owner took 386 (single-leg cable
+kickback) and 387 (standing cable hip extension) out of the app because the
+female model's kickbacks already cover them. 387 was the Standing Cable Hip
+Extension (catalog entry, trainer content, model framing, fault poses,
+`Legs/StandingCableHipExtension.usdc` and its library thumbnail all removed);
+386 had never been added. Their folders are gone from the drive's
+`🟢hamstrings_glutes_356_400`; skip both in any later 300-400 swap. The tool
+data (`probe.py`, `thumbs.json`, `posetimes.json`, `bottoms.json`, the 1012
+specs and notes, `convert_all.py`'s `300-400-1012/387_…` entry) still lists
+387 as a record of that round.
+
 Desktop "From 316" folder (2026-10-19): `~/Desktop/From 316` holds 52
 exports (316-325 and 356-400, re-saved by the owner 2026-10-18/19; no 357,
 which keeps its model, and 386/387 are dropped: the female model's

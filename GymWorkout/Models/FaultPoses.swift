@@ -5997,68 +5997,6 @@ enum FaultPoses {
         moves: [.shift(carried + ["shin_*", "foot_*", "foot_*.tip"], ahead: -0.4)]
     )
 
-    /// Standing Cable Hip Extension: how far the left leg is back. The
-    /// ankles are 0.32-0.38 torso lengths apart with the leg forward or
-    /// under the body and 0.82 at the back of the kick: none forward, all
-    /// of it from about 0.8 (the back's hold, 1.67-2.17 s).
-    private static let r1012hipextLegBack = FaultStrength.between("foot_L", "foot_R", from: 0.45, to: 0.8)
-
-    /// Standing Cable Hip Extension: a short kick, the left leg swung 26°
-    /// forward about the hip, so at the back the thigh stops about 2° behind
-    /// vertical instead of 28° and the foot ~36 cm further forward, under
-    /// the hips.
-    private static let r1012hipextKickShort = FaultPose(
-        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
-        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: 26)],
-        strength: r1012hipextLegBack
-    )
-
-    /// Standing Cable Hip Extension: the lower back arching to swing the leg
-    /// higher. The mid-spine sinks 0.12 torso lengths (~7 cm) toward the
-    /// belly and the chest 0.05, and the left leg swings 14° further back,
-    /// the foot ~13 cm higher at the back of the kick.
-    private static let r1012hipextKickArched = FaultPose(
-        chains: [spine, ["thigh_R", "pelvis", "thigh_L"], leg("L")],
-        moves: [.shift(["spine"], forward: 0.12), .shift(["chest"], forward: 0.05),
-                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: -14)],
-        strength: r1012hipextLegBack
-    )
-
-    /// Standing Cable Hip Extension: the left hip rolling open, the hips and
-    /// left leg turned 22° about the pelvis (the left hip back) and the leg
-    /// swung 22° out about the hip: at the back of the kick the left foot
-    /// ~17 cm out to the side. The drift runs across the lifter, along the
-    /// line of sight in the trainer's framing, so the table turns it round
-    /// to the lifter's back.
-    private static let r1012hipextHipOpened = FaultPose(
-        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
-        moves: [.turn(pivot: "pelvis", points: ["thigh_L", "thigh_R", "shin_L", "foot_L", "foot_L.tip"], axis: .up, degrees: -22),
-                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 22)],
-        strength: r1012hipextLegBack
-    )
-
-    /// Standing Cable Hip Extension: the knee bending at the back of the
-    /// kick, the heel flicked up toward the glutes: the left foot turned 55°
-    /// up about the knee, 174° -> ~119° at the back, the ankle ~32 cm
-    /// higher.
-    private static let r1012hipextKneeCurled = FaultPose(
-        chains: [leg("L")],
-        moves: [.turn(pivot: "shin_L", points: ["foot_L", "foot_L.tip"], axis: .lateral, degrees: -55)],
-        strength: r1012hipextLegBack
-    )
-
-    /// Standing Cable Hip Extension: pulling on the upright to twist into
-    /// the kick, the trunk and shoulders turned 30° about the vertical, the
-    /// left shoulder back (~10 cm each shoulder), the elbows re-seated with
-    /// the hands still on the upright: the left arm straightens (117° ->
-    /// ~159°) and the right pulls in (-> ~92°). Lab round 1 drew the trunk
-    /// and shoulders alone (25°), which barely read from behind-left.
-    private static let r1012hipextTwistedOnUpright = FaultPose(
-        chains: [spine, shoulders, arms],
-        moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .up, degrees: -30),
-                .resolve(["forearm_*"])]
-    )
-
     /// Reverse Hyperextension: how far the legs are up, from the neck's
     /// distance to the left ankle (1.72 torso lengths hanging, 2.42 at the
     /// top): none until the legs pass about halfway, all of it at the top.
@@ -13203,22 +13141,6 @@ enum FaultPoses {
             "arms": r1012hipextArmsRowed,
             // Standing ~24 cm closer to the column.
             "stance": r1012hipextCloserToPulley
-        ],
-        "Standing Cable Hip Extension": [
-            // A short kick: the thigh stopping about vertical at the back
-            // (2° behind instead of 28°), the foot ~36 cm forward.
-            "kick": r1012hipextKickShort,
-            // The lower back arching (~7 cm) and the leg ~14° higher.
-            "torso": r1012hipextKickArched,
-            // The hip rolling open, the foot ~17 cm out to the side. Turned
-            // 1.34 round to the lifter's back (a total of -3.14), where the
-            // sideways drift crosses the screen.
-            "hips": r1012hipextHipOpened.seen(-1.34),
-            // The knee bending to ~119° at the back, the heel ~32 cm higher.
-            "knee": r1012hipextKneeCurled,
-            // The trunk twisted 30° on the upright, the left shoulder back,
-            // the right arm pulling.
-            "grip": r1012hipextTwistedOnUpright
         ],
         "Reverse Hyperextension": [
             // Stopping halfway: the legs about 42° below level at the top.
