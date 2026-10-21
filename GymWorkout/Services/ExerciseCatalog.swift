@@ -103,10 +103,12 @@ enum ExerciseCatalog {
 
     /// No external load unless the user adds some (a vest, a plate). The
     /// towel hang is a hang from a bar, so it counts too, as do the ball,
-    /// slider and band lifts of the 351-400 set (nothing to log in kilos).
+    /// slider and band lifts of the 351-400 set (nothing to log in kilos), and
+    /// the box jumps, jump rope, battle ropes and rower of the 401-500 set.
     static func isBodyweight(_ name: String) -> Bool {
         guard let exercise = exercise(named: name) else { return false }
-        return ["BODYWEIGHT", "BENCH", "TOWEL", "SWISS BALL", "SLIDERS", "BAND"].contains(exercise.equipment)
+        return ["BODYWEIGHT", "BENCH", "TOWEL", "SWISS BALL", "SLIDERS", "BAND",
+                "PLYO BOX", "JUMP ROPE", "BATTLE ROPE", "ROWER"].contains(exercise.equipment)
     }
 
     /// Step-by-step setup, from the exercise's trainer content.
@@ -123,14 +125,17 @@ enum ExerciseCatalog {
 
     /// Holds and loaded carries, logged in seconds rather than reps (the
     /// 401-500 folder adds a calf raise hold, a walk on the toes, the hollow
-    /// body hold, three held planks, two carry marches and the bear crawl).
+    /// body hold, three held planks, two carry marches and the bear crawl; on
+    /// 2026-10-21 the sled, battle rope, jump rope and rower work).
     private static let timedExercises: Set<String> = ["Plank", "Side Plank",
                                                       "Farmer's Carry", "Suitcase Carry", "Overhead Carry",
                                                       "Plate Pinch Hold", "Dumbbell Static Hold",
                                                       "Barbell Static Hold", "Towel Grip Hold",
                                                       "Calf Raise Hold", "Farmer's Walk on Toes", "Hollow Body Hold",
                                                       "RKC Plank", "Weighted Plank", "Copenhagen Plank",
-                                                      "Farmer Carry March", "Suitcase Carry March", "Bear Crawl"]
+                                                      "Farmer Carry March", "Suitcase Carry March", "Bear Crawl",
+                                                      "Sled Push", "Sled Drag", "Battle Rope Alternating Waves",
+                                                      "Battle Rope Slams", "Jump Rope", "Rowing Machine"]
 
     private static let byName: [String: Exercise] =
         Dictionary(SampleData.exercises.map { ($0.name, $0) }, uniquingKeysWith: { first, _ in first })

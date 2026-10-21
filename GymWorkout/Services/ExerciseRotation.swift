@@ -32,6 +32,11 @@ enum MovementPattern: String {
         // raises before all of those, so the leg-press, hack-squat and Smith
         // calf raises and the calf press stay calf work.
         if has("carry", "walk on toes", "bear crawl") { self = .carry }
+        // Conditioning from the 401-500 folder (2026-10-21): the rower is not a
+        // row, and the jumps are not squats or step-ups to swap in for them.
+        else if has("rowing machine", "jump", "sled", "battle rope", "medicine ball slam", "chest pass") {
+            self = .other
+        }
         // Planks that move are drills, not holds (445-474, 2026-10-05).
         else if has("plank shoulder tap", "plank knee to elbow", "side plank hip lift") { self = .coreStability }
         else if has("plank hip dip") { self = .trunkRotation }
@@ -71,7 +76,8 @@ enum MovementPattern: String {
             self = .trunkRotation
         }
         else if has("rollout", "body saw") { self = .rollout }
-        else if has("thruster", "clean and press", "clean and jerk", "power clean", "hang clean", "snatch") {
+        else if has("thruster", "clean and press", "clean and jerk", "power clean", "hang clean", "kettlebell clean",
+                    "snatch", "jerk") {
             self = .olympicLift
         }
         else if has("dead bug", "bird dog", "hollow body", "mountain climber") { self = .coreStability }

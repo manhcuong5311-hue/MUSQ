@@ -832,6 +832,67 @@ lying curl side-on at -1.35 like the Lying Leg Curl, the two machines side-on
 at -1.35 so the leg drives back in profile, the banded bridge at -0.8 so the
 band at the knees reads.
 
+Desktop "401-500" folder (2026-10-21): `~/Desktop/401-500` holds 98
+exports (401-500 without 487 and 497, re-saved by the owner 2026-10-19..21).
+Plain swaps like the "From 316" round (cues, muscle rows, fault ghosts and
+library tiles left for later): cloned to `SourceExports/401-500-1021/`,
+converted, `one_side_tiers.py` (13 changed: the single-leg calf and tibialis
+raises, the side and Copenhagen planks, both side bends, the one-arm
+kettlebell and dumbbell lifts, the windmill and the Step-Up Jump), padded and
+slimmed against `AnatomyBodyV2.usdc` (all attribute for attribute,
+0.3-2.1 MB). All intact: one 227/228-joint skeleton, one animation over 1-192
+(1-384 for 495/496), no cameras. 73 replace their app models. Against them
+(`drive_diff.py` without the toe joints, which the old 211-joint models
+lack): 61 kept their motion exactly; 404 (the new M32, the lifter 18 cm
+higher and 13 cm forward), 406 (the LS hack squat, hands 46 cm), 413 (the
+HP34, 11 cm), 428/429 (the ABB decline bench, the lifter 22 cm higher), 440
+(arms 17 cm), 443/444 (head 13 cm), 445 (feet 14 cm), 461 (hands 8 cm, the
+rope re-rigged), 466 (10 cm) and 472/473 (knees 9-21 cm) moved. Equipment:
+the seats became the GYM bench on 407-410 and 418 (and 457's bench), the
+calf press the LP33, new bands on 424/425 (425's anchored to a kettlebell
+1.7 m ahead, off the frame). Paint changed on 44 (on the converted models):
+mostly the secondary forearms, upper back, quads, delts and triceps unlit;
+the abs bright to dim where the hip flexors or obliques lead (leg raises,
+kicks, twists, landmine rotations, the dead bug); the hip flexors bright to
+dim on the V-ups, toe touch, toe-to-bar and rollout; 456's glutes unlit; 474
+Clean and Press now lights the hamstrings, side delts and triceps bright with
+the upper back dim. 458/459 (the side bends) export the right abs and
+obliques lit with no glow while the left glows, so `one_side_tiers.py`
+unlights the right, as Blender draws it (asked about as a possible slip on
+2026-10-12; the owner has re-saved both since with it unchanged).
+New exercises with a model only: 402 Barbell Standing Calf Raise, 475/476
+Dumbbell and Kettlebell Clean and Press, 477 Barbell Power Clean, 478 Hang
+Clean, 479 Dumbbell Hang Clean, 480 Kettlebell Clean, 481 Barbell Clean and
+Jerk, 482 Split Jerk, 483 Push Jerk, 484 Power Snatch, 485 Dumbbell Snatch,
+486 Kettlebell Snatch, 488 Kettlebell Windmill, 489 Sled Push, 490 Sled Drag,
+491 Battle Rope Alternating Waves, 492 Battle Rope Slams, 493 Medicine Ball
+Slam, 494 Medicine Ball Chest Pass, 495 Box Jump, 496 Step-Up Jump, 498
+Squat Jump, 499 Jump Rope and 500 Rowing Machine (into `Legs/`, `Shoulder/`,
+`Abs/`, `Chest/` and `Back/`). The battle ropes and the jump rope are animated
+NurbsCurves (each written twice, the copy under a `<name>_0` Xform);
+`curves2mesh.py` now evaluates them as B-splines at their Greville points and
+builds the same rigid segment chains as the animated cables (a 38 mm battle
+rope, the jump rope at the cables' 8 mm); the battle ropes' anchor 6 m ahead
+is parked off by the converter. `MovementPattern` files the rower, the jumps,
+the sled, battle ropes, slam and chest pass as `.other` (not rows, squats or
+step-ups to swap in) and the jerks and kettlebell clean as Olympic lifts; the
+sled, battle rope, jump rope and rower work is timed, and the box, ropes and
+rower log no load.
+Framings: the clips that kept their motion keep theirs (viewport stills of
+all 73 at 2 s); for the moved ones, stills at 0-5 s of the current framing
+against it shifted by the body solve's change: the Donkey Calf Raise (zoom
+0.957 -> 0.826; the M32's pad cut the head off), the Hack Squat Calf Raise
+(0.966 -> 0.865) and both decline sit-ups (offset y down 7.8 cm for the
+higher bench) take the shifted one, the others keep theirs. The new ones
+were solved (`framer.py` taking no joints under CTRL/MCH; `HG_Weight`,
+`Kettlebell` and `MedicineBall` held) and picked on stills: the cleans,
+clean and presses, jerks and snatches at -0.8 like the Clean and Press, the
+windmill -0.3, the sled, battle ropes, chest pass and box and step-up jumps
+side-on (-1.3; the ropes and the thrown ball leave the frame), the rower
+-1.35, the slam, squat jump and jump rope -0.8; the barbell calf raise -0.8
+too (side-on its plate hid the head) and the Sled Drag zoomed out to 0.68 so
+the sled shows.
+
 X-ray scapula demo (2026-10-17): `Chest/XRayScapulaBenchSetup.usdc`, opened from
 the "Retract scapula" cue of the bench-type presses (`XRayDemos.swift`,
 `XRayDemoView.swift`, `XRayViewport.swift`). Built in Blender on a copy of the

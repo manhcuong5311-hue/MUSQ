@@ -1,4 +1,4 @@
-# Replaces BasisCurves (which RealityKit does not draw) with meshes.
+# Replaces BasisCurves and NurbsCurves (which RealityKit does not draw) with meshes.
 #  - static curves  -> one swept tube mesh
 #  - curves whose points are time-sampled -> a chain of rigid cylinder
 #    segments, each with time-sampled translate/rotateXYZ/scale, because
@@ -17,7 +17,29 @@ def bezier_polyline(cvs, steps=8):
             out.append(p0*u*u*u + p1*3*u*u*t + p2*3*u*t*t + p3*t*t*t)
     return out
 
+def nurbs_polyline(curve, t):
+    """Points on a non-rational B-spline at its Greville abscissae: one per
+    control point, so a rope keeps its control polygon's segment count."""
+    cvs = [Gf.Vec3d(p) for p in curve.GetPointsAttr().Get(t)]
+    knots = list(curve.GetKnotsAttr().Get(t))
+    p = curve.GetOrderAttr().Get(t)[0] - 1
+    n = len(cvs)
+    out = []
+    for i in range(n):
+        u = sum(knots[i + 1:i + p + 1]) / p
+        s = n - 1 if u >= knots[n] else max(k for k in range(p, n) if knots[k] <= u)
+        d = [cvs[j + s - p] for j in range(p + 1)]
+        for r in range(1, p + 1):
+            for j in range(p, r - 1, -1):
+                lo, hi = knots[j + s - p], knots[j + 1 + s - r]
+                a = 0.0 if hi == lo else (u - lo) / (hi - lo)
+                d[j] = d[j - 1] * (1 - a) + d[j] * a
+        out.append(d[p])
+    return out
+
 def polyline(curve, t):
+    if curve.GetPrim().GetTypeName() == "NurbsCurves":
+        return nurbs_polyline(curve, t)
     pts = [Gf.Vec3d(p) for p in curve.GetPointsAttr().Get(t)]
     if curve.GetTypeAttr().Get() == "cubic" and curve.GetBasisAttr().Get() == "bezier":
         return bezier_polyline(pts)
@@ -125,10 +147,16 @@ def segment_chain(stage, path, curve, r, times):
 def replace_curves(stage, radius_for):
     """radius_for(prim) -> tube radius in metres. Returns a report list."""
     report = []
-    curves = [p for p in stage.Traverse() if p.GetTypeName() == "BasisCurves"]
+    # NurbsCurves too (2026-10-21): the battle ropes and the jump rope (one
+    # open, order-4 curve each, its points time-sampled), plus the copy under
+    # a `<name>_0` Xform that the duplicate check drops.
+    curves = [p for p in stage.Traverse() if p.GetTypeName() in ("BasisCurves", "NurbsCurves")]
     seen = set()
     for p in curves:
-        c = UsdGeom.BasisCurves(p)
+        c = UsdGeom.NurbsCurves(p) if p.GetTypeName() == "NurbsCurves" else UsdGeom.BasisCurves(p)
+        if p.GetTypeName() == "NurbsCurves":
+            w = c.GetPointWeightsAttr().Get(1)
+            assert len(c.GetCurveVertexCountsAttr().Get(1)) == 1 and (not w or set(w) == {1.0}), p.GetPath()
         pa = c.GetPointsAttr()
         times = pa.GetTimeSamples()
         t0 = times[0] if times else Usd.TimeCode.Default()
