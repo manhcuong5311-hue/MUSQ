@@ -700,8 +700,8 @@
   "length": 7.96
  },
  "Renegade Row": {
-  "time": 5.33,
-  "disp": 0.94,
+  "time": 1.33,
+  "disp": 1.01,
   "length": 7.96
  },
  "Gorilla Row": {
@@ -2187,6 +2187,186 @@
  "B-Stance Hip Thrust": {
   "time": 1.5,
   "disp": 1.64,
+  "length": 7.96
+ },
+ "Bent-Over Cable Overhead Triceps Extension": {
+  "time": 1.33,
+  "disp": 0.8,
+  "length": 7.96
+ },
+ "Dumbbell Lying Leg Curl": {
+  "time": 1.5,
+  "disp": 1.03,
+  "length": 7.96
+ },
+ "Machine Glute Press": {
+  "time": 1.5,
+  "disp": 1.18,
+  "length": 7.96
+ },
+ "Machine Glute Kickback": {
+  "time": 1.83,
+  "disp": 1.33,
+  "length": 7.96
+ },
+ "Banded Glute Bridge": {
+  "time": 1.5,
+  "disp": 0.28,
+  "length": 7.96
+ },
+ "Pallof Press": {
+  "time": 1.67,
+  "disp": 1.29,
+  "length": 7.96
+ },
+ "Lying Cable Curl": {
+  "time": 1.67,
+  "disp": 0.66,
+  "length": 7.96
+ },
+ "Cable Reverse Curl": {
+  "time": 1.83,
+  "disp": 0.81,
+  "length": 7.96
+ },
+ "Vertical Hack Squat": {
+  "time": 2.0,
+  "disp": 2.31,
+  "length": 7.96
+ },
+ "Standing Hinge Kickback": {
+  "time": 2.0,
+  "disp": 1.96,
+  "length": 7.96
+ },
+ "Incline Bench Cable Kickback": {
+  "time": 1.83,
+  "disp": 1.84,
+  "length": 7.96
+ },
+ "Barbell Standing Calf Raise": {
+  "time": 1.0,
+  "disp": 1.13,
+  "length": 7.96
+ },
+ "Dumbbell Clean and Press": {
+  "time": 5.0,
+  "disp": 8.11,
+  "length": 7.96
+ },
+ "Kettlebell Clean and Press": {
+  "time": 3.5,
+  "disp": 6.67,
+  "length": 7.96
+ },
+ "Barbell Power Clean": {
+  "time": 5.17,
+  "disp": 5.04,
+  "length": 7.96
+ },
+ "Hang Clean": {
+  "time": 1.67,
+  "disp": 1.9,
+  "length": 7.96
+ },
+ "Dumbbell Hang Clean": {
+  "time": 1.67,
+  "disp": 2.08,
+  "length": 7.96
+ },
+ "Kettlebell Clean": {
+  "time": 0.83,
+  "disp": 2.84,
+  "length": 7.96
+ },
+ "Barbell Clean and Jerk": {
+  "time": 4.5,
+  "disp": 7.2,
+  "length": 7.96
+ },
+ "Split Jerk": {
+  "time": 1.17,
+  "disp": 3.08,
+  "length": 7.96
+ },
+ "Push Jerk": {
+  "time": 1.17,
+  "disp": 2.53,
+  "length": 7.96
+ },
+ "Power Snatch": {
+  "time": 3.17,
+  "disp": 6.86,
+  "length": 7.96
+ },
+ "Dumbbell Snatch": {
+  "time": 3.5,
+  "disp": 6.89,
+  "length": 7.96
+ },
+ "Kettlebell Snatch": {
+  "time": 0.83,
+  "disp": 4.46,
+  "length": 7.96
+ },
+ "Kettlebell Windmill": {
+  "time": 1.83,
+  "disp": 3.57,
+  "length": 7.96
+ },
+ "Sled Push": {
+  "time": 0.33,
+  "disp": 0.63,
+  "length": 7.96
+ },
+ "Sled Drag": {
+  "time": 1.0,
+  "disp": 0.39,
+  "length": 7.96
+ },
+ "Battle Rope Alternating Waves": {
+  "time": 0.5,
+  "disp": 0.31,
+  "length": 7.96
+ },
+ "Battle Rope Slams": {
+  "time": 0.5,
+  "disp": 5.38,
+  "length": 7.96
+ },
+ "Medicine Ball Slam": {
+  "time": 1.17,
+  "disp": 5.16,
+  "length": 7.96
+ },
+ "Medicine Ball Chest Pass": {
+  "time": 0.5,
+  "disp": 1.86,
+  "length": 7.96
+ },
+ "Box Jump": {
+  "time": 2.0,
+  "disp": 9.85,
+  "length": 15.96
+ },
+ "Step-Up Jump": {
+  "time": 1.83,
+  "disp": 9.9,
+  "length": 15.96
+ },
+ "Squat Jump": {
+  "time": 1.67,
+  "disp": 5.78,
+  "length": 7.96
+ },
+ "Jump Rope": {
+  "time": 0.33,
+  "disp": 0.77,
+  "length": 7.96
+ },
+ "Rowing Machine": {
+  "time": 1.33,
+  "disp": 5.68,
   "length": 7.96
  }
 }

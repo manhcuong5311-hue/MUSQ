@@ -594,12 +594,12 @@
   ]
  },
  "Single-Leg Curl": {
-  "yaw": -1.35,
-  "zoom": 0.961,
+  "yaw": 1.35,
+  "zoom": 0.88,
   "off": [
-   -0.005,
-   0.079,
-   0.024
+   0.014,
+   0.063,
+   0.063
   ]
  },
  "Glute Bridge": {
@@ -2953,20 +2953,20 @@
  },
  "Chest Dip": {
   "yaw": -1.0,
-  "zoom": 0.991,
+  "zoom": 1.375,
   "off": [
-   -0.044,
-   0.041,
-   0.069
+   -0.015,
+   -0.32,
+   0.023
   ]
  },
  "Weighted Chest Dip": {
   "yaw": -1.0,
-  "zoom": 0.994,
+  "zoom": 1.266,
   "off": [
-   -0.04,
-   0.043,
-   0.063
+   -0.024,
+   -0.317,
+   0.038
   ]
  },
  "Decline Push-Up": {
@@ -3115,11 +3115,11 @@
  },
  "Donkey Calf Raise": {
   "yaw": -1.3,
-  "zoom": 1.201,
+  "zoom": 0.901,
   "off": [
-   0.048,
-   0.135,
-   -0.174
+   0.013,
+   0.052,
+   -0.047
   ]
  },
  "Machine Donkey Calf Raise": {
@@ -3133,11 +3133,11 @@
  },
  "Hack Squat Calf Raise": {
   "yaw": -0.6,
-  "zoom": 0.956,
+  "zoom": 0.84,
   "off": [
-   -0.045,
-   0.061,
-   0.031
+   0.003,
+   0.009,
+   -0.002
   ]
  },
  "Smith Machine Seated Calf Raise": {
@@ -3160,20 +3160,20 @@
  },
  "Dumbbell Seated Calf Raise": {
   "yaw": -1.3,
-  "zoom": 1.192,
+  "zoom": 0.989,
   "off": [
-   0.028,
-   0.161,
-   -0.1
+   -0.039,
+   0.139,
+   0.14
   ]
  },
  "Single-Leg Seated Calf Raise": {
   "yaw": -1.3,
-  "zoom": 1.132,
+  "zoom": 0.981,
   "off": [
-   0.025,
-   0.151,
-   -0.089
+   -0.04,
+   0.13,
+   0.145
   ]
  },
  "Single-Leg Machine Calf Raise": {
@@ -3241,11 +3241,11 @@
  },
  "Machine Tibialis Raise": {
   "yaw": -1.3,
-  "zoom": 1.187,
+  "zoom": 1.009,
   "off": [
-   0.025,
-   0.161,
-   -0.09
+   -0.053,
+   0.141,
+   0.192
   ]
  },
  "Wall Tibialis Raise": {
@@ -3939,6 +3939,330 @@
    0.051,
    0.363,
    -0.043
+  ]
+ },
+ "Bent-Over Cable Overhead Triceps Extension": {
+  "yaw": -0.6,
+  "zoom": 0.967,
+  "off": [
+   0.061,
+   0.057,
+   -0.042
+  ]
+ },
+ "Dumbbell Lying Leg Curl": {
+  "yaw": -1.35,
+  "zoom": 1.058,
+  "off": [
+   0.003,
+   0.138,
+   -0.013
+  ]
+ },
+ "Machine Glute Press": {
+  "yaw": -1.35,
+  "zoom": 0.839,
+  "off": [
+   -0.021,
+   -0.033,
+   0.092
+  ]
+ },
+ "Machine Glute Kickback": {
+  "yaw": -1.35,
+  "zoom": 0.971,
+  "off": [
+   -0.005,
+   0.068,
+   0.024
+  ]
+ },
+ "Banded Glute Bridge": {
+  "yaw": -0.8,
+  "zoom": 0.779,
+  "off": [
+   -0.02,
+   0.283,
+   0.021
+  ]
+ },
+ "Pallof Press": {
+  "yaw": -0.3,
+  "zoom": 0.756,
+  "off": [
+   -0.216,
+   -0.083,
+   0.067
+  ]
+ },
+ "Lying Cable Curl": {
+  "yaw": -1.3,
+  "zoom": 0.845,
+  "off": [
+   -0.072,
+   0.318,
+   0.26
+  ]
+ },
+ "Cable Reverse Curl": {
+  "yaw": -1.4,
+  "zoom": 0.907,
+  "off": [
+   -0.002,
+   0.045,
+   0.014
+  ]
+ },
+ "Vertical Hack Squat": {
+  "yaw": -1.0,
+  "zoom": 0.886,
+  "off": [
+   0.004,
+   -0.023,
+   -0.006
+  ]
+ },
+ "Standing Hinge Kickback": {
+  "yaw": -1.0,
+  "zoom": 0.711,
+  "off": [
+   0.02,
+   -0.113,
+   -0.032
+  ]
+ },
+ "Incline Bench Cable Kickback": {
+  "yaw": -1.3,
+  "zoom": 0.712,
+  "off": [
+   -0.064,
+   -0.097,
+   0.232
+  ]
+ },
+ "Barbell Standing Calf Raise": {
+  "yaw": -0.8,
+  "zoom": 0.862,
+  "off": [
+   -0.026,
+   0.019,
+   0.027
+  ]
+ },
+ "Dumbbell Clean and Press": {
+  "yaw": -0.8,
+  "zoom": 0.776,
+  "off": [
+   -0.025,
+   -0.038,
+   0.026
+  ]
+ },
+ "Kettlebell Clean and Press": {
+  "yaw": -0.8,
+  "zoom": 0.769,
+  "off": [
+   -0.007,
+   -0.023,
+   0.008
+  ]
+ },
+ "Barbell Power Clean": {
+  "yaw": -0.8,
+  "zoom": 0.929,
+  "off": [
+   -0.016,
+   0.056,
+   0.017
+  ]
+ },
+ "Hang Clean": {
+  "yaw": -0.8,
+  "zoom": 0.984,
+  "off": [
+   -0.017,
+   0.093,
+   0.017
+  ]
+ },
+ "Dumbbell Hang Clean": {
+  "yaw": -0.8,
+  "zoom": 0.985,
+  "off": [
+   0.004,
+   0.09,
+   -0.004
+  ]
+ },
+ "Kettlebell Clean": {
+  "yaw": -0.8,
+  "zoom": 1.086,
+  "off": [
+   0.025,
+   0.158,
+   -0.025
+  ]
+ },
+ "Barbell Clean and Jerk": {
+  "yaw": -0.8,
+  "zoom": 0.709,
+  "off": [
+   -0.045,
+   -0.076,
+   0.046
+  ]
+ },
+ "Split Jerk": {
+  "yaw": -0.8,
+  "zoom": 0.715,
+  "off": [
+   -0.052,
+   -0.054,
+   0.053
+  ]
+ },
+ "Push Jerk": {
+  "yaw": -0.8,
+  "zoom": 0.708,
+  "off": [
+   -0.042,
+   -0.072,
+   0.043
+  ]
+ },
+ "Power Snatch": {
+  "yaw": -0.8,
+  "zoom": 0.719,
+  "off": [
+   -0.039,
+   -0.065,
+   0.04
+  ]
+ },
+ "Dumbbell Snatch": {
+  "yaw": -0.8,
+  "zoom": 0.772,
+  "off": [
+   -0.013,
+   -0.034,
+   0.013
+  ]
+ },
+ "Kettlebell Snatch": {
+  "yaw": -0.8,
+  "zoom": 1.146,
+  "off": [
+   0.029,
+   0.194,
+   -0.029
+  ]
+ },
+ "Kettlebell Windmill": {
+  "yaw": -0.3,
+  "zoom": 0.905,
+  "off": [
+   0.098,
+   0.025,
+   -0.03
+  ]
+ },
+ "Sled Push": {
+  "yaw": -1.3,
+  "zoom": 1.017,
+  "off": [
+   0.04,
+   0.12,
+   -0.144
+  ]
+ },
+ "Sled Drag": {
+  "yaw": -1.3,
+  "zoom": 0.88,
+  "off": [
+   0.083,
+   0.067,
+   -0.299
+  ]
+ },
+ "Battle Rope Alternating Waves": {
+  "yaw": -1.3,
+  "zoom": 0.973,
+  "off": [
+   0.014,
+   0.094,
+   -0.049
+  ]
+ },
+ "Battle Rope Slams": {
+  "yaw": -1.3,
+  "zoom": 1.043,
+  "off": [
+   0.009,
+   0.136,
+   -0.031
+  ]
+ },
+ "Medicine Ball Slam": {
+  "yaw": -0.8,
+  "zoom": 1.37,
+  "off": [
+   0.043,
+   0.327,
+   -0.044
+  ]
+ },
+ "Medicine Ball Chest Pass": {
+  "yaw": -1.3,
+  "zoom": 0.925,
+  "off": [
+   0.06,
+   0.06,
+   -0.216
+  ]
+ },
+ "Box Jump": {
+  "yaw": -1.3,
+  "zoom": 0.758,
+  "off": [
+   0.073,
+   -0.083,
+   -0.263
+  ]
+ },
+ "Step-Up Jump": {
+  "yaw": -1.3,
+  "zoom": 0.679,
+  "off": [
+   0.067,
+   -0.129,
+   -0.242
+  ]
+ },
+ "Squat Jump": {
+  "yaw": -0.8,
+  "zoom": 0.757,
+  "off": [
+   0.014,
+   -0.128,
+   -0.014
+  ]
+ },
+ "Jump Rope": {
+  "yaw": -0.8,
+  "zoom": 0.896,
+  "off": [
+   -0.05,
+   0.022,
+   0.051
+  ]
+ },
+ "Rowing Machine": {
+  "yaw": -1.35,
+  "zoom": 0.752,
+  "off": [
+   0.032,
+   0.123,
+   -0.143
   ]
  }
 }

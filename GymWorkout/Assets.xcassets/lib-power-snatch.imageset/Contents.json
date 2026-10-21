@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-power-snatch.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

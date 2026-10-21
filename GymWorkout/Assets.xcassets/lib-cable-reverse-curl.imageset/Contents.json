@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-cable-reverse-curl.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

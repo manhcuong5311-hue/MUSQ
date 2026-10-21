@@ -211,3 +211,26 @@ Hip Extension, Cable Hip Adduction and Cable Pull-Through joined
 `BODY_ONLY`. Twelve new tiles (the 45-Degree Hip Extension's slot is
 `lib--degree-hip-extension`, as for the 45-Degree Leg Press); the library
 now has 438 exercises, all with a thumbnail.
+
+White-sneaker re-shoot (2026-10-21): every exercise whose model wears the new
+white shoes was re-shot with `Tools/lab/shots.sh photo`: the 381 men's models
+with the `Anatomy_Shoes_WhiteSneaker` mesh and the four women's tiles
+(`Female_Sneaker_*` meshes, the same white materials; Cable Knee-Drive
+Kickback came out identical). The 52 models still in the old black shoes
+(`Anatomy_Shoes_Surface`, material `DARK_Shoes_Matte`) kept their tiles. The
+36 exercises that had no tile (the model-only ones from the 2026-10-17..21
+swaps and the three newer women's lifts) got pose times and square framings
+the usual way. Pose times were recomputed for all and compared at the stored
+time: only the Renegade Row's (5.33 s) no longer showed its key pose and took
+the new 1.33 s; the hand-pinned ones (the six pulls at 0, the wrist and
+finger curls, Hip Adduction Machine, Toe-to-Bar) were kept. Framings were
+kept unless a re-solve moved them a lot and the old one now cropped: Chest
+Dip and Weighted Chest Dip (the new station cut the head), Donkey and Hack
+Squat Calf Raise, both seated calf raises and Machine Tibialis Raise (new
+machine or bench cropped), and Single-Leg Curl, whose trainer view turned to
++1.35 (the working leg's side). The battle ropes let their 3 m ropes crop,
+the Medicine Ball Chest Pass counts its ball as held and lets the rebound
+wall crop, and Lying Cable Curl and Cable Reverse Curl joined `BODY_ONLY`.
+`shots.sh` now passes the name through the environment, since
+"Farmer's Carry" broke its quoting. The library now has 473 exercises, all
+with a thumbnail.

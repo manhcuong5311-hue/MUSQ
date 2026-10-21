@@ -14,7 +14,9 @@ HELD = ("Barbell", "Dumbbell", "Lat_Bar", "Handle", "TGrip", "TBar_Plate", "Land
         # Batch 241-300 (2026-09-27): the EZ bar, pinch plates and towels are held.
         "EZBar", "PinchPlates", "Towel",
         # 1-50 redo (2026-09-29): the preacher and reverse curls' EZ bars.
-        "EZ_Bar")
+        "EZ_Bar",
+        # White-sneaker re-shoot (2026-10-21): the chest pass's ball, in flight.
+        "MedicineBall")
 BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Grip Lat Pulldown",
              "V-Bar Lat Pulldown", "Single-Arm Lat Pulldown", "Rope Lat Pulldown",
              # Batch 191-240 (2026-09-26): cable towers and the rear-delt machine
@@ -43,10 +45,17 @@ BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Gri
              "Smith Machine Split Squat", "Smith Machine Bulgarian Split Squat",
              "Smith Machine Reverse Lunge", "Smith Machine Good Morning",
              "Cable Standing Leg Curl", "Standing Cable Hip Extension", "Cable Hip Adduction",
-             "Cable Pull-Through"}
+             "Cable Pull-Through",
+             # White-sneaker re-shoot (2026-10-21): the two new cable curls'
+             # tower and the chest pass's rebound wall left the lifter small.
+             "Lying Cable Curl", "Cable Reverse Curl", "Medicine Ball Chest Pass",
+             "Battle Rope Alternating Waves", "Battle Rope Slams"}
 # Held parts a lift lets crop (401-500, 2026-10-04): the landmine chest press's
 # 1.9 m bar, as in its trainer framing.
-CROP = {"Landmine Chest Press": ("LandmineBar",)}
+# The battle ropes (2026-10-21) run 3 m to the anchor and left the lifter a
+# speck, so they crop like the landmine bar.
+CROP = {"Landmine Chest Press": ("LandmineBar",),
+        "Battle Rope Alternating Waves": ("BattleRope",), "Battle Rope Slams": ("BattleRope",)}
 block = SRC[SRC.index("modelByExercise: [String: ExerciseModel] = ["):SRC.index("static func model(for")]
 jobs = {}
 for m in re.finditer(r'"([^"]+)":\s*ExerciseModel\(resource: "([^"]+)",\s*framing: (?:\.(\w+)|ModelFraming\(yaw: ([-\d.]+))', block):

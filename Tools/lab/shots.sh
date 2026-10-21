@@ -37,9 +37,11 @@ stills)
   done; done;;
 photo)
   for n in "$@"; do
-    read fr t <<<$(python3 -c "
-import json, sys
-T = json.load(open('$REPO/Tools/thumbnails/thumbs.json'))['$n']; P = json.load(open('$REPO/Tools/thumbnails/posetimes.json'))['$n']
+    # The name goes in through the environment: "Farmer's Carry" broke the quoting.
+    read fr t <<<$(N="$n" python3 -c "
+import json, os
+n = os.environ['N']
+T = json.load(open('$REPO/Tools/thumbnails/thumbs.json'))[n]; P = json.load(open('$REPO/Tools/thumbnails/posetimes.json'))[n]
 print(','.join(str(v) for v in [T['yaw'], T['zoom'], *T['off']]), P['time'])")
     f="$out/lib-$(echo "$n" | tr 'A-Z' 'a-z' | sed 's/[^a-z]\{1,\}/-/g').png"
     shoot SIMCTL_CHILD_HARNESS_PHOTO="$n" SIMCTL_CHILD_HARNESS_FRAMING="$fr" SIMCTL_CHILD_HARNESS_STILL="$t" "$f"

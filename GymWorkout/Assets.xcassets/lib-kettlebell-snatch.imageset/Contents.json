@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-kettlebell-snatch.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

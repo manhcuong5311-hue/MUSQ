@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "lib-barbell-clean-and-jerk.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
