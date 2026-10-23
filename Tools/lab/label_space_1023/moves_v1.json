@@ -1,0 +1,235 @@
+{
+ "Reverse Lunge": {
+  "Front knee stacks over ankle": {
+   "x": 0.842,
+   "y": 0.034,
+   "side": "leading"
+  },
+  "Weight stays on the front leg": {
+   "x": 0.628,
+   "y": 0.084,
+   "side": "leading"
+  },
+  "Step straight back": {
+   "x": 0.357,
+   "y": 0.908,
+   "side": "leading"
+  },
+  "Drive up through the front heel": {
+   "x": 0.458,
+   "y": 0.908,
+   "side": "trailing"
+  }
+ },
+ "Sissy Squat": {
+  "Torso reclines with control": {
+   "x": 0.479,
+   "y": 0.47,
+   "side": "leading"
+  },
+  "Brace the core": {
+   "x": 0.698,
+   "y": 0.47,
+   "side": "trailing"
+  },
+  "Knee, hip and shoulder in line": {
+   "x": 0.522,
+   "y": 0.656,
+   "side": "leading"
+  },
+  "Go only as far as controlled": {
+   "x": 0.51,
+   "y": 0.715,
+   "side": "trailing"
+  }
+ },
+ "Front Squat": {
+  "Elbows driven up high": {
+   "x": 0.42,
+   "y": 0.215,
+   "side": "leading"
+  },
+  "Torso stays upright": {
+   "x": 0.62,
+   "y": 0.545,
+   "side": "trailing"
+  }
+ },
+ "Low-to-High Cable Fly": {
+  "Shoulders down, not shrugged": {
+   "x": 0.597,
+   "y": 0.072,
+   "side": "leading"
+  },
+  "Diagonal path, low to high": {
+   "x": 0.696,
+   "y": 0.379,
+   "side": "leading"
+  },
+  "Elbows lead the sweep": {
+   "x": 0.775,
+   "y": 0.429,
+   "side": "leading"
+  },
+  "Hands meet at chin height": {
+   "x": 0.874,
+   "y": 0.479,
+   "side": "leading"
+  }
+ },
+ "Hip Abduction Machine (Lean)": {
+  "Lean forward from the hips": {
+   "x": 0.502,
+   "y": 0.24,
+   "side": "trailing"
+  },
+  "Hold the handles": {
+   "x": 0.649,
+   "y": 0.4,
+   "side": "trailing"
+  },
+  "Push knees out": {
+   "x": 0.675,
+   "y": 0.57,
+   "side": "trailing"
+  }
+ },
+ "Biceps Curl": {
+  "Shoulders down and back": {
+   "x": 0.76,
+   "y": 0.058,
+   "side": "leading"
+  }
+ },
+ "Bulgarian Split Squat": {
+  "Front knee tracks the toes": {
+   "x": 0.474,
+   "y": 0.851,
+   "side": "leading"
+  },
+  "Front foot flat, mid-foot": {
+   "x": 0.433,
+   "y": 0.902,
+   "side": "leading"
+  },
+  "Dumbbells at your sides": {
+   "x": 0.979,
+   "y": 0.325,
+   "side": "leading"
+  }
+ },
+ "Overhead Cable Triceps Extension": {
+  "Deep stretch behind the head": {
+   "x": 0.53,
+   "y": 0.062,
+   "side": "leading"
+  }
+ },
+ "Pistol Squat": {
+  "Full depth": {
+   "x": 0.767,
+   "y": 0.256,
+   "side": "trailing"
+  },
+  "Knee tracks toes": {
+   "x": 0.63,
+   "y": 0.888,
+   "side": "leading"
+  },
+  "Free leg straight": {
+   "x": 0.327,
+   "y": 0.835,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Romanian Deadlift": {
+  "Knees bend, then hold": {
+   "x": 0.42,
+   "y": 0.714,
+   "side": "leading"
+  },
+  "Dumbbells slide down the thighs": {
+   "x": 0.573,
+   "y": 0.766,
+   "side": "leading"
+  },
+  "Neutral spine": {
+   "x": 0.717,
+   "y": 0.205,
+   "side": "trailing"
+  },
+  "Hips back": {
+   "x": 0.766,
+   "y": 0.257,
+   "side": "trailing"
+  }
+ },
+ "Cable Glute Kickback": {
+  "Hinge forward, spine long": {
+   "x": 0.47,
+   "y": 0.215,
+   "side": "leading"
+  },
+  "Hips square to the stack": {
+   "x": 0.553,
+   "y": 0.32,
+   "side": "trailing"
+  }
+ },
+ "Triceps Pushdown": {
+  "Shoulders down and back": {
+   "x": 0.526,
+   "y": 0.203,
+   "side": "trailing"
+  },
+  "Elbows pinned to sides": {
+   "x": 0.571,
+   "y": 0.3,
+   "side": "trailing"
+  },
+  "Slight forward lean": {
+   "x": 0.635,
+   "y": 0.423,
+   "side": "trailing"
+  },
+  "Full lockout at the bottom": {
+   "x": 0.536,
+   "y": 0.584,
+   "side": "trailing"
+  }
+ },
+ "Single-Arm Cable Pushdown": {
+  "Shoulder stays down": {
+   "x": 0.601,
+   "y": 0.203,
+   "side": "trailing"
+  },
+  "Elbow pinned to the side": {
+   "x": 0.452,
+   "y": 0.27,
+   "side": "leading"
+  },
+  "Full lockout at the bottom": {
+   "x": 0.464,
+   "y": 0.42,
+   "side": "leading"
+  }
+ },
+ "Leg Extension": {
+  "Control the full lowering": {
+   "x": 0.021,
+   "y": 0.335,
+   "side": "trailing"
+  },
+  "Slow, controlled tempo": {
+   "x": 0.429,
+   "y": 0.553,
+   "side": "leading"
+  },
+  "Pad rests above the ankle": {
+   "x": 0.16,
+   "y": 0.735,
+   "side": "trailing"
+  }
+ }
+}

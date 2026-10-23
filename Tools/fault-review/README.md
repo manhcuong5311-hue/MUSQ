@@ -275,4 +275,5 @@ The reviewers also noted callout pills that cover a face or hands on some
 of these lifts after the re-tune (Reverse Lunge, Sissy Squat, Front Squat at
 3 s, Low-to-High Cable Fly, Hip Abduction Machine (Lean), Biceps Curl, the
 Overhead Cable Triceps Extension at 1.5 s, Pistol Squat at 3 s, Leg
-Extension); those layouts were not changed in this round.
+Extension); those pills, and the ones on the hands of five more lifts, were
+moved on 2026-10-23 (`Tools/lab/label_space_1023/`).
