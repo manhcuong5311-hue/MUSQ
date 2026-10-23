@@ -7654,8 +7654,13 @@ enum FaultPoses {
                                strength: .withBend("shin_L"))
         ],
         "Front Squat": [
-            // Gripping like a curl: the elbows sink under the bar.
-            "rack": FaultPose(chains: [armsToGrip, bar], moves: [.shift(["forearm_*"], up: -0.25), .resolve(["forearm_*"])]),
+            // Gripping like a curl: the elbows sink under the bar. Redrawn
+            // 2026-10-22: the re-tuned model racks with the elbows high, so the
+            // old drop along the shoulder-wrist line left the elbows where they
+            // were; the arms now swing down about the shoulders, seen side-on.
+            "rack": FaultPose(chains: [armsToGrip, bar],
+                              moves: [.turn(pivot: "upper_arm_*", points: ["forearm_*", "hand_*", "hand_*.tip"], axis: .lateral, degrees: -40)],
+                              view: sideOn),
             // The elbows dropping as the squat deepens, the bar rolling forward.
             "elbow": FaultPose(chains: [spine, armsToGrip, bar],
                                moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: -10),
@@ -7935,10 +7940,10 @@ enum FaultPoses {
                               moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: -25),
                                       .shift(["spine"], forward: 0.07)],
                               strength: .whenStraight("shin_L")),
-            // Twisting the trunk open against the frame.
-            "grip": FaultPose(chains: [spine, shoulders],
-                              moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .up, degrees: -18)],
-                              view: -0.9)
+            // Hauling on the frame: the trunk leans off it and the arm bends
+            // to pull (2026-10-22; the twist about the spine it used to draw
+            // lay along the spine from this side and showed nothing).
+            "grip": pulledOnSupport(strength: .always).seen(faceOn)
         ],
         "Cable Side Kick": [
             "torso": leanedAway(16, strength: .between("foot_L", "foot_R", from: 0.43, to: 1.26)),
@@ -8183,9 +8188,12 @@ enum FaultPoses {
             "shoulder": hunched().seen(-0.8),
             "elbow": elbowsForward(30).seen(-0.9),
             // Hands kept together: the rope stops on the thighs short of lockout.
+            // Gated on the straight elbow since 2026-10-22: the re-tuned model
+            // holds the hands as far apart at the top as at the bottom, so the
+            // old hand-spread window no longer fired.
             "split": FaultPose(chains: [armsToGrip],
-                               moves: [.shift(["hand_*", "hand_*.tip"], up: 0.08, outward: -0.12), .resolve(["forearm_*"])],
-                               strength: .between("hand_L", "hand_R", from: 0.65, to: 0.82)),
+                               moves: [.shift(["hand_*", "hand_*.tip"], up: 0.1, outward: -0.12), .resolve(["forearm_*"])],
+                               strength: .whenStraight("forearm_L")),
             "torso": leanedForward(18, strength: .always).seen(-0.9),
             "feet": crowdingTheStack.seen(-0.9)
         ],

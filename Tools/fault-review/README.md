@@ -249,3 +249,30 @@ fall through to the press rule). The library's Back Extension arms ghost and
 the Dumbbell and Barbell Hip Thrusts' `hipsShortOfLockout` distort the arms
 on their own rigs (the hipext and thrust families use corrected copies);
 left for a later pass.
+
+SSD 1-100 ghosts on the 2026-10-17 models (2026-10-22): the owner's call was
+to redraw as few as possible ("a ghost shows the wrong form anyway; I only
+tweaked many models a little, so a mistake is still a mistake; redraw only
+where it is too far off"). Every ghost of the 87 exercises with content was
+shot on the new models (`Tools/lab/shoot_ex.sh`, 440 mistake views, 261
+trainer stills), one reviewer per exercise judged each against four defects
+(the ghost vanished or matches the model; limbs detached, swapped or bent
+backwards; it shows something other than the mistake text; it goes deep
+through the floor or equipment), and two skeptics had to agree before any
+redraw. 405 ghosts were kept, 31 cues are ring-only by design, one proposal
+(Push-Up feet) was voted down, and three were redrawn:
+- Front Squat "rack": the re-tuned model racks with the elbows high, so the
+  old drop along the shoulder-to-wrist line left the elbows in place; the
+  arms now swing 40° down about the shoulders, seen side-on.
+- Rope Pushdown "split": the model now holds the hands about 0.67 torso
+  apart at the top and the bottom alike, so the hand-spread gate (0.65-0.82)
+  never fired; it is gated on the straight elbow instead, the hands lifted
+  0.1 instead of 0.08.
+- Cable Glute Kickback "grip" (unchanged model, an old defect): the twist
+  about the spine drew one line along the spine from the side; it is now
+  the pulled-on-support pattern seen face-on.
+The reviewers also noted callout pills that cover a face or hands on some
+of these lifts after the re-tune (Reverse Lunge, Sissy Squat, Front Squat at
+3 s, Low-to-High Cable Fly, Hip Abduction Machine (Lean), Biceps Curl, the
+Overhead Cable Triceps Extension at 1.5 s, Pistol Squat at 3 s, Leg
+Extension); those layouts were not changed in this round.

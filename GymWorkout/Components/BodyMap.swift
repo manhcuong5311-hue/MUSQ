@@ -4,7 +4,9 @@
 //
 //  The flat front/back muscle map in the Muscles Worked panel. Regions are
 //  drawn from `BodyMapPaths` (generated) and lit from the exercise's own
-//  activation data, so the map always agrees with the bars beside it.
+//  activation data, so the map always agrees with the bars beside it. The
+//  chest's three bands follow the exercise model's paint (`ChestPaint`),
+//  which the chest rows name head by head.
 //
 
 import SwiftUI
@@ -17,13 +19,20 @@ enum BodySide: CaseIterable {
     var title: String { self == .front ? "FRONT" : "BACK" }
 }
 
-/// One drawable region of the map. Cases match the source data's slugs.
+/// One drawable region of the map. Cases match the source data's slugs,
+/// except the chest: the source draws each pec whole (`chest`), and the map
+/// cuts it into the pectoralis major's three heads, the way the exercise
+/// models paint them (2026-10-22).
 enum BodyRegion {
-    case chest, obliques, abs, biceps, triceps, neck, trapezius, deltoids
+    case chest, upperChest, midChest, lowerChest
+    case obliques, abs, biceps, triceps, neck, trapezius, deltoids
     case adductors, quadriceps, tibialis, calves, forearm
     case upperBack, lowerBack, gluteal, hamstring
     // Not muscles: always drawn neutral.
     case knees, hands, ankles, feet, head, hair
+
+    /// The chest's bands, top to bottom.
+    static let chestHeads: [BodyRegion] = [.upperChest, .midChest, .lowerChest]
 
     var isMuscle: Bool {
         switch self {
@@ -46,7 +55,12 @@ enum BodyRegion {
         if has("biceps femoris", "hamstring", "semitendinosus", "semimembranosus") {
             return [(.hamstring, both)]
         }
-        if has("pector", "chest") { return [(.chest, both)] }
+        if has("pector", "chest") {
+            if has("upper", "clavicular") { return [(.upperChest, both)] }
+            if has("middle", "sternal", "sternocostal") { return [(.midChest, both)] }
+            if has("lower", "abdominal") { return [(.lowerChest, both)] }
+            return chestHeads.map { ($0, both) }
+        }
         if has("deltoid", "delt") {
             if has("anterior", "front") { return [(.deltoids, [.front])] }
             if has("posterior", "rear") { return [(.deltoids, [.back])] }
@@ -118,13 +132,27 @@ struct BodyMapCanvas: View {
 struct BodyMapFigure: View {
     var side: BodySide
     var muscles: [MuscleActivation]
+    /// How the exercise's own model paints the chest's three heads. When the
+    /// list has the chest, its bands follow the model (bright head primary,
+    /// dim heads secondary, unlit heads idle) rather than the row names.
+    var chest: ChestPaint.Heads? = nil
     var lineWidth: CGFloat = 0.75
 
     var body: some View {
         let lit = litRegions
-        BodyMapCanvas(side: side, fills: lit.mapValues { $0.rank.barColor }, lineWidth: lineWidth)
+        BodyMapCanvas(side: side, fills: fills(lit), lineWidth: lineWidth)
             .accessibilityElement()
             .accessibilityLabel(accessibilityText(lit))
+    }
+
+    private func fills(_ lit: [BodyRegion: MuscleActivation]) -> [BodyRegion: Color] {
+        var fills = lit.mapValues { $0.rank.barColor }
+        if let chest, BodyRegion.chestHeads.contains(where: { lit[$0] != nil }) {
+            for (region, rank) in zip(BodyRegion.chestHeads, [chest.upper, chest.middle, chest.lower]) {
+                fills[region] = rank?.barColor
+            }
+        }
+        return fills
     }
 
     /// The strongest muscle landing on each region of this view: primary over
@@ -161,8 +189,9 @@ struct BodyMapPair: View {
     enum Source {
         /// Region colours per view, as `BodyMapCanvas` takes them.
         case fills(front: [BodyRegion: Color], back: [BodyRegion: Color])
-        /// Muscles lit by rank, as `BodyMapFigure` draws them.
-        case muscles([MuscleActivation])
+        /// Muscles lit by rank, as `BodyMapFigure` draws them, with the
+        /// model's chest paint when known.
+        case muscles([MuscleActivation], chest: ChestPaint.Heads? = nil)
     }
 
     var source: Source
@@ -205,8 +234,8 @@ struct BodyMapPair: View {
             BodyMapCanvas(side: side, fills: side == .front ? front : back, lineWidth: width)
                 .accessibilityElement()
                 .accessibilityLabel(side == .front ? "Front of body" : "Back of body")
-        case .muscles(let muscles):
-            BodyMapFigure(side: side, muscles: muscles, lineWidth: width)
+        case .muscles(let muscles, let chest):
+            BodyMapFigure(side: side, muscles: muscles, chest: chest, lineWidth: width)
         }
     }
 }
@@ -215,7 +244,13 @@ struct BodyMapPair: View {
 
 /// `BodyMapPaths` parsed once, on first use.
 private enum BodyMapShapes {
-    private static let front: [(BodyRegion, Path)] = BodyMapPaths.front.flatMap { region, ds in ds.map { (region, parse($0)) } }
+    private static let front: [(BodyRegion, Path)] = BodyMapPaths.front.flatMap { region, ds in
+        ds.flatMap { d -> [(BodyRegion, Path)] in
+            let path = parse(d)
+            guard region == .chest else { return [(region, path)] }
+            return zip(BodyRegion.chestHeads, chestBands).map { ($0, path.intersection($1)) }
+        }
+    }
     private static let back: [(BodyRegion, Path)] = BodyMapPaths.back.flatMap { region, ds in ds.map { (region, parse($0)) } }
     private static let frontOutline = parse(BodyMapPaths.frontOutline)
     private static let backOutline = parse(BodyMapPaths.backOutline)
@@ -227,6 +262,28 @@ private enum BodyMapShapes {
     static func outline(_ side: BodySide) -> Path {
         side == .front ? frontOutline : backOutline
     }
+
+    /// The pecs (x 251-476, y 316-438 in the 724 x 1448 box) cut into the
+    /// clavicular, sternal and abdominal heads: the upper cut at y 352 by the
+    /// sternum, the lower at y 401, both dropping 10 units out to each
+    /// armpit, as the heads' borders slope down and out.
+    private static let chestBands: [Path] = {
+        let mid: CGFloat = 363.5, left: CGFloat = 200, right: CGFloat = 530
+        func cut(_ y: CGFloat, _ x: CGFloat) -> CGPoint { CGPoint(x: x, y: y + 10 * abs(x - mid) / 110) }
+        func band(_ top: [CGPoint], _ bottom: [CGPoint]) -> Path {
+            var p = Path()
+            p.addLines(top + bottom.reversed())
+            p.closeSubpath()
+            return p
+        }
+        let upper = [left, mid, right].map { cut(352, $0) }
+        let lower = [left, mid, right].map { cut(401, $0) }
+        return [
+            band([CGPoint(x: left, y: 250), CGPoint(x: right, y: 250)], upper),
+            band(upper, lower),
+            band(lower, [CGPoint(x: left, y: 520), CGPoint(x: right, y: 520)]),
+        ]
+    }()
 
     /// Reads the generator's canonical form: absolute `M x y`, `L x y`,
     /// `C x1 y1 x2 y2 x y` and `Z`, numbers separated by single spaces.
@@ -275,7 +332,7 @@ extension MuscleGroup {
     /// there (e.g. the lats only exist on the back view).
     var bodyRegions: [BodyRegion] {
         switch self {
-        case .chest: return [.chest]
+        case .chest: return BodyRegion.chestHeads
         case .back: return [.upperBack, .lowerBack, .trapezius]
         case .shoulders: return [.deltoids]
         case .biceps: return [.biceps]

@@ -59,6 +59,19 @@ struct MuscleActivity: Identifiable, Hashable {
     var setsLabel: String { "\(setsValue) \(effectiveSets == 1 ? "set" : "sets")" }
 }
 
+/// The chest's three heads in a period, for the muscle map's chest bands:
+/// each completed set of a lift that works the chest counts in full for a
+/// head its model paints bright and half for a dim one, the same weights a
+/// primary and a secondary row give the Chest group.
+struct ChestActivity: Hashable {
+    var upper: ActivityLevel = .notTrained
+    var middle: ActivityLevel = .notTrained
+    var lower: ActivityLevel = .notTrained
+
+    /// Upper, middle and lower, as `BodyRegion.chestHeads` lists them.
+    var levels: [ActivityLevel] { [upper, middle, lower] }
+}
+
 /// A group that is trained noticeably less than the rest, with the reason.
 struct AttentionItem: Identifiable, Hashable {
     let activity: MuscleActivity
@@ -91,6 +104,41 @@ struct MuscleActivityCalculator {
             let level: ActivityLevel =
                 sets <= 0 ? .notTrained : sets < trained ? .low : sets < high ? .trained : .high
             return MuscleActivity(muscle: muscle, effectiveSets: sets, level: level)
+        }
+    }
+
+    /// Effective completed sets per chest head inside `period`, levelled on
+    /// the period's group cut-offs. The heads come from the logged snapshot,
+    /// else the exercise's model, else its chest rows (`ChestPaint`); a lift
+    /// with a chest weight but no head to show spreads it over all three.
+    func chest(from sessions: [WorkoutSession], period: ActivityPeriod,
+               now: Date = Date()) -> ChestActivity {
+        let interval = period.interval(containing: now)
+        var sets: [Double] = [0, 0, 0]
+        for session in sessions {
+            for exercise in session.exercises {
+                guard let weight = exercise.contributions.first(where: { $0.muscle == .chest })?.weight else { continue }
+                let heads = exercise.chestHeads ?? ChestPaint.heads(forExerciseNamed: exercise.exerciseName)
+                let shares = heads.map { [$0.upper, $0.middle, $0.lower].map(Self.share) } ?? [weight, weight, weight]
+                for set in exercise.sets where set.isCompleted {
+                    let at = set.completedAt ?? session.day
+                    guard interval.contains(at), at <= now else { continue }
+                    for i in 0..<3 { sets[i] += shares[i] }
+                }
+            }
+        }
+        let (trained, high) = period.thresholds
+        let levels = sets.map { s -> ActivityLevel in
+            s <= 0 ? .notTrained : s < trained ? .low : s < high ? .trained : .high
+        }
+        return ChestActivity(upper: levels[0], middle: levels[1], lower: levels[2])
+    }
+
+    private static func share(_ rank: ActivationRank?) -> Double {
+        switch rank {
+        case .primary: return ContributionRole.primary.defaultWeight
+        case .secondary: return ContributionRole.secondary.defaultWeight
+        case nil: return 0
         }
     }
 

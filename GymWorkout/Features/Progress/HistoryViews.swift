@@ -138,6 +138,18 @@ struct SessionHistoryView: View {
         for group in done.map(\.group) {
             for region in group.bodyRegions { fills[region] = DS.activation }
         }
+        // The chest by head: only the bands a chest exercise's model lights.
+        let chestDone = done.filter { $0.group == .chest }
+        if !chestDone.isEmpty {
+            for (i, region) in BodyRegion.chestHeads.enumerated() {
+                let ranks = chestDone.map { e -> ActivationRank? in
+                    guard let heads = e.chestHeads ?? ChestPaint.heads(forExerciseNamed: e.exerciseName) else { return .primary }
+                    return [heads.upper, heads.middle, heads.lower][i]
+                }
+                fills[region] = ranks.contains(.primary) ? DS.activation
+                    : ranks.contains(.secondary) ? ActivationRank.secondary.barColor : nil
+            }
+        }
         let divider = Rectangle()
             .fill(DS.silver.opacity(0.08))
             .frame(width: 1, height: 44)

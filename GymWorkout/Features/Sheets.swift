@@ -25,12 +25,14 @@ struct MusclePanelSheet: View {
     var exerciseName: String
     var muscles: [MuscleActivation]
     var stabilisers: [String]
+    /// The live model's chest paint, for the map's chest bands.
+    var chest: ChestPaint.Heads? = nil
     var onDone: () -> Void
 
     var body: some View {
         SheetScaffold(grabberBottomSpacing: 18) {
             MuscleActivationContent(exerciseName: exerciseName, muscles: muscles,
-                                    stabilisers: stabilisers, onDone: onDone)
+                                    stabilisers: stabilisers, chest: chest, onDone: onDone)
         }
     }
 }
@@ -42,6 +44,9 @@ struct MuscleActivationContent: View {
     var exerciseName: String = ""
     var muscles: [MuscleActivation]
     var stabilisers: [String]
+    /// How the live model paints the chest's three heads; the map's chest
+    /// bands follow it.
+    var chest: ChestPaint.Heads? = nil
     /// Drawn in the iPad trainer's inspector rather than in a sheet: an
     /// eyebrow for a header, both figures at one height, a size up
     /// throughout.
@@ -121,7 +126,7 @@ struct MuscleActivationContent: View {
             HStack(spacing: 0) {
                 ForEach(BodySide.allCases, id: \.self) { side in
                     VStack(spacing: 8) {
-                        BodyMapFigure(side: side, muscles: muscles)
+                        BodyMapFigure(side: side, muscles: muscles, chest: chest)
                         Text(side.title)
                             .font(.mono(9, .semibold))
                             .trackingEm(0.10, size: 9)
@@ -173,7 +178,7 @@ struct MuscleActivationContent: View {
             // A fixed figure height rather than the sheet's share of the
             // screen: inside a scroll view that share would be measured
             // against the scroll view, not the window.
-            BodyMapPair(source: .muscles(muscles), figureHeight: inlineFigureHeight)
+            BodyMapPair(source: .muscles(muscles, chest: chest), figureHeight: inlineFigureHeight)
                 .padding(.top, 22)
                 .padding(.bottom, 16)
                 .frame(maxWidth: .infinity)

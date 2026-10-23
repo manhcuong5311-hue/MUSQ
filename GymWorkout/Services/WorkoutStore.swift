@@ -509,6 +509,7 @@ final class WorkoutStore {
             sets: (0..<max(1, sets)).map { _ in WorkoutSet(reps: reps.lower) },
             contributions: ExerciseCatalog.contributions(forExerciseNamed: name),
             partContributions: ExerciseCatalog.partContributions(forExerciseNamed: name),
+            chestHeads: ChestPaint.heads(forExerciseNamed: name),
             measure: ExerciseCatalog.measure(forExerciseNamed: name)
         )
     }

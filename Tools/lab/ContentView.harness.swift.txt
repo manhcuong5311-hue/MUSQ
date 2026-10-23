@@ -12,6 +12,9 @@
 //  HARNESS_XRAY (2026-10-21): an x-ray demo's viewport by resource name, at
 //  HARNESS_XRAY_VIEW (an XRayView raw value, default auto), paused at
 //  HARNESS_STILL seconds once the model has loaded (shoot after ~8 s).
+//  HARNESS_MAP (2026-10-22): the trainer's Muscles Worked panel for an
+//  exercise ("Name" or "Name|Stance"), with its model's chest paint.
+//  HARNESS_WEEK: the Muscles tab's map for a made-up week, "Name:sets,...".
 //
 
 import SwiftUI
@@ -60,6 +63,10 @@ struct ContentView: View {
                 .environment(purchases)
                 .environment(Ads(purchases: purchases))
                 .environment(Paywall())
+        } else if let spec = env["HARNESS_MAP"] {
+            MapHarness(spec: spec)
+        } else if let spec = env["HARNESS_WEEK"] {
+            WeekHarness(spec: spec)
         } else if let res = env["HARNESS_XRAY"],
                   let demo = [XRayDemos.benchScapula, XRayDemos.backBarSetup, XRayDemos.deadliftSetup]
                       .first(where: { $0.resource == res }) {
@@ -95,5 +102,59 @@ struct XRayHarness: View {
                     if !stage.paused { stage.togglePause() }
                 }
             }
+    }
+}
+
+
+struct MapHarness: View {
+    let spec: String
+
+    var body: some View {
+        let parts = spec.split(separator: "|").map(String.init)
+        if let ex = SampleData.exercises.first(where: { $0.name == parts[0] }),
+           let content = SampleData.content(for: ex) {
+            let stance = parts.count > 1 ? SampleData.stances(for: ex).first { $0.label == parts[1] } : nil
+            let model = stance?.model ?? SampleData.model(for: ex)
+            ZStack {
+                DS.ink.ignoresSafeArea()
+                MuscleActivationContent(exerciseName: ex.name.uppercased(),
+                                        muscles: stance?.activation ?? content.activation,
+                                        stabilisers: content.stabilisers,
+                                        chest: model.flatMap { ChestPaint.heads(forModel: $0.resource) })
+                    .padding(.horizontal, 20)
+            }
+        }
+    }
+}
+
+struct WeekHarness: View {
+    let spec: String
+
+    var body: some View {
+        let now = Date()
+        let exercises: [WorkoutExercise] = spec.split(separator: ",").compactMap { item in
+            let kv = item.split(separator: ":").map(String.init)
+            guard kv.count == 2, let n = Int(kv[1]) else { return nil }
+            return WorkoutExercise(
+                exerciseName: kv[0], group: .chest, repRange: RepRange(8, 12),
+                sets: (0..<n).map { _ in WorkoutSet(reps: 10, isCompleted: true, completedAt: now) },
+                contributions: ExerciseCatalog.contributions(forExerciseNamed: kv[0]),
+                chestHeads: ChestPaint.heads(forExerciseNamed: kv[0]))
+        }
+        let sessions = [WorkoutSession(day: Calendar.current.startOfDay(for: now), exercises: exercises)]
+        let calc = MuscleActivityCalculator()
+        var fills: [BodyRegion: Color] = [:]
+        for entry in calc.activity(from: sessions, period: .week, now: now) {
+            guard let color = entry.level.color else { continue }
+            for region in entry.muscle.bodyRegions { fills[region] = color }
+        }
+        for (region, level) in zip(BodyRegion.chestHeads, calc.chest(from: sessions, period: .week, now: now).levels) {
+            fills[region] = level.color
+        }
+        return ZStack {
+            DS.ink.ignoresSafeArea()
+            BodyMapCanvas(side: .front, fills: fills, lineWidth: 1)
+                .frame(width: 360, height: 700)
+        }
     }
 }

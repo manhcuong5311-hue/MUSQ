@@ -3096,6 +3096,10 @@ enum SampleData {
         modelByExercise[exercise.name]?.resource
     }
 
+    static func modelName(forExerciseNamed name: String) -> String? {
+        modelByExercise[name]?.resource
+    }
+
     /// The stances an exercise can be shown in, or none for the usual single
     /// model.
     static func stances(for exercise: Exercise) -> [ExerciseStance] {
@@ -3262,26 +3266,133 @@ enum SampleData {
         // for the Belt Squat (13 high/low/narrow/wide), the 45-Degree Leg Press
         // (18 high/low; narrow and wide are the Narrow- and Wide-Stance Leg
         // Press models, which stay exercises of their own) and the Smith
-        // Machine Squat (068 narrow/wide). Models only for now: no notes, and
-        // each stance keeps the exercise's muscle list.
+        // Machine Squat (068 narrow/wide). Notes and muscle lists added
+        // 2026-10-22: each stance's list follows its own model's paint, as the
+        // female stance sets do; recovery still counts the exercise's own list.
         "Belt Squat": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "BeltSquat", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
-            ExerciseStance(label: "High", model: ExerciseModel(resource: "BeltSquatHigh", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
-            ExerciseStance(label: "Low", model: ExerciseModel(resource: "BeltSquatLow", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
-            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "BeltSquatWide", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
-            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "BeltSquatNarrow", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "BeltSquat", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061])),
+                           note: "Feet about shoulder-width, ankles in line with the cable; the model lights the quads brightest",
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
+                MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.46)
+                           ]),
+            ExerciseStance(label: "High", model: ExerciseModel(resource: "BeltSquatHigh", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061])),
+                           note: "Feet 10 cm further forward, ahead of the cable: hips bend more, knees less; the model lights the glutes",
+                           activation: [
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.46),
+                MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.88)
+                           ]),
+            ExerciseStance(label: "Low", model: ExerciseModel(resource: "BeltSquatLow", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061])),
+                           note: "Feet 6 cm further back, behind the cable: the hips stop about 8 cm higher; the model lights the quads",
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
+                MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.46)
+                           ]),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "BeltSquatWide", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061])),
+                           note: "Feet well wider than the shoulders, toes out more, 10 cm forward; the model lights the inner thighs and glutes",
+                           activation: [
+                // Follows the BeltSquatWide model's paint: adductors, glutes and
+                // the sartorius (hip flexors) bright, quads dim (the outer quad
+                // unlit). McCaw and Melrose 1999 (Med Sci Sports Exerc
+                // 31:428-436) found more adductor longus activity with a wide
+                // stance; no normalised value to set the fraction from was
+                // found, so 0.44 is the sumo squats' estimate. No normalised
+                // EMG found for the hip flexors in a squat, so 0.40 is an
+                // estimate, as on the Single-Leg Hip Thrust's bright sartorius.
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.46),
+                MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.44),
+                MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
+                MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.88)
+                           ]),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "BeltSquatNarrow", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061])),
+                           note: "Feet about hip-width, toes almost straight, 10 cm forward; the model lights the glutes and outer quad",
+                           activation: [
+                // The outer quad (vastus lateralis) is lit bright and the rest
+                // of the quads dim, so the one Quadriceps row is primary.
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.46)
+                           ]),
         ],
         "45-Degree Leg Press": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "LegPress45", framing: ModelFraming(yaw: -2.0, zoom: 0.681, offset: [0.049, 0.122, 0.108]))),
-            ExerciseStance(label: "High", model: ExerciseModel(resource: "LegPress45High", framing: ModelFraming(yaw: -2.0, zoom: 0.681, offset: [0.049, 0.122, 0.108]))),
-            ExerciseStance(label: "Low", model: ExerciseModel(resource: "LegPress45Low", framing: ModelFraming(yaw: -2.0, zoom: 0.656, offset: [0.049, 0.122, 0.108]))),
-            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "WideStanceLegPress", framing: ModelFraming(yaw: -2.0, zoom: 0.656, offset: [0.043, 0.119, 0.094]))),
-            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "NarrowStanceLegPress", framing: ModelFraming(yaw: -2.0, zoom: 0.704, offset: [0.055, 0.127, 0.121]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "LegPress45", framing: ModelFraming(yaw: -2.0, zoom: 0.681, offset: [0.049, 0.122, 0.108])),
+                           note: "Feet shoulder-width in the middle of the platform; the model lights the quads and glutes",
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.87),
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
+                           ]),
+            ExerciseStance(label: "High", model: ExerciseModel(resource: "LegPress45High", framing: ModelFraming(yaw: -2.0, zoom: 0.681, offset: [0.049, 0.122, 0.108])),
+                           note: "Feet 8 cm higher up the platform: hips bend more, knees less; the model lights the glutes and hamstrings",
+                           activation: [
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48),
+                // Bright on this model only. No normalised EMG found, so
+                // this is an estimate at 0.40, the lowest moderate value.
+                MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.40),
+                MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.87)
+                           ]),
+            ExerciseStance(label: "Low", model: ExerciseModel(resource: "LegPress45Low", framing: ModelFraming(yaw: -2.0, zoom: 0.656, offset: [0.049, 0.122, 0.108])),
+                           note: "Feet 10 cm lower on the platform: knees bend more and travel further past the toes; the model lights the quads",
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.87),
+                MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+                           ]),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "WideStanceLegPress", framing: ModelFraming(yaw: -2.0, zoom: 0.656, offset: [0.043, 0.119, 0.094])),
+                           note: "Feet 66 cm apart, toes turned out about 27°; the model lights the inner thighs, glutes and hip flexors",
+                           activation: [
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.54),
+                // A legend-only name (the rig paints it on the sartorius),
+                // bright here. No normalised EMG found, so this is an
+                // estimate at 0.40.
+                MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
+                // Bright, so the rank moves to primary; the fraction stays at
+                // the exercise's LOW 0.34 (ranks follow the paint, fractions
+                // stay where they were). No leg press EMG of the adductors by
+                // stance width was found.
+                MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.34),
+                MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.87),
+                // Dim. No normalised EMG found, so this is an estimate, the
+                // same as the dim hamstrings on the female hack stances.
+                MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+                           ]),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "NarrowStanceLegPress", framing: ModelFraming(yaw: -2.0, zoom: 0.704, offset: [0.055, 0.127, 0.121])),
+                           note: "Feet right under the hips, 20 cm apart, toes almost straight; the model lights the outer quads and glutes",
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.87),
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
+                           ]),
         ],
         "Smith Machine Squat": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "SmithMachineSquat", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
-            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "SmithMachineSquatWide", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
-            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "SmithMachineSquatNarrow", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "SmithMachineSquat", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0])),
+                           note: "Feet about shoulder width (40 cm apart), toes out about 10°; the model lights the quads and glutes",
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50)
+                           ]),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "SmithMachineSquatWide", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0])),
+                           note: "Feet 26 cm wider, toes out about 30°: knees bend a little less; the model lights the inner thighs, glutes and hip flexors",
+                           activation: [
+                // The SmithMachineSquatWide model lights the adductors, glutes
+                // and sartorius (the rig's hip flexors) bright and the
+                // quadriceps dim (vastus lateralis unlit). McCaw & Melrose 1999
+                // (Med Sci Sports Exerc 31(3):428-436): a wider stance raised
+                // gluteus maximus and adductor longus EMG and did not change the
+                // quadriceps, so the quadriceps keep 0.86 and the glutes go up
+                // 0.06, as on the female wide stances. No normalised EMG found
+                // for the adductors or hip flexors; estimates (0.44 as on the
+                // sumo squats; 0.40, the lowest moderate value).
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56),
+                MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.44),
+                MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
+                MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.86)
+                           ]),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "SmithMachineSquatNarrow", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0])),
+                           note: "Feet 16 cm closer, just outside the hips, toes almost straight; the model lights the outer quad and glutes",
+                           activation: [
+                // Vastus lateralis and the glutes bright, the other quadriceps
+                // dim: both rows are primary at the exercise's fractions (stance
+                // width does not shift the quadriceps, McCaw & Melrose 1999).
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50)
+                           ]),
         ],
         // Desktop "101-200" folder (2026-10-17): the owner's variants of six
         // chest lifts. The incline and decline cable presses drive the
@@ -3292,28 +3403,166 @@ enum SampleData {
         // stance keeps the exercise's muscle list. Variant framings were
         // picked on viewport stills.
         "Incline Cable Press": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "InclineCablePress", framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013]))),
-            ExerciseStance(label: "Straight Up", model: ExerciseModel(resource: "InclineCablePressStraightUp", framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "InclineCablePress", framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013])),
+                           note: "Handles press up and 11 cm closer together, ending over the mid chest; the model lights the middle chest",
+                           activation: [
+                // 2026-10-22: same model as the exercise, so the same list: chest
+                // rows from its paint by head (middle bright, upper and lower
+                // dim); 0.64 and 0.48 are estimates.
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.82),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.64),
+                MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.58),
+                MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.48),
+                MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
+                           ]),
+            ExerciseStance(label: "Straight Up", model: ExerciseModel(resource: "InclineCablePressStraightUp", framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013])),
+                           note: "Handles start 8 cm nearer the head and press straight up, staying 63 cm apart, to end over the collarbones; the model lights the upper chest",
+                           activation: [
+                // 2026-10-22: the chest rows follow this model's paint by head:
+                // upper (clavicular) pec bright, middle and lower dim. The upper
+                // head keeps the old row's 0.82. The hands track 8-15 cm nearer
+                // the head than on the Standard model and finish over the
+                // collarbones, the arm higher in flexion as on a free-weight
+                // incline, so the dim heads scale 0.82 by a 30° barbell incline
+                // at 60% 1RM: upper ~30, middle ~16.6, lower ~13.2 %MVIC
+                // (Rodríguez-Ridao et al. 2020, Int J Environ Res Public Health
+                // 17(19):7339, Fig. 3), as the Incline Dumbbell Press does.
+                MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.82),
+                MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.58),
+                MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46),
+                MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.45),
+                MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.36)
+                           ]),
         ],
         "Decline Cable Press": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "DeclineCablePress", framing: ModelFraming(yaw: -1.0, zoom: 0.633, offset: [0.003, -0.052, -0.004]))),
-            ExerciseStance(label: "Straight Up", model: ExerciseModel(resource: "DeclineCablePressStraightUp", framing: ModelFraming(yaw: -1.0, zoom: 0.674, offset: [-0.058, -0.049, 0.090]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "DeclineCablePress", framing: ModelFraming(yaw: -1.0, zoom: 0.633, offset: [0.003, -0.052, -0.004])),
+                           note: "Hands press from beside the lower chest to over the mid chest, drifting slightly toward the head and closing from 62 to 50 cm apart; the model lights the lower chest",
+                           activation: [
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
+                MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.52),
+                MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.59),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.41),
+                MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34)
+                           ]),
+            ExerciseStance(label: "Straight Up", model: ExerciseModel(resource: "DeclineCablePressStraightUp", framing: ModelFraming(yaw: -1.0, zoom: 0.674, offset: [-0.058, -0.049, 0.090])),
+                           note: "Hands rise plumb, 65 cm apart, from beside the lower ribs to over the waistband, finishing about 35 cm nearer the hips; the model lights the lower chest",
+                           activation: [
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
+                MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.52),
+                MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.59),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.41),
+                MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34)
+                           ]),
         ],
         "High-to-Low Cable Fly": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "HighToLowCableFly", framing: ModelFraming(yaw: 0, zoom: 0.629, offset: [0.000, 0.025, 0.000]))),
-            ExerciseStance(label: "To Thighs", model: ExerciseModel(resource: "HighToLowCableFlyToThighs", framing: ModelFraming(yaw: 0, zoom: 0.629, offset: [0.000, 0.025, 0.000]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "HighToLowCableFly", framing: ModelFraming(yaw: 0, zoom: 0.629, offset: [0.000, 0.025, 0.000])),
+                           note: "Hands finish together in front of the lower chest; the model lights the mid chest brightest",
+                           activation: [
+                // 2026-10-22: chest rows follow the HighToLowCableFly model's
+                // paint, as the exercise's list does: middle pec bright, upper
+                // and lower pec dim.
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
+                MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.60),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.36),
+                MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34),
+                MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.28),
+                MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
+                           ]),
+            ExerciseStance(label: "To Thighs", model: ExerciseModel(resource: "HighToLowCableFlyToThighs", framing: ModelFraming(yaw: 0, zoom: 0.629, offset: [0.000, 0.025, 0.000])),
+                           note: "Hands sweep about 17 cm lower, finishing in front of the hips; the model lights the lower chest bright too",
+                           activation: [
+                // 2026-10-22: chest rows follow the HighToLowCableFlyToThighs
+                // model's paint: middle and lower pec bright, upper pec dim. The
+                // lower head keeps the old Lower Pectoralis 0.84. The deeper
+                // finish leaves the upper arms about 55° off the trunk (about
+                // 80° at the Standard finish, measured on the models): more
+                // extension, which in men brings in the lower sternocostal
+                // region (Lulic 2020, PhD thesis, Univ. of Waterloo, hdl
+                // 10012/16480). The middle head's 0.80 and the upper head's LOW
+                // 0.32 are estimates set a little under the Standard list.
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.84),
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.80),
+                MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.32),
+                MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.28),
+                MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
+                           ]),
         ],
         "Plate-Loaded Chest Press": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "PlateLoadedChestPress", framing: ModelFraming(yaw: -0.7, zoom: 0.950, offset: [0.041, 0.107, -0.035]))),
-            ExerciseStance(label: "High Handles", model: ExerciseModel(resource: "PlateLoadedChestPressHighHandles", framing: ModelFraming(yaw: -0.7, zoom: 0.880, offset: [0.040, 0.050, -0.034]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "PlateLoadedChestPress", framing: ModelFraming(yaw: -0.7, zoom: 0.950, offset: [0.041, 0.107, -0.035])),
+                           note: "Upright handles gripped palms in, torso reclined about 22° on the pad; the model lights the middle and lower chest",
+                           activation: [
+                // Chest rows follow this model's paint by head (2026-10-22):
+                // middle and lower pec bright, upper pec dim, as the exercise.
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.90),
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.62),
+                MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
+                MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
+                           ]),
+            ExerciseStance(label: "High Handles", model: ExerciseModel(resource: "PlateLoadedChestPressHighHandles", framing: ModelFraming(yaw: -0.7, zoom: 0.880, offset: [0.040, 0.050, -0.034])),
+                           note: "Seat about 14 cm higher, palms down on the horizontal top handles, hands about 18 cm wider; the model lights the middle and lower chest",
+                           activation: [
+                // Chest rows follow this model's paint by head (2026-10-22):
+                // middle and lower pec bright, upper pec dim, as on the
+                // Standard model. The palms-down grip is the one Coratella et
+                // al. 2020 (Eur J Sport Sci 20(5):571-579) tested: on that
+                // chest press machine the clavicular head was less active in
+                // the concentric phase than in any barbell bench press, so
+                // Upper Pectoralis is 0.50 here, an estimate below the Barbell
+                // Bench Press's 0.55 (0.62 with the Standard model's palms-in
+                // grip).
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.90),
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
+                MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50),
+                MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
+                           ]),
         ],
         "Chest Dip": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "ChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.218, 0.05]))),
-            ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "ChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.032, 0.05]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "ChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.218, 0.05])),
+                           note: "Knees bent to about 85°, feet trailing about 35 cm behind the hips on the dip station; the model lights the middle and lower chest and front delts",
+                           activation: [
+                // The ChestDip model's paint: chest rows by head (2026-10-22),
+                // the same list as the exercise's.
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.84),
+                MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.66),
+                MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.82),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50)
+                           ]),
+            ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "ChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.032, 0.05])),
+                           note: "Legs straight on a rack's dip handles, feet 8-14 cm behind the hips, so the hips bend about 13° less; the model lights the same middle and lower chest and front delts",
+                           activation: [
+                // ChestDipStraightLegs paints the chest by head the same as
+                // ChestDip (middle and lower bright, upper dim; 2026-10-22), so
+                // the list matches the Standard stance.
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.84),
+                MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.66),
+                MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.82),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50)
+                           ]),
         ],
         "Weighted Chest Dip": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "WeightedChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.225, 0.049]))),
-            ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "WeightedChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.035, 0.049]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "WeightedChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.225, 0.049])),
+                           note: "Knees bent a little past 90°, feet trailing about 45 cm behind the hips; the model lights the middle and lower chest",
+                           activation: [
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.90),
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
+                MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.72),
+                MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.88),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55)
+                           ]),
+            ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "WeightedChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.035, 0.049])),
+                           note: "Legs almost straight below you, feet about 18 cm behind the hips; the model lights the middle and lower chest, as Standard does",
+                           activation: [
+                MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.90),
+                MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
+                MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.72),
+                MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.88),
+                MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55)
+                           ]),
         ],
         // Desktop "From 191" folder (2026-10-18): 215B raises a rope instead
         // of the straight bar. Model only for now: no notes, and the stance
@@ -3406,8 +3655,27 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.92),
+            // Follows the 2026-10-17 model's paint. Before, all three pectoral
+            // heads were bright; now only the middle (sternal) head is bright
+            // and the upper and lower heads are dim. So the single Pectoralis
+            // Major row is split by head: Middle Pectoralis is primary and keeps
+            // the old pectoral 0.92, and Upper and Lower Pectoralis are new
+            // secondary rows. On a flat bench the EMG shows the three heads
+            // close together. Rodriguez-Ridao et al. 2020 (Int J Environ Res
+            // Public Health 17(19):7339) found about 27% MVIC for each head at
+            // 0° and 60% 1RM, with no significant difference. Lauver et al. 2016
+            // (Eur J Sport Sci 16(3):309-316) found the lower pec as active flat
+            // as on a -15° decline (about 100% MVIC both), and the upper pec no
+            // different between angles over the whole press (30° and 45° beat
+            // flat only in the 26-50% part of the lift). Both new rows are
+            // estimates anchored on that EMG, kept MODERATE under the bright
+            // head because the paint dims them; the lower head sits above the
+            // upper as a judgement call. Triceps and front delt stay dim
+            // secondaries.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.62),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.51)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "core"],
@@ -3514,9 +3782,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: upper chest bright;
+            // front delt, triceps and now the middle and lower chest dim (the
+            // last two were faint before), so the middle and lower pec get
+            // their own secondary rows. Their fractions are scaled to the upper
+            // pec row from a free-weight barbell press on a 30° bench at 60% 1RM:
+            // clavicular ~30, sternal ~17, costal ~13 %MVIC, both lower heads
+            // significantly below their flat-bench values (Rodríguez-Ridao et
+            // al. 2020, Int J Environ Res Public Health 17:7339, Fig. 3).
             MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.85),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.47),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "core"],
         setup: [
@@ -3602,8 +3880,20 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint, which splits the
+            // pectoral: the lower (abdominal) head is bright, the middle
+            // (sternal) and upper (clavicular) heads dim (before: middle
+            // bright, upper faint). The lower head keeps the old pectoral row
+            // as the primary; the middle and upper heads gain secondary rows.
+            // Both work less on a decline than on a flat bench (Barnett et al.
+            // 1995, J Strength Cond Res 9:222-227), though the upper head stays
+            // near its flat-bench level over the whole concentric phase
+            // (Lauver et al. 2016, Eur J Sport Sci 16:309-316). No EMG on this
+            // library's scale was found, so 0.64 and 0.44 are estimates.
             MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.93),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.64),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["latissimus dorsi", "rotator cuff", "core"],
@@ -3690,7 +3980,20 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            // Follows the 2026-10-17 model's paint: the sternal (middle) head
+            // bright, the clavicular (upper) and abdominal (lower) heads now
+            // dim, so the one Pectoralis Major row splits into a primary
+            // Middle Pectoralis (its 0.90 kept) and two new secondary rows.
+            // Barbell EMG would rank the heads closer: on a flat bench the
+            // three portions did not differ (~27% MVIC each; Rodríguez-Ridao
+            // et al. 2020, Int J Environ Res Public Health 17:7339), the lower
+            // one at its peak there and the upper one peaking at 30°, so the
+            // lower row sits above the upper. The paint wins so the list and
+            // the model agree. No normalised EMG by head was found for the
+            // dumbbell press; 0.62 and 0.55 are estimates.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.53),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50)
         ],
@@ -3778,9 +4081,18 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: upper chest bright;
+            // front delt, triceps and now the middle and lower chest heads dim
+            // (faint before, with no rows), so both heads get secondary rows.
+            // Their fractions scale the upper head's 0.83 by Rodríguez-Ridao et
+            // al. 2020 (Int J Environ Res Public Health 17:7339, PMID 33049982,
+            // Fig. 3; barbell, 30° bench, 60% 1RM): upper ~30, middle ~16.6,
+            // lower ~13.2 %MVIC.
             MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.83),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.60),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.44)
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.37)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii"],
         setup: [
@@ -3866,13 +4178,26 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.88),
+            // Follows the 2026-10-17 model's paint, which splits the chest: the
+            // middle and upper pec are bright (primary) and the lower pec dim
+            // (secondary), where the 2026-09-29 model lit all three heads
+            // bright as one Pectoralis Major row. That row's 0.88 stays with
+            // the middle (sternal) head, which a flat fly works hardest.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.88),
+            // Clavicular pec activity did not differ between flat and 30°
+            // incline dumbbell flyes (Reiser et al. 2014, Rev Bras Prescr
+            // Fisiol Exerc 8(50):864-870), so the row takes the Incline
+            // Dumbbell Fly's 0.82.
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.82),
+            // Lit dim. No normalised EMG of the lower (costal) pec in a fly
+            // was found; MODERATE 0.50 is an estimate, below the bright heads.
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
-            // The 2026-09-29 model lights the biceps dim. It most likely holds
-            // the fixed elbow bend, and it shows 57-86% more activity in the
-            // dumbbell fly than in the bench press (Solstad et al. 2020, J Sports
-            // Sci Med 19:645-651, PMID 33239937). LOW, like the Incline Cable
-            // Fly's biceps row.
+            // The 2026-09-29 and 2026-10-17 models light the biceps dim. It most
+            // likely holds the fixed elbow bend, and it shows 57-86% more
+            // activity in the dumbbell fly than in the bench press (Solstad et
+            // al. 2020, J Sports Sci Med 19:645-651, PMID 33239937). LOW, like
+            // the Incline Cable Fly's biceps row.
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
@@ -3958,13 +4283,25 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: UpperChest bright,
+            // FrontDelt, Biceps, MidChest and LowerChest dim (the last two were
+            // faint before, now dim), so the middle and lower pec heads get
+            // their own secondary rows.
             MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.82),
+            // Middle and lower pec: no normalised EMG found for an incline fly;
+            // estimate. Pressing at 30°, both portions work less than on a flat
+            // bench while the upper portion peaks (Rodríguez-Ridao et al. 2020,
+            // Int J Environ Res Public Health 17:7339). The middle head stays
+            // MODERATE because the fly is still a horizontal adduction; the
+            // lower head, farthest from the incline line, is LOW.
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.48),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46),
-            // Lit dim on the 2026-09-29 model, as on the flat fly: the biceps
-            // most likely holds the fixed elbow bend through the arc, and it is
-            // far more active in a dumbbell fly than in a press (Solstad et al.
-            // 2020, measured flat; the same fixed-elbow arc here). LOW, like
-            // the Incline Cable Fly's biceps row.
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.30),
+            // Lit dim on the model, as on the flat fly: the biceps most likely
+            // holds the fixed elbow bend through the arc, and it is far more
+            // active in a dumbbell fly than in a press (Solstad et al. 2020,
+            // measured flat; the same fixed-elbow arc here). LOW, like the
+            // Incline Cable Fly's biceps row.
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
@@ -4053,7 +4390,22 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.87),
+            // The list follows the 2026-10-17 model's paint, which splits the
+            // chest. The middle (sternal) pec is bright. The upper and lower
+            // pec, triceps and front delt are dim (the old paint lit all three
+            // pec heads bright). The single Pectoralis Major row becomes a
+            // primary Middle Pectoralis that keeps its 0.87, and the upper and
+            // lower heads get new secondary rows. On a flat press the three pec
+            // portions work alike (Rodríguez-Ridao et al. 2020, Int J Environ
+            // Res Public Health 17:7339, PMID 33049982). A seated neutral-grip
+            // chest press drew more clavicular activity than a wide-grip flat
+            // bench, ~30% vs ~25% MVIC (Muyor et al. 2023, J Hum Kinet
+            // 87:23-34, PMID 37229415). No per-head values on this list's
+            // scale were found, so 0.62 and 0.56 are estimates: MODERATE,
+            // below the bright middle head as the paint has them.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.87),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.56),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46)
         ],
@@ -4140,12 +4492,21 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            // Follows the 2026-10-17 model's paint: the chest-split rig now
+            // lights the middle and upper pec bright and the lower pec dim
+            // (all three were bright before), so the one Pectoralis Major row
+            // becomes three head rows. The middle head keeps the old 0.90.
+            // No normalised pec deck EMG split by head found; the upper (0.70)
+            // and lower (0.50) heads are estimates (the clavicular head works
+            // hard in horizontal adduction with the elbows at shoulder height).
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.70),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.35),
-            // The 2026-09-29 model lights the biceps dim. On a handle fly
-            // machine like this one its short head is a synergist (ExRx,
-            // Lever Seated Fly): on a pec deck it reached 28 % of its curl
-            // maximum at 80 % 1RM (Brentano et al., ISEK 2008), and a fly
+            // The 2026-09-29 and 2026-10-17 models light the biceps dim. On a
+            // handle fly machine like this one its short head is a synergist
+            // (ExRx, Lever Seated Fly): on a pec deck it reached 28 % of its
+            // curl maximum at 80 % 1RM (Brentano et al., ISEK 2008), and a fly
             // works it far harder than a press (Solstad et al. 2020, J Sports
             // Sci Med 19:645-651, PMID 33239937). LOW, like the cable flies.
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.28)
@@ -4234,12 +4595,25 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            // The list follows the 2026-10-17 model's paint. That model splits
+            // the chest: the mid chest is bright and the upper and lower heads
+            // are dim (all three were bright before). The single Pectoralis
+            // Major row is now three rows. Middle Pectoralis keeps the old 0.86
+            // as a primary row, and Upper and Lower Pectoralis are new
+            // MODERATE secondary rows. No normalised EMG for each head in a
+            // cable fly was found, so these two values are estimates. The
+            // forward lean, and the hands meeting at sternum height a little
+            // below the shoulder-height pulleys, angle the pull slightly
+            // downward, so the lower head sits just above the upper.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42),
-            // The 2026-09-29 model lights the biceps dim: holding the fixed
-            // elbow bend through the arc, it works far harder in a fly than in
-            // a press (Solstad et al. 2020, J Sports Sci Med 19:645-651, PMID
-            // 33239937). LOW, like the Cable Crossover's biceps row.
+            // The model lights the biceps dim, as the 2026-09-29 model did:
+            // holding the fixed elbow bend through the arc, it works far harder
+            // in a fly than in a press (Solstad et al. 2020, J Sports Sci Med
+            // 19:645-651, PMID 33239937). LOW, like the Cable Crossover's
+            // biceps row.
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["serratus anterior", "core"],
@@ -4326,13 +4700,27 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the upper chest bright,
+            // the middle and lower chest, front delt and biceps dim. The
+            // middle and lower pec were faint on the old model and had no
+            // row; now dim, they get their own secondary rows.
             MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50),
-            // Lit dim on the 2026-09-29 model, as on the other cable flies:
-            // the biceps holds the fixed elbow bend as the arms sweep up, and
-            // a fly works it far harder than a press (Solstad et al. 2020,
-            // J Sports Sci Med 19:645-651, PMID 33239937). LOW, like the
-            // Incline Cable Fly's biceps row.
+            // No normalised EMG found for the pec heads in a low-to-high fly;
+            // estimate. The hands still meet in front of the body, so the
+            // sternal (middle) fibres share the adduction, but the upward
+            // sweep favours the clavicular head. In the bench press the
+            // middle and lower portions work hardest flat and less as the
+            // bench rises from 0° to 60°, while the upper portion peaks at
+            // 30° (Rodríguez-Ridao et al. 2020, Int J Environ Res Public
+            // Health 17:7339, PMID 33049982), so the lower pec stays LOW.
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.30),
+            // Lit dim on the 2026-09-29 and 2026-10-17 models, as on the
+            // other cable flies: the biceps holds the fixed elbow bend as
+            // the arms sweep up, and a fly works it far harder than a press
+            // (Solstad et al. 2020, J Sports Sci Med 19:645-651, PMID
+            // 33239937). LOW, like the Incline Cable Fly's biceps row.
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["serratus anterior", "core"],
@@ -5756,8 +6144,11 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the glutes are lit
+            // bright with the quads, so Gluteus Maximus moves up to primary
+            // (fraction kept where the EMG put it); the lower back stays dim.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["adductors", "hamstrings", "calves", "core"],
@@ -5841,9 +6232,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: quadriceps bright, glutes
+            // faint (dim before the swap), lower back unlit (as before). The
+            // Erector Spinae row (0.50) is dropped and the gluteus maximus
+            // falls from 0.40 to a LOW 0.36, the value the library's other
+            // faint rows take (the Romanian Deadlift's forearms and
+            // quadriceps). That is the paint's call, not the EMG's: front, full
+            // and parallel squats drew similar gluteus maximus amplitudes
+            // (Contreras et al. 2016, J Appl Biomech 32(1):16-22), so 0.36 is
+            // an estimate.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.94),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["upper back", "adductors", "core"],
         setup: [
@@ -5933,29 +6332,27 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the quadriceps
+            // bright, the glutes and erector spinae dim. The repaint turned
+            // the biceps off (the 2026-09-30 model lit it dim for the
+            // isometric elbow-flexion hold of the goblet grip), so its row is
+            // gone.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.85),
             MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.52),
-            // The 2026-09-30 model also lights the erector spinae and the
-            // biceps dim. With the load in front, the front squat drew more
-            // erector spinae activity than the back squat, as much as a
-            // superman hold (Comfort et al. 2011, J Strength Cond Res
-            // 25(1):149-154), and load lifts it well above a body-weight squat
-            // (Hamlyn et al. 2007, J Strength Cond Res 21(4):1108-1112); a
-            // goblet dumbbell is lighter than a front-squat bar, so LOW, under
-            // the Front and Back Squat rows. The elbows stay sharply bent
-            // (about 36° inside) with the dumbbell 13-22 cm in front of them,
-            // an isometric elbow-flexion hold, and the biceps works in elbow
-            // flexion whatever the hand position (Kleiber et al. 2015, Front
-            // Physiol 6:215). No goblet squat EMG of either muscle was found
-            // (Collins et al. 2021 recorded only thigh muscles), so both
-            // fractions are estimates; the biceps takes the app's LOW value
-            // for a biceps holding a fixed bend (the cable flies, 0.24). The
-            // rectus abdominis, unlit on the model and far less active in
-            // squats than in trunk isolation exercises (Aspe & Swinton 2014,
-            // J Strength Cond Res 28(10):2827-2836), moves to the stabilisers
-            // as core to keep the legend to three secondary names.
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.38),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
+            // With the load in front, the front squat drew more erector
+            // spinae activity than the back squat, as much as a superman hold
+            // (Comfort et al. 2011, J Strength Cond Res 25(1):149-154), and
+            // load lifts it well above a body-weight squat (Hamlyn et al.
+            // 2007, J Strength Cond Res 21(4):1108-1112); a goblet dumbbell is
+            // lighter than a front-squat bar, so LOW, under the Back Squat
+            // row (the Front Squat model leaves the lower back unlit). No
+            // goblet squat EMG of the erector spinae was found (Collins et al.
+            // 2021 recorded only thigh muscles), so the fraction is an
+            // estimate. The rectus abdominis, unlit on the model and far less
+            // active in squats than in trunk isolation exercises (Aspe &
+            // Swinton 2014, J Strength Cond Res 28(10):2827-2836), stays in
+            // the stabilisers as core.
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["adductors", "upper back", "forearms", "core"],
         setup: [
@@ -6151,20 +6548,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint, which lights only
+            // the front leg's glutes and quads, both bright: the gluteus
+            // maximus is now primary beside the quadriceps (fractions kept
+            // where they were). The grip, trapezius and rhomboids are no
+            // longer lit, so the Forearms row is gone, and the hamstrings,
+            // unlit in both the old and new exports, left the list.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.65),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.32),
-            // The 2026-09-30 model lights the grip dim (forearm flexors and
-            // extensors, brachioradialis) with the trapezius and rhomboids.
-            // Gripping works the forearm flexors and extensors (Mogk & Keir
-            // 2003, Ergonomics 46(9):956-975) and a heavy load held at the
-            // sides taxes the grip (Decker et al. 2026, Int J Strength Cond
-            // 6(1), strapped the hands in a farmer's carry to remove it); LOW,
-            // the app's dumbbell-grip value, as on the Walking Lunge. No lunge
-            // EMG of the forearms was found, so it is an estimate. The
-            // trapezius and rhomboids, also lit, are named with the
-            // stabilisers to keep the legend to three secondary names.
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.65)
         ],
         stabilisers: ["gluteus medius", "adductors", "trapezius", "rhomboids", "core"],
         setup: [
@@ -6509,9 +6900,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint (the Standard stance): the
+            // glutes and quadriceps bright, the lower back unlit. Gluteus
+            // Maximus moves up to primary at its 0.50 and the Erector Spinae
+            // row is dropped.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50)
         ],
         stabilisers: ["hamstrings", "adductors", "calves", "core"],
         setup: [
@@ -6594,8 +6988,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: bright quads stay
+            // primary; the dim glutes get a LOW secondary row (no normalised EMG
+            // found for the sissy squat; estimate: the hips stay extended, so the
+            // glutes only hold the knee-hip-shoulder line, in the range of the
+            // Nordic-style lifts' glute rows, 0.22 Assisted Nordic Curl to 0.34
+            // Nordic Hamstring Curl); Rectus Abdominis dropped (Abs unlit).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.25)
         ],
         stabilisers: ["hip flexors", "calves"],
         setup: [
@@ -6705,21 +7105,26 @@ enum SampleData {
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit: hamstrings and glutes
-            // bright; erector spinae, forearms and quadriceps faint. At 70% of
-            // the RDL 1RM the gluteus maximus (46.9 %peak) ran close to the
-            // biceps femoris (56.7) and the rectus femoris reached 25.3, under
-            // half its conventional-deadlift level (Lee et al. 2018, J Exerc Sci
-            // Fit 16:87-93); at 1RM the RDL's gluteus maximus did not differ
-            // from the barbell hip thrust's (Delgado et al. 2019, J Strength
-            // Cond Res 33:2595-2601). StrengthLog lists the glutes as primary
-            // and the forearm flexors as secondary. No normalised forearm value
-            // for the RDL was found, so 0.36, under the deadlifts' 0.45 as the
-            // model paints the forearms fainter, is an estimate.
+            // Ranked as the 2026-10-17 model is lit: hamstrings and glutes
+            // bright; erector spinae and quadriceps faint. The list follows
+            // that paint: the forearms are no longer lit, so their row is gone
+            // (StrengthLog lists the forearm flexors as secondary), and the
+            // faint erector spinae is now a LOW row, 0.42 lowered to 0.38.
+            // StrengthLog lists the glutes, hamstrings and lower back as
+            // primary; the model paints the lower back only faint. No
+            // normalised RDL erector value was found in text (Coratella et al.
+            // 2022, Int J Environ Res Public Health 19:1903, charts it only),
+            // so 0.38 is an estimate, above the faint quadriceps and under the
+            // Dumbbell Romanian Deadlift's dim 0.52. At 70% of the RDL 1RM the
+            // gluteus maximus (46.9 %peak) ran close to the biceps femoris
+            // (56.7) and the rectus femoris reached 25.3, under half its
+            // conventional-deadlift level (Lee et al. 2018, J Exerc Sci Fit
+            // 16:87-93); at 1RM the RDL's gluteus maximus did not differ from
+            // the barbell hip thrust's (Delgado et al. 2019, J Strength Cond
+            // Res 33:2595-2601).
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.42),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.38),
             MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["latissimus dorsi", "upper trapezius", "core"],
@@ -8542,9 +8947,17 @@ enum SampleData {
         ],
         activation: [
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46)
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46),
+            // The list follows the 2026-10-17 model's paint: triceps bright,
+            // front delts and chest (one Chest group) dim. The chest, dim
+            // before too but only named in the stabilisers, leaves them as a
+            // LOW secondary row. No normalised EMG found; estimate (McKenzie
+            // et al. 2022, IJERPH, give the bench dip's pectoralis peak only in
+            // mV, significantly below the bar dip's), so it sits under the
+            // front delt and the assisted dip's 0.56.
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["pectoralis major", "serratus anterior", "core"],
+        stabilisers: ["serratus anterior", "core"],
         setup: [
             "Sit on the edge of a bench, hands beside your hips.",
             "Fingers forward, slide your hips off the bench.",
@@ -8633,12 +9046,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the triceps and
+            // front delts are lit bright (primary) and the chest (all three
+            // heads) is now dim, so the pectoralis major moves from primary to
+            // secondary. The fractions are kept where the EMG put them, so the
+            // chest's 0.56 stays above the front delts' 0.48 even as a secondary.
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.84),
-            // The 2026-10-10 model lights the chest (all three heads) and the
-            // front delts bright with the triceps, so both are primary rows.
-            // The fractions are kept, so the triceps still lead the list.
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.56),
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.48)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.48),
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["serratus anterior", "latissimus dorsi", "rotator cuff"],
         setup: [
@@ -8744,15 +9159,16 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the front leg's
+            // quadriceps and glutes (maximus, medius and minimus meshes) are
+            // bright, as they were before, but the hamstrings, dim on the
+            // 2026-10-10 model, are no longer lit, so their row is gone. The
+            // bright glutes are now primary rows instead of the secondary rows
+            // the split-squat family used to give them, their fractions left
+            // where the EMG put them.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44),
-            // The 2026-10-10 model no longer lights the forearms, erector
-            // spinae, trapezius or rhomboids; the hamstrings are the only
-            // muscles left in its fainter tier, so they take the Forearms
-            // row's place and the grip joins the stabilisers. 0.40, as on the
-            // dumbbell split squat, keeps them under the lean variation's 0.48.
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.58),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44)
         ],
         stabilisers: ["adductors", "forearms", "erector spinae", "trapezius", "rhomboids", "core"],
         setup: [
@@ -8942,18 +9358,17 @@ enum SampleData {
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit: hamstrings and glutes
-            // bright; erector spinae, forearms and quadriceps dim. The glutes
-            // and quadriceps follow the barbell Romanian Deadlift's evidence
-            // (Lee et al. 2018, J Exerc Sci Fit 16:87-93: gluteus maximus close
-            // to the biceps femoris, rectus femoris under half of it; Delgado et
-            // al. 2019, J Strength Cond Res 33:2595-2601); StrengthLog lists the
-            // glutes as primary and the forearm flexors as secondary. Forearms
-            // take the deadlifts' 0.45 grip estimate.
+            // The list follows the 2026-10-17 model's paint: hamstrings and
+            // glutes bright; erector spinae and quadriceps dim. The owner turned
+            // the forearms off in the re-paint, so the Forearms row is gone. The
+            // glutes and quadriceps follow the barbell Romanian Deadlift's
+            // evidence (Lee et al. 2018, J Exerc Sci Fit 16:87-93: gluteus
+            // maximus close to the biceps femoris, rectus femoris under half of
+            // it; Delgado et al. 2019, J Strength Cond Res 33:2595-2601);
+            // StrengthLog lists the glutes as primary.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.45),
             MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["lats", "core", "adductors"],
@@ -9056,19 +9471,17 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-09-30 model lights the hamstrings bright and the glutes,
-            // erector spinae, forearms and quadriceps faint. The forearms become
-            // a LOW secondary row as on the Romanian Deadlift (StrengthLog lists
-            // the forearm flexors; 0.36 is an estimate). The quadriceps, holding
-            // near-straight knees, are listed as a stabiliser so the legend keeps
-            // three secondary names. The glutes stay secondary as the model paints
-            // them, though at 80% 1RM this lift drew more gluteus maximus and
-            // less semitendinosus than the Romanian deadlift (Coratella et al.
-            // 2022, Int J Environ Res Public Health 19:1903).
+            // The list follows the 2026-10-17 model's paint: hamstrings, glutes
+            // and erector spinae all bright. Gluteus Maximus and Erector Spinae
+            // move up from secondary to primary (fractions kept), and the Forearms
+            // row is dropped because the new model no longer lights the forearms.
+            // The quadriceps, holding near-straight knees, stay a stabiliser.
+            // The bright glutes agree with the EMG: at 80% 1RM this lift drew more
+            // gluteus maximus and less semitendinosus than the Romanian deadlift
+            // (Coratella et al. 2022, Int J Environ Res Public Health 19:1903).
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.58),
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.58)
         ],
         stabilisers: ["quadriceps", "lats", "trapezius", "core"],
         setup: [
@@ -9521,16 +9934,22 @@ enum SampleData {
             )
         ],
         activation: [
-            // Follows the model's paint (owner's call, 2026-10-01): the glutes
-            // and the quadriceps bright, the hamstrings dim (the 2026-10-10
-            // model; the 2026-09-30 one barely lit them), a low secondary. EMG of this position would rank the
-            // hamstrings higher and the quadriceps lower (Lehecka et al. 2017,
-            // Int J Sports Phys Ther 12:543-549); the paint wins so the list
-            // and the model agree.
+            // Follows the 2026-10-17 model's paint (owner's call, 2026-10-01:
+            // the list follows the model): the glutes (maximus, medius and
+            // minimus) and the hamstrings bright, the quadriceps dim. The
+            // re-paint raised the hamstrings to a primary and dropped the
+            // quadriceps to a secondary; the gluteus medius, bright with the
+            // rest of the glutes, is listed primary too. The ranks follow the
+            // paint and the fractions stay where they were. EMG of this
+            // position agrees with the new ranks: biceps femoris 75 %MVIC beside
+            // 51 for the gluteus maximus and 58 for the gluteus medius, the
+            // working leg's rectus femoris 6% (Lehecka et al. 2017, Int J Sports
+            // Phys Ther 12:543-549). The hamstrings' 0.30 and the quadriceps'
+            // 0.66 date from the 2026-10-01 paint edit, not from that EMG.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.66),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.66)
         ],
         stabilisers: ["adductors", "obliques", "erector spinae"],
         setup: [
@@ -9615,9 +10034,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the glutes bright
+            // (maximus, medius and minimus are one paint group, lit on the
+            // working leg) and the hamstrings dim. The Gluteus Medius moves
+            // from secondary to primary and keeps its fraction.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["standing-leg glutes", "core", "erector spinae"],
         setup: [
@@ -9703,8 +10126,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the glutes are one
+            // bright group on the kicking leg (maximus, medius and minimus
+            // meshes all lit), so the Gluteus Maximus moves from secondary to
+            // primary. The fractions stay, keeping the medius, the main
+            // abductor, ahead of the maximus.
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
         ],
         stabilisers: ["standing-leg gluteus medius", "obliques", "adductors"],
         setup: [
@@ -10062,15 +10490,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: only the quads and
+            // glutes are lit (bright, working leg), so the Gluteus Maximus and
+            // Gluteus Medius rows are now primary (fractions kept). The upper
+            // back and forearms are no longer lit, so the Trapezius and
+            // Forearms rows are gone.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.64),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44),
-            // The 2026-10-10 model lights the upper back (trapezius and
-            // rhomboids, one paint group) and the forearms dim: they carry the
-            // dumbbells. The list follows the paint; the Trapezius row stands
-            // for the upper-back group.
-            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.30),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44)
         ],
         stabilisers: ["hamstrings", "adductors", "core"],
         setup: [
@@ -10154,9 +10581,14 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.60),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52)
+            // Follows the 2026-10-17 model's paint (owner's re-paint, 2026-10-14..16):
+            // the triceps and the anterior deltoid are now bright (were dim) and
+            // the chest only dim (was bright), so the triceps and front delts are
+            // primary and the pectoralis secondary. Ranks follow the paint; the
+            // fractions stay where the EMG put them, so the pectoralis keeps 0.84.
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.52),
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.84)
         ],
         stabilisers: ["serratus anterior", "rectus abdominis", "gluteus maximus"],
         setup: [
@@ -10240,9 +10672,11 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: abs bright, obliques dim.
+            // The glutes are unlit in the model, so the Gluteus Maximus row is
+            // gone.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["transverse abdominis", "serratus anterior", "quadriceps", "shoulders"],
         setup: [
@@ -10430,9 +10864,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the rectus
+            // abdominis bright (primary), the obliques dim (secondary). The
+            // owner turned the hip flexors off on this model (dim in the old
+            // paint), so the Hip Flexors row is gone.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.58)
         ],
         stabilisers: ["transverse abdominis"],
         setup: [
@@ -10523,9 +10960,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // Rows follow the 2026-10-17 model's paint (bright abs, dim obliques).
+            // Hip Flexors row dropped: the rig's HipFlexors (sartorius) group is
+            // unlit, and the model's pelvis-to-thigh angle holds at 169 degrees
+            // through the whole rep (the curl is all spine), so this is not a
+            // hip-flexion lift that keeps a legend-only row.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["transverse abdominis", "quadriceps"],
         setup: [
@@ -10701,25 +11142,18 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: Abs bright,
+            // Obliques dim. The 2026-09-30 model also lit the hang dim
+            // (forearms, lats, posterior deltoid, rotator cuff, rhomboids,
+            // trapezius); the new paint turns all of them off, so the Forearms
+            // and Latissimus Dorsi rows are gone. Hip Flexors stays as a
+            // legend-only row: raising the knees is hip flexion, and the rig's
+            // HipFlexors group is the sartorius mesh alone (the iliopsoas is
+            // not modelled), unlit in both models. The shoulder-blade muscles
+            // stay in the stabilisers note.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.64),
-            // The 2026-09-30 model also lights the hang dim: forearms, lats,
-            // posterior deltoid, rotator cuff, rhomboids and trapezius. The
-            // whole body hangs from the hands; a two-handed bar hang is used to
-            // measure forearm muscle endurance (Kwong et al. 2024, J Funct
-            // Morphol Kinesiol 9(3):161) and dead hangs train support grip
-            // (Gill 2024, Stronger by Science). Latissimus dorsi activity in
-            // the hanging knee-up (with arm straps) was among the highest of
-            // the abdominal exercises Escamilla et al. 2006 tested (Phys Ther
-            // 86(5):656-671); in the Swiss ball abdominal exercises of
-            // Escamilla et al. 2010 the highest lat readings were 17-25% MVIC
-            // (JOSPT 40(5):265-276). No normalised EMG of either muscle in a
-            // bar-hanging raise was found, so both fractions are estimates.
-            // The shoulder-blade muscles are named with the stabilisers to
-            // keep the legend to three names.
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.25)
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.64)
         ],
         stabilisers: ["posterior deltoid", "rotator cuff", "rhomboids", "trapezius"],
         setup: [
@@ -10808,13 +11242,16 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: abs bright,
+            // obliques dim. The owner turned the hang off (the 2026-09-30
+            // model lit forearms, lats, posterior deltoid, rotator cuff and
+            // upper back dim), so the Forearms and Latissimus Dorsi rows are
+            // gone. Hip Flexors stays primary as a legend-only row: the rig's
+            // HipFlexors group is the sartorius mesh only (no iliopsoas), and
+            // it was unlit before the swap too.
             MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.62),
-            // The 2026-09-30 model lights the hang dim as on the Hanging Knee
-            // Raise; sources, estimates and the stabilisers as there.
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.25)
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.62)
         ],
         stabilisers: ["posterior deltoid", "rotator cuff", "rhomboids", "trapezius", "quadriceps"],
         setup: [
@@ -10989,19 +11426,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: rectus abdominis
+            // bright, obliques dim. The owner turned off the latissimus dorsi,
+            // triceps and posterior deltoid that the 2026-10-10 model lit dim,
+            // so those three rows are gone, although Escamilla 2006 (Phys Ther
+            // 86:656-671) measured latissimus dorsi activity in the roll-out.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.68),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.48),
-            // The 2026-10-10 female model lights the triceps and posterior
-            // deltoid dim. Neither was measured in a roll-out (Escamilla 2006,
-            // Phys Ther 86:656-671, recorded the abdominals, latissimus dorsi,
-            // rectus femoris and lumbar paraspinals): the triceps hold the
-            // elbows nearly straight (about 165° all rep) and the posterior
-            // deltoid, a shoulder extensor (OpenStax), helps sweep the arms back
-            // down on the return. LOW 0.30, like the Mountain Climber's triceps
-            // and the Stability Ball Rollout's posterior deltoid rows.
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.30),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.68)
         ],
         stabilisers: ["transverse abdominis", "rotator cuff", "gluteus maximus"],
         setup: [
@@ -11088,11 +11519,16 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: obliques bright,
+            // abs dim, lower back and glutes unlit. Rectus Abdominis added as a
+            // low secondary; Quadratus Lumborum and Gluteus Medius dropped.
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Quadratus Lumborum", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.46)
+            // Rectus abdominis ~22% MVC in the side bridge (McGill, Juker &
+            // Kropf 1996, Clin Biomech 11(3):170-172, the same study as the
+            // 54% quadratus lumborum value in the hips cue).
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.22)
         ],
-        stabilisers: ["transverse abdominis", "rectus abdominis", "shoulders"],
+        stabilisers: ["transverse abdominis", "shoulders"],
         setup: [
             "Lie on your side on a mat, legs straight and stacked.",
             "Place your elbow directly under your shoulder.",
@@ -11177,8 +11613,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the obliques and the
+            // rectus abdominis are both bright, so the rectus abdominis moves
+            // up to primary (its fraction kept). The hip flexors hold the 45°
+            // lean-back. The rig cannot paint the iliopsoas (its HipFlexors
+            // group is the sartorius mesh, unlit before and after the swap),
+            // so they stay a legend-only LOW secondary.
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.52),
             MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["transverse abdominis", "erector spinae"],
@@ -11268,15 +11710,15 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint, which lights only the abs
+            // and obliques, both bright: Rectus Abdominis moves up to primary
+            // (its 0.44 fraction stays), and the delt and arm rows are gone
+            // because the 2026-10-10 model's dim delts and arms are no longer
+            // painted. Transverse Abdominis stays secondary as a legend-only
+            // row: the rig has no mesh for it to paint.
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.44),
-            MuscleActivation(name: "Transverse Abdominis", rank: .secondary, fraction: 0.40),
-            // The 2026-10-10 model lights the delts and arms dim: they hold the
-            // arms long and carry the handle. The list follows the paint.
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.25),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.20),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.15)
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.44),
+            MuscleActivation(name: "Transverse Abdominis", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["gluteus maximus", "latissimus dorsi"],
         setup: [
@@ -11432,9 +11874,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint (bright quads and
+            // glutes, nothing dim or faint): Gluteus Maximus moves up to
+            // primary at its EMG fraction, and the Adductor Magnus row is gone
+            // because the model leaves the adductors unlit.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Adductor Magnus", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56)
         ],
         stabilisers: ["hamstrings", "erector spinae", "core", "anterior deltoid"],
         setup: [
@@ -11528,9 +11973,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the quadriceps and the
+            // glutes are both bright, so the Gluteus Maximus and Gluteus
+            // Medius rows move from secondary to primary. The fractions are
+            // unchanged; only the ranks follow the paint.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.58),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.42)
         ],
         stabilisers: ["adductors", "hamstrings", "calves", "core"],
         setup: [
@@ -11622,9 +12071,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the glutes bright (primary),
+            // the quadriceps dim, so now secondary (fraction kept where the
+            // earlier estimate put it), and the hamstrings unlit, so their row
+            // is gone.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.76)
         ],
         stabilisers: ["gluteus medius", "adductors", "erector spinae", "core"],
         setup: [
@@ -11717,8 +12169,26 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // model paints the chest like the bench press (middle head bright,
+            // upper and lower heads dim), so the one Pectoralis Major row
+            // splits: Middle Pectoralis is primary and keeps the old 0.86, and
+            // Upper and Lower Pectoralis are new secondary rows. No floor-press
+            // EMG by head was found, so 0.58 and 0.51 are estimates: the bench
+            // press's dim-head estimates (0.62 and 0.55 under 0.92, anchored on
+            // Rodriguez-Ridao et al. 2020, Int J Environ Res Public Health
+            // 17(19):7339, and Lauver et al. 2016, Eur J Sport Sci
+            // 16(3):309-316) scaled to 0.86, both MODERATE under the bright
+            // head. The shorter range does not clearly favour one head: an
+            // upper-half bench raised clavicular and sternocostal mean EMG
+            // alike over the full range (Fischer et al. 2025, Sci Rep
+            // 15:14105), and a board press at 130% 1RM drew less of both than a
+            // full press at 90% in Paralympic powerlifters (Mendonça et al.
+            // 2021, PLoS ONE 16(10):e0257810).
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.51),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "core"],
@@ -11807,7 +12277,24 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // sternal (middle) head is bright and the clavicular (upper) and
+            // abdominal (lower) heads dim, as on the Barbell Bench Press model.
+            // So the one Pectoralis Major row splits into a primary Middle
+            // Pectoralis, which keeps the old 0.90, and two new secondary rows.
+            // Schick et al. 2010 (J Strength Cond Res 24(3):779-784) report a
+            // Smith vs free-weight difference only in the medial deltoid, with
+            // the pec recorded as one muscle, and no EMG by pec head was found
+            // for the Smith press. The new rows therefore take the flat barbell
+            // bench's values. Those are estimates anchored on Rodriguez-Ridao
+            // et al. 2020 (Int J Environ Res Public Health 17(19):7339), which
+            // found the three heads about equal at 0°, and Lauver et al. 2016
+            // (Eur J Sport Sci 16(3):309-316). They are kept MODERATE under the
+            // bright head, and putting the lower head above the upper is a
+            // judgement call.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50)
         ],
@@ -11897,9 +12384,22 @@ enum SampleData {
             )
         ],
         activation: [
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // upper (clavicular) head is bright and the middle (sternal) and
+            // lower (abdominal) heads are dim, so Upper Pectoralis keeps the old
+            // 0.86 as the primary and the two dim heads get new secondary rows.
+            // Their fractions scale 0.86 by a 30° barbell press at 60% 1RM:
+            // clavicular ~30, sternal ~16.6, costal ~13.2 %MVIC (Rodríguez-Ridao
+            // et al. 2020, Int J Environ Res Public Health 17(19):7339, Fig. 3;
+            // free bar), the same ratios as the Incline Barbell Bench Press.
+            // Borrowing them for the Smith bar is an estimate. In flat-bench EMG
+            // the free bar mainly raised medial-deltoid activity (Schick et al.
+            // 2010, J Strength Cond Res 24(3):779-784).
             MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -11988,8 +12488,26 @@ enum SampleData {
             )
         ],
         activation: [
+            // The chest rows follow the model's paint by head (2026-10-22).
+            // SmithMachineDeclinePress paints the lower (abdominal) head bright
+            // and the middle (sternal) and upper (clavicular) heads dim (tiers.py
+            // re-measure: Abdominal bright; Sternal, Clavicular dim), the same
+            // split as the Decline Barbell Bench Press model. Lower Pectoralis
+            // stays primary on the old 0.92; Middle and Upper Pectoralis are new
+            // secondary rows. The lower pec is more active on a -15° decline
+            // than on a +30° incline (Glass & Armstrong 1997, J Strength Cond
+            // Res 11(3):163-167). Both the sternal and clavicular heads work
+            // less on a decline than on a flat bench (Barnett et al. 1995,
+            // J Strength Cond Res 9(4):222-227). The Smith rails do not change
+            // pec major EMG compared with free weight; only the medial delt
+            // differed (Schick et al. 2010, J Strength Cond Res 24(3):779-784).
+            // So 0.64 and 0.44 are estimates that mirror the free-weight decline
+            // rows, kept MODERATE/LOW under the bright head because the paint
+            // dims them.
             MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.64),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["latissimus dorsi", "rotator cuff", "core"],
@@ -12078,8 +12596,21 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            // 2026-10-22: the chest rows follow the model's paint by head. It
+            // lights the sternal (middle) head bright and the clavicular (upper)
+            // and abdominal (lower) heads dim, so the one Pectoralis Major row
+            // splits: Middle Pectoralis is primary and keeps the old 0.86, and
+            // Upper and Lower Pectoralis are new secondary rows. No EMG by head
+            // was found for the floor press; on a flat barbell bench the three
+            // heads did not differ (~27% MVIC each at 60% 1RM; Rodriguez-Ridao
+            // et al. 2020, Int J Environ Res Public Health 17(19):7339). 0.59
+            // and 0.53 are estimates: the Dumbbell Bench Press's 0.62 and 0.55
+            // (under its 0.90) scaled to this 0.86, the lower head above the
+            // upper as there, both kept MODERATE under the bright head.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.59),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.53),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["rotator cuff", "biceps brachii", "serratus anterior"],
@@ -12168,12 +12699,31 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // 2026-10-17 model paints the sternal (middle) head bright and the
+            // clavicular (upper) and abdominal (lower) heads dim, so the one
+            // Pectoralis Major row splits into a primary Middle Pectoralis (its
+            // 0.84 kept) and two new secondary rows. Pectoralis major EMG did
+            // not differ significantly across one-arm presses holding one
+            // dumbbell or alternating two, on a flat or an unstable bench
+            // (p = 0.059; Patterson et al. 2015, PeerJ 3:e1365), but that study
+            // recorded one pec site, not the heads, and no by-head EMG of the
+            // one-arm press was found. So both new rows are estimates taken
+            // from the Dumbbell Bench Press, which has the same paint: 0.62 and
+            // 0.55, MODERATE under the bright head. On a flat bench the three
+            // portions did not differ significantly, the lower one at its peak
+            // there and the upper one peaking at 30° (Rodriguez-Ridao et al.
+            // 2020, Int J Environ Res Public Health 17(19):7339), so the lower
+            // row sits above the upper as a judgement call.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
             // The 2026-10-11 model paints the triceps and front delt bright with
             // the chest (dim before), so they are primary rows; the fractions
-            // stay where the EMG put them.
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            // stay where the EMG put them. The 2026-10-17 model paints both dim
+            // again; this pass changes only the chest rows, so they stay as is.
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.52),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.46),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["rotator cuff", "quadratus lumborum", "serratus anterior"],
@@ -12261,7 +12811,22 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // sternal (middle) head is bright and the clavicular (upper) and
+            // abdominal (lower) heads are dim. So the one Pectoralis Major row
+            // splits into a primary Middle Pectoralis, which keeps its 0.86,
+            // and two new secondary rows. In a barbell press on a flat bench
+            // the three portions did not differ (~27% MVIC each;
+            // Rodríguez-Ridao et al. 2020, Int J Environ Res Public Health
+            // 17(19):7339). The lower one is at its peak flat and the upper one
+            // peaks at 30°, so the lower row sits above the upper, as on the
+            // Dumbbell Bench Press. No EMG by head was found for the
+            // alternating press, so 0.59 and 0.53 are estimates: the Dumbbell
+            // Bench Press's 0.62 and 0.55 scaled to this list's 0.86, MODERATE
+            // under the bright head.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.59),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.53),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46)
         ],
@@ -12350,8 +12915,26 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // NeutralGripDumbbellPress model paints the sternal (middle) head
+            // bright and the clavicular (upper) and abdominal (lower) heads
+            // dim, so the one Pectoralis Major row splits: Middle Pectoralis
+            // is primary and keeps the old 0.82, and Upper and Lower
+            // Pectoralis are new secondary rows. No head-by-head EMG of a
+            // neutral-grip dumbbell press was found. In a neutral-grip seated
+            // chest press the clavicular head was significantly more active
+            // (~30% MVIC) than in a prone-grip bench press at 150% biacromial
+            // width (~25%), and within that press the three heads did not
+            // differ significantly (Muyor et al. 2023, J Hum Kinet 87:23-34);
+            // a supinated grip also raised clavicular activity in the flat
+            // press (Lehman 2005, J Strength Cond Res 19(3):587-591). So the
+            // upper row sits above the lower one here, unlike the pronated
+            // presses, as a judgement call. 0.58 and 0.52 are estimates, kept
+            // MODERATE under the bright head because the paint dims them.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.52),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii"],
@@ -12439,8 +13022,28 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // model lights the sternal (middle) head bright and the clavicular
+            // (upper) and abdominal (lower) heads dim, so the one Pectoralis
+            // Major row splits into a primary Middle Pectoralis (its 0.84
+            // kept) and two new secondary rows. No EMG of the squeeze press
+            // itself was found. It is a close, palms-in press with the elbows
+            // tucked, and the close-grip barbell studies put the heads near
+            // each other (Saeterbakken et al. 2021, Int J Environ Res Public
+            // Health 18:6444, narrow grip: clavicular 88 vs sternal 100
+            // %MVIC; Mausehund et al. 2022, J Strength Cond Res 36:2685,
+            // elbows in: clavicular 59.6, abdominal 54.6, sternal 51.5
+            // %MVIC). %MVIC fixes no rank between heads, so the sternal head
+            // stays the primary row as the paint has it. Narrower grips raised
+            // the clavicular head and wider ones the abdominal (Mausehund
+            // 2022), so the upper row sits above the lower. Upper Pectoralis
+            // 0.58 and Lower Pectoralis 0.54 are estimates, kept MODERATE
+            // under the bright head because the paint dims them. Triceps and
+            // front delt stay dim secondaries.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.54),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
@@ -12529,9 +13132,20 @@ enum SampleData {
             )
         ],
         activation: [
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // upper (clavicular) pec is bright and keeps the old 0.84 as the
+            // primary; the middle (sternal) and lower (abdominal) heads are lit
+            // dim and get new secondary rows. No squeeze-press EMG was found, so
+            // both are estimates scaled to the upper head from a free-weight
+            // barbell press on a 30° bench at 60% 1RM: clavicular ~30, sternal
+            // ~16.6, costal ~13.2 %MVIC (Rodríguez-Ridao et al. 2020, Int J
+            // Environ Res Public Health 17(19):7339, PMID 33049982, Fig. 3),
+            // the same scaling as the Incline Dumbbell Press.
             MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56)
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.37)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -12629,10 +13243,26 @@ enum SampleData {
             // Pullover EMG would rank the rear delts lower (about 16% MVIC,
             // Campos et al. 2017, Rev Bras Med Esporte 23:357-360); the paint
             // wins so the list and the model agree.
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            // The chest rows follow the model's paint by head (2026-10-22):
+            // the chest-split rig lights the middle (sternal) and lower
+            // (abdominal) pec bright and the upper (clavicular) pec dim, so
+            // the one Pectoralis Major row becomes three head rows. The middle
+            // head keeps the old 0.82. The paint fits the anatomy: the
+            // sternocostal fibres pull the arm down from overhead, while the
+            // clavicular head is a shoulder flexor. Muyor et al. 2022 (Appl
+            // Sci 12(21):11138) recorded all three portions in the barbell
+            // pullover and conclude it works mainly the sternal and lower
+            // portions; their per-head values were not reached, so the lower
+            // (0.78, just under the middle head) and upper (0.40, MODERATE,
+            // under the bright heads) rows are estimates.
+            // A 2026-10-22 re-measure of this model reads the rear delts dim
+            // and the triceps unlit; those rows are left as they are here.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.55),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.42),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["serratus anterior", "teres major", "core"],
         setup: [
@@ -12725,8 +13355,26 @@ enum SampleData {
         activation: [
             // Follows the model's paint, as on the Dumbbell Pullover: the pecs
             // and the rear delts bright, the lats and triceps dim.
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // chest-split rig lights the middle (sternal) and lower (abdominal)
+            // heads bright and the upper (clavicular) head dim, so the one
+            // Pectoralis Major row becomes three head rows. The middle head
+            // keeps the old 0.80: in isometric shoulder extension the middle
+            // sternocostal region was 12-108% more active than the clavicular
+            // and upper sternocostal regions (Lulic-Kuryllo et al. 2022, J
+            // Biomech, art. 110966; healthy women, lower region not recorded).
+            // No EMG of the lower head in a pullover was found, so 0.76 is an
+            // estimate, HIGH as the paint lights it bright. The paint and the
+            // literature disagree on the upper head: barbell pullover EMG puts
+            // it level with the sternocostal portion and the lats (clavicular
+            // 46-49, sternocostal 43-47, lats about 43-47% MVIC; Pezarat-Correia
+            // et al. 2020, Rev Andal Med Deporte 13:127-133). The paint wins, so
+            // 0.60 is an estimate kept MODERATE under the bright heads, just
+            // above the lats row as that EMG has it.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.70),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.60),
             MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
         ],
@@ -12824,7 +13472,27 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.88),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // IsoLateralChestPress model lights the middle (sternal) pec bright
+            // and the upper and lower heads dim, so the single Pectoralis Major
+            // row becomes three: Middle Pectoralis keeps the old 0.88 as the
+            // primary row, and Upper and Lower Pectoralis are new secondary
+            // rows. No per-head EMG for this machine was found, so 0.60 and
+            // 0.56 are estimates, MODERATE under the bright head as the paint
+            // has them. Measured from the model, each handle travels square to
+            // the torso, which reclines 22 degrees (the back pad about 18), but
+            // ends level with the shoulder, so the arm finishes at about 67
+            // degrees of shoulder flexion, 23 short of square to the torso: a
+            // decline-like line, and the clavicular head was less active on a
+            // decline than on a flat press (Barnett et al. 1995, J Strength
+            // Cond Res 9(4):222-227). The palms-in grip pulls the other way: a
+            // seated neutral-grip chest press drew more clavicular activity
+            // than a wide-grip flat bench (Muyor et al. 2023, J Hum Kinet
+            // 87:23-34, PMID 37229415). So the lower head sits only just above
+            // the upper.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
@@ -12921,9 +13589,24 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
+            // 2026-10-22: the chest rows follow the model's paint by head. It
+            // lights the middle (sternal) pec bright and the upper (clavicular)
+            // and lower (abdominal) heads dim, so the old primary Upper
+            // Pectoralis row becomes Middle Pectoralis and keeps its 0.84. The
+            // paint disagrees with that old row and with the EMG: on a 30°
+            // barbell incline at 60% 1RM the upper head is the most active
+            // (~30 %MVIC) while the middle (~16.6) and lower (~13.2) fall below
+            // their flat-bench values (Rodríguez-Ridao et al. 2020, Int J
+            // Environ Res Public Health 17(19):7339, PMID 33049982, Fig. 3).
+            // The paint wins. No per-head EMG for an incline machine was found,
+            // so both new rows are estimates: upper 0.66, high MODERATE under
+            // the bright head as the EMG ranks it first; lower 0.37 (LOW), 0.84
+            // scaled by 13.2/30, as on the Incline Dumbbell Press.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.66),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.37)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -13019,8 +13702,21 @@ enum SampleData {
             )
         ],
         activation: [
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // lower (abdominal) head is bright and keeps the old Lower
+            // Pectoralis 0.88 as the primary; the middle (sternal) and upper
+            // (clavicular) heads are lit dim (re-measured 2026-10-22), so they
+            // gain secondary rows. Both work less on a decline press than on a
+            // flat one (Barnett et al. 1995, J Strength Cond Res 9:222-227),
+            // though the upper head stays near its flat-press level over the
+            // whole concentric phase (Lauver et al. 2016, Eur J Sport Sci
+            // 16:309-316). No machine EMG on this library's scale was found, so
+            // 0.61 and 0.42 are estimates, scaled to 0.88 from the Decline
+            // Barbell Bench Press rows (0.64 and 0.44 under its 0.93).
             MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.61),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.42),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
@@ -13118,7 +13814,25 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // PlateLoadedChestPress model lights the middle (sternal) and lower
+            // (abdominal) pec bright and the upper (clavicular) pec dim, so the
+            // one Pectoralis Major row is split by head. Middle Pectoralis keeps
+            // the old 0.90. On a flat bench the three heads work about equally
+            // (Rodríguez-Ridao et al. 2020, Int J Environ Res Public Health
+            // 17:7339), and a prone-grip chest press machine worked the
+            // sternocostal head about as hard as a flat bench (Coratella et al.
+            // 2020, Eur J Sport Sci 20(5):571-579), so Lower Pectoralis 0.86,
+            // just under the middle head, is an estimate. This model grips the
+            // upright handles palms in: a seated neutral-grip chest press drew
+            // more clavicular activity than a wide-grip flat bench, ~30% vs ~25%
+            // MVIC (Muyor et al. 2023, J Hum Kinet 87:23-34, PMID 37229415), so
+            // Upper Pectoralis takes the Chest Press Machine's 0.62 (the same
+            // neutral grip and paint on that head), an estimate: MODERATE, below
+            // the bright heads as the paint has them.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.62),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
@@ -13218,7 +13932,26 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // sternal (middle) pec is bright; the clavicular (upper) and
+            // abdominal (lower) heads are dim, as are the front delt and
+            // triceps. So the one Pectoralis Major row becomes a primary
+            // Middle Pectoralis that keeps its 0.90, and the upper and lower
+            // heads get new secondary rows. On a seated chest press with a
+            // wide prone grip (~200% biacromial width) the three pec portions
+            // did not differ significantly, and the machine's pec activity
+            // matched a wide-grip flat bench's (Muyor et al. 2023, J Hum
+            // Kinet 87:23-34, PMID 37229415). On a flat bench a wide pronated
+            // grip drew less clavicular activity than a close pronated grip
+            // (Roy et al. 2020, Int J Strength Cond), and narrowing the grip
+            // cut sternal activity (Lehman 2005, J Strength Cond Res
+            // 19(3):587-591). No per-head values on this list's scale were
+            // found, so 0.62 and 0.52 are estimates: MODERATE, below the
+            // bright middle head as the paint has them, with the lower head
+            // above the upper as a judgement call for the wide grip.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.52),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.40)
         ],
@@ -13306,8 +14039,22 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            // 2026-10-22: the chest rows follow the CableChestPress model's
+            // paint by head. The middle (sternal) head is bright and the upper
+            // (clavicular) and lower (abdominal) heads are dim, so the one
+            // Pectoralis Major row splits. Middle Pectoralis is primary and
+            // keeps the old 0.82, under the bench press: Santana et al. 2007
+            // (J Strength Cond Res 21(4):1271-1279) measured the sternal pec
+            // at 61.3% MVIC in a 1RM single-arm standing cable press against
+            // 98.7% in the 1RM bench press. No EMG of the upper or lower head
+            // in a cable press was found, so 0.55 and 0.49 are estimates: the
+            // Barbell Bench Press's dim heads (lower 0.62, upper 0.55) scaled
+            // by 0.82/0.92, with the lower head above the upper as on that
+            // flat press. Both stay MODERATE under the bright head.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.49),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["core", "serratus anterior", "rotator cuff"],
@@ -13397,9 +14144,28 @@ enum SampleData {
             // The 2026-10-11 model paints the front delt and triceps bright with
             // the chest (dim before), so they are primary rows; the fractions
             // stay as they were.
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.78),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // 2026-10-17 model lights the working side's middle (sternal) pec
+            // bright and the upper (clavicular) and lower (abdominal) heads
+            // dim, so the one Pectoralis Major row splits: Middle Pectoralis
+            // keeps its 0.78 as the primary row, and Upper and Lower
+            // Pectoralis are new MODERATE secondary rows. An EMG study of this
+            // lift recorded the pec as a single signal, lower than in the
+            // bench press (Santana et al. 2007, J Strength Cond Res
+            // 21(4):1271-1279), so 0.44 and 0.42 are estimates, kept under
+            // all three primary rows. The model leans the torso ~16° forward
+            // and ends the press with the hand ~25 cm below the shoulder, the
+            // arm ~13° below square to the torso (a shallow decline line), so
+            // the lower head is set above the upper as a judgement call; the
+            // lower pec works as hard flat as on a -15° decline (Lauver et al.
+            // 2016, Eur J Sport Sci 16(3):309-316). The same export lights the
+            // front delt and triceps dim; this chest-only pass leaves their
+            // rows as they were.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.52),
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.46),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.42),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["transversus abdominis", "rotator cuff", "serratus anterior"],
@@ -13487,8 +14253,24 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.82),
+            // 2026-10-22: the chest rows follow the model's paint by head. It
+            // lights the middle (sternal) pec bright and the upper (clavicular)
+            // and lower (abdominal) pec dim, so the one Upper Pectoralis row
+            // becomes three head rows. The paint and the old row disagree: the
+            // old list, like the free-weight EMG, put the upper head first (on
+            // a 30° barbell incline at 60% 1RM the clavicular portion led, ~30
+            // vs ~17 sternal and ~13 costal %MVIC; Rodríguez-Ridao et al. 2020,
+            // Int J Environ Res Public Health 17(19):7339). The paint wins, so
+            // the bright middle head takes the old 0.82. The model's hands fit
+            // it: they finish about 10 cm below the shoulder joints along the
+            // torso, over the mid chest, while the Straight Up stance's hands
+            // finish over the collarbones. No EMG by head was found for a cable
+            // incline press, so 0.64 and 0.48 are estimates, MODERATE under the
+            // bright head; the incline keeps the upper head above the lower.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.64),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.48),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
@@ -13579,8 +14361,21 @@ enum SampleData {
         activation: [
             // The 2026-10-11 model paints the triceps bright (dim before), so
             // they are a primary row; the front delt stays dim.
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // 2026-10-17 model paints the lower (abdominal) head bright and the
+            // middle (sternal) and upper (clavicular) heads dim, so Lower
+            // Pectoralis stays the primary row at the old 0.86 and the middle
+            // and upper heads gain secondary rows. Both work less on a decline
+            // than on a flat bench (Barnett et al. 1995, J Strength Cond Res
+            // 9(4):222-227), though the upper head stays near its flat-bench
+            // level over the whole concentric phase (Lauver et al. 2016, Eur J
+            // Sport Sci 16(3):309-316). No cable-press EMG by head was found,
+            // so 0.59 and 0.41 are estimates: the Decline Barbell Bench Press's
+            // 0.64 and 0.44 scaled to this row's 0.86, both MODERATE.
             MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.52),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.59),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.41),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["latissimus dorsi", "rotator cuff", "core"],
@@ -13671,7 +14466,29 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.84),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // 2026-10-17 model lights the middle (sternal) head bright and the
+            // upper (clavicular) and lower (abdominal) heads dim. Paint and old
+            // row disagree: the list had one Lower Pectoralis primary row, as
+            // the down-and-in sweep is usually coached as a lower-chest fly
+            // (this lift's Hand Path cue too), but the model puts the middle
+            // head first, so Middle Pectoralis takes that row's 0.84.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
+            // Lit dim. No normalised EMG of a high-to-low cable fly by head was
+            // found; 0.60 is an estimate, MODERATE under the bright head and
+            // above the shoulder-height Cable Fly's 0.48. In men the lower
+            // sternocostal region joins in tasks that need adduction, internal
+            // rotation and extension (Lulic 2020, PhD thesis, Univ. of
+            // Waterloo, hdl 10012/16480), and the downward sweep adducts and
+            // extends the arm. The lower pec also works harder on a -15°
+            // decline press than a +30° incline (Glass and Armstrong 1997,
+            // J Strength Cond Res 11(3):163-167).
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.60),
+            // Lit dim. Estimate: the upper pec worked alike on the incline and
+            // decline presses (Glass and Armstrong 1997), but the pull here runs
+            // down, away from its fibres' line, so LOW 0.36, under the Cable
+            // Fly's 0.44.
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.36),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34),
             MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.28),
             // Lit dim on the 2026-09-30 model, as on the other cable flies: the
@@ -13770,13 +14587,29 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // model lights the middle (sternal) pec bright and the upper
+            // (clavicular) and lower (abdominal) heads dim, on the working left
+            // side only (ChestPaint; re-measured with tiers.py), so the one
+            // Pectoralis Major row becomes three head rows. Middle Pectoralis
+            // keeps the old 0.80 as a primary row, and Upper and Lower
+            // Pectoralis are new MODERATE secondary rows. No normalised EMG for
+            // each head in a single-arm (or two-arm) cable fly was found, so
+            // both values are estimates: the Cable Fly's 0.48 and 0.44 scaled
+            // to this lift's 0.80 bright head. In the model the cable leaves
+            // the pulley about 5 cm above the shoulder joint and the hand
+            // finishes about 15 cm below that, at mid-chest, so as on the Cable
+            // Fly the pull angles slightly downward and the lower head sits
+            // just above the upper.
             // The 2026-10-11 model paints the front delt bright (dim before) and
             // the biceps dim, as on the High-to-Low and Incline Cable Flies, so
             // the front delt is a primary row and the biceps, which hold the
             // slight elbow bend, leave the stabilisers as a LOW secondary row
             // at those lifts' 0.24.
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.41),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.28),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
@@ -13869,8 +14702,29 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.82),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // InclineCableFly model lights the middle (sternal) pec bright and
+            // the upper (clavicular) and lower (abdominal) pec dim, so the old
+            // primary Upper Pectoralis row's 0.82 moves to Middle Pectoralis.
+            // The paint and the old row disagree here: on a 30° incline press
+            // the EMG favours the upper head (60% 1RM: clavicular ~30 vs
+            // sternal ~17 %MVIC, Rodríguez-Ridao et al. 2020, Int J Environ Res
+            // Public Health 17:7339), and the cue copy aims the hands at the
+            // upper chest.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.82),
+            // Lit dim. No normalised EMG of the pec heads in an incline cable
+            // fly was found, so this is an estimate. In dumbbell flyes neither
+            // the clavicular nor the sternocostal pec differed between a flat
+            // and a 30° incline bench (Reiser et al. 2014, Rev Bras Prescr
+            // Fisiol Exerc 8(50):864-870), so the upper head stays high
+            // MODERATE, under the bright middle head as the paint has it.
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.64),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46),
+            // Lit dim. Estimate: pressing at 30°, the lower portion works less
+            // than flat (Rodríguez-Ridao et al. 2020), and it is the head
+            // farthest from the incline line, so LOW, as on the Incline
+            // Dumbbell Fly (0.30).
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.30),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
@@ -13961,7 +14815,20 @@ enum SampleData {
             )
         ],
         activation: [
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // DeclineCableFly model lights the lower (abdominal) head bright and
+            // the middle (sternal) and upper (clavicular) heads dim. Lower
+            // Pectoralis keeps the old 0.84 as the primary; Middle and Upper
+            // Pectoralis are new secondary rows. A -15° decline press drew more
+            // lower-pec EMG than a +30° incline, with the upper pec no different
+            // (Glass & Armstrong 1997, J Strength Cond Res 11(3):163-167; the
+            // middle head was not measured). No head-by-head EMG of a cable fly
+            // was found, so 0.58 and 0.40 are estimates, scaled from the Decline
+            // Barbell Bench Press rows (0.64 and 0.44 under its 0.93) to this
+            // 0.84 and kept MODERATE under the bright head.
             MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.40),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
@@ -14052,7 +14919,21 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            // The chest rows follow the model's paint by head (2026-10-22). The
+            // CableCrossover model lights the middle (sternal) pec bright and
+            // the upper (clavicular) and lower (abdominal) pec dim, so the old
+            // single Pectoralis Major row is split. Middle Pectoralis is primary
+            // and keeps the old 0.86, and Upper and Lower Pectoralis are new
+            // MODERATE secondary rows. No normalised per-head pec EMG for a
+            // cable crossover was found, so 0.48 and 0.44 are estimates. They
+            // match the Cable Fly's: the two models share the paint, the
+            // pulleys and the hand path. In the model the pulleys sit at
+            // shoulder height and the hands finish at chest height, about
+            // 30 cm below them, so the cables pull about 7-10 degrees downward
+            // and the lower head sits just above the upper.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
@@ -14140,6 +15021,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // 2026-10-17 model lights the upper (clavicular) pec bright and
+            // the middle (sternal) and lower (abdominal) pec dim, so Upper
+            // Pectoralis stays the primary with its 0.78 and the middle and
+            // lower heads get new secondary rows. No head-level EMG of the
+            // landmine press was found, so both are estimates scaled to the
+            // upper pec row from a barbell press on a 30° bench at 60% 1RM,
+            // near this press's ~30° arm finish: clavicular ~30, sternal ~17,
+            // costal ~13 %MVIC (Rodríguez-Ridao et al. 2020, Int J Environ Res
+            // Public Health 17:7339, Fig. 3), giving 0.44 and 0.34,
+            // MODERATE/LOW under the bright head.
             MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.78),
             // The 2026-09-30 model lights the front delt bright with the pecs.
             // The hand rises ~49° from level (trunk ~6° forward) and the arm
@@ -14151,6 +15043,8 @@ enum SampleData {
             // 2010, J Strength Cond Res 24:1925-1930, PMID 20512064).
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.34),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "glutes"],
@@ -14243,9 +15137,25 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.76),
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // lower (abdominal) pec is bright and the middle (sternal) and
+            // upper (clavicular) pec dim, so the one Pectoralis Major row
+            // splits. Lower Pectoralis is primary and keeps the old 0.76;
+            // Middle and Upper Pectoralis are new secondary rows. In the model
+            // the body line rises about 40° toward the hands on the bench while
+            // the arms stay vertical, so relative to the trunk they point toward
+            // the hips, as in a decline press, where the lower pec works more
+            // than on an incline (Glass and Armstrong 1997, J Strength Cond Res
+            // 11(3):163-167) and the sternal and clavicular heads less than on
+            // a flat bench (Barnett et al. 1995, J Strength Cond Res
+            // 9(4):222-227). No head-by-head EMG for the hands-elevated push-up
+            // was found, so 0.52 and 0.36 are estimates scaled from the Decline
+            // Barbell Bench Press rows (0.64 and 0.44 under its 0.93).
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["serratus anterior", "core", "glutes"],
         setup: [
@@ -14343,8 +15253,29 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // sternal (middle) pec is bright beside the triceps; the clavicular
+            // (upper) and abdominal (lower) heads are dim. So the one
+            // Pectoralis Major row splits into a primary Middle Pectoralis that
+            // keeps its 0.80 and two new secondary rows. A narrow base raises
+            // pec and triceps EMG over a wide one (Cogley et al. 2005, J
+            // Strength Cond Res 19(3):628-633), and diamond hands drew the most
+            // pec and triceps activity of three push-ups, the triceps above the
+            // pec (Intziegianni et al. 2026, Muscles 5(1):18); both report the
+            // pec as one muscle. Marcolin et al. 2015 (J Athl Train
+            // 50(11):1126-1132) recorded the clavicular and sternal heads: the
+            // narrow push-up lifted the clavicular head over a standard push-up
+            // (their text is inconsistent about the sternal head). No per-head
+            // values on this list's scale were found, and the paint wins so the
+            // list and the model agree. Upper 0.62 and Lower 0.55 are
+            // estimates: MODERATE, under the bright middle head. The upper sits
+            // above the lower because tucked elbows push mostly by shoulder
+            // flexion, the clavicular head's line (the Close-Grip Bench Press
+            // list also puts its upper head above its lower).
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["serratus anterior", "core", "glutes"],
@@ -14435,7 +15366,21 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            // The chest rows follow the model's paint by head (2026-10-22). The
+            // 2026-09-30 model lit all three pectoral heads bright as one
+            // Pectoralis Major row; the 2026-10-17 model paints only the middle
+            // (sternal) head bright and the upper and lower heads dim, so the
+            // row is split by head: Middle Pectoralis is primary and keeps the
+            // old 0.84, and Upper and Lower Pectoralis are new secondary rows.
+            // A wide base leaves the sternal head where a standard push-up puts
+            // it (no difference between the two, Marcolin et al. 2015, J Athl
+            // Train 50:1126-1132, PMID 26488636). No normalised EMG of the
+            // clavicular or abdominal head in a wide push-up was found, so both
+            // new rows are estimates, kept MODERATE under the bright head
+            // because the paint dims them and scaled from the Barbell Bench
+            // Press's split (0.62 and 0.55 under 0.92): the lower head above
+            // the upper as there, the upper set just under the front delt.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
             // The 2026-09-30 model lights the triceps bright with the pecs. A
             // push-up works them hard at every hand width: 73-109% MVIC across
             // shoulder-width, wide and narrow bases, against 95-105% for the
@@ -14446,7 +15391,9 @@ enum SampleData {
             // draws less triceps than a narrow one (Cogley et al. 2005, J
             // Strength Cond Res 19:628-633, PMID 16095413).
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.56),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["serratus anterior", "core", "glutes"],
         setup: [
@@ -14537,7 +15484,23 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.86),
+            // The chest rows follow the model's paint by head (2026-10-22).
+            // The 2026-10-17 model splits the chest: the middle (sternal) head
+            // is bright and the upper (clavicular) and lower (abdominal) heads
+            // are dim. So the single Pectoralis Major row becomes a primary
+            // Middle Pectoralis that keeps the old 0.86, and Upper and Lower
+            // Pectoralis are new secondary rows. No per-head EMG for the
+            // archer push-up was found. Marcolin et al. 2015 (J Athl Train
+            // 50(11):1126-1132, PMID 26488636) recorded both the sternal and
+            // clavicular heads across push-up hand positions, but only in a
+            // figure, with no values on this list's scale. So 0.58 and 0.51
+            // are estimates: the Barbell Bench Press split (0.62 and 0.55
+            // under its 0.92) scaled to this 0.86, because a floor push-up
+            // presses at roughly right angles to the trunk, as a flat bench
+            // does (here the pelvis-to-neck line sits about 1° off level at
+            // the bottom and 9° head-up at the top). Both are MODERATE and sit
+            // below the bright head, as the paint has them.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
             // The 2026-09-30 model lights the triceps bright with the pecs. The
             // archer loads one arm at a time (here the bending elbow closes to
             // about 80° while the other stays near 155°), a step toward the
@@ -14545,7 +15508,9 @@ enum SampleData {
             // 66% in a standard push-up, level with the pec's 81% (Freeman et al.
             // 2006, Med Sci Sports Exerc 38:570-577, PMID 16540847).
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52)
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.51)
         ],
         stabilisers: ["serratus anterior", "obliques", "glutes"],
         setup: [
@@ -14635,8 +15600,27 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.82),
+            // The chest rows follow the model's paint by head (2026-10-22). The
+            // MedicineBallPushUp model lights the sternal (middle) pec bright
+            // beside the triceps and the clavicular (upper) and abdominal
+            // (lower) heads dim (re-measured with tiers.py), so the single
+            // Pectoralis Major row splits into a primary Middle Pectoralis
+            // that keeps its 0.82 and two new secondary rows. No per-head EMG
+            // for a push-up with both hands on one ball was found. A narrow
+            // base raised the sternal and clavicular heads over a wide and a
+            // standard base in the results of Marcolin et al. 2015 (J Athl
+            // Train 50:1126-1132, PMID 26488636), though its discussion excepts
+            // the sternal head against the standard base, so the clavicular
+            // rise is the firmer one; the lower head was not recorded. A Swiss
+            // ball under the hands left the pec unchanged (Lehman et al. 2006,
+            // Dyn Med 5:7, PMID 16762080). So Upper Pectoralis 0.58 and Lower
+            // Pectoralis 0.52 are estimates: MODERATE, under the bright middle
+            // head as the paint has them, the upper above the lower for the
+            // narrow base and tucked elbows.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.52),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "core"],
@@ -14724,8 +15708,24 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.92),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // PauseBenchPress model lights the middle (sternal) pec bright and
+            // the upper (clavicular) and lower (abdominal) pec dim, the same
+            // paint as the Barbell Bench Press model, so the old Pectoralis
+            // Major row is split by head: Middle Pectoralis is primary and keeps
+            // its 0.92, and Upper and Lower Pectoralis are new secondary rows.
+            // No EMG of the pec heads in a paused versus a touch-and-go rep was
+            // found, so both new rows take the Barbell Bench Press values for
+            // the same flat bench: the three heads sit close together there
+            // (Rodriguez-Ridao et al. 2020, Int J Environ Res Public Health
+            // 17(19):7339), and the lower pec is as active flat as on a -15°
+            // decline (Lauver et al. 2016, Eur J Sport Sci 16(3):309-316). Both
+            // are estimates, kept MODERATE under the bright head because the
+            // paint dims them.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.92),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.62),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "core"],
@@ -14817,8 +15817,26 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // LarsenPress model paints the sternal (middle) head bright and the
+            // clavicular (upper) and abdominal (lower) heads dim, as the flat
+            // bench does (re-measured: front delt and triceps dim too), so the
+            // one Pectoralis Major row splits: Middle Pectoralis is primary and
+            // keeps the old 0.90, and Lower and Upper Pectoralis are new
+            // secondary rows. With the feet off the floor all three portions
+            // rose by about the same small amount (Muyor et al. 2019, PLoS One
+            // 14(6):e0218209, 60% 1RM: about 3-4 %MVIC more in each portion
+            // than feet down; its feet-up legs were bent 90 degrees at hip and
+            // knee, a stand-in for the Larsen's straight legs), so the flat
+            // bench's split carries over: 0.62 and 0.55 are the Barbell Bench
+            // Press estimates (about 27% MVIC per head on a flat bench,
+            // Rodriguez-Ridao et al. 2020, Int J Environ Res Public Health
+            // 17(19):7339), kept MODERATE under the bright head because the
+            // paint dims them.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.62),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "rotator cuff", "serratus anterior"],
@@ -14912,8 +15930,24 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // ReverseGripBenchPress model lights the clavicular (upper) and
+            // sternal (middle) heads bright and the abdominal (lower) head dim,
+            // so the one Upper Pectoralis row becomes three head rows. Upper
+            // Pectoralis keeps its 0.84: in isometric holds a supinated grip
+            // raised clavicular activity over the pronated grip (Lehman 2005,
+            // J Strength Cond Res 19(3):587-591). Middle Pectoralis is new and
+            // bright. Lehman found the sternal head held its activity with a
+            // supinated grip as the grip narrowed, but gives no value on this
+            // library's scale, so 0.78 is an estimate: HIGH, under the upper
+            // head that the grip raises and the exercise names as its primary.
+            // Lower Pectoralis is lit dim. Lehman did not record the abdominal
+            // head and no supinated-grip EMG of it was found, so MODERATE 0.50
+            // is an estimate, below both bright heads.
             MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
@@ -19824,7 +20858,16 @@ enum SampleData {
         ],
         activation: [
             MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.74),
+            // 2026-10-22: the chest rows follow the model's paint by head. It
+            // lights all three pectoral heads dim, alike (re-measured), so the
+            // chest stays one Pectoralis Major row, moved from primary to
+            // secondary. As on the Push-Up and Assisted Dip, the rank follows
+            // the paint and the old 0.74 is kept, still heading the
+            // secondaries. The paint and the literature disagree here: pullover
+            // EMG puts the pecs above the lats (Marchetti & Uchida 2011, J Appl
+            // Biomech 27(4):380-384; over 70% MVIC in Washif et al. 2024, J
+            // Sport Exerc Sci 8(2):26-36).
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.74),
             MuscleActivation(name: "Teres Major", rank: .secondary, fraction: 0.54),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.42),
             // The 2026-09-30 model lights the rear delts bright with the lats
@@ -24603,10 +25646,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint (the list follows the
+            // model): the quadriceps and the glutes are bright, so both gluteal
+            // rows are now primary (they were secondary); the adductors are
+            // unlit, so the Adductor Magnus row is gone. Fractions unchanged.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Adductor Magnus", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.48)
         ],
         stabilisers: ["gluteus minimus", "calves", "core"],
         setup: [
@@ -25652,13 +26698,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: glutes and
+            // hamstrings bright, quadriceps dim. The hamstrings move up to
+            // primary (fraction kept); the abdominals row goes (the model no
+            // longer lights the abs or obliques) and so does the erector
+            // spinae row (the lower back is unlit, as it was before).
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.40),
-            // The 2026-10-10 model lights the abs and obliques dim (they hold
-            // the ribs down at lockout); the list follows the paint.
-            MuscleActivation(name: "Abdominals", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.45),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["adductors", "gluteus medius"],
         setup: [
@@ -28099,12 +29146,28 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the glutes (maximus,
+            // medius and minimus meshes) and the quadriceps bright, the
+            // hamstrings dim (new), the adductors unlit. The Gluteus Maximus
+            // and Gluteus Medius move to primary with their fractions kept
+            // (0.52 is DiStefano 2009's 41% MVIC raised for the model's deep
+            // hinge; the medius sits just below it, DiStefano's 39%). The
+            // Adductors row (0.42) is dropped, and the hamstrings move from
+            // the stabilisers to a LOW row.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.46),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.52),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.46),
+            // Hamstrings: estimate. Bouillon et al. 2012 (Int J Sports Phys
+            // Ther 7(6):595-605) measured the biceps femoris in a side-step
+            // lunge at 12% MVIC, level with every other muscle there
+            // (11-15%), so it sets no level. Placed above the Forward Lunge's
+            // 0.24 for this model's 58° trunk lean (Farrokhi et al. 2008,
+            // J Orthop Sports Phys Ther 38(7):403-409: more biceps femoris
+            // with the trunk forward in the lunge), level with the Smith
+            // Machine Reverse Lunge's and Single-Leg Glute Bridge's 0.30.
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["erector spinae", "hamstrings", "calves", "core"],
+        stabilisers: ["erector spinae", "calves", "core"],
         setup: [
             "Stand tall with your feet about hip-width apart, toes pointing ahead.",
             "Clasp your hands in front of your chest.",
@@ -28189,10 +29252,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the glutes are one
+            // bright group, so the Gluteus Maximus and Medius are now primary
+            // (fractions kept); the adductors are unlit, so their row is gone.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.46)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.46)
         ],
         stabilisers: ["hamstrings", "calves", "core"],
         setup: [
@@ -28279,9 +29344,18 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.85),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.44)
+            // The list follows the 2026-10-17 model's paint: the glutes, inner
+            // thighs and hip flexors (the sartorius) are bright, so the Gluteus
+            // Maximus and Adductors move up to primary and Hip Flexors is a new
+            // primary row; the quadriceps are now dim, so they drop to a
+            // secondary but keep their 0.85 (ranks follow the paint, fractions
+            // stay where the EMG put them). Hip Flexors: no normalised EMG
+            // found for the sartorius in a sumo squat; 0.40 (the lowest
+            // moderate value) is an estimate, as on the Single-Leg Hip Thrust.
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.58),
+            MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.44),
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.85)
         ],
         stabilisers: ["hamstrings", "calves", "forearms", "core"],
         setup: [
@@ -28378,10 +29452,20 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.64),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.44)
+            // The list follows the 2026-10-17 model's paint: glutes, adductors
+            // and hip flexors (the rig's sartorius mesh) bright, quadriceps and
+            // erector spinae dim. Changed: Gluteus Maximus and Adductors move
+            // from secondary to primary and the Quadriceps from primary to
+            // secondary, each keeping its fraction (ranks follow the paint; the
+            // fractions stay as ranked from the wide-stance squat studies);
+            // Hip Flexors is a new primary row (no normalised EMG found for the
+            // sartorius in a sumo squat; estimate, set at the lowest moderate
+            // value as on the Single-Leg Hip Thrust's bright hip flexors).
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
+            MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.44),
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.90),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["hamstrings", "calves", "core"],
         setup: [
@@ -28466,9 +29550,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint (Quads and Glutes
+            // bright, nothing else lit): Gluteus Maximus moves up to primary
+            // (fraction kept), and the Rectus Abdominis row is dropped because
+            // the model leaves the abs unlit.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.32)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50)
         ],
         stabilisers: ["adductors", "upper back", "forearms"],
         setup: [
@@ -28565,9 +29652,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: bright quads and
+            // bright glutes are both primary (Gluteus Maximus moves up from
+            // secondary, fraction kept); the lower back is unlit, so the
+            // Erector Spinae row is gone.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62)
         ],
         stabilisers: ["adductors", "hamstrings", "calves", "core"],
         setup: [
@@ -28753,10 +29843,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the glutes are
+            // bright, so Gluteus Maximus moves up to primary (its fraction
+            // stays), and the upper back is unlit, so the Lower Trapezius row
+            // is gone (the Upper Back cue still cites its EMG rise).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Lower Trapezius", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["adductors", "hamstrings", "calves", "core"],
         setup: [
@@ -28843,9 +29936,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the quadriceps and the
+            // glutes bright, the erector spinae dim. The glutes move up from
+            // secondary to primary; fractions stay where they were.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["upper back", "biceps", "adductors", "core"],
         setup: [
@@ -28932,10 +30028,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the glutes are lit
+            // bright, so Gluteus Maximus moves up to primary (fraction kept);
+            // the upper back is unlit, so the Trapezius row is gone.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.34)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["deltoids", "core", "adductors", "calves"],
         setup: [
@@ -29021,14 +30119,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the glutes and
+            // quads are bright, so both are primary. The model no longer
+            // lights the front delts or arms, and the lower back is unlit
+            // (as on the 2026-10-10 model), so the Anterior Deltoid, Biceps,
+            // Triceps and Erector Spinae rows are gone.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.30),
-            // The 2026-10-10 model lights the front delts and arms dim: they
-            // hold the bar's end at the chest. The list follows the paint.
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.20),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.15)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.52)
         ],
         stabilisers: ["adductors", "upper back", "forearms", "core"],
         setup: [
@@ -29115,6 +30212,10 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 Standard model's paint: quads bright,
+            // glutes dim (the old model lit them bright), so the glute row
+            // stays secondary. Each stance in stancesByExercise has its own
+            // list, read off its own model's paint.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.46)
         ],
@@ -29378,10 +30479,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the quadriceps and the
+            // glutes bright, the hamstrings dim. Changed: the gluteus maximus
+            // moves up to primary (its 0.48 fraction kept; ranks follow the
+            // paint, fractions stay where the EMG put them), and the
+            // hamstrings, newly dim, move from the stabilisers to a LOW
+            // secondary row. No normalised EMG found for the hamstrings in a
+            // vertical leg press; 0.25 is an estimate, matching the dim
+            // hamstrings on the hack squat stances.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
         ],
-        stabilisers: ["hamstrings", "adductors", "calves"],
+        stabilisers: ["adductors", "calves"],
         setup: [
             "Lie on the back pad with your hips on the seat, right under the sled.",
             "Set the safety stops just below the lowest point you plan to reach.",
@@ -29466,8 +30576,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint (LegPress45, the Standard
+            // stance): the quadriceps and glutes are both bright, so the
+            // Gluteus Maximus row moves from secondary to primary. The
+            // fractions are unchanged.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.87),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
         ],
         stabilisers: ["hamstrings", "adductors", "calves"],
         setup: [
@@ -29554,8 +30668,11 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: quadriceps and
+            // glutes are both bright on the working leg, so Gluteus Maximus
+            // moves from secondary to primary (its fraction stays).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.87),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
         ],
         stabilisers: ["gluteus medius", "hamstrings", "adductors", "calves"],
         setup: [
@@ -29643,8 +30760,18 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the glutes and the outer
+            // thigh (vastus lateralis, its own paint group on this rig) bright,
+            // the other three quadriceps heads dim (all four were bright
+            // before), the hamstrings, adductors and calves unlit. The bright
+            // vastus lateralis keeps the Quadriceps row primary at 0.87
+            // (stance width did not change leg press quadriceps EMG:
+            // Martín-Fuentes et al. 2022, Escamilla et al. 2001); the Gluteus
+            // Maximus moves up from secondary to primary with its 0.48 kept,
+            // the 45-degree press's value (no leg press study measured the
+            // glutes by stance).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.87),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
         ],
         stabilisers: ["hamstrings", "adductors", "calves"],
         setup: [
@@ -29731,11 +30858,33 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.87),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.34)
+            // Follows the 2026-10-17 model's paint, which lights the
+            // adductors, glutes and hip flexors (the rig's sartorius) bright
+            // and the quadriceps and hamstrings dim: Gluteus Maximus and
+            // Adductors move up to primary, Quadriceps moves down to
+            // secondary, and Hip Flexors and Hamstrings are new rows. The
+            // fractions stay where the EMG put them: stance width did not
+            // change quadriceps EMG in the leg press (Martín-Fuentes 2022,
+            // Sports Health 14:317-327; Escamilla 2001, Med Sci Sports Exerc
+            // 33:1552-1566), and the glute and adductor values come from squat
+            // stance studies (Paoli 2009, J Strength Cond Res 23:246-250;
+            // McCaw & Melrose 1999, Med Sci Sports Exerc 31:428-436), the
+            // adductors kept LOW because no leg press study measured them by
+            // stance width.
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.54),
+            // Hip Flexors: no normalised EMG found for the sartorius in a leg
+            // press; estimate 0.40, the lowest moderate value, as on the
+            // Single-Leg Hip Thrust's bright hip flexors.
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.34),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.87),
+            // Hamstrings (dim, formerly a stabiliser): no normalised EMG found
+            // for this foot placement; estimate LOW 0.25, as on the Hack Squat
+            // (Stances) row. Escamilla 2001 found more hamstring activity only
+            // with the wide stance set high, and these feet sit mid-platform.
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
         ],
-        stabilisers: ["hamstrings", "calves"],
+        stabilisers: ["calves"],
         setup: [
             "Set the back pad so you can reach about 90 degrees at the knee without your hips lifting.",
             "Sit with your back and hips flat against the pad.",
@@ -29830,8 +30979,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint (owner's call, 2026-10-01):
+            // the quadriceps and the glutes bright, the erector spinae dim. The
+            // gluteus maximus moves from secondary to primary to match the
+            // bright glutes; fractions stay where the EMG put them.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.60),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.43)
         ],
         stabilisers: ["adductors", "hamstrings", "calves", "core"],
@@ -29919,9 +31072,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the quadriceps and
+            // glutes are bright, so the Gluteus Maximus row moves up to primary
+            // (fraction kept); the lower back is unlit, so the Erector Spinae
+            // row is gone.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.41)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
         ],
         stabilisers: ["adductors", "hamstrings", "calves", "core"],
         setup: [
@@ -30007,10 +31163,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the standing leg's glutes
+            // (maximus, medius and minimus, one bright group) and quadriceps are
+            // bright and nothing else is lit. The Gluteus Maximus and Gluteus
+            // Medius rows move up to primary with their fractions kept; the
+            // Hamstrings row is dropped (unlit on the model).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.64),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.62)
         ],
         stabilisers: ["hip flexors", "adductors", "calves", "core"],
         setup: [
@@ -30096,10 +31256,11 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint (glutes and quads bright, standing
+            // leg): both glute rows move to primary, the unlit hamstrings row is dropped.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.47),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.58),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.47)
         ],
         stabilisers: ["hip flexors", "forearms", "calves", "core"],
         setup: [
@@ -30186,12 +31347,24 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-10 model paints the calves as one group, the soleus
-            // as bright as the gastrocnemius, so both are primary.
+            // The list follows the 2026-10-17 model's paint: the calves bright as
+            // one group (soleus as bright as the gastrocnemius), so both stay
+            // primary. New in this paint: the hamstrings, dim. The lower-leg group
+            // was dim on the 2026-10-10 model too but had no row; it gets one now.
+            // Fibularis Longus stands for the lower-leg group (no normalised EMG
+            // found; estimate). After single-leg heel raises the MRI signal rose
+            // 57% in the peroneus longus and 27% in the tibialis posterior, and
+            // fell 4% in the tibialis anterior (Kulig et al. 2004, Med Sci Sports
+            // Exerc 36:862-867), so the row names the peroneal. The tibialis
+            // posterior stays a stabiliser so the legend stays on one line.
+            // Hamstrings 0.15: no normalised EMG found; estimate, as on the
+            // dumbbell standing raise.
             MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.66)
+            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Fibularis Longus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.15)
         ],
-        stabilisers: ["tibialis posterior", "peroneals", "toe flexors", "upper back", "core"],
+        stabilisers: ["tibialis posterior", "toe flexors", "upper back", "core"],
         setup: [
             "Set the shoulder pads so they sit on your shoulders with your heels down.",
             "Step onto the block with the balls of your feet on its edge, heels off.",
@@ -30275,14 +31448,24 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-10 model paints the calves as one group, so the
-            // gastrocnemius is lit as bright as the soleus and listed primary;
-            // with the knees bent it does far less of the work, as its
-            // fraction says.
+            // The list follows the 2026-10-17 model's paint. The calves are
+            // one group, so the gastrocnemius is lit as bright as the soleus
+            // and listed primary; with the knees bent it does far less of the
+            // work, as its fraction says. New rows: the model lights the lower
+            // leg dim (as the 2026-10-10 one did), so its two plantar flexors,
+            // the fibularis longus and the tibialis posterior, are LOW
+            // secondary rows, moved up from the stabilisers (no normalised
+            // EMG found for a seated calf raise; estimates, kept below the
+            // soleus and no higher than the bent-knee gastrocnemius, within
+            // the 0.15-0.30 they get on the tibialis raises). The same
+            // group's shin muscles (tibialis anterior, the long toe extensor)
+            // lift the foot, not the heel, so they get no row.
             MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.30)
+            MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Fibularis Longus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Tibialis Posterior", rank: .secondary, fraction: 0.25)
         ],
-        stabilisers: ["tibialis posterior", "peroneals", "toe flexors"],
+        stabilisers: ["toe flexors"],
         setup: [
             "Sit on the seat with the balls of your feet on the edge of the platform, heels off.",
             "Set the pad on your lower thighs, just above the knees, knees at about 90°.",
@@ -30366,10 +31549,26 @@ enum SampleData {
             )
         ],
         activation: [
+            // Follows the 2026-10-17 model's paint: the calves bright (both
+            // gastrocnemius heads and the soleus), the hamstrings and the whole
+            // lower leg dim. Changed: the soleus is now primary (it was
+            // secondary as ExRx's synergist; fraction kept), and the tibialis
+            // posterior and hamstrings are new dim rows.
+            // The lower-leg group lights tibialis anterior and posterior,
+            // fibularis longus and the toe extensor. The row names the tibialis
+            // posterior, a plantar flexor that works in heel raises (fine-wire
+            // EMG: Akuzawa et al. 2017, Phys Ther Sport 28:23), so it left the
+            // stabilisers; the fibularis, also a plantar flexor, stays there as
+            // "peroneals" so the one-line secondary legend stays short.
+            // Tibialis posterior: no normalised EMG found; estimate.
+            // Hamstrings: no normalised EMG found; estimate, as on the
+            // Horizontal Leg Press Calf Raise (0.20).
             MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Soleus", rank: .secondary, fraction: 0.66)
+            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Tibialis Posterior", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.20)
         ],
-        stabilisers: ["tibialis posterior", "peroneals", "toe flexors"],
+        stabilisers: ["peroneals", "toe flexors"],
         setup: [
             "Sit with your back flat on the pad and hold the handles beside the seat.",
             "Put the balls of your feet on the lower edge of the platform, hip-width apart, heels off.",
@@ -30453,10 +31652,30 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint. It lights the
+            // calves as one bright group, the soleus as bright as the
+            // gastrocnemius, so both are primary (the soleus keeps its 0.66).
+            // It also lights the working leg's hamstrings and lower leg dim,
+            // so they gain LOW secondary rows. The hamstrings cross the back
+            // of the knee with the gastrocnemius and help steady the straight
+            // working knee. Of the lower leg's lit muscles, the tibialis
+            // posterior and fibularis longus help point the ankle and keep it
+            // from rolling in or out on one foot (Akuzawa et al. 2017, Phys
+            // Ther Sport 28:23-28: both work in heel raises); the shin's
+            // tibialis anterior and long toe extensor pull the foot and toes
+            // up rather than raise the heel, so they have no row. No
+            // normalised EMG of these three in a single-leg calf raise was
+            // found, so their fractions are estimates: the hamstrings' 0.20
+            // as on the library's other calf raises (0.15-0.20), the two
+            // lower-leg muscles' 0.30 at the top of the tibialis raises'
+            // 0.15-0.30.
             MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Soleus", rank: .secondary, fraction: 0.66)
+            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Fibularis Longus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Tibialis Posterior", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.20)
         ],
-        stabilisers: ["tibialis posterior", "peroneals", "toe flexors", "gluteus medius", "obliques", "forearms"],
+        stabilisers: ["toe flexors", "gluteus medius", "obliques", "forearms"],
         setup: [
             "Stand on a sturdy step beside a support, a dumbbell in the hand on the working side.",
             "Put the ball of the working foot on the edge of the step, heel off.",
@@ -30541,10 +31760,26 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint. The calves are
+            // one bright group, the soleus as bright as the gastrocnemius, so
+            // the soleus is now primary (its fraction stays). The model also
+            // lights the hamstrings (new) and the lower-leg group dim, so both
+            // gained secondary rows. Of the lower-leg group only tibialis
+            // posterior and fibularis longus help raise the heel (tibialis
+            // anterior lifts the toes), so they are the rows and leave the
+            // stabilisers. No normalised EMG value found for these three on
+            // this lift (Akuzawa et al. 2017, Phys Ther Sport 28:23-28,
+            // recorded tibialis posterior and peroneus longus in heel raises,
+            // no %MVC to hand); estimates: hamstrings 0.15 as on the library's
+            // other standing calf raises, tibialis posterior and fibularis
+            // longus as LOW synergists.
             MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Soleus", rank: .secondary, fraction: 0.66)
+            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Tibialis Posterior", rank: .secondary, fraction: 0.25),
+            MuscleActivation(name: "Fibularis Longus", rank: .secondary, fraction: 0.25),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.15)
         ],
-        stabilisers: ["tibialis posterior", "peroneals", "toe flexors", "upper back", "core"],
+        stabilisers: ["toe flexors", "upper back", "core"],
         setup: [
             "Set the bar at upper-chest height with a calf block under it.",
             "Step under the bar, rest it on your upper traps and grip it just outside your shoulders.",
@@ -31357,9 +32592,28 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint: the sternal
+            // (middle) pec is now bright beside the triceps, so it is a
+            // primary row at the old Pectoralis Major row's 0.68 (top of the
+            // moderate band: EMG keeps the pec about as active as the
+            // triceps on a close grip, Lehman 2005, Saeterbakken 2021,
+            // Tanimoto 2023, Mausehund 2022). The dim clavicular and
+            // abdominal heads get their own secondary rows; the dim front
+            // delt stays secondary at 0.60 (the close-grip studies do not
+            // put it clearly below the pec).
+            // Upper Pectoralis 0.60 and Lower Pectoralis 0.56 are estimates:
+            // the close-grip studies put both heads near the sternal one
+            // (Saeterbakken et al. 2021, Int J Environ Res Public Health
+            // 18:6444, narrow grip: clavicular 88 vs sternal 100 %MVIC;
+            // Mausehund et al. 2022, J Strength Cond Res 36:2685, elbows in:
+            // clavicular 59.6, abdominal 54.6, sternal 51.5 %MVIC), but %MVIC
+            // fixes no rank between heads, so the dim heads sit in the
+            // moderate band just under the bright one.
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.68),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.60)
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.68),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii", "core"],
         setup: [
@@ -34054,9 +35308,33 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.80),
+            // 2026-10-22: the chest rows follow the model's paint by head.
+            // ChestPaint (re-measured with tiers.py) lights the upper
+            // (clavicular) pec bright and the middle (sternal) and lower
+            // (abdominal) pec dim, where one Pectoralis Major row stood for
+            // the whole chest. Upper Pectoralis is primary and keeps that
+            // row's 0.80: the library Push-Up's pec 0.84 scaled x0.96, the
+            // change Lin et al. 2026 (BMC Sports Sci Med Rehabil 18:139)
+            // measured on a stable surface from +15° to about -10°. Their
+            // electrode sat on the sternocostal fibres and no study recorded
+            // the clavicular head here, so the number comes from the middle
+            // head while the paint brightens the upper one; ExRx files this
+            // push-up under the upper chest with the clavicular pec as
+            // target, though it adds that low elevations shift the work
+            // toward the sternal head. Lin found the sternocostal pec about
+            // as active as in a floor push-up (35.8 vs 39.2% MVIC at -15° vs
+            // +15°, not significant), so Middle Pectoralis sits at the top of
+            // MODERATE, 0.66, an estimate kept under the bright head for the
+            // paint. Head-down, the press tilts toward the head like a
+            // shallow incline press, and even on a 15° incline the costal pec
+            // works significantly less than flat (Rodriguez-Ridao et al.
+            // 2020, Int J Environ Res Public Health 17(19):7339), so Lower
+            // Pectoralis is a MODERATE 0.50, also an estimate.
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.69),
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.62)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["serratus anterior", "rectus abdominis", "obliques", "quadriceps"],
         setup: [
@@ -34144,9 +35422,25 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.88),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // PlyometricPushUp model lights the middle (sternal) pec bright and
+            // the upper (clavicular) and lower (abdominal) heads dim (ChestPaint,
+            // re-measured with tiers.py), so the one Pectoralis Major row splits:
+            // Middle Pectoralis is primary and keeps the old 0.88, and Upper and
+            // Lower Pectoralis are new secondary rows. No EMG by head was found
+            // for the plyometric push-up. In a standard straight-body push-up
+            // the clavicular portion read higher than the sternocostal one,
+            // ~79% vs ~65% MVIC in 15 men (Kang et al. 2014, J Phys Ther Sci
+            // 26(6):909-910, PMID 25013294), so the paint and that EMG disagree
+            // on which head leads; the paint wins so the list and the model
+            // agree, and the upper row sits above the lower. 0.64 and 0.56 are
+            // estimates: MODERATE, under the bright middle head as the paint
+            // has them.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.56),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.32),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.28)
         ],
@@ -34242,9 +35536,25 @@ enum SampleData {
             // the chest and front delts bright, so the triceps row moves to
             // secondary and keeps its 0.82 (a secondary at 0.85-0.88 has
             // precedent; no %MVIC exists for the bar dip).
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            // 2026-10-22: the chest rows follow the model's paint by head. The
+            // 2026-10-17 model's chest-split rig lights the middle (sternal)
+            // and lower (abdominal) heads bright and the upper (clavicular)
+            // head dim, so the one Pectoralis Major row becomes three head
+            // rows. The middle head keeps the old row's 0.84. No EMG splits the
+            // pec by head in a bar dip: McKenzie et al. 2022 (Int J Environ Res
+            // Public Health 19(20):13211) recorded only the clavicular head, in
+            // mV. So the lower head takes the same 0.84 as an estimate, since
+            // ranking one bright head over the other would be a guess. The dim
+            // upper head's 0.50 is an estimate too, MODERATE under the bright
+            // heads, between the decline bench's dim upper head (0.44) and the
+            // flat bench's (0.55). McKenzie et al. found the clavicular head
+            // more active on the bar dip than the bench dip, but with no %MVIC
+            // that sets no fraction.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.66),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.82)
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.82),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["pectoralis minor", "latissimus dorsi", "rhomboids", "lower trapezius"],
         setup: [
@@ -34337,9 +35647,24 @@ enum SampleData {
             // the chest and front delts bright, so the triceps row moves to
             // secondary and keeps its 0.88 (a secondary at 0.85-0.88 has
             // precedent; no EMG exists for the weighted dip).
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.90),
+            // The chest rows follow the model's paint by head (2026-10-22):
+            // the chest-split rig lights the middle (sternal) and lower
+            // (abdominal) pec bright and the upper (clavicular) pec dim, so
+            // the one Pectoralis Major row becomes three head rows. The lower
+            // head keeps the old 0.90, a judgement call: the forward-leaning
+            // dip presses the arms down toward the hips, along the lower
+            // (abdominal) fibres, as a decline press does. Middle Pectoralis
+            // 0.86 and Upper Pectoralis 0.55 are estimates: no dip EMG split
+            // by head was found (McKenzie et al. 2022, Int J Environ Res
+            // Public Health 19(20):13211, recorded only the clavicular head,
+            // in mV, on the bodyweight bar dip), so the bright middle head
+            // sits just under the lower one and the dim upper head stays
+            // MODERATE, as on the flat bench press.
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.90),
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.88)
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.88),
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55)
         ],
         stabilisers: ["pectoralis minor", "latissimus dorsi", "lower trapezius", "core"],
         setup: [
@@ -34425,9 +35750,22 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.78),
+            // The chest rows follow the model's paint by head (2026-10-22): the
+            // upper (clavicular) head is bright and the middle (sternal) and
+            // lower (abdominal) heads dim, so the old Pectoralis Major row
+            // becomes Upper Pectoralis and keeps its 0.78, and the middle and
+            // lower heads get new secondary rows. The handle climbs about 50°
+            // and the arms finish like a 40° incline press, but no landmine EMG
+            // by head was found, so both new rows are estimates: 0.78 scaled by
+            // Rodríguez-Ridao et al. 2020 (Int J Environ Res Public Health
+            // 17:7339, PMID 33049982, Fig. 3; barbell, 30° bench, 60% 1RM):
+            // upper ~30, middle ~16.6, lower ~13.2 %MVIC, kept under the bright
+            // head as the paint dims them.
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.62)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.43),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["serratus anterior", "core", "glutes", "rotator cuff"],
         setup: [
@@ -42277,9 +43615,22 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the 2026-10-17 model's paint. It still lights the
+            // left quadriceps and all three glutes bright (primary; the gluteus
+            // medius ahead of the maximus after Muyor 2020, PLoS One, and Wang
+            // 2003, Clin Biomech), and now also lights the left adductors
+            // (longus, magnus, gracilis) and sartorius ("Hip Flexors") dim, so
+            // two secondary rows are added. No normalised EMG found for either on
+            // the lateral step-up (Muyor 2020 and Worrell 1998, J Athl Train,
+            // recorded no adductor, sartorius or iliopsoas), so both are
+            // estimates: the adductors LOW, below the Lateral Lunge's 0.42 (ExRx
+            // names the adductor magnus a synergist), and the hip flexors lower
+            // still, since the box leg's hip extends as it rises.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.55),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["forearms", "trapezius", "erector spinae", "obliques"],
         setup: [
@@ -42463,7 +43814,15 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.85)
+            // The list follows the 2026-10-17 model's paint: besides the
+            // adductors it now lights the sartorius (the rig's Hip Flexors
+            // group) bright, so Hip Flexors joins as a primary row. The
+            // sartorius flexes and abducts the hip rather than adducting it,
+            // and no normalised EMG was found for it on the adduction
+            // machine; 0.40, the floor of the library's bright Hip Flexors
+            // rows, is an estimate.
+            MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.85),
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40)
         ],
         stabilisers: ["gracilis", "pectineus"],
         setup: [

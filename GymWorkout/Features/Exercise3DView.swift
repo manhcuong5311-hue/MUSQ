@@ -107,6 +107,10 @@ struct Exercise3DView: View {
     private var liveModel: SampleData.ExerciseModel? {
         currentStance?.model ?? SampleData.model(for: exercise)
     }
+    /// How the model on stage paints the chest's three heads.
+    private var liveChest: ChestPaint.Heads? {
+        liveModel.flatMap { ChestPaint.heads(forModel: $0.resource) }
+    }
     /// Never true without Premium, so no ghost, ring or bar slips through.
     private var showingMistake: Bool { sheet == .cue && cueMode == .mistake && purchases.isPremium }
 
@@ -579,6 +583,7 @@ struct Exercise3DView: View {
                     exerciseName: exercise.name.uppercased(),
                     muscles: content.activation,
                     stabilisers: content.stabilisers,
+                    chest: liveChest,
                     onDone: closeSheet
                 )
                 .transition(.move(edge: .bottom))
@@ -919,6 +924,7 @@ struct Exercise3DView: View {
                         if layout.isWide || inspectorTab == .muscles {
                             MuscleActivationContent(muscles: content.activation,
                                                     stabilisers: content.stabilisers,
+                                                    chest: liveChest,
                                                     inline: true)
                                 .id(InspectorID.muscles)
                         }

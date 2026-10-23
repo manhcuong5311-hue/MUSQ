@@ -75,7 +75,7 @@ struct TechniqueCue: Identifiable, Hashable {
 
 // MARK: - Muscle activation
 
-enum ActivationRank: String {
+enum ActivationRank: String, Codable {
     case primary = "PRIMARY"
     case secondary = "SECONDARY"
 

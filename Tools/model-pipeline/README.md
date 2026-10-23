@@ -435,6 +435,14 @@ the working side only in one-sided lifts; on the Lean abduction's glutes and
 the Seated Calf Raise's calves the diffuse is capped at 0.15 and only the
 emissive shows the level, which RealityKit still shows as the same hot red.
 `tiers.py` now takes the larger of the diffuse and the emissive / 0.153.
+The chest-series rigs (and a few that borrow them: Close-Grip Bench Press,
+Belt Squat Narrow, Narrow-Stance Leg Press) split the chest into
+`FF_Highlight_UpperChest` / `MidChest` / `LowerChest`, bound to the
+pectoralis major's clavicular, sternal and abdominal meshes, so one head can
+be bright and the others dim; the other rigs bind all three heads to one
+`FF_Highlight_Chest`. `Tools/body-map/chest_paint.py` reads the three heads
+off every model into `GymWorkout/Models/ChestPaint.swift` for the muscle map
+(2026-10-22); re-run it after a re-paint.
 The same folder's five new exercises (22 single-leg extension, 23 Smith
 machine front squat, 28 dumbbell lateral step-up, 29 barbell step-up, 30 hip
 adduction machine) went in the same evening: copied to

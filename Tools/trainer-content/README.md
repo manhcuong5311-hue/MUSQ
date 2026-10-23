@@ -705,3 +705,52 @@ five-cue rule at the owner's request. Edited in SampleData.swift with
 - Layout: `Tools/lab/label_space_1021/`; checked on the harness's trainer
   shots at the start and the bottom of each lift, and the cue card's "See It
   in 3D X-Ray" button opens the demo.
+
+Muscle rows follow the 2026-10-17 paint, exercises 1-100 (2026-10-22): the
+owner re-painted the SSD 1-100 models before the 2026-10-17 swap, changing
+many primary/secondary colours and turning many groups off, and asked for
+the rows to follow. One agent per exercise rewrote the `activation` list
+from the paint (`Tools/model-pipeline/tiers.py`) and a second re-measured
+and corrected it; 70 of the 87 exercises with content changed, 17 already
+matched. Rules, all from this README's earlier house decisions:
+- Bright group = primary row, dim = secondary, faint = a LOW secondary row.
+  A group the owner turned off loses its rows (the Ab Wheel Rollout's lats,
+  triceps and rear delt; the Cable Wood Chop's arms; the hanging raises'
+  forearms and lats; erector rows on squats now unpainted, and so on).
+- A rank change keeps the fraction; new rows are sourced or marked as
+  estimates in their comments, and where the paint and the literature
+  disagree the comment says so.
+- The open point above (bright glutes listed secondary on the squats,
+  lunges and presses) is closed: bright glutes are primary now.
+- Legend-only rows the rig cannot paint stay when the owner never lit
+  them: Hip Flexors on the hanging and captain's chair raises and the
+  Russian Twist (the HipFlexors group is the sartorius only), Transverse
+  Abdominis where the abs are lit.
+- Chest-series rigs paint the pectoralis major's heads apart, so their rows
+  name them: Upper (clavicular), Middle (sternal) and Lower (abdominal)
+  Pectoralis, the bright head primary with the old pectoral fraction, the
+  dim heads secondary. A single-group chest stays "Pectoralis Major".
+- The Belt Squat, 45-Degree Leg Press and Smith Machine Squat stances got a
+  note and their own list, each from its own model's paint (the 45-Degree
+  Wide and Narrow stances equal the Wide- and Narrow-Stance Leg Press rows).
+Not changed and left for a copy pass: cue text that still names a muscle
+the paint dropped, e.g. the Ab Wheel Rollout's "return" cue (lats) and the
+Side Plank's hips cue and comparison note (quadratus lumborum). Pallof
+Press and Bent-Over Cable Overhead Triceps Extension still have no content.
+Results and the per-exercise reasoning: the rows-follow-paint workflow run
+of 2026-10-22.
+
+Chest rows by head, the other chest lifts (2026-10-22): with the muscle map
+now lighting the chest's three heads from each model's paint
+(`ChestPaint.swift`, see `Tools/body-map/README.md`), the 41 other lifts
+whose model lights the chest had their chest rows split the same way, and
+nothing else changed (one author, one verifier each). The bright head keeps
+the old chest fraction; where the old row named another head (the Incline
+Chest Press Machine, Incline Cable Press and Incline Cable Fly said Upper,
+the High-to-Low Cable Fly said Lower, but their models light the middle
+head) the paint wins and the comment says so. The Dumbbell Pullover Row,
+painted dim all over, lists the chest as secondary. The six chest stance
+pickers (Incline and Decline Cable Press, High-to-Low Cable Fly,
+Plate-Loaded Chest Press, both dips) got a note and their own list per
+stance. The shoulder lifts that list "Upper Pectoralis" as secondary while
+their models paint no chest were left as they are.

@@ -42,6 +42,12 @@ struct MuscleProgressView: View {
         calculator.activity(from: store.sessions, period: period)
     }
 
+    /// The chest's three heads at their own levels, so a week of incline
+    /// pressing lights the upper chest more than the rest.
+    private var chestActivity: ChestActivity {
+        calculator.chest(from: store.sessions, period: period)
+    }
+
     var body: some View {
         @Bindable var router = router
         let activity = activity
@@ -143,6 +149,9 @@ struct MuscleProgressView: View {
         for entry in activity {
             guard let color = entry.level.color else { continue }
             for region in entry.muscle.bodyRegions { fills[region] = color }
+        }
+        for (region, level) in zip(BodyRegion.chestHeads, chestActivity.levels) {
+            fills[region] = level.color
         }
         return VStack(spacing: 12) {
             MonoSegmentedControl(
@@ -705,6 +714,15 @@ extension MuscleProgressView {
             }
             guard let color else { continue }
             for region in entry.muscle.bodyRegions { fills[region] = color }
+        }
+        for (region, level) in zip(BodyRegion.chestHeads, chestActivity.levels) {
+            if let focus = highlighted {
+                fills[region] = focus == .chest
+                    ? level.color ?? DS.silver.opacity(0.5)
+                    : level.color?.opacity(0.4)
+            } else {
+                fills[region] = level.color
+            }
         }
         return fills
     }

@@ -280,6 +280,11 @@ struct WorkoutExercise: Identifiable, Codable, Hashable {
     /// The same snapshot per `MusclePart`, for recovery. Nil in history saved
     /// before parts existed; recovery then looks the exercise up again.
     var partContributions: [MusclePartContribution]? = nil
+    /// How the exercise's model painted the chest's three heads when it was
+    /// logged, for the muscle map's chest bands. Nil in history saved before
+    /// the bands existed, or for a model with no chest lit; the map then
+    /// looks the exercise up again.
+    var chestHeads: ChestPaint.Heads? = nil
     var isCompleted = false
     /// Reps or time. Nil in history saved before timed sets existed, which
     /// was all reps.
