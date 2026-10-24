@@ -9163,7 +9163,28 @@ enum FaultPoses {
             "posture": leanedForward(10, strength: .always).seen(-0.8),
             // A loose grip: the dumbbells swinging forward.
             "grip": armsSwungForward(15).seen(-0.8),
-            "steps": longStride(from: 0.6, to: 0.76).seen(-0.8)
+            // `longStride` drawn bigger (2026-10-24). The re-tuned walk opens
+            // the ankles to 0.67 torso lengths at most (0.71 before), so the
+            // old 0.6-0.76 gate left the stride at ~40% and the yellow legs lay
+            // on the model's own; from this angle even the full stride kept
+            // both yellow feet on the shoes. Now the gate opens fully at the
+            // widest stride, the leading foot lands 0.38 torso lengths ahead
+            // and the trailing one 0.4 behind, clear of the shoes, the hips
+            // dropping 0.14 so both legs still reach (at most ~2% long), and
+            // the trailing toe lifted a little so the foot does not dive under
+            // the floor. The leading knee goes half as far ahead before the
+            // knees are re-seated, or it would bend backwards (it stayed
+            // behind the new hip-to-ankle line); the leading toe lifts as at a
+            // heel strike.
+            "steps": FaultPose(chains: [legs, hips],
+                               moves: [.shift(["thigh_*"], up: -0.14),
+                                       .shift(["foot_front", "foot_front.tip"], forward: 0.38),
+                                       .shift(["shin_front"], forward: 0.19),
+                                       .shift(["foot_front.tip"], up: 0.05),
+                                       .shift(["foot_back", "foot_back.tip"], forward: -0.4),
+                                       .shift(["foot_back.tip"], up: 0.04),
+                                       .resolve(["shin_front", "shin_back"])],
+                               strength: .between("foot_L", "foot_R", from: 0.5, to: 0.64)).seen(-0.8)
         ],
         "Suitcase Carry": [
             "level": leanedToLoad,

@@ -22858,14 +22858,13 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "path", label: "Press up and forward",
-                          labelPoint: CGPoint(x: 0.391, y: 0.32),
+                          labelPoint: CGPoint(x: 0.420, y: 0.105),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "core", label: "Ribs down, no lean back",
-                          labelPoint: CGPoint(x: 0.435, y: 0.52),
+                          labelPoint: CGPoint(x: 0.464, y: 0.500),
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "twist", label: "Shoulders stay square",
-                          labelPoint: CGPoint(x: 0.595, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.900, y: 0.185),
                           leaderLength: 40, joint: "upper_arm_L"),
             CueAnnotation(cueID: "stance", label: "Down knee under the hip",
                           labelPoint: CGPoint(x: 0.565, y: 0.86),
@@ -22915,15 +22914,23 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-11 model paints the side delt bright beside the front
-            // delt (unlit before), so it is a primary row. MODERATE 0.50 is a
-            // judgement call: the angled landmine path sits between a vertical
-            // dumbbell press (Seated Dumbbell Press 0.66) and a front raise.
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap), as on the Landmine Shoulder Press: the front
+            // delt is the one bright group; the side delt, triceps and upper
+            // back (the whole trapezius and the rhomboids) are dim, all on the
+            // pressing (left) side. Changes: Lateral Deltoid drops to secondary
+            // and keeps its MODERATE 0.50 judgement call (the angled landmine
+            // path sits between a vertical dumbbell press and a front raise);
+            // the chest and obliques are unpainted, so the Upper Pectoralis and
+            // Obliques rows are gone; the dim trapezius gets a new row, named
+            // whole, with the rhomboids unnamed as on the presses. No normalised
+            // EMG found for the trapezius in a landmine press; LOW 0.30 is the
+            // Landmine Shoulder Press's estimate, set under the vertical
+            // presses' 0.36 as the angled path takes the arm less far overhead.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.50),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.32)
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["glutes", "serratus anterior", "rotator cuff"],
         setup: [
@@ -23013,23 +23020,22 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-11 model (a dual adjustable-pulley station) paints
-            // the front and side delts bright and the triceps, trapezius and
-            // rhomboids dim (its first export painted the front delt dim, a
-            // slip the owner confirmed; the re-export the same day put it back
-            // to bright). The trapezius, until now a stabiliser, joins the
-            // secondary rows as on the Standing Dumbbell Press: LOW 0.36, an
-            // estimate (ExRx lists its middle and lower parts as synergists;
-            // Paoli et al. 2010, J Strength Cond Res 24(6):1578-1583; Luczak
-            // et al. 2013, J Sports Med 2013:612650). The rhomboids, which ExRx
-            // does not list for the press, stay unnamed so the legend keeps
-            // three secondary names; the rectus abdominis row stays, as there,
-            // though the model leaves it unlit.
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap; the owner confirmed the dim front delt is meant):
+            // the side delt bright; the front delt, triceps, trapezius and
+            // rhomboids dim. Changes: Anterior Deltoid drops to secondary and
+            // keeps its 0.88, as on the Standing Dumbbell Press (ranks follow
+            // the paint, fractions stay where the EMG put them); the Rectus
+            // Abdominis row is gone, as the model leaves the abs unlit. The
+            // trapezius stays a LOW 0.36 secondary, an estimate (ExRx lists its
+            // middle and lower parts as synergists; Paoli et al. 2010, J
+            // Strength Cond Res 24(6):1578-1583; Luczak et al. 2013, J Sports
+            // Med 2013:612650); the rhomboids, which ExRx does not list for the
+            // press, stay unnamed.
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.88),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "glutes"],
         setup: [
@@ -23122,21 +23128,21 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-11 model paints the front and side delts and the
-            // triceps bright (its first export painted the front delt dim, a
-            // slip the owner confirmed; the re-export the same day put it back
-            // to bright) and the trapezius and rhomboids dim, as on the
-            // Single-Arm Dumbbell Shoulder Press. The triceps join the primary
-            // rows at their EMG fraction, and the trapezius joins the
-            // secondary rows as there: LOW 0.36, an estimate (ExRx lists its
-            // middle and lower parts as synergists; Paoli et al. 2010, J
-            // Strength Cond Res 24(6):1578-1583; Luczak et al. 2013, J Sports
-            // Med 2013:612650). The rhomboids, which ExRx does not list for
-            // the press, stay unnamed.
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.88),
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap; the owner confirmed the dim front delt is meant):
+            // the side delt and triceps bright; the front delt, trapezius and
+            // rhomboids dim, all on the pressing (left) side. Changes: Anterior
+            // Deltoid drops to secondary and keeps its 0.88 (ranks follow the
+            // paint, fractions stay where the EMG put them); the Obliques row is
+            // gone, as the model leaves them unlit. The trapezius stays a LOW
+            // 0.36 secondary, as on the Single-Arm Dumbbell Shoulder Press, an
+            // estimate (ExRx lists its middle and lower parts as synergists;
+            // Paoli et al. 2010, J Strength Cond Res 24(6):1578-1583; Luczak et
+            // al. 2013, J Sports Med 2013:612650); the rhomboids, which ExRx
+            // does not list for the press, stay unnamed.
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.50),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.42),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.88),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["quadratus lumborum", "rotator cuff", "serratus anterior", "glutes"],
@@ -23164,7 +23170,7 @@ enum SampleData {
     static let smithMachineShoulderPressContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bench", label: "Bench under bar",
-                          labelPoint: CGPoint(x: 0.318, y: 0.32),
+                          labelPoint: CGPoint(x: 0.345, y: 0.440),
                           leaderLength: 40, joint: "head"),
             CueAnnotation(cueID: "back", label: "Back flat on the pad",
                           labelPoint: CGPoint(x: 0.609, y: 0.64),
@@ -23175,10 +23181,10 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "depth", label: "Lower to collarbones",
-                          labelPoint: CGPoint(x: 0.391, y: 0.16),
-                          leaderLength: 40, joint: "hand_R"),
+                          labelPoint: CGPoint(x: 0.430, y: 0.067),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "feet", label: "Feet flat, wide base",
-                          labelPoint: CGPoint(x: 0.391, y: 0.80),
+                          labelPoint: CGPoint(x: 0.387, y: 0.870),
                           leaderLength: 40, joint: "foot_R")
         ],
         cues: [
@@ -23224,10 +23230,22 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap): front delt, side delt and triceps bright; the
+            // trapezius and rhomboids dim. Changes: Triceps Brachii moves up to
+            // primary with its 0.50 (ranks follow the paint, fractions stay
+            // where the EMG put them); the chest is unpainted, so the Upper
+            // Pectoralis row is gone; the dim trapezius gets a new row, named
+            // whole, with the rhomboids unnamed as on the other presses. No
+            // normalised EMG found for it here, so LOW 0.36, the Seated Dumbbell
+            // Press's value, is an estimate (ExRx lists its middle and lower
+            // parts as synergists of the press; Paoli et al. 2010, J Strength
+            // Cond Res 24(6):1578-1583; Luczak et al. 2013, J Sports Med
+            // 2013:612650).
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.60),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.28)
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
         setup: [
@@ -23254,15 +23272,14 @@ enum SampleData {
     static let vikingPressContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "grip", label: "Palms in, wrists neutral",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.830, y: 0.047),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "elbow", label: "Elbows tucked",
                           labelPoint: CGPoint(x: 0.712, y: 0.48),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "path", label: "Press to full reach",
-                          labelPoint: CGPoint(x: 0.376, y: 0.16),
+                          labelPoint: CGPoint(x: 0.364, y: 0.047),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "core", label: "Ribs down, no lean back",
                           labelPoint: CGPoint(x: 0.435, y: 0.48),
@@ -23314,10 +23331,22 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): front and side delts bright; the triceps,
+            // trapezius and rhomboids dim. Changes: Lateral Deltoid moves up to
+            // primary, keeping its 0.36 (ranks follow the paint, fractions stay
+            // where the EMG put them); the chest is unpainted, so the Upper
+            // Pectoralis row is gone; the dim trapezius gets a new row, named
+            // whole, with the rhomboids unnamed as on the other presses. No
+            // normalised EMG found for it here, so LOW 0.36, the Seated Dumbbell
+            // Press's value, is an estimate (ExRx lists its middle and lower
+            // parts as synergists of the press; Paoli et al. 2010, J Strength
+            // Cond Res 24(6):1578-1583; Luczak et al. 2013, J Sports Med
+            // 2013:612650).
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.36),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.44),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["core", "serratus anterior", "rotator cuff"],
         setup: [
@@ -23403,9 +23432,15 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap): the side delt bright, the trapezius and
+            // rhomboids dim, on the raising (left) side. Changes: the front delt
+            // is no longer lit, so the Anterior Deltoid row is gone; the rig
+            // paints the supraspinatus with the rotator cuff, which the model
+            // leaves unlit, so the Supraspinatus row goes too (the cuff stays
+            // named with the stabilisers). The Upper Trapezius row stands for
+            // the dim trapezius.
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.46),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["obliques", "rotator cuff", "serratus anterior"],
@@ -23491,9 +23526,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap): the side delt bright, the trapezius and
+            // rhomboids dim, on the raising (left) side. Changes: the front delt
+            // is no longer lit, so the Anterior Deltoid row is gone; the rig
+            // paints the supraspinatus with the rotator cuff, which the model
+            // leaves unlit, so the Supraspinatus row goes too (the cuff stays
+            // named with the stabilisers).
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
             MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "lower trapezius"],
@@ -23523,9 +23563,12 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.580, y: 0.80),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
+            // The right trap's attachment (support_TrapeziusUpper_L before): the
+            // left support point sits ~8 pt from the head's centre in this
+            // view, so its leader always ran across the face.
             CueAnnotation(cueID: "traps", label: "Shoulders down, no shrug",
                           labelPoint: CGPoint(x: 0.450, y: 0.16),
-                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+                          leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
             CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
                           labelPoint: CGPoint(x: 0.638, y: 0.16),
                           labelSide: .trailing,
@@ -23581,8 +23624,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap, which only unlit the front delt): side and rear
+            // delts bright, the trapezius and rhomboids dim. Changed: Posterior
+            // Deltoid moves up to primary, keeping its 0.68 (ranks follow the
+            // paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.68),
             MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.46),
             MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.34)
         ],
@@ -23672,10 +23720,19 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Lower Trapezius", rank: .primary, fraction: 0.78),
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap): front and side delts bright; the trapezius and
+            // rhomboids, bright before, now dim. Changes: Lower Trapezius drops
+            // to secondary, keeping its 0.78 (ranks follow the paint, fractions
+            // stay where the EMG put them); the rear delts are unpainted, so the
+            // Posterior Deltoid row is gone; the bright front delt gets a new
+            // primary row. No normalised EMG found for the anterior deltoid in a
+            // prone Y-raise, so MODERATE 0.50 is an estimate, under the side
+            // delt's 0.72 as the arms rise between flexion and abduction.
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.70),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.46)
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Lower Trapezius", rank: .secondary, fraction: 0.78),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.70)
         ],
         stabilisers: ["serratus anterior", "rotator cuff", "rhomboids"],
         setup: [
@@ -23702,21 +23759,19 @@ enum SampleData {
     static let cableYRaiseContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "torso", label: "Ribs down, no lean back",
-                          labelPoint: CGPoint(x: 0.565, y: 0.60),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "spine"),
+                          labelPoint: CGPoint(x: 0.565, y: 0.632),
+                          labelSide: .trailing, leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "traps", label: "Shoulders away from ears",
-                          labelPoint: CGPoint(x: 0.450, y: 0.60),
+                          labelPoint: CGPoint(x: 0.450, y: 0.632),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
             CueAnnotation(cueID: "elbow", label: "Arms long, elbows soft",
-                          labelPoint: CGPoint(x: 0.420, y: 0.52),
+                          labelPoint: CGPoint(x: 0.420, y: 0.565),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "height", label: "Up and out into a Y",
-                          labelPoint: CGPoint(x: 0.624, y: 0.52),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_R"),
+                          labelPoint: CGPoint(x: 0.624, y: 0.565),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "cross", label: "Cables crossed at the hips",
-                          labelPoint: CGPoint(x: 0.479, y: 0.68),
+                          labelPoint: CGPoint(x: 0.479, y: 0.699),
                           leaderLength: 40, joint: "thigh_L")
         ],
         cues: [
@@ -23762,10 +23817,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the side delts bright; the front delts,
+            // trapezius and rhomboids dim. Changes: the serratus and the rotator
+            // cuff (which the rig paints the supraspinatus with) are unlit, so
+            // the Serratus Anterior and Supraspinatus rows are gone (the cuff
+            // stays a stabiliser); the dim front delt gets a new secondary row.
+            // No normalised EMG found for it in a cable Y-raise, so 0.42, inside
+            // the 0.38-0.48 the lateral raises give it, is an estimate.
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Serratus Anterior", rank: .secondary, fraction: 0.56),
             MuscleActivation(name: "Lower Trapezius", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.46)
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["rotator cuff", "core", "erector spinae"],
         setup: [
@@ -23792,7 +23854,7 @@ enum SampleData {
     static let luRaiseContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "traps", label: "Shoulders down to start",
-                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          labelPoint: CGPoint(x: 0.435, y: 0.125),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
             CueAnnotation(cueID: "elbow", label: "Arms long, elbows soft",
                           labelPoint: CGPoint(x: 0.580, y: 0.64),
@@ -23802,8 +23864,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.406, y: 0.80),
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "height", label: "All the way overhead",
-                          labelPoint: CGPoint(x: 0.609, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.866, y: 0.125),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "path", label: "Out to the sides",
                           labelPoint: CGPoint(x: 0.332, y: 0.64),
@@ -23852,10 +23913,18 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the side delts bright; the front delts,
+            // trapezius and rhomboids dim. Changes: the serratus and the rotator
+            // cuff (which the rig paints the supraspinatus with) are unlit, so
+            // the Serratus Anterior and Supraspinatus rows are gone (the cuff
+            // stays a stabiliser); the dim front delt gets a new secondary row.
+            // No normalised EMG found for it in a Lu raise; the arms finish
+            // overhead, where flexing the shoulder works it hard, so MODERATE
+            // 0.50 is an estimate.
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.60),
-            MuscleActivation(name: "Serratus Anterior", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.54)
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["lower trapezius", "rotator cuff", "core"],
         setup: [
@@ -23882,21 +23951,19 @@ enum SampleData {
     static let plateFrontRaiseContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "height", label: "Plate to face height",
-                          labelPoint: CGPoint(x: 0.391, y: 0.64),
+                          labelPoint: CGPoint(x: 0.388, y: 0.045),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "shoulder", label: "Shoulders stay down",
-                          labelPoint: CGPoint(x: 0.624, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.850, y: 0.045),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
-                          labelPoint: CGPoint(x: 0.362, y: 0.16),
+                          labelPoint: CGPoint(x: 0.980, y: 0.535),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "grip", label: "Grip at 3 and 9 o'clock",
-                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+                          labelPoint: CGPoint(x: 0.440, y: 0.535),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "torso", label: "No backward lean",
-                          labelPoint: CGPoint(x: 0.668, y: 0.32),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.445, y: 0.590),
                           leaderLength: 40, joint: "spine")
         ],
         cues: [
@@ -23942,11 +24009,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the front delts bright; the side delts,
+            // trapezius and rhomboids dim. Changes: the chest is unpainted, so
+            // the Upper Pectoralis row is gone; the dim trapezius, a stabiliser
+            // until now (as the upper trapezius), gets a row, named whole with
+            // the rhomboids unnamed as on the presses. No normalised EMG found
+            // for it in a front raise, so LOW 0.36, the presses' value, is an
+            // estimate.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["serratus anterior", "upper trapezius", "forearms", "core"],
+        stabilisers: ["serratus anterior", "forearms", "core"],
         setup: [
             "Stand with your feet hip-width apart, knees soft.",
             "Hold a plate at 3 and 9 o'clock, palms facing each other.",
@@ -23971,7 +24046,7 @@ enum SampleData {
     static let barbellFrontRaiseContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "height", label: "Bar to shoulder level",
-                          labelPoint: CGPoint(x: 0.406, y: 0.48),
+                          labelPoint: CGPoint(x: 0.406, y: 0.235),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
                           labelPoint: CGPoint(x: 0.450, y: 0.64),
@@ -24031,11 +24106,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the front delts bright; the side delts,
+            // trapezius and rhomboids dim. Changes: the chest is unpainted, so
+            // the Upper Pectoralis row is gone; the dim trapezius, a stabiliser
+            // until now (as the upper trapezius), gets a row, named whole with
+            // the rhomboids unnamed as on the presses. No normalised EMG found
+            // for it in a front raise, so LOW 0.36, the presses' value, is an
+            // estimate.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["serratus anterior", "upper trapezius", "wrist extensors", "core"],
+        stabilisers: ["serratus anterior", "wrist extensors", "core"],
         setup: [
             "Stand with your feet hip-width apart, knees soft.",
             "Hold the bar overhand, hands about shoulder-width.",
@@ -24060,11 +24143,10 @@ enum SampleData {
     static let cableFrontRaiseContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "height", label: "Bar to shoulder level",
-                          labelPoint: CGPoint(x: 0.406, y: 0.48),
+                          labelPoint: CGPoint(x: 0.406, y: 0.563),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "shoulder", label: "Shoulders down, no shrug",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.860, y: 0.060),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
             CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
                           labelPoint: CGPoint(x: 0.362, y: 0.16),
@@ -24119,11 +24201,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged; the Rope stance's model paints the same): the
+            // front delts bright; the side delts, trapezius and rhomboids dim.
+            // Changes: the chest is unpainted, so the Upper Pectoralis row is
+            // gone; the dim trapezius, a stabiliser until now (as the upper
+            // trapezius), gets a row, named whole with the rhomboids unnamed as
+            // on the presses. No normalised EMG found for it in a front raise,
+            // so LOW 0.36, the presses' value, is an estimate.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["serratus anterior", "upper trapezius", "erector spinae", "core"],
+        stabilisers: ["serratus anterior", "erector spinae", "core"],
         setup: [
             "Attach a straight bar to a low pulley.",
             "Stand with your back to the stack, the cable between your feet.",
@@ -24152,17 +24242,16 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "shoulder", label: "Shoulders down, no shrug",
-                          labelPoint: CGPoint(x: 0.450, y: 0.16),
+                          labelPoint: CGPoint(x: 0.511, y: 0.034),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_R"),
             CueAnnotation(cueID: "elbow", label: "Soft, fixed elbows",
-                          labelPoint: CGPoint(x: 0.362, y: 0.32),
+                          labelPoint: CGPoint(x: 0.393, y: 0.141),
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "alternate", label: "Chest square, no twist",
-                          labelPoint: CGPoint(x: 0.420, y: 0.48),
+                          labelPoint: CGPoint(x: 0.445, y: 0.087),
                           leaderLength: 40, joint: "upper_arm_R"),
             CueAnnotation(cueID: "torso", label: "No lean or sway",
-                          labelPoint: CGPoint(x: 0.682, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.864, y: 0.072),
                           leaderLength: 40, joint: "chest")
         ],
         cues: [
@@ -24208,11 +24297,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the front delts bright; the side delts,
+            // trapezius and rhomboids dim. Changes: the chest is unpainted, so
+            // the Upper Pectoralis row is gone; the dim trapezius, a stabiliser
+            // until now (as the upper trapezius), gets a row, named whole with
+            // the rhomboids unnamed as on the presses. No normalised EMG found
+            // for it in a front raise, so LOW 0.36, the presses' value, is an
+            // estimate.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["serratus anterior", "obliques", "upper trapezius", "core"],
+        stabilisers: ["serratus anterior", "obliques", "core"],
         setup: [
             "Stand with a dumbbell in each hand in front of your thighs.",
             "Palms facing your body, elbows softly bent.",
@@ -24237,13 +24334,11 @@ enum SampleData {
     static let cableExternalRotationContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "elbow", label: "Elbow pinned to side",
-                          labelPoint: CGPoint(x: 0.609, y: 0.32),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "forearm_L"),
+                          labelPoint: CGPoint(x: 0.589, y: 0.425),
+                          labelSide: .trailing, leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "angle", label: "Forearm level, elbow 90°",
-                          labelPoint: CGPoint(x: 0.550, y: 0.64),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.523, y: 0.300),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "shoulder", label: "Shoulder down, no shrug",
                           labelPoint: CGPoint(x: 0.565, y: 0.16),
                           labelSide: .trailing,
@@ -24327,13 +24422,11 @@ enum SampleData {
     static let cableInternalRotationContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "elbow", label: "Elbow pinned to side",
-                          labelPoint: CGPoint(x: 0.609, y: 0.32),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "forearm_L"),
+                          labelPoint: CGPoint(x: 0.589, y: 0.440),
+                          labelSide: .trailing, leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "angle", label: "Forearm level, elbow 90°",
-                          labelPoint: CGPoint(x: 0.550, y: 0.64),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.523, y: 0.290),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "shoulder", label: "Shoulder back, chest up",
                           labelPoint: CGPoint(x: 0.565, y: 0.16),
                           labelSide: .trailing,
@@ -24389,9 +24482,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rotator cuff bright on the working (left)
+            // side, the chest and front delt faint. Changes: the faint chest
+            // makes Pectoralis Major a LOW row, 0.48 lowered to 0.38, as the
+            // library's other faint rows are set; the faint front delt gets a
+            // LOW row too, an estimate (no normalised EMG found for it in a
+            // cable internal rotation); the lats are unpainted, so the
+            // Latissimus Dorsi row is gone.
             MuscleActivation(name: "Subscapularis", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.38),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["rotator cuff", "middle trapezius", "core"],
         setup: [
@@ -24425,9 +24526,8 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "elbow", label: "Arm long, elbow soft",
-                          labelPoint: CGPoint(x: 0.609, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "forearm_L"),
+                          labelPoint: CGPoint(x: 0.550, y: 0.250),
+                          labelSide: .trailing, leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "path", label: "Arm level with shoulder",
                           labelPoint: CGPoint(x: 0.435, y: 0.64),
                           leaderLength: 40, joint: "upper_arm_L"),
@@ -24478,10 +24578,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rear delt bright, the side delt and rotator
+            // cuff dim, on the raising (left) side. Changed: the trapezius is
+            // unpainted, so the Middle Trapezius row is gone.
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Infraspinatus", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.48)
+            MuscleActivation(name: "Infraspinatus", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["rotator cuff", "lower trapezius", "core"],
         setup: [
@@ -24516,12 +24619,11 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.376, y: 0.80),
                           leaderLength: 40, joint: "thigh_R"),
             CueAnnotation(cueID: "traps", label: "Shoulders away from ears",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.555, y: 0.088),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "back", label: "Flat back",
-                          labelPoint: CGPoint(x: 0.230, y: 0.12),
-                          leaderLength: 40, joint: "chest")
+                          labelPoint: CGPoint(x: 0.600, y: 0.160),
+                          labelSide: .trailing, leaderLength: 40, joint: "chest")
         ],
         cues: [
             TechniqueCue(
@@ -24566,26 +24668,27 @@ enum SampleData {
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit: rear delts, rotator cuff,
-            // rhomboids and trapezius bright, the side delts and lats unlit.
-            // Rowing with the elbows out at 60-90 degrees raises upper and
-            // middle trapezius and posterior deltoid activity and lowers the
-            // lats' (Vasconcelos et al. 2023, Int J Strength Cond 3(1)); the
-            // seated row gave the highest middle trapezius/rhomboid activity
-            // of the pulls Lehman et al. 2004 tested (Dyn Med 3:4). The rotator
-            // cuff, also lit, is named with the stabilisers, as on the other
-            // rows (Escamilla et al. 2009, Sports Med 39:663-685). The side
-            // delts keep a secondary row although the model leaves them
-            // unlit, because horizontal abduction works them about as hard
-            // as the rear delts (middle 87, posterior 88% MVIC, Reinold et
-            // al. 2004, J Orthop Sports Phys Ther 34:385-394); it is set LOW
-            // to match the model, which does not light them.
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap): rear delts and rotator cuff bright; the
+            // trapezius and rhomboids, bright before, now dim; the side delts
+            // and lats unlit. Rowing with the elbows out at 60-90 degrees raises
+            // upper and middle trapezius and posterior deltoid activity and
+            // lowers the lats' (Vasconcelos et al. 2023, Int J Strength Cond
+            // 3(1)); the seated row gave the highest middle trapezius/rhomboid
+            // activity of the pulls Lehman et al. 2004 tested (Dyn Med 3:4).
+            // Changes: Middle Trapezius and Rhomboids drop to secondary with
+            // their fractions; the bright rotator cuff, named with the
+            // stabilisers before, becomes a primary row (no normalised EMG of
+            // the cuff in a row was found, so 0.60 is an estimate, the Pendlay
+            // Row's value, MODERATE and below the rear delt that leads the
+            // pull); the Lateral Deltoid row, kept LOW though the model left the
+            // side delts unlit, is gone.
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.74),
-            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.38)
+            MuscleActivation(name: "Rotator Cuff", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.74),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.72)
         ],
-        stabilisers: ["rotator cuff", "erector spinae", "hamstrings", "biceps brachii", "forearms"],
+        stabilisers: ["erector spinae", "hamstrings", "biceps brachii", "forearms"],
         setup: [
             "Hold a dumbbell in each hand with an overhand grip.",
             "Hinge forward from the hips, knees soft, back flat.",
@@ -24614,7 +24717,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows high and wide",
-                          labelPoint: CGPoint(x: 0.391, y: 0.40),
+                          labelPoint: CGPoint(x: 0.420, y: 0.338),
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "range", label: "Full reach, full squeeze",
                           labelPoint: CGPoint(x: 0.550, y: 0.16),
@@ -24623,10 +24726,12 @@ enum SampleData {
             CueAnnotation(cueID: "traps", label: "Shoulders down",
                           labelPoint: CGPoint(x: 0.303, y: 0.16),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+            // Tracks the chest (the spine joint before): on the 2026-10-18 machine
+            // the lifter sits 17 cm higher and the lower spine is well under the
+            // pad, so the dot sat on the lower back.
             CueAnnotation(cueID: "chest", label: "Chest on the pad",
-                          labelPoint: CGPoint(x: 0.668, y: 0.64),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "spine")
+                          labelPoint: CGPoint(x: 0.354, y: 0.400),
+                          leaderLength: 40, joint: "chest")
         ],
         cues: [
             TechniqueCue(
@@ -24671,25 +24776,31 @@ enum SampleData {
             )
         ],
         activation: [
-            // Ranked as the 2026-09-30 model is lit: rear delts, rotator cuff,
-            // rhomboids and trapezius bright, side delts and lats dim. Rowing
-            // with the upper arms out 60-90 degrees, as here, raises upper and
-            // middle trapezius and posterior deltoid activity and lowers the
-            // lats' (Vasconcelos et al. 2023, Int J Strength Cond 3(1)); the
-            // seated row gave the highest middle trapezius/rhomboid activity
-            // of the pulls Lehman et al. 2004 tested (Dyn Med 3:4). In prone
-            // horizontal abduction the middle deltoid works about as hard as
-            // the posterior (87 vs 88% MVIC, Reinold et al. 2004, J Orthop
-            // Sports Phys Ther 34:385-394), hence its HIGH secondary row. The
-            // rotator cuff, also lit, is named with the stabilisers, as on the
-            // other rows (Escamilla et al. 2009, Sports Med 39:663-685); the
-            // dim lats stay unnamed so the legend keeps four names.
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): rear delts, rotator cuff, rhomboids and
+            // trapezius bright, side delts and lats dim. Rowing with the elbows
+            // out at 60-90 degrees raises upper and middle trapezius and
+            // posterior deltoid activity and lowers the lats' (Vasconcelos et
+            // al. 2023, Int J Strength Cond 3(1)); the seated row gave the
+            // highest middle trapezius/rhomboid activity of the pulls Lehman et
+            // al. 2004 tested (Dyn Med 3:4). In prone horizontal abduction the
+            // middle deltoid works about as hard as the posterior (87 vs 88%
+            // MVIC, Reinold et al. 2004, J Orthop Sports Phys Ther 34:385-394),
+            // hence its HIGH secondary row. Changes: the bright rotator cuff,
+            // named with the stabilisers before, becomes a primary row (no
+            // normalised EMG of the cuff in a row was found, so 0.60 is an
+            // estimate, the Pendlay Row's value, MODERATE and below the rear
+            // delt that leads the pull), and the dim lats get a LOW secondary
+            // row, an estimate set low because the wide elbows take them out of
+            // the pull.
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.74),
             MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.70)
+            MuscleActivation(name: "Rotator Cuff", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.70),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["rotator cuff", "lower trapezius", "forearms"],
+        stabilisers: ["lower trapezius", "forearms"],
         setup: [
             "Set the seat so the handles line up with your shoulders.",
             "Sit with your chest on the pad, feet flat on the floor.",
@@ -24895,7 +25006,7 @@ enum SampleData {
     static let smithMachineUprightRowContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "grip", label: "Overhand, shoulder-width",
-                          labelPoint: CGPoint(x: 0.450, y: 0.48),
+                          labelPoint: CGPoint(x: 0.450, y: 0.540),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows lead the bar",
                           labelPoint: CGPoint(x: 0.624, y: 0.16),
@@ -24908,9 +25019,8 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.420, y: 0.80),
                           leaderLength: 40, joint: "foot_R"),
             CueAnnotation(cueID: "torso", label: "Torso still, no swing",
-                          labelPoint: CGPoint(x: 0.594, y: 0.48),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "spine")
+                          labelPoint: CGPoint(x: 0.594, y: 0.540),
+                          labelSide: .trailing, leaderLength: 40, joint: "spine")
         ],
         cues: [
             TechniqueCue(
@@ -24985,8 +25095,7 @@ enum SampleData {
     static let dumbbellShrugContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.785, y: 0.065),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
             CueAnnotation(cueID: "path", label: "Straight up, no rolling",
                           labelPoint: CGPoint(x: 0.435, y: 0.32),
@@ -24999,7 +25108,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "grip", label: "Dumbbells at your sides",
-                          labelPoint: CGPoint(x: 0.435, y: 0.52),
+                          labelPoint: CGPoint(x: 0.461, y: 0.575),
                           leaderLength: 40, joint: "hand_R")
         ],
         cues: [
@@ -25045,10 +25154,16 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the whole trapezius and the rhomboids bright,
+            // the neck dim. Changes: the forearms are unpainted, so the Forearm
+            // Flexors row is gone; Middle Trapezius moves up to primary with its
+            // LOW 0.30 (ranks follow the paint, fractions stay where the EMG put
+            // them: the upper trapezius does the shrugging). The Levator
+            // Scapulae row stands for the dim neck.
             MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "erector spinae", "rhomboids"],
         setup: [
@@ -25134,10 +25249,16 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the whole trapezius and the rhomboids bright,
+            // the neck dim. Changes: the forearms are unpainted, so the Forearm
+            // Flexors row is gone; Middle Trapezius moves up to primary with its
+            // LOW 0.30 (ranks follow the paint, fractions stay where the EMG put
+            // them: the upper trapezius does the shrugging). The Levator
+            // Scapulae row stands for the dim neck.
             MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "erector spinae", "rhomboids"],
         setup: [
@@ -25163,8 +25284,7 @@ enum SampleData {
     static let smithMachineShrugContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.862, y: 0.072),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
             CueAnnotation(cueID: "path", label: "Straight up, no rolling",
                           labelPoint: CGPoint(x: 0.435, y: 0.32),
@@ -25223,10 +25343,16 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the whole trapezius and the rhomboids bright,
+            // the neck dim. Changes: the forearms are unpainted, so the Forearm
+            // Flexors row is gone; Middle Trapezius moves up to primary with its
+            // LOW 0.30 (ranks follow the paint, fractions stay where the EMG put
+            // them: the upper trapezius does the shrugging). The Levator
+            // Scapulae row stands for the dim neck.
             MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "erector spinae", "rhomboids"],
         setup: [
@@ -25253,8 +25379,7 @@ enum SampleData {
     static let cableShrugContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.840, y: 0.065),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
             CueAnnotation(cueID: "path", label: "Straight up, no rolling",
                           labelPoint: CGPoint(x: 0.435, y: 0.32),
@@ -25313,10 +25438,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap, which unlit the forearms; the owner confirmed
+            // that is meant): the whole trapezius and the rhomboids bright, the
+            // neck dim. Changes: the forearms are unpainted, so the Forearm
+            // Flexors row is gone; Middle Trapezius moves up to primary with its
+            // LOW 0.30 (ranks follow the paint, fractions stay where the EMG put
+            // them: the upper trapezius does the shrugging). The Levator
+            // Scapulae row stands for the dim neck.
             MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "latissimus dorsi", "rhomboids"],
         setup: [
@@ -25342,8 +25474,7 @@ enum SampleData {
     static let trapBarShrugContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "range", label: "Shoulders up to the ears",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.785, y: 0.065),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
             CueAnnotation(cueID: "path", label: "Straight up, no rolling",
                           labelPoint: CGPoint(x: 0.435, y: 0.32),
@@ -25402,10 +25533,16 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the whole trapezius and the rhomboids bright,
+            // the neck dim. Changes: the forearms are unpainted, so the Forearm
+            // Flexors row is gone; Middle Trapezius moves up to primary with its
+            // LOW 0.30 (ranks follow the paint, fractions stay where the EMG put
+            // them: the upper trapezius does the shrugging). The Levator
+            // Scapulae row stands for the dim neck.
             MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "erector spinae", "rhomboids"],
         setup: [
@@ -25492,10 +25629,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap, which unlit the forearms; the owner confirmed
+            // that is meant): the whole trapezius and the rhomboids bright, the
+            // neck dim. Changes: the forearms are unpainted, so the Forearm
+            // Flexors row is gone; Middle Trapezius moves up to primary with its
+            // LOW 0.30 (ranks follow the paint, fractions stay where the EMG put
+            // them: the upper trapezius does the shrugging). The Levator
+            // Scapulae row stands for the dim neck.
             MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52),
-            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Levator Scapulae", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["core", "erector spinae", "rhomboids"],
         setup: [
@@ -25583,8 +25727,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.62 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["anterior deltoid", "forearm flexors", "core"],
@@ -25672,8 +25820,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (the 2026-09-27 model, not re-
+            // exported since): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.66 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.66),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["anterior deltoid", "forearm flexors", "middle trapezius", "rhomboids"],
@@ -25707,7 +25859,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.450, y: 0.48),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "wrist", label: "Palm up, wrist straight",
-                          labelPoint: CGPoint(x: 0.435, y: 0.16),
+                          labelPoint: CGPoint(x: 0.435, y: 0.130),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "torso", label: "Chest stays on the pad",
                           labelPoint: CGPoint(x: 0.580, y: 0.43),
@@ -25793,8 +25945,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "pad", label: "Arms on the pad",
-                          labelPoint: CGPoint(x: 0.682, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.838, y: 0.066),
                           leaderLength: 40, joint: "upper_arm_L"),
             CueAnnotation(cueID: "grip", label: "Underhand, wrists flat",
                           labelPoint: CGPoint(x: 0.420, y: 0.16),
@@ -25850,8 +26001,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.66 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.66),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["forearm flexors", "rotator cuff", "core"],
@@ -25882,8 +26037,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.420, y: 0.16),
                           leaderLength: 40, joint: "head"),
             CueAnnotation(cueID: "shoulders", label: "Shoulders back, no slump",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.680, y: 0.070),
                           leaderLength: 40, joint: "attachment_TrapeziusUpper_L"),
             CueAnnotation(cueID: "posture", label: "Walk tall, brace",
                           labelPoint: CGPoint(x: 0.332, y: 0.32),
@@ -25893,7 +26047,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "steps", label: "Short, controlled steps",
-                          labelPoint: CGPoint(x: 0.435, y: 0.80),
+                          labelPoint: CGPoint(x: 0.435, y: 0.875),
                           leaderLength: 40, joint: "foot_R")
         ],
         cues: [
@@ -25939,12 +26093,21 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Forearm Flexors", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.35)
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap; the owner confirmed the unlit forearms on the
+            // carries are meant): the trapezius and rhomboids bright, the abs
+            // and obliques dim. Changes: the forearms and glutes are unpainted,
+            // so the Forearm Flexors and Gluteus Medius rows are gone; Upper
+            // Trapezius moves up to primary with its 0.45 (ranks follow the
+            // paint, fractions stay where the EMG put them); the dim rectus
+            // abdominis, a stabiliser until now, becomes a LOW row, an estimate
+            // set under the obliques that brace against the sway (no normalised
+            // EMG found for it in a farmer's carry).
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.45),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.35),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["erector spinae", "quadratus lumborum", "rectus abdominis"],
+        stabilisers: ["erector spinae", "quadratus lumborum"],
         setup: [
             "Stand between two dumbbells, feet hip-width.",
             "Squat down with a flat back and grip them in the middle, palms in.",
@@ -26029,22 +26192,26 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap; the owner confirmed the unlit forearms on the
+            // carries are meant): the obliques bright and the abs dim on the
+            // free (right) side, the trapezius and rhomboids dim on the loaded
+            // one. Changes: the forearms, lower back and glutes are unpainted,
+            // so the Forearm Flexors, Erector Spinae and Gluteus Medius rows are
+            // gone; the dim rectus abdominis, a stabiliser until now, becomes a
+            // LOW row, an estimate set under the obliques (no normalised EMG
+            // found for it in a suitcase carry).
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.60),
-            MuscleActivation(name: "Forearm Flexors", rank: .secondary, fraction: 0.55),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
-            // The 2026-09-30 model lights the trapezius (all three parts) and
-            // the rhomboids dim. In one-handed suitcase carries of 35-45% of
-            // body weight the loaded side's upper trapezius read 21-28% MVIC,
-            // which the authors class as moderate, and the lower trapezius
-            // 8-10%; the far side's gluteus medius read 10-13% (Bordelon et
-            // al. 2021, J Strength Cond Res 35(Suppl 1):S114-S119, Table 2).
-            // The trapezius, until now a stabiliser, joins the secondary rows,
-            // named whole as the whole muscle is lit. The rhomboids were not
-            // measured and stay out.
+            // In one-handed suitcase carries of 35-45% of body weight the loaded
+            // side's upper trapezius read 21-28% MVIC, which the authors class
+            // as moderate, and the lower trapezius 8-10% (Bordelon et al. 2021,
+            // J Strength Cond Res 35(Suppl 1):S114-S119, Table 2). The row names
+            // the trapezius whole as the whole muscle is lit; the rhomboids were
+            // not measured and stay out.
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.44),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["quadratus lumborum", "rectus abdominis"],
+        stabilisers: ["quadratus lumborum"],
         setup: [
             "Stand beside one dumbbell, feet hip-width.",
             "Squat down with a flat back and grip it in one hand, palm in.",
@@ -26083,9 +26250,8 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.362, y: 0.52),
                           leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "steps", label: "Short, steady steps",
-                          labelPoint: CGPoint(x: 0.624, y: 0.80),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "foot_L")
+                          labelPoint: CGPoint(x: 0.624, y: 0.700),
+                          labelSide: .trailing, leaderLength: 40, joint: "foot_L")
         ],
         cues: [
             TechniqueCue(
@@ -26130,12 +26296,20 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): side delts, trapezius and rhomboids bright, abs
+            // and obliques dim. Changes: Lateral Deltoid moves up to primary
+            // with its 0.45 (ranks follow the paint, fractions stay where the
+            // EMG put them); the serratus is unpainted, so the Serratus Anterior
+            // row is gone; the dim rectus abdominis, a stabiliser until now,
+            // becomes a LOW row, an estimate set under the obliques (no
+            // normalised EMG found for it in an overhead carry).
             MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.60),
-            MuscleActivation(name: "Serratus Anterior", rank: .secondary, fraction: 0.55),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.45),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["anterior deltoid", "rotator cuff", "triceps", "rectus abdominis"],
+        stabilisers: ["anterior deltoid", "rotator cuff", "triceps"],
         setup: [
             "Clean a dumbbell to each shoulder and press them overhead.",
             "Lock the elbows, palms forward, upper arms beside your ears.",
@@ -27225,8 +27399,7 @@ enum SampleData {
     static let seatedDumbbellLateralRaiseContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "traps", label: "Shoulders down, no shrug",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.975, y: 0.160),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "height", label: "Stop at shoulder height",
                           labelPoint: CGPoint(x: 0.435, y: 0.16),
@@ -27285,12 +27458,20 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap): the side delts bright, the trapezius and
+            // rhomboids dim. Changes: the front delt is no longer lit, and the
+            // rear delts and the rotator cuff (which the rig paints the
+            // supraspinatus with) are not lit either, so the Anterior Deltoid,
+            // Posterior Deltoid and Supraspinatus rows are gone (the cuff stays
+            // a stabiliser). The dim upper trapezius, a stabiliser until now,
+            // becomes a row; no normalised EMG found for it in a seated raise,
+            // so MODERATE 0.40, the Leaning Lateral Raise's value, is an
+            // estimate.
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Supraspinatus", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.40)
         ],
-        stabilisers: ["upper trapezius", "serratus anterior", "rotator cuff", "wrist extensors"],
+        stabilisers: ["serratus anterior", "rotator cuff", "wrist extensors"],
         setup: [
             "Sit tall on the end of a flat bench, feet flat and apart.",
             "Hold a dumbbell in each hand beside your thighs.",
@@ -27317,8 +27498,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.362, y: 0.16),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "traps", label: "Shoulders down, no shrug",
-                          labelPoint: CGPoint(x: 0.550, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.850, y: 0.075),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "elbow", label: "Elbows high and wide",
                           labelPoint: CGPoint(x: 0.391, y: 0.48),
@@ -27374,12 +27554,24 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap): rear delts, trapezius, rhomboids and now the
+            // rotator cuff (dim before) bright; side delts and lats dim.
+            // Changes: Middle and Upper Trapezius move up to primary with their
+            // fractions (ranks follow the paint, fractions stay where the EMG
+            // put them); the bright cuff, named with the stabilisers (the
+            // infraspinatus) before, becomes a primary row and the dim lats a
+            // LOW secondary one, both estimates as on the Machine Rear Delt Row
+            // (Rotator Cuff 0.60, the Pendlay Row's value; Latissimus Dorsi
+            // 0.30, low because the wide elbows take the lats out of the pull).
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Rotator Cuff", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Upper Trapezius", rank: .primary, fraction: 0.50),
             MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.66),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["rhomboids", "infraspinatus", "lower trapezius", "erector spinae"],
+        stabilisers: ["rhomboids", "lower trapezius", "erector spinae"],
         setup: [
             "Set the pulley at seated shoulder height with a straight bar.",
             "Sit tall facing the stack, knees slightly bent, feet flat.",
@@ -27407,8 +27599,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.450, y: 0.16),
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows lead the dumbbells",
-                          labelPoint: CGPoint(x: 0.536, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.785, y: 0.065),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "path", label: "Dumbbells close to body",
                           labelPoint: CGPoint(x: 0.565, y: 0.64),
@@ -27777,7 +27968,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "upper_arm_L"),
             CueAnnotation(cueID: "range", label: "Lower all the way",
-                          labelPoint: CGPoint(x: 0.347, y: 0.48),
+                          labelPoint: CGPoint(x: 0.347, y: 0.530),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "shoulder", label: "Shoulders down",
                           labelPoint: CGPoint(x: 0.697, y: 0.30),
@@ -27834,8 +28025,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim,
+            // on the working (left) arm. Changed: Brachialis moves up to
+            // primary, keeping its 0.64 (ranks follow the paint, fractions stay
+            // where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.64),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.64),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["anterior deltoid", "forearm flexors", "obliques"],
@@ -27922,8 +28118,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.62 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["deltoids", "rotator cuff", "forearm flexors", "core"],
@@ -28010,8 +28210,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.62 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["anterior deltoid", "rotator cuff", "forearm flexors", "core"],
@@ -28098,9 +28302,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps, brachialis and forearms bright. Changed:
+            // Brachioradialis, the forearm muscle the neutral grip loads most,
+            // moves up to primary, keeping its 0.42 (ranks follow the paint,
+            // fractions stay where the EMG put them).
             MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.74),
-            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Brachioradialis", rank: .primary, fraction: 0.42)
         ],
         stabilisers: ["anterior deltoid", "forearm flexors", "core"],
         setup: [
@@ -28187,9 +28396,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps, brachialis and forearms bright on the
+            // working (left) arm. Changed: Brachioradialis, the forearm muscle
+            // the neutral grip loads most, moves up to primary, keeping its 0.38
+            // (ranks follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.38)
+            MuscleActivation(name: "Brachioradialis", rank: .primary, fraction: 0.38)
         ],
         stabilisers: ["extensor carpi radialis", "flexor carpi radialis", "rotator cuff"],
         setup: [
@@ -28276,8 +28490,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.62 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["posterior deltoid", "anterior deltoid", "upper trapezius", "wrist flexors"],
@@ -28365,8 +28583,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.62 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["posterior deltoid", "anterior deltoid", "upper trapezius", "wrist flexors"],
@@ -28399,16 +28621,14 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.303, y: 0.16),
                           leaderLength: 40, joint: "upper_arm_R"),
             CueAnnotation(cueID: "grip", label: "Underhand grip",
-                          labelPoint: CGPoint(x: 0.697, y: 0.39),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.655, y: 0.268),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "range", label: "Lower to the thighs",
                           labelPoint: CGPoint(x: 0.376, y: 0.48),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "torso", label: "Stand tall",
-                          labelPoint: CGPoint(x: 0.756, y: 0.23),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "neck")
+                          labelPoint: CGPoint(x: 0.756, y: 0.190),
+                          labelSide: .trailing, leaderLength: 40, joint: "neck")
         ],
         cues: [
             TechniqueCue(
@@ -28453,8 +28673,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.62 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.44)
         ],
         stabilisers: ["posterior deltoid", "anterior deltoid", "upper trapezius", "wrist flexors"],
@@ -28542,9 +28766,13 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Brachioradialis", rank: .primary, fraction: 0.56),
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps, brachialis and forearms bright. Changed:
+            // Biceps Brachii moves up to primary, keeping its 0.62 (ranks follow
+            // the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.68),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.62)
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Brachioradialis", rank: .primary, fraction: 0.56)
         ],
         stabilisers: ["wrist extensors", "finger flexors", "rotator cuff"],
         setup: [
@@ -28631,8 +28859,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.68 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.68),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.36)
         ],
         stabilisers: ["forearm flexors", "rotator cuff", "core"],
@@ -28721,8 +28953,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.66 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.66),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.46)
         ],
         stabilisers: ["anterior deltoid", "forearm flexors", "middle trapezius", "rhomboids"],
@@ -28810,8 +29046,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps and brachialis bright, the forearms dim.
+            // Changed: Brachialis moves up to primary, keeping its 0.66 (ranks
+            // follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Brachialis", rank: .secondary, fraction: 0.66),
+            MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.66),
             MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["anterior deltoid", "forearm flexors", "middle trapezius", "rhomboids"],
@@ -28898,9 +29138,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps, brachialis and forearms bright. Changed:
+            // Brachioradialis, the forearm muscle the neutral grip loads most,
+            // moves up to primary, keeping its 0.44 (ranks follow the paint,
+            // fractions stay where the EMG put them).
             MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.74),
-            MuscleActivation(name: "Brachioradialis", rank: .secondary, fraction: 0.44)
+            MuscleActivation(name: "Brachioradialis", rank: .primary, fraction: 0.44)
         ],
         stabilisers: ["anterior deltoid", "upper trapezius", "flexor carpi radialis", "extensor carpi radialis"],
         setup: [
@@ -28988,8 +29233,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Finger Flexors moves up from secondary, keeping its 0.55
+            // (ranks follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Wrist Flexors", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Finger Flexors", rank: .secondary, fraction: 0.55)
+            MuscleActivation(name: "Finger Flexors", rank: .primary, fraction: 0.55)
         ],
         stabilisers: ["wrist extensors", "thumb flexors"],
         setup: [
@@ -29076,8 +29326,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Extensor Digitorum moves up from secondary, keeping its
+            // 0.45 (ranks follow the paint, fractions stay where the EMG put
+            // them).
             MuscleActivation(name: "Wrist Extensors", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Extensor Digitorum", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Extensor Digitorum", rank: .primary, fraction: 0.45)
         ],
         stabilisers: ["finger flexors", "thumb flexors"],
         setup: [
@@ -29164,8 +29420,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Extensor Digitorum moves up from secondary, keeping its
+            // 0.45 (ranks follow the paint, fractions stay where the EMG put
+            // them).
             MuscleActivation(name: "Wrist Extensors", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Extensor Digitorum", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Extensor Digitorum", rank: .primary, fraction: 0.45)
         ],
         stabilisers: ["finger flexors", "thumb flexors"],
         setup: [
@@ -29251,8 +29513,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Finger Flexors moves up from secondary, keeping its 0.55
+            // (ranks follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Wrist Flexors", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Finger Flexors", rank: .secondary, fraction: 0.55)
+            MuscleActivation(name: "Finger Flexors", rank: .primary, fraction: 0.55)
         ],
         stabilisers: ["wrist extensors", "thumb flexors"],
         setup: [
@@ -29338,8 +29605,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Extensor Digitorum moves up from secondary, keeping its
+            // 0.45 (ranks follow the paint, fractions stay where the EMG put
+            // them).
             MuscleActivation(name: "Wrist Extensors", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Extensor Digitorum", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Extensor Digitorum", rank: .primary, fraction: 0.45)
         ],
         stabilisers: ["finger flexors", "thumb flexors"],
         setup: [
@@ -29426,8 +29699,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Finger Flexors moves up from secondary, keeping its 0.55
+            // (ranks follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Wrist Flexors", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Finger Flexors", rank: .secondary, fraction: 0.55)
+            MuscleActivation(name: "Finger Flexors", rank: .primary, fraction: 0.55)
         ],
         stabilisers: ["upper trapezius", "rear deltoids", "latissimus dorsi", "wrist extensors"],
         setup: [
@@ -29514,9 +29792,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Wrist Flexors moves up from secondary, keeping its 0.60
+            // (ranks follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Flexor Digitorum Profundus", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Flexor Digitorum Superficialis", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Wrist Flexors", rank: .secondary, fraction: 0.60)
+            MuscleActivation(name: "Wrist Flexors", rank: .primary, fraction: 0.60)
         ],
         stabilisers: ["wrist extensors", "thumb flexors"],
         setup: [
@@ -29603,19 +29886,23 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Wrist Extensors moves up from secondary, keeping its 0.42
+            // (ranks follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Flexor Digitorum Superficialis", rank: .primary, fraction: 0.64),
             MuscleActivation(name: "Flexor Digitorum Profundus", rank: .primary, fraction: 0.60),
             MuscleActivation(name: "Flexor Pollicis Longus", rank: .primary, fraction: 0.56),
-            MuscleActivation(name: "Wrist Extensors", rank: .secondary, fraction: 0.42),
-            // The 2026-09-30 model lights the trapezius (all three parts) and
-            // the rhomboids dim. The upper trapezius holds the shoulder girdle
-            // up against a load hanging at the side: 21-28% MVIC in one-handed
-            // suitcase carries of 35-45% of body weight, rising with the load
-            // (Bordelon et al. 2021, J Strength Cond Res 35(Suppl
-            // 1):S114-S119). No EMG of a pinch hold exists and a pinch holds
-            // far less than a full grip, so the fraction is a LOW estimate,
-            // under the Dumbbell Static Hold's 0.42. Until now a stabiliser;
-            // named whole as the whole muscle is lit.
+            MuscleActivation(name: "Wrist Extensors", rank: .primary, fraction: 0.42),
+            // The model lights the trapezius (all three parts) and the rhomboids
+            // dim. The upper trapezius holds the shoulder girdle up against a
+            // load hanging at the side: 21-28% MVIC in one-handed suitcase
+            // carries of 35-45% of body weight, rising with the load (Bordelon
+            // et al. 2021, J Strength Cond Res 35(Suppl 1):S114-S119). No EMG of
+            // a pinch hold exists and a pinch holds far less than a full grip,
+            // so the fraction is a LOW estimate, under the Dumbbell Static
+            // Hold's 0.42; named whole as the whole muscle is lit.
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["core"],
@@ -29703,16 +29990,20 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Wrist Extensors moves up from secondary, keeping its 0.40
+            // (ranks follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Flexor Digitorum Profundus", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Flexor Digitorum Superficialis", rank: .primary, fraction: 0.72),
-            // The 2026-09-30 model lights the whole trapezius (and the
-            // rhomboids) dim, so the row names it whole. With a dumbbell
-            // hanging at the side the upper trapezius read 21-28% MVIC and
-            // the lower 8-10% in one-handed carries of 35-45% of body weight
-            // (Bordelon et al. 2021, J Strength Cond Res 35(Suppl
-            // 1):S114-S119).
-            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.42),
-            MuscleActivation(name: "Wrist Extensors", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Wrist Extensors", rank: .primary, fraction: 0.40),
+            // The model lights the whole trapezius (and the rhomboids) dim, so
+            // the row names it whole. With a load hanging from the hand the
+            // upper trapezius read 21-28% MVIC and the lower 8-10% in one-handed
+            // carries of 35-45% of body weight (Bordelon et al. 2021, J Strength
+            // Cond Res 35(Suppl 1):S114-S119).
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["levator scapulae", "erector spinae", "core"],
         setup: [
@@ -29798,15 +30089,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary.
+            // Changed: Wrist Extensors moves up from secondary, keeping its 0.48
+            // (ranks follow the paint, fractions stay where the EMG put them).
             MuscleActivation(name: "Flexor Digitorum Profundus", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Flexor Digitorum Superficialis", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Wrist Extensors", rank: .secondary, fraction: 0.48),
-            // The 2026-09-30 model lights the whole trapezius (and the
-            // rhomboids) dim, so the row names it whole. With a load hanging
-            // from the hand the upper trapezius read 21-28% MVIC and the
-            // lower 8-10% in one-handed carries of 35-45% of body weight
-            // (Bordelon et al. 2021, J Strength Cond Res 35(Suppl
-            // 1):S114-S119).
+            MuscleActivation(name: "Wrist Extensors", rank: .primary, fraction: 0.48),
+            // The model lights the whole trapezius (and the rhomboids) dim, so
+            // the row names it whole. With a load hanging from the hand the
+            // upper trapezius read 21-28% MVIC and the lower 8-10% in one-handed
+            // carries of 35-45% of body weight (Bordelon et al. 2021, J Strength
+            // Cond Res 35(Suppl 1):S114-S119).
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["levator scapulae", "erector spinae", "core"],
@@ -29833,7 +30128,7 @@ enum SampleData {
     static let towelGripHoldContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "grip", label: "Wrists straight",
-                          labelPoint: CGPoint(x: 0.318, y: 0.16),
+                          labelPoint: CGPoint(x: 0.313, y: 0.260),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "head", label: "Eyes ahead",
                           labelPoint: CGPoint(x: 0.244, y: 0.32),
@@ -29893,21 +30188,18 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-18
+            // "From 191" swap): the rig paints the forearm as one group, and the
+            // model lights all of it bright, so every forearm row is primary;
+            // the trapezius, lats, rhomboids, rear delts and rotator cuff, dim
+            // before, are no longer lit. Changes: Wrist Extensors and Flexor
+            // Pollicis Longus move up from secondary, keeping their 0.48 and
+            // 0.44 (ranks follow the paint, fractions stay where the EMG put
+            // them); the Trapezius row is gone.
             MuscleActivation(name: "Flexor Digitorum Profundus", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Flexor Digitorum Superficialis", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Wrist Extensors", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Flexor Pollicis Longus", rank: .secondary, fraction: 0.44),
-            // The 2026-09-30 model lights the trapezius, lats, rhomboids, rear
-            // delts and rotator cuff dim. In finger hangs the trapezius and
-            // lats worked about 1.5-3 times harder with the elbows bent to
-            // 135° or 90° than with the arms straight (Exel et al. 2023, Front
-            // Sports Act Living 5:1251089); no study gives their share of a
-            // maximum in a straight-arm hang, so the fraction is an estimate.
-            // The trapezius, until now a stabiliser, joins the secondary rows
-            // as LOW. The lats join the stabilisers, and so does the rotator
-            // cuff, which a hard grip with the arm raised works harder
-            // (Sporrong et al. 1996, Acta Orthop Scand 67(5):485-490).
-            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Wrist Extensors", rank: .primary, fraction: 0.48),
+            MuscleActivation(name: "Flexor Pollicis Longus", rank: .primary, fraction: 0.44)
         ],
         stabilisers: ["brachioradialis", "biceps brachii", "pectoralis major", "latissimus dorsi", "rotator cuff"],
         setup: [
@@ -33503,14 +33795,14 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "upper_arm_L"),
             CueAnnotation(cueID: "grip", label: "Wrists straight",
-                          labelPoint: CGPoint(x: 0.318, y: 0.12),
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.687, y: 0.305),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "range", label: "Arms almost straight",
-                          labelPoint: CGPoint(x: 0.391, y: 0.53),
+                          labelPoint: CGPoint(x: 0.410, y: 0.153),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "lower", label: "Lower over two seconds",
-                          labelPoint: CGPoint(x: 0.420, y: 0.64),
-                          leaderLength: 40, joint: "forearm_R")
+                          labelPoint: CGPoint(x: 0.105, y: 0.492),
+                          labelSide: .trailing, leaderLength: 40, joint: "forearm_R")
         ],
         cues: [
             TechniqueCue(
@@ -36924,13 +37216,11 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "elbow", label: "Elbows in",
-                          labelPoint: CGPoint(x: 0.770, y: 0.59),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "forearm_L"),
+                          labelPoint: CGPoint(x: 0.766, y: 0.320),
+                          labelSide: .trailing, leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "wrist", label: "Wrists straight",
-                          labelPoint: CGPoint(x: 0.682, y: 0.80),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.687, y: 0.590),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "range", label: "Lower all the way",
                           labelPoint: CGPoint(x: 0.347, y: 0.59),
                           leaderLength: 40, joint: "hand_R"),
@@ -37071,10 +37361,14 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Brachioradialis", rank: .primary, fraction: 0.56),
-            MuscleActivation(name: "Forearms", rank: .primary, fraction: 0.48),
+            // The list follows the model's paint (swapped in 2026-10-18 with the
+            // paint unchanged): biceps, brachialis and forearms bright, so all
+            // four rows stay primary. Changed: the rows are now in fraction
+            // order (they were brachioradialis first).
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.68),
             MuscleActivation(name: "Brachialis", rank: .primary, fraction: 0.66),
-            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.68)
+            MuscleActivation(name: "Brachioradialis", rank: .primary, fraction: 0.56),
+            MuscleActivation(name: "Forearms", rank: .primary, fraction: 0.48)
         ],
         stabilisers: ["anterior deltoid", "upper trapezius", "levator scapulae"],
         setup: [
@@ -37370,9 +37664,8 @@ enum SampleData {
     static let ezBar21sContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "grip", label: "Outer bends grip",
-                          labelPoint: CGPoint(x: 0.668, y: 0.63),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.668, y: 0.720),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "bottom", label: "1-7: lower half",
                           labelPoint: CGPoint(x: 0.318, y: 0.62),
                           leaderLength: 40, joint: "hand_R"),
@@ -37383,9 +37676,8 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.362, y: 0.71),
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "elbows", label: "Elbows stay put",
-                          labelPoint: CGPoint(x: 0.682, y: 0.72),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "forearm_L")
+                          labelPoint: CGPoint(x: 0.682, y: 0.630),
+                          labelSide: .trailing, leaderLength: 40, joint: "forearm_L")
         ],
         cues: [
             TechniqueCue(

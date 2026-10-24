@@ -79,3 +79,47 @@ a second pass judged on real shots every 0.25 s).
   the end of "Upper back tight, flat". No position-only fix exists. Renaming
   the label to "Upper back tight" (the Safety Bar Squat's wording) at x
   0.660 would clear it; that waits for the owner.
+
+Exercises 201-280 (2026-10-24): the same pass for the Desktop "From 191"
+swap (fdb0a36, exports 201-280). Two checker fixes came first:
+- The card's height. A subtitle that wraps to a second line (e.g.
+  "SHOULDERS · DUMBBELL · INTERMEDIATE") pushes the card's top down ~11 pt
+  while its bottom stays put, so the card is 643.7 pt tall; a stance picker
+  without notes (Cable Front Raise) leaves 616.7 pt, one with notes 581.
+  Pills sit at fractions of the card and the camera keeps its vertical field
+  of view, so the scene keeps its vertical fractions and narrows about the
+  card's centre by the same ratio (the 581 pt stance card's 0.887 scale and
+  22.6 pt inset are that rule). `cards.py <lab> <shots>` measures each
+  lift's card on its t=0 trainer shot into `cards.json`; `check_layout.py`
+  and `dots_check.py` use it when present. That explains the ~6-7 pt "off"
+  lifts `dots_check.py` reported: its top was fixed at a one-line subtitle's.
+  With it all 78 lifts of this batch agree within 3 pt.
+- The buttons. "Under the buttons" was any pill reaching x > 322 with its
+  top above y 118, which flagged pills well clear below them; it now uses
+  the two buttons' frames (x 338-370, y 12-84 pt) with 4 pt to spare.
+Widths were set with `K=1.20` (the real pills' factor found for 101-200;
+`widths.py` alone fits 1.12). Shots for this pass came from a second
+iPhone 17 Pro simulator made for it ("Claude Harness 17 Pro B"), so the
+ghost shoot on the harness simulator could run at the same time.
+With those, 45 of the 78 lifts checked clean and 33 had a pill on the head
+or a fist, a leader across the face or through another dot, or a dot under
+a pill. Laid out one agent per lift with these tools and checked by a
+second (who changed 10 of the 33), then shot in the rebuilt app at six
+moments of the rep and checked again on the shots, one checker per lift:
+62 pills moved on 32 lifts (`moves_201_300.json`), and two dots track
+another joint (`joints_201_300.json`): Chest-Supported Lateral Raise's
+"Shoulders down, no shrug" the right trap's attachment (the left support
+point sat ~8 pt from the head's centre, so any leader to it crossed the
+face) and Machine Rear Delt Row's "Chest on the pad" the chest (the spine
+joint sat on the lower back since the new machine seats the lifter 17 cm
+higher). On the real shots Cable Rear Delt Row's shrug pill still lay on
+the crown of the head: seen from behind, the head rises above the disc the
+checker draws ahead of the head joint. It moved to the top row and passed a
+second shot check. 75 lifts now check clean. Left as they are: three
+leaders that must cross the face because the elbow or hand they track
+passes in front of the head (Viking Press "Elbows tucked" and "Palms in,
+wrists neutral", Powell Raise "Arm long, elbow soft", Rear Delt Row
+"Elbows out wide"; the pills themselves stay off it), and dots that slip
+behind a plate for a moment (Viking Press's right hand, the 21s Curl's and
+Barbell Preacher Curl's far arm, Dumbbell Reverse Curl's shoulder at the
+top).

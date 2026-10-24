@@ -310,3 +310,30 @@ skeptics on fresh shots; four needed a second try:
   the model's (one skeptic accepted it, the other found it only a little
   better than the old one, which showed nothing; the frame upright hides the
   model's own arms at that angle).
+
+Exercises 201-280 ghosts on the re-tuned models (2026-10-24): the same
+review for the Desktop "From 191" swap (fdb0a36) without its 191-200
+presses, 77 exercises with content, 385 cues, shot with
+`Tools/lab/shoot_ex.sh` and reviewed one reviewer per exercise (two
+skeptics per proposed redraw) in four batches as the shots came in. 376
+were kept and 8 are ring-only by design; one redraw was proposed and both
+skeptics confirmed it:
+- Farmer's Carry "steps": the yellow stride lay on the model's own legs.
+  All three carries share the re-tuned walk, whose ankles open to 0.67
+  torso lengths at most (0.71 before), so the Farmer's Carry's own
+  `longStride(from: 0.6, to: 0.76)` gate left the stride at ~40% at its
+  2.0 s review still (70% on the old walk). Five tries, each judged by two
+  skeptics on fresh shots at 1.7-2.4 s: the other carries' gate (~90%) and
+  then 1.6 times the stride still left the yellow feet on the shoes from
+  this angle; a stride of its own (leading ankle 0.38 torso lengths ahead,
+  trailing 0.4 behind, hips 0.14 lower, gate full at the widest stride)
+  read clearly but bent the leading knee backwards at 2.2 s, because the
+  knee stayed behind the new hip-to-ankle line when `.resolve` re-seated
+  it; moving that knee half as far ahead first (and lifting the leading
+  toe a little, a heel strike) passed both: ankles ~2.3 times as far apart
+  as the model's, both knees bent forward at every shot, an offline solve
+  over the whole walk finding no backward knee. The Suitcase and Overhead
+  Carries keep `longStride` (their reviewers kept them).
+The large motion changes of the swap (the Smith Machine and Viking Presses'
+new bars, the Machine Rear Delt Row's new machine, the Cable Rear Delt Row's
+moved station, the walking carries) all left readable ghosts.

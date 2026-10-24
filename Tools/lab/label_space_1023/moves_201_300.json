@@ -1,0 +1,377 @@
+{
+ "Alternating Dumbbell Front Raise": {
+  "Shoulders down, no shrug": {
+   "x": 0.511,
+   "y": 0.034,
+   "side": "leading"
+  },
+  "Chest square, no twist": {
+   "x": 0.445,
+   "y": 0.087,
+   "side": "leading"
+  },
+  "Soft, fixed elbows": {
+   "x": 0.393,
+   "y": 0.141,
+   "side": "leading"
+  },
+  "No lean or sway": {
+   "x": 0.864,
+   "y": 0.072,
+   "side": "leading"
+  }
+ },
+ "Barbell Front Raise": {
+  "Bar to shoulder level": {
+   "x": 0.406,
+   "y": 0.235,
+   "side": "leading"
+  }
+ },
+ "Cable Drag Curl": {
+  "Underhand grip": {
+   "x": 0.655,
+   "y": 0.268,
+   "side": "trailing"
+  },
+  "Stand tall": {
+   "x": 0.756,
+   "y": 0.19,
+   "side": "trailing"
+  }
+ },
+ "Cable External Rotation": {
+  "Elbow pinned to side": {
+   "x": 0.589,
+   "y": 0.425,
+   "side": "trailing"
+  },
+  "Forearm level, elbow 90\u00b0": {
+   "x": 0.523,
+   "y": 0.3,
+   "side": "trailing"
+  }
+ },
+ "Cable Front Raise": {
+  "Shoulders down, no shrug": {
+   "x": 0.86,
+   "y": 0.06,
+   "side": "leading"
+  },
+  "Bar to shoulder level": {
+   "x": 0.406,
+   "y": 0.563,
+   "side": "leading"
+  }
+ },
+ "Cable Internal Rotation": {
+  "Forearm level, elbow 90\u00b0": {
+   "x": 0.523,
+   "y": 0.29,
+   "side": "trailing"
+  },
+  "Elbow pinned to side": {
+   "x": 0.589,
+   "y": 0.44,
+   "side": "trailing"
+  }
+ },
+ "Cable Rear Delt Row": {
+  "Shoulders down, no shrug": {
+   "x": 0.85,
+   "y": 0.075,
+   "side": "leading"
+  }
+ },
+ "Cable Shrug": {
+  "Shoulders up to the ears": {
+   "x": 0.84,
+   "y": 0.065,
+   "side": "leading"
+  }
+ },
+ "Cable Y-Raise": {
+  "Arms long, elbows soft": {
+   "x": 0.42,
+   "y": 0.565,
+   "side": "leading"
+  },
+  "Up and out into a Y": {
+   "x": 0.624,
+   "y": 0.565,
+   "side": "trailing"
+  },
+  "Shoulders away from ears": {
+   "x": 0.45,
+   "y": 0.632,
+   "side": "leading"
+  },
+  "Ribs down, no lean back": {
+   "x": 0.565,
+   "y": 0.632,
+   "side": "trailing"
+  },
+  "Cables crossed at the hips": {
+   "x": 0.479,
+   "y": 0.699,
+   "side": "leading"
+  }
+ },
+ "Chest-Supported Lateral Raise": {},
+ "Dumbbell Preacher Curl": {
+  "Palm up, wrist straight": {
+   "x": 0.435,
+   "y": 0.13,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Shrug": {
+  "Shoulders up to the ears": {
+   "x": 0.785,
+   "y": 0.065,
+   "side": "leading"
+  },
+  "Dumbbells at your sides": {
+   "x": 0.461,
+   "y": 0.575,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Upright Row": {
+  "Elbows lead the dumbbells": {
+   "x": 0.785,
+   "y": 0.065,
+   "side": "leading"
+  }
+ },
+ "EZ-Bar 21s": {
+  "Outer bends grip": {
+   "x": 0.668,
+   "y": 0.72,
+   "side": "trailing"
+  },
+  "Elbows stay put": {
+   "x": 0.682,
+   "y": 0.63,
+   "side": "trailing"
+  }
+ },
+ "Farmer's Carry": {
+  "Shoulders back, no slump": {
+   "x": 0.68,
+   "y": 0.07,
+   "side": "leading"
+  },
+  "Short, controlled steps": {
+   "x": 0.435,
+   "y": 0.875,
+   "side": "leading"
+  }
+ },
+ "Half-Kneeling Landmine Press": {
+  "Press up and forward": {
+   "x": 0.42,
+   "y": 0.105,
+   "side": "leading"
+  },
+  "Shoulders stay square": {
+   "x": 0.9,
+   "y": 0.185,
+   "side": "leading"
+  },
+  "Ribs down, no lean back": {
+   "x": 0.464,
+   "y": 0.5,
+   "side": "leading"
+  }
+ },
+ "Lu Raise": {
+  "Shoulders down to start": {
+   "x": 0.435,
+   "y": 0.125,
+   "side": "leading"
+  },
+  "All the way overhead": {
+   "x": 0.866,
+   "y": 0.125,
+   "side": "leading"
+  }
+ },
+ "Machine Biceps Curl": {
+  "Arms on the pad": {
+   "x": 0.838,
+   "y": 0.066,
+   "side": "leading"
+  }
+ },
+ "Machine Preacher Curl": {
+  "Wrists straight": {
+   "x": 0.687,
+   "y": 0.305,
+   "side": "trailing"
+  },
+  "Arms almost straight": {
+   "x": 0.41,
+   "y": 0.153,
+   "side": "leading"
+  },
+  "Lower over two seconds": {
+   "x": 0.105,
+   "y": 0.492,
+   "side": "trailing"
+  }
+ },
+ "Machine Rear Delt Row": {
+  "Elbows high and wide": {
+   "x": 0.42,
+   "y": 0.338,
+   "side": "leading"
+  },
+  "Chest on the pad": {
+   "x": 0.354,
+   "y": 0.4,
+   "side": "leading"
+  }
+ },
+ "Overhead Carry": {
+  "Short, steady steps": {
+   "x": 0.624,
+   "y": 0.7,
+   "side": "trailing"
+  }
+ },
+ "Plate Front Raise": {
+  "Plate to face height": {
+   "x": 0.388,
+   "y": 0.045,
+   "side": "leading"
+  },
+  "Shoulders stay down": {
+   "x": 0.85,
+   "y": 0.045,
+   "side": "leading"
+  },
+  "Grip at 3 and 9 o'clock": {
+   "x": 0.44,
+   "y": 0.535,
+   "side": "leading"
+  },
+  "No backward lean": {
+   "x": 0.445,
+   "y": 0.59,
+   "side": "leading"
+  },
+  "Soft, fixed elbows": {
+   "x": 0.98,
+   "y": 0.535,
+   "side": "leading"
+  }
+ },
+ "Powell Raise": {
+  "Arm long, elbow soft": {
+   "x": 0.55,
+   "y": 0.25,
+   "side": "trailing"
+  }
+ },
+ "Rear Delt Row": {
+  "Shoulders away from ears": {
+   "x": 0.555,
+   "y": 0.088,
+   "side": "leading"
+  },
+  "Flat back": {
+   "x": 0.6,
+   "y": 0.16,
+   "side": "trailing"
+  }
+ },
+ "Seated Dumbbell Lateral Raise": {
+  "Shoulders down, no shrug": {
+   "x": 0.975,
+   "y": 0.16,
+   "side": "leading"
+  }
+ },
+ "Single-Arm Cable Curl": {
+  "Lower all the way": {
+   "x": 0.347,
+   "y": 0.53,
+   "side": "leading"
+  }
+ },
+ "Smith Machine Shoulder Press": {
+  "Lower to collarbones": {
+   "x": 0.43,
+   "y": 0.067,
+   "side": "trailing"
+  },
+  "Bench under bar": {
+   "x": 0.345,
+   "y": 0.44,
+   "side": "leading"
+  },
+  "Feet flat, wide base": {
+   "x": 0.387,
+   "y": 0.87,
+   "side": "leading"
+  }
+ },
+ "Smith Machine Shrug": {
+  "Shoulders up to the ears": {
+   "x": 0.862,
+   "y": 0.072,
+   "side": "leading"
+  }
+ },
+ "Smith Machine Upright Row": {
+  "Overhand, shoulder-width": {
+   "x": 0.45,
+   "y": 0.54,
+   "side": "leading"
+  },
+  "Torso still, no swing": {
+   "x": 0.594,
+   "y": 0.54,
+   "side": "trailing"
+  }
+ },
+ "Towel Grip Hold": {
+  "Wrists straight": {
+   "x": 0.313,
+   "y": 0.26,
+   "side": "leading"
+  }
+ },
+ "Trap Bar Shrug": {
+  "Shoulders up to the ears": {
+   "x": 0.785,
+   "y": 0.065,
+   "side": "leading"
+  }
+ },
+ "Viking Press": {
+  "Press to full reach": {
+   "x": 0.364,
+   "y": 0.047,
+   "side": "leading"
+  },
+  "Palms in, wrists neutral": {
+   "x": 0.83,
+   "y": 0.047,
+   "side": "leading"
+  }
+ },
+ "Zottman Curl": {
+  "Elbows in": {
+   "x": 0.766,
+   "y": 0.32,
+   "side": "trailing"
+  },
+  "Wrists straight": {
+   "x": 0.687,
+   "y": 0.59,
+   "side": "trailing"
+  }
+ }
+}

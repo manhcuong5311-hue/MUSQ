@@ -772,3 +772,42 @@ pickers got their own lists. Same rules as for 1-100; what was new here:
 - The chest rows by head from 2026-10-22 already matched; the 191-200
   shoulder rigs paint one Chest group.
 The paint-vs-rows check finds no remaining mismatch.
+
+Muscle rows follow the paint, exercises 201-300 (2026-10-24): the same pass
+for the Desktop "From 191" swap (fdb0a36) without its 191-200 shoulder
+presses, done above: exports 201-280 (no 238, whose 2026-09-27 Spider Curl
+model was checked too), the 215B Rope stance and the two model-only curls,
+80 exercises; there are no exports numbered 281-315. The paint-vs-rows
+report now lives in the repo (`Tools/lab/paint_rows.py`, old paint read at
+`fdb0a36^`); the 101-200 one had stayed in a scratchpad. 57 lists changed,
+written by hand from the report and applied with `Tools/lab/apply_rows.py`,
+and the report re-run finds nothing left but the faint Cable Internal
+Rotation rows (now LOW) and the Cable Front Raise stances, which paint the
+same and use the exercise's list (the Dumbbell Reverse Curl's rows were
+also put in fraction order). Most of the mismatches were older than the
+swap: 62 of the 78 models with an earlier version paint as before (16 were
+re-painted), and 41 of the 57 changed lists sit on those, e.g. the
+brachialis bright but secondary on twelve curls and the brachioradialis on
+three hammer curls. An independent check of all 57 against the paint, the
+old rows and the rules found only comment and README wording to fix. Same
+rules as for 1-200; what was new here:
+- The rig paints the forearm as one group, so on the forearm lifts every
+  forearm row (wrist and finger flexors and extensors, flexor pollicis
+  longus) follows the group: primary where it is bright, fractions kept.
+- The supraspinatus, infraspinatus, teres minor and subscapularis rows
+  belong to the RotatorCuff group; the lateral and Y-raises leave it unlit,
+  so their Supraspinatus rows went (the cuff stays a stabiliser).
+- The trapezius and rhomboids are one UpperBack group: a dim one on the
+  presses and front raises became a "Trapezius" row (LOW 0.36, the presses'
+  estimate; 0.30 on the Half-Kneeling Landmine Press, as on the Landmine
+  Shoulder Press), as on the 191-200 presses; on the shrugs, bright all over, the
+  Middle Trapezius row became primary with its LOW 0.30. The dim neck on the
+  shrugs is the Levator Scapulae row.
+- Unpainted chests lost their Upper Pectoralis rows on the presses and front
+  raises; unlit forearms on the carries and shrugs lost their Forearm
+  Flexors rows (the owner confirmed on 2026-10-18 the forearms he unlit on
+  the carries and the Cable and Behind-the-Back Shrugs; the other four
+  shrugs had them unlit already), and the Farmer's Carry is now led by the
+  upper trapezius.
+- The carries keep their grip cue ("Crush the handles"): a hard grip is
+  still the technique, though the forearms are no longer painted.

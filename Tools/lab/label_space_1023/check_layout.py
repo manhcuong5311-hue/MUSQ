@@ -32,9 +32,18 @@ STANCE = NAME in set(re.findall(r'^        "([^"]+)": \[\n            ExerciseSt
 CH = 581.0 if STANCE else float(VH)
 KS = CH / VH                   # the scene's scale in the card
 CX = 22.6 if STANCE else 0.0   # and its left inset (fitted on the Incline Cable Press shots)
+# A two-line subtitle shortens the card (LAB/cards.json from cards.py): the
+# pills sit at fractions of the shorter card and the scene keeps its vertical
+# fractions, narrowing about the centre by the same ratio.
+_cards = os.path.join(LAB, 'cards.json')
+CARD = json.load(open(_cards)).get(NAME) if os.path.exists(_cards) else None
+if CARD:
+    CH = CARD['h']
 
 
 def scene(u, v):
+    if CARD:
+        return ((0.5 + (u - 0.5) * CH / VH) * VW, v * CH)
     return (KS * u * VW + CX, KS * v * VH)
 
 
@@ -132,7 +141,10 @@ def near_rect(pt, r, rad):
 for p in pills:
     r = p['rect']
     x0, y0, x1, y1 = [int(round(v)) for v in r]
-    if r[2] > 322 and r[1] < 118:
+    # The muscles and key-tips buttons: two 32 pt squares 8 pt apart, 12 pt in
+    # from the top right (x 338-370, y 12-84), with 4 pt to spare (2026-10-24;
+    # the old box, x > 322 and y < 118, flagged pills clear below them).
+    if r[2] > 334 and r[1] < 88:
         issues.append('%s: under the buttons' % p['label'])
     nf = [t for t, pt, rad in face if covers(r, pt, rad) >= 0.1]
     nh = [t for t, pt in fists if near_rect(pt, r, HAND_R * 0.6)]
