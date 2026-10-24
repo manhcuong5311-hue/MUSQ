@@ -5,7 +5,7 @@ source ~/Developer/GymWorkout/Tools/lab/env.sh
 source ~/Developer/GymWorkout/Tools/lab/lock.sh
 OUT=$LAB/occ; mkdir -p $OUT
 xcrun simctl boot $SIM 2>/dev/null
-names=("${(@f)$(<${0:A:h}/lifts.txt)}")
+names=("${(@f)$(<${LIFTS:-${0:A:h}/lifts.txt})}")
 for n in "${names[@]}"; do
   slug=$(echo $n | tr 'A-Z' 'a-z' | sed 's/[^a-z0-9]\{1,\}/-/g')
   for t in 0 0.5 1.0 1.5 2.0 2.5 3.0; do

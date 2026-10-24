@@ -1,0 +1,321 @@
+{
+ "Cable Wood Chop": {
+  "Arms long, handle close": {
+   "x": 0.835,
+   "y": 0.12,
+   "side": "leading"
+  },
+  "Rotate the trunk": {
+   "x": 0.42,
+   "y": 0.56,
+   "side": "leading"
+  },
+  "Brace before you chop": {
+   "x": 0.425,
+   "y": 0.615,
+   "side": "leading"
+  }
+ },
+ "Cable Fly": {
+  "Hands meet at sternum height": {
+   "x": 0.979,
+   "y": 0.53,
+   "side": "leading"
+  },
+  "Elbows fixed, slight bend": {
+   "x": 0.979,
+   "y": 0.255,
+   "side": "leading"
+  },
+  "Hug the arc, don't press": {
+   "x": 0.46,
+   "y": 0.28,
+   "side": "leading"
+  },
+  "Chest up, shoulders back": {
+   "x": 0.466,
+   "y": 0.475,
+   "side": "leading"
+  }
+ },
+ "Incline Dumbbell Fly": {
+  "Palms facing in": {
+   "x": 0.6806,
+   "y": 0.2794,
+   "side": "trailing"
+  },
+  "Fixed elbow bend": {
+   "x": 0.6492,
+   "y": 0.5282,
+   "side": "trailing"
+  },
+  "Squeeze over upper chest": {
+   "x": 0.3613,
+   "y": 0.2168,
+   "side": "trailing"
+  }
+ },
+ "Pec Deck Fly": {
+  "Squeeze handles together": {
+   "x": 0.48,
+   "y": 0.49,
+   "side": "leading"
+  },
+  "Elbows at shoulder height": {
+   "x": 0.53,
+   "y": 0.51,
+   "side": "trailing"
+  },
+  "Back flat on pad": {
+   "x": 0.34,
+   "y": 0.34,
+   "side": "leading"
+  }
+ },
+ "Assisted Pistol Squat": {
+  "Full depth": {
+   "x": 0.766,
+   "y": 0.22,
+   "side": "trailing"
+  }
+ },
+ "Box Squat": {
+  "Bar high on the traps": {
+   "x": 0.628,
+   "y": 0.092,
+   "side": "leading"
+  },
+  "Squeeze shoulder blades": {
+   "x": 0.77,
+   "y": 0.037,
+   "side": "leading"
+  },
+  "Back flat": {
+   "x": 0.288,
+   "y": 0.547,
+   "side": "leading"
+  },
+  "Stay tight on the box": {
+   "x": 0.602,
+   "y": 0.547,
+   "side": "trailing"
+  }
+ },
+ "Goblet Squat": {
+  "Cup the weight at the chest": {
+   "x": 0.842,
+   "y": 0.055,
+   "side": "leading"
+  },
+  "Chest lifted, torso tall": {
+   "x": 0.402,
+   "y": 0.615,
+   "side": "leading"
+  },
+  "Sit to full depth": {
+   "x": 0.689,
+   "y": 0.55,
+   "side": "trailing"
+  },
+  "Knees track over toes": {
+   "x": 0.59,
+   "y": 0.73,
+   "side": "trailing"
+  }
+ },
+ "Heel-Elevated Squat": {
+  "Bar high on traps": {
+   "x": 0.65,
+   "y": 0.495,
+   "side": "trailing"
+  }
+ },
+ "Hip Abduction Machine": {
+  "Back against the pad": {
+   "x": 0.419,
+   "y": 0.252,
+   "side": "leading"
+  },
+  "Hips stay in the seat": {
+   "x": 0.387,
+   "y": 0.4,
+   "side": "leading"
+  },
+  "Hold the handles": {
+   "x": 0.668,
+   "y": 0.412,
+   "side": "trailing"
+  },
+  "Push knees out": {
+   "x": 0.697,
+   "y": 0.603,
+   "side": "trailing"
+  }
+ },
+ "45-Degree Leg Press": {
+  "Hips stay on the seat": {
+   "x": 0.46,
+   "y": 0.78,
+   "side": "trailing"
+  },
+  "Soft knees at the top": {
+   "x": 0.594,
+   "y": 0.235,
+   "side": "trailing"
+  }
+ },
+ "Leg Press Calf Raise": {
+  "Knees stay put": {
+   "x": 0.307,
+   "y": 0.535,
+   "side": "leading"
+  },
+  "Heels back down": {
+   "x": 0.655,
+   "y": 0.21,
+   "side": "trailing"
+  }
+ },
+ "Narrow-Stance Leg Press": {
+  "Hips stay on the seat": {
+   "x": 0.406,
+   "y": 0.465,
+   "side": "leading"
+  },
+  "Soft knees at the top": {
+   "x": 0.594,
+   "y": 0.205,
+   "side": "trailing"
+  }
+ },
+ "Overhead Squat": {
+  "Bar over the ankles": {
+   "x": 0.681,
+   "y": 0.133,
+   "side": "leading"
+  },
+  "Elbows locked": {
+   "x": 0.697,
+   "y": 0.458,
+   "side": "trailing"
+  }
+ },
+ "Single-Leg Press": {
+  "Both hips on the seat": {
+   "x": 0.45,
+   "y": 0.76,
+   "side": "leading"
+  },
+  "Soft knee at the top": {
+   "x": 0.609,
+   "y": 0.21,
+   "side": "trailing"
+  }
+ },
+ "Stiff-Leg Deadlift": {
+  "Grip & lats tight": {
+   "x": 0.63,
+   "y": 0.206,
+   "side": "trailing"
+  },
+  "Flat back throughout": {
+   "x": 0.603,
+   "y": 0.2635,
+   "side": "trailing"
+  }
+ },
+ "Wide-Stance Leg Press": {
+  "Hips stay on the seat": {
+   "x": 0.406,
+   "y": 0.75,
+   "side": "leading"
+  },
+  "Soft knees at the top": {
+   "x": 0.594,
+   "y": 0.205,
+   "side": "trailing"
+  }
+ },
+ "Assisted Dip": {
+  "Torso upright": {
+   "x": 0.44,
+   "y": 0.4,
+   "side": "leading"
+  },
+  "Lower to a 90° elbow bend": {
+   "x": 0.84,
+   "y": 0.14,
+   "side": "leading"
+  }
+ },
+ "Rope Pushdown": {
+  "Shoulders down and back": {
+   "x": 0.524,
+   "y": 0.204,
+   "side": "trailing"
+  },
+  "Elbows pinned to sides": {
+   "x": 0.569,
+   "y": 0.29,
+   "side": "trailing"
+  },
+  "Slight forward lean": {
+   "x": 0.634,
+   "y": 0.412,
+   "side": "trailing"
+  },
+  "Spread the rope at the bottom": {
+   "x": 0.464,
+   "y": 0.585,
+   "side": "trailing"
+  }
+ },
+ "Smith Machine Incline Press": {
+  "Keep wrists stacked": {
+   "x": 0.388,
+   "y": 0.269,
+   "side": "leading"
+  },
+  "Elbows ~45–60°": {
+   "x": 0.78,
+   "y": 0.25,
+   "side": "leading"
+  }
+ },
+ "Larsen Press": {
+  "Elbows ~45°": {
+   "x": 0.36,
+   "y": 0.4,
+   "side": "leading"
+  }
+ },
+ "Single-Arm Landmine Row": {
+  "Reach, then squeeze": {
+   "x": 0.46,
+   "y": 0.075,
+   "side": "leading"
+  },
+  "Elbow to the hip": {
+   "x": 0.64,
+   "y": 0.205,
+   "side": "trailing"
+  },
+  "Hips hinged, back flat": {
+   "x": 0.589,
+   "y": 0.3,
+   "side": "trailing"
+  }
+ },
+ "Decline Cable Press": {
+  "Elbows ~45°": {
+   "x": 0.301,
+   "y": 0.7,
+   "side": "leading"
+  },
+  "Keep wrists stacked": {
+   "x": 0.84,
+   "y": 0.14,
+   "side": "leading"
+  }
+ }
+}

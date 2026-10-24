@@ -754,3 +754,21 @@ pickers (Incline and Decline Cable Press, High-to-Low Cable Fly,
 Plate-Loaded Chest Press, both dips) got a note and their own list per
 stance. The shoulder lifts that list "Upper Pectoralis" as secondary while
 their models paint no chest were left as they are.
+
+Muscle rows follow the paint, exercises 101-200 (2026-10-23): the same pass
+for the Desktop 101-200 swap (c9dc620, exports 101-190) and the 191-200
+shoulder presses (fdb0a36): 98 exercises, one author and one verifier each,
+73 changed (43 corrected by their verifier), and the 15 stance models of the
+Single-Arm Lat Pulldown, the Inverted Row's High Bar and the six chest
+pickers got their own lists. Same rules as for 1-100; what was new here:
+- The owner lights the rotator cuff on most rows and pulls, so it is a row
+  ("Rotator Cuff", at the paint's rank) instead of a stabiliser; the map
+  lights it on the upper back, as it does the infraspinatus, and recovery
+  counts it with the rear delts, as it always has.
+- Dim forearms on the rows, pulls and deadlifts became "Forearms" secondary
+  rows (LOW/MODERATE estimates unless sourced); forearms the owner turned
+  off lost theirs (the Sumo Deadlift's, against StrengthLog, as the comment
+  says).
+- The chest rows by head from 2026-10-22 already matched; the 191-200
+  shoulder rigs paint one Chest group.
+The paint-vs-rows check finds no remaining mismatch.

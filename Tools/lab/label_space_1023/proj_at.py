@@ -10,18 +10,27 @@ import numpy as np
 LAB = sys.argv[1]
 ASPECT = 382 / 655
 M = "/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models/"
+def _presets():
+    import re as _re
+    am = open("/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Models/AnatomyModels.swift").read()
+    out = {}
+    for m in _re.finditer(r'static let (\w+) = ModelFraming\(\s*yaw: ([^,]+), zoom: ([\d.]+), offset: \[([-\d., ]+)\]', am):
+        yaw = m[2].strip().replace('.pi', str(math.pi))
+        out[m[1]] = (float(eval(yaw)), float(m[3]), tuple(float(v) for v in m[4].split(",")))
+    return out
+PRESETS = _presets()
 def _jobs():
     import re as _re, glob as _glob
     src = open("/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Models/SampleData.swift").read()
-    names = [l.strip() for l in open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "lifts.txt")) if l.strip()]
+    names = [l.strip() for l in open(os.environ.get("LIFTS") or os.path.join(os.path.dirname(os.path.abspath(__file__)), "lifts.txt")) if l.strip()]
     out = {}
     for n in names:
         m = _re.search(r'"%s":\s*ExerciseModel\(resource: "(\w+)",\s*framing: ModelFraming\(yaw: ([-\d.]+), zoom: ([\d.]+), offset: \[([-\d., ]+)\]\)' % _re.escape(n), src)
         if m:
             res, fr = m[1], (float(m[2]), float(m[3]), tuple(float(v) for v in m[4].split(",")))
-        else:   # the .standing preset (AnatomyModels.swift)
-            m = _re.search(r'"%s":\s*ExerciseModel\(resource: "(\w+)",\s*framing: \.standing\)' % _re.escape(n), src)
-            res, fr = m[1], (0.0, 1.0, (0.0, 0.10, 0.0))
+        else:   # a named preset (.standing, .bench, ... in AnatomyModels.swift)
+            m = _re.search(r'"%s":\s*ExerciseModel\(resource: "(\w+)",\s*framing: \.(\w+)\)' % _re.escape(n), src)
+            res, fr = m[1], PRESETS[m[2]]
         out[n] = (_glob.glob(M + "*/" + res + ".usdc")[0][len(M):-5],) + fr
     return out
 JOBS = _jobs()

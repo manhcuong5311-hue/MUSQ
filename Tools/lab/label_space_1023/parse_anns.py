@@ -1,6 +1,6 @@
 import re, json, sys
 src = open(sys.argv[1]).read()
-names = [l.strip() for l in open(__import__("os").path.join(__import__("os").path.dirname(__import__("os").path.abspath(__file__)), "lifts.txt")) if l.strip()]
+names = [l.strip() for l in open(__import__("os").environ.get("LIFTS") or __import__("os").path.join(__import__("os").path.dirname(__import__("os").path.abspath(__file__)), "lifts.txt")) if l.strip()]
 def calls(blk, head):
     i = 0
     while True:
@@ -50,8 +50,10 @@ for n in names:
         rows.append(dict(cue=cue, label=label, x=x, y=y, side=side, joint=joint))
     for s in calls(src[a:b], 'CueAnnotation'):
         g = lambda pat: (re.search(pat, s) or [None, None])[1]
-        pt = re.search(r'labelPoint: CGPoint\(x: ([\d.]+), y: ([\d.]+)\)', s)
-        rows.append(dict(cue=g(r'cueID: "(\w+)"'), label=g(r'label: "([^"]*)"'), x=float(pt[1]), y=float(pt[2]), side=g(r'labelSide: \.(\w+)') or 'leading', joint=g(r'joint: "(\w+)"')))
+        # plain fractions, or the bench presses' "218.0 / 382.0" points
+        pt = re.search(r'labelPoint: CGPoint\(x: ([\d.]+)(?: / ([\d.]+))?, y: ([\d.]+)(?: / ([\d.]+))?\)', s)
+        x, y = float(pt[1]) / float(pt[2] or 1), float(pt[3]) / float(pt[4] or 1)
+        rows.append(dict(cue=g(r'cueID: "(\w+)"'), label=g(r'label: "([^"]*)"'), x=x, y=y, side=g(r'labelSide: \.(\w+)') or 'leading', joint=g(r'joint: "(\w+)"')))
     out[n] = dict(var=var, anns=rows)
 json.dump(out, open(sys.argv[2], 'w'), indent=1)
 print(len(out), 'lifts;', sum(len(e['anns']) for e in out.values()), 'callouts')

@@ -277,3 +277,36 @@ of these lifts after the re-tune (Reverse Lunge, Sissy Squat, Front Squat at
 Overhead Cable Triceps Extension at 1.5 s, Pistol Squat at 3 s, Leg
 Extension); those pills, and the ones on the hands of five more lifts, were
 moved on 2026-10-23 (`Tools/lab/label_space_1023/`).
+
+Exercises 101-200 ghosts on the re-tuned models (2026-10-23/24): the same
+review for the Desktop 101-200 swap (c9dc620) and the 191-200 shoulder
+presses (fdb0a36), 97 exercises, 491 cues: every mistake view shot with
+`Tools/lab/shoot_ex.sh`, contact sheets from `Tools/lab/gsheets.py`, cues
+listed against the table by `ghost_keys.py`. 471 were kept, 8 are ring-only
+by design, and of 12 redraw proposals 4 were voted down (Single-Arm Cable
+Chest Press feet, Single-Arm Cable Fly scapula, Larsen Press legs, Wide-Grip
+Barbell Row grip). The eight confirmed all lay on the model's own limbs, most
+of them from the start (the move ran along the line of sight of their
+framing), not because of the re-tune. Each redraw then had to pass two
+skeptics on fresh shots; four needed a second try:
+- Reverse-Grip T-Bar Row "elbow", Single-Arm Landmine Row "elbow": the wider
+  flare pieces (`r1011ElbowsFlaredWide`, `leftElbowWingedWide`) turned -0.5.
+- Single-Arm Cable Fly "wrist": a finish fault now; the straight arm swings
+  40° on across the chest and the trunk 15°, gated on the wrist's distance to
+  the far shoulder (review still 1.48 s in `bottoms.json`).
+- Wide-Grip Barbell Row "elbow": the same tuck, seen from behind (view -1.0;
+  turned toward the front the plates hid the arms).
+- Wide-Grip Pull-Up "barpath": `hangingShort` slid only ~16 px down the
+  spine; a local piece drops the whole body, legs included, 0.3 torso lengths
+  and re-seats the elbows, from the plain rear view.
+- Underhand Inverted Row "elbow": the Inverted Row's flare, turned -1.1 (at
+  -0.6 the near forearm ran at the camera and the arms read as a zigzag).
+- Kneeling Lat Pulldown "feet": the whole trunk 0.28 back and 0.12 down over
+  the planted knees, seen side-on (0.16/0.14 hugged the model's back).
+- Neutral-Grip Chin-Up "elbow": re-seating the pushed elbows undid the push
+  (the shoulder-to-hand line already points forward at the top) and hanging
+  the body back drew them behind the model's; the third try, the shared
+  drift seen side-on and a little higher, puts the elbows ~14 pt ahead of
+  the model's (one skeptic accepted it, the other found it only a little
+  better than the old one, which showed nothing; the frame upright hides the
+  model's own arms at that angle).

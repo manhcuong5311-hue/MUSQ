@@ -1,0 +1,35 @@
+{
+ "Iso-Lateral Lat Pulldown": {
+  "Shoulder-width": {
+   "x": 0.54,
+   "y": 0.082,
+   "side": "trailing"
+  }
+ },
+ "Block Pull": {
+  "Grip & lats tight": {
+   "x": 0.63,
+   "y": 0.265,
+   "side": "trailing"
+  }
+ },
+ "Dumbbell Bent-Over Row": {
+  "Elbows back ~30–45°": {
+   "x": 0.572,
+   "y": 0.24,
+   "side": "trailing"
+  }
+ },
+ "Snatch-Grip Deadlift": {
+  "Upper back tight, flat": {
+   "x": 0.597,
+   "y": 0.247,
+   "side": "trailing"
+  },
+  "Grip & lats tight": {
+   "x": 0.3181,
+   "y": 0.313,
+   "side": "leading"
+  }
+ }
+}

@@ -70,7 +70,10 @@ enum BodyRegion {
             if has("middle", "lower") { return [(.trapezius, [.back])] }
             return [(.trapezius, both)]
         }
-        if has("latissimus", "lats", "rhomboid", "teres", "infraspinatus", "upper back") {
+        // The rotator cuff (a row on the re-painted rows and pulls, 2026-10-23)
+        // lies on the shoulder blade, so it lights the upper back as the
+        // infraspinatus always has.
+        if has("latissimus", "lats", "rhomboid", "teres", "infraspinatus", "rotator cuff", "supraspinatus", "upper back") {
             return [(.upperBack, both)]
         }
         if has("erector", "spinae", "lower back", "quadratus lumborum") { return [(.lowerBack, both)] }

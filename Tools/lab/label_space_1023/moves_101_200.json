@@ -1,0 +1,218 @@
+{
+ "Kneeling Lat Pulldown": {
+  "Overhand, shoulder-width": {
+   "x": 0.262,
+   "y": 0.065,
+   "side": "trailing"
+  }
+ },
+ "Iso-Lateral Lat Pulldown": {
+  "Shoulder-width": {
+   "x": 0.545,
+   "y": 0.082,
+   "side": "trailing"
+  }
+ },
+ "Wide-Grip Lat Pulldown": {
+  "Wide grip": {
+   "x": 0.235,
+   "y": 0.05,
+   "side": "leading"
+  }
+ },
+ "Landmine Chest Press": {
+  "Wrists straight": {
+   "x": 0.318,
+   "y": 0.075,
+   "side": "leading"
+  }
+ },
+ "Machine Lat Pulldown": {
+  "Shoulder-width": {
+   "x": 0.326,
+   "y": 0.07,
+   "side": "leading"
+  }
+ },
+ "Block Pull": {
+  "Hips drive through": {
+   "x": 0.64,
+   "y": 0.705,
+   "side": "trailing"
+  },
+  "Bar stays on the thighs": {
+   "x": 0.58,
+   "y": 0.76,
+   "side": "trailing"
+  }
+ },
+ "Cable Chest Press": {
+  "Press forward, hands meet": {
+   "x": 0.48,
+   "y": 0.27,
+   "side": "leading"
+  },
+  "No shrugging": {
+   "x": 0.71,
+   "y": 0.205,
+   "side": "trailing"
+  }
+ },
+ "Seated Dumbbell Press": {
+  "Up and slightly in": {
+   "x": 0.4,
+   "y": 0.165,
+   "side": "leading"
+  }
+ },
+ "Pause Bench Press": {
+  "Still pause on the chest": {
+   "x": 0.52,
+   "y": 0.21,
+   "side": "trailing"
+  },
+  "Keep wrists stacked": {
+   "x": 0.564,
+   "y": 0.268,
+   "side": "trailing"
+  }
+ },
+ "Single-Arm Dumbbell Bench Press": {
+  "Keep the wrist stacked": {
+   "x": 0.789,
+   "y": 0.24,
+   "side": "leading"
+  },
+  "Elbow ~45°": {
+   "x": 0.628,
+   "y": 0.32,
+   "side": "leading"
+  },
+  "Hips and shoulders level": {
+   "x": 0.45,
+   "y": 0.395,
+   "side": "leading"
+  }
+ },
+ "Incline Cable Fly": {
+  "Hands meet over upper chest": {
+   "x": 0.478,
+   "y": 0.205,
+   "side": "trailing"
+  },
+  "Fixed ~15–20° bend": {
+   "x": 0.388,
+   "y": 0.205,
+   "side": "leading"
+  }
+ },
+ "Deficit Deadlift": {
+  "Grip & lats tight": {
+   "x": 0.64,
+   "y": 0.73,
+   "side": "trailing"
+  },
+  "Hands outside legs": {
+   "x": 0.369,
+   "y": 0.83,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Bent-Over Row": {
+  "Elbows back ~30–45°": {
+   "x": 0.428,
+   "y": 0.27,
+   "side": "leading"
+  },
+  "Squeeze the blades": {
+   "x": 0.48,
+   "y": 0.12,
+   "side": "trailing"
+  }
+ },
+ "Incline Cable Press": {
+  "Hands meet over upper chest": {
+   "x": 0.78,
+   "y": 0.137,
+   "side": "leading"
+  },
+  "Keep wrists stacked": {
+   "x": 0.64,
+   "y": 0.193,
+   "side": "leading"
+  }
+ },
+ "Snatch-Grip Deadlift": {
+  "Wide snatch grip": {
+   "x": 0.34,
+   "y": 0.895,
+   "side": "leading"
+  },
+  "Bar close to shins": {
+   "x": 0.65,
+   "y": 0.66,
+   "side": "trailing"
+  },
+  "Hips sit lower": {
+   "x": 0.717,
+   "y": 0.3,
+   "side": "trailing"
+  },
+  "Feet hip-width, bar over mid-foot": {
+   "x": 0.418,
+   "y": 0.895,
+   "side": "trailing"
+  }
+ },
+ "Single-Arm Cable Chest Press": {
+  "Handle at chest height": {
+   "x": 0.42,
+   "y": 0.262,
+   "side": "leading"
+  },
+  "Shoulder down and back": {
+   "x": 0.548,
+   "y": 0.208,
+   "side": "trailing"
+  }
+ },
+ "Dumbbell Push Press": {
+  "Lock out over shoulders": {
+   "x": 0.442,
+   "y": 0.1,
+   "side": "leading"
+  },
+  "Elbows under dumbbells": {
+   "x": 0.552,
+   "y": 0.57,
+   "side": "trailing"
+  }
+ },
+ "Machine Pullover": {
+  "Hands loose on the bar": {
+   "x": 0.77,
+   "y": 0.064,
+   "side": "leading"
+  },
+  "Full stretch overhead": {
+   "x": 0.978,
+   "y": 0.661,
+   "side": "leading"
+  },
+  "Shoulders down": {
+   "x": 0.326,
+   "y": 0.532,
+   "side": "leading"
+  },
+  "Back on the pad": {
+   "x": 0.326,
+   "y": 0.585,
+   "side": "leading"
+  },
+  "Drive with the elbows": {
+   "x": 0.751,
+   "y": 0.607,
+   "side": "leading"
+  }
+ }
+}

@@ -6796,9 +6796,20 @@ enum FaultPoses {
             "scapula": shouldersRolledIn
         ],
         "Single-Arm Cable Fly": [
-            // Hand hauled across the body, past the other shoulder.
-            "wrist": FaultPose(chains: [leftArmToGrip],
-                               moves: [.shift(["hand_L", "hand_L.tip"], outward: -0.22), .shift(["forearm_L"], outward: -0.08)]),
+            // Hand hauled across the body, past the other shoulder, the trunk
+            // turning with it: a fault of the finish. 2026-10-23: the old 0.22
+            // inward shift lay along the model's own arm at the stretch and
+            // took the hand only to the near pec at the finish; now the
+            // straight arm swings 40° on across the chest and the trunk turns
+            // 15°, growing in as the hand comes in (wrist to the far shoulder
+            // 1.47 torso lengths at the stretch, 0.99 at the finish).
+            "wrist": FaultPose(chains: [spine, shoulders, leftArmToGrip],
+                               moves: [.turn(pivot: "upper_arm_L", points: ["forearm_L", "hand_L", "hand_L.tip"],
+                                             axis: .up, degrees: 40),
+                                       .turn(pivot: "pelvis", points: ["spine", "chest", "neck", "head", "upper_arm_*",
+                                                                       "forearm_L", "hand_L", "hand_L.tip"],
+                                             axis: .up, degrees: 15)],
+                               strength: .between("hand_L", "upper_arm_R", from: 1.4, to: 1.05)),
             "elbow": FaultPose(chains: [leftArmToGrip],
                                moves: [.shift(["hand_L", "hand_L.tip"], forward: 0.08, outward: -0.14),
                                        .shift(["forearm_L"], up: -0.05, outward: -0.06)]),
@@ -6966,9 +6977,12 @@ enum FaultPoses {
             "scapula": shouldersForward
         ],
         "Wide-Grip Barbell Row": [
-            // Elbows tucked in to the sides.
+            // Elbows tucked in to the sides. 2026-10-23: side-on, the framing,
+            // the tuck ran at the camera and the ghost elbows sat 6-8 px off
+            // the model's; turned to a view from behind, it crosses the
+            // screen (turned toward the front, the plates hid the arms).
             "elbow": FaultPose(chains: [arms], moves: [.shift(["forearm_*"], outward: -0.12)],
-                               strength: .withBend("forearm_L")),
+                               strength: .withBend("forearm_L"), view: -1.0),
             "barpath": rowedLow(withBar: true),
             // Grip creeping in toward shoulder-width.
             "grip": FaultPose(chains: [armsToGrip, bar],
@@ -7008,7 +7022,10 @@ enum FaultPoses {
         ],
         "Single-Arm Landmine Row": [
             "grip": leftWristBentBack,
-            "elbow": leftElbowWinged,
+            // 2026-10-23: side-on the shared push ran at the camera and the
+            // ghost elbow sat ~11 px off the model's; the Meadows and
+            // Kettlebell Rows' wider flare, turned so it swings out sideways.
+            "elbow": leftElbowWingedWide(view: -0.5),
             "brace": leftTwistedOpen,
             "feet": trunkLifted(20),
             "scapula": leftShoulderForward
@@ -7082,14 +7099,28 @@ enum FaultPoses {
         // elbow flare, turned so it runs across the screen.
         "Inverted Row": invertedRowFaults.merging(["elbow": r1011ElbowsFlaredWide(view: -0.6)]) { _, variant in variant },
         "Feet-Elevated Inverted Row": invertedRowFaults,
-        "Underhand Inverted Row": invertedRowFaults,
+        // 2026-10-23: side-on, `elbowsWinged` drew the elbows under the
+        // model's own, still by the ribs. The Inverted Row's wider flare,
+        // turned nearly head-on (-1.1): at -0.6 the near forearm ran at the
+        // camera and the arms read as a zigzag.
+        "Underhand Inverted Row": invertedRowFaults.merging(["elbow": r1011ElbowsFlaredWide(view: -1.1)]) { _, variant in variant },
 
         // MARK: Batch 161-190 (2026-09-25)
         "Wide-Grip Pull-Up": [
             "scapula": shrugged,
             "elbow": elbowsForward.seen(0.5),
             "grip": gripTooWide(withBar: false, hands: 0.25, forearms: 0.1),
-            "barpath": chinCraned.seen(0.5),
+            // Short reps: the whole body stopping ~18 cm low under the bar,
+            // the elbows re-seated so the arms hang longer (both bones keep
+            // their length), from the framing's own rear view. 2026-10-23:
+            // `chinCraned` drew one line up the lifter's back, 5-11 px off,
+            // and the Machine Pull-Up's `hangingShort` slid it only ~16 px
+            // down the spine.
+            "barpath": FaultPose(chains: [spine, hips, legs, arms],
+                                 moves: [.shift(["pelvis", "spine", "chest", "neck", "head", "upper_arm_*",
+                                                 "thigh_*", "shin_*", "foot_*", "foot_*.tip"], up: -0.3),
+                                         .resolve(["forearm_*"])],
+                                 strength: .withBend("forearm_L")),
             "feet": kipping
         ],
         "Neutral-Grip Pull-Up": [
@@ -7145,7 +7176,14 @@ enum FaultPoses {
         ],
         "Neutral-Grip Chin-Up": [
             "scapula": shrugged,
-            "elbow": elbowsForward,
+            // The shared drift seen side-on, a little higher (2026-10-24):
+            // from behind it ran at the camera (7-8 pt), and turned 0.5 like
+            // the other hangs it moved 12 pt. Re-seating the elbows undid the
+            // push (the shoulder-to-hand line already points forward at the
+            // top), and hanging the body back drew the elbows behind the
+            // model's.
+            "elbow": FaultPose(chains: [arms], moves: [.shift(["forearm_*"], forward: 0.15, up: 0.03)],
+                               strength: .withBend("forearm_L"), view: 1.0),
             "grip": wristBentBack(withBar: false),
             "barpath": hangingShort,
             "feet": kipping
@@ -7207,9 +7245,14 @@ enum FaultPoses {
             "elbow": pulldownFlared,
             "grip": gripTooWide(withBar: true),
             "barpath": pulledBehindNeck,
-            // Sitting back toward the heels.
+            // Sitting back toward the heels, the whole trunk settling back
+            // over the planted knees, the thighs leaning well back.
+            // 2026-10-23: from behind, the hips alone moved back along the
+            // line of sight (~15 px) and the spine traced the model's; now
+            // turned side-on like the lean fault.
             "feet": FaultPose(chains: [spine, hips, legs],
-                              moves: [.shift(["pelvis", "thigh_*"], forward: -0.14, up: -0.08), .shift(["spine"], forward: -0.07)])
+                              moves: [.shift(["pelvis", "thigh_*", "spine", "chest", "neck", "head"], forward: -0.28, up: -0.12)],
+                              view: 0.9)
         ],
         "Rope Lat Pulldown": [
             // Turned like the other pulldowns' lean faults; unturned, the trunk
@@ -7348,7 +7391,10 @@ enum FaultPoses {
             "scapula": leftShrugged
         ],
         "Reverse-Grip T-Bar Row": [
-            "elbow": elbowsWinged,
+            // 2026-10-23: in this three-quarter rear view `elbowsWinged` moved
+            // the elbows 9-13 px along the back. The Inverted Row's wider
+            // flare, turned so the shoulders run across the screen.
+            "elbow": r1011ElbowsFlaredWide(view: -0.5),
             "barpath": rowedShort,
             "grip": shouldersForward,
             "feet": backRounded(),

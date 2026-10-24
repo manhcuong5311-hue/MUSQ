@@ -38,10 +38,14 @@ for name, moves in table.items():
         e0 = close_paren(block, block.index('(', s0)) + 1
         call = block[s0:e0]
         assert 'label: "%s"' % label in call, (name, label)
-        new = re.sub(r'labelPoint: CGPoint\(x: [\d.]+, y: [\d.]+\)', 'labelPoint: CGPoint(x: %.3f, y: %.3f)' % (m['x'], m['y']), call)
+        # plain fractions, or the bench presses' "218.0 / 382.0" points
+        new, n = re.subn(r'labelPoint: CGPoint\(x: [\d.]+(?: / [\d.]+)?, y: [\d.]+(?: / [\d.]+)?\)',
+                         'labelPoint: CGPoint(x: %.3f, y: %.3f)' % (m['x'], m['y']), call)
+        assert n == 1, (name, label, 'labelPoint')
         new = re.sub(r'labelSide: \.(leading|trailing),\s*', '', new)
         if m['side'] == 'trailing':
             new = new.replace('leaderLength:', 'labelSide: .trailing, leaderLength:', 1)
+            assert 'labelSide: .trailing' in new, (name, label, 'side')
         block = block[:s0] + new + block[e0:]
         print('%-34s %-34s (%.3f, %.3f) %s' % (name, label, m['x'], m['y'], m['side']))
     src = src[:a] + block + src[b:]

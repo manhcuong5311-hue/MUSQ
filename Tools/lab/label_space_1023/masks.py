@@ -8,7 +8,7 @@ from PIL import Image, ImageChops, ImageFilter
 LAB = sys.argv[1]
 OCC = os.path.join(LAB, 'occ')
 VW, VH = 382, 655
-SLUGS = [re.sub("[^a-z0-9]+", "-", l.strip().lower()) for l in open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "lifts.txt")) if l.strip()]
+SLUGS = [re.sub("[^a-z0-9]+", "-", l.strip().lower()) for l in open(os.environ.get("LIFTS") or os.path.join(os.path.dirname(os.path.abspath(__file__)), "lifts.txt")) if l.strip()]
 
 
 def card_view(path):

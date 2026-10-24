@@ -5,7 +5,7 @@ source ~/Developer/GymWorkout/Tools/lab/env.sh
 source ~/Developer/GymWorkout/Tools/lab/lock.sh
 OUT=$1; mkdir -p $OUT
 xcrun simctl boot $SIM 2>/dev/null
-names=("${(@f)$(<${0:A:h}/lifts.txt)}")
+names=("${(@f)$(<${LIFTS:-${0:A:h}/lifts.txt})}")
 for n in "${names[@]}"; do
   slug=$(echo $n | tr 'A-Z' 'a-z' | sed 's/[^a-z0-9]\{1,\}/-/g')
   bt=$(python3 -c "import json;B=json.load(open('$REPO/Tools/fault-review/bottoms.json'));print(round(B.get('$n',1.0),2))")

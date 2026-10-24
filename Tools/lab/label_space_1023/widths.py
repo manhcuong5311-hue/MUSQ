@@ -51,6 +51,9 @@ for name, e in anns.items():
             ratios.append((best - 24) / t)
 ratios.sort()
 k = ratios[len(ratios) // 2] if ratios else 1.08
+# K=1.15 skips the calibration (lifts with no trainer shots, 2026-10-24)
+if os.environ.get('K'):
+    k, ratios = float(os.environ['K']), [float(os.environ['K'])]
 print('pill width = 24 + %.3f * text (median of %d pills; range %.3f-%.3f)' % (k, len(ratios), ratios[0], ratios[-1]))
 out = dict(k=k, height=28.5, widths={})
 for name, e in anns.items():
