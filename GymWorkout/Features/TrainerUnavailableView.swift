@@ -25,6 +25,7 @@ struct TrainerUnavailableView: View {
 
     @Environment(\.dsLayout) private var layout
     @Environment(\.colorScheme) private var colorScheme
+    @AppStorage(ModelLook.storageKey) private var look: ModelLook = .charcoal
     /// The iPad viewport pane, for the stage its ground is measured on.
     @State private var paneSize: CGSize = .zero
 
@@ -71,8 +72,8 @@ struct TrainerUnavailableView: View {
                 // A model stands on the dark model ground, as in `Viewport`;
                 // the caption alone keeps the studio ground.
                 ViewportGround(
-                    inner: model == nil ? DS.viewportInner : DS.modelGroundInner,
-                    outer: model == nil ? DS.viewportOuter : DS.modelGroundOuter,
+                    inner: model == nil ? DS.viewportInner : look.groundInner,
+                    outer: model == nil ? DS.viewportOuter : look.groundOuter,
                     rx: 1.10, ry: 0.70, cx: 0.5, cy: 0.5
                 )
 
@@ -80,7 +81,7 @@ struct TrainerUnavailableView: View {
                 // withholds cues and activation numbers, not the anatomy.
                 if let model = SampleData.model(for: exercise) {
                     USDZViewport(resource: model.resource, framing: model.framing,
-                                 speed: model.speed)
+                                 speed: model.speed, look: look)
                 }
 
                 RoundedRectangle(cornerRadius: 18, style: .continuous)

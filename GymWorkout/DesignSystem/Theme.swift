@@ -79,13 +79,17 @@ enum DS {
     static let viewportInner = Color(light: 0xFFFFFF, dark: 0x1E2126)
     static let viewportOuter = Color(light: 0xEDEEF0, dark: 0x0A0B0D)
 
-    /// The ground behind a live 3D model: dark in either appearance, since
-    /// the lifter washes out on a pale one (owner, 2026-10-18) — near-black
-    /// in Dark Mode, a mid grey in Light Mode (the owner's pick of five
-    /// shades). `Viewport` draws the labels and buttons over it in the dark
-    /// appearance.
-    static let modelGroundInner = Color(light: 0x8A8F97, dark: 0x1E2126)
-    static let modelGroundOuter = Color(light: 0x62666D, dark: 0x0A0B0D)
+    /// The ground behind a live 3D model: the web guide's grey studio, the
+    /// same in either appearance (owner, 2026-10-22, over the near-black and
+    /// mid-grey grounds of 2026-10-18). Under the studio light
+    /// (`USDZViewport`) the lifter is a deep black and reads against it.
+    /// `Viewport` draws the labels and buttons over it in the dark appearance.
+    static let modelGroundInner = Color(hex: 0xA3A8B0)
+    static let modelGroundOuter = Color(hex: 0x2C2F33)
+    /// Where that ground's light falls, in `ViewportGround`'s terms: the web
+    /// guide's `radial-gradient(120% 95% at 50% 32%)`, its centre lowered a
+    /// little for the taller stage so it sits behind the lifter.
+    static let modelGroundSpot = (rx: CGFloat(1.20), ry: CGFloat(0.95), cy: CGFloat(0.40), stop: CGFloat(1.0))
 
     /// Translucent glass fill for chips and pills that float over a viewport.
     static func glass(_ opacity: Double = 0.66) -> Color {

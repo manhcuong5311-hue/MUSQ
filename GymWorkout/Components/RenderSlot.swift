@@ -81,13 +81,14 @@ struct Viewport<Overlay: View, Chrome: View>: View {
     /// Share of the viewport's height a panel covers at the bottom, for the
     /// model to rise clear of.
     var roomBelow: Float = 0
-    var inner: Color = DS.modelGroundInner
-    var outer: Color = DS.modelGroundOuter
-    var rx: CGFloat = 1.20
-    var ry: CGFloat = 0.72
+    /// The ground's colours; nil follows the Settings model look.
+    var inner: Color? = nil
+    var outer: Color? = nil
+    var rx: CGFloat = DS.modelGroundSpot.rx
+    var ry: CGFloat = DS.modelGroundSpot.ry
     var cx: CGFloat = 0.50
-    var cy: CGFloat = 0.80
-    var stop: CGFloat = 0.70
+    var cy: CGFloat = DS.modelGroundSpot.cy
+    var stop: CGFloat = DS.modelGroundSpot.stop
     var glows: [ActivationGlowLayer.Glow] = []
     var pulses: Bool = false
     var showsGuides: Bool = false
@@ -102,6 +103,8 @@ struct Viewport<Overlay: View, Chrome: View>: View {
     @ViewBuilder var overlay: () -> Overlay
     @ViewBuilder var chrome: () -> Chrome
 
+    @AppStorage(ModelLook.storageKey) private var look: ModelLook = .charcoal
+
     /// The model's turn when the whole pane drives it (staged layout only).
     @State private var paneYaw: Double = 0
     @State private var paneDragStartYaw: Double = 0
@@ -112,7 +115,7 @@ struct Viewport<Overlay: View, Chrome: View>: View {
         } else {
             GeometryReader { geo in
                 ZStack {
-                    ViewportGround(inner: inner, outer: outer,
+                    ViewportGround(inner: inner ?? look.groundInner, outer: outer ?? look.groundOuter,
                                    rx: rx, ry: ry, cx: cx, cy: cy, stop: stop)
 
                     ZStack {
@@ -137,7 +140,7 @@ struct Viewport<Overlay: View, Chrome: View>: View {
             USDZViewport(resource: model, framing: framing, speed: speed,
                          still: still, turn: turn, roomBelow: roomBelow,
                          tracker: tracker, dragReferenceWidth: dragReferenceWidth,
-                         externalYaw: yaw)
+                         externalYaw: yaw, look: look)
         } else {
             RenderSlot(id: slot)
         }
@@ -159,7 +162,7 @@ struct Viewport<Overlay: View, Chrome: View>: View {
         GeometryReader { geo in
             let fit = Self.fit(aspect: aspect, in: geo.size)
             ZStack {
-                ViewportGround(inner: inner, outer: outer,
+                ViewportGround(inner: inner ?? look.groundInner, outer: outer ?? look.groundOuter,
                                rx: rx, ry: ry, cx: cx, cy: cy, stop: stop,
                                aspectLocked: true)
 
@@ -208,13 +211,13 @@ extension Viewport where Chrome == EmptyView {
         still: TimeInterval? = nil,
         turn: Float = 0,
         roomBelow: Float = 0,
-        inner: Color = DS.modelGroundInner,
-        outer: Color = DS.modelGroundOuter,
-        rx: CGFloat = 1.20,
-        ry: CGFloat = 0.72,
+        inner: Color? = nil,
+        outer: Color? = nil,
+        rx: CGFloat = DS.modelGroundSpot.rx,
+        ry: CGFloat = DS.modelGroundSpot.ry,
         cx: CGFloat = 0.50,
-        cy: CGFloat = 0.80,
-        stop: CGFloat = 0.70,
+        cy: CGFloat = DS.modelGroundSpot.cy,
+        stop: CGFloat = DS.modelGroundSpot.stop,
         glows: [ActivationGlowLayer.Glow] = [],
         pulses: Bool = false,
         showsGuides: Bool = false,
@@ -239,13 +242,13 @@ extension Viewport where Overlay == EmptyView, Chrome == EmptyView {
         model: String? = nil,
         framing: ModelFraming = .standing,
         speed: Float = 1,
-        inner: Color = DS.modelGroundInner,
-        outer: Color = DS.modelGroundOuter,
-        rx: CGFloat = 1.20,
-        ry: CGFloat = 0.72,
+        inner: Color? = nil,
+        outer: Color? = nil,
+        rx: CGFloat = DS.modelGroundSpot.rx,
+        ry: CGFloat = DS.modelGroundSpot.ry,
         cx: CGFloat = 0.50,
-        cy: CGFloat = 0.80,
-        stop: CGFloat = 0.70,
+        cy: CGFloat = DS.modelGroundSpot.cy,
+        stop: CGFloat = DS.modelGroundSpot.stop,
         glows: [ActivationGlowLayer.Glow] = [],
         pulses: Bool = false,
         showsGuides: Bool = false,

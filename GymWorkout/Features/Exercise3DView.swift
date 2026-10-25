@@ -710,17 +710,17 @@ struct Exercise3DView: View {
         return min(max(stageSize.height / 567, 1), 1.5)
     }
 
-    /// The phone's studio pool (`Viewport`'s 1.2 × 0.72 at 0.5 / 0.8)
-    /// measured on the stage instead of the pane, so in a pane much taller
-    /// than the stage the floor's glow still sits under the lifter's feet
-    /// rather than below them.
+    /// The phone's studio light (`DS.modelGroundSpot`) measured on the stage
+    /// instead of the pane, so in a pane much taller than the stage it still
+    /// falls behind the lifter rather than above or below them.
     private var ground: (rx: CGFloat, ry: CGFloat, cy: CGFloat) {
+        let spot = DS.modelGroundSpot
         let stage = stageSize
-        guard paneSize.width > 0, paneSize.height > 0 else { return (1.20, 0.72, 0.80) }
+        guard paneSize.width > 0, paneSize.height > 0 else { return (spot.rx, spot.ry, spot.cy) }
         let top = (paneSize.height - stage.height) / 2
-        return (1.20 * stage.width / paneSize.width,
-                0.72 * stage.height / paneSize.height,
-                (top + 0.80 * stage.height) / paneSize.height)
+        return (spot.rx * stage.width / paneSize.width,
+                spot.ry * stage.height / paneSize.height,
+                (top + spot.cy * stage.height) / paneSize.height)
     }
 
     // MARK: Header

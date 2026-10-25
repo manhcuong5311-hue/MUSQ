@@ -11,13 +11,24 @@
 //  DCC scene's DiskLight/DomeLight rig.
 //
 //  These meshes are deliberately near-black (0.0075 linear, ~sRGB 28) with the
-//  worked muscles carrying a hot emissive red. Readability therefore comes
-//  from rim light and specular, not from a bright key — a conventional key
-//  just crushes the whole figure into one silhouette.
+//  worked muscles carrying a hot emissive red. Since 2026-10-22 they are lit
+//  the way the web guide lights the same models: by model-viewer's "neutral"
+//  studio alone (`NeutralStudio.hdr`), the body's sheen turned down, against
+//  the grey studio ground (`DS.modelGroundInner`), so the lifter reads as a
+//  deep, matte black with the sneakers white and the equipment grey. The old
+//  key/fill/rim rig only stands in if that light can't be made.
+//
+//  That black proved too dark to read on a phone, so since 2026-10-25 the
+//  viewer picks a `ModelLook` in Settings: the skin's colour and sheen, and
+//  whether the rig's two back rims light it alongside the studio. The default
+//  is a charcoal skin with rims (the owner's pick of six looks), which keeps
+//  the muscle shapes and the silhouette readable while the worked muscles
+//  stay the hottest thing.
 //
 
 import SwiftUI
 import RealityKit
+import ImageIO
 
 /// Where named skeleton joints of a live `USDZViewport` model land on screen,
 /// refreshed every frame, so overlays can point at the body as it moves
@@ -75,6 +86,9 @@ struct USDZViewport: View {
     /// Camera distance in model units.
     var distance: Float = 2.05
     var fieldOfView: Float = 32
+    /// The skin colour, sheen and rims (Settings' "Model color"). A change
+    /// restyles the model on stage at once.
+    var look: ModelLook = .charcoal
 
     @State private var pivot = Entity()
     @State private var yaw: Double = 0
@@ -95,6 +109,13 @@ struct USDZViewport: View {
     /// either first changes.
     @State private var shown: Staging?
     @State private var staging: Task<Void, Never>?
+    /// The studio light every model on stage receives; nil when the
+    /// key/fill/rim rig lights the scene instead.
+    @State private var studioLight: Entity?
+    /// The back rims next to the studio light, on only for looks that want
+    /// them.
+    @State private var rims: [Entity] = []
+    @State private var skinSlots = SkinSlots()
 
     /// The extra turn and room, eased between as one.
     private struct Staging: Equatable {
@@ -125,11 +146,18 @@ struct USDZViewport: View {
                 content.add(camera)
 
                 content.add(pivot)
-                addLighting(to: content)
+                studioLight = await addStudioLight()
+                if studioLight == nil {
+                    addLighting(to: content)
+                } else {
+                    rims = addRims(to: content)
+                    for rim in rims { rim.isEnabled = look.rims }
+                }
 
                 do {
                     let model = try await Entity(named: resource, in: .main)
                     hideStudioProps(in: model)
+                    light(model)
                     pivot.addChild(model)
                     playAnimations(in: model)
                     await settleFraming(model)
@@ -186,6 +214,10 @@ struct USDZViewport: View {
         .contentShape(Rectangle())
         .onGeometryChange(for: CGSize.self, of: \.size) { tracker?.viewSize = $0 }
         .onChange(of: Staging(turn: turn, room: roomBelow)) { old, new in stage(from: shown ?? old, to: new) }
+        .onChange(of: look) {
+            for rim in rims { rim.isEnabled = look.rims }
+            if let onStage { styleBody(in: onStage) }
+        }
         .gesture(
             DragGesture(minimumDistance: 2)
                 .onChanged { value in
@@ -227,6 +259,7 @@ struct USDZViewport: View {
         // never reaches the stage.
         guard let next = try? await Entity(named: resource, in: .main), !Task.isCancelled else { return }
         hideStudioProps(in: next)
+        light(next)
         next.components.set(OpacityComponent(opacity: 0))
         pivot.addChild(next)
         playAnimations(in: next)
@@ -414,28 +447,129 @@ struct USDZViewport: View {
         return nil
     }
 
+    /// The web guide's studio light: model-viewer's "neutral" environment,
+    /// its own room and area lights unwrapped to a lat-long
+    /// (`Tools/web-guide/capture/env.html`), so the app lights these models as
+    /// the guide does. A child of the pivot, it turns with the model, as on
+    /// the web where the camera orbits a fixed scene. Nil if the file can't be
+    /// read; the caller then falls back to the key/fill/rim rig.
+    private func addStudioLight() async -> Entity? {
+        guard let environment = await Self.studioEnvironment() else { return nil }
+        let light = Entity()
+        light.components.set(ImageBasedLightComponent(source: .single(environment), intensityExponent: 0))
+        pivot.addChild(light)
+        return light
+    }
+
+    /// Decoded once and shared by every viewport.
+    @MainActor private static var studio: EnvironmentResource?
+
+    @MainActor private static func studioEnvironment() async -> EnvironmentResource? {
+        if let studio { return studio }
+        guard let url = Bundle.main.url(forResource: "NeutralStudio", withExtension: "hdr"),
+              let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+              let image = CGImageSourceCreateImageAtIndex(source, 0, nil),
+              let made = try? await EnvironmentResource(equirectangular: image)
+        else { return nil }
+        studio = made
+        return made
+    }
+
+    /// Puts a freshly loaded model under the studio light, its body matte.
+    private func light(_ model: Entity) {
+        guard let studioLight else { return }
+        func receive(_ entity: Entity) {
+            entity.components.set(ImageBasedLightReceiverComponent(imageBasedLight: studioLight))
+            for child in entity.children { receive(child) }
+        }
+        receive(model)
+        bodyMeshes(in: model) { mesh in
+            guard let materials = mesh.model?.materials else { return }
+            for (index, material) in materials.enumerated() {
+                guard let body = material as? PhysicallyBasedMaterial,
+                      body.baseColor.texture == nil, Self.isNearBlack(body.baseColor.tint) else { continue }
+                skinSlots.original[ObjectIdentifier(mesh), default: [:]][index] = body.baseColor.tint
+            }
+        }
+        styleBody(in: model)
+    }
+
+    /// The near-black skin's slots in the models on stage, with the files'
+    /// own tint, so a new look recolours a model in place, without reloading.
+    private final class SkinSlots {
+        var original: [ObjectIdentifier: [Int: UIColor]] = [:]
+    }
+
+    /// Sets the body's sheen and skin colour from `look`. Matte was the
+    /// owner's pick of four glosses on 2026-10-22, so the files' roughness
+    /// stays; the Black look keeps the web's sheen instead. The near-black
+    /// skin takes the look's colour, or its own back; the painted muscles and
+    /// textured garments keep theirs.
+    private func styleBody(in model: Entity) {
+        let look = look
+        bodyMeshes(in: model) { mesh in
+            guard var component = mesh.model else { return }
+            let skinned = skinSlots.original[ObjectIdentifier(mesh)] ?? [:]
+            component.materials = component.materials.enumerated().map { index, material in
+                guard var body = material as? PhysicallyBasedMaterial else { return material }
+                body.specular = .init(floatLiteral: look.specular)
+                if let original = skinned[index] { body.baseColor.tint = look.skin ?? original }
+                return body
+            }
+            mesh.model = component
+        }
+    }
+
+    /// Every mesh under the rig but the sneakers, so the black shoes of the
+    /// older body go along with the skin and the white ones stay as they are;
+    /// the equipment, outside the rig, keeps its own.
+    private func bodyMeshes(in model: Entity, _ visit: (ModelEntity) -> Void) {
+        guard let rig = model.findEntity(named: Self.rigEntityName) else { return }
+        func walk(_ entity: Entity, inSneaker: Bool) {
+            let inSneaker = inSneaker || entity.name.contains("Sneaker")
+            if !inSneaker, let mesh = entity as? ModelEntity { visit(mesh) }
+            for child in entity.children { walk(child, inSneaker: inSneaker) }
+        }
+        walk(rig, inSneaker: false)
+    }
+
+    /// The files' unpainted skin: a flat near-black grey (0.0075 linear).
+    /// The painted muscles are red and miss this.
+    private static func isNearBlack(_ colour: UIColor) -> Bool {
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        colour.getRed(&r, green: &g, blue: &b, alpha: &a)
+        return max(r, g, b) < 0.2 && abs(r - g) < 0.02 && abs(g - b) < 0.02
+    }
+
+    private static func directional(intensity: Float, from: SIMD3<Float>) -> DirectionalLight {
+        let entity = DirectionalLight()
+        entity.light.intensity = intensity
+        entity.position = from
+        entity.look(at: .zero, from: from, relativeTo: nil)
+        return entity
+    }
+
+    /// Two rims from behind, fixed to the camera so they edge the figure
+    /// whichever way it's turned: with the studio light for the looks that
+    /// want them (2026-10-25), and the back half of the fallback rig.
+    @discardableResult
+    private func addRims(to content: RealityViewCameraContent) -> [Entity] {
+        let rims = [Self.directional(intensity: 6_500, from: [1.7, 0.9, -1.6]),
+                    Self.directional(intensity: 5_200, from: [-1.7, 0.7, -1.5])]
+        for rim in rims { content.add(rim) }
+        return rims
+    }
+
     /// Key / fill / rim, echoing the design's studio: one bright source high
     /// and to the left, a dim fill, and two rims to separate the figure from a
-    /// near-black ground.
+    /// near-black ground. Only a fallback since the studio light (2026-10-22).
     private func addLighting(to content: RealityViewCameraContent) {
-        func light(
-            intensity: Float, from: SIMD3<Float>, colour: UIColor = .white
-        ) -> DirectionalLight {
-            let entity = DirectionalLight()
-            entity.light.intensity = intensity
-            entity.light.color = colour
-            entity.position = from
-            entity.look(at: .zero, from: from, relativeTo: nil)
-            return entity
-        }
-
         // Rim-led: the back pair does most of the work of separating a
         // near-black figure from a near-black ground, while the key stays low
         // enough that the emissive worked muscles still read as the brightest
         // thing on screen.
-        content.add(light(intensity: 3_200, from: [-1.4, 1.6, 1.8]))
-        content.add(light(intensity: 900, from: [1.8, 0.4, 1.2]))
-        content.add(light(intensity: 6_500, from: [1.7, 0.9, -1.6]))
-        content.add(light(intensity: 5_200, from: [-1.7, 0.7, -1.5]))
+        content.add(Self.directional(intensity: 3_200, from: [-1.4, 1.6, 1.8]))
+        content.add(Self.directional(intensity: 900, from: [1.8, 0.4, 1.2]))
+        addRims(to: content)
     }
 }

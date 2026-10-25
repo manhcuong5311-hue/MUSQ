@@ -23,6 +23,7 @@ struct ProfileView: View {
     @Environment(Paywall.self) private var paywall
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dsLayout) private var layout
+    @AppStorage(ModelLook.storageKey) private var modelLook: ModelLook = .charcoal
     @State private var editsProfile = false
     /// The name as it's typed; saved when the field is left.
     @State private var nameDraft = ""
@@ -373,10 +374,76 @@ struct ProfileView: View {
                            : "Starts when a set is marked done.") {
                     menu(selection: $store.rest, options: RestSetting.allCases, title: \.title)
                 }
+                Hairline(opacity: 0.06)
+                modelColorSetting
             }
             .padding(.horizontal, cardPadding)
             .background(card)
         }
+    }
+
+    // MARK: - Model color
+
+    /// The lifter the Model color preview shows.
+    private static let lookPreview = SampleData.exercises
+        .first { $0.name == "Back Squat" }
+        .flatMap(SampleData.model(for:))
+
+    /// The four looks side by side, a tap picks one, and a live lifter under
+    /// them shows it at once.
+    private var modelColorSetting: some View {
+        VStack(alignment: .leading, spacing: layout.value(12, 14)) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Model color")
+                    .font(.ui(layout.value(14.5, 16), .semibold))
+                    .foregroundStyle(DS.silver)
+                Text(modelLook.detail)
+                    .font(.ui(layout.value(12, 13.5)))
+                    .cssLineHeight(layout.value(12, 13.5), 1.4)
+                    .foregroundStyle(DS.silver.opacity(0.5))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            HStack(spacing: 6) {
+                ForEach(ModelLook.allCases) { lookSwatch($0) }
+            }
+            if let preview = Self.lookPreview {
+                Viewport(slot: "", model: preview.resource, framing: preview.framing,
+                         speed: preview.speed, cornerRadius: 14)
+                    .frame(height: layout.value(300, 360))
+            }
+        }
+        .padding(.vertical, layout.value(13, 16))
+    }
+
+    private func lookSwatch(_ look: ModelLook) -> some View {
+        let selected = modelLook == look
+        return Button {
+            withAnimation(.easeOut(duration: 0.2)) { modelLook = look }
+        } label: {
+            VStack(spacing: 7) {
+                Circle()
+                    .fill(look.groundInner)
+                    .overlay(Circle().fill(look.swatch).padding(7))
+                    .frame(width: 34, height: 34)
+                    .padding(3)
+                    .overlay(Circle().strokeBorder(DS.silver.opacity(selected ? 1 : 0.12),
+                                                   lineWidth: selected ? 2 : 1))
+                Text(look.title)
+                    .font(.ui(layout.value(11, 12), .semibold))
+                    .foregroundStyle(DS.silver.opacity(selected ? 1 : 0.55))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(DS.silver.opacity(selected ? 0.07 : 0)))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .dsHover()
+        .accessibilityLabel(look.title)
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 
     // MARK: - Card colors
