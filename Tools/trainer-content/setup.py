@@ -2011,7 +2011,7 @@ SETUP = {
         "Rest your right hand on your right thigh; switch legs after the set.",
     ],
     "Smith Machine Seated Calf Raise": [
-        "Set the bar just above knee height with its pad round the middle, a low block under it and a bench behind.",
+        "Set the bar just above knee height with its pad round the middle, a low block in front of it and a bench behind.",
         "Sit facing the bar with the balls of your feet on the edge of the block, heels off.",
         "Rise onto your toes to bring your lower thighs under the padded bar and grip it outside the pad.",
         "Unhook the bar by rotating it, with the safety stops set below your lowest point.",
@@ -2055,7 +2055,7 @@ SETUP = {
     "Banded Plantar Flexion": [
         "Sit on a mat with your legs straight out in front of you, feet hip-width apart.",
         "Put a rolled towel under your lower calves so your heels are just off the mat.",
-        "Loop a band round the ball of each foot and hold the ends beside your hips, elbows bent.",
+        "Loop a band round the ball of each foot and hold the ends in front of you at elbow height, elbows bent at your sides.",
         "Sit tall and pull the bands taut with your toes pointing up.",
     ],
     "Tibialis Raise": [
@@ -2256,7 +2256,7 @@ SETUP = {
     "Weighted Plank": [
         "Lie face down on a mat with your elbows under your shoulders and your forearms parallel.",
         "Tuck your toes under, feet about hip-width apart.",
-        "Have a partner set the plate flat on your upper back, centred over your spine, and brace your abs.",
+        "Brace your abs, then have a partner set the plate flat on your upper back, centred over your spine.",
         "Push up into a straight line from head to heels and hold, keeping the plate level.",
     ],
     "Side Plank Hip Lift": [

@@ -33460,7 +33460,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.536, y: 0.64),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "depth", label: "Elbows past a right angle",
+            CueAnnotation(cueID: "depth", label: "Chest a hand off the floor",
                           labelPoint: CGPoint(x: 0.536, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
@@ -33822,7 +33822,7 @@ enum SampleData {
 
     static let landmineChestPressContent = ExerciseContent(
         annotations: [
-            CueAnnotation(cueID: "grip", label: "Wrists straight",
+            CueAnnotation(cueID: "grip", label: "Wrists firm",
                           labelPoint: CGPoint(x: 0.318, y: 0.12),
                           leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "elbow", label: "Elbows low by the ribs",
@@ -33843,10 +33843,10 @@ enum SampleData {
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "Both hands hold the crossbar handle, wrists straight.",
-                why: "Straight wrists stack the hands behind the handle so the push runs straight up the forearms. The close two-hand grip also keeps the triceps busy: in a bench-press EMG study, narrower grips raised triceps activity.",
+                intro: "Both hands hold the crossbar handle, wrists firm.",
+                why: "Firm wrists keep the handle pressed into the palms, so the push runs up the forearms. The close two-hand grip also keeps the triceps busy: in a bench-press EMG study, narrower grips raised triceps activity.",
                 mistake: "Letting the wrists bend back so the handle rolls toward the fingers.",
-                correct: "Wrap both hands around the handle's grips, palms facing forward, and keep the wrists straight from the chest to the top."
+                correct: "Wrap both hands around the handle's grips, palms facing forward, and keep the wrists firm from the chest to the top."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -34205,7 +34205,7 @@ enum SampleData {
                 intro: "Palms up on the way up, palms down on the way down.",
                 why: "In one study the biceps worked hardest lifting with the palms up, and the elbow flexors are much weaker with the palms down. Curling palms up and lowering palms down lets you lower more weight in the reverse-curl grip than you could lift in it, which is where the extra forearm work comes from.",
                 mistake: "Turning the palms over partway down, or lowering with them still facing up.",
-                correct: "Curl with your palms up, turn them to face down at the top, lower slowly with them down, and turn them forward again once your arms are straight."
+                correct: "Curl with your palms up, turn them to face down at the top, lower slowly with them down, and turn them forward again once your arms are almost straight."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -34539,13 +34539,13 @@ enum SampleData {
 
     static let curl21sContent = ExerciseContent(
         annotations: [
-            CueAnnotation(cueID: "bottom", label: "1-7: bottom half",
+            CueAnnotation(cueID: "bottom", label: "1–7: bottom half",
                           labelPoint: CGPoint(x: 0.332, y: 0.66),
                           leaderLength: 40, joint: "hand_R"),
-            CueAnnotation(cueID: "top", label: "8-14: top half",
+            CueAnnotation(cueID: "top", label: "8–14: top half",
                           labelPoint: CGPoint(x: 0.303, y: 0.17),
                           leaderLength: 40, joint: "hand_R"),
-            CueAnnotation(cueID: "full", label: "15-21: full reps",
+            CueAnnotation(cueID: "full", label: "15–21: full reps",
                           labelPoint: CGPoint(x: 0.668, y: 0.63),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "forearm_L"),
@@ -34633,13 +34633,13 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.668, y: 0.63),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "bottom", label: "1-7: lower half",
+            CueAnnotation(cueID: "bottom", label: "1–7: lower half",
                           labelPoint: CGPoint(x: 0.318, y: 0.62),
                           leaderLength: 40, joint: "hand_R"),
-            CueAnnotation(cueID: "top", label: "8-14: upper half",
+            CueAnnotation(cueID: "top", label: "8–14: upper half",
                           labelPoint: CGPoint(x: 0.332, y: 0.10),
                           leaderLength: 40, joint: "hand_R"),
-            CueAnnotation(cueID: "full", label: "15-21: all the way",
+            CueAnnotation(cueID: "full", label: "15–21: all the way",
                           labelPoint: CGPoint(x: 0.362, y: 0.71),
                           leaderLength: 40, joint: "forearm_R"),
             CueAnnotation(cueID: "elbows", label: "Elbows stay put",
@@ -34993,7 +34993,7 @@ enum SampleData {
             CueAnnotation(cueID: "knees", label: "Knees straight, soft",
                           labelPoint: CGPoint(x: 0.391, y: 0.60),
                           leaderLength: 40, joint: "patella_L"),
-            CueAnnotation(cueID: "top", label: "Heels high, hold",
+            CueAnnotation(cueID: "top", label: "Rise high, hold",
                           labelPoint: CGPoint(x: 0.332, y: 0.80),
                           leaderLength: 40, joint: "toe_L"),
             CueAnnotation(cueID: "floor", label: "Heels back down",
@@ -35733,7 +35733,7 @@ enum SampleData {
                 intro: "The knees stay bent at about a right angle, the shins upright.",
                 why: "The gastrocnemius crosses the knee, so with the knee bent this far it is shortened and does less; in studies that bent the knee, gastrocnemius activity fell while soleus activity held, so the soleus does most of the work. Setting the feet far out in front opens the knees and hands more of it back to the gastrocnemius.",
                 mistake: "Setting the feet far out in front, so the knees open well past a right angle.",
-                correct: "Put the balls of your feet on the block directly under your knees, thighs about level under the bar."
+                correct: "Put the balls of your feet on the block, ankles directly under your knees, thighs about level under the bar."
             ),
             TechniqueCue(
                 id: "top",
@@ -35820,7 +35820,7 @@ enum SampleData {
                 intro: "The knees stay bent at about a right angle, the shins upright.",
                 why: "The gastrocnemius crosses the knee, so with the knee bent this far it is shortened and does less; in studies that bent the knee, gastrocnemius activity fell while soleus activity held, so the soleus does most of the work. Setting the feet far out in front opens the knees and hands more of it back to the gastrocnemius.",
                 mistake: "Setting the feet far out in front, so the knees open well past a right angle.",
-                correct: "Put the balls of your feet on the block directly under your knees, thighs about level under the dumbbells."
+                correct: "Put the balls of your feet on the block, ankles directly under your knees, thighs about level under the dumbbells."
             ),
             TechniqueCue(
                 id: "top",
@@ -35905,9 +35905,9 @@ enum SampleData {
                 id: "knee",
                 title: "Knee Angle",
                 intro: "The left knee stays bent at about a right angle, the shin upright.",
-                why: "The gastrocnemius crosses the knee, so with the knee bent this far it is shortened and does less; in studies that bent the knee, gastrocnemius activity fell while soleus activity held, so the soleus does most of the work. Setting the feet far out in front opens the knees and hands more of it back to the gastrocnemius.",
+                why: "The gastrocnemius crosses the knee, so with the knee bent this far it is shortened and does less; in studies that bent the knee, gastrocnemius activity fell while soleus activity held, so the soleus does most of the work. Setting the left foot far out in front opens the knee and hands more of it back to the gastrocnemius.",
                 mistake: "Setting the left foot far out in front, so the knee opens well past a right angle.",
-                correct: "Put the ball of your left foot on the block directly under the knee and rest your right foot flat on the floor beside the block."
+                correct: "Put the ball of your left foot on the block, the ankle directly under the knee, and rest your right foot flat on the floor beside the block."
             ),
             TechniqueCue(
                 id: "top",
@@ -35994,7 +35994,7 @@ enum SampleData {
                 intro: "The knees stay bent at about a right angle, the thighs level.",
                 why: "The gastrocnemius crosses the knee, so with the knee bent this far it is shortened and does less; in studies that bent the knee, gastrocnemius activity fell while soleus activity held, so the soleus does most of the work. Setting the feet far out in front opens the knees and hands more of it back to the gastrocnemius.",
                 mistake: "Setting the feet far out in front, so the knees open well past a right angle.",
-                correct: "Set the bench and block so your thighs are about level, with the balls of your feet on the block directly under your knees."
+                correct: "Set the bench and block so your thighs are about level, with the balls of your feet on the block and your ankles directly under your knees."
             ),
             TechniqueCue(
                 id: "top",
@@ -36027,7 +36027,7 @@ enum SampleData {
         ],
         stabilisers: ["tibialis posterior", "peroneals", "toe flexors"],
         setup: [
-            "Set the bar just above knee height with its pad round the middle, a low block under it and a bench behind.",
+            "Set the bar just above knee height with its pad round the middle, a low block in front of it and a bench behind.",
             "Sit facing the bar with the balls of your feet on the edge of the block, heels off.",
             "Rise onto your toes to bring your lower thighs under the padded bar and grip it outside the pad.",
             "Unhook the bar by rotating it, with the safety stops set below your lowest point."
@@ -36176,7 +36176,7 @@ enum SampleData {
                 id: "top",
                 title: "Top of the Rep",
                 intro: "Rise until the heels are as high as they go, then pause.",
-                why: "From the bottom of the stretch to the top the heels travel about 17 cm here, from the stretch below the step to full height. ExRx notes the top of a calf raise stays hard because the ankle cannot straighten out the way other joints do, so a short pause there keeps the calves working at that end too.",
+                why: "The heels travel about 17 cm here, from the stretch below the step to full height. ExRx notes the top of a calf raise stays hard because the ankle cannot straighten out the way other joints do, so a short pause there keeps the calves working at that end too.",
                 mistake: "Lowering again before the heels reach full height.",
                 correct: "Push through the balls of your feet until the heels are as high as they go, pause for about a second, then lower."
             ),
@@ -36629,7 +36629,7 @@ enum SampleData {
             TechniqueCue(
                 id: "hands",
                 title: "Band Tension",
-                intro: "Hold the band ends still beside your hips so the bands stay taut.",
+                intro: "Hold the band ends still in front of you at elbow height so the bands stay taut.",
                 why: "A band only resists as far as it is stretched; in a study of exercise bands the pull rose steadily with how far they were pulled out. If the hands drift forward as the feet push, the bands slacken and the calves push against less. One guide even has you draw the band toward you as you push.",
                 mistake: "Letting the hands follow the feet forward, the bands going slack.",
                 correct: "Hold the two ends of each band in the hand on that side, elbows bent at your sides, and keep your hands still while the feet push."
@@ -36651,7 +36651,7 @@ enum SampleData {
         setup: [
             "Sit on a mat with your legs straight out in front of you, feet hip-width apart.",
             "Put a rolled towel under your lower calves so your heels are just off the mat.",
-            "Loop a band round the ball of each foot and hold the ends beside your hips, elbows bent.",
+            "Loop a band round the ball of each foot and hold the ends in front of you at elbow height, elbows bent at your sides.",
             "Sit tall and pull the bands taut with your toes pointing up."
         ],
         comparison: FormComparisonCopy(
@@ -36800,7 +36800,7 @@ enum SampleData {
                 intro: "Both hips stay level while you balance on the left heel.",
                 why: "On one leg the hip muscles of the standing side hold the pelvis up; ExRx names the gluteus medius and maximus, quadratus lumborum and obliques as this lift's stabilisers. Level hips keep your weight stacked over the left heel, while the muscles either side of the ankle stop the foot rolling in or out.",
                 mistake: "The right hip sagging toward the floor as the toes come up.",
-                correct: "Tighten the left hip, keep both hip bones at the same height and let the right leg hang loose."
+                correct: "Tighten the left hip and keep both hip bones at the same height, the right knee still bent and the foot off the floor."
             ),
             TechniqueCue(
                 id: "top",
@@ -36924,7 +36924,7 @@ enum SampleData {
             correctCue: "Heels well out from the wall",
             mistakeCue: "Heels close to the wall",
             correctNote: "With the feet well out the shins lean back, so each rep starts with the ankles more pointed and the toes travel further.",
-            mistakeNote: "Close to the wall the shins stand nearly upright and every rep starts higher, so the toes travel a shorter way."
+            mistakeNote: "Close to the wall the shins stand nearly upright and every rep starts with the ankles less pointed, so the toes travel a shorter way."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.04, ry: 0.07, cx: 0.41, cy: 0.77),
@@ -37233,7 +37233,7 @@ enum SampleData {
                 intro: "Keep a gap between your chin and the plate.",
                 why: "ExRx suggests a neutral neck with space between chin and breastbone for anyone who needs to protect the neck, with the plate on the upper chest just below it. ExRx also warns not to mistake moving the neck for moving the waist: tucking the chin onto the plate only bends the neck.",
                 mistake: "Dropping the chin onto the plate and leading the rep with the head.",
-                correct: "Look slightly up past the plate, chin about a fist from the chest, and let the head move with the trunk."
+                correct: "Look over the top of the plate, chin about a fist from the chest, and let the head move with the trunk."
             ),
             TechniqueCue(
                 id: "curl",
@@ -37861,7 +37861,7 @@ enum SampleData {
                 intro: "The knees stay nearly straight and the legs stay still.",
                 why: "ACE extends the knees as the legs rise before the first rep and keeps the thighs vertical throughout. Bent knees drop the feet away from the hands.",
                 mistake: "Bending the knees so the feet drop away as you curl up.",
-                correct: "Keep your knees long but not locked, toes pointing up, and leave the legs where they are."
+                correct: "Keep your knees long but not locked, soles facing the ceiling, and leave the legs where they are."
             ),
             TechniqueCue(
                 id: "neck",
@@ -38105,7 +38105,7 @@ enum SampleData {
                 id: "rope",
                 title: "Rope Position",
                 intro: "The rope ends stay beside your forehead from the top of the rep to the bottom.",
-                why: "With your hands fixed to your head, the only way to move the weight is to curl your trunk. ExRx counts the lats, rear shoulders and long head of the triceps among the stabilisers of cable crunches held at the head: their job is to hold the arms still. Pulling the rope down with them moves the stack with your arms instead.",
+                why: "With your hands fixed to your head, your trunk has to move the weight. ExRx counts the lats, rear shoulders and long head of the triceps among the stabilisers of cable crunches held at the head: their job is to hold the arms still. Pulling the rope down with them moves the stack with your arms instead.",
                 mistake: "Dragging the rope down toward your chest with your arms as you curl.",
                 correct: "Hold one rope end beside each side of your forehead with your elbows in front, and let your hands travel only because your trunk curls."
             ),
@@ -38902,7 +38902,7 @@ enum SampleData {
             TechniqueCue(
                 id: "hang",
                 title: "Active Hang",
-                intro: "Hang on straight arms with the shoulders pulled down, and keep the arms straight all set.",
+                intro: "Hang on straight arms with the shoulders pulled down, and keep the arms straight for the whole set.",
                 why: "The arms only hold you here: the elbows stay straight, at about 177 degrees, through every rep and the shoulders stay square to the bar. Invictus's toes-to-bar guide asks for an active hang from the moment you take the bar, space between the ears and shoulders, which it says gives you tension through the body and control over your swing.",
                 mistake: "Hanging loose from the shoulders, the body sinking with the shoulders up by the ears.",
                 correct: "Grip a little wider than your shoulders, draw the shoulders down and keep the arms long while the knees move."
@@ -39107,7 +39107,7 @@ enum SampleData {
                 intro: "Neither heel touches the mat until the set is over.",
                 why: "Catalyst Athletics keeps both heels off the floor, and ExRx makes its scissor kick slightly easier by letting alternate heels touch down each rep. Here the lower heel never comes closer than about 14 cm to the mat.",
                 mistake: "Letting the lower heel tap the mat between kicks.",
-                correct: "Keep the lower leg just off the mat on every kick; if you cannot, kick a little higher."
+                correct: "Keep the lower leg off the mat on every kick; if you cannot, kick a little higher."
             ),
             TechniqueCue(
                 id: "tempo",
@@ -39178,7 +39178,7 @@ enum SampleData {
                 id: "back",
                 title: "Lower Back",
                 intro: "Your lower back stays flat on the mat while the legs open and cross.",
-                why: "ExRx notes that without waist flexion the abs only hold the pelvis and waist steady while the hip flexors keep the legs up, and that its own scissor kick's very short range calls for isometric-like endurance. The model's pelvis and lower back stay still all set.",
+                why: "ExRx notes that without waist flexion the abs only hold the pelvis and waist steady while the hip flexors keep the legs up, and that its own scissor kick's very short range calls for isometric-like endurance. The model's pelvis and lower back stay still for the whole set.",
                 mistake: "The lower back arching off the mat as the legs sweep in and out.",
                 correct: "Brace before you lift the legs, keep the back flat and raise the legs a little if it starts to arch."
             ),
@@ -39186,7 +39186,7 @@ enum SampleData {
                 id: "knees",
                 title: "Straight Legs",
                 intro: "Move each leg as one long piece from the hip.",
-                why: "Straight knees keep the legs a long lever for the hip flexors and abs to hold up, and ExRx's easier versions of its lying leg raises bend the knees. Here the knees stay straight and the toes pointed all set.",
+                why: "Straight knees keep the legs a long lever for the hip flexors and abs to hold up, and ExRx's easier versions of its lying leg raises bend the knees. Here the knees stay straight and the toes pointed for the whole set.",
                 mistake: "Bending the knees so the feet pedal rather than the legs sweeping.",
                 correct: "Keep the knees straight and the toes pointed as the legs open and cross."
             ),
@@ -39355,7 +39355,7 @@ enum SampleData {
                 id: "tap",
                 title: "The Tap",
                 intro: "The right hand taps the left shoulder, then the left hand taps the right, each going back to the floor between taps.",
-                why: "Every tap leaves the body on three points, and NASM notes that removing a point of contact increases the stabilising demand. The screen taps the opposite shoulder and returns to the plank each time.",
+                why: "Every tap leaves the body on three points, and NASM notes that removing a point of contact increases the stabilising demand. In the shoulder-tap screen, the hand taps the opposite shoulder and returns to the plank each time.",
                 mistake: "Lifting the hand only partway, well short of the shoulder.",
                 correct: "Reach across until your fingers touch the outside of the opposite shoulder, then place the hand back under its own shoulder."
             ),
@@ -39379,7 +39379,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Tempo",
                 intro: "Each tap takes under two seconds, with a brief touch at the shoulder.",
-                why: "NASM measures success by staying stable rather than finishing reps quickly, and the screen has the taps done in a controlled manner. Here each hand is up for about a second and a half and rests on the shoulder for about half a second.",
+                why: "NASM measures success by staying stable rather than finishing reps quickly, and the shoulder-tap screen has the taps done in a controlled manner. Here each hand is up for about a second and a half and rests on the shoulder for about half a second.",
                 mistake: "Slapping the shoulders quickly while the hips rock side to side.",
                 correct: "Tap slowly enough that your hips stay still, about one tap every two seconds as here."
             )
@@ -39542,7 +39542,7 @@ enum SampleData {
                 intro: "Your hips stay down, in line with your shoulders and the foot still on the floor.",
                 why: "Lifting the hips makes room for the knee but makes the plank easier; NASM's plank coaching says clients may raise them to reduce the challenge, and ACE's BOSU spiderman plank keeps them low.",
                 mistake: "Piking the hips up to make room for the knee.",
-                correct: "Keep your hips in line with your shoulders while the knee travels, and bring it only as high as that allows."
+                correct: "Keep your hips in line with your shoulders while the knee travels, and bring it only as far as that allows."
             ),
             TechniqueCue(
                 id: "hands",
@@ -39748,7 +39748,7 @@ enum SampleData {
         setup: [
             "Lie face down on a mat with your elbows under your shoulders and your forearms parallel.",
             "Tuck your toes under, feet about hip-width apart.",
-            "Have a partner set the plate flat on your upper back, centred over your spine, and brace your abs.",
+            "Brace your abs, then have a partner set the plate flat on your upper back, centred over your spine.",
             "Push up into a straight line from head to heels and hold, keeping the plate level."
         ],
         comparison: FormComparisonCopy(
@@ -41800,9 +41800,9 @@ enum SampleData {
                 id: "drive",
                 title: "Working Leg",
                 intro: "The front leg lifts you; the back foot only follows.",
-                why: "ExRx lists the calf of the second leg, the one that follows, among the helpers, so the back foot gives a little push, but the front leg is the one straightening to lift you. Here the back foot leaves the floor early and comes up beside the front one without taking weight on the box.",
+                why: "ExRx lists the calf of the second leg, the one that follows, among the helpers, but the front leg is the one straightening to lift you. Here the back foot leaves the floor early and comes up beside the front one without taking weight on the box.",
                 mistake: "Bouncing off the back foot onto its toes to spring yourself up.",
-                correct: "Lean onto your front foot, then straighten that leg to stand up; let the back foot trail and land softly beside it."
+                correct: "Lean onto your front foot, then straighten that leg to stand up; let the back foot trail and come up beside it without taking weight."
             ),
             TechniqueCue(
                 id: "knee",
@@ -41837,7 +41837,7 @@ enum SampleData {
             mistakeBadge: "CHEST DROPPING",
             correctCue: "Lean, then stand tall",
             mistakeCue: "Back rounds over the knee",
-            correctNote: "Leaning from the hips with a flat back keeps the bar over the front foot while the leg drives you up.",
+            correctNote: "Leaning from the hips with a flat back lets the leg on the box, not the spine, drive the bar up.",
             mistakeNote: "Rounding the back to heave the bar puts the effort into the spine instead of the leg on the box."
         ),
         glows: [
@@ -42165,7 +42165,7 @@ enum SampleData {
                 id: "grip",
                 title: "Support",
                 intro: "Both hands hold the tower to keep you steady.",
-                why: "ExRx holds a bar with both hands for the standing cable hip extension. Here the hands rest on the tower's upright at about chest height, elbows bent, and the trunk stays still all set, so keeping your balance does not limit how hard the hip can work.",
+                why: "ExRx holds a bar with both hands for the standing cable hip extension. Here the hands rest on the tower's upright at about chest height, elbows bent, and the trunk stays still for the whole set, so keeping your balance does not limit how hard the hip can work.",
                 mistake: "Pulling on the tower to twist the body into each kick.",
                 correct: "Hold the upright with both hands, arms relaxed, and keep your shoulders square to the tower."
             )
@@ -43254,7 +43254,7 @@ enum SampleData {
             TechniqueCue(
                 id: "hips",
                 title: "Hips and Chest",
-                intro: "The hips and chest rise at the same rate, the trunk righting itself steadily from the bottom.",
+                intro: "The hips and chest rise together, the trunk righting itself steadily from the bottom.",
                 why: "Rising together keeps the trunk upright and the work shared between the thighs and the hips. When the hips shoot up first, the knees straighten early and the chest stays low, so the back is left to lift the bell the rest of the way.",
                 mistake: "The hips shooting up out of the bottom while the chest stays low over the bell.",
                 correct: "Drive through the whole foot, push the knees out and let the hips and shoulders rise together until you stand tall."

@@ -643,3 +643,57 @@ and model map went in with the models; `ExerciseRotation` files the
 pull-through, reverse hyper, 45-degree hip extension and swing as hinges
 and the standing cable hip extension as glute isolation. The library now
 has 438 exercises.
+
+Copy review of the 111 newest exercises (2026-10-26): the 90 of the
+401-500 folder and the 21 new ones of the Desktop folders had not had the
+review the first 327 got (909c505). Run from a cloud session (no Xcode or
+Blender): the models were read with `pxr`, drawn with a software renderer
+at the app framings, and measured joint by joint; one reviewer per family,
+then a skeptic that tried to refute each edit (38 proposed, 35 applied, 3
+rejected as ghost geometry or taste). Edited in place in SampleData.swift
+(and setup.py for three setup steps); the spec files' ex() copy and the
+notes' claim rows were NOT updated, so regenerating would undo these:
+- Copy now follows the model: the Landmine Chest Press's wrists are "firm"
+  (bent back ~45° at the chest, ~17° at lockout, not straight); the four
+  seated calf raises put the ankles, not the balls of the feet, under the
+  knees, and the Smith one's block sits in front of the bar; the Banded
+  Plantar Flexion holds the band ends in front at elbow height; the Toe
+  Touch Crunch's soles face the ceiling; the Flutter Kick no longer says
+  "just off the mat" (its lower heel stays ~14 cm up); the Weighted Sit-Up
+  looks over the plate; the Barbell Step-Up's back foot comes up without
+  landing or pushing.
+- Labels: the Decline Push-Up's depth pill (tracks the chest) reads "Chest
+  a hand off the floor"; the Dumbbell Standing Calf Raise's top pill (tracks
+  the ball of the foot) "Rise high, hold"; the 21s pills use en dashes.
+- Consistency and wording: Zottman turn at almost straight arms; the
+  single-leg seated raise's why names the left foot; the Single-Leg Tibialis
+  Raise keeps the right knee bent; the Weighted Plank braces before the
+  plate goes on; the Standing Cable Crunch's rope why, the Plank Shoulder
+  Tap's "screen", the Plank Knee to Elbow's "as far", the Sumo Kettlebell
+  Deadlift's "rise together", "all set" -> "for the whole set", a doubled
+  range in the Elevated Calf Raise, the Wall Tibialis Raise's mistake note.
+Open points for the owner (models, ghosts, judgement calls; no copy change):
+- Ghosts that draw less than their mistake line: Incline Hammer Curl arms
+  (ends in line with the trunk, not in front), Cable Knee-Drive Kickback
+  kick (foot ~35 cm behind the hips, not under them), Bear Crawl hips (the
+  `_bent` side is the planted leg while a foot steps), Dumbbell Side Bend
+  second dumbbell (no weight drawn).
+- Models: the Hack Squat Calf Raise's upper back floats 4-6 cm off the pad
+  (the copy says the back stays on it); the Hip Adduction Machine's pads stop
+  1.2 cm apart; the landmine rotations pivot the same-side heel; the
+  dumbbell and kettlebell thrusters' knees cave; the barbell thruster's bar
+  sits ~3 cm in front of the shoulders; the Clean and Press catches with low
+  elbows; the Plank Hip Dip turns in ~1 s each way while the copy says slow.
+- Paint: the Standing Cable Hip Extension lights both glutes though one leg
+  works; the Suitcase Carry March lights both sides' obliques.
+- Labels: the decline sit-ups' "Ankles hooked" tracks the ball of the foot
+  (the roller sits on the ankle); the Weighted Russian Twist's "Ribcage
+  turns" tracks the shoulder.
+- Lists: the Weighted Decline Sit-Up's stabilisers lack the neck flexors
+  the other sit-ups list; the Copenhagen Plank's secondary Obliques (0.52)
+  sit above two primaries; the stance sets' exercise-level lists differ a
+  little from their Standard stance's (Hack 0.88/0.50 vs 0.89/0.44); the
+  stance sets show "adductors" as a stabiliser on the Wide stance, which
+  has an Adductors row.
+- Outside the 111: the library Seated Calf Raise has the same "balls of the
+  feet under the knees" line as the four fixed here.
