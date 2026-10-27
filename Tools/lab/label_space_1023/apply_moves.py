@@ -28,12 +28,42 @@ def close_paren(s, i):
         j += 1
 
 
+def back_move(block, name, label, m):
+    """The older back lifts' `backAnnotation(cue, label, joint, slot:, side:,
+    leader:)` calls (2026-10-27): the slot is written in points over the
+    382 x 655 card, as their hand-placed slots are; an optional "joint" in
+    the move re-targets the dot."""
+    i = block.index('backAnnotation("')
+    i = block.find('"%s"' % label, i)
+    assert i > 0, (name, label)
+    s0 = block.rfind('backAnnotation(', 0, i)
+    e0 = close_paren(block, block.index('(', s0)) + 1
+    call = block[s0:e0]
+    q = re.findall(r'"([^"]*)"', call)
+    assert q[1] == label, (name, label)
+    new, n = re.subn(r'slot: (?:\w+|\(x: [\d.]+ / [\d.]+, y: [\d.]+ / [\d.]+\))',
+                     'slot: (x: %.1f / 382.0, y: %.1f / 655.0)' % (m['x'] * 382, m['y'] * 655), call)
+    assert n == 1, (name, label, 'slot')
+    new = re.sub(r',\s*side: \.(leading|trailing)', '', new)
+    if m['side'] == 'trailing':
+        new = new.replace(', leader:', ', side: .trailing, leader:', 1)
+        assert 'side: .trailing' in new, (name, label, 'side')
+    if m.get('joint'):
+        new = new.replace('"%s", "%s"' % (label, q[2]), '"%s", "%s"' % (label, m['joint']), 1)
+        assert '"%s", "%s"' % (label, m['joint']) in new, (name, label, 'joint')
+    print('%-34s %-34s (%.3f, %.3f) %s' % (name, label, m['x'], m['y'], m['side']))
+    return block[:s0] + new + block[e0:]
+
+
 for name, moves in table.items():
     var = re.search(r'^\s+"%s":\s+(\w+Content),' % re.escape(name), src, re.M).group(1)
     a = src.index('static let %s = ExerciseContent(' % var)
     b = close_paren(src, src.index('(', a))
     block = src[a:b]
     for label, m in moves.items():
+        if 'label: "%s"' % label not in block:
+            block = back_move(block, name, label, m)
+            continue
         s0 = block.rfind('CueAnnotation(', 0, block.index('label: "%s"' % label))
         e0 = close_paren(block, block.index('(', s0)) + 1
         call = block[s0:e0]
@@ -46,6 +76,9 @@ for name, moves in table.items():
         if m['side'] == 'trailing':
             new = new.replace('leaderLength:', 'labelSide: .trailing, leaderLength:', 1)
             assert 'labelSide: .trailing' in new, (name, label, 'side')
+        if m.get('joint'):
+            new, n = re.subn(r'joint: "\w+"', 'joint: "%s"' % m['joint'], new)
+            assert n == 1, (name, label, 'joint')
         block = block[:s0] + new + block[e0:]
         print('%-34s %-34s (%.3f, %.3f) %s' % (name, label, m['x'], m['y'], m['side']))
     src = src[:a] + block + src[b:]

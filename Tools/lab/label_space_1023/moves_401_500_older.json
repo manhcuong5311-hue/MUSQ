@@ -1,0 +1,838 @@
+{
+ "Cable Rotation": {
+  "Arms long": {
+   "x": 0.6,
+   "y": 0.2,
+   "side": "trailing"
+  },
+  "Hands chest high": {
+   "x": 0.635,
+   "y": 0.42,
+   "side": "trailing"
+  },
+  "Stand tall": {
+   "x": 0.6,
+   "y": 0.13,
+   "side": "trailing"
+  }
+ },
+ "Cable Side Bend": {
+  "Bend sideways only": {
+   "x": 0.362,
+   "y": 0.105,
+   "side": "leading"
+  },
+  "Arm hangs long": {
+   "x": 0.333,
+   "y": 0.245,
+   "side": "leading"
+  }
+ },
+ "Cross-Body Crunch": {
+  "Elbow to opposite knee": {
+   "x": 0.47,
+   "y": 0.84,
+   "side": "leading"
+  }
+ },
+ "Dead Bug": {
+  "Opposite arm and leg": {
+   "x": 0.609,
+   "y": 0.16,
+   "side": "trailing",
+   "joint": "forearm_R"
+  }
+ },
+ "Decline Sit-Up": {
+  "No pulling": {
+   "x": 0.756,
+   "y": 0.34,
+   "side": "trailing",
+   "joint": "neck"
+  },
+  "Curl up first": {
+   "x": 0.685,
+   "y": 0.2,
+   "side": "trailing"
+  },
+  "Shoulders down": {
+   "x": 0.66,
+   "y": 0.77,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Side Bend": {
+  "Free hand behind head": {
+   "x": 0.54,
+   "y": 0.09,
+   "side": "leading"
+  }
+ },
+ "Farmer Carry March": {
+  "Hips level": {
+   "x": 0.762,
+   "y": 0.39,
+   "side": "trailing"
+  }
+ },
+ "Landmine 180": {
+  "Stay tall": {
+   "x": 0.625,
+   "y": 0.075,
+   "side": "trailing",
+   "joint": "head"
+  },
+  "Turn chest and hips": {
+   "x": 0.396,
+   "y": 0.51,
+   "side": "leading"
+  },
+  "To your hip": {
+   "x": 0.259,
+   "y": 0.63,
+   "side": "leading"
+  },
+  "Slow arc": {
+   "x": 0.781,
+   "y": 0.571,
+   "side": "trailing"
+  }
+ },
+ "Landmine Rotation": {
+  "Chest turns with the bar": {
+   "x": 0.45,
+   "y": 0.13,
+   "side": "leading",
+   "joint": "clavicle_L"
+  }
+ },
+ "Lying Leg Raise": {
+  "Lower slowly": {
+   "x": 0.726,
+   "y": 0.34,
+   "side": "trailing"
+  }
+ },
+ "Medicine Ball Russian Twist": {
+  "Knees still": {
+   "x": 0.259,
+   "y": 0.28,
+   "side": "leading",
+   "joint": "patella_R"
+  },
+  "Even rhythm": {
+   "x": 0.44,
+   "y": 0.72,
+   "side": "leading"
+  },
+  "Shoulders turn": {
+   "x": 0.979,
+   "y": 0.28,
+   "side": "leading"
+  },
+  "Hold the lean": {
+   "x": 0.66,
+   "y": 0.19,
+   "side": "trailing"
+  }
+ },
+ "Oblique Cable Crunch": {
+  "Hands by your face": {
+   "x": 0.39,
+   "y": 0.365,
+   "side": "leading"
+  }
+ },
+ "Scissor Kick": {
+  "Heels off the mat": {
+   "x": 0.347,
+   "y": 0.7,
+   "side": "leading",
+   "joint": "foot_L"
+  }
+ },
+ "Sit-Up": {
+  "Hands at the ears": {
+   "x": 0.38,
+   "y": 0.38,
+   "side": "leading",
+   "joint": "hand_R"
+  },
+  "Sit up tall, pause": {
+   "x": 0.979,
+   "y": 0.2,
+   "side": "leading"
+  }
+ },
+ "Standing Cable Crunch": {
+  "Hands fixed": {
+   "x": 0.72,
+   "y": 0.26,
+   "side": "trailing"
+  }
+ },
+ "Toe-to-Bar": {
+  "Press the bar down": {
+   "x": 0.64,
+   "y": 0.085,
+   "side": "leading"
+  },
+  "Toes to bar": {
+   "x": 0.274,
+   "y": 0.18,
+   "side": "leading"
+  },
+  "Lower slowly": {
+   "x": 0.57,
+   "y": 0.88,
+   "side": "trailing"
+  }
+ },
+ "Weighted Decline Sit-Up": {
+  "Curl up first": {
+   "x": 0.44,
+   "y": 0.27,
+   "side": "trailing"
+  }
+ },
+ "Weighted Russian Twist": {
+  "Plate by its rim": {
+   "x": 0.43,
+   "y": 0.72,
+   "side": "leading"
+  }
+ },
+ "Weighted Sit-Up": {
+  "Chin off the plate": {
+   "x": 0.971,
+   "y": 0.24,
+   "side": "leading"
+  }
+ },
+ "Bent-Knee Calf Raise": {
+  "Rise high, pause": {
+   "x": 0.332,
+   "y": 0.84,
+   "side": "leading"
+  }
+ },
+ "Bodyweight Standing Calf Raise": {
+  "Rise high, hold": {
+   "x": 0.318,
+   "y": 0.84,
+   "side": "leading"
+  }
+ },
+ "Calf Raise Pulse": {
+  "Full height first": {
+   "x": 0.347,
+   "y": 0.845,
+   "side": "leading"
+  }
+ },
+ "Donkey Calf Raise": {
+  "Forearms rest": {
+   "x": 0.302,
+   "y": 0.455,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Thruster": {
+  "Arms locked out": {
+   "x": 0.341,
+   "y": 0.565,
+   "side": "leading"
+  }
+ },
+ "Elevated Calf Raise": {
+  "Up high, pause": {
+   "x": 0.303,
+   "y": 0.84,
+   "side": "leading"
+  }
+ },
+ "Hack Squat Calf Raise": {
+  "Back on the pad": {
+   "x": 0.318,
+   "y": 0.35,
+   "side": "leading"
+  },
+  "Heels below the plate": {
+   "x": 0.594,
+   "y": 0.85,
+   "side": "trailing"
+  }
+ },
+ "Kettlebell Thruster": {
+  "Arms locked": {
+   "x": 0.259,
+   "y": 0.42,
+   "side": "leading"
+  }
+ },
+ "Machine Donkey Calf Raise": {
+  "Pad on the hips": {
+   "x": 0.8,
+   "y": 0.15,
+   "side": "leading"
+  }
+ },
+ "Clean and Press": {
+  "Arms long": {
+   "x": 0.97,
+   "y": 0.16,
+   "side": "leading"
+  },
+  "Catch, chest up": {
+   "x": 0.4,
+   "y": 0.86,
+   "side": "leading"
+  },
+  "Strict press": {
+   "x": 0.59,
+   "y": 0.17,
+   "side": "leading",
+   "joint": "upper_arm_L"
+  }
+ },
+ "Reverse Curl": {
+  "No hip swing": {
+   "x": 0.39,
+   "y": 0.72,
+   "side": "leading"
+  }
+ },
+ "Barbell Curl": {
+  "Shoulders stay back": {
+   "x": 0.624,
+   "y": 0.2,
+   "side": "trailing"
+  },
+  "Elbows pinned to sides": {
+   "x": 0.42,
+   "y": 0.29,
+   "side": "leading",
+   "joint": "forearm_R"
+  },
+  "Shoulder-width grip": {
+   "x": 0.624,
+   "y": 0.55,
+   "side": "trailing"
+  }
+ },
+ "Chest-Supported Dumbbell Row": {
+  "Row to lower ribs": {
+   "x": 0.419,
+   "y": 0.052,
+   "side": "leading"
+  },
+  "No shrugging": {
+   "x": 0.461,
+   "y": 0.11,
+   "side": "trailing"
+  },
+  "Elbows drive back": {
+   "x": 0.537,
+   "y": 0.171,
+   "side": "trailing"
+  }
+ },
+ "Straight-Arm Pulldown": {
+  "Soft elbow lock": {
+   "x": 0.435,
+   "y": 0.555,
+   "side": "leading"
+  }
+ },
+ "Feet-Elevated Inverted Row": {
+  "Overhand, a bit wider than shoulders": {
+   "x": 0.339,
+   "y": 0.165,
+   "side": "trailing"
+  },
+  "Heels to head in one line": {
+   "x": 0.47,
+   "y": 0.335,
+   "side": "leading"
+  },
+  "Chest to the bar": {
+   "x": 0.89,
+   "y": 0.24,
+   "side": "leading"
+  },
+  "Elbows ~45\u00b0 from the body": {
+   "x": 0.517,
+   "y": 0.7,
+   "side": "leading"
+  },
+  "Squeeze shoulder blades": {
+   "x": 0.979,
+   "y": 0.77,
+   "side": "leading"
+  }
+ },
+ "Barbell Bent-Over Row": {
+  "Bar to lower ribs": {
+   "x": 0.34,
+   "y": 0.32,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Row": {
+  "Squeeze the blades": {
+   "x": 0.414,
+   "y": 0.1,
+   "side": "trailing"
+  },
+  "Elbows track to hip": {
+   "x": 0.6,
+   "y": 0.172,
+   "side": "trailing"
+  },
+  "Row to the hip": {
+   "x": 0.309,
+   "y": 0.275,
+   "side": "leading"
+  },
+  "Neutral grip": {
+   "x": 0.269,
+   "y": 0.412,
+   "side": "leading"
+  },
+  "Flat back": {
+   "x": 0.773,
+   "y": 0.235,
+   "side": "trailing"
+  }
+ },
+ "Seated Cable Row": {
+  "Set blades first": {
+   "x": 0.597,
+   "y": 0.176,
+   "side": "leading"
+  },
+  "Handle to the abdomen": {
+   "x": 0.539,
+   "y": 0.237,
+   "side": "leading"
+  },
+  "Elbows drive back": {
+   "x": 0.419,
+   "y": 0.298,
+   "side": "leading"
+  },
+  "Neutral grip": {
+   "x": 0.315,
+   "y": 0.465,
+   "side": "trailing"
+  }
+ },
+ "Pull-Up": {
+  "Slightly wide overhand": {
+   "x": 0.45,
+   "y": 0.075,
+   "side": "leading"
+  },
+  "Set blades first": {
+   "x": 0.32,
+   "y": 0.281,
+   "side": "leading"
+  },
+  "Chest to the bar": {
+   "x": 0.61,
+   "y": 0.37,
+   "side": "trailing"
+  }
+ },
+ "High Row Machine": {
+  "Wide overhand grip": {
+   "x": 0.29,
+   "y": 0.07,
+   "side": "trailing"
+  },
+  "Elbows down and back": {
+   "x": 0.45,
+   "y": 0.5,
+   "side": "leading"
+  },
+  "To the upper chest": {
+   "x": 0.619,
+   "y": 0.52,
+   "side": "trailing"
+  }
+ },
+ "Inverted Row": {
+  "Chest to the bar": {
+   "x": 0.54,
+   "y": 0.235,
+   "side": "leading"
+  },
+  "Elbows ~45\u00b0 from the body": {
+   "x": 0.49,
+   "y": 0.31,
+   "side": "leading"
+  }
+ },
+ "Close-Grip Lat Pulldown": {
+  "Neutral, close grip": {
+   "x": 0.369,
+   "y": 0.098,
+   "side": "leading"
+  },
+  "Elbows track close": {
+   "x": 0.377,
+   "y": 0.458,
+   "side": "leading"
+  },
+  "Handle to upper chest": {
+   "x": 0.524,
+   "y": 0.568,
+   "side": "leading"
+  }
+ },
+ "Lat Pulldown": {
+  "Wide overhand grip": {
+   "x": 0.188,
+   "y": 0.092,
+   "side": "trailing"
+  },
+  "Elbows down and back": {
+   "x": 0.45,
+   "y": 0.562,
+   "side": "leading"
+  },
+  "Bar to upper chest": {
+   "x": 0.628,
+   "y": 0.546,
+   "side": "trailing"
+  }
+ },
+ "Chin-Up": {
+  "Underhand grip": {
+   "x": 0.393,
+   "y": 0.092,
+   "side": "leading"
+  },
+  "Elbows stay close": {
+   "x": 0.364,
+   "y": 0.305,
+   "side": "leading"
+  },
+  "Set blades first": {
+   "x": 0.364,
+   "y": 0.39,
+   "side": "leading"
+  },
+  "Chest to the bar": {
+   "x": 0.602,
+   "y": 0.366,
+   "side": "trailing"
+  }
+ },
+ "Deadlift": {
+  "Bar close to shins": {
+   "x": 0.398,
+   "y": 0.531,
+   "side": "leading"
+  },
+  "Hips hinge back": {
+   "x": 0.649,
+   "y": 0.678,
+   "side": "trailing"
+  },
+  "Hook or mixed grip": {
+   "x": 0.398,
+   "y": 0.592,
+   "side": "leading"
+  },
+  "Neutral spine": {
+   "x": 0.696,
+   "y": 0.376,
+   "side": "trailing"
+  },
+  "Grip & lats tight": {
+   "x": 0.387,
+   "y": 0.664,
+   "side": "leading"
+  }
+ },
+ "Bulgarian Split Squat (Lean)": {
+  "Lean ~40\u00b0 from the hips": {
+   "x": 0.468,
+   "y": 0.345,
+   "side": "leading"
+  },
+  "Hips back, not just down": {
+   "x": 0.53,
+   "y": 0.345,
+   "side": "trailing",
+   "joint": "thigh_L"
+  },
+  "Front knee tracks the toes": {
+   "x": 0.492,
+   "y": 0.69,
+   "side": "leading"
+  },
+  "Back knee drops straight down": {
+   "x": 0.64,
+   "y": 0.77,
+   "side": "leading"
+  }
+ },
+ "V-Squat": {
+  "Control down, pause": {
+   "x": 0.59,
+   "y": 0.28,
+   "side": "trailing"
+  }
+ },
+ "Hack Squat": {
+  "Stop just short of lockout": {
+   "x": 0.476,
+   "y": 0.45,
+   "side": "leading"
+  },
+  "Back stays on the pad": {
+   "x": 0.57,
+   "y": 0.55,
+   "side": "trailing"
+  },
+  "Knees track over toes": {
+   "x": 0.424,
+   "y": 0.347,
+   "side": "leading"
+  },
+  "Lower under control, no bounce": {
+   "x": 0.416,
+   "y": 0.64,
+   "side": "trailing"
+  }
+ },
+ "Hack Squat (Stances)": {
+  "Thighs to level": {
+   "x": 0.408,
+   "y": 0.4,
+   "side": "leading"
+  },
+  "Soft knees at the top": {
+   "x": 0.406,
+   "y": 0.5,
+   "side": "leading"
+  }
+ },
+ "Walking Lunge": {
+  "Torso stays tall": {
+   "x": 0.68,
+   "y": 0.35,
+   "side": "trailing",
+   "joint": "neck"
+  },
+  "Step long enough for 90\u00b0": {
+   "x": 0.115,
+   "y": 0.034,
+   "side": "trailing",
+   "joint": "foot_front"
+  },
+  "Drive through the front heel": {
+   "x": 0.178,
+   "y": 0.084,
+   "side": "trailing"
+  },
+  "Front knee tracks the toes": {
+   "x": 0.508,
+   "y": 0.446,
+   "side": "trailing"
+  },
+  "Tap the back knee, don't bounce": {
+   "x": 0.6,
+   "y": 0.883,
+   "side": "leading"
+  }
+ },
+ "Pause Squat": {
+  "Bar high on the traps": {
+   "x": 0.55,
+   "y": 0.1,
+   "side": "leading"
+  },
+  "Squeeze shoulder blades": {
+   "x": 0.615,
+   "y": 0.045,
+   "side": "leading"
+  },
+  "Chest up": {
+   "x": 0.215,
+   "y": 0.4,
+   "side": "leading"
+  },
+  "Hold still 2-3 seconds": {
+   "x": 0.571,
+   "y": 0.55,
+   "side": "trailing"
+  }
+ },
+ "Machine Lateral Raise": {
+  "No shrugging": {
+   "x": 0.458,
+   "y": 0.3,
+   "side": "leading"
+  },
+  "Shoulders level with pivot": {
+   "x": 0.979,
+   "y": 0.17,
+   "side": "leading"
+  },
+  "Lift to shoulder height": {
+   "x": 0.435,
+   "y": 0.52,
+   "side": "leading"
+  },
+  "Sit tall, chest up": {
+   "x": 0.33,
+   "y": 0.6,
+   "side": "leading"
+  }
+ },
+ "Machine Shoulder Press": {
+  "Press to a soft lockout": {
+   "x": 0.5,
+   "y": 0.1,
+   "side": "leading"
+  },
+  "Elbows under the handles": {
+   "x": 0.84,
+   "y": 0.04,
+   "side": "leading"
+  }
+ },
+ "Cable Lateral Raise": {
+  "Shoulder down, no shrug": {
+   "x": 0.48,
+   "y": 0.265,
+   "side": "leading"
+  },
+  "Stop at shoulder height": {
+   "x": 0.451,
+   "y": 0.39,
+   "side": "leading"
+  }
+ },
+ "Reverse Pec Deck": {
+  "Shoulders down": {
+   "x": 0.66,
+   "y": 0.24,
+   "side": "trailing"
+  },
+  "Sweep out, not back": {
+   "x": 0.021,
+   "y": 0.25,
+   "side": "trailing"
+  }
+ },
+ "Arnold Press": {
+  "Rotate while you press": {
+   "x": 0.44,
+   "y": 0.5,
+   "side": "leading",
+   "joint": "forearm_R"
+  },
+  "Start palms in, at chin": {
+   "x": 0.69,
+   "y": 0.07,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Front Raise": {
+  "Shoulders down": {
+   "x": 0.759,
+   "y": 0.06,
+   "side": "leading"
+  },
+  "Soft, fixed elbows": {
+   "x": 0.41,
+   "y": 0.165,
+   "side": "leading",
+   "joint": "forearm_R"
+  },
+  "Stop at shoulder height": {
+   "x": 0.45,
+   "y": 0.55,
+   "side": "leading",
+   "joint": "hand_R"
+  }
+ },
+ "Dumbbell Lateral Raise": {
+  "Shoulders down, no shrug": {
+   "x": 0.021,
+   "y": 0.135,
+   "side": "trailing",
+   "joint": "attachment_TrapeziusUpper_R"
+  },
+  "Arms slightly forward": {
+   "x": 0.584,
+   "y": 0.16,
+   "side": "trailing"
+  },
+  "Soft, fixed elbows": {
+   "x": 0.636,
+   "y": 0.212,
+   "side": "trailing"
+  },
+  "Torso still, no swing": {
+   "x": 0.394,
+   "y": 0.62,
+   "side": "leading"
+  }
+ },
+ "Cable Rear Delt Fly": {
+  "Shoulders down": {
+   "x": 0.903,
+   "y": 0.17,
+   "side": "leading"
+  }
+ },
+ "Barbell Overhead Press": {
+  "Bar travels straight up": {
+   "x": 0.565,
+   "y": 0.159,
+   "side": "trailing"
+  }
+ },
+ "Reverse Dumbbell Fly": {
+  "Neck neutral, chin tucked": {
+   "x": 0.515,
+   "y": 0.16,
+   "side": "trailing"
+  },
+  "Hinge to near parallel": {
+   "x": 0.975,
+   "y": 0.22,
+   "side": "leading"
+  }
+ },
+ "Face Pull": {
+  "Pull to the face": {
+   "x": 0.555,
+   "y": 0.1,
+   "side": "trailing"
+  },
+  "Rotate hands back": {
+   "x": 0.393,
+   "y": 0.06,
+   "side": "leading"
+  }
+ },
+ "Dumbbell Shoulder Press": {
+  "Press up and slightly in": {
+   "x": 0.707,
+   "y": 0.07,
+   "side": "leading"
+  },
+  "Elbows slightly forward": {
+   "x": 0.448,
+   "y": 0.5,
+   "side": "leading",
+   "joint": "forearm_R"
+  }
+ }
+}

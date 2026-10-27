@@ -31,7 +31,7 @@ for t in ('0', '1.0', '2.0', '3.0'):
         w, h = Wd['widths'][a['label']], Wd['height']
         ax, ay = x * VW, y * VH
         x0 = ax - w if side == 'leading' else ax
-        u, v = P['joints'][a['joint']][k]
+        u, v = P['joints'][(m or {}).get('joint') or a['joint']][k]
         d.line([(ax * S, ay * S), (u * VW * S, v * VH * S)], fill=(235, 235, 235), width=2)
         d.ellipse([(u * VW - 3) * S, (v * VH - 3) * S, (u * VW + 3) * S, (v * VH + 3) * S], fill=(255, 255, 255))
         d.rounded_rectangle([x0 * S, (ay - h / 2) * S, (x0 + w) * S, (ay + h / 2) * S], radius=13 * S,

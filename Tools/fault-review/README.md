@@ -349,3 +349,37 @@ shift runs along the line of sight), and the two skeptics split, so it was
 kept, as the rule asks. No ghost changed: the Reverse Hyperextension's legs
 (84 cm), the single-leg RDLs' head (15 cm) and the Single-Leg Hip Thrust's
 arms (28 cm) all moved without leaving their ghosts unreadable.
+
+Exercises 401-500 ghosts on the 2026-10-21 models (2026-10-27): the same
+review for the Desktop 401-500 swap (2ec0b28), 73 exercises with content
+(its 25 new model-only exercises have none), 365 cues, shot with
+`Tools/lab/shoot_ex.sh`; 13 of the models had moved (Donkey, Hack Squat
+and Horizontal Leg Press Calf Raises, both Decline Sit-Ups, Bird Dog, the
+V-Ups, Toe-to-Bar, Cable Rotation, Stability Ball Rollout, the thrusters),
+the rest kept their motion exactly. One reviewer per group: 303 kept, 61
+ring-only by design, and one redraw proposed and confirmed by both
+skeptics: Hack Squat Calf Raise "top", whose 20° heel drop with the body 5
+cm down the sled bent the knees to ~152° on the new machine and read as
+the "knees" fault. No replacement passed both skeptics in five gated
+tries, each on fresh shots from its own build (the third picked from five
+candidates judged blind by three judges with different lenses):
+- 30° with the body carried back with the ankle: knees straight, but the
+  body went into the back pad and the yellow foot lay along the shoe's
+  sole, so the heel drop did not show (0 of 2).
+- 45° with the body slid down the sled along the pad: the foot still along
+  the sole, and the knees at ~168° hinted at the knees fault (0 of 2).
+- Only the legs drawn, 55°, the hips ~10 cm down the sled: all three judges
+  ranked it first of five; its skeptics split (the turned toe tip rises off
+  the platform, and the leg reads a little shifted). It is in the app now.
+- The same with the foot drawn to a planted toe tip, or to the ball of the
+  foot: the yellow foot back along the sole (0 of 2 each).
+The skeptics' remaining point is that the stick foot has no heel: the
+corner of the yellow L lands at the white shoe's heel, so the drop reads
+small. A heel point (ankle, heel, ball) would need a new ghost point
+type; the options, side by side, are in
+`hack_squat_calf_raise_top_options.png`, for the owner. The older models
+outside the swap had their ghosts reviewed when they were made and did not
+change. Mistake-view pills on a face or fist, noted for later (outside the
+trainer-card check): Horizontal Leg Press Calf Raise "seat", Plank
+Shoulder Tap "tempo", Barbell Seated Calf Raise "tempo", Oblique Cable
+Crunch "rope", Cable Side Bend "plane" and "arm".

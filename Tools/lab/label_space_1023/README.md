@@ -155,3 +155,74 @@ moments, the 19 relaid lifts each passed a checker on the real shots.
 Left: white dots on white shoes (Assisted Nordic Curl's ankles, Banded Hip
 Abduction's and Machine Hip Thrust's feet) and dots that slip behind an
 arm for a moment (B-Stance Romanian Deadlift's hip and back at the top).
+
+Exercises 401-500 and the older models (2026-10-27): the last pass, over
+the 73 lifts with content from the Desktop 401-500 swap (2ec0b28) and the
+55 on older models that no round had looked at (Lat Pulldown, Pull-Up,
+Deadlift, the rows, the shoulder raises, Leg Press, Hack Squat, the female
+Hack and Pendulum Squat stances, ...), 128 lifts. Tool changes first:
+- `parse_anns.py` reads `backAnnotation` slots over any denominator (the
+  older back lifts write theirs over 655, not 567), and `apply_moves.py`
+  writes them (in points over 382 x 655, as they are hand-placed).
+- A move may carry `"joint"` to re-target its dot: `apply_moves.py`,
+  `check_layout.py` and `preview_moves.py` read it, and `proj_at.py` takes
+  `EXTRA_JOINTS=a,b` to project joints no callout tracks yet.
+- `cards.py` skips stance pickers: their picker read as a ~644 pt card,
+  while `check_layout.py` already uses the 581 pt stance geometry (Hack
+  Squat (Stances) moved ~24-37 pt off).
+- Walking Lunge tracks `patella_front`, `foot_front`, ... that the app
+  resolves each frame with `BodyFrame.leadingSide`;
+  `walking_lunge_lead.py` computes that side per sample and
+  `walking_lunge_lab.py` copies the lab with those joints added, so the
+  checker can run on it.
+- `check_layout.py` now also flags a leader that runs back under its own
+  pill for more than 25 pt (`OWN_LEADER`): the leader starts mid-height at
+  the pill's end and is drawn under the see-through pill, so a dot behind
+  the anchor sends it across the text. Over a corner it barely shows (the
+  real-shot checkers called those minor).
+- `dots_check.py` keeps a lift's offset only with six or more dots, so with
+  one t=0 shot per lift the offsets below were written by hand.
+On the calibrated checker (`K=1.20`), 62 of the 128 had a pill on the head
+or a fist, a leader across the face or through another dot, a dot under a
+pill or crossing leaders. They were laid out in 22 groups, one author and
+one adversarial verifier each (the verifiers changed 37 pills in 18
+groups): 139 pills moved on 62 lifts (`moves_401_500_older.json`), 17 dots
+re-targeted inside the moves, mostly from a hand that passes over the face
+to the elbow (`forearm_*`: Dead Bug, Barbell Curl, Arnold Press, Dumbbell
+Front Raise, Dumbbell Shoulder Press), plus Dumbbell Lateral Raise's shrug
+pill to the right trap's attachment, Decline Sit-Up's "No pulling" and
+Walking Lunge's torso pill to the neck, and Walking Lunge's step pill to the
+front foot. All 128 then checked clean offline. Shot in the rebuilt app at
+six moments of the loop (`t=0` as PNG for `cards.py` and `dots_check.py`,
+the rest as JPEG to save disk) and checked on the real geometry: two cards
+of 643.7 pt (Arnold Press, Barbell Overhead Press, two-line subtitles) and
+dot offsets for Decline Sit-Up and Weighted Decline Sit-Up (~42 pt low, as
+in the 1-100 pass), Hack Squat (Stances) (~11 pt) and Toe-to-Bar (~4 pt);
+all 62 clean. One checker per group on the shots and one refuter per
+reported problem confirmed five: a blank shot (Landmine 180 at 4 s,
+re-shot), two leaders back across their own pill over the text (Dumbbell
+Front Raise "Knees soft, feet hip-width", ~41 pt, and Dumbbell Shoulder
+Press "Elbows slightly forward", ~32 pt; moved again in
+`moves_401_500_older_r2.json` and passed a fresh checker on new shots,
+whose two minor notes, "Stop at shoulder height" touching the dumbbell
+plates at rest and the Elbows pill's end beside the "Back against the pad"
+dot, moved them ~13 pt down and to the left margin), and two left as they
+are:
+- Feet-Elevated Inverted Row: at the top of the row the sternum dot ("Chest
+  to the bar") sits ~6 pt above the hand dot ("Overhand, ..."), the chest
+  at the bar between the hands, so the two dots touch for a moment.
+- Close-Grip Lat Pulldown: at the bottom of the pull the hands pass behind
+  the body from this camera and the grip dot lands on the shoulder.
+Also left: Pull-Up's "Elbows down and back" leader runs ~50-60 pt under its
+own pill (the left column holds three pills; no clean spot near it), Hack
+Squat (Stances)' "Feet flat on the plate" ~29 pt along its pill's top edge
+(the only clean spot is on the muscle legend, which the checker does not
+know), and residuals the verifiers accepted: Decline Sit-Up's neck leaders
+passing the head mid-rep (house rule), Medicine Ball Russian Twist's hand
+dot behind the legs, Oblique Cable Crunch's elbow under "Hands by your
+face" during the twist, Clean and Press's long catch leader and the plate
+behind "Arms long" at lockout, Barbell Overhead Press's bar pill over the
+plate at lockout, Donkey Calf Raise's "Forearms rest" over the pad bracket.
+Inverted Row's High Bar stance shows the Low Bar's pills and is not
+projected. The machine restarted mid-round and wiped the scratchpad; the
+layout agents' notes came back from the workflow journal.

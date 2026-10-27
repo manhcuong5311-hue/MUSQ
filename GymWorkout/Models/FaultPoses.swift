@@ -11470,10 +11470,21 @@ enum FaultPoses {
             // sled, the knees bending forward, 175° -> ~138° (backward
             // before the nudge, as above).
             "knees": calfStand500SledSinks(0.12),
-            // Stopping short: the heels 20° lower (134° -> ~113°), the body
-            // ~5 cm down the sled, the knees ~171°.
-            "top": calfStand500Heels("*", turn: 20, body: carried, up: -0.08,
-                                     strength: calfHeelHeight(from: 0.9, to: 0.97)).seen(sledSide),
+            // Stopping short: the feet turned 55° heel-down about the balls of
+            // the feet (158° -> ~96° shin to toe tip, the foot near flat under
+            // the shoe), the hips ~10 cm down the sled along the back pad, the
+            // knees ~176°; only the legs are drawn. (Re-drawn 2026-10-27: on
+            // the 2026-10-21 machine the old 20° and 5 cm down the sled bent
+            // the knees to ~152° and read as the "knees" fault. Of six tries
+            // this one was ranked first by three blind judges and split its
+            // two skeptics: the turned toe tip rises off the platform and the
+            // leg reads a little shifted. Smaller drops, or the foot drawn to
+            // a planted tip or to the ball, left the yellow foot along the
+            // sole; the whole body carried down read as a shifted overlay.)
+            "top": FaultPose(chains: [leg("*"), hips],
+                             moves: [.turn(pivot: "toe_*", points: ["foot_*", "foot_*.tip"], axis: .lateral, degrees: 55),
+                                     .shift(["shin_*", "thigh_*"], up: -0.165), .resolve(["shin_*"])],
+                             strength: calfHeelHeight(from: 0.9, to: 0.97)).seen(sledSide),
             // Stopping about level with the platform: the heels 25° up from
             // the stretch (75° -> ~109°), the body ~8 cm up the sled, the
             // knees ~176°, nudged so they stay on the forward side of straight.

@@ -835,3 +835,56 @@ Gastrocnemius rows are already LOW. What the re-paint did, and the rows:
   the Kettlebell Swing's hamstrings go to secondary; the 45-Degree Hip
   Extension's hamstrings to primary; the Glute-Ham Raise gains an Erector
   Spinae row for its dim lower back.
+
+Muscle rows follow the paint, 401-500 and the older models (2026-10-27):
+the last pass. It covers the 73 exercises with content from the Desktop
+401-500 swap (2ec0b28; old paint at `2ec0b28^`) and the 55 never re-exported
+since the rules above (sources 1-50, Legs, 51-150, the female 1010 set,
+300-350 and others: Lat Pulldown, Pull-Up, Deadlift, the rows, the shoulder
+raises, Leg Press, Hack Squat, the female Hack and Pendulum Squat stances,
+...). The 25 model-only exercises of the swap and the female Vertical Hack
+Squat and two kickbacks have no content. `paint_rows.py` now reads the
+older and female models' own per-muscle materials
+(`S50_Focus_GluteusMedius`, `HS_04_wide_stance_VastusMedialis_L_0`, ...)
+through each mesh's group on a current-rig model (GluteBridge); it used to
+read those models as unpainted. One author and one adversarial verifier
+per batch; 82 lists changed (49 of the 73, 33 of the 55), applied with
+`Tools/lab/apply_rows.py`; the re-run's 24 remaining flags are the
+expected ones listed below. What was new:
+- `validate()` wants a primary row the app counts, and "Hip Flexors" and
+  "Quadratus Lumborum" have no MusclePart. Where the paint lights only
+  those bright, the abs stay primary as the counted row, as for the Farmer
+  Carry March above: Dead Bug, Flutter Kick, Lying Leg Raise, Scissor
+  Kick, Farmer Carry March and Suitcase Carry March. A list that follows
+  the paint to the letter is in the run's scratch notes if the owner
+  prefers it.
+- Abs lifts whose paint leads with something else follow it: Body Saw is
+  led by the posterior deltoid, Bear Crawl by the front delts, quads and
+  triceps (the abs drop to secondary on both); abs drop where the hip
+  flexors or obliques lead. Side Plank Hip Lift loses its glutes (unlit),
+  and the side bends' rows follow their one-sided paint.
+- Tibialis Posterior and Fibularis rows stay secondary on the calf lifts:
+  the rig has no group for them (the report says "unknown group"), and the
+  2D map lights them on the calves.
+- Calves: Hamstrings rows where the paint lights them dim; Forearms and
+  Trapezius rows the paint dropped are gone; Clean and Press re-ranked.
+- Old back and shoulder lifts: "Rotator Cuff" and "Forearms" rows as
+  since 101-200; the rear-delt flies drop Lateral Deltoid and the lateral
+  raises Anterior Deltoid, both unlit. The Deadlift's erectors are unlit on
+  its older model, so Erector Spinae moved to the stabilisers; that one is
+  for the owner (re-paint the model, or keep the row).
+- Old legs: bright glutes primary on Pendulum Squat, V-Squat, Pause Squat,
+  Leg Press and Walking Lunge; the hip abductions' gluteus maximus is
+  faint, a LOW 0.36 row; Hip Flexors 0.40 on the female wide stances.
+- Estimates, said so in their comments: Walking Lunge Trapezius 0.28,
+  Leg Press Hamstrings 0.25, and the Chest-Supported Row Machine's Teres
+  Major and Serratus Anterior.
+Not changed, for the copy pass: cues that name a muscle now unlit (RKC
+Plank's glutes, Side Plank Hip Lift's and Suitcase Carry March's gluteus
+medius, Farmer Carry March's grip and hips, Toe-to-Bar's lats, the Russian
+twists' hip flexors, Bulgarian Split Squat (Lean)'s hamstrings in three
+places, Deadlift's spine and grip, Cable Lateral Raise's traps, Reverse
+Dumbbell Fly's side delt, Farmer's Walk on Toes' shoulder blades) and the
+Inverted Row stance picker's comment. Legends over ~40 characters may
+truncate: Bear Crawl, Body Saw, Copenhagen Plank, Plank Shoulder Tap,
+Stability Ball Rollout.

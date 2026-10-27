@@ -40,6 +40,8 @@ JOINTS = ["support_TrapeziusUpper_L", "head", "neck", "chest", "spine", "pelvis"
 # plus every joint the lifts' callouts track (parse_anns.py output, if made)
 if os.path.exists(os.path.join(LAB, "anns.json")):
     JOINTS += sorted({a["joint"] for e in json.load(open(os.path.join(LAB, "anns.json"))).values() for a in e["anns"]} - set(JOINTS))
+# EXTRA_JOINTS="a,b": more joints to project, for re-targeting a dot (2026-10-27)
+JOINTS += [j for j in os.environ.get("EXTRA_JOINTS", "").split(",") if j and j not in JOINTS]
 B = json.load(open("/Users/sammanhcuong/Developer/GymWorkout/Tools/fault-review/bottoms.json"))
 
 

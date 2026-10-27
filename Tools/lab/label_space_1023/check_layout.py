@@ -26,6 +26,7 @@ P = json.load(open(os.path.join(LAB, 'proj_at.json')))[NAME]
 Wd = json.load(open(os.path.join(LAB, 'widths.json')))
 PH = Wd['height']
 FACE_R, HAND_R = 24.0, 15.0
+OWN_LEADER = float(os.environ.get('OWN_LEADER', 25))   # pt of its own leader a pill may hide
 _sd = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'GymWorkout', 'Models', 'SampleData.swift')).read()
 _st = _sd[_sd.index('stancesByExercise'):]
 STANCE = NAME in set(re.findall(r'^        "([^"]+)": \[\n            ExerciseStance\(', _st, re.M))
@@ -87,6 +88,20 @@ def seg_hits_rect(p, q, r, pad=0.0):
     return True
 
 
+def seg_len_in_rect(p, q, r):
+    """Length of the segment p-q inside the rect (pt)."""
+    dx, dy = q[0] - p[0], q[1] - p[1]
+    t0, t1 = 0.0, 1.0
+    for pk, qk in ((-dx, p[0] - r[0]), (dx, r[2] - p[0]), (-dy, p[1] - r[1]), (dy, r[3] - p[1])):
+        if pk == 0:
+            if qk < 0:
+                return 0.0
+        else:
+            t = qk / pk
+            t0, t1 = (max(t0, t), t1) if pk < 0 else (t0, min(t1, t))
+    return max(0.0, t1 - t0) * (dx * dx + dy * dy) ** 0.5
+
+
 def seg_dist(p, q, c):
     """Distance from point c to the segment p-q."""
     dx, dy = q[0] - p[0], q[1] - p[1]
@@ -110,10 +125,12 @@ pills = []
 for a in anns[NAME]['anns']:
     m = MOVES.get(a['label'])
     x, y, side = (m['x'], m['y'], m['side']) if m else (a['x'], a['y'], a['side'])
+    jt = (m or {}).get('joint') or a['joint']   # a move may re-target the dot (2026-10-27)
+    assert jt in J[NAME], '%s: %s is not in joints.json (re-run proj_at.py)' % (a['label'], jt)
     w = Wd['widths'][a['label']]
     ax, ay = clamp(x * VW, y * CH, side, w)
-    pills.append(dict(label=a['label'], joint=a['joint'], rect=pill_rect(ax, ay, side, w), anchor=(ax, ay),
-                      dots=[scene(u, v) for u, v in J[NAME].get(a['joint'], [])]))
+    pills.append(dict(label=a['label'], joint=jt, rect=pill_rect(ax, ay, side, w), anchor=(ax, ay),
+                      dots=[scene(u, v) for u, v in J[NAME].get(jt, [])]))
 issues = []
 # The head joint sits at the base of the skull, 20-40 pt behind the face:
 # the head is a disc carried 0.75 of the neck-to-head bone past the joint,
@@ -185,6 +202,17 @@ for p in pills:
             if r[0] + 2 <= d[0] <= r[2] - 2 and r[1] + 2 <= d[1] <= r[3] - 2:
                 issues.append('%s: its own dot under it at %.2f s' % (p['label'], times[k]))
                 break
+    # The leader starts at the anchor, mid-height at the pill's end, and is
+    # drawn under the see-through pill: a dot behind the anchor (up-left of
+    # a leading pill's right end, ...) sends it back across the pill's own
+    # body. Across a corner it barely shows; past ~25 pt it runs over the
+    # text (Dumbbell Front Raise's stance pill, ~45 pt on the real shots,
+    # 2026-10-27).
+    r = p['rect']
+    inner = (r[0] + 3, r[1] + 2, r[2] - 3, r[3] - 2)
+    for k, d in enumerate(p['dots']):
+        if seg_len_in_rect(p['anchor'], d, inner) > OWN_LEADER:
+            issues.append('%s: leader back across its own pill at %.2f s' % (p['label'], times[k]))
     if p['joint'] not in ('head', 'neck'):
         for k, d in enumerate(p['dots']):
             if k < len(face) and seg_dist(p['anchor'], d, face[k][1]) < face[k][2] * 0.7:

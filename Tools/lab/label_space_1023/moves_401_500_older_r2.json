@@ -1,0 +1,7 @@
+{
+ "Dumbbell Front Raise": {
+  "Knees soft, feet hip-width": {"x": 0.850, "y": 0.910, "side": "leading"},
+  "Stop at shoulder height": {"x": 0.450, "y": 0.570, "side": "leading"}
+ },
+ "Dumbbell Shoulder Press": {"Elbows slightly forward": {"x": 0.021, "y": 0.570, "side": "trailing"}}
+}

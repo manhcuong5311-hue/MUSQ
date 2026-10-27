@@ -24,8 +24,14 @@ VH = 655
 TOP = 351                 # the card's top in px under a one-line subtitle
 BOTTOM = TOP + 3 * VH     # where every card ends (the sheet's top)
 anns = json.load(open(LAB + '/anns.json'))
+# Stance pickers keep check_layout.py's 382 x 581 card: their picker reads
+# here as a ~644 pt card (Hack Squat (Stances), 2026-10-27).
+_sd = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'GymWorkout', 'Models', 'SampleData.swift')).read()
+STANCE = set(re.findall(r'^        "([^"]+)": \[\n            ExerciseStance\(', _sd[_sd.index('stancesByExercise'):], re.M))
 out = {}
 for n in anns:
+    if n in STANCE:
+        continue
     p = os.path.join(SH, re.sub('[^a-z0-9]+', '-', n.lower()) + '_t0.png')
     if not os.path.exists(p):
         continue

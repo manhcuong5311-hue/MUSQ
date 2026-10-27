@@ -40,12 +40,13 @@ for n in names:
         q = re.findall(r'"([^"]*)"', s)
         if len(q) < 3: continue          # the helper's own definition, not a call
         cue, label, joint = q[:3]
-        sl = re.search(r'slot: (?:(\w+)|\(x: ([\d.]+) / 382\.0, y: ([\d.]+) / 567\.0\))', s)
+        # the older back lifts write their slots over 655, not 567 (2026-10-27)
+        sl = re.search(r'slot: (?:(\w+)|\(x: ([\d.]+) / ([\d.]+), y: ([\d.]+) / ([\d.]+)\))', s)
         if sl[1]:
             m = re.search(r'static let %s = \(x: ([\d.]+) / 382\.0, y: ([\d.]+) / 567\.0\)' % sl[1], src)
             x, y = float(m[1]) / 382, float(m[2]) / 567
         else:
-            x, y = float(sl[2]) / 382, float(sl[3]) / 567
+            x, y = float(sl[2]) / float(sl[3]), float(sl[4]) / float(sl[5])
         side = (re.search(r'side: \.(\w+)', s) or [None, 'leading'])[1]
         rows.append(dict(cue=cue, label=label, x=x, y=y, side=side, joint=joint))
     for s in calls(src[a:b], 'CueAnnotation'):

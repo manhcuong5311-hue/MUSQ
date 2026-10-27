@@ -45,6 +45,23 @@ GROUP_ROWS = {
 }
 
 
+MESH_GROUP = {}
+
+
+def mesh_groups():
+    """Mesh -> group, read off a model on the current rig (2026-10-27): some
+    older and female models light single muscles with their own materials
+    (S50_Focus_GluteusMedius, HS_04_wide_stance_VastusMedialis_L_0, ...)."""
+    if not MESH_GROUP:
+        st = Usd.Stage.Open(M + "Legs/GluteBridge.usdc")
+        for p in st.Traverse():
+            m, _ = UsdShade.MaterialBindingAPI(p).ComputeBoundMaterial() if p.GetTypeName() == "Mesh" else (None, None)
+            mm = m and re.match(r"FF_Highlight_(.+?)(?:_[LR])?(?:_\d+)?$", m.GetPrim().GetName())
+            if mm:
+                MESH_GROUP[re.sub(r"_Mesh(_\d{3})?$", "", p.GetName())] = mm.group(1)
+    return MESH_GROUP
+
+
 def groups(path):
     """{group: {side: level}} of one model file."""
     st = Usd.Stage.Open(path)
@@ -58,6 +75,9 @@ def groups(path):
             continue
         mm = re.match(r"(?:FF_Highlight|DARK_Muscle)_(.+?)(?:_([LR]))?(?:_\d+)?$", m.GetPrim().GetName())
         sh = m.GetPrim().GetChild("Principled_BSDF")
+        if not mm and sh:
+            g = mesh_groups().get(re.sub(r"_Mesh(_\d{3})?$", "", p.GetName()))
+            mm = g and re.match(r"(.+)()$", g)
         if not mm or not sh:
             continue
         a, e = sh.GetAttribute("inputs:diffuseColor"), sh.GetAttribute("inputs:emissiveColor")
