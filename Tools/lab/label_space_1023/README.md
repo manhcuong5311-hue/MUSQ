@@ -123,3 +123,35 @@ wrists neutral", Powell Raise "Arm long, elbow soft", Rear Delt Row
 behind a plate for a moment (Viking Press's right hand, the 21s Curl's and
 Barbell Preacher Curl's far arm, Dumbbell Reverse Curl's shoulder at the
 top).
+
+Exercises 300-400 (2026-10-25): the same pass for the Desktop "From 316"
+swap (e79db48), 49 lifts with content, now under the 2026-10-25 "Charcoal"
+model look (a dark grey lifter on a lighter grey studio). Two more checker
+fixes:
+- `cards.py` looked for the card's top in one pixel column, and the Smith
+  rack's white upright runs up that column under the new look (Smith
+  Machine Split Squat read 539.7 pt); it now takes the earliest dark row of
+  six columns. Every card of this batch is 655 pt.
+- Cable Hip Adduction and Cable Standing Leg Curl project 22 pt right of
+  their real dots, the cause not found (like 1-100's Assisted Dip).
+  `dots_check.py` now writes each lift's median shift past 3 pt to
+  `dot_offsets.json`, and `check_layout.py` adds it; Cable Standing Leg
+  Curl's "leader under a pill" was that shift.
+With them, 31 lifts checked clean and 18 had a pill on a fist, a leader
+across the face or through another dot, or crossing leaders; the ghost
+review added Smith Machine Hip Thrust, whose dots sat on the Smith upright,
+the bar pad, the hand and a white shoe. One agent laid out each lift and
+another verified it (three corrected): 46 pills moved on 19 lifts
+(`moves_300_400.json`) and six dots track another joint
+(`joints_300_400.json`): Good Morning's "Bar on the traps" the right trap
+(it tracked the left hand, which passes over the face at the bottom),
+Machine Hip Thrust's "Roller on hip crease" the right hand at the roller's
+end (the left passed in front of the face), and on Smith Machine Hip Thrust
+"Ribs down, spine neutral" the spine, "Back pivots on the bench" the chest
+(the back never shows from this camera), "Pad on the hip crease" the lower
+pec's support point (it lands on the bar pad) and "Shins vertical at the
+top" the knee. All 49 lifts now check clean; shot in the rebuilt app at six
+moments, the 19 relaid lifts each passed a checker on the real shots.
+Left: white dots on white shoes (Assisted Nordic Curl's ankles, Banded Hip
+Abduction's and Machine Hip Thrust's feet) and dots that slip behind an
+arm for a moment (B-Stance Romanian Deadlift's hip and back at the top).

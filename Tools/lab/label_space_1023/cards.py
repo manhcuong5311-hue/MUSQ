@@ -9,6 +9,9 @@
 # are that rule). Offline checks that assume 655 put the short cards'
 # joints up to ~3 pt off sideways, and dots_check.py's fixed top read them
 # ~7 pt low (Cable Front Raise ~21 pt).
+# dots_check.py also writes <lab>/dot_offsets.json, the median shift of a
+# lift's real dots from these projections where it passes 3 pt (an unknown
+# misprojection, e.g. the cable stations' 22 pt); check_layout.py adds it.
 # Reads <shots dir>/<slug>_t0.png (3x, from shoot_trainer.sh); writes
 # <lab>/cards.json {"Lift": {"top": <card top in px>, "h": <height in pt>}}.
 # System python (PIL).
@@ -27,9 +30,13 @@ for n in anns:
     if not os.path.exists(p):
         continue
     im = Image.open(p).convert('RGB')
-    # x = 1000 px: right of the picker's dark segment, left of the buttons,
-    # clear of the rounded corner
-    top = next(y for y in range(200, im.size[1]) if sum(im.getpixel((1000, y))) < 3 * 170)
+    # Columns right of the picker's dark segment and the subtitle, left of
+    # the buttons, clear of the rounded corner. Light equipment can run up
+    # one column past the card's top (the Smith rack's white upright under
+    # the 2026-10-25 Charcoal look), so the earliest dark row of several
+    # wins.
+    top = min(next((y for y in range(330, 1200) if sum(im.getpixel((x, y))) < 3 * 170), 9999)
+              for x in (760, 820, 880, 940, 1000, 1060))
     out[n] = dict(top=top, h=round((BOTTOM - top) / 3, 1))
 json.dump(out, open(LAB + '/cards.json', 'w'), indent=1)
 short = {n: c['h'] for n, c in out.items() if abs(c['h'] - VH) > 2}

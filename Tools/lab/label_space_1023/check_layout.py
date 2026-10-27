@@ -41,10 +41,16 @@ if CARD:
     CH = CARD['h']
 
 
+# Where dots_check.py measured a lift's real dots off the projection (an
+# unknown misprojection, e.g. the cable stations' 22 pt), shift by it.
+_offs = os.path.join(LAB, 'dot_offsets.json')
+DX, DY = json.load(open(_offs)).get(NAME, (0.0, 0.0)) if os.path.exists(_offs) else (0.0, 0.0)
+
+
 def scene(u, v):
     if CARD:
-        return ((0.5 + (u - 0.5) * CH / VH) * VW, v * CH)
-    return (KS * u * VW + CX, KS * v * VH)
+        return ((0.5 + (u - 0.5) * CH / VH) * VW + DX, v * CH + DY)
+    return (KS * u * VW + CX + DX, KS * v * VH + DY)
 
 
 def clamp(ax, ay, side, w):

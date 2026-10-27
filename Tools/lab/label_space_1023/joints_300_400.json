@@ -1,0 +1,14 @@
+{
+ "Good Morning": {
+  "Bar on the traps": "support_TrapeziusUpper_R"
+ },
+ "Machine Hip Thrust": {
+  "Roller on hip crease": "hand_R"
+ },
+ "Smith Machine Hip Thrust": {
+  "Ribs down, spine neutral": "spine",
+  "Back pivots on the bench": "chest",
+  "Pad on the hip crease": "support_PectoralisMajor_Abdominal_R",
+  "Shins vertical at the top": "shin_L"
+ }
+}

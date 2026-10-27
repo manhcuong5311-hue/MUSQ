@@ -811,3 +811,27 @@ rules as for 1-200; what was new here:
   upper trapezius.
 - The carries keep their grip cue ("Crush the handles"): a hard grip is
   still the technique, though the forearms are no longer painted.
+
+Muscle rows follow the paint, exercises 300-400 (2026-10-25): the same pass
+for the Desktop "From 316" swap (e79db48, exports 316-325 and 356-400; no
+357, which keeps its older model and already matched): 53 models, 49 with
+content. `Tools/lab/paint_rows.py` at `e79db48^` flagged 37; one author and
+one adversarial verifier each, as for 1-200 (the verifiers corrected 19),
+applied with `Tools/lab/apply_rows.py`; the report re-run leaves only the
+faint calves on the Assisted Nordic Curl and Cable Standing Leg Curl, whose
+Gastrocnemius rows are already LOW. What the re-paint did, and the rows:
+- Split squats and lunges: the glutes bright with the adductors unlit, so
+  the Gluteus Maximus and Medius rows are primary (fractions kept) and the
+  Hamstrings rows, unpainted, are gone.
+- RDLs, good mornings and the kettlebell lifts: the erectors bright, so
+  Erector Spinae is primary; the dim adductors got "Adductors" rows on 19
+  lifts, sourced where a study recorded them (Mo et al. 2023, Front Physiol
+  14:1264604, the stance leg's adductor longus in dumbbell single-leg RDLs)
+  and otherwise estimates said so in the comment (the Lee et al. 2018 and
+  Delgado et al. 2019 RDL studies recorded no adductor).
+- Hip thrusts and frog pumps drop their Quadriceps and Erector Spinae rows
+  (and the Single-Leg Hip Thrust its Hip Flexors); the kettlebell and
+  dumbbell deadlifts their Forearms rows; the nordics their Gluteus Maximus;
+  the Kettlebell Swing's hamstrings go to secondary; the 45-Degree Hip
+  Extension's hamstrings to primary; the Glute-Ham Raise gains an Erector
+  Spinae row for its dim lower back.

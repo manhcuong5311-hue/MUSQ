@@ -54,7 +54,12 @@ for f in sorted(glob.glob(SH + '/*_t*.png')):
             x, y = (0.5 + (u - 0.5) * R) * VW, v * c['h']
         d = min(D, key=lambda q: (q[0] - x) ** 2 + (q[1] - y) ** 2)
         by.setdefault(n, []).append((d[0] - x, d[1] - y))
+offsets = {}
 for n, o in sorted(by.items()):
     mx = statistics.median(a for a, b in o); my = statistics.median(b for a, b in o)
     flag = '  <-- OFF' if (mx * mx + my * my) ** 0.5 > 6 else ''
     print('%-36s n=%2d median offset (%6.1f, %6.1f) pt%s' % (n, len(o), mx, my, flag))
+    if (mx * mx + my * my) ** 0.5 > 3 and len(o) >= 6:
+        offsets[n] = [round(mx, 1), round(my, 1)]
+# the shift check_layout.py adds to the projected joints (pt in the card)
+json.dump(offsets, open(LAB + '/dot_offsets.json', 'w'), indent=1)

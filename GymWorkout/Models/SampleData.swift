@@ -26345,21 +26345,19 @@ enum SampleData {
     static let forwardLungeContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "step", label: "Take a long step",
-                          labelPoint: CGPoint(x: 0.332, y: 0.80),
+                          labelPoint: CGPoint(x: 0.343, y: 0.820),
                           leaderLength: 40, joint: "foot_front"),
             CueAnnotation(cueID: "torso", label: "Chest up, torso tall",
-                          labelPoint: CGPoint(x: 0.609, y: 0.16),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.865, y: 0.145),
                           leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "knee", label: "Knee tracks toes",
-                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          labelPoint: CGPoint(x: 0.347, y: 0.446),
                           leaderLength: 40, joint: "patella_front"),
             CueAnnotation(cueID: "depth", label: "Knees to 90°",
-                          labelPoint: CGPoint(x: 0.726, y: 0.80),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.940, y: 0.820),
                           leaderLength: 40, joint: "patella_back"),
             CueAnnotation(cueID: "drive", label: "Push back",
-                          labelPoint: CGPoint(x: 0.230, y: 0.32),
+                          labelPoint: CGPoint(x: 0.340, y: 0.394),
                           leaderLength: 40, joint: "pelvis")
         ],
         cues: [
@@ -26405,10 +26403,16 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the
+            // 2026-10-19 "From 316" swap): the glutes and quads are now both
+            // bright, so the gluteus maximus and the gluteus medius (part of
+            // the same Glutes paint) are primary beside the quadriceps, with
+            // their fractions kept. The hamstrings, unlit in both the old and
+            // the new paint, left the list; the adductors, dim before, are no
+            // longer lit and stay with the stabilisers.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.46),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.24)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.46),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40)
         ],
         stabilisers: ["adductors", "calves", "core"],
         setup: [
@@ -26496,10 +26500,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the quads and glutes are now both bright, on
+            // both legs (the lunge switches legs between reps), where the model
+            // before it lit the quads bright and the glutes and adductors dim.
+            // So the gluteus maximus and medius (the medius meshes belong to
+            // the glutes group) move from secondary to primary rows, their
+            // fractions kept where the EMG put them. The adductors are no
+            // longer lit and stay with the stabilisers, and the hamstrings row
+            // is gone: the owner leaves the hamstrings unlit, in this model and
+            // the one before it.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.28)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.48)
         ],
         stabilisers: ["adductors", "erector spinae", "calves", "core"],
         setup: [
@@ -26533,9 +26546,8 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_back"),
             CueAnnotation(cueID: "lean", label: "Hinge ~20°, back flat",
-                          labelPoint: CGPoint(x: 0.594, y: 0.52),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "chest"),
+                          labelPoint: CGPoint(x: 0.594, y: 0.505),
+                          labelSide: .trailing, leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "knee", label: "Knee in line",
                           labelPoint: CGPoint(x: 0.274, y: 0.48),
                           leaderLength: 40, joint: "patella_front"),
@@ -26587,10 +26599,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the quadriceps and the glutes bright. The
+            // glutes, dim on the old model, are now primary rows beside the
+            // quadriceps; the gluteus medius, part of the same glute paint, is
+            // listed primary too. Their fractions stay where they were. The
+            // adductors, dim before, are no longer lit (they stay in the
+            // stabilisers), and the hamstrings, unlit in both the old and new
+            // models, left the list.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.42),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.42)
         ],
         stabilisers: ["adductors", "erector spinae", "core"],
         setup: [
@@ -26709,10 +26728,10 @@ enum SampleData {
     static let barbellSplitSquatContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.564, y: 0.07),
+                          labelPoint: CGPoint(x: 0.700, y: 0.100),
                           leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
-                          labelPoint: CGPoint(x: 0.557, y: 0.20),
+                          labelPoint: CGPoint(x: 0.545, y: 0.540),
                           labelSide: .trailing, leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "torso", label: "Stay tall",
                           labelPoint: CGPoint(x: 0.230, y: 0.32),
@@ -26721,9 +26740,8 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.332, y: 0.48),
                           leaderLength: 40, joint: "patella_L"),
             CueAnnotation(cueID: "depth", label: "Back knee down",
-                          labelPoint: CGPoint(x: 0.697, y: 0.48),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "patella_R"),
+                          labelPoint: CGPoint(x: 0.660, y: 0.595),
+                          labelSide: .trailing, leaderLength: 40, joint: "patella_R"),
             CueAnnotation(cueID: "heel", label: "Heel down",
                           labelPoint: CGPoint(x: 0.230, y: 0.75),
                           leaderLength: 40, joint: "foot_L")
@@ -26779,10 +26797,18 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the quadriceps and glutes (maximus, medius and
+            // minimus meshes) are bright on both legs. The glutes were dim
+            // before, so the Gluteus Maximus and Gluteus Medius rows, one Glutes
+            // paint group, are now primary, their fractions kept where they
+            // were. The adductors, dim before, are no longer lit; they never had
+            // a row and stay with the stabilisers. The hamstrings are unlit, as
+            // they were before the swap, so their row is gone, as on the
+            // Bulgarian split squat.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40)
         ],
         stabilisers: ["adductors", "erector spinae", "calves", "core"],
         setup: [
@@ -26868,10 +26894,18 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the quadriceps and glutes of both legs are now
+            // bright (the glutes were dim before), and the adductors, dim
+            // before, are no longer lit. So the Gluteus Maximus row goes from
+            // secondary to primary, and the Gluteus Medius row, part of the same
+            // glute paint group, goes with it, both fractions kept where the
+            // EMG put them. The Hamstrings row is gone: the hamstrings are
+            // unlit, in this model and the one before it. The adductors stay a
+            // stabiliser.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40)
         ],
         stabilisers: ["adductors", "calves", "forearms", "core"],
         setup: [
@@ -26897,21 +26931,20 @@ enum SampleData {
     static let smithMachineSplitSquatContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.502, y: 0.07),
-                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+                          labelPoint: CGPoint(x: 0.590, y: 0.174),
+                          labelSide: .trailing, leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
-                          labelPoint: CGPoint(x: 0.557, y: 0.20),
-                          labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
+                          labelPoint: CGPoint(x: 0.979, y: 0.460),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "torso", label: "Chest up, hips under",
-                          labelPoint: CGPoint(x: 0.391, y: 0.32),
+                          labelPoint: CGPoint(x: 0.410, y: 0.460),
                           leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "knee", label: "Knee tracks toes",
-                          labelPoint: CGPoint(x: 0.332, y: 0.48),
+                          labelPoint: CGPoint(x: 0.347, y: 0.520),
                           leaderLength: 40, joint: "patella_L"),
             CueAnnotation(cueID: "depth", label: "Back knee down",
-                          labelPoint: CGPoint(x: 0.697, y: 0.48),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "patella_R"),
+                          labelPoint: CGPoint(x: 0.656, y: 0.520),
+                          labelSide: .trailing, leaderLength: 40, joint: "patella_R"),
             CueAnnotation(cueID: "stance", label: "Long stance",
                           labelPoint: CGPoint(x: 0.259, y: 0.75),
                           leaderLength: 40, joint: "foot_L")
@@ -26967,10 +27000,18 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap: the quadriceps and glutes (maximus,
+            // medius and minimus meshes) are bright on both legs (the glutes
+            // were dim before), the adductors (dim before the swap) are no
+            // longer lit, and the hamstrings are not lit (they were not
+            // before either). The bright glutes are now primary rows instead
+            // of secondary, their fractions left where the EMG put them; the
+            // Hamstrings row is gone, and the adductors stay among the
+            // stabilisers.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.34),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.32)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.58),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.34)
         ],
         stabilisers: ["adductors", "calves", "core"],
         setup: [
@@ -27006,9 +27047,8 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.332, y: 0.48),
                           leaderLength: 40, joint: "patella_L"),
             CueAnnotation(cueID: "depth", label: "Back knee down",
-                          labelPoint: CGPoint(x: 0.697, y: 0.48),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "patella_R"),
+                          labelPoint: CGPoint(x: 0.667, y: 0.600),
+                          labelSide: .trailing, leaderLength: 40, joint: "patella_R"),
             CueAnnotation(cueID: "step", label: "Heel down",
                           labelPoint: CGPoint(x: 0.230, y: 0.75),
                           leaderLength: 40, joint: "foot_L")
@@ -27056,10 +27096,17 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap: the front leg's quadriceps stay
+            // bright and the glutes (maximus, medius and minimus meshes), dim
+            // before, are now bright, so the Gluteus Maximus and Gluteus
+            // Medius rows are primary beside the quadriceps (fractions kept
+            // where the EMG put them). The adductors, dim on the old model, are
+            // no longer lit and stay a stabiliser note; the hamstrings, unlit
+            // on both the old and new models, left the list.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.66),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40)
         ],
         stabilisers: ["adductors", "calves", "forearms", "core"],
         setup: [
@@ -27146,15 +27193,16 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-12 model paints the three glutes bright as one group
-            // (dim before) and no longer lights the adductors, so the Gluteus
-            // Maximus row is primary, its fraction left where the EMG put it;
-            // the medius, lit with it, keeps its secondary row (the library's
-            // glute-group convention, as on the Single-Leg Glute Bridge).
+            // The list follows the model's paint (swapped in 2026-10-19 with the
+            // paint unchanged): the front leg's quadriceps and glutes (maximus,
+            // medius and minimus meshes, one group) are bright; the hamstrings
+            // and adductors are unlit. Changes: the Gluteus Medius moves up to
+            // primary with the bright glute group, keeping its 0.44 (ranks follow
+            // the paint, fractions stay where the EMG put them), as on the
+            // Bulgarian Split Squat; the unlit hamstrings lose their row.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44)
         ],
         stabilisers: ["adductors", "calves", "forearms", "core"],
         setup: [
@@ -27251,15 +27299,18 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-12 model paints the three glutes bright as one group
-            // (dim before) and no longer lights the adductors, so the Gluteus
-            // Maximus row is primary, its fraction left where the EMG put it;
-            // the medius, lit with it, keeps its secondary row (the library's
-            // glute-group convention, as on the Single-Leg Glute Bridge).
+            // The list follows the model's paint, swapped in 2026-10-19 with
+            // the paint unchanged: the front leg's quadriceps and the three
+            // glutes (maximus, medius and minimus meshes, one group) are
+            // bright and nothing else is lit. The hamstrings, unlit on this
+            // model, lose their row, and the Gluteus Medius row takes the
+            // bright glute group's primary rank (it was secondary under the
+            // older glute-group convention), as on the Bulgarian Split Squat;
+            // fractions stay where the EMG put them. The adductors, unlit
+            // since the 2026-10-12 model, stay a stabiliser.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.44)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44)
         ],
         stabilisers: ["erector spinae", "adductors", "calves", "core"],
         setup: [
@@ -27285,10 +27336,10 @@ enum SampleData {
     static let smithMachineBulgarianSplitSquatContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar high on the traps",
-                          labelPoint: CGPoint(x: 0.473, y: 0.07),
-                          leaderLength: 40, joint: "support_TrapeziusUpper_L"),
+                          labelPoint: CGPoint(x: 0.590, y: 0.165),
+                          labelSide: .trailing, leaderLength: 40, joint: "support_TrapeziusUpper_L"),
             CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
-                          labelPoint: CGPoint(x: 0.557, y: 0.20),
+                          labelPoint: CGPoint(x: 0.540, y: 0.490),
                           labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "torso", label: "Stay tall",
                           labelPoint: CGPoint(x: 0.230, y: 0.32),
@@ -27356,15 +27407,15 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-12 model paints the three glutes bright as one group
-            // (dim before), the hamstrings dim and the adductors no longer, so
-            // the Gluteus Maximus row is primary, its fraction left where the
-            // EMG put it; the medius, lit with it, keeps its secondary row (the
-            // library's glute-group convention, as on the Single-Leg Glute Bridge).
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: the front leg's quadriceps and glutes stay
+            // bright, but the hamstrings, dim before, are no longer lit, so
+            // their row is gone. The glutes are one paint group, so the
+            // Gluteus Medius row, lit with the maximus, is now primary too (it
+            // was secondary). Fractions left where the EMG put them.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.42),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.34)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.34)
         ],
         stabilisers: ["adductors", "calves", "core"],
         setup: [
@@ -33887,8 +33938,8 @@ enum SampleData {
     static let singleLegRomanianDeadliftContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "back", label: "Long, flat back",
-                          labelPoint: CGPoint(x: 0.318, y: 0.16),
-                          leaderLength: 40, joint: "chest"),
+                          labelPoint: CGPoint(x: 0.540, y: 0.250),
+                          labelSide: .trailing, leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "hinge", label: "Hips back, leg back",
                           labelPoint: CGPoint(x: 0.624, y: 0.32),
                           labelSide: .trailing,
@@ -33947,16 +33998,31 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap: the left hamstrings and glutes stay
+            // bright; the erector spinae go from dim to bright, so they are
+            // primary, their 0.34 kept (an estimate: unloaded, they hold only
+            // the trunk); the quadriceps are no longer lit, so their row (a
+            // 0.25 estimate) is gone; and the adductors (longus, magnus,
+            // gracilis), unlit before, are now dim, so they are a secondary
+            // row instead of a stabiliser. Gluteus maximus and medius 0.60
+            // after DiStefano et al. 2009 (J Orthop Sports Phys Ther
+            // 39:532-540; bodyweight single-limb deadlift, both 59 % MVIC);
+            // the hamstrings, not measured there, just above. No adductor EMG
+            // found for the unloaded lift, so 0.20 is an estimate: with a
+            // dumbbell (about 27 kg) the standing leg's adductor longus
+            // reached 21-35 % MVIC concentric against the biceps femoris'
+            // 113-115 % (Mo et al. 2023, Front Physiol 14:1264604), about
+            // 0.12-0.19 scaled to these hamstrings, put at 0.20 because the
+            // rig also paints the adductor magnus, a hip extensor Mo did not
+            // record.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.60),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.60),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.34),
-            // The 2026-10-12 model paints the quadriceps dim (unlit before). An
-            // estimate: the Romanian Deadlift's 0.36 (Lee et al. 2018's rectus
-            // femoris) scaled as this bodyweight lift's hamstrings are (0.62/0.88).
-            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.25)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.34),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.20)
         ],
-        stabilisers: ["adductors", "obliques", "calves", "core"],
+        stabilisers: ["obliques", "calves", "core"],
         setup: [
             "Stand on your left foot, the whole foot flat and the knee slightly bent, as the model does.",
             "Rest the right toes lightly on the floor just behind you.",
@@ -33980,20 +34046,20 @@ enum SampleData {
     static let barbellSingleLegRomanianDeadliftContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "barpath", label: "Bar close to the leg",
-                          labelPoint: CGPoint(x: 0.391, y: 0.16),
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.576, y: 0.375),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "back", label: "Flat back",
                           labelPoint: CGPoint(x: 0.770, y: 0.16),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "lats", label: "Grip & lats tight",
-                          labelPoint: CGPoint(x: 0.641, y: 0.423),
-                          labelSide: .trailing, leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
+                          labelPoint: CGPoint(x: 0.327, y: 0.690),
+                          leaderLength: 40, joint: "CTRL_finger_middle_01_L"),
             CueAnnotation(cueID: "hinge", label: "Hips back, leg back",
-                          labelPoint: CGPoint(x: 0.602, y: 0.341),
+                          labelPoint: CGPoint(x: 0.597, y: 0.440),
                           labelSide: .trailing, leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "knee", label: "Soft knee",
-                          labelPoint: CGPoint(x: 0.230, y: 0.72),
+                          labelPoint: CGPoint(x: 0.484, y: 0.800),
                           leaderLength: 40, joint: "patella_L"),
             CueAnnotation(cueID: "square", label: "Free toes point down",
                           labelPoint: CGPoint(x: 0.609, y: 0.80),
@@ -34080,16 +34146,14 @@ enum SampleData {
     static let dumbbellSingleLegRomanianDeadliftContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "path", label: "Dumbbells hang straight",
-                          labelPoint: CGPoint(x: 0.435, y: 0.16),
-                          leaderLength: 40, joint: "hand_R"),
+                          labelPoint: CGPoint(x: 0.530, y: 0.380),
+                          labelSide: .trailing, leaderLength: 40, joint: "hand_R"),
             CueAnnotation(cueID: "back", label: "Flat back",
-                          labelPoint: CGPoint(x: 0.770, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "chest"),
+                          labelPoint: CGPoint(x: 0.520, y: 0.320),
+                          labelSide: .trailing, leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "hinge", label: "Hips back, leg back",
-                          labelPoint: CGPoint(x: 0.624, y: 0.32),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "pelvis"),
+                          labelPoint: CGPoint(x: 0.580, y: 0.435),
+                          labelSide: .trailing, leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "knee", label: "Soft knee",
                           labelPoint: CGPoint(x: 0.230, y: 0.72),
                           leaderLength: 40, joint: "patella_L"),
@@ -34141,12 +34205,29 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap: the standing (left) leg's glutes
+            // and hamstrings stay bright, and the erector spinae, dim before,
+            // are now bright too, so Erector Spinae moves up to primary and
+            // keeps its 0.50 (ranks follow the paint, fractions stay where
+            // the EMG put them). The left adductors (longus, magnus,
+            // gracilis), unlit before, are now dim, so Adductors is a new
+            // secondary row and leaves the stabilisers. In a single-leg RDL
+            // with one dumbbell (Mo et al. 2023, Front Physiol 14:1264604;
+            // concentric %MVIC) the biceps femoris reached 113-115 and the
+            // erector spinae 75-103; the adductor longus, the only adductor
+            // recorded, reached 34.9 with the dumbbell on the standing-leg
+            // side and 21.4 with it in the opposite hand, a fifth to a third
+            // of the biceps femoris. Adductors is LOW 0.30, about a third of
+            // these hamstrings, as the rig also paints the adductor magnus,
+            // a hip extensor Mo did not record.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.74),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["adductors", "obliques", "forearms", "core"],
+        stabilisers: ["obliques", "forearms", "core"],
         setup: [
             "Hold a dumbbell in each hand at your sides, palms facing in.",
             "Stand on your left foot, knee slightly bent, as the model does.",
@@ -34170,8 +34251,8 @@ enum SampleData {
     static let bStanceRomanianDeadliftContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "back", label: "Flat back",
-                          labelPoint: CGPoint(x: 0.230, y: 0.16),
-                          leaderLength: 40, joint: "chest"),
+                          labelPoint: CGPoint(x: 0.770, y: 0.220),
+                          labelSide: .trailing, leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "hinge", label: "Hips back",
                           labelPoint: CGPoint(x: 0.770, y: 0.32),
                           labelSide: .trailing,
@@ -34230,12 +34311,27 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap: the left (front) leg's hamstrings
+            // and glutes stay bright, the gluteus medius with them; the
+            // erector spinae go from dim to bright, so they move up to
+            // primary, their 0.50 kept; and the left adductors (longus,
+            // magnus, gracilis), unlit before, are now dim, so they are a
+            // secondary row instead of a stabiliser. No adductor EMG found
+            // for the B-stance itself, so 0.25 is an estimate: on the
+            // dumbbell single-leg RDL (about 27 kg) the standing leg's
+            // adductor longus reached 21-35 % MVIC concentric against the
+            // biceps femoris' 113-115 % (Mo et al. 2023, Front Physiol
+            // 14:1264604), about 0.16-0.25 scaled to these hamstrings, put at
+            // the top because the rig also paints the adductor magnus, a hip
+            // extensor Mo did not record.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.60),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.25)
         ],
-        stabilisers: ["adductors", "obliques", "forearms", "core"],
+        stabilisers: ["obliques", "forearms", "core"],
         setup: [
             "Hold a dumbbell in each hand at your sides, palms facing in.",
             "Stand on your left foot and step the right foot back so its toes are level with your left heel, as the model does.",
@@ -34330,11 +34426,25 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the
+            // 2026-10-19 "From 316" swap): hamstrings, glutes and erector
+            // spinae bright, the adductors dim (before: the erector spinae
+            // dim, the adductors unlit). Erector Spinae moves up from
+            // secondary to primary with its 0.38 kept (ranks follow the
+            // paint, fractions stay where they were), and the adductors move
+            // from the stabilisers to a new LOW row.
+            // Adductors: no normalised EMG found; estimate. The RDL studies
+            // the library cites (Lee et al. 2018, J Exerc Sci Fit 16:87-93;
+            // Delgado et al. 2019, J Strength Cond Res 33:2595-2601) recorded
+            // no adductor, so 0.36 is in line with the dim adductor rows of
+            // the Dumbbell Lateral Step-Up (0.36) and Barbell Thruster (0.38),
+            // just under the erector spinae.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.68),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.38)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.38),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["forearms", "lats", "core", "adductors"],
+        stabilisers: ["forearms", "lats", "core"],
         setup: [
             "Set the bar on the hooks just below hip height and the safety stops below the lowest point of your rep.",
             "Stand under the bar, feet hip-width, so it hangs over the middle of your feet.",
@@ -34420,11 +34530,22 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: the hamstrings and glutes stay bright and the lower
+            // back goes from dim to bright, so Erector Spinae moves up to primary
+            // at its 0.36 (the rank follows the paint, the fraction stays). The
+            // adductors are now lit dim (unlit before), so an Adductors secondary
+            // row is added and "adductors" leaves the stabilisers. No normalised
+            // EMG of the adductors on the RDL was found (Lee et al. 2018, J Exerc
+            // Sci Fit 16:87-93, did not record them), so 0.36 is an estimate: LOW,
+            // like the dim adductors of the Dumbbell Lateral Step-Up (0.36) and
+            // the thrusters (0.38).
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.66),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.36),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["lats", "forearms", "core", "adductors"],
+        stabilisers: ["lats", "forearms", "core"],
         setup: [
             "Set the pulley at its lowest point and clip on a straight bar.",
             "Face the machine and take the bar overhand, hands just outside your thighs.",
@@ -34509,11 +34630,23 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): hamstrings, glutes and now the erector spinae
+            // bright, the adductors dim (unlit before). The erector spinae moves
+            // up to primary and keeps its 0.42 (ranks follow the paint, fractions
+            // stay). The dim adductors get a new secondary row and leave the
+            // stabilisers. No normalised EMG found for the adductors on the
+            // Romanian deadlift: Lee et al. 2018 (J Exerc Sci Fit 16:87-93) and
+            // Delgado et al. 2019 (J Strength Cond Res 33:2595-2601) did not
+            // record them. So 0.38 is an estimate, LOW like the dim adductor
+            // rows of the Barbell Thruster (0.38) and the Dumbbell Lateral
+            // Step-Up (0.36), and below the erector spinae.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.66),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.42)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.42),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38)
         ],
-        stabilisers: ["forearms", "lats", "core", "adductors"],
+        stabilisers: ["forearms", "lats", "core"],
         setup: [
             "Stand with your feet hip-width, the kettlebell on the floor between them.",
             "Squat down, grip the handle overhand with both hands and stand up with it.",
@@ -34537,16 +34670,14 @@ enum SampleData {
     static let dumbbellDeadliftContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "back", label: "Chest up, back flat",
-                          labelPoint: CGPoint(x: 0.376, y: 0.16),
-                          leaderLength: 40, joint: "chest"),
+                          labelPoint: CGPoint(x: 0.623, y: 0.192),
+                          labelSide: .trailing, leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "lockout", label: "Stand tall",
-                          labelPoint: CGPoint(x: 0.756, y: 0.27),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "thigh_L"),
+                          labelPoint: CGPoint(x: 0.769, y: 0.299),
+                          labelSide: .trailing, leaderLength: 40, joint: "thigh_L"),
             CueAnnotation(cueID: "hips", label: "Rise together",
-                          labelPoint: CGPoint(x: 0.712, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "pelvis"),
+                          labelPoint: CGPoint(x: 0.712, y: 0.246),
+                          labelSide: .trailing, leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "knee", label: "Over toes",
                           labelPoint: CGPoint(x: 0.230, y: 0.48),
                           leaderLength: 40, joint: "patella_L"),
@@ -34598,19 +34729,30 @@ enum SampleData {
             )
         ],
         activation: [
-            // The 2026-10-12 model paints the quadriceps bright and the forearms
-            // dim (both unlit before). Estimates: the quadriceps a little under
-            // the Trap Bar Deadlift's 0.78 (the load at the sides, as with a hex
-            // bar, raises vastus lateralis work; Camara et al. 2016) for the
-            // lighter dumbbells; the forearms as on the Trap Bar and Sumo
-            // Deadlifts.
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): glutes, quadriceps and hamstrings bright, the
+            // erector spinae and now the adductors (magnus, longus, gracilis)
+            // dim. The forearms, dim before, are no longer lit, so their row is
+            // gone, and the adductors move from the stabilisers to a secondary
+            // row. In a conventional barbell deadlift at 85% 1RM the adductor
+            // magnus peaked at a median 77.5 %MVC from lift-off to the knees
+            // and 50.8 from the knees to lockout, beside 79.1 and 77.2 for the
+            // gluteus maximus (Hanen et al. 2025, Front Bioeng Biotechnol
+            // 13:1597209). The paint ranks the adductors secondary, so their
+            // 0.50, under the erectors' 0.54 and the Sumo Deadlift's bright
+            // 0.60, is an estimate rather than a value taken from the study.
+            // The quadriceps' 0.70 (an estimate since the 2026-10-12 model
+            // first lit them) sits a little under the Trap Bar Deadlift's 0.78:
+            // the load at the sides, as with a hex bar, raises vastus lateralis
+            // work (Camara et al. 2016, J Strength Cond Res 30:1183-1188), and
+            // the dumbbells are lighter.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.74),
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.56),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.50)
         ],
-        stabilisers: ["adductors", "trapezius", "core"],
+        stabilisers: ["trapezius", "core"],
         setup: [
             "Stand with your feet about hip-width, toes forward, a dumbbell beside each foot.",
             "Push the hips back, bend the knees and grip the dumbbells with the palms facing in.",
@@ -34634,15 +34776,14 @@ enum SampleData {
     static let goodMorningContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "bar", label: "Bar on the traps",
-                          labelPoint: CGPoint(x: 0.332, y: 0.16),
-                          leaderLength: 40, joint: "hand_L"),
+                          labelPoint: CGPoint(x: 0.668, y: 0.245),
+                          labelSide: .trailing, leaderLength: 40, joint: "support_TrapeziusUpper_R"),
             CueAnnotation(cueID: "shelf", label: "Grip tight, elbows down",
                           labelPoint: CGPoint(x: 0.444, y: 0.47),
                           leaderLength: 40, joint: "forearm_L"),
             CueAnnotation(cueID: "back", label: "Neutral spine",
-                          labelPoint: CGPoint(x: 0.712, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "spine"),
+                          labelPoint: CGPoint(x: 0.707, y: 0.471),
+                          labelSide: .trailing, leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "hips", label: "Push the hips back",
                           labelPoint: CGPoint(x: 0.638, y: 0.80),
                           labelSide: .trailing,
@@ -34705,11 +34846,23 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: erector spinae, hamstrings and glutes bright;
+            // adductors dim (before: the glutes dim, the adductors unlit). Gluteus
+            // Maximus moves up from secondary to primary (fraction kept), and the
+            // newly lit adductors get a secondary row, so they leave the
+            // stabilisers. No normalised EMG found for the adductors in a good
+            // morning (Vigotsky et al. 2015, PeerJ 3:e708, recorded only the
+            // hamstrings and the lumbar and thoracic erector spinae), so 0.38 is
+            // an estimate: LOW, under the glutes, level with the thrusters' dim
+            // Adductors rows (0.38) and just above the Dumbbell Lateral Step-Up's
+            // (0.36).
             MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38)
         ],
-        stabilisers: ["core", "upper back", "adductors", "calves"],
+        stabilisers: ["core", "upper back", "calves"],
         setup: [
             "Set the bar in a rack at about shoulder height.",
             "Step under it and rest it high across your upper traps, hands well outside your shoulders.",
@@ -34805,11 +34958,20 @@ enum SampleData {
             )
         ],
         activation: [
+            // Re-painted for the 2026-10-19 "From 316" swap; the list follows
+            // the model's paint. The erector spinae and hamstrings stay bright,
+            // the glutes are now bright too (they were dim), so Gluteus Maximus
+            // moves up to primary at its fraction, and the adductors are now
+            // lit dim, so they get a secondary row and leave the stabilisers.
+            // No normalised EMG found for the adductors on a good morning, so
+            // 0.38 is an estimate: LOW, as on the thrusters' dim Adductors
+            // rows, and under the glutes.
             MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38)
         ],
-        stabilisers: ["core", "upper back", "adductors"],
+        stabilisers: ["core", "upper back"],
         setup: [
             "Set a flat bench lengthwise in a rack, with the bar at a height you can take it from while seated.",
             "Straddle the end of the bench with your feet flat, wider than your shoulders.",
@@ -34914,9 +35076,21 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap. The hamstrings and erector spinae stay
+            // bright; the glutes (maximus, medius and minimus meshes), dim
+            // before, are now bright too, so the gluteus maximus becomes a
+            // primary row, its 0.48 kept. The adductors (longus, magnus,
+            // gracilis) are newly lit dim, so a secondary row is added. No
+            // normalised EMG found for the adductors on the good morning
+            // (Vigotsky et al. 2015, PeerJ 3:e708, recorded no adductor), so
+            // 0.38 is an estimate: LOW, under the gluteus maximus, as the
+            // adductor magnus helps extend the flexed hip, and level with the
+            // thrusters' dim adductor rows.
             MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.72),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38)
         ],
         stabilisers: ["core", "upper back", "calves"],
         setup: [
@@ -35003,9 +35177,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the hamstrings bright, the calves dim. The
+            // owner turned the glutes off (dim on the model before), so the
+            // Gluteus Maximus row (0.34) is gone; the glute squeeze that holds
+            // the hips straight stays a cue. Hamstrings and gastrocnemius keep
+            // their ranks and fractions.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.95),
-            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.34)
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["erector spinae", "obliques", "core"],
         setup: [
@@ -35032,12 +35211,11 @@ enum SampleData {
     static let assistedNordicCurlContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "band", label: "Band high on the chest",
-                          labelPoint: CGPoint(x: 0.420, y: 0.80),
+                          labelPoint: CGPoint(x: 0.420, y: 0.825),
                           leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "line", label: "Knees to shoulders in line",
-                          labelPoint: CGPoint(x: 0.521, y: 0.80),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "pelvis"),
+                          labelPoint: CGPoint(x: 0.521, y: 0.825),
+                          labelSide: .trailing, leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "lower", label: "Lower slowly, no drop",
                           labelPoint: CGPoint(x: 0.406, y: 0.16),
                           leaderLength: 40, joint: "head"),
@@ -35046,7 +35224,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
             CueAnnotation(cueID: "hands", label: "Hands ready",
-                          labelPoint: CGPoint(x: 0.259, y: 0.64),
+                          labelPoint: CGPoint(x: 0.390, y: 0.767),
                           leaderLength: 40, joint: "hand_L")
         ],
         cues: [
@@ -35092,9 +35270,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: hamstrings bright; calves faint. The owner turned
+            // the glutes off in the re-paint (they were faint before), so the
+            // Gluteus Maximus row is gone; the gastrocnemius stays a low
+            // secondary row for the faint calves.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.85),
-            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.32),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.22)
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.32)
         ],
         stabilisers: ["erector spinae", "obliques", "core"],
         setup: [
@@ -35182,11 +35364,25 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap: hamstrings bright; calves
+            // (gastrocnemius), glutes and, new in this paint, the erector
+            // spinae dim. The erector spinae was a stabiliser and now gets a
+            // secondary row. No normalised EMG found; estimate: 0.52
+            // (MODERATE). In one study of a loaded glute-ham raise with the
+            // hips held straight (single reps at 85% 1RM), concentric erector
+            // activity (432.0 µV, not normalised) was about twice the good
+            // morning's and the RDL's (216.6 and 217.0; McAllister et al.
+            // 2014, J Strength Cond Res 28:1573-1580). As a judgement the row
+            // sits above the 45-Degree Hip Extension's dim 0.42, and with the
+            // paint only dim it stays MODERATE, well under the Good Morning's
+            // bright 0.80.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.93),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.52),
             MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["erector spinae", "obliques", "core"],
+        stabilisers: ["obliques", "core"],
         setup: [
             "Set the footplate so your kneecaps rest on the pad when your feet are against the plate.",
             "Step onto the plate and lock your ankles between the rollers.",
@@ -35457,9 +35653,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: the working left leg's hamstrings are bright and
+            // its calves faint (gastrocnemius and soleus), nothing else lit. The
+            // old paint's faint left glutes are now unlit, so the Gluteus Medius
+            // row is dropped; Gastrocnemius stays a low secondary (0.34).
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.34),
-            MuscleActivation(name: "Gluteus Medius", rank: .secondary, fraction: 0.20)
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.34)
         ],
         stabilisers: ["gluteus maximus", "gluteus minimus", "quadratus lumborum", "obliques"],
         setup: [
@@ -35678,7 +35878,7 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "range", label: "Left leg almost straight",
-                          labelPoint: CGPoint(x: 0.450, y: 0.72),
+                          labelPoint: CGPoint(x: 0.540, y: 0.710),
                           leaderLength: 40, joint: "patella_L")
         ],
         cues: [
@@ -35812,10 +36012,21 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: the glutes (maximus, medius, minimus) bright, the
+            // hamstrings and the adductors (longus, magnus, gracilis) dim. The
+            // lower back is no longer lit, so the Erector Spinae row goes; the
+            // newly lit adductors get a secondary row. No normalised EMG found
+            // for the adductors on the frog pump or an abducted bridge, so their
+            // fraction is an estimate: LOW, just under the hamstrings', since the
+            // hips sit wide and turned out and the adductor magnus only assists
+            // the extension (the Glute Bridge, Single-Leg Glute Bridge and
+            // Barbell Hip Thrust, whose models leave the adductors unlit, list
+            // them only as stabilisers).
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.85),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.32),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.28)
         ],
         stabilisers: ["deep hip rotators", "core"],
         setup: [
@@ -35902,10 +36113,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: the glutes stay bright (Gluteus Maximus and
+            // Medius primary, fractions kept) and the hamstrings dim, while the
+            // lower back is now unlit and the adductors dim. So the Erector
+            // Spinae row is gone and a secondary Adductors row is added. No
+            // normalised EMG found for the adductors in a frog pump, bridge or
+            // hip thrust; estimate: LOW, just under the hamstrings, the adductor
+            // magnus helping the glutes extend the hip from the wide, turned-out
+            // frog stance.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.87),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.42),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.34),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.32)
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.32),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["deep hip rotators", "forearms", "core"],
         setup: [
@@ -36199,9 +36419,8 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.406, y: 0.16),
                           leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "band", label: "Band around knees",
-                          labelPoint: CGPoint(x: 0.668, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "patella_L"),
+                          labelPoint: CGPoint(x: 0.668, y: 0.240),
+                          labelSide: .trailing, leaderLength: 40, joint: "patella_L"),
             CueAnnotation(cueID: "grip", label: "Hands rest",
                           labelPoint: CGPoint(x: 0.244, y: 0.24),
                           leaderLength: 40, joint: "hand_R"),
@@ -39141,12 +39360,21 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: the glutes (maximus, medius and minimus) bright,
+            // the hamstrings and the adductors (longus, magnus, gracilis) dim.
+            // The re-paint no longer lights the quadriceps (bright before) or
+            // the erector spinae (dim before), so both rows go. The medius and
+            // minimus have no rows and stay among the stabilisers, as before.
+            // The adductors, a stabiliser before, become a secondary row; no
+            // normalised adductor EMG for the hip thrust was found, so 0.36 is
+            // an estimate: LOW, under the hamstrings, like the Dumbbell Lateral
+            // Step-Up's dim adductors.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
             MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "core"],
+        stabilisers: ["gluteus medius", "gluteus minimus", "core"],
         setup: [
             "Sit on the floor with your upper back against the long side of a flat bench, secured so it cannot slide.",
             "Lay a dumbbell across the crease of your hips and hold it by both heads.",
@@ -45372,22 +45600,20 @@ enum SampleData {
     static let smithMachineHipThrustContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "hips", label: "Hips up, torso level",
-                          labelPoint: CGPoint(x: 0.391, y: 0.18),
+                          labelPoint: CGPoint(x: 0.443, y: 0.265),
                           leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "ribs", label: "Ribs down, spine neutral",
-                          labelPoint: CGPoint(x: 0.450, y: 0.12),
-                          leaderLength: 40, joint: "support_PectoralisMajor_Abdominal_R"),
+                          labelPoint: CGPoint(x: 0.467, y: 0.210),
+                          leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "feet", label: "Shins vertical at the top",
-                          labelPoint: CGPoint(x: 0.464, y: 0.74),
-                          leaderLength: 40, joint: "foot_L"),
+                          labelPoint: CGPoint(x: 0.452, y: 0.700),
+                          leaderLength: 40, joint: "shin_L"),
             CueAnnotation(cueID: "bench", label: "Back pivots on the bench",
-                          labelPoint: CGPoint(x: 0.550, y: 0.74),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "scapula_L"),
+                          labelPoint: CGPoint(x: 0.945, y: 0.700),
+                          leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "bar", label: "Pad on the hip crease",
-                          labelPoint: CGPoint(x: 0.594, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L")
+                          labelPoint: CGPoint(x: 0.576, y: 0.210),
+                          labelSide: .trailing, leaderLength: 40, joint: "support_PectoralisMajor_Abdominal_R")
         ],
         cues: [
             TechniqueCue(
@@ -45432,12 +45658,20 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap: the glutes (maximus, medius and
+            // minimus) bright, the hamstrings and the adductors (longus,
+            // magnus, gracilis) dim. Changed: the quadriceps (bright before)
+            // and the erector spinae (dim before) are unlit now, so both rows
+            // go; the adductors move from the stabilisers to a new secondary
+            // row. No normalised hip thrust EMG of the adductors found, so its
+            // fraction is an estimate: LOW, below the dim hamstrings' 0.45 and
+            // the same as the Dumbbell Lateral Step-Up's dim adductors.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
             MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "core"],
+        stabilisers: ["gluteus medius", "gluteus minimus", "core"],
         setup: [
             "Set a flat bench about 40 cm high lengthwise behind the Smith bar, far enough back that the bar will sit over your hips.",
             "Wrap the middle of the bar in a thick pad and set the safety stops just below the bar's lowest point.",
@@ -45476,9 +45710,8 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L"),
             CueAnnotation(cueID: "roller", label: "Roller on hip crease",
-                          labelPoint: CGPoint(x: 0.609, y: 0.21),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "hand_L")
+                          labelPoint: CGPoint(x: 0.402, y: 0.215),
+                          leaderLength: 40, joint: "hand_R")
         ],
         cues: [
             TechniqueCue(
@@ -45523,12 +45756,26 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: the glutes (maximus, medius, minimus) bright, the
+            // hamstrings dim as before and the adductors (longus, magnus,
+            // gracilis) now dim too. Changed: the quadriceps (bright before) and
+            // the lower back (dim before) are unlit, so the Quadriceps and
+            // Erector Spinae rows are gone, and the adductors become a new
+            // secondary row and leave the stabilisers. Gluteus Maximus and
+            // Hamstrings keep their ranks and fractions; the medius and minimus
+            // stay among the stabilisers. No normalised EMG of the adductors
+            // found for any hip thrust (the 2019 review of barbell hip thrust
+            // EMG, Neto et al., J Sports Sci Med 18:198-206, lists none), so
+            // 0.36 is an estimate: LOW, below the hamstrings, as on the
+            // Dumbbell Lateral Step-Up. Hip thrust training also grew the
+            // adductors less than squatting did (Plotkin et al. 2023, Front
+            // Physiol 14:1279170).
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
             MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "core"],
+        stabilisers: ["gluteus medius", "gluteus minimus", "core"],
         setup: [
             "Load plates on the machine's horn and sit on its low seat with your back to the back pad.",
             "Lean back so the edge of the back pad sits under the lower tips of your shoulder blades.",
@@ -45612,11 +45859,14 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the
+            // 2026-10-19 "From 316" swap: the working (left) leg's glutes
+            // bright and its hamstrings dim. The re-paint no longer lights the
+            // quadriceps, the free leg's hip flexors or the lower back, so the
+            // Quadriceps, Hip Flexors and Erector Spinae rows go; the gluteus
+            // maximus and the hamstrings keep their ranks and fractions.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "obliques"],
         setup: [
@@ -45702,10 +45952,15 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the glutes bright and the hamstrings dim, both
+            // on the working left leg. The quadriceps row goes (the model no
+            // longer lights the quads, bright before) and so does the erector
+            // spinae row (the lower back, dim before, is now unlit); the
+            // gluteus maximus and hamstrings rows keep their ranks and
+            // fractions.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.90),
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.55),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["gluteus medius", "gluteus minimus", "adductors", "core"],
         setup: [
@@ -45732,15 +45987,13 @@ enum SampleData {
     static let cablePullThroughContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "hinge", label: "Hips back",
-                          labelPoint: CGPoint(x: 0.770, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "pelvis"),
+                          labelPoint: CGPoint(x: 0.735, y: 0.340),
+                          labelSide: .trailing, leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "back", label: "Back flat",
-                          labelPoint: CGPoint(x: 0.770, y: 0.32),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "spine"),
+                          labelPoint: CGPoint(x: 0.735, y: 0.270),
+                          labelSide: .trailing, leaderLength: 40, joint: "spine"),
             CueAnnotation(cueID: "top", label: "Stand tall at the top",
-                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          labelPoint: CGPoint(x: 0.390, y: 0.100),
                           leaderLength: 40, joint: "head"),
             CueAnnotation(cueID: "arms", label: "Arms stay long",
                           labelPoint: CGPoint(x: 0.303, y: 0.48),
@@ -45793,11 +46046,24 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, re-painted for the 2026-10-19
+            // "From 316" swap: the glutes stay bright (primary) and the
+            // hamstrings and erector spinae dim (secondary), and the adductors
+            // are now lit dim too, so they get a secondary row and leave the
+            // stabilisers. The glute, hamstring and erector fractions scale the
+            // library RDL's by Dicus et al. 2023 (Int J Exerc Sci), which
+            // recorded no adductor on its three hinges. No normalised EMG found
+            // for the adductors on the pull-through (StrengthLog names them a
+            // secondary muscle of the lift), so 0.36 is an estimate: LOW, like
+            // the dim adductor rows on the thrusters (0.38) and the lateral
+            // step-up (0.36), and a little above the erector spinae since the
+            // adductor magnus helps extend the hip out of the deep hinge.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.36),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.34)
         ],
-        stabilisers: ["adductors", "gluteus medius", "core", "forearms"],
+        stabilisers: ["gluteus medius", "core", "forearms"],
         setup: [
             "Attach a rope to a low pulley and stand facing away from the stack.",
             "Reach down and take the rope ends between your legs, palms facing each other.",
@@ -45833,9 +46099,8 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "patella_L"),
             CueAnnotation(cueID: "lower", label: "Lower slowly, no swing",
-                          labelPoint: CGPoint(x: 0.580, y: 0.80),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "shin_L"),
+                          labelPoint: CGPoint(x: 0.360, y: 0.800),
+                          labelSide: .trailing, leaderLength: 40, joint: "shin_L"),
             CueAnnotation(cueID: "grip", label: "Hold the grips",
                           labelPoint: CGPoint(x: 0.303, y: 0.80),
                           leaderLength: 40, joint: "hand_L")
@@ -45883,9 +46148,15 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the glutes and now the erectors bright, the
+            // hamstrings dim. So the Erector Spinae row moves up from secondary
+            // to primary (its 0.50 kept where the EMG put it). The hamstrings
+            // stay a secondary row at 0.90, above the glutes' 0.86, because
+            // the paint keeps them dim.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.90),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.90)
         ],
         stabilisers: ["rectus abdominis", "obliques"],
         setup: [
@@ -46063,8 +46334,19 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the glutes and hamstrings bright, the lower
+            // back dim. The hamstrings were dim before the swap and are bright
+            // now, so their row moves up from secondary to primary with its
+            // 0.90 kept (Andersen et al. 2021, J Sports Sci Med 20(2):181-187,
+            // where the straight-back 45-degree extension drew more biceps
+            // femoris activity than a Romanian deadlift), which puts it above
+            // the glutes' 0.76 (ranks follow the paint, fractions stay where
+            // the EMG put them). The erector spinae stays a dim secondary; the
+            // adductors are still unlit, so the adductor magnus stays in the
+            // stabilisers note.
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.90),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.90),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["adductor magnus", "gluteus medius"],
@@ -46153,13 +46435,27 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the glutes and lower back bright, the hamstrings
+            // and adductors dim. Erector Spinae moves up to primary and
+            // Hamstrings down to secondary, both keeping their fractions (ranks
+            // follow the paint, fractions stay where the EMG put them): with a
+            // 16 kg bell the gluteals reached about 80% MVC and the low back
+            // extensors about 50% (McGill and Marshall 2012, J Strength Cond Res
+            // 26:16-27), and the swing drew very high semitendinosus activity,
+            // above the biceps femoris (Zebis et al. 2013, Br J Sports Med
+            // 47:1192-1198). The forearms and quadriceps, dim before, are unlit
+            // now, so their rows are gone. The adductors, listed among the
+            // stabilisers before, become a new secondary row: no normalised EMG
+            // of them in the swing was found, so 0.38 is an estimate, LOW like
+            // the thrusters' dim adductor rows (0.38); the adductor magnus
+            // helps the glutes and hamstrings extend the hip.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.35),
-            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.76),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38)
         ],
-        stabilisers: ["gluteus medius", "adductors", "trapezius", "core"],
+        stabilisers: ["gluteus medius", "trapezius", "core"],
         setup: [
             "Stand with your feet a little wider than your shoulders, toes turned slightly out, the kettlebell on the floor about a foot in front of you.",
             "Hinge forward with a flat back and grip the handle with both hands, palms facing down.",
@@ -46244,13 +46540,29 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the
+            // 2026-10-19 "From 316" swap): the glutes, quadriceps and
+            // hamstrings stay bright, the erector spinae (dim before) are now
+            // bright too, the adductors (longus, magnus, gracilis) are newly
+            // dim, and the forearms, dim before, are unlit. Erector Spinae
+            // moves up to primary and keeps its 0.50 (ranks follow the paint,
+            // fractions stay where they were), the Forearms row is gone, and
+            // Adductors is a new secondary row, taken out of the stabilisers.
+            // Adductors: no normalised EMG found for a kettlebell sumo
+            // deadlift (Hanen et al. 2025, Front Bioeng Biotechnol
+            // 13:1597209, recorded the adductor magnus in the barbell sumo
+            // pull but normalised it to the lift's own peak, so it gives no
+            // fraction); 0.44, as on the dumbbell and barbell sumo squats, is
+            // an estimate, below the barbell Sumo Deadlift's bright 0.60. The
+            // other fractions stay judgement calls anchored on the library's
+            // deadlifts, as no kettlebell deadlift EMG exists.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.74),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.56),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.35)
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.44)
         ],
-        stabilisers: ["adductors", "lats", "trapezius", "core"],
+        stabilisers: ["lats", "trapezius", "core"],
         setup: [
             "Stand with your feet well wider than your shoulders, toes turned out about 35 degrees, as the model does.",
             "Set the kettlebell on the floor between your feet, centred and level with the middle of your feet.",
@@ -46337,13 +46649,25 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): glutes and hamstrings bright; erector spinae,
+            // quadriceps and now the adductors dim. Changed: the forearms are
+            // no longer lit, so their row (0.35) is gone, and Adductors is a
+            // new secondary row, taken out of the stabilisers (the adductor
+            // magnus helps extend the hip). No normalised EMG was found for the
+            // adductors in a kettlebell deadlift, so 0.38 is an estimate: LOW,
+            // under the dim quadriceps, as the library's thruster Adductors
+            // rows. Hanen et al. 2025 (Front Bioeng Biotechnol 13:1597209)
+            // recorded the adductor magnus in conventional and sumo barbell
+            // deadlifts but normalised each muscle to its own peak across the
+            // two styles, not to an MVIC, so it gives no comparable fraction.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.74),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.66),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.54),
             MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.35)
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38)
         ],
-        stabilisers: ["adductors", "lats", "trapezius", "core"],
+        stabilisers: ["lats", "trapezius", "core"],
         setup: [
             "Stand with your feet about shoulder-width apart, toes turned slightly out, as the model does.",
             "Set the kettlebell on the floor between your feet, the handle over the middle of your feet.",

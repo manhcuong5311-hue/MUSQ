@@ -337,3 +337,15 @@ skeptics confirmed it:
 The large motion changes of the swap (the Smith Machine and Viking Presses'
 new bars, the Machine Rear Delt Row's new machine, the Cable Rear Delt Row's
 moved station, the walking carries) all left readable ghosts.
+
+Exercises 300-400 ghosts on the re-tuned models (2026-10-25): the same
+review for the Desktop "From 316" swap (e79db48), 49 exercises with content
+(the four new model-only ones have none; the Barbell Single-Leg Romanian
+Deadlift, on its older model, was looked at too), 254 cues, shot with
+`Tools/lab/shoot_ex.sh` and reviewed one reviewer per exercise in two
+batches. 230 were kept and 23 are ring-only by design. One redraw was
+proposed, Cable Standing Leg Curl "hips" (seen from behind, the forward
+shift runs along the line of sight), and the two skeptics split, so it was
+kept, as the rule asks. No ghost changed: the Reverse Hyperextension's legs
+(84 cm), the single-leg RDLs' head (15 cm) and the Single-Leg Hip Thrust's
+arms (28 cm) all moved without leaving their ghosts unreadable.
