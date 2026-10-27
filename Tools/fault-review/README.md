@@ -360,7 +360,7 @@ the rest kept their motion exactly. One reviewer per group: 303 kept, 61
 ring-only by design, and one redraw proposed and confirmed by both
 skeptics: Hack Squat Calf Raise "top", whose 20° heel drop with the body 5
 cm down the sled bent the knees to ~152° on the new machine and read as
-the "knees" fault. No replacement passed both skeptics in five gated
+the "knees" fault. No stick-foot redraw passed both skeptics in five gated
 tries, each on fresh shots from its own build (the third picked from five
 candidates judged blind by three judges with different lenses):
 - 30° with the body carried back with the ankle: knees straight, but the
@@ -370,16 +370,21 @@ candidates judged blind by three judges with different lenses):
   the sole, and the knees at ~168° hinted at the knees fault (0 of 2).
 - Only the legs drawn, 55°, the hips ~10 cm down the sled: all three judges
   ranked it first of five; its skeptics split (the turned toe tip rises off
-  the platform, and the leg reads a little shifted). It is in the app now.
+  the platform, and the leg reads a little shifted).
 - The same with the foot drawn to a planted toe tip, or to the ball of the
   foot: the yellow foot back along the sole (0 of 2 each).
-The skeptics' remaining point is that the stick foot has no heel: the
-corner of the yellow L lands at the white shoe's heel, so the drop reads
-small. A heel point (ankle, heel, ball) would need a new ghost point
-type; the options, side by side, are in
-`hack_squat_calf_raise_top_options.png`, for the owner. The older models
-outside the swap had their ghosts reviewed when they were made and did not
-change. Mistake-view pills on a face or fist, noted for later (outside the
+The skeptics' point was that a stick foot has no heel: the corner of the
+yellow L lands at the white shoe's heel, so the drop reads small. The ghost
+now has a heel point, `foot_*.heel` (`FaultPose.heelOffset`): the bottom of
+the heel held in the foot bone's own frame, measured on the white sneaker's
+bind pose of the 401-500 rig (~7 cm down the shin's line, ~2.5 cm behind the
+ankle; the rig mirrors the bone's x for the right foot). Drawn as ankle,
+heel and ball, 45° and 55° showed the drop but laid the foot flat on the
+platform ("never rose"); 30°, the hips ~4 cm down the sled and the knees
+~174°, passed both skeptics (heel ~15-21 pt below the shoe's, the foot ~30°
+off the platform against the model's ~60°), while 25° split them. The
+older models outside the swap had their ghosts reviewed when they were made
+and did not change. Mistake-view pills on a face or fist, noted for later (outside the
 trainer-card check): Horizontal Leg Press Calf Raise "seat", Plank
 Shoulder Tap "tempo", Barbell Seated Calf Raise "tempo", Oblique Cable
 Crunch "rope", Cable Side Bend "plane" and "arm".

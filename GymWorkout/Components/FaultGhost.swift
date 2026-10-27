@@ -103,6 +103,12 @@ struct FaultGhost: View {
             let head = SIMD3(m.columns.3.x, m.columns.3.y, m.columns.3.z)
             if name == bone {
                 real[name] = head
+            } else if name.hasSuffix(".heel") {
+                let axes = (0..<3).map { k in
+                    simd_normalize(SIMD3(m[k].x, m[k].y, m[k].z))
+                }
+                let o = FaultPose.heelOffset(bone)
+                real[name] = head + (axes[0] * o.x + axes[1] * o.y + axes[2] * o.z) * frame.torso
             } else {
                 // A bone's +Y runs head to tail in this rig.
                 let along = simd_normalize(SIMD3(m.columns.1.x, m.columns.1.y, m.columns.1.z))

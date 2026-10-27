@@ -68,7 +68,8 @@ enum FaultStrength {
 /// Joint names are the rig's (`upper_arm_L` is the shoulder, `forearm_L` the
 /// elbow, `hand_L` the wrist, `thigh_L` the hip, `shin_L` the knee, `foot_L`
 /// the ankle). `name.tip` is further along that bone — the middle of the
-/// palm, where a bar sits, for a hand; the toes for a foot. A `*` stands for
+/// palm, where a bar sits, for a hand; the toes for a foot. `foot_L.heel` is
+/// the bottom of the heel, held in the foot bone's own frame. A `*` stands for
 /// both sides: `hand_*` is `hand_L` and `hand_R`. For lifts that alternate
 /// legs, `_front` and `_back` stand for the side whose foot is further ahead
 /// and the other, decided afresh every frame. For lifts that shift from side
@@ -211,14 +212,24 @@ struct FaultPose {
         return nil
     }
 
-    /// `hand_L.tip` → `hand_L`.
+    /// `hand_L.tip` → `hand_L`, `foot_L.heel` → `foot_L`.
     static func bone(_ name: String) -> String {
-        name.hasSuffix(".tip") ? String(name.dropLast(4)) : name
+        if name.hasSuffix(".tip") { return String(name.dropLast(4)) }
+        if name.hasSuffix(".heel") { return String(name.dropLast(5)) }
+        return name
     }
 
     /// Bone length to a tip, in torso lengths.
     static func tipLength(_ bone: String) -> Float {
         bone.hasPrefix("foot") ? 0.38 : 0.2
+    }
+
+    /// The bottom of the heel from the ankle, along the foot bone's own x, y
+    /// and z axes, in torso lengths: ~7 cm down the shin's line and ~2.5 cm
+    /// behind the ankle, measured on the white sneaker's bind pose on the
+    /// 401-500 rig (2026-10-27). The rig mirrors x for the right foot.
+    static func heelOffset(_ bone: String) -> SIMD3<Float> {
+        SIMD3(bone.hasSuffix("_R") ? -0.11 : 0.11, -0.043, -0.092)
     }
 
     // MARK: - Both sides
@@ -11470,20 +11481,19 @@ enum FaultPoses {
             // sled, the knees bending forward, 175° -> ~138° (backward
             // before the nudge, as above).
             "knees": calfStand500SledSinks(0.12),
-            // Stopping short: the feet turned 55° heel-down about the balls of
-            // the feet (158° -> ~96° shin to toe tip, the foot near flat under
-            // the shoe), the hips ~10 cm down the sled along the back pad, the
-            // knees ~176°; only the legs are drawn. (Re-drawn 2026-10-27: on
-            // the 2026-10-21 machine the old 20° and 5 cm down the sled bent
-            // the knees to ~152° and read as the "knees" fault. Of six tries
-            // this one was ranked first by three blind judges and split its
-            // two skeptics: the turned toe tip rises off the platform and the
-            // leg reads a little shifted. Smaller drops, or the foot drawn to
-            // a planted tip or to the ball, left the yellow foot along the
-            // sole; the whole body carried down read as a shifted overlay.)
-            "top": FaultPose(chains: [leg("*"), hips],
-                             moves: [.turn(pivot: "toe_*", points: ["foot_*", "foot_*.tip"], axis: .lateral, degrees: 55),
-                                     .shift(["shin_*", "thigh_*"], up: -0.165), .resolve(["shin_*"])],
+            // Stopping short: the feet turned 30° heel-down about the balls of
+            // the feet (~30° off the platform against the model's ~60°), the
+            // hips ~4 cm down the sled along the back pad, the knees ~174°.
+            // Only the legs are drawn, each foot as ankle, heel and ball, so
+            // the yellow heel hangs ~20 pt below the shoe's. (Re-drawn
+            // 2026-10-27: on the 2026-10-21 machine the old 20° and 5 cm down
+            // the sled bent the knees to ~152° and read as the "knees" fault.
+            // A stick foot without a heel lay along the sole however far it
+            // turned, its corner at the shoe's own heel; with the heel, 45-55°
+            // laid the foot flat on the platform, "never rose".)
+            "top": FaultPose(chains: [["thigh_*", "shin_*", "foot_*", "foot_*.heel", "toe_*"], hips],
+                             moves: [.turn(pivot: "toe_*", points: ["foot_*", "foot_*.heel"], axis: .lateral, degrees: 30),
+                                     .shift(["shin_*", "thigh_*"], up: -0.069), .resolve(["shin_*"])],
                              strength: calfHeelHeight(from: 0.9, to: 0.97)).seen(sledSide),
             // Stopping about level with the platform: the heels 25° up from
             // the stretch (75° -> ~109°), the body ~8 cm up the sled, the
