@@ -177,9 +177,9 @@ final class Purchases {
 
 /// Where the app's legal pages live.
 enum AppLinks {
-    static let privacy = URL(string: "https://manhcuong5311-hue.github.io/musq/privacy.html")!
-    static let terms = URL(string: "https://manhcuong5311-hue.github.io/musq/terms.html")!
-    static let support = URL(string: "https://manhcuong5311-hue.github.io/musq/")!
+    static let privacy = URL(string: "https://musq.app/privacy.html")!
+    static let terms = URL(string: "https://musq.app/terms.html")!
+    static let support = URL(string: "https://musq.app/support/")!
     static let supportEmail = "manhcuong531@gmail.com"
     static let supportMail = URL(string: "mailto:\(supportEmail)?subject=MUSQ%20Support")!
 }
