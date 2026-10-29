@@ -25,6 +25,14 @@
 //  the muscle shapes and the silhouette readable while the worked muscles
 //  stay the hottest thing.
 //
+//  The files dress the male lifter in shorts as near-black as his skin, so
+//  every look painted them the skin's colour and the hips read as one bare
+//  mass with the glutes' red showing through. Since 2026-10-28 the shorts
+//  take a colour of their own per look, a navy darker than the charcoal, and
+//  the glutes under them follow it while they are unlit. The refitted shorts
+//  now cover worked glutes whole, so the fabric over them takes their paint
+//  instead (`ShortsGluteZone`).
+//
 
 import SwiftUI
 import RealityKit
@@ -490,34 +498,86 @@ struct USDZViewport: View {
                       body.baseColor.texture == nil, Self.isNearBlack(body.baseColor.tint) else { continue }
                 skinSlots.original[ObjectIdentifier(mesh), default: [:]][index] = body.baseColor.tint
             }
+            // Only the male bodies wear these shorts, and reading a model's
+            // parts takes up to 2 s on the female ones, so look for the
+            // shorts' entity first.
+            guard model.findEntity(named: "Anatomy_Shorts") != nil else { return }
+            let users = Self.slotUsers(of: mesh)
+            skinSlots.shorts[ObjectIdentifier(mesh)] = Self.shortsSlots(users)
+            skinSlots.wear[ObjectIdentifier(mesh)] = ShortsGluteZone.wear(of: mesh, users: users, unlit: Self.isNearBlack)
         }
         styleBody(in: model)
     }
 
     /// The near-black skin's slots in the models on stage, with the files'
-    /// own tint, so a new look recolours a model in place, without reloading.
+    /// own tint, so a new look recolours a model in place, without reloading;
+    /// which of them dress the shorts; and the glute paint the shorts show.
     private final class SkinSlots {
         var original: [ObjectIdentifier: [Int: UIColor]] = [:]
+        var shorts: [ObjectIdentifier: Set<Int>] = [:]
+        var wear: [ObjectIdentifier: ShortsGluteZone.Wear] = [:]
     }
 
     /// Sets the body's sheen and skin colour from `look`. Matte was the
     /// owner's pick of four glosses on 2026-10-22, so the files' roughness
     /// stays; the Black look keeps the web's sheen instead. The near-black
-    /// skin takes the look's colour, or its own back; the painted muscles and
-    /// textured garments keep theirs.
+    /// skin takes the look's colour, or its own back; the near-black shorts
+    /// take the look's shorts colour and stay matte, as fabric, turning red
+    /// over the glutes when the lift works them (`ShortsGluteZone`); the
+    /// painted muscles and textured garments keep theirs.
     private func styleBody(in model: Entity) {
         let look = look
         bodyMeshes(in: model) { mesh in
             guard var component = mesh.model else { return }
             let skinned = skinSlots.original[ObjectIdentifier(mesh)] ?? [:]
+            let shorts = skinSlots.shorts[ObjectIdentifier(mesh)] ?? []
+            let wear = skinSlots.wear[ObjectIdentifier(mesh)]
             component.materials = component.materials.enumerated().map { index, material in
                 guard var body = material as? PhysicallyBasedMaterial else { return material }
-                body.specular = .init(floatLiteral: look.specular)
-                if let original = skinned[index] { body.baseColor.tint = look.skin ?? original }
+                let original = skinned[index]
+                let fabric = original != nil && shorts.contains(index)
+                body.specular = .init(floatLiteral: fabric ? 0.1 : look.specular)
+                guard let original else { return body }
+                let colour = fabric ? look.shorts : look.skin ?? original
+                if let wear, wear.lit, index == wear.slot,
+                   let texture = ShortsGluteZone.texture(fabric: colour, wear: wear) {
+                    body.baseColor = .init(tint: .white, texture: .init(texture))
+                } else {
+                    body.baseColor = .init(tint: colour)
+                }
                 return body
             }
             mesh.model = component
         }
+    }
+
+    /// The file meshes using each material slot of `mesh`. RealityKit merges
+    /// the skinned body into the rig's one model, so the shorts and glutes
+    /// are no entities of their own; its parts keep the file's mesh names,
+    /// and each names its slot.
+    private static func slotUsers(of mesh: ModelEntity) -> [Int: [String]] {
+        guard let contents = mesh.model?.mesh.contents else { return [:] }
+        var users: [Int: [String]] = [:]
+        for model in contents.models {
+            for part in model.parts { users[part.materialIndex, default: []].append(model.id) }
+        }
+        return users
+    }
+
+    /// The slots that dress the male lifter's shorts (2026-10-28), from
+    /// `slotUsers`: the untextured `Anatomy_Shorts`, and the glutes on a body
+    /// that wears them. The glutes sit wholly under the fabric, and where a
+    /// pose pushes one through it (the shorts follow the hips by skinning
+    /// alone, with no cloth solve) an unlit glute shows in the shorts' colour
+    /// rather than as a patch of skin; a worked glute is painted red, not
+    /// near-black, and keeps its red. A slot counts only if nothing else uses
+    /// it.
+    private static func shortsSlots(_ users: [Int: [String]]) -> Set<Int> {
+        func only(_ prefix: String) -> Set<Int> {
+            Set(users.filter { $0.value.allSatisfy { $0.hasPrefix(prefix) } }.keys)
+        }
+        let shorts = only("Anatomy_Shorts")
+        return shorts.isEmpty ? [] : shorts.union(only("Gluteus"))
     }
 
     /// Every mesh under the rig but the sneakers, so the black shoes of the
@@ -533,9 +593,12 @@ struct USDZViewport: View {
         walk(rig, inSneaker: false)
     }
 
-    /// The files' unpainted skin: a flat near-black grey (0.0075 linear).
-    /// The painted muscles are red and miss this.
-    private static func isNearBlack(_ colour: UIColor) -> Bool {
+    /// The files' unpainted near-black: the skin (0.0075 linear) and the male
+    /// shorts (0.0144, or 0.0116/0.0203/0.0395 navy in the lifts exported
+    /// from the patched .blend files on 2026-10-28, its blue 0.019 above its
+    /// green, just inside the 0.02). The painted muscles are red and miss
+    /// this, so it is also the test for an unlit muscle.
+    nonisolated private static func isNearBlack(_ colour: UIColor) -> Bool {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
         colour.getRed(&r, green: &g, blue: &b, alpha: &a)
         return max(r, g, b) < 0.2 && abs(r - g) < 0.02 && abs(g - b) < 0.02

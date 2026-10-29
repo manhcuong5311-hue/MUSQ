@@ -954,3 +954,47 @@ the skeleton's). `usd_for_app.py` now also turns off the `XRAY_LightRig`
 empty and any top-level prop parked more than 5 m off stage: both demo
 files carried the dumbbells 12.5 m to the side, which drew two specks in
 the side view. The back-bar file had them turned off in place.
+
+Male shorts refit and glute zone (2026-10-28): the male bodies' shorts were
+the raw base mesh (Blender keeps them off the muscles only with render-only
+modifiers), so the glutes showed through them as red patches, standing and
+more in hip hinges, and the adductors through the crotch. In
+`Shared/AnatomyBodyV2.usdc` and `Shared/AnatomyBody.usdc`, `shorts/fix_shorts.py`
+pushed the shorts' rest points out to about 5-6 mm over the muscles and gave
+each vertex near a muscle that muscle's skin weights, and `shorts/fix_crotch.py`
+then moved the crotch gusset down clear of the adductors. Only the shorts'
+points, normals, jointWeights and extent changed; jointIndices stay slot for
+slot, so the 273 slim models that re-index the shorts need no change. Red
+glute pixels through the shorts fell 99% over 12 lifts, crotch pokes 81%.
+Every new male model now takes `shorts/rebase_shorts.py` (the body's refit
+shorts, renumbered into its skeleton) after `one_side_tiers.py` and before
+padding and slimming, and `share_body.py slim` refuses one whose shorts still
+differ from the body's, so the raw shorts cannot come back as overrides. With the glutes now covered,
+`Shared/ShortsGluteMask.png` and `ShortsGluteMaskMedius.png`
+(`shorts/make_mask.py`) mark where the shorts cover each side's gluteus
+maximus and medius over their UVs, and the viewer (`ShortsGluteZone.swift`)
+tints the fabric there with each muscle's paint; the
+shorts themselves get their own navy per look (`ModelLook.shorts`). Re-run the
+three scripts after any new male `share_body.py body` export. Details in
+`shorts/README.md`.
+
+Glute leg lifts re-exported, "legs-1028" (2026-10-28): the 124 male leg
+.blend files on the SSD that light the glutes took the refit shorts, the navy
+and a glute zone that stays out of USD exports (`patch_blend.py`, backups and
+`revert.py` in `BLENDER/_cai_thien_nam_20261028/work/blendpatch/`), and their
+folders were renamed 🔴 for the owner's review. 122 of them feed app models
+(the drive's Single-Leg Glute Bridge, left out on 2026-10-17, and 498B have
+none) and replaced them: exported to `SourceExports/legs-1028/`
+(`_names.tsv`), then `convert_all.py` (legs-1028), `one_side_tiers.py`,
+`shorts/rebase_shorts.py`, `pad_one.sh` and `slim_one.sh` against
+`AnatomyBodyV2.usdc`, all attribute for attribute (131.6 MB in all, as
+before). 115 differ from the models they replace only in the shorts' material
+(navy, which the viewer's `isNearBlack` still takes for the shorts). The Pause
+Squat, Smith Machine Front Squat, Barbell Single-Leg RDL, Leg Press, Glute
+Bridge and Cable Hip Abduction were on the older 205-211-joint rig and now
+carry the current one, with white sneakers and per-side highlight materials;
+the Reverse Hyperextension stores its joint channels differently, every joint
+where it was. The key joints of all seven move as before (0.0 cm; the
+single-leg RDL's left shin 0.9 cm). As their .blend files paint them, the
+single-leg RDL now shows its adductors dim and the Cable Hip Abduction lights
+all of each glute, not the medius alone. Library tiles were not re-shot.

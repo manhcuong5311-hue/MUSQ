@@ -46,6 +46,19 @@ enum ModelLook: String, CaseIterable, Identifiable {
         }
     }
 
+    /// The male shorts' colour on stage (2026-10-28, the owner's pick). The
+    /// files dress the lifter in shorts as near-black as his skin, so every
+    /// look painted them the skin's colour and the hips read as one bare mass,
+    /// the glutes' red showing through it. A navy darker than the skin (a
+    /// cool slate on the black skins) makes body, clothing and the worked
+    /// muscles three separate layers, and keeps the red the only warm thing.
+    var shorts: UIColor {
+        switch self {
+        case .charcoal, .light: return UIColor(hex: 0x1C2738)
+        case .black, .highContrast: return UIColor(hex: 0x263445)
+        }
+    }
+
     /// The skin's specular. Matte where the skin is lifted or the ground does
     /// the work; the web's sheen on the black, which is what shows its muscle
     /// shapes there.

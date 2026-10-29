@@ -24,6 +24,13 @@ from pxr import Sdf, Usd
 BODY = "AnatomyBody.usdc"
 RIG = Sdf.Path("/root/Anatomy_MasterRig")
 MATERIALS = Sdf.Path("/root/_materials")
+# The male shorts were refitted in the shared bodies (2026-10-28,
+# shorts/README.md). A model must carry exactly the body's shorts, renumbered
+# into its own skeleton (shorts/rebase_shorts.py); a slim refuses one whose
+# shorts still differ, which would override the refit (or, with the weights 4
+# to a vertex against the body's 5, break the skinning).
+SHORTS = Sdf.Path("/root/Anatomy_MasterRig/Anatomy_Shorts/Anatomy_Shorts_Surface")
+SHORTS_REFIT = ("points", "normals", "extent", "primvars:skel:jointWeights")
 
 
 def load(path):
@@ -110,6 +117,9 @@ def slim(src, body_path, out):
             theirs = other.properties.get(prop.name)
             if theirs is not None and same_property(prop, theirs, layer, base):
                 spec.RemoveProperty(prop)
+            elif spec.path == SHORTS and prop.name in SHORTS_REFIT:
+                raise SystemExit(f"{src}: shorts {prop.name} differ from the body's refit; "
+                                 f"run shorts/rebase_shorts.py {body_path} {src} first")
         if spec.path == Sdf.Path("/root"):
             continue
         spec.specifier = Sdf.SpecifierOver
