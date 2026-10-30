@@ -2666,5 +2666,31 @@ SETUP = {
         "Brace your trunk and squeeze your glutes before you dip.",
         "Between reps, take the bar back on your shoulders with your knees soft and let them bend to absorb it before the next dip.",
     ],
+    "Box Jump": [
+        "Pick a box with room for both whole feet on top and low enough that you can land on it with your knees bending - around 12 to 18 inches if it is new to you - and check that it will not slide or tip.",
+        "Stand facing it, about a foot's length back from its near face.",
+        "Clear the floor between you and the box, give yourself room to step down beside it, and jump early in the session while your legs are fresh.",
+        "Brace your trunk and let your arms hang loose and a little wide, ready to swing back.",
+        "Between reps step off the box one foot at a time rather than jumping down, and if a jump comes up short let your feet miss the box rather than reaching for the edge.",
+    ],
+    "Step-Up Jump": [
+        "Set a box a little below knee height in front of you and check that it will not slide, tip or flex when you land on it with one foot.",
+        "Place the whole of one foot flat on the box with the heel on the surface.",
+        "Lean forward a little over the box foot so your weight sits on it, let your arms hang, and brace your trunk.",
+        "Learn it as a step with no jump first, and if a jump comes up short, step down onto the floor rather than reaching for the edge of the box.",
+        "Between reps lower the box foot under control and put the other foot back on the same spot on the floor, then reset before the next one.",
+    ],
+    "Squat Jump": [
+        "Stand with your feet a little inside shoulder width, toes pointing forward or turned out slightly, weight over the whole foot.",
+        "Let your arms hang at your sides with your elbows long, and brace your trunk.",
+        "Clear a flat, non-slip patch of floor with room overhead, and jump early in the session while your legs are fresh.",
+        "Land with your feet on the same spot and stand still for a moment before the next rep.",
+    ],
+    "Jump Rope": [
+        "Size the rope: stand on the middle of it with one foot and pull the handles up - the tips should reach your armpits and no higher than your shoulders.",
+        "Skip on wood, rubber, a mat or level dirt rather than concrete or tile, in shoes with forefoot padding, with five feet clear each side and two overhead.",
+        "Stand tall with your feet almost together and your eyes straight ahead, and let the rope rest on the floor behind your heels.",
+        "When the rope catches your feet, stop the turn, step it back behind your heels and start again at the pace you were holding rather than a faster one.",
+    ],
     # END Model-only exercises (2026-10-29)
 }

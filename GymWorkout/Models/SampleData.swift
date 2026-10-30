@@ -1984,6 +1984,10 @@ enum SampleData {
         "Barbell Clean and Jerk": barbellCleanAndJerkContent,
         "Split Jerk": splitJerkContent,
         "Push Jerk": pushJerkContent,
+        "Box Jump": boxJumpContent,
+        "Step-Up Jump": stepUpJumpContent,
+        "Squat Jump": squatJumpContent,
+        "Jump Rope": jumpRopeContent,
         // END Model-only exercises (2026-10-29)
     ]
 
@@ -49910,6 +49914,383 @@ enum SampleData {
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.06, cx: 0.48, cy: 0.57),
             .init(DS.activation.opacity(0.50), rx: 0.10, ry: 0.07, cx: 0.47, cy: 0.67),
             .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.05, cx: 0.61, cy: 0.39)
+        ]
+    )
+
+    static let boxJumpContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "setup", label: "Chest up",
+                          labelPoint: CGPoint(x: 0.215, y: 0.80),
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "dip", label: "Dip and swing",
+                          labelPoint: CGPoint(x: 0.288, y: 0.64),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "drive", label: "Heels lift",
+                          labelPoint: CGPoint(x: 0.244, y: 0.32),
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "land", label: "Soft knees",
+                          labelPoint: CGPoint(x: 0.244, y: 0.16),
+                          leaderLength: 40, joint: "patella_R"),
+            CueAnnotation(cueID: "down", label: "Step down",
+                          labelPoint: CGPoint(x: 0.230, y: 0.48),
+                          leaderLength: 40, joint: "foot_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "setup",
+                title: "Start Position",
+                intro: "You stand a short step back from a box that never moves, tall and still, with your arms loose and ready to swing.",
+                why: "In the model this is a held pose and not a wind-up: 61 frames are identical to better than a micron and the stand lasts 2.500 s in every rep. The knees are at 167.02 and 167.06 degrees, the hips 166.12, the trunk 1.58 degrees forward and the pelvis 0.9029 m - and note that the rig stands with about 13 degrees of soft knee, so every flexion figure in this entry is measured from 167.0 and not from straight. The stance is NARROWER than the shoulders: 0.3000 m between the ankles against a shouldergap frozen at 0.3922 m for all 384 frames, which is 76.5%, with each foot 0.1500 m off the midline. The box is a plain block 0.840 m wide, 0.380 m tall and 0.640 m deep that never moves at all - its bounding box and its centroid are bit-identical on every frame and its screen position has a range of 0.000000 - and its front face is 38.4 cm in front of the ankle joint and 24.6 cm in front of the toe. The hands are already wide and stay wide: the gap between them never drops below 0.6118 m, 1.56 to 1.85 times the shoulder span, and at this freeze the wrist is 0.3059 m off the midline against the collarbone at 0.0128 m. Nothing in the literature sets a box height. Dos Santos 2024 had 14 recreationally active men and 17 women jump onto boxes at five heights, from zero to 80% of each person's own maximum, and measured peak force, rate of force development, peak power, jump height and time to take-off: peak force was higher at 80% than at zero in the WOMEN only, with no significant difference on any other variable in the men or at any height below 80% in the women. So this model shows one box and not a prescription: the mesh is 38.0 cm tall, and because its base sits 1.2 cm into the floor the drawn top face is at 36.8 cm while the plane the lifter stands on is at 38.0 cm, so a reader measuring the box on screen gets 36.8 cm. The three coaching sources that do give a rule disagree with each other - Catalyst Athletics and Everett set the box deliberately low so the jump itself is maximal, NASM suggests 12 to 18 inches for beginners for landing control, and both reason from what you are training rather than from what you can clear. The setup step names NASM's beginner range as a starting point, as coaching and not as a finding, because the alternative the draft had - pick a box you can land on with your knees bending - asks a beginner to know how a box jump lands before they have done one.",
+                mistake: "Standing so close that you have to pike your hips to get your feet over the edge, or picking the tallest box you can reach.",
+                correct: "Stand about a foot's length back from the box with your feet a little inside shoulder-width and your weight over the whole foot, chest up and both arms hanging loose, and choose a box you can land on with your knees bending rather than the tallest one you can clear."
+            ),
+            TechniqueCue(
+                id: "dip",
+                title: "Countermovement",
+                intro: "You drop quickly into a short dip and swing both arms back behind your hips.",
+                why: "The dip runs from t 0.667, the last frozen frame, to t 1.250. Over it the knees go from 167.02 to 107.32 degrees, the hips from 166.12 to 116.31, the trunk from 1.58 to 33.45 degrees forward - its maximum anywhere in the clip - and the pelvis drops 16.3 cm to 0.7398 m, which is the lowest it reaches in 384 frames. The arms go with it: the wrist travels from z +0.1274 m to -0.1060 m at t 1.083, 23.3 cm back and behind the hips, with the elbow moving at most 12.65 degrees over the entire clip (159.10 to 171.75) and the two elbows agreeing to 0.000142 degrees on every frame, so this is a straight-arm swing from the shoulder and never a pull. The knee is not finished at t 1.250 either: it opens 3.8 degrees at t 1.333 and then re-flexes to 105.14 at t 1.500, which is its deepest point before the feet leave. That is about 62 degrees of bend from the standing 167.0 - between a quarter and a half squat - and only 0.167 s separates it from the last frame a toe is on the floor. This is not the knee-only dip of a jerk or a push press, where the trunk stays inside a degree of vertical; here it comes forward 32 degrees.",
+                mistake: "Sinking slowly into a deep squat, or stopping at the bottom before you jump.",
+                correct: "Bend your knees and hips quickly into a short dip, about a quarter to a half squat, letting your chest come forward and both arms swing back past your hips, and go straight back up out of the bottom without pausing there."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Leg Drive",
+                intro: "Everything opens at once, your heels roll up over your toes, and you throw both arms up.",
+                why: "The heel lift is the measurement that defines this phase. Over t 1.458 to 1.667, 0.208 s, the ankle joint rises from 0.87 cm to 6.85 cm above its own resting height while the toe stays on the floor at 0.0141 to 0.0158 m, its resting value: the ankle angle opens from 82.8 to 142.6 degrees with the toe still planted. Underneath it the knee goes 106.9 to 166.9 degrees, the hip 128.0 to 163.1, and the trunk comes back up from 20.9 to 8.3 degrees forward. The feet do not slide while any of that happens - the ankle's front-to-back position is identical to 0.0000007 m across the 19 frames of the hold and the dip. The last frame with a toe down is t 1.667, and the knee's maximum for the jump, 174.36 degrees, is at t 1.750, two frames LATER: the extension finishes in the air, not on the floor. The arms finish with it - the wrist runs from 0.6884 m at t 1.333 to 2.1646 m at t 1.917, which is 11.4 cm above the head joint on that frame. Catalyst Athletics teaches exactly this swing, back then aggressively up, and Everett argues the opposite case for weightlifters, that removing the swing is how you make sure the legs and hips are doing the work. Both are coaching; the measured part is that the arms carry no load and the elbow never bends.",
+                mistake: "Pulling your feet up to reach the box instead of driving the floor away, and letting the arms stop at your hips.",
+                correct: "Drive the floor away through the whole foot until your hips, knees and ankles are all open and your heels have rolled up over your toes, and swing both arms up past your head as it happens."
+            ),
+            TechniqueCue(
+                id: "land",
+                title: "Landing",
+                intro: "Both feet arrive on the box together and your hips and knees keep bending to soak up the landing.",
+                why: "The flight is 11 frames, 0.458 s, with 0.500 s between the last and the first toe contact. The ankle reaches 0.6680 m at t 2.000 - 59.9 cm above the floor and 21.9 cm above the plane it is about to land on - and the toe crosses the box's front face (z 0.4636) 11.1 cm above the drawn top face - 11.5 cm by f45, the first frame already past it - so the box is cleared with room rather than scraped, and the pelvis PEAKS only 8.7 cm above the height it will stand at: by the last airborne frame, f51, it is already 5.1 cm BELOW that, and the whole fall from apex to settled is 27.7 cm. It is genuinely a two-foot landing: over the jump the knees stay within 0.57 degrees of each other and the ankles within 0.63 mm of height and 0.18 mm front to back, and both toes reach the box on the same frame. THE DRAWN LANDING IS NOT FLAT, which is a fact about the animation and not an instruction. The toe reaches its settled height at t 2.167 while the ankle is still 5.0 cm above where it will sit, and the heel does not arrive until t 2.333, 0.167 s later, with the ankle angle closing from 105.0 to 78.7 degrees over those five frames. The knee flexes from the standing 167.02 to 107.68 at the first frame of contact and 100.53 at t 2.250 - about 66 degrees of travel - and the ankles stay 0.3000 m apart through all of it, so the feet never widen to receive it. That heel timing is the rig's own and not a cue: a heel arriving 0.167 s late on a jump whose apex is 8.7 cm above the box is what a soft landing looks like in an animation, and it is still a whole-foot landing that the box has to be low enough and big enough to take. The lifter lands centred, not on the lip: the ankle settles 19.6 cm behind the front face and 44.4 cm in front of the back one, 51.7 cm forward of where it took off, after overshooting 3.8 cm and being pulled back. Landing on the box rather than the floor is where this lift is cheap, and that is a force result and not an activation one: Janikov 2023 put 20 recreationally trained men on force platforms for maximal countermovement jumps, 50 cm hurdle jumps and 50 cm box jumps and measured about 51% less peak impact force in the box jump, with no difference in peak velocity, peak vertical force, peak resultant force or total impulsion time. That study recorded no muscle activity at all.",
+                mistake: "Landing with the knees straight, or landing on the balls of your feet near the front edge with the heels hanging off.",
+                correct: "Land on both feet at once, well back from the front edge of the box, toes down first and the heels following so the whole foot is down, keep your knees pointing out over your toes rather than letting them fall in, and keep bending your hips and knees until the landing goes quiet."
+            ),
+            TechniqueCue(
+                id: "down",
+                title: "The Step Down",
+                intro: "There is no jump down in this lift: you stand all the way up on the box and then step off one foot at a time.",
+                why: "After the landing the lifter stands up on the box over t 2.333 to 3.000, the pelvis rising 19.0 cm from 1.0922 to 1.2823 m while the trunk comes back from its peak 31.45 degrees at t 2.417 to 1.58, and then holds still for 0.750 s, 19 identical frames. The way down is a climb and not a jump. The right toe leaves the box at t 4.042 and reaches the floor at t 4.833, then the left leaves at t 5.125 and lands at t 6.000, so the descent runs t 3.875 to 6.000 - 2.125 s, 38.6% of the 5.500 s this rep spends moving - and the only flight anywhere in the 384 frames is the jump up. The RIGHT foot leads down in both reps and does not alternate. The clip's two deepest knees are both here and not in the jump: the left support knee bends to 66.5 degrees at t 4.833 while the right foot reaches for the floor, and the left swing knee to 45.08 at t 5.500, against the jump's own deepest 100.53, and the ankles come 0.7555 m apart at t 4.875 with one foot on each level. NASM's box-jump page is the named source for stepping down - it says to step down carefully and not to jump down, and lists jumping down among its errors - and that is coaching: nobody has compared stepping down with jumping down in a study, and the figure that circulates for how much force stepping down saves has no study behind it, so it is not quoted here in any form. What is measured is only how drop landings scale. Niu 2014 pooled 26 studies and found peak vertical ground reaction force rising as the square root of the drop height, and Gunay 2026 had 32 athletes drop-jump from 26, 35 and 42 cm and found peak knee moments rising with height, highest at 42 cm.",
+                mistake: "Jumping or dropping back off the box, or rebounding straight into the next rep.",
+                correct: "Stand all the way up on the box, then step down one foot at a time and reset both feet on the floor before the next jump - do not jump or drop off the box."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56),
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Soleus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.24)
+        ],
+        stabilisers: ["core", "erector spinae", "tibialis anterior", "anterior deltoid"],
+        setup: [
+            "Pick a box with room for both whole feet on top and low enough that you can land on it with your knees bending - around 12 to 18 inches if it is new to you - and check that it will not slide or tip.",
+            "Stand facing it, about a foot's length back from its near face.",
+            "Clear the floor between you and the box, give yourself room to step down beside it, and jump early in the session while your legs are fresh.",
+            "Brace your trunk and let your arms hang loose and a little wide, ready to swing back.",
+            "Between reps step off the box one foot at a time rather than jumping down, and if a jump comes up short let your feet miss the box rather than reaching for the edge."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "STIFF-LEG LANDING",
+            correctCue: "Knees bend as you land",
+            mistakeCue: "Knees stay straight on the box",
+            correctNote: "In the model the knee is 167.02 degrees standing, 107.68 on the first frame the toe is on the box and 100.53 at t 2.250, so the landing is taken over about 66 degrees of knee travel - which is the part of this animation worth copying. The heel following the toe by 0.167 s is not: on a jump whose apex is only 8.7 cm above the box the instruction is a whole foot down, and the ankle closing 105.0 to 78.7 degrees over those five frames is how the rig draws a soft landing, not how to aim one.",
+            mistakeNote: "NASM lists landing with straight knees among its box-jump errors, and the force cost is measured, though never on a box: Myers 2011 had 16 healthy adults land from 40 cm and recorded peak vertical force of 1.63 against 2.60 body weights, with 55.4 against 36.8 degrees of knee travel, when they were told to land softly rather than stiffly, and Guy-Cherry 2018 measured 1.34 against 1.81 body weights across soft and stiff landings in 30 participants from the same height. Neither study used a box, and no study shows that any landing cue changes an injury rate."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.65, cy: 0.56),
+            .init(DS.activation.opacity(0.50), rx: 0.10, ry: 0.06, cx: 0.69, cy: 0.47),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.09, ry: 0.05, cx: 0.62, cy: 0.62),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.04, cx: 0.64, cy: 0.69),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.09, ry: 0.06, cx: 0.69, cy: 0.52),
+            .init(DS.activationSoft.opacity(0.24), rx: 0.07, ry: 0.05, cx: 0.67, cy: 0.49)
+        ]
+    )
+
+    static let stepUpJumpContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "stance", label: "Flat on the box",
+                          labelPoint: CGPoint(x: 0.318, y: 0.64),
+                          leaderLength: 40, joint: "toe_L"),
+            CueAnnotation(cueID: "dip", label: "Slight lean",
+                          labelPoint: CGPoint(x: 0.741, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "drive", label: "Legs up",
+                          labelPoint: CGPoint(x: 0.800, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "flight", label: "Both feet off",
+                          labelPoint: CGPoint(x: 0.712, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "land", label: "Soft knee",
+                          labelPoint: CGPoint(x: 0.230, y: 0.80),
+                          leaderLength: 40, joint: "patella_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "stance",
+                title: "On the Box",
+                intro: "You begin with your whole working foot already up on the box and the other foot flat on the floor behind you.",
+                why: "The clip opens and closes in the same pose, held still for 3.708 s of every 8.000 s cycle. The lead knee is already at 73.3 degrees and the lead hip at 94.8, the trunk is 9.6 degrees forward of vertical and the arms hang with the elbows at 171.7. The whole lead foot is on the box, the ankle 0.081 m and the toe 0.028 m above its top face, and it stays over the box footprint in 384 of 384 frames - 11 mm of side-to-side travel and 66 mm of fore-and-aft travel in the entire clip. The feet are 0.300 m apart sideways and 0.560 m apart front to back, and the floor foot ends the rep at the point it started, to 0.0 mm in both directions. The box is 0.840 m wide, 0.380 m tall and 0.640 m deep, which is 85% of this lifter's knee height, and it does not move by one micrometre at any frame. So this is a jump taken FROM a box by one leg, not a climb onto it: the lifter is never standing on the box with both feet, and the left leg leads in both reps. Box height is a choice, not a finding - no study compares step heights, and the 41.5 cm box in the one published measurement of this lift is that protocol's box, not a recommendation.",
+                mistake: "Setting only the ball of the foot or the toes on the box, with the heel hanging over the edge.",
+                correct: "Put the whole of one foot flat on the box with the heel on the surface, leave the other foot flat on the floor behind you, and keep that same foot on the box for every rep of the set."
+            ),
+            TechniqueCue(
+                id: "dip",
+                title: "Lean and Load",
+                intro: "You lean out over the box foot and let that knee and ankle fold a little, then jump straight out of it.",
+                why: "The dip is small and it is not a squat. Over 0.542 to 0.833 s the lead knee closes from 72.9 to 65.3 degrees and the lead ankle from 88.8 to 79.2, but the pelvis drops only 0.015 m, from 0.856 m to 0.841 m. What actually travels is the trunk: it pitches from 10.0 to 27.5 degrees by 1.167 s, by which point the knee is already opening again. The lead knee passes 0.050 m in front of its own toe at the bottom and peaks 0.069 m past it, from 0.012 m behind at rest. The arms contribute nothing to this: the near hand moves at most 0.191 m from its resting place over the first 28 frames and its swing does not begin until 1.208 s. Reading those angles together, the load goes on by leaning the body over a foot that is already high rather than by sinking - that reading is mechanics, the angles are measured. ACE's own power version of this lift starts hinged forward from the hips, which is the same shape and is coaching, not measurement; ACE's upright-torso rule belongs to the strength step-up and carrying it here would be an inference.",
+                mistake: "Sitting the hips back into a squat, or dropping straight down with the chest kept upright.",
+                correct: "Let your chest travel forward over the box foot until your weight is on it, sink a couple of inches at that knee and ankle with your arms hanging, and jump straight out of the bottom."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Drive Up Off the Box",
+                intro: "One leg does all of it: the box leg straightens hard and throws you up off the box.",
+                why: "The floor foot leaves at the very start of this phase: the trail toe is off the ground at 1.208 s and take-off is at 1.708 s, so for the whole 0.500 s that produces the jump there is nothing under the back foot, and it stays airborne for 3.292 s in all. In the 12 frames from 1.208 to 1.667 s, 0.458 s, the lead knee opens from 69.2 to 167.3 degrees, the lead ankle from 77.7 to 153.1 - it peaks at 156.6 two frames later, in the air - and the trunk comes back from 26.6 to 4.5. The heel leaves the box before the toe does, 69 mm up at 1.667 s with the toe still down. Both hands climb 1.540 m, from 0.851 m at the hips to 2.391 m overhead, with the elbows never bending past 159.1 degrees, and the two arms mirror each other to one micrometre. The one measurement published under this name is of force, not of muscle: Glassbrook 2024 put ten professional male rugby league players on a plate under a 41.5 cm box and recorded 63.5 N/kg of peak vertical force for the step-up jump against 23.3 to 28.7 N/kg for three loaded step-up variations, and about 2006 N/s/kg of rate of force development against about 755 for a barbell step-up with a catch. No EMG of a step-up jump exists, so nothing here ranks one muscle against another.",
+                mistake: "Keeping the back foot down and springing off the floor with it, so the jump comes out of two legs.",
+                correct: "Put your weight over the box foot and let the back foot go light, then drive that whole foot down into the box until the knee and ankle are straight, jumping straight up rather than forward, and swing both arms up past your head as you leave."
+            ),
+            TechniqueCue(
+                id: "flight",
+                title: "In the Air",
+                intro: "For a moment nothing is touching anything, and the back leg adds nothing to the height.",
+                why: "Both feet are off at once for 0.458 s, from 1.708 to 2.167 s - and that is the only window in the clip when they are. Measured from f40, the last frame the lead toe is on the box, the lead toe rises 0.208 m, the lead ankle 0.217 m, the pelvis 0.216 m and the whole-skeleton centroid 0.210 m; measured against the lifter's own fully extended stance on the box, where the pelvis sits at 1.282 m, the apex pelvis of 1.550 m is 0.268 m of air. The swing leg does much less than the usual coaching line suggests. At its highest, 1.917 s, the right kneecap is still 0.190 m BELOW the pelvis and the right hip angle is 121.05 degrees - it bottoms at 110.8 only later, on the catch at 2.417 s - so that thigh is never horizontal and the knee never reaches hip height. The hands finish 0.154 m above the head joint at their own apex, f44, and reach 0.194 m above it at f40, high enough that the near one leaves the top of the trainer frame for 10 of the 384 frames. One caution: the arc is animated rather than thrown. A 0.458 s hang would need a 0.257 m rise of the centre of mass and the measured rise from take-off is 0.210 m, about 82% of it, so no jump height can be read off the hang time or the other way round. Glassbrook 2024's force figures for this lift were taken at the box, in ten professional men, and say nothing about height. The cue does not ask you to copy that passive swing leg, either: on a one-foot catch onto a box the trail leg is the limb nearest the edge, so keeping it quiet and underneath you is the instruction, and that is a convention rather than anything this clip measures.",
+                mistake: "Kicking or tucking the back leg up to try to gain height, or letting it swing loose while you are in the air.",
+                correct: "Stay tall through the middle of the jump with both arms up and your eyes forward, and keep the back leg quiet and underneath you rather than kicking it up for height."
+            ),
+            TechniqueCue(
+                id: "land",
+                title: "Land and Stand",
+                intro: "The same foot catches you back on the box on its own, and then you stand all the way up on that one leg.",
+                why: "The lead toe is back on the box at 2.167 s and the foot lands on the spot it left: 5.5 mm across and 31.3 mm fore-and-aft from its last contact point. The knee is already re-flexed to 120.0 degrees before it touches and then gives only 3.8 degrees, to a low of 116.2, so almost none of the absorbing happens there - it happens in the trunk, which re-pitches from 13.1 to 24.1 degrees and reaches 25.3 by 2.417 s, and in the ankle, which gives from 110.0 to 88.8, while the pelvis comes down from 1.212 m to 1.163 m - a 4.9 cm give inside the catch itself, at the end of a 38.7 cm fall from the 1.551 m apex. That trunk fold is the animation's shortcut and not the lift: a one-leg catch absorbed at the trunk puts the drop through the lower back, so take it at the knee and the ankle instead of copying what you see here. Then a second, slower extension on the same leg: knee 119.1 to 166.9, hip 127.7 to 164.9, trunk 24.1 back to 3.6, pelvis up to 1.282 m, with a 0.333 s still hold balanced on the left leg at the top. The other foot does not reach the floor until 4.500 s, and it returns to the identical place it left. Landing soft is measured to cost less force, in two groups at the same 40 cm drop: Myers 2011 recorded 1.63 body weights soft against 2.60 stiff in 16 healthy adults, and Guy-Cherry 2018 1.34 soft, 1.50 self-selected and 1.81 stiff in 30 participants. ACE's cue for this lift is to land softly and quietly on the mid-foot and not to lock the knee, which is coaching, as is the knee tracking out over the toes that the cue asks for - nothing in this clip measures that, and the library badges it six times. Neither force study measured an injury outcome, so none is promised here.",
+                mistake: "Catching the whole landing on a straight knee, letting the knee fall inward, or letting the heel slam down flat on the box.",
+                correct: "Let the same foot come back down well inside the edge of the box, let the knee and ankle bend as you catch yourself with that knee pointing out over your toes, then stand all the way tall on that leg before you lower the other foot down."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
+            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Soleus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+        ],
+        stabilisers: ["core", "adductors", "erector spinae", "tibialis anterior"],
+        setup: [
+            "Set a box a little below knee height in front of you and check that it will not slide, tip or flex when you land on it with one foot.",
+            "Place the whole of one foot flat on the box with the heel on the surface.",
+            "Lean forward a little over the box foot so your weight sits on it, let your arms hang, and brace your trunk.",
+            "Learn it as a step with no jump first, and if a jump comes up short, step down onto the floor rather than reaching for the edge of the box.",
+            "Between reps lower the box foot under control and put the other foot back on the same spot on the floor, then reset before the next one."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "STIFF-LEG LANDING",
+            correctCue: "Land soft on the box leg",
+            mistakeCue: "Catches it on a locked knee",
+            correctNote: "Dropping from 40 cm, Myers 2011 had 16 healthy adults peak at 1.63 body weights of force landing softly against 2.60 landing stiffly, with 55.4 degrees of knee travel from contact against 36.8, and Guy-Cherry 2018 measured 1.34 against 1.81 in 30 participants at the same height. This model gives only 3.8 degrees at the knee on the catch, 120.0 to 116.2, and folds the trunk from 13.1 to 25.3 degrees to take the rest - less knee than either study's soft landing, so take the drop at the knee and ankle rather than copying the trunk.",
+            mistakeNote: "What it costs is force and joint angle only: Guy-Cherry 2018 put electrodes on five leg muscles across soft, stiff and self-selected landings in 30 participants, found no difference in any of them, and scored the stiff landing higher for reactive strength, 0.93 against 0.64. Neither study tested an injury outcome."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.07, cx: 0.58, cy: 0.53),
+            .init(DS.activation.opacity(0.55), rx: 0.06, ry: 0.05, cx: 0.70, cy: 0.49),
+            .init(DS.activation.opacity(0.50), rx: 0.09, ry: 0.04, cx: 0.64, cy: 0.49),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.04, ry: 0.06, cx: 0.55, cy: 0.61),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.03, ry: 0.04, cx: 0.56, cy: 0.66),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.64, cy: 0.56)
+        ]
+    )
+
+    static let squatJumpContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "dip", label: "Hips back",
+                          labelPoint: CGPoint(x: 0.770, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "arms", label: "Swing the arms",
+                          labelPoint: CGPoint(x: 0.697, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "drive", label: "Heels lift",
+                          labelPoint: CGPoint(x: 0.756, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "flight", label: "Straight up",
+                          labelPoint: CGPoint(x: 0.741, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "toe_L"),
+            CueAnnotation(cueID: "land", label: "Soft knees",
+                          labelPoint: CGPoint(x: 0.244, y: 0.80),
+                          leaderLength: 40, joint: "patella_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "dip",
+                title: "The Dip",
+                intro: "You bend your knees and send your hips back and down into a shallow squat before you jump.",
+                why: "The dip takes 0.750 s, from the last frozen frame at 0.250 s to 1.000 s. The knee goes 166.83 deg to 84.10 - 82.73 deg at a mean 110 deg/s - the hip 166.87 to 93.40, the trunk 1.58 deg to 41.08 forward and the ankle 105.0 to 76.1, while the pelvis drops 29.28 cm and goes 15.00 cm rearwards. It stays ABOVE PARALLEL: at the bottom the thigh is 25.9 deg below horizontal, the hip 18.8 cm above the knee. The heels are flat the whole way down, the first heel rise coming at f28, after the bottom; and the knees travel out, knee to knee going 0.3022 m standing to 0.5062 m at the bottom with the ankles frozen 0.3000 m apart, so each knee finishes about 10 cm outside its own ankle, 5.89 cm outside its own toe and 6.93 cm ahead of it. (Knee to knee peaks at 0.5151 m at f30, in the drive and not in the dip, which is the figure the draft quoted for this sentence.) Two conventions disagree about what comes next and this model sits between them: the NSCA squat jump test lowers to roughly 110 deg of knee and holds it 2-3 s with the hands on the hips, while Catalyst Athletics teaches changing direction immediately in the bottom; the model pauses the legs 0.167 s and swings the arms right through the pause. Bobbert 1996 measured six male volleyball players jumping 3.4 cm higher with a countermovement than from a held squat, attributing it to joint moments at the start of push-off and not to stored elastic energy. No study measures an optimal dip depth.",
+                mistake: "Sinking to a full squat, or settling at the bottom long enough that the dip stops helping the jump.",
+                correct: "Bend your knees and send your hips back and down until your thighs are just above parallel, keeping your heels flat and your knees travelling out over your toes, then jump straight back up out of the bottom without settling there."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "The Arm Swing",
+                intro: "Your arms swing back behind you as you dip, then forward and up as you jump.",
+                why: "The swing happens at the shoulder, not the elbow: the elbow sits at 171.75 deg standing, its minimum anywhere is 158.51 and its whole range 13.24 deg. Measured against its own shoulder joint, the hand is 36.28 cm BEHIND at f21 (0.875 s, the rearmost point), 52.32 cm IN FRONT at f31 (1.292 s), 36.19 cm ABOVE the shoulder at take-off and 46.86 cm above it at the apex - so the swing is still rising 10.66 cm after the feet have left the floor. It runs straight through the pause in the legs: over f24-f27, 0.167 s, 22 of the 26 measured joints move 0.000 mm while each hand covers 367.6 mm in a straight line - 374.7 mm of path - and each elbow 196.5 mm, 200.2 mm of path. Each hand covers 13.82 m over the clip against the pelvis's 4.39 m, the fastest single frame anywhere in it is 27.65 cm of travel by a hand, and the two arms mirror to under a micrometre. Chiu, Bryanton and Moolyk 2014, sixteen women volleyball players with motion capture, found the arm swing raised hip extensor and ankle plantar flexor joint moments and jump height, p <= 0.05; it recorded no EMG, so nothing here says which muscle the swing recruits. Taking the arms out is not a fault - it is the NSCA test protocol, which pins the hands to the hips to remove them.",
+                mistake: "Letting the arms hang through the jump, or throwing them by bending the elbows instead of swinging them.",
+                correct: "Let your arms swing back behind you as you dip, then throw them forward and overhead as you drive, keeping your elbows long and the swing coming from your shoulders."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "The Drive",
+                intro: "Out of the bottom you push the floor away and finish up on the balls of your feet.",
+                why: "The drive takes 0.250 s, 1.167 to 1.417 s. The knee goes 84.70 deg to 167.01 at a mean 329 deg/s peaking at 898 in one frame, the hip 96.24 to 166.87, the trunk 38.82 deg forward to 0.33, and the pelvis rises 34.80 cm. The heels come up in order - 0.47 cm at f28, 1.65 at f29, 3.15 at f30 and 6.85 cm at take-off with both toes still planted - and stay up 0.7917 s a rep. The measurement that governs the cue: the ankle is the only joint that goes PAST its standing angle. From its 77.79 deg at f28, where this drive starts, it runs to 146.58 at take-off, 68.79 deg over the drive - 70.48 deg measured from the 76.10 at the bottom of the dip - and finishes 41.6 deg past the 104.99 it stands at, holding that angle through the entire flight. The hip and the knee do finish, they just stop at the pose the rig stands in: knee 84.70 to 167.01 against 166.83 standing, hip 96.24 to 166.87 against 166.87. That standing pose is also the clip's ceiling - knee maximum 167.01 on the left and 167.28 on the right, hip maximum 166.91 and 166.92 - so 167 is this rig's straight, about 13 deg short of a drawn 180, and nothing here reads the rig as a knee that stops short. Chiu 2014 measured the order rather than the amount: a longer delay between pelvis and knee extension went with higher jumps in sixteen women volleyball players (r = 0.82, p < 0.001 with an arm swing). No EMG of a squat jump exists, so nothing here says which muscle drives it: the calves rank primary because the model paints them bright, a painting decision and not a measurement.",
+                mistake: "Driving up flat-footed and leaving the floor with the heels down, so the ankles add nothing to the jump.",
+                correct: "Push the floor away hard and keep pushing until your hips and knees are all the way open, then let your heels come up so you leave the ground off the balls of your feet."
+            ),
+            TechniqueCue(
+                id: "flight",
+                title: "Flight",
+                intro: "You leave the floor with both feet at once and come back down on the same patch of floor.",
+                why: "Nine frames are fully airborne, f35 to f43, 0.3750 s of contact-free frames; fitting the toe height across them gives a parabola clean to 6.0e-08 m that crosses the resting toe height at frame 34.023 and frame 43.977, so the true flight time is 0.4148 s. The implied acceleration is 9.810 m/s2 and the take-off speed 2.035 m/s, which gives the measured IN-FLIGHT rise exactly: from take-off at f34, 21.10 cm at the toe and 21.29 cm at the ankle, the pelvis and the head alike. Measured instead against the standing pose the ankle finishes 28.14 cm higher, the pelvis 27.77 and the head 27.87, the difference being the extension taken before the feet leave. Below the shoulders the body is one rigid block that only translates - knee, hip, trunk and ankle gap are frozen to within 0.00001 deg over f34-f44 - while the ankles splay 3.94 cm as the plantarflexion rolls them outward, the toes staying put. Both feet leave and land together: foot_L and foot_R never differ in height by more than 0.204 mm across all 192 frames. And the feet land exactly where they took off, to 0.000 mm in x, y and z; over the whole 8 s the toes move 2.53 mm sideways and 7.80 mm front to back, so the jump is purely vertical, with no drift and no stance reset between reps. The 21.10 cm is this animation and not a target: no source prescribes a height for a training squat jump.",
+                mistake: "Drifting forward, back or sideways in the air, or leaving the floor one foot at a time.",
+                correct: "Jump straight up off both feet together, and land on the same patch of floor you left with your feet where they started."
+            ),
+            TechniqueCue(
+                id: "land",
+                title: "The Landing",
+                intro: "You land on the balls of your feet and let your knees bend to absorb the drop.",
+                why: "The toes touch at f44 with the ankle still at 146.58 deg and the heel 6.85 cm off the floor - a ball-of-foot landing - and the heel is not flat until f47, 0.125 s later. The knee then loses 30.5 deg in a single frame, 167.01 to 136.50 at 732 deg/s, and bottoms at 122.09 deg with the hip at 137.09 and the trunk 20.83 deg forward, the pelvis 10.30 cm below standing. So the landing is 38 deg shallower at the knee than the dip - 122.09 against 84.10, which is 45 deg of flexion from the standing 166.83 - and is absorbed in a quarter of a second; the stand-up then takes 0.333 s. What the softness buys is measured as force and joint angle, never as muscle work. Myers 2011, sixteen healthy adults landing from 40 cm under biplane fluoroscopy: peak vertical ground reaction force 1.63 +/- 0.73 body weights soft against 2.60 +/- 1.32 stiff (P < .001), knee flexion 55.4 +/- 8.8 deg against 36.8 +/- 11.1 (P < .01). Guy-Cherry 2018, thirty participants over three 40 cm landing styles: force 1.34 soft, 1.50 self-selected, 1.81 stiff body weights (p < 0.001), and NO difference in the EMG of five muscles (p > 0.66). A soft landing is about taking the force, not about working a muscle harder, and no study here shows a landing cue changing an injury rate.",
+                mistake: "Landing with straight legs, letting the knees fall inward, or slapping both heels down flat instead of rolling through the forefoot.",
+                correct: "Land toes first on the balls of your feet with your knees tracking out over your toes, let your heels settle and your knees bend to take the drop, then stand up and stand still before the next rep."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+        ],
+        stabilisers: ["core", "erector spinae", "anterior deltoid", "tibialis anterior"],
+        setup: [
+            "Stand with your feet a little inside shoulder width, toes pointing forward or turned out slightly, weight over the whole foot.",
+            "Let your arms hang at your sides with your elbows long, and brace your trunk.",
+            "Clear a flat, non-slip patch of floor with room overhead, and jump early in the session while your legs are fresh.",
+            "Land with your feet on the same spot and stand still for a moment before the next rep."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "KNEES CAVING IN",
+            correctCue: "Knees out over the toes",
+            mistakeCue: "Knees collapse inward on landing",
+            correctNote: "In the model the knees travel out, not in: knee to knee goes from 0.3022 m standing to 0.5062 m at the bottom of the dip while the ankles stay 0.3000 m apart, so each knee finishes about 10 cm outside its own ankle, 5.89 cm outside its own toe and 6.93 cm ahead of it, on both legs, which never differ by more than 0.269 deg at the knee.",
+            mistakeNote: "When the knees fall inward the load twists through the knee joint and the glutes do less to help absorb the landing. That is a different axis from landing softly, not the same one: Myers 2011 measured varus and valgus motion as similar between soft and stiff 40 cm landings in 16 adults, so a soft landing does not by itself keep the knees out. No study here tested a knee cue on a jump, and none shows that any landing cue changes an injury rate."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.56, cy: 0.63),
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.05, cx: 0.54, cy: 0.73),
+            .init(DS.activation.opacity(0.50), rx: 0.09, ry: 0.04, cx: 0.58, cy: 0.79),
+            .init(DS.activation.opacity(0.50), rx: 0.07, ry: 0.04, cx: 0.60, cy: 0.59),
+            .init(DS.activationSoft.opacity(0.29), rx: 0.10, ry: 0.06, cx: 0.60, cy: 0.62)
+        ]
+    )
+
+    static let jumpRopeContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hands", label: "Quiet hands",
+                          labelPoint: CGPoint(x: 0.741, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "base", label: "Feet close",
+                          labelPoint: CGPoint(x: 0.244, y: 0.80),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "ankles", label: "Heels lift",
+                          labelPoint: CGPoint(x: 0.756, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "bounce", label: "Low bounce",
+                          labelPoint: CGPoint(x: 0.244, y: 0.64),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "land", label: "Steady rhythm",
+                          labelPoint: CGPoint(x: 0.288, y: 0.16),
+                          leaderLength: 40, joint: "toe_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hands",
+                title: "Quiet Hands",
+                intro: "The rope is turned by your wrists, not your arms, so your hands stay low and almost still while the rope goes round.",
+                why: "In this model the hands do not move at all. hand_L.x is +0.3061 m and hand_R.x -0.3061 m at every one of the 192 frames; handgap is frozen at 0.6122 m, 1.56 times the 0.3922 m between the shoulder joints, and each hand covers only 4.85 px of u on screen over the whole clip. The 8.95 cm the hands travel in y is the arm riding the body's 11.539 cm bob, and the elbow opens and closes 18.34 degrees in time with it. Each of the two handles is rigidly fixed to its own hand, 0.098234-0.098235 m from the hand joint across all 192 frames - a range of 0.0005 mm. The rope still turns 16 times, one revolution per bounce, so the turn is animated and the arms are passengers: there is no wrist circle to watch. Nor does the rope pass under the feet - its circle sits 14.1 cm in front of them, a rig artefact and not something to copy. Lee, in the CrossFit Journal (issue 62, 2007), coaches arms close to the sides, elbows pointing down at about 45 degrees and two-inch circles of the wrists. That is a coach's system, not a measurement, and no study of rope-skipping technique was found for this round; measured against it this model is wide, its elbow sitting about 6.5 cm outside the shoulder joint.",
+                mistake: "Swinging the whole arm to turn the rope, so the hands drift out wide and the shoulders do the work.",
+                correct: "Keep your hands low and close to your sides, elbows in near your ribs and pointing down at about 45 degrees, and turn the rope with small wrist circles rather than swings of your arms."
+            ),
+            TechniqueCue(
+                id: "base",
+                title: "The Bottom",
+                intro: "Every bounce starts and finishes in the same narrow stance with your knees softly bent and your feet almost together.",
+                why: "The deepest frame of each cycle is its first. Knee 138.787 degrees, which is 41.2 degrees of bend; hip 156.404; ankle 103.571; trunk 2.579 forward; pelvis 0.88392 m; both heels flat on the floor and the rope directly overhead. The stance never changes: the ankle joints hold 0.1836-0.1900 m apart against 0.3922 m between the shoulder joints, so the feet sit at 46.8-48.5% of shoulder width, mean 47.9%, and each foot is toed out 6.00 degrees, perfectly mirrored. Both feet also leave and land together - the left and right knee never differ by more than 0.108 degrees, the hips by more than 0.205, and the hands are mirror images to 0.0005 mm - so there is no lead leg and nothing alternates. That is the plain two-foot bounce, and it is the version with the lighter landing: Lin and colleagues (2022) put 16 male adolescents through bounced and alternating rope jumping and found the two-foot bounce had the smaller vertical ground reaction force over 11-82% of ground contact (p < 0.001) with a smaller peak force and loading rate, and more hip and knee flexion. Their muscle data is standardised RMS amplitude, not a percentage of a maximum contraction, so it ranks muscles and yields no fraction.",
+                mistake: "Letting the feet slide apart or turn out, or planting them wide as if for a squat.",
+                correct: "Stand with your feet almost touching and your toes pointing straight ahead, knees softly bent and your weight over the balls of your feet with the heels light on the floor, and keep that stance for the whole set."
+            ),
+            TechniqueCue(
+                id: "ankles",
+                title: "Ankle Drive",
+                intro: "The bounce comes from your ankles: your heels peel off the floor while the balls of your feet stay down.",
+                why: "From the bottom of each bounce to 0.1250 s the ball of the foot stays pinned - the toe joint reads exactly 0.015796 m at four consecutive frames - while the ankle opens 103.571 to 126.566 degrees and the heel rises 0 to 2.762 cm. Over the whole clip that ankle travels 25.92 degrees (103.571-129.494) against 15.93 at the knee (138.787-154.713) and 2.56 at the hip (156.404-158.966) - all four figures the left leg, the right agreeing to 0.24 degrees - so the ankle does more than the knee and hip together. The heel peaks 8.362 cm up at the top of the jump and is above the floor on 11 of the 12 frames of each cycle; it is only properly down on the bottom frame. Nothing above the hip contributes: trunk is frozen at 2.5793 degrees forward with a range of 0.00000 over all 192 frames, and the pelvis, spine, chest, neck, head, both clavicles, both scapulae and both upper arms each have 0.000 mm of x and z range - the upper body is a pure vertical elevator. That is why the paint lights the calves alone and brightest: of 10 painted meshes the 3 bright ones are both gastrocnemius heads and the soleus, with the quadriceps and hamstrings dim behind them and nothing above the knee lit at all.",
+                mistake: "Driving the bounce from the knees, so the heels stay stuck down and the calves never load.",
+                correct: "Push the floor away with the balls of your feet and let your heels lift clear as you go, then let them settle back down between bounces, so the ankle does the work rather than the knee."
+            ),
+            TechniqueCue(
+                id: "bounce",
+                title: "Take-Off",
+                intro: "You only have to clear the rope, so the bounce is tiny - a flick off the floor rather than a jump.",
+                why: "Take-off falls between 0.1250 and 0.1667 s of each cycle, when the toe joint leaves its pinned 0.015796 m. Flight is 5 frames, 0.2083 s, with the apex at 0.2500, and through all of it every leg angle is frozen: knee 154.713 and 154.820, hip 158.966 and 159.172, ankle 129.441-129.494, trunk 2.579, constant to 0.06 degrees while the whole body translates. The pelvis rises 11.539 cm, but most of that is the ankle opening over a planted forefoot. The toe joint itself rises 5.209 cm, from 0.015796 to 0.067886 m, and the drawn body's lowest pixel row moves only from 514 to 511 - 3 rows, about 1.7 cm at this framing's 5.645 mm per pixel row. Read the pelvis figure as jump height and you are out by a factor of about seven. The knee neither locks nor folds: its whole range is 15.93 degrees on the left leg this entry measures, 16.00 on the right and the deepest it ever gets is 41.2 degrees of bend. Lee's rule in the CrossFit Journal is to jump only high enough to clear the rope, and he gives that height three different ways in the same article - half an inch, three-quarters, and an inch - so barely off the floor is the honest version of it and no single figure is the standard. That is coaching, not a measurement.",
+                mistake: "Jumping as high as you can, or tucking the knees up, which costs height and air time on every single turn.",
+                correct: "Bounce barely off the floor, only as high as you need to clear the rope, and keep your knees soft and almost still instead of driving them up."
+            ),
+            TechniqueCue(
+                id: "land",
+                title: "Land and Go Again",
+                intro: "Land on the balls of your feet in the same spot and go straight into the next bounce - the rhythm is the exercise.",
+                why: "Landing falls between 0.3333 and 0.3750 s, when the toe joint comes back to exactly 0.015796 m, and there is no separate absorption phase: the knee goes back down the curve it came up, frame for frame, to 0.2 mm. Ground contact is 7 frames, 0.2917 s, against 5 frames, 0.2083 s, of flight - a 58/42 duty cycle at 120 bounces a minute. Those two times sit right on the measured ones: Kaewjaratwilai and colleagues (2025) had 10 female and 10 male Muay Thai athletes skip at 2.2 Hz on force plates and recorded contact times of 0.280 plus or minus 0.03 s and 0.275 plus or minus 0.05 s and flight times of 0.205 plus or minus 0.03 s and 0.245 plus or minus 0.05 s, none of the sex differences significant; their peak forces are in kN without the body masses, so there is no body-weight figure to quote. The feet also come down exactly where they left, foot_L at take-off and at landing being the same point to 0.0000 mm. Rate is not the dose, either - Town, Sol and Sinning (1980) had 19 males and 11 females skip for 5 minutes at each of 125, 135 and 145 skips a minute and found no difference in oxygen uptake, heart rate, ventilation or energy cost at any rate, averaging 11.7 to 12.5 METs. What the cue asks for - timing the bounce to the rope rather than to the sound of it - is the one genuinely hard part of learning to skip and it is not measured by anything here or in the sources; it is also the one thing this rig cannot show, because its rope circle misses the feet by 14.1 cm and so never hits the floor at all.",
+                mistake: "Pausing between bounces, or landing flat and heavy and then resetting the feet before the next turn.",
+                correct: "Land lightly on the balls of your feet in the spot you left, let your ankles and knees give a little, and go straight into the next bounce - time it to the rope coming down in front of you so it passes under your feet while you are off the floor."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.25),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.20)
+        ],
+        stabilisers: ["tibialis posterior", "peroneals", "toe flexors", "tibialis anterior", "core"],
+        setup: [
+            "Size the rope: stand on the middle of it with one foot and pull the handles up - the tips should reach your armpits and no higher than your shoulders.",
+            "Skip on wood, rubber, a mat or level dirt rather than concrete or tile, in shoes with forefoot padding, with five feet clear each side and two overhead.",
+            "Stand tall with your feet almost together and your eyes straight ahead, and let the rope rest on the floor behind your heels.",
+            "When the rope catches your feet, stop the turn, step it back behind your heels and start again at the pace you were holding rather than a faster one."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "DRIFTING OFF THE SPOT",
+            correctCue: "Lands on the same spot",
+            mistakeCue: "Creeps forward with each bounce",
+            correctNote: "The model never moves. foot_L at take-off and at landing is the same point to 0.0000 mm - [0.09462, 0.12398, 0.04393] at both - and across the whole 8.000 s clip the toe joint travels 0.698 mm in x and 6.642 mm in z. The ankle joints hold 0.1836-0.1900 m apart throughout, both feet leave and land together, and the two knees never differ by more than 0.108 degrees. Sixteen bounces, one landing spot, and the pose repeats to 0.000 mm every 12 frames.",
+            mistakeNote: "Creeping forward is what happens when the bounce is driven by the knee rather than the ankle, and it is why the basic bounce is coached on one spot. There is nothing measured behind the fault: no study of rope-skipping technique - foot contact, jump height or elbow angle - was found for this round, so it is coaching convention, and Lee's own system reaches it only indirectly, by asking for the weight on the balls of the feet and the body upright and balanced."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.09, ry: 0.04, cx: 0.61, cy: 0.69),
+            .init(DS.activation.opacity(0.50), rx: 0.07, ry: 0.03, cx: 0.61, cy: 0.73),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.09, ry: 0.06, cx: 0.61, cy: 0.60),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.04, cx: 0.64, cy: 0.56)
         ]
     )
     // END Model-only exercises (2026-10-29) content
