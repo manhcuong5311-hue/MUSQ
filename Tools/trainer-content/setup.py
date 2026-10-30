@@ -2692,5 +2692,51 @@ SETUP = {
         "Stand tall with your feet almost together and your eyes straight ahead, and let the rope rest on the floor behind your heels.",
         "When the rope catches your feet, stop the turn, step it back behind your heels and start again at the pace you were holding rather than a faster one.",
     ],
+    "Sled Push": [
+        "Set the sled at one end of a clear lane and load it light enough that you can keep it moving at a steady walk the whole way.",
+        "Take a handle in each hand at the width the sled sets, set your elbows so they cannot fold, and walk your feet back behind you.",
+        "Drop your hips and chest into one low line from head to heels, brace your trunk, and look up the lane, not down at your feet.",
+        "Keep that body angle and push with the legs in short quick steps for the set time - the push dies the moment you stand up.",
+    ],
+    "Sled Drag": [
+        "Load the sled, take a strap or handle in each hand, and face it with your arms long and the strap already tight.",
+        "You walk the whole set backwards, so clear a straight lane behind you and check it is empty before you start.",
+        "Bend your knees a little and lean away from the sled with your hips under you, heels down and weight through the whole foot.",
+        "Walk backwards with short, steady steps and keep the strap tight so the sled never stops, for the set time.",
+    ],
+    "Rowing Machine": [
+        "Sit down, put both feet on the footplate and do the straps up across the balls of your feet so your feet cannot slide.",
+        "Take the handle overhand, hands a little inside the ends of the bar and about shoulder-width apart.",
+        "Slide forward until your knees are bent, your arms are straight and your shoulders are a little in front of your hips.",
+        "Drive in order - legs, then body, then arms - then come forward in reverse: arms, body, knees - and row on for the set time.",
+        "Take the lean from your hips with a flat back rather than rounding the lower back, and let the handle and the seat start together.",
+    ],
+    "Battle Rope Alternating Waves": [
+        "Loop the middle of a long rope round a post or rack upright, take an end in each hand and walk back until a little slack is left.",
+        "Stand facing the rope, feet about shoulder-width, knees bent a little and chest tipped forward over them.",
+        "Hold an end in each fist with your palms facing each other, elbows bent, and your hands out in front of your hips.",
+        "Clear about three body lengths of floor in front of you and keep anything you could trip on out of the rope path.",
+        "Work this for time rather than reps: set a clock before you start, and treat the rope going quiet as the end of the set.",
+    ],
+    "Battle Rope Slams": [
+        "Loop a battle rope around a post and walk back with an end in each hand until only a little slack is left on the floor.",
+        "Stand with your feet about shoulder-width apart and your knees soft, holding an end in each hand with your palms facing in.",
+        "Leave two clear strides of floor in front of you for the rope to run out, and keep your toes planted for the whole set.",
+        "This lift is timed rather than counted, so pick a rate you can hold to the end of the interval instead of going flat out early.",
+    ],
+    "Medicine Ball Chest Pass": [
+        "Face a solid wall about two to three metres away, or a partner at that distance, with nothing breakable in the throwing line.",
+        "Use a medicine ball you can hold in both hands at chest height, hands behind it and elbows down by your ribs.",
+        "Stand with your feet a little inside shoulder-width, flat and still, and stand tall with your trunk braced.",
+        "Treat the catch as half the rep: take the ball on bending elbows and bring it back to your chest before you throw again.",
+        "Use a ball that bounces back off a wall - a dead slam ball will not return and leaves you nothing to catch.",
+    ],
+    "Medicine Ball Slam": [
+        "Stand with your feet about shoulder-width, a medicine ball in both hands at your chest, and your trunk braced.",
+        "Use a slam ball that does not bounce back, and aim at a spot about 20 cm in front of your toes.",
+        "Clear the floor in front of you and the space overhead, and keep your eyes on the ball as you go down to it.",
+        "Expect over half of every rep to be the squat down to the ball and the stand back up - that squat is where your back is working.",
+        "Stand all the way up with the ball at your chest before you start the next rep, and keep your feet where you set them.",
+    ],
     # END Model-only exercises (2026-10-29)
 }

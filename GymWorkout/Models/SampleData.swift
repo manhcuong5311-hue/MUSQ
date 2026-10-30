@@ -1988,6 +1988,13 @@ enum SampleData {
         "Step-Up Jump": stepUpJumpContent,
         "Squat Jump": squatJumpContent,
         "Jump Rope": jumpRopeContent,
+        "Sled Push": sledPushContent,
+        "Sled Drag": sledDragContent,
+        "Rowing Machine": rowingMachineContent,
+        "Battle Rope Alternating Waves": battleRopeAlternatingWavesContent,
+        "Battle Rope Slams": battleRopeSlamsContent,
+        "Medicine Ball Chest Pass": medicineBallChestPassContent,
+        "Medicine Ball Slam": medicineBallSlamContent,
         // END Model-only exercises (2026-10-29)
     ]
 
@@ -50291,6 +50298,721 @@ enum SampleData {
             .init(DS.activation.opacity(0.50), rx: 0.07, ry: 0.03, cx: 0.61, cy: 0.73),
             .init(DS.activationSoft.opacity(0.30), rx: 0.09, ry: 0.06, cx: 0.61, cy: 0.60),
             .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.04, cx: 0.64, cy: 0.56)
+        ]
+    )
+
+    static let sledPushContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "stance", label: "Arms long on the posts",
+                          labelPoint: CGPoint(x: 0.580, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "torso", label: "Low lean, flat back",
+                          labelPoint: CGPoint(x: 0.624, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "neck"),
+            CueAnnotation(cueID: "drive", label: "Legs do the pushing",
+                          labelPoint: CGPoint(x: 0.376, y: 0.64),
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "steps", label: "Short steps",
+                          labelPoint: CGPoint(x: 0.259, y: 0.80),
+                          leaderLength: 40, joint: "foot_L"),
+            CueAnnotation(cueID: "tempo", label: "Pace you can hold",
+                          labelPoint: CGPoint(x: 0.347, y: 0.48),
+                          leaderLength: 40, joint: "pelvis")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "stance",
+                title: "Start Position",
+                intro: "You stand well back from a loaded sled with a hand on each upright post, your elbows set hard and your whole body tipped into one low line.",
+                why: "The grip and the stance are both measured and both wider or narrower than a reader would guess. The hands are WIDE: handgap is 0.6279 m against a shouldergap frozen at 0.392155 m for all 192 frames, so 160.1% of the shoulder span, and they take the posts FROM THE OUTSIDE - the wrists sit at x plus and minus 0.314 against post centres at plus and minus 0.280, 3.4 cm outside, over a 0.560 m post spacing. The feet are NARROW: anklegap at double support is 0.2882 m, 73.5% of the same shoulder span. The grip is a real grip, which the wrist joint alone would deny: hand_L sits 8.75 cm from Cylinder_097 and hand_R 9.03 cm from Cylinder_096 and no joint ever enters a sled mesh, but extending the elbow-to-wrist line past the wrist - which is where the hand mesh goes - reaches 0.10 cm and 0.36 cm from the post at 10 cm and is inside the post at 12 cm, and a 6x crop of the still shows fingers wrapped round both posts. The lifter starts and stays two thirds of a metre behind the frame: the forward-most toe reaches z -0.3404 against the sled's rear-most point at z +0.3250, a gap of 66.54 cm that never closes. The sled itself is nine static meshes - two 95 cm handle posts, a centre pin, three 40 cm plates, two 95 cm runners and a 72 by 70 cm deck, 74.0 cm wide by 104.5 cm tall by 95.0 cm deep - whose bounding boxes are bit-identical on all 192 frames. On screen only the two handle posts are wholly visible (u 0.0623..0.0893 and 0.1123..0.1431); 50.0% of the sled's projected points fall off the LEFT edge of the frame, so CLIPPED TO THE VISIBLE FRAME it runs u 0.0110..0.2957 and v 0.3611..0.7948, the plates show about a third of themselves and the centre pin is never seen at all - which is why this cue names the posts and nothing else. On load: the literature gives a prescription and this cue does not pass it on as one. Seitz 2017 had 20 rugby league players push at 75% of body mass and sprint 20 m faster at 4, 8 and 12 minutes afterwards, while 125% made them slower at every time point; Martinez-Serrano 2021 found peak power highest at 55%; but Cahill 2021 measured 90 high-school athletes and found that although the load-velocity relationship is highly linear in each individual (r greater than 0.96), the load needed for a given velocity decrement varies greatly between people - so a percentage printed for a general audience would mislead more readers than it helped. The one piece of safety evidence for a non-athletic reader is Baumann 2024: 36 apparently healthy older adults randomised to a progressive sled push or walking completed the protocol with no adverse events, a third of the sled group reporting minimal discomfort. It is an exploratory feasibility study on one machine and establishes no training effect.",
+                mistake: "Standing in close to the sled with the elbows folding and the chest resting on the handles, or loading it so heavy that it will not move at all.",
+                correct: "Take the handles where the sled puts them, walk your feet back behind you, and set your body into one low line from head to heels with your elbows braced."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Body Angle",
+                intro: "Your body is one low straight line leaning into the sled, and it holds that angle from the first step to the last.",
+                why: "THE LEAN IS THE ONE THING IN THIS CLIP THAT NEVER CHANGES, and it is the exercise. trunk reads 50.079990 to 50.080019 degrees across all 192 frames - a total of 0.0000296 degrees - and the lumbar, thoracic and neck chains are frozen with it at 170.679, 171.267 and 144.733, zero range on each. The whole midline is a rigid bar that only bobs 22.87 mm up and down: pelvis, spine, chest, neck and head all have an x range of 0.0000 mm and a z range of 0.0001 to 0.0002 mm. So the model shows one angle and CANNOT show it being lost, which is also why this entry badges the fault without a glow that could demonstrate it. The one posture choice the model does make visible is the head: the chest-to-neck segment tilts 55.833 degrees toward the facing direction while the neck-to-head segment tilts only 20.566, so the head is held 35.267 degrees UP off the trunk line - the lifter is looking ahead under a 50 degree lean, not tucked, and that never changes either. What is measured about the lean is measured in TOWING, not pushing, and the copy says so. Lockie 2003 towed 20 men at 12.6% and 32.2% of body mass and found trunk lean, hip flexion and ground contact time all increased while stride length fell about 10% and about 24%. Cronin 2008 towed 20 athletes at 15% and 20% and found sled towing increased trunk angle by 12.5 to 71.5% while a weighted vest at the same relative load DECREASED it by 1.7 to 13.0% - so the lean is the sled pulling the body forward, not the weight pressing it down. Osterwald 2021 took 33 athletes through 40 m at four velocity decrements and found hip, knee, ankle and trunk angle all changed significantly (p less than 0.05) with trunk lean rising LINEARLY with load, and concluded that heavy loads prevented mechanics reflective of maximum-velocity sprinting. All three are a harness, facing forward, with free arms. None of them prescribes an angle, and the only claim that pushing leans further than towing is secondary text on a page that will not open, so it is not used. The commonly quoted 45 degrees is coaching folklore with no standards body behind it; what the coaching sources agree on is holding the angle constant rather than letting the hips rise and the chest drop, which is why this cue says a low lean and gives no number. The model's own 50.08 degrees is close enough to 45 that the picture does not fight the words.",
+                mistake: "Letting the hips rise and the chest come up as the set goes on, so the push turns into a stand-up and the sled stops.",
+                correct: "Hold one low forward lean with a flat back and your hips in line with your shoulders for the whole set - if your hips rise and your chest comes up, the sled stops moving."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Leg Drive",
+                intro: "The legs do all of it. Your arms only connect you to the sled; they never fold and they never press.",
+                why: "The ranges settle it. knee_L travels 62.099 degrees over the clip (96.307 at f6 to 158.406 at f0, checked: 158.406 - 96.307) and knee_R 62.107; hip_L travels 35.298 degrees (113.294 to 148.592) and hip_R 35.208. Against that elbow_L moves 10.149 degrees (100.293 at f8 to 110.442 at f18) and elbow_R 10.083, handgap changes 2.204 mm over 192 frames and shouldergap changes 2.0e-07 m - frozen. The knee moves six times what the elbow does, and the arms are a fixed link rather than a motor. The only upper-body motion worth naming is not an arm action at all: the two shoulders stay exactly level with each other at every frame, yet each wrist moves 40.00 mm in y and the two see-saw out of phase (hand_L minus hand_R is -2.69 mm at f0, +37.31 mm at f8 and -42.69 mm at f24), so the grip slides about 2 cm up and down the static posts once per step - 10.9 px and 9.5 px on screen at 2.71 px per cm. That is the rig absorbing the body's 22.87 mm bob, and nothing in this entry describes the arms as doing anything. The knee drive itself is smaller than it looks and no cue asks for a high knee: the knee rises only 5.9 cm while the ankle rises 12.93 cm and the toe 9.65 cm, it travels 28.29 cm FORWARD rather than up, and it never comes above the hip - patella_L peaks at 0.5014 m against a pelvis at 0.8573 to 0.8802 m. On muscle: there is no %MVIC study of a sled push anywhere, so this cue claims no level and no ranking. The only EMG study of the movement is Martinez-Serrano 2021 - nine male amateur rugby union players, called a pilot by its own authors, three muscles, pushing at 20, 55 and 90% of body mass on an instrumented treadmill where the participants did not travel. A heavier sled significantly raised vastus lateralis and gastrocnemius medialis activity (p at or below 0.001 each) while biceps femoris did not change (p = 0.278). Its stated limitation is the non-normalisation of its activation values, so it supports a DIRECTION - heavier sled, more knee-extensor and calf demand, hamstring demand not following - and nothing on the app's HIGH, MODERATE or LOW scale.",
+                mistake: "Letting the elbows fold and hauling with the arms until the chest sinks onto the handles and the legs stop driving.",
+                correct: "Push the floor back with your legs, not with your arms - set your elbows at the start and never let them give, so your chest stays off the handles and the legs keep working."
+            ),
+            TechniqueCue(
+                id: "steps",
+                title: "Short Quick Steps",
+                intro: "The steps are short and fast, off the ball of each foot, and one foot is always on the floor.",
+                why: "The cadence is measured and it is a walk, not a sprint: 12 steps over 8.000 s is 1.5 steps per second, 90 STEPS PER MINUTE. Each step is 16 frames, 0.6667 s between the two double-support poses; the swinging foot is off the floor for ELEVEN frames, f1..f11 inclusive, which is 0.4167 s from the first airborne frame to the last and 0.5000 s contact to contact (f0 to f12). BOTH FEET ARE NEVER OFF THE FLOOR - 0 of 192 frames - and 126 of 192 frames have the left toe down, 126 the right, 60 BOTH and 0 NEITHER, so there is no flight phase anywhere and nothing here is explosive. The foot is the other measured fact. There is no heel joint on this rig, so the test is foot pitch, ankle to toe: the planted left foot sits at 46.29 degrees below horizontal at every one of its 126 contact frames, to two decimals, against 21.034 degrees for the same rig standing flat in Box Jump - 25.26 degrees more plantarflexion (checked: 46.2922 - 21.0340 = 25.2581). The lifter is on the balls of both feet for the entire clip and the heel is never down, which is defensible for a real sled push and which means a cue saying heel down or drive through the whole foot would be flatly contradicted on screen. On stride length, coaching is split - one guide calls long strides the fault and another calls overstriding the fault - and the measurement settles it awkwardly: Lockie 2003 found the LOAD itself shortened the stride about 10% at 12.6% of body mass and about 24% at 32.2%, so a short step is what a loaded sled forces rather than something the lifter chooses. This cue therefore asks for quick steps and badges no stride length. For scale, the swinging leg covers 46.20 cm of ankle path per step and finishes with a net displacement of 0.0000 cm.",
+                mistake: "Reaching for long slow strides, so each step waits on the other leg and the sled loses speed between pushes.",
+                correct: "Take short fast steps and push off the ball of each foot, keeping one foot on the floor the whole time rather than reaching for long strides."
+            ),
+            TechniqueCue(
+                id: "tempo",
+                title: "Setting the Pace",
+                intro: "This one is timed, not counted. You pick a speed at the start and the job is to still be moving at that speed when the clock runs out.",
+                why: "The app measures this lift in SECONDS: ExerciseCatalog.swift:137 lists Sled Push in timedExercises, so measure(forExerciseNamed:) returns .time, and because SLED is not in isBodyweight()'s equipment list the weight column stays live - seconds with a load. Eleven of the nineteen shipped timed entries end a setup step with the phrase for the set time, and this entry follows them. The clip supports a tempo cue where the jump family's did not, and that is a measured difference rather than a preference: searching circularly for runs whose per-frame maximum joint step falls under 0.001 mm finds 0 of 192 frames and 0 of 192 frame intervals, and the same at 0.01, 0.1 and 1.0 mm - the smallest step anywhere is 3.901984 mm, at f31 to f32, which is also the loop seam, and the largest is 102.270420 mm at f16 to f17. Box Jump, by contrast, held 41.7% of its frames perfectly still. So this model moves continuously at one rate for the whole clip and a cue may speak about rate. What it cannot show is the fault: the clip is six bit-identical 32-frame cycles (a circular lag sweep agrees to 0.0000074506 mm at lag 32 and to no better than 102.2704 mm at lag 1, and each of cycles 1 to 5 matches cycle 0 frame for frame to 7.451e-06 mm Euclidean), and six identical cycles cannot fade, slow or break down. Pacing is therefore coaching and is named as such. It is also unprecedented on the badge surface: in 466 shipped blocks the library has never badged pace, rhythm, tempo, rushing, fatigue or breakdown, nor the breath, grip failure, head position or the environment - although the cue id tempo itself is well established, with 53 shipped uses. The only measured pacing datum anywhere in this family is on battle ropes rather than sleds - Ratamess 2015b found a shorter rest interval raised the metabolic cost of rope work, 52.8% against 40.5% of VO2max in men - and it is deliberately not carried onto a sled.",
+                mistake: "Sprinting the first few steps and then stalling with most of the clock left, or stopping the sled and restarting it over and over.",
+                correct: "Start at a pace you can keep to the end of the set time rather than sprinting the first few steps, and keep the sled moving the whole way instead of stopping and restarting it."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+        ],
+        stabilisers: ["erector spinae", "transverse abdominis", "adductors", "forearms"],
+        setup: [
+            "Set the sled at one end of a clear lane and load it light enough that you can keep it moving at a steady walk the whole way.",
+            "Take a handle in each hand at the width the sled sets, set your elbows so they cannot fold, and walk your feet back behind you.",
+            "Drop your hips and chest into one low line from head to heels, brace your trunk, and look up the lane, not down at your feet.",
+            "Keep that body angle and push with the legs in short quick steps for the set time - the push dies the moment you stand up."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LOSING THE LEAN",
+            correctCue: "Body stays low behind the sled",
+            mistakeCue: "Hips rise, chest comes up",
+            correctNote: "In the model the lean is the one thing that never changes: trunk reads 50.079990 to 50.080019 degrees across all 192 frames, a total of 0.0000296 degrees, with the lumbar, thoracic and neck chains frozen alongside it. That one angle is the whole exercise, and the model cannot show it being lost because it only ever holds the one pose.",
+            mistakeNote: "Nobody has measured a sled pushed by the hands; what is measured is towing. Lockie 2003 towed 20 men at 12.6% and 32.2% of body mass and found trunk lean, hip flexion and contact time all rose with load while stride length fell about 10% and about 24%; Cronin 2008 found towing raised trunk angle 12.5 to 71.5% while a vest at the same load lowered it; Osterwald 2021 found lean rising linearly with load in 33 athletes. None prescribes an angle, none pushed anything, and there is no injury mechanism - standing up simply stops the sled."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.62, cy: 0.55),
+            .init(DS.activation.opacity(0.50), rx: 0.09, ry: 0.05, cx: 0.64, cy: 0.62),
+            .init(DS.activation.opacity(0.45), rx: 0.07, ry: 0.04, cx: 0.71, cy: 0.67),
+            .init(DS.activation.opacity(0.42), rx: 0.10, ry: 0.06, cx: 0.62, cy: 0.44),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.07, ry: 0.05, cx: 0.56, cy: 0.42),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.06, ry: 0.04, cx: 0.32, cy: 0.32),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.09, ry: 0.06, cx: 0.60, cy: 0.49)
+        ]
+    )
+
+    static let sledDragContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "path", label: "Check the lane behind you",
+                          labelPoint: CGPoint(x: 0.464, y: 0.16),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "torso", label: "Lean away from the sled",
+                          labelPoint: CGPoint(x: 0.435, y: 0.32),
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "arms", label: "Arms long",
+                          labelPoint: CGPoint(x: 0.230, y: 0.48),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "knee", label: "Knees bent",
+                          labelPoint: CGPoint(x: 0.756, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "steps", label: "Short, steady steps",
+                          labelPoint: CGPoint(x: 0.624, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "path",
+                title: "Walking Backwards",
+                intro: "You travel backwards, away from the sled, so you cannot see the ground you are about to cover.",
+                why: "The direction IS the lift, and the clip states it in one channel that never moves: trunk sits at -13.67014 deg on all 192 frames, negative being backwards, with a range of 0.0000065 deg. At the reference frame f0 both feet are flat and level, the knees 34.408 deg short of straight, the thigh 14.799 deg forward of vertical and the shank 16.304 deg back - the knees-forward, hips-back, lean-away shape of a backward drag - and the hands hang 0.38461 m below the shoulder joint, constant to five decimals, with the upper arm 38.9341 deg from straight down. Nothing else in the frame carries the direction. The lifter does not travel: 18 of the 26 probed joints have world x and z frozen to 0.000358 mm or less, the head among them, so the model never turns to look behind it either, and the sled does not move. This is the only acute hazard in the family and the library has no badge for anything in the environment - 297 distinct mistake badges across 466 blocks and not one about a floor, a wall or a lane - so if a setup step and this string do not say it, no surface the reader can reach will. West 2014 measured the session rather than the technique: 11 strength-trained men, 5 sets of 2 x 20 m backward drags at 75 per cent of body mass, countermovement-jump peak power falling from 4,445 +/- 705 W to 3,464 +/- 819 W immediately after (p = 0.001) and back at baseline by 3 h, blood lactate 1.7 +/- 0.5 to 12.4 +/- 2.6 mmol/L and still raised at 60 min, and NO change in creatine kinase at any time point. That is the only thing measured about a backward drag anywhere, it is a programming fact rather than a technique one - a hard drag costs about a fifth of your jump power for up to three hours, with no marker of muscle damage - and it stays here, gated, rather than spending one of the four public setup steps. There is no EMG study of sled dragging at all and no governing-body standard for it, so nothing in this entry claims a muscle level or a trunk angle.",
+                mistake: "Setting off backwards without looking at the lane first, or craning round so far that the lean collapses and the strap goes slack.",
+                correct: "Clear a straight lane behind you and look down it before the first step, then travel backwards along it and glance over your shoulder every few steps."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Lean Away",
+                intro: "Your hips sit back and your whole trunk leans away from the sled, so the strap never goes slack.",
+                why: "trunk is -13.67014 deg on every one of the 192 frames, a range of 0.0000065 deg - the most constant channel in the clip. The lean is real and worth naming, but it never changes, so there is no bracing cycle, no sway and no rounding in the animation: anything about not letting the torso rock is coaching and not a measurement. The shape it holds alongside the lean: the knees run 34.408 to 75.393 deg of flexion, the pelvis rides 0.847578 to 0.871296 m, and the hands stay 0.38461 m below the shoulder joint. The measured literature prescribes no angle. Keogh 2010 - 6 resistance-trained men, 3 x 25 m at 171.2 kg - found a heavy sprint-style sled PULL had a more horizontal trunk than acceleration sprinting, with smaller step lengths, lower step rates and longer ground contacts; but that is a forward harnessed pull, it measured no muscle activity at all, and more horizontal is relative to sprinting rather than a target. Lockie 2003 and Osterwald 2021 both find trunk lean rises with load on towed sprints and neither names a value, and no NASM or other governing-body sled guideline could be found. The familiar 45-degree figure is folklore and is not used. What the coaching sources are consistent about is the FAULT, for the drag specifically: standing up too tall. McGill 2009, the obvious strongman trunk citation, did not include a sled drag or a sled push and is deliberately not cited.",
+                mistake: "Standing up taller as the set goes on, so the strap goes slack and the sled stalls between steps.",
+                correct: "Sit your hips back and lean away from the sled, then hold that same angle from the first step to the last instead of letting your chest rise."
+            ),
+            TechniqueCue(
+                id: "arms",
+                title: "Arms Hang Long",
+                intro: "Your arms only hold the strap. The legs are what move the sled.",
+                why: "The arms are welded in space for the whole clip, so this string is coaching and not a description of the screen: handgap is frozen at 0.504002 m and shouldergap at 0.392155, both with a range of 0.000000; both elbows sit at 153.063 deg with a range of 0.00004 deg; hand_L world x and z are fixed to within 0.0003 mm; and on screen the hands move 0.00 px sideways and about 5 px vertically over the whole 8 s. There is no tug, no arm bend and no shoulder give anywhere, so the model shows neither this fault nor its fix. Note what 153.063 deg is NOT: it is about 27 deg of bend held unchanged, not a straight arm, with the hands 0.38461 m below the shoulder joint and the upper arm 38.9341 deg from straight down - which is why this says soft bend and never says straight. The strap is modelled as geometry rather than as rope: end to end it measures 1.004162 m at f8 and f24 and 1.021782 m at f0 and f16, a change of 17.620 mm or 1.75 per cent of its length on EVERY step, which no loaded strap does, so there is no slack-to-taut moment in the clip to point at. It never touches the lifter below the hands either: the nearest it comes to a leg joint is 317.4 mm, to the patella 345 mm and to the shin 369 mm, which with a 59.8 mm mesh is about 290 mm of air. The paint supports the cue only weakly, in that all of it here is dim: nine forearm muscles, both biceps heads and all three deltoid heads at level 0.2556, the forearm block reading as 10.6 per cent of the figure pixels in rows 250-332. The library badge for the fault is PULLING WITH THE ARMS, 4 uses - Cable Wood Chop :12188, Cable Shrug :25950, Machine Crunch :42236, Landmine Rotation :44452.",
+                mistake: "Bending the elbows to haul the sled along, so the arms and the grip give out long before the legs do.",
+                correct: "Let your arms hang from your shoulders with the same soft bend at the elbow all the way through, so your hands only hold on and your legs move the sled."
+            ),
+            TechniqueCue(
+                id: "knee",
+                title: "Knees Stay Bent",
+                intro: "Both knees stay bent for the whole drag. They never straighten out at the top of a step.",
+                why: "knee_L runs 104.60730 to 145.59193 deg and knee_R 104.62132 to 145.60768, ranges of 40.98464 and 40.98635, and the two sides never differ by more than about 0.016 deg. So even at its tallest, frame f0 of every cycle, the knee is 34.408 deg short of straight, and at its deepest 75.393 - it never approaches a lockout anywhere in the clip. Read the THIGH rather than the published hip channel: A hip_L moves only 2.93370 deg, because the ray it measures runs to the chest while the hip joint sits 91.4 mm off the sagittal plane, whereas the thigh segment itself tilts 12.387 deg (14.799 to 27.186) toward the way the lifter faces. The quadriceps are the only BRIGHT paint on this lift - 4 of the 31 painted muscles at level 1.0000, the other 27 at 0.2556 - which matches the library row primaryMuscle QUADRICEPS, and they are the clearest paint in the render too, 44.2 per cent of the figure pixels in rows 332-395 and 28.2 per cent in rows 395-445. But there is NO EMG study of sled dragging, %MVIC or raw, so nothing here claims a level or a ranking for them. One thing the clip does that no lifter should read as an instruction: in each double-stance window both knees extend together, knee_L by 5.086 and knee_R by 5.088 deg over 4 frame intervals (0.1667 s), with the pelvis rising 11.824 mm. No real gait extends both knees in double support, so no string here asks for a two-legged push between steps.",
+                mistake: "Letting the knees straighten between steps, so the hips ride up and the quads stop doing the work.",
+                correct: "Keep a bend in both knees from the first step to the last, and push each step away through the front of your thighs rather than straightening the leg to get there."
+            ),
+            TechniqueCue(
+                id: "steps",
+                title: "Short Steady Steps",
+                intro: "Short, steady steps keep the sled moving. Long reaching steps let it stall.",
+                why: "THIS IS THE CUE THAT CARRIES WHAT THE MODEL CANNOT SHOW: the clip is a march on the spot in front of a sled that never moves. 18 of the 26 probed joints have world x and z frozen to 0.000358 mm or less over all 192 frames - chest, both clavicles, both forearms, both hands, head, neck, pelvis, both scapulae, spine, the pectoral marker, BOTH HIP JOINTS and both upper arms - and their only motion is a shared vertical bob between 23.7178 and 23.7187 mm. foot_L returns to z -0.020001 and y 0.068600 at f12 and foot_R to z -0.020001 and y 0.068565 at f28; whenever both feet are down they sit at the SAME z to 0.000000 m, so they are never staggered and stride length is zero. The nine static sled meshes travel 0.000 mm. What the clip does give is a cadence: a circular lag sweep finds a period of exactly 32 frames, 1.33333 s, with a residual of 0.000017 mm against 36.765361 mm at the nearest non-multiple, so 192 frames are 6.0000 cycles of two steps - 12 steps over 8.0000 s, 90 steps a minute, one step every 16 frame INTERVALS (0.66667 s). Each swing is 11 FRAMES, 0.4583 s by frame count, or 10 frame INTERVALS, 0.4167 s; lift-off to touch-down, f0 to f12 inclusive, is 13 frames (0.5417 s) or 12 intervals (0.5000 s). Per cycle that is 24 intervals of single support (1.0000 s, 75 per cent) and 8 of double support (0.3333 s, 25 per cent). That 90 a minute is this animation and not a prescription, which is why no public string quotes it. Two things the clip forbids: the thigh drives 12.387 deg forward while the ankle sweeps 86.35 mm BACKWARD and 123.38 mm UP and lands on the same spot, so the swing leg folds under rather than reaching back and no string says reach the trailing leg back; and a freeze sweep at 0.001 mm finds zero frozen frames and zero frozen intervals, the slowest interval in the clip moving 1.584843 mm, so there is no pause anywhere to hang a tempo on.",
+                mistake: "Reaching each foot far back, or stamping away on the spot without actually covering any ground.",
+                correct: "Keep covering ground with short, steady steps and never let the sled come to a stop between them, so the strap stays tight the whole way."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.44),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Soleus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+        ],
+        stabilisers: ["core", "erector spinae", "adductors"],
+        setup: [
+            "Load the sled, take a strap or handle in each hand, and face it with your arms long and the strap already tight.",
+            "You walk the whole set backwards, so clear a straight lane behind you and check it is empty before you start.",
+            "Bend your knees a little and lean away from the sled with your hips under you, heels down and weight through the whole foot.",
+            "Walk backwards with short, steady steps and keep the strap tight so the sled never stops, for the set time."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "LOSING THE LEAN",
+            correctCue: "Knees bent, leaning away",
+            mistakeCue: "Torso stands up, knees lock",
+            correctNote: "In the model the lean never moves: trunk sits at -13.67014 deg, negative being backwards, on every one of the 192 frames, a range of 0.0000065 deg - and the knee never passes 145.59193 deg, which is still 34.408 deg short of straight, so the shape the clip holds is exactly the one this cue asks for.",
+            mistakeNote: "Standing up tall is the fault every general sled source names for the drag, and it is coaching rather than a measured outcome: there is no EMG study of sled dragging at all, no governing-body guideline for it, and no trial has tested a posture cue on a sled. The only evidence-backed prescription anywhere in the sled literature is LOAD rather than posture, and it comes from the push: Seitz 2017 found 75 per cent of body mass potentiated a later sprint while 125 per cent impaired it at every time point."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.09, cx: 0.62, cy: 0.54),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.09, ry: 0.06, cx: 0.74, cy: 0.32),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.08, ry: 0.06, cx: 0.60, cy: 0.41),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.06, cx: 0.67, cy: 0.55),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.04, cx: 0.67, cy: 0.49),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.04, cx: 0.63, cy: 0.68)
+        ]
+    )
+
+    static let rowingMachineContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "setup", label: "Chest forward",
+                          labelPoint: CGPoint(x: 0.288, y: 0.32),
+                          leaderLength: 40, joint: "clavicle_L"),
+            CueAnnotation(cueID: "drive", label: "Arms straight",
+                          labelPoint: CGPoint(x: 0.288, y: 0.16),
+                          leaderLength: 40, joint: "forearm_L"),
+            CueAnnotation(cueID: "swing", label: "Swing from the hips",
+                          labelPoint: CGPoint(x: 0.624, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "finish", label: "Handle to the ribs",
+                          labelPoint: CGPoint(x: 0.638, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "recovery", label: "Knees bend last",
+                          labelPoint: CGPoint(x: 0.318, y: 0.80),
+                          leaderLength: 40, joint: "patella_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "setup",
+                title: "Start Position",
+                intro: "You sit strapped to the footplate at the front of the slide, knees bent, arms reaching straight out to the handle and your shoulders a little in front of your hips.",
+                why: "The catch is f0 and f96, and it is the quietest instant in the clip rather than a hold: the step from f95 to f96 is 0.5766 mm, the slowest of all 191 intervals, and no interval anywhere in the clip falls under 0.001 mm. Measured at f0 the knee is 76.699 degrees - 103.301 degrees of bend - the hip 53.599, the elbow 175.082, the trunk 15.3313 degrees forward, the derived ankle 107.182 and dorsiflexed, the seat at its forward end with pelvis z -0.060436, the hands at their furthest out with a midpoint z of +0.646861, and the scapulae at their widest with shouldergap 0.409358. The shoulders are 19.10 cm in front of the hips at that frame (clavicle_L z 0.1306 against pelvis z -0.0604), which is the part of the pose a reader can actually check on themselves. The grip is NARROWER than the shoulders and never changes: handgap is 0.245723 m on every one of the 192 frames, range 0.0000 m, on a 40.00 cm bar, which is 60.0 per cent of the shouldergap at the catch and 65.1 per cent at the finish. WHAT THIS POSE IS NOT is a full-compression catch, and that is why nothing in this entry mentions the shin: the knee joint sits 0.1797 m BEHIND the ankle in z (shin_L z 0.2749 against foot_L z 0.4546), so the shin leans 27.1007 degrees BACK from vertical in the sagittal plane and 27.1158 on the right, and the seat travels only 30.2194 cm in total. Hart 2006 teaches a vertical shin and roughly thirty degrees of forward body angle; the model gives 15.3313, which is 14.67 degrees short, so neither figure is quoted anywhere a reader can see. No catch angle is quoted as a standard at all: the studies that report them have five to seventeen rowers and disagree about which angles matter, and Soper and Hume 2004 concludes that research on ideal rowing technique is limited.",
+                mistake: "Sitting at the front of the slide with the lower back rounded under and the shoulders already behind the hips.",
+                correct: "Strap both feet to the footplate and take the handle overhand with your hands a little inside the ends of the bar, then slide forward to the front of the slide with your back flat."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "Leg Drive",
+                intro: "The legs go first. You push the footplate away with the arms still straight, and the handle and the seat leave together.",
+                why: "This is the one claim on this lift that the picture supports frame by frame. Measured by the knee the drive is f0 to f16 - 17 frames, 16 intervals, 0.6667 s - over which knee_L goes 76.6989 to 175.9928 degrees, 99.29 degrees of extension. Measured by the seat it is f0 to f15, 16 frames and 15 intervals, 0.6250 s, the pelvis travelling z -0.060436 to -0.362613, which is 30.2194 cm. THE ELBOW DOES NOT MOVE WHILE THAT HAPPENS: elbow_L is 175.0821 at f0, 174.8320 at f16 and 174.7482 at f18, so it stays inside 0.34 of a degree of its catch value across the whole leg drive, and only then folds 120.1099 degrees to 54.6383 by f30. The first frame it has given up a full degree is f19 at 173.4161, and f20 is already 165.0822. AND THE HANDLE AND THE SEAT BOTH START ON THE VERY FIRST INTERVAL: from f0 to f1 the pelvis moves 3.848 mm and the hand midpoint 5.060 mm, which is the model's own version of Hart's rule that the handle and the seat must move together on the drive and that a handle moving first means pulling with the back early. The order itself is coaching and is named as coaching: Hart 2006 in CrossFit Journal 50 teaches legs, then torso, then arms, Concept2 and British Rowing teach the same, and NO study tests the drive sequence against injury or performance - Soper and Hume 2004 says the biomechanical predictors of rowing performance are indistinct in the literature. What may NOT be said is that the legs are the hardest-working muscles here: the only MVIC-normalised study of rowing-machine rowing, Sha and Chiu 2026 with twelve subjects on a water ergometer, puts rectus femoris fifth of six muscles at 10.46 to 13.50 per cent of MVIC and biceps brachii first at 24.34 to 39.37. Vieira 2020 is the honest form of the leg claim: in twenty elite rowers all eight sampled lower-limb muscles were recruited and rectus femoris was active the LONGEST of them, so the legs are working even where their amplitude is modest.",
+                mistake: "Bending the elbows or opening the back while the knees are still bent, so the handle moves before the seat does.",
+                correct: "Push the footplate away with your legs while your arms stay straight and your body angle holds through the first half of the push, so the handle and the seat start moving together."
+            ),
+            TechniqueCue(
+                id: "swing",
+                title: "Body Swing",
+                intro: "Once the legs are driving hard, your trunk swings open from the hips and carries the handle on.",
+                why: "The swing is f8 to f24 - 17 frames, 16 intervals, 0.6667 s - and the trunk goes 15.3313 degrees forward to 20.1677 degrees back, a range of 35.4990 degrees, while the hip opens 53.5990 to 122.5228, which is 68.9239 degrees. It overlaps the leg drive at f8 to f16 and the arm pull at f18 to f24, and that overlap IS the sequence. IT IS A HIP SWING AND NOT A BACK SWING, and the rig proves it the hard way: the only lumbar proxy in this skeleton, the pelvis-spine-chest joint-chain angle, takes 33 distinct values over the whole clip - exactly as many as the trunk channel - and sits at 170.0789 degrees on 92 of the 192 frames and 173.6789 on 38, which are precisely the frame counts of the trunk channel's own two pinned windows. The chain is a deterministic function of the trunk angle, so there is no independent lumbar articulation in this rig at all, and its entire catch-to-finish excursion is 3.6000 degrees. The thoracic chain moves 8.4000. This is also the best-evidenced safety point in the whole conditioning family. Trease 2020, following 153 Australian international rowers over 48,611 athlete days, found the lumbar region the most frequently injured area with 84 of 270 injuries. Nugent 2021, pooling 22 studies and 429 participants, found that rowers WITHOUT low back pain hold neutral or anterior pelvic rotation at the catch and a flatter low back at the finish, while rowers WITH pain show greater posterior pelvic rotation at the catch, and that in both groups fatigue increases lumbar flexion at the catch, more on the ergometer than in a boat. Ng 2015 found no difference in mean lumbar angle between ten adolescent rowers with pain and ten without, but the painful group sat closer to end-range flexion for a greater proportion of the drive, came out of flexion less over the drive and spent more time in sustained flexion loading - so the fault is time spent near the end of the range, not one rounded stroke. Yamashita 2023 localised it: lumbar erector spinae activity was higher in the painful group at 0 to 10 per cent of the stroke cycle, p below 0.001, which is the catch. Wilson 2013 measured the drift directly, maximum lumbar flexion rising 4.4 plus or minus 0.9 degrees over an ergometer step test against 1.3 plus or minus 1.1 in a boat, p equals 0.035 - more than this model's entire 3.6000 degrees of lumbar range. Hart teaches a thirty-degree layback; the model gives 20.1677, which is 9.83 short, so no figure is quoted.",
+                mistake: "Opening the back before the legs are down, or getting the lean by rounding and then arching the lower back instead of rotating at the hips.",
+                correct: "Once the legs are driving hard, swing your trunk open from your hips until you are leaning back a little past upright, and keep your back flat the whole way rather than rounding it and then arching it."
+            ),
+            TechniqueCue(
+                id: "finish",
+                title: "The Finish",
+                intro: "The handle comes in last, to the bottom of your ribs, with your elbows going past your body and your shoulder blades drawing together.",
+                why: "The arm pull is f18 to f30 - 13 frames, 12 intervals, 0.5000 s - the elbow folding 174.7482 to 54.6383 degrees, 120.1099 degrees, and the finish itself is f30 to f34, 5 frames and 4 intervals, 0.1667 s. WHERE THE HANDLE ARRIVES, measured along the trunk rather than off the floor, because the trunk is laid back 20 degrees at that point: at f31 the hand midpoint projects 0.3136 m along the 0.5940 m axis from the hip joint to the neck joint, which is 52.8 per cent of the way up the trunk, and sits 0.0973 m out from that axis. The chest joint projects at 45.5 per cent, so the hands arrive 4.34 cm above it along the trunk, and they are 19.25 cm BELOW the collarbone joint in height. That is the bottom of the ribcage - not the collarbone and not the waist. The pull is flat, not an arc: the handle centroid's height stays inside 0.8400 to 0.8800 m, within 4 cm of level, across all 102.6285 cm of handle travel. The blades do draw together, and this is the one place the model shows a correction rather than a fault: shouldergap goes 0.409358 at f94 to 0.377253 at f28, which is 3.21 cm of scapular retraction. TWO THINGS THE MODEL FORBIDS HERE. The knee never straightens - knee_L maxes at 175.9932 and knee_R at 176.0943, both held to within 0.0008 of a degree for the whole of f16 to f54, 39 frames of every 96 - so nothing says the legs lock out and the correct string asks for a soft bend instead. And the wrist is never above the shoulder: hand_L sits 2.52 to 19.17 cm below clavicle_L on all 192 frames, 0 of 192 above it, so nothing says lift the handle. On the muscles, the paint and the measurement disagree in direction and neither is asserted here: the paint makes the traps, rhomboids and rear-delt group primary and the lats and biceps secondary, while Sha and Chiu 2026 ranks biceps brachii first of six at 24.34 to 39.37 per cent of MVIC and latissimus dorsi second at 20.29 to 24.93, on a water ergometer at a fixed stroke rate with twelve subjects and nine of this lift's sixteen bright muscles never measured.",
+                mistake: "Hauling the handle up into the collarbone, shrugging the shoulders up instead of drawing the blades together, or heaving further back to get it there.",
+                correct: "Finish by drawing the handle in to the bottom of your ribs, elbows travelling past your body and your shoulder blades squeezing together, and leave a soft bend in your knees rather than locking them out."
+            ),
+            TechniqueCue(
+                id: "recovery",
+                title: "The Recovery",
+                intro: "Coming forward you reverse the order: hands away first, then the body tips forward, and only then do the knees bend and the seat slide you back.",
+                why: "The recovery is the drive run backwards, and the model does it in that order and in that time. The arms go away over f34 to f45 - 12 frames, 11 intervals, 0.4583 s - the elbow opening 54.6294 to 174.8232 degrees. The body comes over f42 to f58 - 17 frames, 16 intervals, 0.6667 s - the trunk going 20.1677 degrees back to 15.3313 forward. The slide is f54 to f95 by the knee, 42 frames and 41 intervals, 1.7083 s, knee 175.9932 to 76.7988, or f58 to f95 by the seat, 38 frames and 37 intervals, 1.5417 s. THE KNEE IS THE LAST OF THE THREE TO MOVE, and it is pinned while it waits: knee_L holds between 175.9928 and 175.9932 degrees, a spread of 0.0004, for the whole of f16 to f54. By the seat alone the stroke divides exactly - 15 intervals driving at 0.6250 s, 43 intervals parked at the finish at 1.7917 s, 38 intervals sliding forward at 1.5833 s, which is 96 intervals and 4.0000 s, and 0.6250 plus 1.7917 plus 1.5833 is 4.0000. Hart 2006 is the named coaching source and the wording is his: on the recovery the handle leads the body forward, the arms extend first and then forward flexion occurs at the hips, and you should feel your weight shift to the front of the seat before the knees begin to rise. ONE CAUTION THAT GOVERNS THIS WHOLE ENTRY: the clip runs at 15.000 strokes per minute with a drive-to-recovery ratio of 1 to 2.533 measured by seat motion, and that is a demonstration tempo. No stroke rate, no ratio and no cadence is quoted anywhere a reader can see, here or in any other cue.",
+                mistake: "Letting the knees come up before the hands and the body have gone forward, so the handle has to be lifted over them.",
+                correct: "Come forward in the reverse order - straighten your arms first, then let your trunk tip forward from your hips, and only then let your knees bend and the seat slide you back to the front."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.67),
+            MuscleActivation(name: "Trapezius", rank: .primary, fraction: 0.63),
+            MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.63),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Rotator Cuff", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+        ],
+        stabilisers: ["core", "forearms", "tibialis anterior"],
+        setup: [
+            "Sit down, put both feet on the footplate and do the straps up across the balls of your feet so your feet cannot slide.",
+            "Take the handle overhand, hands a little inside the ends of the bar and about shoulder-width apart.",
+            "Slide forward until your knees are bent, your arms are straight and your shoulders are a little in front of your hips.",
+            "Drive in order - legs, then body, then arms - then come forward in reverse: arms, body, knees - and row on for the set time.",
+            "Take the lean from your hips with a flat back rather than rounding the lower back, and let the handle and the seat start together."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ARMS PULL EARLY",
+            correctCue: "Legs finish before the elbows bend",
+            mistakeCue: "Elbows bend before the legs finish",
+            correctNote: "In the model elbow_L is 175.0821 degrees at the catch, 174.8320 at f16 where the knee has already reached 175.9928, and 174.7482 at f18 - inside 0.34 of a degree of straight across the whole leg drive - and it only then folds 120.1099 degrees to 54.6383 by f30. The handle and the seat also start together, moving 5.060 mm and 3.848 mm respectively on the first interval of the stroke. The legs-then-arms order is the part of this animation worth copying.",
+            mistakeNote: "Hart 2006 in CrossFit Journal 50 is the named source and it is coaching, not a finding: the handle and the seat must move together on the drive, and a handle that moves first is evidence of pulling with the back early. No study tests the drive sequence against injury or against performance - Soper and Hume 2004 concludes that the biomechanical predictors of rowing performance are indistinct in the literature and that research on ideal technique is limited. What is measured is adjacent: Wilson 2014 reports that greater pelvic rotation at either end of the stroke is ideal as opposed to lumbar flexion and extension, and that this tends to be poorly demonstrated in novice rowers on ergometers."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.66, cy: 0.43),
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.04, cx: 0.68, cy: 0.40),
+            .init(DS.activation.opacity(0.52), rx: 0.07, ry: 0.06, cx: 0.68, cy: 0.46),
+            .init(DS.activation.opacity(0.52), rx: 0.10, ry: 0.07, cx: 0.56, cy: 0.59),
+            .init(DS.activation.opacity(0.50), rx: 0.06, ry: 0.04, cx: 0.71, cy: 0.43),
+            .init(DS.activation.opacity(0.48), rx: 0.07, ry: 0.05, cx: 0.69, cy: 0.62),
+            .init(DS.activationSoft.opacity(0.34), rx: 0.08, ry: 0.06, cx: 0.70, cy: 0.52),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.69, cy: 0.56),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.09, ry: 0.04, cx: 0.59, cy: 0.45),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.09, ry: 0.05, cx: 0.64, cy: 0.63)
+        ]
+    )
+
+    static let battleRopeAlternatingWavesContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "stance", label: "Feet planted",
+                          labelPoint: CGPoint(x: 0.274, y: 0.80),
+                          leaderLength: 40, joint: "foot_R"),
+            CueAnnotation(cueID: "hands", label: "Hands stay low",
+                          labelPoint: CGPoint(x: 0.303, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "torso", label: "Torso still",
+                          labelPoint: CGPoint(x: 0.741, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine"),
+            CueAnnotation(cueID: "grip", label: "Light grip",
+                          labelPoint: CGPoint(x: 0.244, y: 0.24),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "tempo", label: "Steady pace",
+                          labelPoint: CGPoint(x: 0.259, y: 0.64),
+                          leaderLength: 40, joint: "forearm_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "stance",
+                title: "Stance",
+                intro: "Everything from the hips down holds one shape for the whole interval - the waves come out of your arms.",
+                why: "This stance is a hold, and the model proves it. trunk is 23.454590 to 23.454607 degrees forward over all 192 frames, a range of 0.000018 degrees, and every spine segment keeps its angle to 0.00002 degrees: pelvis to spine 11.7790, spine to chest 20.8001, chest to neck 28.8328, neck to head 15.2660. The knee works over 4.6131 degrees (122.2226 to 126.8357) and the hip over 2.2529 (135.9929 to 138.2458). The feet are pinned: foot_L travels 0.0253 mm and toe_L 0.0285 mm in eight seconds, which is numerical noise, and the ankle joints hold 0.4000 m apart to 0.00000009 m - 102.0% of the 0.39215 m between the shoulder joints - with the toe 13.5 cm ahead of the ankle. Calatayud and colleagues (2015) set exactly this base for the one battle-rope study with a percentage-of-maximum normalisation: 21 trained men, feet shoulder-width, half squat, trunk flexed forward about 30 to 45 degrees, asked for minimal lower-body and trunk movement with the waves driven by the shoulders. This clip is a little more upright than their range at 23.45 degrees and matches it in every other respect. One thing in the model is not worth copying: the pelvis rises and falls 15.958 mm forty times in eight seconds, 5.00 Hz, with the knee opening and closing 4.613 degrees in step (correlation +1.0000). That is the rig answering the strike rate, not a leg drive, and the instruction is to hold the bend rather than pump it.",
+                mistake: "Standing up out of the half squat as the set goes on, or shuffling the feet to find a new base once it gets hard.",
+                correct: "Set your feet about shoulder-width with your knees bent a little and your chest tipped forward over them, then leave your feet planted and hold that shape until the interval ends."
+            ),
+            TechniqueCue(
+                id: "hands",
+                title: "Hand Position",
+                intro: "Each hand drives down and up over a short range and never comes up past your shoulder.",
+                why: "The wrist swings 18.96 cm vertically (0.89140 to 1.08100 m), 10.61 cm fore and aft, and 0.0003 mm sideways - so 42.9 cm of 3-D path per wave, 37.9 cm of it vertical, in a single vertical plane. It is below the shoulder joint in 192 of 192 frames, by 20.43 to 39.13 cm, ahead of it by 29.49 to 40.10 cm, and 9.03 to 27.73 cm above the pelvis joint, and the upper arm never passes 34.705 degrees from straight down (17.340 to 34.705, a span of 17.365). That matters for what this lift is not: the painful-arc and subacromial literature is about 60 to 120 degrees of elevation, and this stroke never gets near it, so the shoulder worry here is not an overhead one. The hands sit 0.41216 to 0.46487 m apart, 105 to 118% of the 0.39215 m shoulder span, and never cross. Calatayud and colleagues (2015) asked their 21 trained men for waves generated primarily through shoulder flexion and extension with the arms straight and relaxed, and measured 63% of maximum (SEM 4.9) in the anterior deltoid during the alternating wave against 58 (6.9) with both arms together. The model flexes the elbow as the hand rises rather than holding it - most bent at the top, 113.498 degrees, straightest at the bottom, 131.314, correlation with hand height -0.9947 over a range of 17.816 - and a planar reconstruction of the wrist (worst error 7.3 mm) puts about 11.9 cm of the 18.96 cm rise on the shoulder swing and about 8.2 cm on that elbow bend. Both joints work; the shoulder does more. The paint agrees about where the effort is: of 22 painted meshes the 3 bright ones are the anterior deltoid and the two biceps heads, and all 751 bright pixels sit on the near arm between v 0.226 and v 0.339.",
+                mistake: "Swinging the hands up toward the shoulders or overhead, which turns a short fast stroke into a slow heavy one and empties the interval.",
+                correct: "Drive each hand down and straight back up over about twenty centimetres, keeping both fists below your shoulders and out in front of your hips, and drive from the shoulder and elbow rather than flicking the wrist."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Torso Control",
+                intro: "One arm going up while the other goes down tries to turn you, and your trunk is what refuses.",
+                why: "This is the one number in the study that is bigger for the alternating wave than for anything else. Calatayud and colleagues (2015), 21 trained men, 15 m rope of 4 cm and 14 kg, peak RMS over three repetitions at a 70 bpm metronome normalised to two five-second maximal contractions: the external oblique reached 73% of maximum (SEM 7.7) in the unilateral alternating wave against 54 (6.3) with both arms together, p = 0.02 - while the lumbar erector spinae went the other way, 51 (2.7) against 67 (3.9), p = 0.001. So alternating puts the work into the side wall of the trunk, and the reason is that the two arms are out of phase: the left hand tops out 0.200 s before the right, exactly half of the 0.400 s wave. In the clip the trunk simply does not move - 23.454590 to 23.454607 degrees over 192 frames, every spine segment steady to 0.00002 degrees, the gap between the shoulder joints constant to 0.00000014 m, and the head fixed in x and z to 0.0 and 0.2 micrometres, so it never turns, nods or looks away. The paint lights the external oblique, the internal oblique and the rectus abdominis dim, and 35.8% of the waist box on screen is painted. Nothing in this clip fatigues, either: four identical 48-frame cycles, so the model can show the hold but not the moment it fails.",
+                mistake: "Letting the shoulders turn with each stroke so the trunk twists, or rocking the chest up and down to help the arms along.",
+                correct: "Brace your middle, hold your shoulders down away from your ears and keep them square to the rope, so each arm works on its own without the trunk twisting."
+            ),
+            TechniqueCue(
+                id: "grip",
+                title: "Grip",
+                intro: "You hold the rope like a hammer, and how hard you squeeze decides how long the set lasts.",
+                why: "The rope end is in the fist, not floating: the first segment of each rope is rigidly parented to its wrist bone, and its offset from the wrist joint varies by 0.61 micrometres over all 192 frames (0.117468 to 0.117469 m on the right, 0.114122 to 0.114123 on the left). The rope surface sits 6.03 to 7.69 cm from the right wrist joint and 5.70 to 7.41 cm from the left and crosses the fist at about 48 degrees to the forearm, which is a hammer grip with the palms facing each other - the neutral grip Calatayud and colleagues (2015) specify. Each side here is a chain of 39 cylinders 3.61 cm thick, 5.64 to 5.88 m long, 11.51 m for the two together; their rope was 15 m, 4 cm and 14 kg. Nothing in the clip shows grip force, and no study measures it in a rope wave. What is measured is the outcome: Cao and colleagues (2026), a review of 21 studies and 590 participants aged 11 to 25, found grip strength improved with battle-rope training, Hedges g = 0.99 with a confidence interval of 0.30 to 1.67, p = 0.011 - the authors stress substantial variation between studies and call their subgroup work exploratory, and the interval is wide. The forearm is also the one working tissue this rig does not paint at all: 22 meshes are lit and not one of them is a forearm, so the forearms are named among the stabilisers instead of getting a row.",
+                mistake: "Squeezing the handle as hard as you can from the first stroke, so the forearms burn out well before the clock does.",
+                correct: "Grip firmly enough not to lose the rope and no harder than that - your forearms are what give out first."
+            ),
+            TechniqueCue(
+                id: "tempo",
+                title: "Tempo",
+                intro: "Battle ropes are an interval rather than a set of reps, and the pace you choose is the whole exercise.",
+                why: "The model gives a tempo, and it is a display speed rather than a target. A Fourier transform over the 192-frame loop makes hand height a near-pure sinusoid at 2.5000 Hz (20 cycles per 8.000 s loop, amplitude 0.093775 m, second harmonic only 0.008263), so one wave of one arm is 9.6 frames = 0.400 s - 150 strikes a minute per arm, 300 in all - and a left-plus-right pair is 24 frames = 1.000 s, of which the clip holds eight. The pose repeats every 48 frames = 2.000 s to 0.0001 mm, four identical cycles, and there is no held frame anywhere: 0 of 192 intervals move less than 0.001 mm and the smallest step in the clip is 13.5273 mm. Each wrist covers 8.5723 m in eight seconds at 0.1248 to 1.8765 m/s, mean 1.0771. Now the comparison: Calatayud and colleagues (2015) used a 70 bpm metronome and Ratamess and colleagues (2015) standardised 15 waves per arm in 15 seconds, which is 60 a minute per arm - so the clip is running at more than twice the only rates anyone has studied. Ratamess measured what the interval costs: 12 men and 10 women through eight 30-second bouts reached 52.8 plus or minus 5.5% of maximal oxygen uptake in men and 50.0 plus or minus 11.2% in women on one-minute rests, falling to 40.5 plus or minus 4.5% and 37.7 plus or minus 11.0% on two-minute rests. No study measures where a rope wave fails and none prescribes a pace, and in 466 shipped blocks this library has never once badged pace, rhythm or going out too hard. The rule in the correct string is coaching convention, not a measurement.",
+                mistake: "Going flat out for the first ten seconds, so the waves shrink to nothing long before the interval is over.",
+                correct: "Pick one speed you could hold for the whole interval and keep it from the first stroke to the last, and when the rope stops travelling end the set there rather than grinding on slower."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Biceps Brachii", rank: .primary, fraction: 0.46),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.68),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.25)
+        ],
+        stabilisers: ["erector spinae", "forearms", "calves"],
+        setup: [
+            "Loop the middle of a long rope round a post or rack upright, take an end in each hand and walk back until a little slack is left.",
+            "Stand facing the rope, feet about shoulder-width, knees bent a little and chest tipped forward over them.",
+            "Hold an end in each fist with your palms facing each other, elbows bent, and your hands out in front of your hips.",
+            "Clear about three body lengths of floor in front of you and keep anything you could trip on out of the rope path.",
+            "Work this for time rather than reps: set a clock before you start, and treat the rope going quiet as the end of the set."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "SHRUGGING UP",
+            correctCue: "Shoulders stay down and set",
+            mistakeCue: "Shoulders ride up to the ears",
+            correctNote: "The model never shrugs. The gap between the shoulder joints holds 0.39215492 to 0.39215505 m across all 192 frames, a range of 0.00000014 m, and the clavicles, scapulae and upper arms each keep their offset from the pelvis to better than 0.0004 mm in every axis, while the head is fixed in x and z to 0.0 and 0.2 micrometres. There is also no top of the wave for the traps to grab: the wrist is below the shoulder joint in 192 of 192 frames, by 20.43 to 39.13 cm, and the upper arm never passes 34.705 degrees from straight down. The paint says the same - all three trapezius bands are dim, and the only bright meshes are the anterior deltoid and the two biceps heads.",
+            mistakeNote: "This one is coaching convention and not a measurement, and it is worth saying plainly: there is no study of battle rope shoulder position, scapular motion, impingement or what fatigue does to any of them. Rope sources agree on keeping the shoulders packed down and away from the ears and on cutting the interval short once rope speed drops, and this library already badges the same fault on three raises. The clip cannot settle it either way, because nothing in it degrades: four identical 48-frame cycles, a trunk that moves 0.000018 degrees and a head that moves 0.2 micrometres."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.04, cx: 0.54, cy: 0.26),
+            .init(DS.activation.opacity(0.50), rx: 0.06, ry: 0.04, cx: 0.51, cy: 0.33),
+            .init(DS.activationSoft.opacity(0.32), rx: 0.06, ry: 0.04, cx: 0.66, cy: 0.27),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.10, ry: 0.07, cx: 0.67, cy: 0.38),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.07, ry: 0.05, cx: 0.54, cy: 0.39),
+            .init(DS.activationSoft.opacity(0.34), rx: 0.09, ry: 0.05, cx: 0.71, cy: 0.50),
+            .init(DS.activationSoft.opacity(0.24), rx: 0.07, ry: 0.04, cx: 0.81, cy: 0.54),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.07, cx: 0.65, cy: 0.56)
+        ]
+    )
+
+    static let battleRopeSlamsContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "top", label: "Reach up",
+                          labelPoint: CGPoint(x: 0.785, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_R"),
+            CueAnnotation(cueID: "body", label: "Whole body, not the arms",
+                          labelPoint: CGPoint(x: 0.450, y: 0.80),
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "elbow", label: "Arms long",
+                          labelPoint: CGPoint(x: 0.770, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "bottom", label: "Stop at hip",
+                          labelPoint: CGPoint(x: 0.741, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "drive", label: "Rise up",
+                          labelPoint: CGPoint(x: 0.800, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "top",
+                title: "Overhead Start",
+                intro: "Every rep starts at the top, with both hands above your shoulders, the arms long and a little wider than your shoulders.",
+                why: "This is the half of the lift that separates the two rope entries, and it is measured. The hands are above the shoulder joint on 96 of 192 frames - exactly 50.0%, 12 frames in every rep - against 0 of 192 frames on Battle Rope Alternating Waves, where they never come above the shoulder at all. The upper arm sweeps 18.9017 to 153.3511 degrees from straight down, a range of 134.4494 degrees. The hands stay outside the shoulders the whole time: handgap runs 0.514571 to 0.555250 m against a shouldergap frozen at 0.392155 m for all 192 frames, so 131.2% to 141.6% of the shoulder span, and the gap is widest at the top. Underneath them the knee is at 173.2675 degrees, which is this rig's near-straight, so every flexion figure in this entry is measured from 173.27 and not from 180. The top is the only genuinely still moment in the clip: one interval per rep is frozen to better than 0.001 mm, which is 0.0417 s of interval time, and the rope is still moving through it - its largest centroid step on those eight intervals is 34.150665 mm. The model also leans back a little at the top, and this entry does not ask you to. Re-measured, because the measure report overstates it thirtyfold: trunk is behind vertical on 48 of 192 frames - eight lean-backs, one per rep, six frames each, which a run scan prints as nine runs only because the first one is split across the loop seam - and it reaches its full -4.919118 degrees on 24 of 192 frames, 3 per rep. Four point nine degrees is not an arch, and the whole lumbar chain moves 3.000 degrees across the clip, so there is nothing here to copy and nothing worth badging. No study has measured a rope slam, so nothing in this cue is a claim about muscles.",
+                mistake: "Pushing the hips forward and arching the back to get the hands higher, or letting them stop at chest height so the rope never has anywhere to fall from.",
+                correct: "Take both hands up above your shoulders, elbows long and hands a little wider than your shoulders, with your ribs down so the reach comes from your shoulders, not from arching your back."
+            ),
+            TechniqueCue(
+                id: "body",
+                title: "The Slam",
+                intro: "The rope goes down because your whole body goes down - you sit and fold as the hands come through.",
+                why: "Over the descent, f1 to f13, which is 13 frames and 12 intervals = 0.5000 s, the knee goes 173.2675 to 114.1130 (59.1545 degrees), the hip 169.2028 to 118.0121 (51.1907 degrees over the descent; 51.9597 clip-wide, because the hip actually peaks at 169.9718 on the way UP at f22, two frames short of the top), and the trunk swings from 4.9191 degrees behind vertical to 37.3313 degrees forward - a 42.2505 degree swing. The pelvis drops 18.103 cm, the head 31.266 cm and the wrist 1.252535 m. THE KNEE AND THE HIP MOVE WITHIN 8 DEGREES OF EACH OTHER, so this model is neither a hinge nor a squat but both at once, which is why no cue here tells you to sit or to hinge instead of the other. Against all of that the elbow moves 14.6279 degrees in the entire clip. The fastest single interval of the descent is f6 to f7 at 5.509 m/s at the wrist. There is no EMG study of a rope slam anywhere, so nothing in this entry says which muscle does the work; what is published is metabolic. Faigenbaum 2018 (PMID 29683913, JSCR 32(5):1197-1206) put 15 boys, 10.6 plus or minus 1.4 years old, through a 10-minute progressive protocol of five rope exercises using a 12.8 m, 4.1 kg rope, 2 sets of 30 s each with 30 s rest, and double-arm slams were the fifth: values rose from 10.3 mL/kg/min and 103.2 bpm on the first set of the first exercise to 30.0 plus or minus 3.9 mL/kg/min and 168.6 plus or minus 11.8 bpm on the second set of the slams, which is 64.8% of treadmill peak VO2 and 86.4% of peak heart rate. Ratamess 2015a found a battle-rope protocol the most metabolically demanding of thirteen, and Faigenbaum attributes that to the slam in particular, explaining it by a substantial lower body contribution. Read both carefully: the sample is fifteen ten-year-old boys, the exercise order was fixed and progressive so the slam sat last and carries the fatigue of the four before it, and neither study measured a single muscle - the lower body contribution is the authors' explanation of a metabolic result, not a measurement of anything.",
+                mistake: "Standing upright and swinging only the arms, so the rope is thrown rather than driven and the legs never load.",
+                correct: "Slam with both hands together, bending your knees and folding at your hips by about the same amount as the hands come down, and let the rope follow your body rather than trying to throw it with your arms."
+            ),
+            TechniqueCue(
+                id: "elbow",
+                title: "Arms Stay Long",
+                intro: "Your arms only hold the rope - they do not bend to drive it down.",
+                why: "The model settles this one. The left elbow runs 141.8884 to 156.5163 degrees, a range of 14.6279, and the right 141.2888 to 156.8816, a range of 15.5928; the wrist sits 0.5083 to 0.5265 m from the shoulder against a fully extended 0.2879 + 0.2498 = 0.5377 m, so the whole reach varies by 18.1 mm over the clip. That is a straight-arm pendulum from the shoulder, and it straightens the way a reader would not guess: THE ELBOW IS STRAIGHTEST AT THE BOTTOM, 156.5163 degrees at f10, AND MOST BENT AT THE TOP, 141.8884 at f23. So a cue asking for a bend at the bottom, or for the elbows to chop the rope down, would contradict the animation as well as the mechanics. The grip never changes either: the nearest rope segment to the right wrist is a constant 0.1136 m away on all 192 frames and to the left wrist 0.1111 m, both to four decimal places, because the handles are parented 11 cm beyond the wrist joint. And both arms do the same thing - the two elbows differ by at most 4.7841 degrees, at f8, and mirroring the left hand onto the right leaves 18.4811 mm, also at f8 - so this is a double-arm slam with no lead side and nothing alternating. No study has measured any of this.",
+                mistake: "Bending the elbows to chop the rope down, which turns a whole-body slam into a small triceps push.",
+                correct: "Keep your elbows long the whole way and let your arms hang heavy from your shoulders - if anything they straighten as the rope goes down, and they should never pull it."
+            ),
+            TechniqueCue(
+                id: "bottom",
+                title: "Where It Finishes",
+                intro: "The hands stop around hip height with your knees and hips still bent, and the rope goes down out in front of you.",
+                why: "The lowest the wrist gets is 0.692912 m, which is 6.69 cm BELOW the pelvis joint at that instant (0.7598) and 23.34 cm ABOVE the kneecap (patella_L 0.4595). THE SLAM FINISHES AT HIP HEIGHT - not at the shins and not at the floor - so nothing in this entry says drive it into the ground or finish past your knees. At that moment the knee is at 114.1130 degrees, the hip at 118.0121 and the trunk 37.3313 degrees forward, all three at their clip extremes. The bottom is also not a hold a reader could time: the lower body is identical to within 1e-4 at f11, f12 and f13 - 3 frames, 2 intervals, 0.0833 s - while the wrist keeps sinking 5.33 mm and then 1.88 mm, so the pose bottoms at f11 and the hands at f13. Where the rope goes is measured too, and it is further out than most readers expect. Some part of the rope is on the floor on every one of the 192 frames, 6 to 19 segments per rope at any moment, and the nearest it ever touches down is z 1.5905 m at f10 against a toe frozen at z 0.134682 - 1.4559 m clear of the toes, about a stride - from where it lies on the floor out to 6.02 m. One honest warning about the picture: nothing visibly strikes the ground in this clip, row 0.80 of the frame carries no on-screen rope at all, and on frames f9 through f16, 8 frames of every 24, the whole visible rope is below the render's black floor horizon at v 0.5084. The strike the lift is named for is real, but you will not see it here.",
+                mistake: "Driving the hands down past the knees toward the floor, so the hips keep folding after the rope has already gone.",
+                correct: "Finish with your hands about hip height and your knees and hips still bent, driving the rope down and away from you rather than straight down at your own feet."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "The Reload",
+                intro: "Standing back up is half the work: the rope only gets overhead again because your legs push the floor away.",
+                why: "This is the half readers treat as a rest, and in this clip it is the faster one. The ascent, f13 to f24, is 12 frames and 11 intervals = 0.4583 s, against the descent's 13 frames and 12 intervals = 0.5000 s, so THE WAY UP IS ONE INTERVAL SHORTER. Peak 3-D wrist speed is 6.083 m/s going up, at f20 to f21, against 5.509 m/s coming down; the means are 3.348 against 3.094 m/s. The clip's single largest per-frame joint step, 253.4732 mm, is the wrist on the way UP, and it happens eight times, once per rep. Only the VERTICAL component is faster coming down, 5.462 against 5.008 m/s, which is the whole of the usual claim that a slam is explosive downwards. Underneath it the knee opens 114.1130 to 173.2675 degrees and the hip 118.0121 to 169.9718, peaking at f22, two frames before the top, while the forefoot never moves at all - toe_L travels 0.0277 mm in total over 192 frames, toe_R 0.0234 mm, and the heel lifts 4.0150 cm at the top of each rep. So the push comes out of a planted foot. The pace this adds up to is one slam per 1.000 s, eight identical reps in 7.958 s, and the app logs this lift in seconds rather than reps - which is a property of the clip and not a recommendation, and is why the rate is left to you in the setup steps.",
+                mistake: "Treating the way up as a rest, so the rope goes slack and the next slam starts from nothing.",
+                correct: "Push the floor away and stand back up tall, letting the rope ride back up overhead - this half is as quick as the slam itself, not a recovery."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
+            MuscleActivation(name: "Gastrocnemius", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Soleus", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.56),
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.30),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Rotator Cuff", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.30)
+        ],
+        stabilisers: ["forearms", "latissimus dorsi", "hamstrings"],
+        setup: [
+            "Loop a battle rope around a post and walk back with an end in each hand until only a little slack is left on the floor.",
+            "Stand with your feet about shoulder-width apart and your knees soft, holding an end in each hand with your palms facing in.",
+            "Leave two clear strides of floor in front of you for the rope to run out, and keep your toes planted for the whole set.",
+            "This lift is timed rather than counted, so pick a rate you can hold to the end of the interval instead of going flat out early."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ARMS ONLY",
+            correctCue: "Hips and knees drive the rope down",
+            mistakeCue: "Arms swing, legs and trunk still",
+            correctNote: "In the model the knee moves 59.1545 degrees, the hip 51.1907 and the trunk 42.2505 while the elbow moves 14.6279, and the elbow is straightest at the bottom of the slam rather than bent - so the rope is driven by the body and only held by the arms.",
+            mistakeNote: "ARMS ONLY has two shipped uses and this is the third; it is not an equipment word, so unlike this family's sled and ball faults it needed no new badge. Nobody has measured a rope slam, so this names a mechanical fault the model settles and makes no claim about which muscle works or about any injury rate."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.71, cy: 0.34),
+            .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.64, cy: 0.35),
+            .init(DS.activation.opacity(0.50), rx: 0.09, ry: 0.05, cx: 0.63, cy: 0.69),
+            .init(DS.activation.opacity(0.48), rx: 0.10, ry: 0.07, cx: 0.63, cy: 0.59),
+            .init(DS.activation.opacity(0.45), rx: 0.08, ry: 0.05, cx: 0.64, cy: 0.75),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.05, ry: 0.07, cx: 0.58, cy: 0.30),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.06, cx: 0.66, cy: 0.46),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.06, cx: 0.58, cy: 0.40),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.09, ry: 0.04, cx: 0.68, cy: 0.35),
+            .init(DS.activationSoft.opacity(0.24), rx: 0.08, ry: 0.05, cx: 0.65, cy: 0.52)
+        ]
+    )
+
+    static let medicineBallChestPassContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "hands", label: "Hands behind the ball",
+                          labelPoint: CGPoint(x: 0.406, y: 0.16),
+                          leaderLength: 40, joint: "hand_R"),
+            CueAnnotation(cueID: "drive", label: "Push the ball away fast",
+                          labelPoint: CGPoint(x: 0.435, y: 0.48),
+                          leaderLength: 40, joint: "support_PectoralisMajor_Abdominal_R"),
+            CueAnnotation(cueID: "catch", label: "Catch on soft elbows",
+                          labelPoint: CGPoint(x: 0.391, y: 0.64),
+                          leaderLength: 40, joint: "forearm_R"),
+            CueAnnotation(cueID: "stance", label: "Feet inside shoulder-width",
+                          labelPoint: CGPoint(x: 0.479, y: 0.80),
+                          leaderLength: 40, joint: "toe_L"),
+            CueAnnotation(cueID: "torso", label: "Stay tall",
+                          labelPoint: CGPoint(x: 0.770, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "spine")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "hands",
+                title: "Behind the Ball",
+                intro: "The ball is pushed from behind with the hands close together, not gripped on its sides.",
+                why: "The hands own this ball and nothing else comes near it. On every contact frame each wrist is exactly 0.1881 m from the ball centre, which is 0.0381 m - 3.81 cm - outside its 0.150 m surface, to better than 0.2 mm, and neither hand is ever inside the ball; the next nearest joint is the right pectoral support at 0.1069 m and then the clavicles at 0.1474 m. At maximum drive the hands squeeze IN rather than out: handgap falls from 0.2326 m at the hold to 0.1356 m at f10, so the two wrists are 13.6 cm apart behind a ball 30 cm across, with the ball centre 17.5 cm in front of and 1.7 cm above the hand midpoint. On screen the nearest joint to a visible ball point is hand_R at 1.3 px and hand_L at 6.6 px, then the pectoral support at 23.4 px. Held, the ball draws at u 0.3156..0.5371, v 0.2238..0.3537 - a disc of radius 42.6 px in front of the chest and below the chin. So the ball is driven by the hands for 34 of the 48 frames of each rep, 70.8% of it, and it is pushed from behind and never gripped at the sides.",
+                mistake: "Holding the ball out away from the chest with the arms already half extended, so there is no push left to make.",
+                correct: "Hold the ball at chest height with both hands behind it and your thumbs close together, so the pass pushes the ball from behind rather than squeezing it from the sides."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "The Pass",
+                intro: "This is a throw. Push the ball away as fast as you can and let it go.",
+                why: "The pass is 5 frame intervals long. The elbow opens from 59.87 degrees at f6 to 160.00 at f11 - 100.13 degrees in 5 INTERVALS, 0.2083 s - while hand_L.z travels from 0.2840 to 0.6691 m, 38.5 cm, and the heels leave the floor at f9. Release falls between f11 and f12 at (0.000, 1.102, 6.230) m/s, a speed of 6.326 m/s at 10.0 degrees above horizontal, and the outbound flight f12..f17 is exact ballistics: dz is +0.25957 m on every one of the five steps and the second difference of y is -0.01703 m per frame squared on every step, which is -9.810 m/s squared. What this trains is speed, and that is the one thing the literature is clear about. There is no EMG study of the chest pass at all, but the throw is a reliable and valid test of upper-body power - test-retest 0.996 and r = 0.906 with a jump power index in 20 sand volleyball players (Stockbrugger and Haennel 2001), ICC 0.94 with a 4 kg instrumented ball in 30 active adults, sensitive to upper-body fatigue where grip strength was not (Tremblay 2026), peak force and rate of force development reliable at ICC 0.82 or better in 20 young women (Johnson 2024). Intent is trainable: a maximum-speed warm-up raised chest-pass distance 0.50 m, 6.0%, in 93% of 45 young female basketball players, where a slow-speed warm-up did not (Iwata 2026). And six weeks of medicine-ball training raised throwing velocity 14% in 28 handball players while leaving precision unchanged (Raeder 2015) - so push for speed, not for accuracy.",
+                mistake: "Pressing the ball out at ordinary bench-press speed, so the rep trains nothing a press does not.",
+                correct: "From your chest, push the ball away as hard and as fast as you can and let it leave your hands - this is a throw, not a press."
+            ),
+            TechniqueCue(
+                id: "catch",
+                title: "The Catch",
+                intro: "Half the rep is receiving the ball, and it is the only part that loads you quickly.",
+                why: "The catch is one frame interval and the absorb that follows is six. Between f25 and f26 each wrist goes from 0.2233 m outside the ball to exactly its held 0.0381 m, and the ball arrives at (0.000, -1.697, -4.551) m/s, a speed of 4.857 m/s. The elbow then closes 80.36 degrees in 6 INTERVALS - 0.2500 s, 142.00 at f26 to 61.64 at f32 - at a trunk whose entire range over the clip is 7.0000037 degrees, and the hips and knees barely help: hip 7.3854 degrees of range, knee 15.0868, anklegap 3.8 mm. A ball 30 cm across arriving in a quarter of a second at a near-static trunk is the only fast loading event in this lift, and nothing in the literature or in the library addresses it: the nearest thing the app owns is BOUNCING OFF THE FLOOR on the Barbell Floor Press, whose mistake cue is Elbows slam the floor, and that is about a barbell. Two things the clip does NOT give you. The deepest elbow of the rep is the wind-up and not the catch - 59.87 degrees at f6 against 61.64 at f32 - and the knee goes the other way by four thousandths of a degree, 129.3762 at f32 against 129.3871 at f5, which is nothing, so there is no measured sink into the catch to copy. And the return is not a bounce off anything: the ball leaves its turnaround RISING at 1.559 m/s having arrived falling at 0.943 m/s, comes back 9.45 cm higher than it went out, and keeps only 73.06% of its outgoing horizontal speed. Set the distance yourself and judge the catch yourself.",
+                mistake: "Catching the ball on straight arms, so the elbows and shoulders stop it instead of the muscles.",
+                correct: "Meet the ball with your arms already reaching and let your elbows fold it in to your chest - and if a pass comes back off line, step aside and let it go rather than reaching for it."
+            ),
+            TechniqueCue(
+                id: "stance",
+                title: "Your Base",
+                intro: "The feet are a little inside shoulder-width and they never move.",
+                why: "The stance is narrower than the shoulders and it is frozen. anklegap is 0.3200 m against a shouldergap of 0.3922 m, which is 81.6% of shoulder width, and over 192 frames anklegap changes by 3.8 mm while shouldergap changes by 0.0000004 m. The feet themselves do not move at all: toe_L and toe_R are frozen on all three axes for all 192 frames, with ranges of 0.000000 m to seven decimals, and the heels rise 1.43 cm at most, on f9..f17 - 9 frames, 0.3750 s - peaking at f12. Nothing steps, shuffles or resets between reps, and the four reps are bit-identical to 0.000554 mm. There is also no leg drive to find here: knee range 15.0868 degrees over the whole clip, hip 7.3854, trunk 7.0000037, with no triple extension and no weight shift, so a wide base buys nothing and a step would only cost accuracy. On how many reps to do, the only study with per-exercise numbers for this movement had 14 children, mean age 10.1 years, with a 2.3 kg ball reach 15.0 and then 15.8 repetitions in 30 s - about one every 1.9-2.0 s - at 53.7% and then 63.4% of VO2peak; but its authors state the aim was not to disentangle the individual exercises, the exercise order was not randomised, and each exercise was likely influenced by fatigue from the one before, so those are ordered, confounded observations and not an effect of the chest pass (Faigenbaum 2018).",
+                mistake: "Stepping into the throw or letting the feet drift wider, so the pass turns into a push press from the legs.",
+                correct: "Leave your feet where you set them - they do not step or shuffle into the throw, so every rep starts from the same base."
+            ),
+            TechniqueCue(
+                id: "torso",
+                title: "Quiet Trunk",
+                intro: "The trunk hardly moves. The pass comes from the arms and chest, not from leaning back.",
+                why: "The trunk is the quietest channel in the clip. Its whole range is 7.0000037 degrees, from 6.5793 at f32 to 13.5793 at f12, over only 40 distinct values with a flat plateau at 9.5793 across f5..f8 - a hand-keyed channel - and the lumbar and thoracic chains are frozen at 171.879 and 174.067 with zero range. The hands are never above the shoulder on any of the 192 frames, staying 9.29 to 17.02 cm below it, and the upper arm peaks at 73.7965 degrees from straight down. The reaching finish a thrower expects is not there either, and this is the one place the animation would mislead a reader who copied it. The elbow's maximum is 167.99985 degrees - a key set at 168, so the arm never straightens - and it arrives at f18, which is 6 frames (0.2500 s) after the first free-flight frame f12 and 7 frames (0.2917 s) after the last held frame f11, so it coincides with the ball's turnaround and not with the throw. At release the elbow is 160.00 and it then FLEXES to 158.47 at f13 before re-extending. What actually opens at f18 is the hands going apart - handgap 0.3178 m, the clip maximum - while hand_L.z moves BACKWARDS from 0.6766 m at f12 to 0.6523, a change of -0.0243 m. So the arms spread and drift back after the ball has gone, and finish long with the fingers chasing the ball is contradicted by the model. Keep the trunk still and let the ball go.",
+                mistake: "Rocking the trunk back and throwing the shoulders after the ball to add a little distance.",
+                correct: "Keep your chest up and your trunk almost still through the rep - the pass comes from your arms and chest, not from leaning back or swinging after the ball."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.88),
+            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.70),
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.64),
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.56),
+            MuscleActivation(name: "Serratus Anterior", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.25),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
+        ],
+        stabilisers: ["core", "gluteus maximus", "rotator cuff", "forearms"],
+        setup: [
+            "Face a solid wall about two to three metres away, or a partner at that distance, with nothing breakable in the throwing line.",
+            "Use a medicine ball you can hold in both hands at chest height, hands behind it and elbows down by your ribs.",
+            "Stand with your feet a little inside shoulder-width, flat and still, and stand tall with your trunk braced.",
+            "Treat the catch as half the rep: take the ball on bending elbows and bring it back to your chest before you throw again.",
+            "Use a ball that bounces back off a wall - a dead slam ball will not return and leaves you nothing to catch."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ELBOWS FLARED",
+            correctCue: "Hands behind the ball, elbows in",
+            mistakeCue: "Elbows flare, hands go wide",
+            correctNote: "With the hands behind the ball and the elbows tracking in by the ribs, the push runs straight through the ball and the chest and triceps do it. The model holds that line and tightens it: handgap falls from 0.2326 m at the hold to 0.1356 m at the moment of maximum drive, so the two wrists finish 13.6 cm apart behind a ball 30 cm across, and each wrist stays exactly 3.81 cm outside the ball surface on every contact frame.",
+            mistakeNote: "Hands spread on to the sides of the ball push the elbows out level with the shoulders, so the force runs around the ball rather than through it and the front of the shoulder takes what the chest should. It is the commonest pressing fault the library badges - eight shipped blocks carry it, one of them another medicine ball lift - and this animation does the opposite at every frame, which is why it is worth naming."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.58), rx: 0.09, ry: 0.06, cx: 0.62, cy: 0.28),
+            .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.05, cx: 0.75, cy: 0.32),
+            .init(DS.activation.opacity(0.50), rx: 0.07, ry: 0.03, cx: 0.67, cy: 0.24),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.04, ry: 0.04, cx: 0.72, cy: 0.37),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.07, cx: 0.67, cy: 0.59),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.04, ry: 0.02, cx: 0.58, cy: 0.33)
+        ]
+    )
+
+    static let medicineBallSlamContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "reach", label: "Reach tall",
+                          labelPoint: CGPoint(x: 0.756, y: 0.16),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "upper_arm_L"),
+            CueAnnotation(cueID: "hinge", label: "Hinge",
+                          labelPoint: CGPoint(x: 0.829, y: 0.32),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "drive", label: "Slam it",
+                          labelPoint: CGPoint(x: 0.800, y: 0.48),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "depth", label: "Sit deep",
+                          labelPoint: CGPoint(x: 0.785, y: 0.64),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "feet", label: "Feet set",
+                          labelPoint: CGPoint(x: 0.785, y: 0.80),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "foot_L")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "reach",
+                title: "Reach Overhead",
+                intro: "You take the ball from your chest and reach it straight overhead with your arms long.",
+                why: "The reach is f4..f12 of a 48-frame rep - 9 frames, 0.3333 s of elapsed time - and it is almost all shoulder. Shoulder flexion, measured as the upper-arm-to-wrist vector against straight down, goes 44.9 deg to 166.18 at f11, while the elbow only opens 75.37 to 149.29 and the knee comes back no further than 163.73. The ball rises from y 1.1789 m to 2.1211 at f12, its top surface at 2.2711, and the wrists peak at y 1.9593, which is 0.3674 m above the standing head height of 1.5919. It travels backwards as it rises - ball z 0.3738 to 0.0280 at f11, essentially straight above the pelvis, whose own z range is -0.1000 to 0.0100 - and it never comes near the face: the smallest clearance from the ball surface to the head joint anywhere in the clip is 0.2880 m, and to the neck 0.2914 m. The trunk goes 5.5434 deg PAST vertical into a backward lean at f11, and both heels leave the floor, foot_L 4.015 cm and foot_R 4.008 cm, above 1 cm over f7..f14. The library badges LEANING BACK on 16 blocks and ARCHING THE LOWER BACK on 2, and 5.54 deg is not enough to badge. No EMG study of a medicine ball slam exists, so nothing here names a muscle: Tsartsapakis 2025 plans exactly that measurement and is written in the future tense with no data.",
+                mistake: "Pressing the ball up with bent elbows, or arching the lower back to get it overhead instead of reaching through the shoulders.",
+                correct: "Take the ball from your chest straight up over your head in one move, arms long, until it is stacked right above your hips, and let your heels come up as you reach."
+            ),
+            TechniqueCue(
+                id: "hinge",
+                title: "Fold At The Hips",
+                intro: "On the way down you fold forward at the hips while your back stays long.",
+                why: "The fold is at the hip and almost nowhere else. hip_L runs 170.9145 deg to 74.8139, a 96.1006 deg range clip-wide and 94.42 deg within a rep, while the lumbar chain from pelvis to spine to chest flexes only from 171.879 deg at rest to 166.479 at f22 - 5.400 deg against rest, and 6.900 deg clip-wide, because that same chain EXTENDS to 173.379 in the overhead reach - and the thoracic chain from spine to chest to neck goes 174.067 to 161.467, 12.600 deg against rest and 16.100 clip-wide. Segment lengths are rigid to 3e-07 m, so none of that is rig stretch. The head tucks 17.650 deg, the chest-neck-head angle going 175.433 to 157.783 at f28: the model is looking at the ball at the bottom, not up. And the hips drop far more than they travel back - pelvis y 0.9357 m to 0.4799, a 45.58 cm fall, against a z range of 0.11 m in total, 0.0000 at f0, 0.0067 at f12, -0.0600 at f19 and -0.1000 at f28 - which is why the pill says Hinge rather than the library's Hips back, a string whose own lifts send the hips much further behind them. Coaching is unanimous that the commonest slam fault is spinal flexion on the way down and that the fix is a hinge, but no source found is a standards body and none cites a measurement.",
+                mistake: "Rounding the lower back to drive the ball down, or bending at the waist with the hips left under you.",
+                correct: "Send the ball down by folding forward at your hips, and keep your back long from your hips to your head the whole way - the bend belongs at the hip, not in your spine."
+            ),
+            TechniqueCue(
+                id: "drive",
+                title: "The Slam",
+                intro: "You throw the ball down in front of you with your whole body, not with your arms.",
+                why: "The slam is f12..f19, 8 frames and 0.2917 s, and the arms do not pull. The elbow is 149.29 deg at f12, 157.49 at f18 and 156.64 at f19, then 165.46 at f20 and its clip maximum 167.6511 at f21 - after the ball has already hit the floor - so it OPENS about 18 deg across the throw. What moves is the trunk: -3.82 deg to 38.34, which is 42.16 deg across 7 intervals at a mean 145 deg/s, with hip 170.58 to 133.53, knee 163.73 to 135.63 and the wrists falling from y 1.9593 to 0.9591. The ball goes down and FORWARD first, z 0.0714 to 0.8843 at f18, then back to 0.8119 at f19, and lands at f21, t 0.875, at 8.7188 m/s vertically and 3.9830 m/s horizontally, 9.5853 m/s resultant. It is welded to the hands over f0..f19 and f28..f47, the wrists holding a fixed 0.188053 m radius, and free only over f20..f27. There is no catch: at the instant of impact the wrists are 0.4882 m ABOVE the ball centre and they do not touch it again for 0.2917 s. One frame of the release is scripted rather than ballistic - the f19-to-f20 interval shows -25.688 m/s2, about 2.6 g, and only f20-to-f21 is at g, -9.810, which is g to 0.04 per cent - so nothing here is built on the release instant.",
+                mistake: "Pulling the ball down with the arms while the trunk stays upright, or chasing it to the floor instead of letting it go.",
+                correct: "Throw the ball down hard in front of you with your hips and trunk, keeping your arms long rather than pulling with them, then let it go and let it land."
+            ),
+            TechniqueCue(
+                id: "depth",
+                title: "Squat To The Ball",
+                intro: "After the ball lands you squat all the way down to it, pick it up and stand back up.",
+                why: "The pick-up is the biggest part of the rep and nobody has written about it: 28 of the 48 frames of a rep - 27 intervals, 1.1250 s of the 2.0000 s rep, 58 per cent - is the descent, the bottom hold and the stand. The descent is f19..f28, 10 frames and 0.3750 s: knee 135.63 deg to 61.9026 at a mean 196.6 deg/s, hip 133.53 to 74.81, trunk to its clip maximum 56.5450 at f26 and 56.33 at f28, the ankle 95.05 to 64.14 against 105.41 standing, the pelvis 0.8396 m to 0.4799 - 35.97 cm below where the slam left it and 41.92 cm below standing - and the head 1.3763 to 0.8831. At the bottom the HIP joint is 0.1120 m ABOVE the knee joint and the thigh slopes 15.09 deg down from hip to knee, so the squat stops just ABOVE parallel on the usual hip-crease-to-knee reading even though the knee itself is deeply flexed at 61.9026 deg - the hip is above the knee on all 192 frames, so no string here asks for depth below parallel, and the depth a lifter actually needs is whatever gets two hands under the ball with a long back. The bottom is frozen over f28..f30, 3 frames and 2 intervals, 0.0833 s, every joint identical to 0.001 mm, with the hands back on the ball at the same 0.188053 m radius. The stand is f31..f46, 16 frames and 0.6250 s, and the elbow re-folds 148.66 deg to 75.20 over the last six of them, re-racking the ball at the chest. No study, no library badge and no coaching source addresses this pick-up. The nearest measured figure is a RATE: Faigenbaum 2018, 14 children of mean age 10.1 years with a 2.3 kg ball, managed 15.1 then 16.1 double-arm slams in 30 s, about one every 1.9 to 2.0 s, which is this clip's own 2.000 s rep, at 62.8 and 63.6 per cent of VO2peak and 88.8 and 89.6 per cent of peak heart rate. Its authors say the protocol was not built to separate the exercises and that each row is confounded by fatigue from the one before, so it is a rate and a cost and not a muscle claim.",
+                mistake: "Snatching the ball up off the floor with straight legs and a rounded back instead of squatting down to it.",
+                correct: "Keep going down after the slam: squat right down to the ball with your hips back and your back long, pick it up in both hands and stand all the way up with it at your chest."
+            ),
+            TechniqueCue(
+                id: "feet",
+                title: "Feet Stay Set",
+                intro: "Your feet stay where you set them, and your heels only leave the floor as you reach overhead.",
+                why: "The feet never move and the heels move once. anklegap runs 0.3800 to 0.3933 m, and that 1.33 cm is the ankle joints rotating rather than a step, against a shouldergap that is a dead constant 0.392155 m with a range of 3.11e-07 m - so the stance is shoulder-width. toe_L and toe_R travel 0.00033 mm and 0.00049 mm over all 192 frames: there is no step, no stance reset and no stance change anywhere in the clip. The heel is the one thing that leaves the floor, and it does it in the reach rather than in the squat. foot_L rests at 0.068600 m, is above 1 mm from f5, above 1 cm over f7..f14, peaks 4.015 cm up at f11 with foot_R at 4.008, and is back at its rest height to within 0.00025 mm for every frame of f20..f31 - the whole slam, the descent, the squat and the stand. So flat-footed is true of the half of the rep that loads the knee and false of the reach, and no string here may claim either half on its own. What the bottom asks of the ankle is real: 64.14 deg at f28 against 105.41 standing, which is 41.27 deg of dorsiflexion, achievable but not universal. The library badges HEELS LIFTING on 3 blocks, all of them squats, and that badge is wrong for this lift: here the heels lift on purpose.",
+                mistake: "Stepping or shuffling the feet between reps, or letting the heels peel off the floor at the bottom of the squat.",
+                correct: "Set your feet about shoulder-width and leave them there - your heels come up as you reach overhead, then stay down through the slam and the whole squat."
+            )
+        ],
+        activation: [
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.86),
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Rhomboids", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+        ],
+        stabilisers: ["latissimus dorsi", "forearms", "transverse abdominis"],
+        setup: [
+            "Stand with your feet about shoulder-width, a medicine ball in both hands at your chest, and your trunk braced.",
+            "Use a slam ball that does not bounce back, and aim at a spot about 20 cm in front of your toes.",
+            "Clear the floor in front of you and the space overhead, and keep your eyes on the ball as you go down to it.",
+            "Expect over half of every rep to be the squat down to the ball and the stand back up - that squat is where your back is working.",
+            "Stand all the way up with the ball at your chest before you start the next rep, and keep your feet where you set them."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "ROUNDED LOWER BACK",
+            correctCue: "Back long, fold at the hips",
+            mistakeCue: "Lower back rounds to reach the ball",
+            correctNote: "The model does the correct version, measurably. The lumbar chain from pelvis to spine to chest flexes only 5.400 deg from its resting 171.879, to 166.479 at f22, and 6.900 deg across the whole clip, while hip_L folds 96.1006 deg from 170.9145 to 74.8139. The thoracic chain gives up 12.600 deg from rest. Segment lengths are rigid to 3e-07 m, so none of that is rig stretch, and the head tucks 17.650 deg at the bottom because the model is looking at the ball.",
+            mistakeNote: "Coaching is unanimous that the commonest fault in a slam is spinal flexion on the way down and that the fix is a hip hinge, but none of the sources found is a standards body and none cites a measurement. The only mechanistic evidence is Callaghan and McGill 2001, which took porcine cervical spinal units through up to 86 400 bending cycles at 1 Hz in vitro and saw repeated flexion initiate posterior annular herniation at modest compression - neither a human nor a lumbar spine, and no dose. No study has tested a rounded back on this lift."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.62, cy: 0.64),
+            .init(DS.activation.opacity(0.55), rx: 0.09, ry: 0.06, cx: 0.57, cy: 0.47),
+            .init(DS.activation.opacity(0.50), rx: 0.09, ry: 0.04, cx: 0.57, cy: 0.40),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.10, ry: 0.06, cx: 0.57, cy: 0.50),
+            .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.07, cx: 0.61, cy: 0.49)
         ]
     )
     // END Model-only exercises (2026-10-29) content
