@@ -1400,6 +1400,15 @@ JOBS = {
     "legs-1028/Lunge": "Legs/Lunge",
     "legs-1028/Lunge_Lean": "Legs/LungeLean",
     "legs-1028/Squat": "Legs/Squat",
+    # Desktop "1-100" (2026-10-31): eight exports re-tuned by the owner 2026-10-30/31.
+    "1-100-1031/02_lateral_lunge": "Legs/LateralLunge",
+    "1-100-1031/06_dumbbell_fly": "Chest/DumbbellFly",
+    "1-100-1031/11_low_to_high_cable_fly": "Chest/LowToHighCableFly",
+    "1-100-1031/11_overhead_squat": "Legs/OverheadSquat",
+    "1-100-1031/17_vertical_leg_press": "Legs/VerticalLegPress",
+    "1-100-1031/19_single_leg_press": "Legs/SingleLegPress",
+    "1-100-1031/23_smith_machine_front_squat": "Legs/SmithMachineFrontSquat",
+    "1-100-1031/30_hip_adduction_machine": "Legs/HipAdductionMachine",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs

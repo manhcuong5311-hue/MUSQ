@@ -25,12 +25,22 @@ models differ from textbook technique.
 
 ## Lateral Lunge
 
-Model: bodyweight, hands clasped at the chest; feet 0.32 m apart and pointing
-straight ahead; rep 1 the left foot steps out 0.42 m (ankles 0.74 m apart) and
-the hips go 0.54 m to that side, 0.29 m back and 0.33 m down. Bottom: stepping
-knee 87°, hip 49°, thigh 17° above parallel, shin 19° forward, kneecap 13 cm
-ahead of the ankle and straight over the foot side to side; the other leg
-straight (171°), its foot flat; trunk 58° forward.
+Model (re-exported 2026-10-31): bodyweight, hands clasped at the chest; feet
+0.32 m apart, toes out 10°; rep 1 the left foot steps out 0.52 m (ankles
+0.85 m apart) and turns out to 30°, and the hips go 0.52 m to that side,
+0.23 m back and 0.29 m down. Bottom: stepping knee 90°, hip 85°, thigh 25°
+above parallel, shin 20° forward, kneecap 13 cm ahead of and 12 cm outside
+the ankle (over the turned-out foot); the other leg straight (171°), its foot
+flat and also turned out 30°; trunk 33° forward.
+
+The model before the re-export (2026-09-28 to 2026-10-31), which the claims
+below were first written against: feet pointing straight ahead; the left foot
+stepped out 0.42 m (ankles 0.74 m apart), the hips 0.54 m to the side, 0.29 m
+back and 0.33 m down; bottom knee 87°, hip 49°, thigh 17° above parallel,
+shin 19°, kneecap 13 cm ahead of the ankle and straight over the foot side
+to side; trunk 58° forward. The 2026-10-31 round kept the paint, the levels,
+the ghosts and the labels (stills checked) and reworded the setup, knee and
+straight-leg cues, which said the feet point straight ahead.
 
 Claims and sources:
 - Quadriceps primary (HI 0.76): ExRx Dumbbell Alternating Side Lunge and
@@ -107,10 +117,11 @@ Claims and sources:
   it (171°) only at the bottom, 1.75-2.38 s.
 - Comparison HIPS NOT SITTING BACK: as the hips cue.
 - Setup: feet about hip-width (model 0.32 m ankle to ankle, slightly wider),
-  hands clasped, weight in the heels (ACE); the last step says both feet
-  point ahead and that each rep steps one foot out and back (model: 0°
-  toe-out, the step out 0.46-1.71 s and 2.42-3.62 s), so the setup does not
-  put the lifter in the wide stance before the first rep.
+  hands clasped, weight in the heels (ACE); toes turned slightly out (the
+  model's 10° since 2026-10-31; "pointing ahead" before, at 0°); the last
+  step says each rep steps one foot out, its toes turned out (30°), and back
+  (the step out 0.46-1.71 s and 2.42-3.62 s), so the setup does not put the
+  lifter in the wide stance before the first rep.
 - Knee comfort: Escamilla 2008 and 2022 found patellofemoral force and
   stress higher in the side lunge than the forward lunge (80-90° knee angles
   with load; 40-100° bodyweight). Escamilla reports knee flexion (0° =
@@ -342,15 +353,22 @@ kneecaps 29 cm ahead of the ankles, heels down; trunk 4° -> 14°.
 
 Where the models differ from textbook technique:
 
-- **Lateral Lunge trunk lean.** The model hinges to 58° at the bottom, the
-  head coming down to about hip height of a standing lifter. ExRx says keep
-  the torso upright; ACE's side lunge pushes the hips back with a braced
-  trunk. The copy accepts a forward lean from the hips and makes the back
-  flat the cue, and the torso ghost rounds the back rather than adding more
-  lean. It does not tell the user to lean 58°.
+- **Lateral Lunge trunk lean.** The model leans 33° at the bottom (58°, the
+  head down to about hip height of a standing lifter, before the 2026-10-31
+  re-export). ExRx says keep the torso upright; ACE's side lunge pushes the
+  hips back with a braced trunk. The copy accepts a forward lean from the
+  hips and makes the back flat the cue, and the torso ghost rounds the back
+  rather than adding more lean. It does not tell the user how far to lean.
+  The hips ghost turns the trunk 25° more upright from wherever the model is,
+  ~8° at the bottom on the re-exported model.
 - **Lateral Lunge shin.** ACE takes the stepping shin to vertical; the model's
-  shin is 19° forward with the kneecap 13 cm ahead of the ankle (still behind
+  shin is 20° forward with the kneecap 13 cm ahead of the ankle (still behind
   the toe tip). The copy does not ask for a vertical shin.
+- **Lateral Lunge feet** (since 2026-10-31): toes out 10° standing, 30° on the
+  stepping foot and, at the bottom, on the straight leg's foot too. ACE's
+  cue is the knee over the second toe, ExRx the knee pointing the same way as
+  the foot; the copy now says the toes turn out and the knee follows them,
+  and no longer that the feet point straight ahead.
 - **Lateral Lunge step.** The stepping foot lifts only ~3 cm and lands flat;
   ExRx lands heel then forefoot. The copy says land the foot flat.
 - **Cossack straight foot** turns up onto its heel (StrengthLog's cue), read

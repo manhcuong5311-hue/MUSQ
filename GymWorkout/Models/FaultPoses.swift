@@ -10357,13 +10357,14 @@ enum FaultPoses {
         // knees caving in to face-on, the toes turned forward to -0.2.
         "Lateral Lunge": [
             // The back rounding and the head dropping toward the knee; the
-            // model already hinges 58° forward, so the ghost rounds rather
-            // than leans further.
+            // model already leans 33° forward (58° before the 2026-10-31
+            // re-export), so the ghost rounds rather than leans further.
             "torso": backRounded(.withBend("shin_bent")).seen(-0.9),
-            // Hips kept forward: ~9 cm forward, trunk 58° -> 33°, the
-            // kneecap 21 cm ahead of the ankle instead of 13 cm (a port of
-            // FaultGhost.solve on the rig at 2.0 s); the straight knee folds
-            // to ~149° as a side effect.
+            // Hips kept forward: ~9 cm forward and the trunk 25° more
+            // upright, 33° -> ~8° on the 2026-10-31 model. On the earlier
+            // 58° model it went to 33° and took the kneecap 21 cm ahead of
+            // the ankle instead of 13 cm (a port of FaultGhost.solve on the
+            // rig at 2.0 s); the straight knee folds as a side effect.
             "hips": wideHipsForward.seen(-0.9),
             // The straight leg bending, its foot ~7 cm in: the knee folds
             // from 171° to ~139°.

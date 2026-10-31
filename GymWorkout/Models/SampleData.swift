@@ -30823,15 +30823,15 @@ enum SampleData {
                 intro: "The other leg ends long, its foot flat.",
                 why: "Keeping the other knee straight puts your weight over the bent leg, which does the lifting, while the inner thigh of the straight leg lengthens. Bending both knees spreads the load between the legs and turns the rep into a lopsided squat.",
                 mistake: "Bending the straight leg and letting its foot slide in, the weight settling between the feet.",
-                correct: "As your hips move over the bent leg, straighten the other knee; at the bottom it is straight, its foot flat and pointing ahead."
+                correct: "As your hips move over the bent leg, straighten the other knee; at the bottom it is straight, its foot flat on the floor."
             ),
             TechniqueCue(
                 id: "knee",
                 title: "Knee Tracking",
                 intro: "The bent knee stays over the stepping foot.",
-                why: "The foot points straight ahead and the knee bends in line with it, over the second toe. A knee that drifts in toward the other leg often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
+                why: "The knee bends the same way the toes point, over the second toe. A knee that drifts in toward the other leg often shows the hip losing control of the thigh, so the knee takes the load at an angle.",
                 mistake: "The bent knee caving in toward the straight leg as you sink or push back up.",
-                correct: "Keep the knee over the middle toes, the foot pointing ahead, all the way down and back up."
+                correct: "Keep the knee over the middle toes, pointing the same way as the foot, all the way down and back up."
             ),
             TechniqueCue(
                 id: "heel",
@@ -30847,10 +30847,13 @@ enum SampleData {
             // medius and minimus meshes) and the quadriceps bright, the
             // hamstrings dim (new), the adductors unlit. The Gluteus Maximus
             // and Gluteus Medius move to primary with their fractions kept
-            // (0.52 is DiStefano 2009's 41% MVIC raised for the model's deep
+            // (0.52 is DiStefano 2009's 41% MVIC raised for the model's hip
             // hinge; the medius sits just below it, DiStefano's 39%). The
             // Adductors row (0.42) is dropped, and the hamstrings move from
-            // the stabilisers to a LOW row.
+            // the stabilisers to a LOW row. The 2026-10-31 re-export leans
+            // less (hip 85°, trunk 33° at the bottom; 49° and 58° before)
+            // with the same paint; the levels are kept, as 33° is still a
+            // forward lean.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.52),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.46),
@@ -30858,7 +30861,7 @@ enum SampleData {
             // Ther 7(6):595-605) measured the biceps femoris in a side-step
             // lunge at 12% MVIC, level with every other muscle there
             // (11-15%), so it sets no level. Placed above the Forward Lunge's
-            // 0.24 for this model's 58° trunk lean (Farrokhi et al. 2008,
+            // 0.24 for this model's 33° trunk lean (Farrokhi et al. 2008,
             // J Orthop Sports Phys Ther 38(7):403-409: more biceps femoris
             // with the trunk forward in the lunge), level with the Smith
             // Machine Reverse Lunge's and Single-Leg Glute Bridge's 0.30.
@@ -30866,10 +30869,10 @@ enum SampleData {
         ],
         stabilisers: ["erector spinae", "calves", "core"],
         setup: [
-            "Stand tall with your feet about hip-width apart, toes pointing ahead.",
+            "Stand tall with your feet about hip-width apart, toes turned slightly out.",
             "Clasp your hands in front of your chest.",
             "Brace your core and settle your weight into your heels.",
-            "Keep both feet pointing ahead; each rep steps one foot wide to the side and back."
+            "Each rep steps one foot wide to the side, its toes turned out, then pushes back to the start."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",

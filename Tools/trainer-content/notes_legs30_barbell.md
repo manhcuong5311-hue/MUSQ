@@ -217,8 +217,11 @@ Model: straight bar overhead on straight arms (elbows ~170°), grip 0.92 m,
 bar ~49 cm above and 4-5 cm behind the neck joint, directly over the ankles
 all clip (within 1 cm fore-aft). Ankles 0.42 m, toes out 12°. Knees 161° at
 the top. Down ~1.0 s, ~0.75 s at the bottom, up ~1.75 s. Bottom: knees 57°,
-hips 85°, thighs just above parallel (+12°), shins 47°, kneecaps ~29 cm ahead
-of the ankles, trunk 18°.
+hips 84°, thighs just above parallel (+10°), shins 43°, kneecaps ~27 cm ahead
+of and 6 cm outside the ankles (in line with the 12° toe-out), trunk 18°.
+Before the 2026-10-31 re-export the knees went straight forward over the
+ankles (kneecaps ~29 cm ahead, shins 47°, thighs +12°); nothing else moved,
+and the copy (knees out over the middle toes) and ghosts were kept.
 
 - Activation Quadriceps HI 0.80, Gluteus Maximus MOD 0.50, Erector Spinae
   MOD 0.40, Trapezius LOW 0.34. Aspe & Swinton 2014: at 60-90% of each

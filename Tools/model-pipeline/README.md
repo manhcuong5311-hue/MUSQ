@@ -998,3 +998,39 @@ where it was. The key joints of all seven move as before (0.0 cm; the
 single-leg RDL's left shin 0.9 cm). As their .blend files paint them, the
 single-leg RDL now shows its adductors dim and the Cable Hip Abduction lights
 all of each glute, not the medius alone. Library tiles were not re-shot.
+
+Desktop "1-100" folder, 2026-10-31: `~/Desktop/1-100` held eight exports the
+owner re-tuned 2026-10-30/31 (02 Lateral Lunge, 06 Dumbbell Fly, 11
+Low-to-High Cable Fly, 11 Overhead Squat, 17 Vertical Leg Press, 19
+Single-Leg Press, 23 Smith Machine Front Squat, 30 Hip Adduction Machine),
+all replacing app models. Cloned to `SourceExports/1-100-1031/`, converted
+(the Dumbbell Fly's spare barbell parked off), `one_side_tiers.py` (the
+Single-Leg Press's resting right leg unlit, as before), `shorts/rebase_shorts.py`,
+padded and slimmed against `AnatomyBodyV2.usdc` (all attribute for
+attribute, 0.7-2.3 MB). All intact: one 219/224-joint skeleton, one
+animation over 1-192, no cameras. The paint is unchanged on all eight
+(`drive_diff.py` tiers and emissive values). The owner's call: the ones that
+kept their motion are model swaps only. Six did (`drive_diff.py`: 0.0 cm, the
+Dumbbell Fly's forearms 2.6 cm) and changed only equipment: new plain
+dumbbells and no bench lift handle on the Dumbbell Fly, the Low-to-High
+Cable Fly's station without its height stops and pull-up bar (the handles
+still sit in the fist as fixed on 2026-10-23), the Single-Leg Press's rails
+11.5 cm, the Smith rack's storage horns and safety stops 3-7 cm, the
+adduction machine's foot posts 5.5 cm. The Vertical Leg Press also carries
+13 new shape keys on the shorts (`FIX17_crotch_f001-f033`, up to 14.5 cm),
+the owner's crotch fix for the deep bottom, keyed in its animation; the
+export's shorts rest points equal the body's refit shorts, so they apply on
+top of the rebased shorts, and the slim keeps them (1.9 MB, 0.9 before).
+Two changed motion: the Lateral Lunge now leans 33° at the bottom (58°
+before), with the hips 0.23 m back (0.29), a wider step (ankles 0.85 m apart,
+0.74) and the feet turned out (10° standing, 30° stepped, the straight
+leg's foot too; straight ahead before); the Overhead Squat's knees track
+6 cm out over its 12° toe-out (the shins only, up to 6.9 cm). Both were
+checked on trainer stills and every mistake ghost (`shoot_ex.sh`); the
+labels, ghosts, framings and paint rows were kept. The Lateral Lunge's setup,
+knee and straight-leg copy no longer say the feet point straight ahead
+(notes in `Tools/trainer-content/notes_legs30_wide.md`, briefs regenerated
+with `briefs_legs30/brief.py`). Their library tiles were re-shot; the
+Lateral Lunge's tile framing moved by the old-vs-new `thumbsolve.py`
+change (zoom 1.358 -> 1.145), the Overhead Squat's solves the same. The
+other six tiles were not re-shot.
