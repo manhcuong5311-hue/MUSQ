@@ -1034,3 +1034,35 @@ with `briefs_legs30/brief.py`). Their library tiles were re-shot; the
 Lateral Lunge's tile framing moved by the old-vs-new `thumbsolve.py`
 change (zoom 1.358 -> 1.145), the Overhead Squat's solves the same. The
 other six tiles were not re-shot.
+
+The same folder that afternoon (2026-10-31): the owner replaced its
+contents with nine chest exports re-tuned that day (01 Barbell Bench Press,
+02 Incline Barbell Bench Press, 03 Decline Barbell Bench Press, 04 Dumbbell
+Bench Press, 05 Incline Dumbbell Press, 06 Dumbbell Fly again, 07 Incline
+Dumbbell Fly, 09 Pec Deck Fly, 10 Cable Fly), all replacing app models.
+Cloned to `SourceExports/1-100-1031b/`, converted (spare barbells and
+dumbbells parked off, the Dumbbell Bench Press's two cameras off),
+`one_side_tiers.py` (nothing unlit), `shorts/rebase_shorts.py`, padded and
+slimmed against `AnatomyBodyV2.usdc` (all attribute for attribute,
+1.1-2.0 MB). All intact: one 219/221/223-joint skeleton, one animation over
+1-192. The paint is unchanged on all nine (`drive_diff.py` tiers and
+emissive values, no material input differs). The bench lift handle is gone
+from every bench, and the dumbbell handles now sit deeper in the fist
+(hand-local (0, 74, 25) mm, (0, 81, 0) before), much as the 2026-10-23
+cable handle fix seats the cable bars; the Cable Fly keeps that fix, and
+the barbell still sits in the fist on renders. The five presses move as
+before (elbow, flare and forearm angles within 3°, hands within 3.3 cm).
+The four flies changed their arms: the elbows bend about 30-40° with the
+arms open (152°, 140°, 138° and 140° on the Dumbbell, Incline Dumbbell, Pec
+Deck and Cable Fly; 157-175° before) and come back nearly straight
+(172-175°) as the hands meet, where the old models held a near-constant
+angle (150-160° on the Incline Dumbbell Fly, 159-179° on the other three,
+the Cable Fly 171-175°). The owner's call: ghosts stay as they are and
+only copy the motion contradicts is reworded. The four flies' "fixed elbow
+bend" copy (pills, elbow cues, setup lines, the Incline Dumbbell Fly's and
+Cable Fly's comparison lines, the Pec Deck's grip cue) now says soft
+elbows, bending to about 30° (flat) or 40° (incline, cable) at the stretch,
+never locked or folded; folding toward a press stays the mistake its ghost
+shows. Checked on Blender renders of the app files (grip cross-sections,
+top views at the stretch); not rebuilt in the simulator (6.7 GB free).
+Library tiles were not re-shot.

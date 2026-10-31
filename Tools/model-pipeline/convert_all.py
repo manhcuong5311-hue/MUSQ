@@ -1409,6 +1409,17 @@ JOBS = {
     "1-100-1031/19_single_leg_press": "Legs/SingleLegPress",
     "1-100-1031/23_smith_machine_front_squat": "Legs/SmithMachineFrontSquat",
     "1-100-1031/30_hip_adduction_machine": "Legs/HipAdductionMachine",
+    # The same folder that afternoon: nine chest exports re-tuned 2026-10-31
+    # (06 replaces the morning's Dumbbell Fly).
+    "1-100-1031b/01_barbell_bench_press": "Chest/BarbellBenchPress",
+    "1-100-1031b/02_incline_barbell_bench_press": "Chest/InclineBarbellBenchPress",
+    "1-100-1031b/03_decline_barbell_bench_press": "Chest/DeclineBarbellBenchPress",
+    "1-100-1031b/04_dumbbell_bench_press": "Chest/DumbbellBenchPress",
+    "1-100-1031b/05_incline_dumbbell_press": "Chest/InclineDumbbellPress",
+    "1-100-1031b/06_dumbbell_fly": "Chest/DumbbellFly",
+    "1-100-1031b/07_incline_dumbbell_fly": "Chest/InclineDumbbellFly",
+    "1-100-1031b/09_pec_deck_fly": "Chest/PecDeckFly",
+    "1-100-1031b/10_cable_fly": "Chest/CableFly",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs

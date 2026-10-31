@@ -4218,7 +4218,7 @@ enum SampleData {
             CueAnnotation(cueID: "wrist", label: "Palms facing in",
                           labelPoint: CGPoint(x: 218.0 / 382.0, y: 147.0 / 567.0),
                           labelSide: .trailing, leaderLength: 34, joint: "hand_L"),
-            CueAnnotation(cueID: "elbow", label: "Fixed elbow bend",
+            CueAnnotation(cueID: "elbow", label: "Soft elbow bend",
                           labelPoint: CGPoint(x: 172.0 / 382.0, y: 113.0 / 567.0),
                           leaderLength: 52, joint: "forearm_L"),
             CueAnnotation(cueID: "barpath", label: "Arc stops at torso level",
@@ -4244,10 +4244,10 @@ enum SampleData {
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Bend",
-                intro: "The elbow angle should barely change for the whole rep.",
-                why: "A fixed, slight bend keeps the work on the chest; bending more at the bottom hands the rep to the triceps and shoulders.",
-                mistake: "Bending the elbows further as the weight drops, quietly turning the fly into a press.",
-                correct: "Set a soft 15–20° elbow bend at the top and hold that angle all the way down and back up."
+                intro: "The elbows stay soft for the whole rep: never locked, never folded.",
+                why: "A soft bend keeps the work on the chest; folding the elbows further at the bottom hands the rep to the triceps and shoulders.",
+                mistake: "Folding the elbows toward a right angle as the weight drops, quietly turning the fly into a press.",
+                correct: "Keep the elbows just short of straight at the top and let them bend to about 30° at the bottom, no further."
             ),
             TechniqueCue(
                 id: "wrist",
@@ -4291,7 +4291,7 @@ enum SampleData {
             MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
             // The 2026-09-29 and 2026-10-17 models light the biceps dim. It most
-            // likely holds the fixed elbow bend, and it shows 57-86% more
+            // likely holds the elbow bend, and it shows 57-86% more
             // activity in the dumbbell fly than in the bench press (Solstad et
             // al. 2020, J Sports Sci Med 19:645-651, PMID 33239937). LOW, like
             // the Incline Cable Fly's biceps row.
@@ -4301,7 +4301,7 @@ enum SampleData {
         setup: [
             "Lie on a flat bench with your feet flat on the floor.",
             "Press the dumbbells over your chest, palms facing each other.",
-            "Unlock the elbows slightly and keep that bend throughout."
+            "Unlock the elbows slightly and keep them soft throughout."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -4323,7 +4323,7 @@ enum SampleData {
             CueAnnotation(cueID: "wrist", label: "Palms facing in",
                           labelPoint: CGPoint(x: 0.681, y: 0.279),
                           labelSide: .trailing, leaderLength: 34, joint: "hand_L"),
-            CueAnnotation(cueID: "elbow", label: "Fixed elbow bend",
+            CueAnnotation(cueID: "elbow", label: "Soft elbow bend",
                           labelPoint: CGPoint(x: 0.649, y: 0.528),
                           labelSide: .trailing, leaderLength: 52, joint: "forearm_L"),
             CueAnnotation(cueID: "barpath", label: "Squeeze over upper chest",
@@ -4349,10 +4349,10 @@ enum SampleData {
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Bend",
-                intro: "Same fixed-elbow rule as any fly, just at an angle.",
-                why: "A constant, slight bend keeps the target on the upper chest instead of leaking into the triceps.",
-                mistake: "Elbows bending more at the bottom, which quietly turns the fly into an incline press.",
-                correct: "Hold a soft 15–20° elbow bend from the top of the arc to the bottom."
+                intro: "Same soft-elbow rule as any fly, just at an angle.",
+                why: "A soft bend that never folds keeps the target on the upper chest instead of leaking into the triceps.",
+                mistake: "Elbows folding toward a right angle at the bottom, which quietly turns the fly into an incline press.",
+                correct: "Keep the elbows just short of straight at the top and let them bend to about 40° at the bottom, no further."
             ),
             TechniqueCue(
                 id: "wrist",
@@ -4395,9 +4395,9 @@ enum SampleData {
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.46),
             MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.30),
             // Lit dim on the model, as on the flat fly: the biceps most likely
-            // holds the fixed elbow bend through the arc, and it is far more
+            // holds the elbow bend through the arc, and it is far more
             // active in a dumbbell fly than in a press (Solstad et al. 2020,
-            // measured flat; the same fixed-elbow arc here). LOW, like the
+            // measured flat; the same bent-elbow arc here). LOW, like the
             // Incline Cable Fly's biceps row.
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
         ],
@@ -4405,15 +4405,15 @@ enum SampleData {
         setup: [
             "Set the bench to about 30° and lie back.",
             "Press the dumbbells over your upper chest, palms facing each other.",
-            "Unlock the elbows slightly and keep that bend throughout."
+            "Unlock the elbows slightly and keep them soft throughout."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "TURNING FLY INTO A PRESS",
-            correctCue: "Fixed elbow bend, arc to torso level",
-            mistakeCue: "Elbows bend more at the bottom",
-            correctNote: "Holding the elbow angle constant keeps the upper chest doing the work through the whole arc.",
-            mistakeNote: "Letting the elbows bend more at the bottom shifts load onto the triceps and front shoulder, so the set quietly turns into a weak incline press."
+            correctCue: "Soft elbows, arc to torso level",
+            mistakeCue: "Elbows fold at the bottom",
+            correctNote: "Keeping the elbows soft, never folded, keeps the upper chest doing the work through the whole arc.",
+            mistakeNote: "Letting the elbows fold at the bottom shifts load onto the triceps and front shoulder, so the set quietly turns into a weak incline press."
         ),
         glows: [
             .init(DS.activation.opacity(0.60), rx: 0.26, ry: 0.14, cx: 0.46, cy: 0.32),
@@ -4567,8 +4567,8 @@ enum SampleData {
                 id: "wrist",
                 title: "Grip",
                 intro: "The handles only connect you to the machine; the chest should do the work.",
-                why: "A light grip and a fixed, slight elbow bend keep each arm one long lever from the shoulder, so the chest, not the hands, brings the handles together.",
-                mistake: "Gripping the handles hard and pulling with the hands, so the elbows bend and drop.",
+                why: "A light grip and soft elbows keep each arm moving from the shoulder, so the chest, not the hands, brings the handles together.",
+                mistake: "Gripping the handles hard and pulling with the hands, so the elbows fold and drop.",
                 correct: "Hold the handles lightly, elbows pointing out to the sides, and drive the upper arms together."
             ),
             TechniqueCue(
@@ -4612,7 +4612,7 @@ enum SampleData {
         setup: [
             "Set the seat so the handles sit at chest height.",
             "Sit tall with your back against the pad.",
-            "Take the handles out wide with a slight bend in the elbows."
+            "Take the handles out wide with your elbows soft."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
@@ -4635,7 +4635,7 @@ enum SampleData {
             CueAnnotation(cueID: "wrist", label: "Hands meet at sternum height",
                           labelPoint: CGPoint(x: 0.979, y: 0.530),
                           leaderLength: 42, joint: "hand_L"),
-            CueAnnotation(cueID: "elbow", label: "Elbows fixed, slight bend",
+            CueAnnotation(cueID: "elbow", label: "Soft elbows, never locked",
                           labelPoint: CGPoint(x: 0.979, y: 0.255),
                           leaderLength: 52, joint: "forearm_L"),
             CueAnnotation(cueID: "barpath", label: "Hug the arc, don't press",
@@ -4661,10 +4661,10 @@ enum SampleData {
             TechniqueCue(
                 id: "elbow",
                 title: "Elbow Position",
-                intro: "The elbow angle should barely move for the whole set.",
-                why: "A fixed, slight bend keeps the work in the shoulder joint and on the chest instead of turning the move into a press.",
+                intro: "The elbows stay soft for the whole set: never locked, never folded.",
+                why: "A soft bend keeps the work in the shoulder joint and on the chest instead of turning the move into a press.",
                 mistake: "Bending the elbows more as the cables come together, quietly pressing instead of flying.",
-                correct: "Set a slight elbow bend at the start and hold that same angle through the whole rep."
+                correct: "Let the elbows bend to about 40° with the arms open, and keep them just short of straight as the hands meet."
             ),
             TechniqueCue(
                 id: "wrist",
@@ -4707,7 +4707,7 @@ enum SampleData {
             MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.42),
             // The model lights the biceps dim, as the 2026-09-29 model did:
-            // holding the fixed elbow bend through the arc, it works far harder
+            // holding the elbow bend through the arc, it works far harder
             // in a fly than in a press (Solstad et al. 2020, J Sports Sci Med
             // 19:645-651, PMID 33239937). LOW, like the Cable Crossover's
             // biceps row.
@@ -4722,9 +4722,9 @@ enum SampleData {
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "TURNING FLY INTO A PRESS",
-            correctCue: "Fixed elbow, arc to sternum",
+            correctCue: "Soft elbows, arc to sternum",
             mistakeCue: "Elbows drive forward like a press",
-            correctNote: "Holding the elbow angle constant and thinking of the movement as a hug keeps the tension on the chest through the whole arc.",
+            correctNote: "Keeping the elbows soft and thinking of the movement as a hug keeps the tension on the chest through the whole arc.",
             mistakeNote: "Letting the elbows bend and drive forward turns the constant cable tension into a weak press, handing work to the shoulders and triceps instead of the chest."
         ),
         glows: [
