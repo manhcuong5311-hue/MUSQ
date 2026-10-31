@@ -12,7 +12,9 @@ except `add_rows_r3.py` (one-off) — mirrors, builds and shots go to `$LAB`.
   alone, `HARNESS_FRAMING`, `HARNESS_STILL`), `HARNESS_EXERCISE` (trainer),
   `HARNESS_FAULT` + `HARNESS_CUE` (a mistake; launch with `DEBUG_PREMIUM=1`).
   `HARNESS_XRAY` (2026-10-21): an x-ray demo's viewport by resource name, at
-  `HARNESS_XRAY_VIEW` (an `XRayView` raw value), paused at `HARNESS_STILL`.
+  `HARNESS_XRAY_VIEW` (an `XRayView` raw value), paused at `HARNESS_STILL`,
+  with `HARNESS_XRAY_TURN` "yaw,pitch,pinch" (2026-10-31) on top of the angle
+  to try a demo's turn and zoom without a rebuild.
   It injects Purchases, Ads and Paywall, which Exercise3DView reads from the
   environment.
 - `build.sh` — mirror the repo to `$LAB/src`, swap in the harness, build for

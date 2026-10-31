@@ -11,7 +11,8 @@
 //  resource instead of the exercise's own (e.g. one stance of a stance set).
 //  HARNESS_XRAY (2026-10-21): an x-ray demo's viewport by resource name, at
 //  HARNESS_XRAY_VIEW (an XRayView raw value, default auto), paused at
-//  HARNESS_STILL seconds once the model has loaded (shoot after ~8 s).
+//  HARNESS_STILL seconds once the model has loaded (shoot after ~8 s), with
+//  an optional HARNESS_XRAY_TURN "yaw,pitch,pinch" on top of the angle.
 //  HARNESS_MAP (2026-10-22): the trainer's Muscles Worked panel for an
 //  exercise ("Name" or "Name|Stance"), with its model's chest paint.
 //  HARNESS_WEEK: the Muscles tab's map for a made-up week, "Name:sets,...".
@@ -68,7 +69,7 @@ struct ContentView: View {
         } else if let spec = env["HARNESS_WEEK"] {
             WeekHarness(spec: spec)
         } else if let res = env["HARNESS_XRAY"],
-                  let demo = [XRayDemos.benchScapula, XRayDemos.backBarSetup, XRayDemos.deadliftSetup]
+                  let demo = [XRayDemos.benchScapula, XRayDemos.backBarSetup, XRayDemos.deadliftSetup, XRayDemos.benchGrip]
                       .first(where: { $0.resource == res }) {
             XRayHarness(demo: demo, view: XRayView(rawValue: env["HARNESS_XRAY_VIEW"] ?? "") ?? .auto, still: still)
         } else {
@@ -96,6 +97,13 @@ struct XRayHarness: View {
             .background(Color(white: 0.1))
             .task {
                 stage.pick(view)
+                // HARNESS_XRAY_TURN "yaw,pitch,pinch" (2026-10-31): a viewer's
+                // drag and pinch on top of the angle, to try a demo's turn and
+                // zoom without a rebuild.
+                if let t = ProcessInfo.processInfo.environment["HARNESS_XRAY_TURN"]?
+                    .split(separator: ",").compactMap({ Float($0) }), t.count == 3 {
+                    stage.dragYaw = t[0]; stage.dragPitch = t[1]; stage.pinch = t[2]
+                }
                 try? await Task.sleep(for: .seconds(4))
                 if let still {
                     stage.seek(to: still)

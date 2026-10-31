@@ -212,7 +212,7 @@ final class XRayStage {
         now.zoom += (goal.zoom - now.zoom) * k
         shown = now
 
-        if let p = focusPoint(target.focus) {
+        if let p = focusPoint(demo.focus[target] ?? target.focus) {
             focus = focus.map { $0 + (p - $0) * k } ?? p
         }
         pivot.transform.rotation = simd_quatf(angle: now.pitch, axis: [1, 0, 0]) * simd_quatf(angle: now.yaw, axis: [0, 1, 0])

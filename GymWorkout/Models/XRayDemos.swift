@@ -41,6 +41,10 @@ struct XRayDemo: Identifiable, Hashable {
     /// from in front of the hand, as it reaches down to a bar on the floor,
     /// and its back view rises over the bent-over lifter.
     var turn: [XRayView: XRayTurn] = [:]
+    /// What an angle keeps centred, where it differs from the angle's own:
+    /// the bench grip's view from above stays on the hand, not the shoulder
+    /// blades.
+    var focus: [XRayView: XRayFocus] = [:]
     /// The playback speed the demo opens at.
     var speed: Float = 1
     /// Name prefix of the parts on the model's left (+X) side, outside the
@@ -83,7 +87,7 @@ struct XRayDemo: Identifiable, Hashable {
 /// yaw 0 (it is exported facing +Z); yaw turns it about the vertical, pitch
 /// tips its top towards the camera, so the camera seems to rise.
 enum XRayView: String, CaseIterable, Hashable {
-    case auto, back, backThreeQuarter, side, top, hand
+    case auto, back, backThreeQuarter, side, top, hand, palm
 
     var title: String {
         switch self {
@@ -93,6 +97,7 @@ enum XRayView: String, CaseIterable, Hashable {
         case .side: return "SIDE"
         case .top: return "TOP"
         case .hand: return "HAND"
+        case .palm: return "PALM"
         }
     }
 
@@ -108,6 +113,11 @@ enum XRayView: String, CaseIterable, Hashable {
         // behind (62° round from the back) and 17° up, looking in along the
         // bar, so the four fingers are seen closing over it.
         case .hand: return (-1.95, 0.30, 2.4)
+        // Into the left palm of a lifter lying on a bench, gripping the
+        // racked bar: from the feet end, a little to the left and well above
+        // (the bench grip's `CAM_Nam_Long`), so the bar is seen across the
+        // palm and the fingers wrap towards the camera.
+        case .palm: return (-0.37, 0.97, 4.0)
         }
     }
 
@@ -117,7 +127,7 @@ enum XRayView: String, CaseIterable, Hashable {
     var focus: XRayFocus {
         switch self {
         case .side: return .body
-        case .hand: return .hand
+        case .hand, .palm: return .hand
         default: return .shoulders
         }
     }
@@ -250,6 +260,67 @@ enum XRayDemos {
         sideHiddenPrefix: "XRSIDE_"
     )
 
+    /// The bench grip (2026-10-25): lying under a racked bar, the lifter
+    /// holds it the wrong way (in the base of the fingers, the wrist bent
+    /// back 61°, the thumb loose), opens the hand, lifts it off and turns it
+    /// in, sets the bar across the palm from the thumb pad towards the heel
+    /// of the hand, wraps the four fingers over it and the thumb the other
+    /// way over the index finger, squeezes with the wrist straight, then
+    /// lifts the bar off the hooks and over the shoulders. Built in Blender
+    /// on the deadlift set-up's x-ray layer from the barbell bench press;
+    /// sources and notes in `/Volumes/HIKSEMI/BLENDER/chest_series 🟢/
+    /// 01B_cach_nam_thanh_bench_co_mo/`.
+    static let benchGrip = XRayDemo(
+        resource: "XRayBenchGrip",
+        title: "Bench Grip in X-Ray",
+        summary: "Bar across the palm, all five fingers wrapped, wrist straight over the forearm.",
+        phases: [
+            .init(chip: "Wrong", caption: "Wrong: bar in the fingers, wrist bent back, thumb loose",
+                  start: 0, jump: 0.3,
+                  views: [(0, .hand)]),
+            .init(chip: "Re-grip", caption: "Open the hand, lift it off the bar and turn it in",
+                  start: 30.0 / 24, jump: 32.0 / 24, views: []),
+            .init(chip: "Palm", caption: "Bar across the palm, from the thumb pad to the heel; wrap the four fingers over",
+                  start: 84.0 / 24, jump: 86.0 / 24,
+                  views: [(82.0 / 24, .palm)]),
+            .init(chip: "Thumb", caption: "Wrap the thumb the other way, over the index finger",
+                  start: 124.0 / 24, jump: 124.0 / 24, views: []),
+            .init(chip: "Squeeze", caption: "Squeeze: the wrist stays straight over the forearm",
+                  start: 146.0 / 24, jump: 148.0 / 24,
+                  views: [(146.0 / 24, .hand), (180.0 / 24, .palm), (196.0 / 24, .top), (212.0 / 24, .side)]),
+            .init(chip: "Unrack", caption: "Lift the bar straight off the hooks and bring it over the shoulders",
+                  start: 230.0 / 24, jump: 232.0 / 24, views: []),
+            .init(chip: "Lockout", caption: "Over the shoulders: arms straight, wrists not bent back",
+                  start: 274.0 / 24, jump: 276.0 / 24,
+                  views: [(298.0 / 24, .hand), (318.0 / 24, .side)]),
+        ],
+        duration: 366.0 / 24,
+        boneLabel: "Hand & arm bones",
+        muscleLabel: "Forearm grip muscles",
+        angles: [.auto, .hand, .palm, .top, .side],
+        // The side view pulls back to keep the racked bar, over the face, in
+        // frame with the trunk.
+        zoomScale: [.hand: 1.08, .top: 3.5, .side: 1.1],
+        // From outside the left hand, about level with the bar and 16° round
+        // towards the head: straight down the bar the camera would sit inside
+        // its length and the near shaft fill the view. From above the hand, a
+        // little towards the head; the side view turned 25° towards the feet,
+        // as the Blender cameras look.
+        turn: [.hand: XRayTurn(yaw: 0.10, pitch: -0.25), .top: XRayTurn(yaw: -2.82, pitch: -0.18), .side: XRayTurn(yaw: 0.44, pitch: -0.03)],
+        focus: [.top: .hand],
+        speed: 0.5,
+        sideHiddenPrefix: "XRSIDE_"
+    )
+
+    /// The bench presses, barbell and Smith, pressed lying down with an
+    /// overhand grip, whose wrist cue (`wrist`, "Wrist Stacking") opens the
+    /// bench grip.
+    static let benchGripLifts: Set<String> = [
+        "Barbell Bench Press", "Incline Barbell Bench Press", "Decline Barbell Bench Press", "Pause Bench Press",
+        "Larsen Press", "Barbell Floor Press", "Smith Machine Bench Press", "Smith Machine Incline Press",
+        "Smith Machine Decline Press",
+    ]
+
     /// The barbell lifts held in the hands from a hip hinge whose grip-and-lats
     /// cue (`lats`) and spine cue open the deadlift set-up.
     static let deadliftLifts: Set<String> = [
@@ -272,11 +343,15 @@ enum XRayDemos {
     /// squats, the good mornings and the barbell step-up); the deadlift
     /// set-up for the grip-and-lats cue (`lats`) and the spine cue (`spine`,
     /// or `back` on the Romanian deadlifts) of the deadlifts and barbell
-    /// Romanian deadlifts.
+    /// Romanian deadlifts; the bench grip for the wrist cue of the barbell
+    /// and Smith bench presses (`benchGripLifts`).
     static func demo(for exercise: Exercise, cue: String) -> XRayDemo? {
         guard let content = SampleData.content(for: exercise) else { return nil }
         if deadliftLifts.contains(exercise.name), ["lats", "spine", "back"].contains(cue) {
             return deadliftSetup
+        }
+        if benchGripLifts.contains(exercise.name), cue == "wrist" {
+            return benchGrip
         }
         switch cue {
         case "scapula":

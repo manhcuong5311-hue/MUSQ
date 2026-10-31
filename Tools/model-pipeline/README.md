@@ -955,6 +955,36 @@ empty and any top-level prop parked more than 5 m off stage: both demo
 files carried the dumbbells 12.5 m to the side, which drew two specks in
 the side view. The back-bar file had them turned off in place.
 
+X-ray bench grip (2026-10-31): `Chest/XRayBenchGrip.usdc`, opened from the
+wrist cue ("Wrist Stacking") of the barbell and Smith bench presses
+(`XRayDemos.benchGrip`, `benchGripLifts`: the flat, incline and decline
+barbell bench presses, Pause Bench Press, Larsen Press, Barbell Floor Press
+and the three Smith presses; the Reverse-Grip and Close-Grip Bench Press and
+the dumbbell presses are left out). The owner built it in Blender on a copy of
+the barbell bench press with the deadlift file's x-ray layer (version 4,
+2026-10-25): lying under a racked bar, the bar is held wrong (in the base of
+the fingers, wrist bent back 61°, thumb loose); the hand opens, lifts off and
+turns in, the bar is set across the palm, the four fingers and then the thumb
+wrap round it, the grip squeezes with the wrist straight, and the bar comes
+off the J-cups and over the shoulders; 366 frames at 24 fps. Source and QA on
+the SSD in `BLENDER/chest_series 🟢/01B_cach_nam_thanh_bench_co_mo/`
+(README_VI.md); the Desktop item of that name is a Finder alias to it. Steps:
+`xray/export_usd_xray_benchgrip.py` (in Blender, on a copy; the deadlift
+export without the spine step, only the forearms lit and the file's fade-in
+over frames 146-164 frozen on; the file shrinks the near plate, collars and
+sleeve to nothing over 246-297 for its side camera, which the export takes
+out, and those parts, the near J-cup and the upright are `XRSIDE_` instead),
+then `xray/usd_for_app.py` and `pad_one.sh` (25 MB). `XRayView` gained
+`.palm` (into the left palm from the feet end and above, the owner's
+`CAM_Nam_Long`) and `XRayDemo.focus` (what an angle keeps centred, per demo:
+this demo's top view stays on the hand). The hand view looks from outside the
+left hand about level with the bar, 16° round towards the head: straight
+down the bar (the owner's `CAM_Nam_Ngang`) the camera sits inside the bar's
+length at this zoom and the near shaft fills the view. The angles were tried
+on the lab harness with `HARNESS_XRAY_TURN` and checked on stills of every
+phase; the app was not rebuilt with the final constants (4 GB free after the
+lab build).
+
 Male shorts refit and glute zone (2026-10-28): the male bodies' shorts were
 the raw base mesh (Blender keeps them off the muscles only with render-only
 modifiers), so the glutes showed through them as red patches, standing and
