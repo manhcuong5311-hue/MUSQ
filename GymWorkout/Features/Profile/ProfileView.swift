@@ -387,7 +387,7 @@ struct ProfileView: View {
     /// The lifter the Model color preview shows.
     private static let lookPreview = SampleData.exercises
         .first { $0.name == "Back Squat" }
-        .flatMap(SampleData.model(for:))
+        .flatMap { SampleData.model(for: $0) }
 
     /// The four looks side by side, a tap picks one, and a live lifter under
     /// them shows it at once.

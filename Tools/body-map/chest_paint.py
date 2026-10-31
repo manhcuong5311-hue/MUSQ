@@ -87,7 +87,7 @@ enum ChestPaint {
     /// a model that paints no chest, the heads its chest rows name: "Upper
     /// Pectoralis" the upper head alone, "Pectoralis Major" all three.
     static func heads(forExerciseNamed name: String) -> Heads? {
-        if let painted = SampleData.modelName(forExerciseNamed: name).flatMap(heads(forModel:)) {
+        if let painted = SampleData.modelName(forExerciseNamed: name).flatMap({ heads(forModel: $0) }) {
             return painted
         }
         guard let exercise = ExerciseCatalog.exercise(named: name),

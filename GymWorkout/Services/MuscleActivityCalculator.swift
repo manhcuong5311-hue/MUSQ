@@ -119,7 +119,7 @@ struct MuscleActivityCalculator {
             for exercise in session.exercises {
                 guard let weight = exercise.contributions.first(where: { $0.muscle == .chest })?.weight else { continue }
                 let heads = exercise.chestHeads ?? ChestPaint.heads(forExerciseNamed: exercise.exerciseName)
-                let shares = heads.map { [$0.upper, $0.middle, $0.lower].map(Self.share) } ?? [weight, weight, weight]
+                let shares = heads.map { [$0.upper, $0.middle, $0.lower].map { Self.share($0) } } ?? [weight, weight, weight]
                 for set in exercise.sets where set.isCompleted {
                     let at = set.completedAt ?? session.day
                     guard interval.contains(at), at <= now else { continue }
