@@ -91,9 +91,6 @@ enum SampleData {
         Exercise(name: "Barbell Pullover", category: .chest,
                  primaryMuscle: "PECTORALIS MAJOR", equipment: "BARBELL",
                  difficulty: .intermediate),
-        Exercise(name: "Iso-Lateral Chest Press", category: .chest,
-                 primaryMuscle: "PECTORALIS MAJOR", equipment: "MACHINE",
-                 difficulty: .beginner),
         Exercise(name: "Incline Chest Press Machine", category: .chest,
                  primaryMuscle: "UPPER PECTORALIS", equipment: "MACHINE",
                  difficulty: .beginner),
@@ -236,9 +233,6 @@ enum SampleData {
         Exercise(name: "Belt Squat", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "BELT",
                  difficulty: .beginner),
-        Exercise(name: "Pendulum Squat", category: .legs,
-                 primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
-                 difficulty: .intermediate),
         Exercise(name: "V-Squat", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
                  difficulty: .intermediate),
@@ -459,9 +453,6 @@ enum SampleData {
         Exercise(name: "Banded Dorsiflexion", category: .legs,
                  primaryMuscle: "TIBIALIS ANTERIOR", equipment: "BAND",
                  difficulty: .beginner),
-        Exercise(name: "Hack Squat", category: .legs,
-                 primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
-                 difficulty: .intermediate),
         Exercise(name: "Leg Extension", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
                  difficulty: .beginner),
@@ -550,9 +541,6 @@ enum SampleData {
         Exercise(name: "Weighted Pull-Up", category: .back,
                  primaryMuscle: "LATISSIMUS DORSI", equipment: "DIP BELT",
                  difficulty: .advanced),
-        Exercise(name: "Assisted Pull-Up", category: .back,
-                 primaryMuscle: "LATISSIMUS DORSI", equipment: "MACHINE",
-                 difficulty: .beginner),
         Exercise(name: "Machine Pull-Up", category: .back,
                  primaryMuscle: "LATISSIMUS DORSI", equipment: "MACHINE",
                  difficulty: .beginner),
@@ -1536,7 +1524,6 @@ enum SampleData {
         "Walking Lunge": walkingLungeContent,
         "Reverse Lunge": reverseLungeContent,
         "Leg Press": legPressContent,
-        "Hack Squat": hackSquatContent,
         "Leg Extension": legExtensionContent,
         "Smith Machine Squat": smithMachineSquatContent,
         "Sissy Squat": sissySquatContent,
@@ -1606,7 +1593,6 @@ enum SampleData {
         "Incline Dumbbell Squeeze Press": inclineDumbbellSqueezePressContent,
         "Dumbbell Pullover": dumbbellPulloverContent,
         "Barbell Pullover": barbellPulloverContent,
-        "Iso-Lateral Chest Press": isoLateralChestPressContent,
         "Incline Chest Press Machine": inclineChestPressMachineContent,
         "Decline Chest Press Machine": declineChestPressMachineContent,
         "Plate-Loaded Chest Press": plateLoadedChestPressContent,
@@ -1653,7 +1639,6 @@ enum SampleData {
         "Neutral-Grip Pull-Up": neutralGripPullUpContent,
         "Archer Pull-Up": archerPullUpContent,
         "Weighted Pull-Up": weightedPullUpContent,
-        "Assisted Pull-Up": assistedPullUpContent,
         "Neutral-Grip Chin-Up": neutralGripChinUpContent,
         "Weighted Chin-Up": weightedChinUpContent,
         "Machine Pull-Up": machinePullUpContent,
@@ -1782,7 +1767,6 @@ enum SampleData {
         "Overhead Squat": overheadSquatContent,
         "Landmine Squat": landmineSquatContent,
         "Belt Squat": beltSquatContent,
-        "Pendulum Squat": pendulumSquatContent,
         "V-Squat": vSquatContent,
         "Vertical Leg Press": verticalLegPressContent,
         "45-Degree Leg Press": legPress45Content,
@@ -2074,8 +2058,6 @@ enum SampleData {
         // trainer's aspect (solve_all.py, ASPECT=0.5832).
         "Leg Press":             ExerciseModel(resource: "LegPress",
                                         framing: ModelFraming(yaw: -2.0, zoom: 0.683, offset: [0.037, 0.060, 0.081])),
-        "Hack Squat":            ExerciseModel(resource: "HackSquat",
-                                        framing: ModelFraming(yaw: -0.6, zoom: 1.013, offset: [0.015, 0.112, -0.010])),
         "Leg Extension":         ExerciseModel(resource: "LegExtension",
                                         framing: ModelFraming(yaw: -0.5, zoom: 0.911, offset: [0.043, 0.076, -0.023])),
         "Smith Machine Squat":   ExerciseModel(resource: "SmithMachineSquat",
@@ -2373,8 +2355,6 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.625, offset: [-0.027, 0.113, 0.096])),
         "Barbell Pullover":                    ExerciseModel(resource: "BarbellPullover",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.504, offset: [-0.037, 0.054, 0.132])),
-        "Iso-Lateral Chest Press":             ExerciseModel(resource: "IsoLateralChestPress",
-                                        framing: ModelFraming(yaw: -0.7, zoom: 0.820, offset: [-0.002, -0.003, 0.002])),
         "Incline Chest Press Machine":         ExerciseModel(resource: "InclineChestPressMachine",
                                         framing: ModelFraming(yaw: -0.7, zoom: 0.952, offset: [-0.002, 0.082, 0.002])),
         // Seen from the front since the 2026-10-11 re-export: from the old
@@ -2486,8 +2466,6 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -2.6, zoom: 0.516, offset: [0.005, -0.078, 0.003])),
         "Weighted Pull-Up":                    ExerciseModel(resource: "WeightedPullUp",
                                         framing: ModelFraming(yaw: -2.6, zoom: 0.580, offset: [0.009, -0.083, 0.005])),
-        "Assisted Pull-Up":                    ExerciseModel(resource: "AssistedPullUp",
-                                        framing: ModelFraming(yaw: -2.6, zoom: 0.580, offset: [0.009, -0.073, 0.005])),
         "Neutral-Grip Chin-Up":                ExerciseModel(resource: "NeutralGripChinUp",
                                         framing: ModelFraming(yaw: -2.6, zoom: 0.580, offset: [0.009, -0.083, 0.005])),
         "Weighted Chin-Up":                    ExerciseModel(resource: "WeightedChinUp",
@@ -2788,8 +2766,6 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.9, zoom: 0.884, offset: [0.034, 0.03, -0.043])),
         "Belt Squat":                         ExerciseModel(resource: "BeltSquat",
                                         framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061])),
-        "Pendulum Squat":                     ExerciseModel(resource: "PendulumSquat",
-                                        framing: ModelFraming(yaw: -1.3, zoom: 0.751, offset: [-0.024, -0.018, 0.088])),
         "V-Squat":                            ExerciseModel(resource: "VSquat",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.778, offset: [-0.003, 0.024, 0.012])),
         "Vertical Leg Press":                 ExerciseModel(resource: "VerticalLegPress",
@@ -7075,90 +7051,6 @@ enum SampleData {
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.16, ry: 0.13, cx: 0.60, cy: 0.50),
             .init(DS.activationSoft.opacity(0.28), rx: 0.10, ry: 0.08, cx: 0.62, cy: 0.36)
-        ]
-    )
-
-    static let hackSquatContent = ExerciseContent(
-        annotations: [
-            CueAnnotation(cueID: "lockout", label: "Stop just short of lockout",
-                          labelPoint: CGPoint(x: 0.476, y: 0.450),
-                          leaderLength: 46, joint: "shin_L"),
-            CueAnnotation(cueID: "pad", label: "Back stays on the pad",
-                          labelPoint: CGPoint(x: 0.570, y: 0.550),
-                          labelSide: .trailing, leaderLength: 44, joint: "chest"),
-            CueAnnotation(cueID: "knee", label: "Knees track over toes",
-                          labelPoint: CGPoint(x: 0.424, y: 0.347),
-                          leaderLength: 40, joint: "patella_L"),
-            CueAnnotation(cueID: "depth", label: "Lower under control, no bounce",
-                          labelPoint: CGPoint(x: 0.416, y: 0.640),
-                          labelSide: .trailing, leaderLength: 38, joint: "pelvis"),
-            CueAnnotation(cueID: "feet", label: "Centre feet on the plate",
-                          labelPoint: CGPoint(x: 0.16, y: 0.86),
-                          labelSide: .trailing, leaderLength: 42, joint: "foot_L")
-        ],
-        cues: [
-            TechniqueCue(
-                id: "feet",
-                title: "Foot Placement",
-                intro: "Foot placement on a hack squat's angled plate works like a dial for where the tension lands.",
-                why: "A lower, centred foot position biases the quads through a deep knee bend, while sliding the feet higher up the plate shifts more of the work to the glutes and hamstrings.",
-                mistake: "Placing the feet right at the very edge of the plate, which crowds the ankles and limits how deep the sled can travel safely.",
-                correct: "Centre the feet shoulder-width on the plate, adjusting higher or lower deliberately depending on the target."
-            ),
-            TechniqueCue(
-                id: "pad",
-                title: "Pad Contact",
-                intro: "The shoulder and back pads are there to keep the spine supported as you sink into a deep range.",
-                why: "Staying flush against the pads keeps the sled's angle carrying the load instead of the lower back compensating for a floating torso.",
-                mistake: "Letting the hips or shoulders lift off the pads at the bottom to chase extra depth.",
-                correct: "Keep the back and shoulders pressed into the pads through the descent and the drive back up."
-            ),
-            TechniqueCue(
-                id: "knee",
-                title: "Knee Tracking",
-                intro: "A fixed sled angle does not fix knee tracking — that still comes from the lifter.",
-                why: "Pushing the knees out in line with the toes keeps the load centred in the joint through the machine's long range of motion.",
-                mistake: "Letting the knees cave inward, which is easy to miss on a machine that feels stable side-to-side.",
-                correct: "Actively track the knees out over the toes for the whole rep, the same as on a free squat."
-            ),
-            TechniqueCue(
-                id: "depth",
-                title: "Controlled Depth",
-                intro: "The hack squat's supported back lets you train a deep range with less balance demand.",
-                why: "Lowering under control until the thighs are well past parallel loads the quads through a much longer range than a partial rep would.",
-                mistake: "Bouncing off the bottom to rebound the weight back up, using momentum instead of the quads to reverse the sled.",
-                correct: "Lower under control to a deep, comfortable stretch, pause briefly, then press back up without bouncing."
-            ),
-            TechniqueCue(
-                id: "lockout",
-                title: "Top Lockout",
-                intro: "The top of the rep should be controlled, not slammed.",
-                why: "Extending to just short of a hard lockout keeps tension on the quads and protects the knee from repeatedly absorbing a locked-out impact under load.",
-                mistake: "Snapping the knees straight and letting the sled's weight jolt into the top stop on every rep.",
-                correct: "Press up to nearly straight legs under control, stopping just short of locking the knees out hard."
-            )
-        ],
-        activation: [
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.89),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.44)
-        ],
-        stabilisers: ["hamstrings", "adductors", "calves"],
-        setup: [
-            "Stand on the platform with your back against the pad.",
-            "Set your shoulders under the pads, feet shoulder-width.",
-            "Hold the handles and release the safety."
-        ],
-        comparison: FormComparisonCopy(
-            correctBadge: "CORRECT FORM",
-            mistakeBadge: "HIPS LIFTING OFF THE PAD",
-            correctCue: "Back and hips stay on the pad",
-            mistakeCue: "Hips lift to chase more depth",
-            correctNote: "Keeping the hips and back flush against the pad channels the load through the legs along the machine's fixed angle.",
-            mistakeNote: "Letting the hips lift off the pad to reach extra depth rounds the lower back at the bottom — the same fault a free squat punishes, just easier to miss on a supported machine."
-        ),
-        glows: [
-            .init(DS.activation.opacity(0.56), rx: 0.15, ry: 0.13, cx: 0.49, cy: 0.48),
-            .init(DS.activationSoft.opacity(0.26), rx: 0.10, ry: 0.08, cx: 0.52, cy: 0.35)
         ]
     )
 
@@ -13869,124 +13761,6 @@ enum SampleData {
         ]
     )
 
-    static let isoLateralChestPressContent = ExerciseContent(
-        // Relaid 2026-10-11 for the re-exported model (plate-loaded machine with
-        // upright handles gripped palms-in, torso reclined about 23 degrees on the pad,
-        // feet on the machine's foot platform with the knees bent only about 30
-        // degrees): the elbow pill sat on the right lever's upright, the press-path
-        // pill on the left lever's lower arm, and the grip leader crossed the head.
-        // Grip and elbow now point at the far (right) arm from the open top left, high
-        // enough to clear the seat-too-low ghost's raised hand and the lifted model in
-        // their mistake views; the press-path pill sits on the static base frame. The
-        // feet copy names the foot platform.
-        annotations: [
-            CueAnnotation(cueID: "wrist", label: "Handles at mid-chest",
-                          labelPoint: CGPoint(x: 0.41, y: 0.20),
-                          leaderLength: 40, joint: "hand_R"),
-            CueAnnotation(cueID: "elbow", label: "Elbows ~45°",
-                          labelPoint: CGPoint(x: 0.47, y: 0.13),
-                          leaderLength: 40, joint: "forearm_R"),
-            CueAnnotation(cueID: "barpath", label: "One arm at a time",
-                          labelPoint: CGPoint(x: 0.655, y: 0.74),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "support_PectoralisMajor_Sternal_L"),
-            CueAnnotation(cueID: "feet", label: "Feet planted, back on pad",
-                          labelPoint: CGPoint(x: 0.52, y: 0.80),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "No shrugging",
-                          labelPoint: CGPoint(x: 0.712, y: 0.21),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "scapula_L")
-        ],
-        cues: [
-            TechniqueCue(
-                id: "wrist",
-                title: "Grip and Seat Height",
-                intro: "The seat sets where the handles meet the chest.",
-                why: "Handles level with the mid-chest line the press up with the pecs; too high and the shoulders lift, too low and the elbows drop.",
-                mistake: "Sitting so low that the handles start at the shoulders.",
-                correct: "Adjust the seat so the handles sit level with the middle of the chest, then grip them with the palms facing in and the wrists straight."
-            ),
-            TechniqueCue(
-                id: "elbow",
-                title: "Elbow Position",
-                intro: "The elbows travel under the handles, not out to the sides.",
-                why: "Around 45° from the torso keeps the pecs in their strongest line and the shoulder supported.",
-                mistake: "Flaring the elbows up and out to the sides as the handle comes back.",
-                correct: "Keep the elbows about 45° from the torso, in line with the wrists, through the whole press."
-            ),
-            TechniqueCue(
-                id: "barpath",
-                title: "Press Path",
-                intro: "Each lever arm moves on its own, so each side has to do its own work.",
-                why: "Pressing one arm at a time stops the stronger side from carrying the weaker one and keeps the body still against a one-sided load.",
-                mistake: "Cutting each press short, or twisting the torso toward the working arm.",
-                correct: "Press one handle out to straight, soft elbows and bring it back under control, holding the other still at the chest, then switch."
-            ),
-            TechniqueCue(
-                id: "feet",
-                title: "Base Position",
-                intro: "Seated pressing still needs a base.",
-                why: "Feet set on the foot platform and the back on the pad let you push hard without the torso sliding or arching.",
-                mistake: "Arching the lower back off the pad or lifting the heels to force the last reps.",
-                correct: "Keep both feet on the foot platform and the whole back against the pad for every rep."
-            ),
-            TechniqueCue(
-                id: "scapula",
-                title: "Scapular Position",
-                intro: "A machine fixes the path, not the shoulders.",
-                why: "Shoulder blades set down and back against the pad keep the chest leading the press instead of the front delts and upper traps.",
-                mistake: "Shrugging the shoulders up toward the ears or rolling them forward off the pad at the end of each press.",
-                correct: "Sit tall, set the shoulder blades back and down against the pad, and keep them there as the handles move."
-            )
-        ],
-        activation: [
-            // 2026-10-22: the chest rows follow the model's paint by head. The
-            // IsoLateralChestPress model lights the middle (sternal) pec bright
-            // and the upper and lower heads dim, so the single Pectoralis Major
-            // row becomes three: Middle Pectoralis keeps the old 0.88 as the
-            // primary row, and Upper and Lower Pectoralis are new secondary
-            // rows. No per-head EMG for this machine was found, so 0.60 and
-            // 0.56 are estimates, MODERATE under the bright head as the paint
-            // has them. Measured from the model, each handle travels square to
-            // the torso, which reclines 22 degrees (the back pad about 18), but
-            // ends level with the shoulder, so the arm finishes at about 67
-            // degrees of shoulder flexion, 23 short of square to the torso: a
-            // decline-like line, and the clavicular head was less active on a
-            // decline than on a flat press (Barnett et al. 1995, J Strength
-            // Cond Res 9(4):222-227). The palms-in grip pulls the other way: a
-            // seated neutral-grip chest press drew more clavicular activity
-            // than a wide-grip flat bench (Muyor et al. 2023, J Hum Kinet
-            // 87:23-34, PMID 37229415). So the lower head sits only just above
-            // the upper.
-            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.60),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.56),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
-        ],
-        stabilisers: ["rotator cuff", "obliques"],
-        setup: [
-            "Set the seat so the handles line up with your mid-chest.",
-            "Sit back against the pad with your feet on the foot platform.",
-            "Grip both upright handles, palms facing in; press one arm at a time."
-        ],
-        comparison: FormComparisonCopy(
-            correctBadge: "CORRECT FORM",
-            mistakeBadge: "SHORT, TWISTING REPS",
-            correctCue: "Full reach, body still",
-            mistakeCue: "Half reps, torso turns",
-            correctNote: "A full press with the torso still makes each side of the chest work through its whole range.",
-            mistakeNote: "Stopping short and twisting toward the pressing arm hands the work to the front delt and the trunk."
-        ),
-        glows: [
-            .init(DS.activation.opacity(0.58), rx: 0.16, ry: 0.09, cx: 0.49, cy: 0.43),
-            .init(DS.activationSoft.opacity(0.32), rx: 0.08, ry: 0.06, cx: 0.64, cy: 0.40),
-            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.05, cx: 0.65, cy: 0.42)
-        ]
-    )
-
     static let inclineChestPressMachineContent = ExerciseContent(
         // Relaid 2026-10-11 for the re-exported model (a new plate-loaded incline
         // machine with independent levers, back pad reclined 38.5 degrees, feet on the
@@ -19257,118 +19031,6 @@ enum SampleData {
             .init(DS.activation.opacity(0.58), rx: 0.14, ry: 0.09, cx: 0.53, cy: 0.36),
             .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.07, cx: 0.53, cy: 0.29),
             .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.06, cx: 0.38, cy: 0.27)
-        ]
-    )
-
-    static let assistedPullUpContent = ExerciseContent(
-        annotations: [
-            CueAnnotation(cueID: "scapula", label: "Shoulders down first",
-                          labelPoint: CGPoint(x: 0.400, y: 0.66),
-                          leaderLength: 40, joint: "scapula_L"),
-            CueAnnotation(cueID: "elbow", label: "Elbows to the ribs",
-                          labelPoint: CGPoint(x: 0.362, y: 0.50),
-                          leaderLength: 40, joint: "forearm_L"),
-            CueAnnotation(cueID: "grip", label: "Slightly wide",
-                          labelPoint: CGPoint(x: 0.290, y: 0.12),
-                          leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "barpath", label: "Chin over the bar",
-                          labelPoint: CGPoint(x: 0.653, y: 0.32),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "head"),
-            CueAnnotation(cueID: "feet", label: "Knees on the pad",
-                          labelPoint: CGPoint(x: 0.668, y: 0.86),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "patella_L")
-        ],
-        cues: [
-            TechniqueCue(
-                id: "scapula",
-                title: "Scapular Position",
-                intro: "Each rep starts by pulling the shoulders down, not by bending the arms.",
-                why: "Depressing and retracting the shoulder blades first sets the lats to pull and keeps the shoulders out of a passive, hanging position.",
-                mistake: "Shrugging the shoulders up toward the ears as the pull starts.",
-                correct: "From a dead hang, draw the shoulder blades down and back, then pull."
-            ),
-            TechniqueCue(
-                id: "elbow",
-                title: "Elbow Path",
-                intro: "The elbows drive down toward the ribs.",
-                why: "Pulling the elbows down and back lines the pull up with the lats instead of the biceps.",
-                mistake: "Letting the elbows drift forward in front of the body and curling up.",
-                correct: "Think of pulling the elbows into the back pockets, down and slightly back."
-            ),
-            TechniqueCue(
-                id: "grip",
-                title: "Grip",
-                intro: "Overhand, a little wider than the shoulders.",
-                why: "The same grip as the unassisted pull-up, so the strength carries over.",
-                mistake: "Gripping narrow and curling the body up with the arms.",
-                correct: "Grip overhand just outside shoulder-width, thumbs around the bar."
-            ),
-            TechniqueCue(
-                id: "barpath",
-                title: "Range of Motion",
-                intro: "Every rep goes from a full hang to the chin over the bar.",
-                why: "The full range stretches the lats at the bottom and finishes them at the top; half reps skip both.",
-                mistake: "Short reps, or craning the neck to get the chin over.",
-                correct: "Lower to straight arms each rep, then pull until the chin clears the bar with the neck neutral."
-            ),
-            TechniqueCue(
-                id: "feet",
-                title: "Body Control",
-                intro: "The knees rest on the pad; they do not push.",
-                why: "The counterweight takes part of the body's weight, so the back still pulls through the whole range.",
-                mistake: "Driving the knees into the pad to push the body up.",
-                correct: "Kneel on the pad with the knees together and let it carry you; pull with the back."
-            )
-        ],
-        activation: [
-            // The list follows the model's own paint (the 2026-09-29 model,
-            // never re-exported since, so its paint is unchanged): the lats
-            // alone bright; the biceps, forearms, rear delts, rotator cuff and
-            // upper back dim. The old list predates the 101-200 rule for pulls
-            // (2026-10-23): the dim rear delts, rotator cuff and forearms get
-            // secondary rows, and the cuff and forearms leave the stabilisers.
-            // The lats, biceps and middle trapezius keep their values, which
-            // are the Machine Pull-Up's (the same counterweight lift), and the
-            // new rows take that lift's values too; the middle trapezius row
-            // names the dim upper back. Rotator cuff: the infraspinatus reached
-            // 71-79% MVIC against 117-130% for the lats in pull-ups and
-            // chin-ups (Youdas et al. 2010, J Strength Cond Res 24:3404-3414,
-            // PMID 21068680), about 60% of the lats' level, so 0.50. Posterior
-            // deltoid: the paint and the EMG disagree; in the bodyweight
-            // pull-up it read 106 +/- 70 %MVC beside the lats' 80 +/- 22 (Snarr
-            // et al. 2017, J Hum Kinet 58:5-13, PMID 28828073), too wide a
-            // spread to set the value, so the row is secondary as painted at
-            // 0.54, an estimate (the Feet-Elevated Inverted Row's value, as on
-            // the other pull-ups). Forearms: no normalised EMG found; estimate,
-            // 0.36, between the Pendlay Row's 0.30 and the deadlifts' 0.45, as
-            // the counterweight takes part of the body weight off the hands.
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.54),
-            MuscleActivation(name: "Rotator Cuff", rank: .secondary, fraction: 0.50),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.46),
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.36)
-        ],
-        stabilisers: ["core"],
-        setup: [
-            "Set the counterweight: more weight gives more help.",
-            "Grip the bar overhand, a little wider than your shoulders.",
-            "Kneel on the pad and hang with straight arms."
-        ],
-        comparison: FormComparisonCopy(
-            correctBadge: "CORRECT FORM",
-            mistakeBadge: "PUSHING OFF THE PAD",
-            correctCue: "Knees resting, back pulling",
-            mistakeCue: "Legs push the body up",
-            correctNote: "With the knees resting on the pad, the counterweight helps evenly and the back does the pulling.",
-            mistakeNote: "Pushing down through the knees turns the assisted pull-up into a leg press."
-        ),
-        glows: [
-            .init(DS.activation.opacity(0.58), rx: 0.14, ry: 0.09, cx: 0.53, cy: 0.35),
-            .init(DS.activationSoft.opacity(0.32), rx: 0.09, ry: 0.07, cx: 0.52, cy: 0.28),
-            .init(DS.activationSoft.opacity(0.28), rx: 0.07, ry: 0.06, cx: 0.38, cy: 0.26)
         ]
     )
 
@@ -31939,100 +31601,6 @@ enum SampleData {
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.05, cx: 0.52, cy: 0.60),
             .init(DS.activationSoft.opacity(0.26), rx: 0.06, ry: 0.05, cx: 0.67, cy: 0.57)
-        ]
-    )
-
-    static let pendulumSquatContent = ExerciseContent(
-        annotations: [
-            CueAnnotation(cueID: "tempo", label: "Control down, pause",
-                          labelPoint: CGPoint(x: 0.624, y: 0.16),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "chest"),
-            CueAnnotation(cueID: "pad", label: "Back on the pad",
-                          labelPoint: CGPoint(x: 0.682, y: 0.43),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "spine"),
-            CueAnnotation(cueID: "knee", label: "Knees over toes",
-                          labelPoint: CGPoint(x: 0.318, y: 0.69),
-                          leaderLength: 40, joint: "patella_L"),
-            CueAnnotation(cueID: "depth", label: "Thighs to parallel",
-                          labelPoint: CGPoint(x: 0.638, y: 0.64),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "pelvis"),
-            CueAnnotation(cueID: "feet", label: "Whole foot on the plate",
-                          labelPoint: CGPoint(x: 0.435, y: 0.80),
-                          leaderLength: 40, joint: "foot_L")
-        ],
-        cues: [
-            TechniqueCue(
-                id: "tempo",
-                title: "Tempo",
-                intro: "Lower under control and pause briefly at the bottom.",
-                why: "The swinging carriage builds momentum on the way down. A controlled descent and a short pause make the legs start each rep from a standstill instead of rebounding out of the bottom on the machine's swing.",
-                mistake: "Dropping fast and bouncing straight back up out of the bottom.",
-                correct: "Take about a second to lower, hold the bottom for a moment with the back on the pad, then drive up through the whole foot."
-            ),
-            TechniqueCue(
-                id: "pad",
-                title: "Back on the Pad",
-                intro: "The back and hips stay against the pad as it swings.",
-                why: "The pad carries the trunk along the machine's arc, so the legs can work hard with little demand on the lower back; hack squats, which support the trunk the same way, have drawn less trunk muscle activity than back squats. If the hips run out of room at the bottom, the pelvis tucks, peels away from the pad and the lower back rounds; machine guides advise stopping just short of that point.",
-                mistake: "The hips and lower back peeling off the pad at the bottom to chase extra depth.",
-                correct: "Press the back and hips into the pad from the top of the rep to the bottom, and stop the descent before the pelvis starts to tuck under."
-            ),
-            TechniqueCue(
-                id: "knee",
-                title: "Knee Tracking",
-                intro: "The knees follow the line of the toes.",
-                why: "The carriage guides the trunk, not the knees. The knees travel forward early in the rep and back again as the hips swing down behind them; keeping each one over the middle toes keeps the load straight through the joint the whole way.",
-                mistake: "The knees caving inward as you drive up from the bottom.",
-                correct: "Keep the knees pointing out over the middle toes on the way down and on the way up."
-            ),
-            TechniqueCue(
-                id: "depth",
-                title: "Depth",
-                intro: "The hips swing down and back until the thighs are about parallel.",
-                why: "Much of the depth comes from the hips travelling back along the arc. In one squat analysis, the knee extensors had to work closer to their maximum the deeper the squat, and training through a full range built more lower-body muscle than partial reps.",
-                mistake: "Stopping partway down the arc, the hips still high and the knees pushed far forward.",
-                correct: "Ride the pad down and back until the thighs are about parallel to the floor or a little lower, as far as the back stays on the pad."
-            ),
-            TechniqueCue(
-                id: "feet",
-                title: "Feet on the Plate",
-                intro: "The whole foot stays flat on the angled plate.",
-                why: "The plate sits higher at the heels than at the toes, which lets the knees travel forward and keeps the quadriceps working; in two-leg squats on decline boards, even a 10° slope raised the load on the knee extensors and lowered it at the ankle. Pushing through both the heel and the ball of the foot keeps the load spread across the foot.",
-                mistake: "The heels lifting off the plate at the bottom, the weight rolling onto the toes.",
-                correct: "Set the feet about shoulder-width in the middle of the plate, toes turned out a little, and push through the whole foot."
-            )
-        ],
-        activation: [
-            // The list follows the model's own paint, unchanged since
-            // 2026-10-01: the quadriceps and the glutes bright, nothing else
-            // lit. The old list predates the rule that bright glutes are
-            // primary, so Gluteus Maximus moves up from secondary to primary,
-            // its 0.48 kept (ranks follow the paint, fractions stay where they
-            // were).
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48)
-        ],
-        stabilisers: ["adductors", "hamstrings", "calves"],
-        setup: [
-            "Stand on the plate with your back against the pad and your shoulders under the pads.",
-            "Set your feet about shoulder-width in the middle of the plate, toes out a little.",
-            "Hold the handles and stand tall to lift the carriage.",
-            "Release the safety stop and brace."
-        ],
-        comparison: FormComparisonCopy(
-            correctBadge: "CORRECT FORM",
-            mistakeBadge: "HIPS OFF THE PAD",
-            correctCue: "Back and hips on the pad",
-            mistakeCue: "Hips peel off at the bottom",
-            correctNote: "With the back and hips on the pad, the machine carries the trunk along its arc and the legs do the lifting.",
-            mistakeNote: "When the pelvis tucks off the pad at the bottom, the lower back rounds under the load; stop the descent just before that point."
-        ),
-        glows: [
-            .init(DS.activation.opacity(0.55), rx: 0.13, ry: 0.05, cx: 0.45, cy: 0.57),
-            .init(DS.activationSoft.opacity(0.28), rx: 0.06, ry: 0.05, cx: 0.59, cy: 0.56)
         ]
     )
 

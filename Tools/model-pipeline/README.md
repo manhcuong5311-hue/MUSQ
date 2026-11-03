@@ -814,6 +814,33 @@ data (`probe.py`, `thumbs.json`, `posetimes.json`, `bottoms.json`, the 1012
 specs and notes, `convert_all.py`'s `300-400-1012/387_…` entry) still lists
 387 as a record of that round.
 
+Dropped male Pendulum Squat (2026-10-31): the owner took the male Pendulum
+Squat out of the app because the female Pendulum Squat (Stances) covers it,
+as with the kickbacks above. Its catalog entry, trainer content, model
+framing, fault poses, `Legs/PendulumSquat.usdc` and library thumbnail are
+removed. The tool data (`convert_all.py`'s `300-350/14_pendulum_squat` and
+`rebuilt-1031/14_pendulum_squat` entries, `thumbs.json`, `posetimes.json`,
+`bottoms.json`, `probe.py`, the legs30 specs and notes) still lists it as a
+record; skip it in later swaps. Its rebuilt .blend stays on the SSD.
+
+Dropped male Hack Squat (2026-10-31): the same evening the owner took the male
+Hack Squat out too, as the female Hack Squat (Stances) covers it (its SSD file
+was already named "THAY BẰNG BẢN NỮ"). Catalog entry, trainer content, model
+framing, fault poses, `Legs/HackSquat.usdc` and its library thumbnail are
+removed, and the advanced quads preset now lists Hack Squat (Stances). Its
+JOBS entries (`Legs/066_hack_squat`, `rebuilt-1031/066_hack_squat`) and tool data
+stay as a record; skip it in later swaps. Hack Squat Calf Raise is a separate
+exercise and stays.
+
+Dropped duplicate Iso-Lateral Chest Press (2026-10-31): the owner saw two
+iso-lateral chest presses in the library and kept the one with two variants,
+Plate-Loaded Chest Press (Standard, High Handles), which is the same plate-
+loaded machine pressed with both arms. The one-arm-at-a-time Iso-Lateral
+Chest Press (122) lost its catalog entry, trainer content, model framing,
+fault poses, `Chest/IsoLateralChestPress.usdc` and library thumbnail;
+`ChestPaint.swift` was regenerated. Its JOBS entries and tool data stay as a
+record; skip it in later swaps.
+
 Desktop "From 316" folder (2026-10-19): `~/Desktop/From 316` holds 52
 exports (316-325 and 356-400, re-saved by the owner 2026-10-18/19; no 357,
 which keeps its model, and 386/387 are dropped: the female model's

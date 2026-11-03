@@ -6690,21 +6690,6 @@ enum FaultPoses {
             "ribs": lowerBackArched(0.13, pulloverStretch),
             "feet": benchFeet
         ],
-        "Iso-Lateral Chest Press": [
-            // Seat too low: the handles start level with the shoulders. The
-            // 2026-10-11 model's hands start 20 cm below them along the trunk
-            // (0.33 torso lengths); the elbows fold to about 60 degrees.
-            "wrist": r1011HandlesHigh(0.33),
-            "elbow": elbowsFlared(34),
-            // Each press cut short, the elbow still bent: a fault of the
-            // lockout, on the left arm, which presses first (0-4 s) while the
-            // right waits at the chest.
-            "barpath": FaultPose(chains: [leftArmToGrip],
-                                 moves: [.shift(["hand_L", "hand_L.tip"], forward: -0.2), .resolve(["forearm_L"])],
-                                 strength: .whenStraight("forearm_L")),
-            "feet": seatedArched,
-            "scapula": shrugged
-        ],
         "Incline Chest Press Machine": [
             // Seat too low: the handles start above the shoulders. The 2026-10-11
             // model's hands start 8 cm below them along the trunk; 0.22 torso
@@ -7154,15 +7139,6 @@ enum FaultPoses {
             "grip": gripTooWide(withBar: false),
             "barpath": chinCraned.seen(0.5),
             "feet": kipping
-        ],
-        "Assisted Pull-Up": [
-            "scapula": shrugged,
-            "elbow": elbowsForward.seen(0.5),
-            "grip": gripTooNarrow(withBar: false),
-            "barpath": chinCraned.seen(0.5),
-            // Pushing through the knees: the whole body pressed up off the pad.
-            "feet": FaultPose(chains: [spine, legs],
-                              moves: [.shift(["pelvis", "spine", "chest", "neck", "head", "thigh_*", "shin_*", "foot_*", "foot_*.tip"], up: 0.12)])
         ],
         "Machine Pull-Up": [
             "scapula": shrugged,
@@ -7785,22 +7761,6 @@ enum FaultPoses {
             "step": FaultPose(chains: [leg("R"), hips],
                               moves: [.shift(["foot_R", "foot_R.tip"], ahead: 0.25), .resolve(["shin_R"])],
                               strength: .withBend("shin_L"), view: sideOn)
-        ],
-        "Hack Squat": [
-            // Feet low on the platform: the knees crowd far forward.
-            "feet": FaultPose(chains: [legs], moves: [.shift(["foot_*", "foot_*.tip"], ahead: -0.14), .resolve(["shin_*"])],
-                              strength: .withBend("shin_L"), view: sledSide),
-            // Hips and back peeling off the pad at the bottom.
-            "pad": FaultPose(chains: [spine, legs, hips],
-                             moves: [.shift(["pelvis", "thigh_*", "spine"], forward: 0.1), .shift(["chest"], forward: 0.05),
-                                     .resolve(["shin_*"])],
-                             strength: .withBend("shin_L"), view: sledSide),
-            "knee": kneesIn(),
-            // Bouncing: the sled sinks past a controlled bottom.
-            "depth": FaultPose(chains: [spine, legs, hips],
-                               moves: [.shift(carried, up: -0.12), .resolve(["shin_*"])],
-                               strength: .withBend("shin_L"), view: sledSide),
-            "lockout": kneesSnapped.seen(sledSide)
         ],
         "Leg Extension": [
             // Already dropping at the top: no pause.
@@ -10180,12 +10140,11 @@ enum FaultPoses {
         // ankles, as the earlier review found); from behind both knees
         // and both ankles are clear at every moment, while 0.3 off it
         // either way (totals -2.8, -3.4) the belt's webbing covers one knee
-        // at the bottom. Pendulum Squat and V-Squat are
-        // framed side-on from the left (yaw -1.3): forward-line faults need
-        // no turn, the knees caving in turns faceOn (a total of -0.2; the
-        // machine is behind them, so the legs are clear). Both legs work
-        // together on all three, so the faults use `*` and `shin_L` for the
-        // bend.
+        // at the bottom. V-Squat is framed side-on from the left (yaw -1.3):
+        // forward-line faults need no turn, the knees caving in turns faceOn
+        // (a total of -0.2; the machine is behind them, so the legs are
+        // clear). Both legs work together on both lifts, so the faults use
+        // `*` and `shin_L` for the bend.
         "Belt Squat": [
             // Feet ahead of the cable: the hips sit back behind the heels.
             // Seen from the framing: the feet slide ~12 cm toward the
@@ -10205,20 +10164,6 @@ enum FaultPoses {
             // Seen from the framing: the heel rocks up off the deck and the
             // knee drives forward.
             "heel": heelsUp()
-        ],
-        "Pendulum Squat": [
-            // The hips and lower back peeling off the pad at the bottom.
-            "pad": machineHipsOffPad,
-            // The heels lifting off the heel-high plate.
-            "feet": heelsUp(),
-            "knee": kneesIn().seen(faceOn),
-            // Stopping partway down the arc: the hips ~18 cm higher and
-            // ~18 cm further forward, near where the arc passes on the way
-            // down, the knees re-seated forward (knee 78° -> ~90°, ~21 cm
-            // ahead of the ankle instead of ~9 cm).
-            "depth": shallow(0.3, ahead: 0.3)
-            // "tempo" has no ghost: bouncing out of the bottom is a matter of
-            // speed, not position.
         ],
         "V-Squat": [
             "pad": machineHipsOffPad,

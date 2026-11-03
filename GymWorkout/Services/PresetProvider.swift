@@ -115,7 +115,7 @@ enum PresetProvider {
                 item("Back Squat", 4, 6, 10),
                 item("Front Squat", 3, 6, 8),
                 item("Bulgarian Split Squat", 3, 8, 12),
-                item("Hack Squat", 3, 10, 12)
+                item("Hack Squat (Stances)", 3, 10, 12)
             ]
         ],
         .hamstrings: [
