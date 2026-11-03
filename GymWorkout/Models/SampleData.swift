@@ -13677,11 +13677,14 @@ enum SampleData {
             // portions; their per-head values were not reached, so the lower
             // (0.78, just under the middle head) and upper (0.40, MODERATE,
             // under the bright heads) rows are estimates.
+            // 2026-11-03: the flat-back re-export lights the upper head bright
+            // too, so Upper Pectoralis is a primary row and keeps its 0.40 (a
+            // rank change keeps the fraction).
             MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.40),
             MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.70),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.55),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.40)
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.55)
         ],
         stabilisers: ["serratus anterior", "teres major", "core"],
         setup: [
@@ -13801,10 +13804,13 @@ enum SampleData {
             // et al. 2020, Rev Andal Med Deporte 13:127-133). The paint wins, so
             // 0.60 is an estimate kept MODERATE under the bright heads, just
             // above the lats row as that EMG has it.
+            // 2026-11-03: the flat-back re-export lights the upper head bright
+            // too, as that EMG has it, so Upper Pectoralis is a primary row and
+            // keeps its 0.60 (a rank change keeps the fraction).
             MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.76),
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.60),
             MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.70),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.60),
             MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.58)
         ],
         stabilisers: ["serratus anterior", "teres major", "core"],

@@ -267,3 +267,7 @@ re-framed the lifts with new equipment or timing (both seated presses, the
 incline and wrist curls, the Lying Leg Raise without its mat, the bent-over row
 and lat pulldown); the Cable Lateral Raise and Cable Rear Delt Fly, now on the
 dual cable station, joined `BODY_ONLY` like the Cable Y-Raise.
+
+Pullovers, 2026-11-03: the Dumbbell and Barbell Pullover re-exports (flat
+back, upper chest bright) were re-timed (`posetime.py`, 1.33 -> 1.5 s) and
+re-framed (`thumbsolve.py`), and their two tiles re-shot.

@@ -1274,3 +1274,18 @@ keep their known rank differences. Copy changed only where the model now
 contradicts it: the Lying Leg Raise lies on the floor, the incline curl's
 bench reads about 70 degrees. Six framings were re-solved (both seated
 presses, both cable-station lifts, the incline curl and wrist curl).
+
+The same folder on 2026-11-03: the owner re-exported the Dumbbell Pullover
+(111) and Barbell Pullover (112) after `BLENDER/Fix_Pullover_20261103` laid
+their backs flat like the Dumbbell Pullover Row (189): the ribcage level and
+T12/L1 8.7 cm above the pad, where the 2026-10-31 fix had only lowered the
+pelvis and left the lower ribs tipped up. Before exporting the owner lit the
+upper chest bright (`MH_UpperChest` 1 -> 2) and took the bench lift handle
+off. Cloned to `SourceExports/1-100-1103/` (with `textures/`), converted
+(spare dumbbells and barbell parked off), `one_side_tiers.py` (nothing
+unlit), `shorts/rebase_shorts.py`, padded and slimmed against
+`AnatomyBodyV2.usdc` (attribute for attribute, 1.1 and 1.3 MB); every joint
+matches the approved .blend to 0.000 cm. The paint changed only on the
+clavicular head (dim -> bright), so both lifts' Upper Pectoralis rows are
+primary now (fractions kept) and `chest_paint.py` rewrote their two
+`ChestPaint` entries. Tiles re-shot; framings kept.

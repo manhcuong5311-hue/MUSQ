@@ -1573,6 +1573,11 @@ JOBS = {
     "1-100-1102/face_pull": "Shoulder/FacePull",
     "1-100-1102/machine_lateral_raise": "Shoulder/MachineLateralRaise",
     "1-100-1102/machine_shoulder_press": "Shoulder/MachineShoulderPress",
+    # Desktop "1-100" folder, 2026-11-03: the two pullovers re-exported after BLENDER/Fix_Pullover_20261103 laid
+    # their backs flat like 189 (ribcage level, T12/L1 8.7 cm above the pad); the owner also lit the upper chest
+    # bright (MH_UpperChest 1 -> 2) and took the bench lift handle off.
+    "1-100-1103/111_dumbbell_pullover": "Chest/DumbbellPullover",
+    "1-100-1103/112_barbell_pullover": "Chest/BarbellPullover",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs
