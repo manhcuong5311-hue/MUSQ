@@ -788,7 +788,7 @@ private struct GroupGlyph: View {
             return BodyRegion.chestHeads + [.obliques, .abs, .biceps, .triceps, .trapezius, .deltoids,
                                             .adductors, .quadriceps, .tibialis, .calves, .forearm]
         case .chest: return BodyRegion.chestHeads
-        case .back: return [.upperBack, .lowerBack, .trapezius]
+        case .back: return [.upperBack, .lats, .lowerBack, .trapezius]
         case .shoulders: return [.deltoids]
         case .arms: return [.biceps, .triceps, .forearm]
         case .legs: return [.quadriceps, .adductors, .tibialis, .calves]

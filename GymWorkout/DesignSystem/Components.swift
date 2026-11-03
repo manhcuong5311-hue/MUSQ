@@ -609,6 +609,11 @@ struct PanelGround: View {
 }
 
 /// Grabber + surface used by every bottom panel in the design.
+///
+/// A panel taller than the height it's offered (a row with seven muscles and
+/// its stabilisers, a cue with long copy) scrolls under the grabber rather
+/// than running its Done off the top of the screen (2026-11-03). One that
+/// fits draws as it always has.
 struct SheetScaffold<Content: View>: View {
     var bottomPadding: CGFloat = 34
     var grabberBottomSpacing: CGFloat = 16
@@ -622,14 +627,23 @@ struct SheetScaffold<Content: View>: View {
                 .padding(.top, 12)
                 .padding(.bottom, grabberBottomSpacing)
 
-            content()
+            ViewThatFits(in: .vertical) {
+                padded
+                ScrollView { padded }
+            }
         }
-        .padding(.horizontal, DS.Metric.gutter)
-        .padding(.bottom, bottomPadding)
         .frame(maxWidth: .infinity)
         .background(alignment: .top) {
             PanelGround(radius: DS.Metric.sheetRadius, border: DS.silver.opacity(0.11))
         }
+    }
+
+    /// Inset inside the scroll view, so its indicator runs at the panel's
+    /// edge and the last line scrolls clear of the home indicator.
+    private var padded: some View {
+        content()
+            .padding(.horizontal, DS.Metric.gutter)
+            .padding(.bottom, bottomPadding)
     }
 }
 

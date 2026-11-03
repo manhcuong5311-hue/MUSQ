@@ -38,3 +38,19 @@ upper chest and a decline the lower. The map follows:
 - History's iPad band lights only the heads a chest exercise's model lights.
 - Stances: the trainer follows the picked stance; logged volume counts the
   exercise's default model, since a logged exercise records no stance.
+
+## Lats apart from the upper back (2026-11-03)
+
+The source's `upper-back` takes in the latissimus dorsi with the
+infraspinatus and teres on the shoulder blade, so a Rhomboids or Rotator
+Cuff row lit the lats at its own rank: on 48 muscle lists the lats showed
+primary although their row says secondary (36, nearly every row) or lit
+up with no lats row at all (12: Face Pull, Reverse Pec Deck, the rear-delt
+flies, …). `BodyMapShapes` now takes the upper back's two long shapes
+(those reaching below y 450, down to y 583) as `BodyRegion.lats`, lit only
+by "Latissimus Dorsi" / "lats" rows; rhomboids, teres, infraspinatus and
+the rotator cuff keep the shoulder-blade shapes. Lat-led lists change the
+other way: on 27 (pull-ups, pulldowns, pullovers) the shoulder blade now
+follows its own Rotator Cuff row, or stays idle, instead of the lats'
+rank. The Back group (`MuscleGroup.bodyRegions`, the library glyph) lights
+both, so the Muscles tab, history and onboarding draw as before.

@@ -25,12 +25,15 @@ enum BodySide: CaseIterable {
 /// One drawable region of the map. Cases match the source data's slugs,
 /// except the chest: the source draws each pec whole (`chest`), and the map
 /// cuts it into the pectoralis major's three heads, the way the exercise
-/// models paint them (2026-10-22).
+/// models paint them (2026-10-22). And the lats: the source's upper back
+/// takes in the latissimus dorsi with the muscles on the shoulder blade, so
+/// a row's primary rhomboids painted its secondary lats primary; the map
+/// draws them apart (2026-11-03).
 enum BodyRegion {
     case chest, upperChest, midChest, lowerChest
     case obliques, abs, biceps, triceps, neck, trapezius, deltoids
     case adductors, quadriceps, tibialis, calves, forearm
-    case upperBack, lowerBack, gluteal, hamstring
+    case upperBack, lats, lowerBack, gluteal, hamstring
     // Not muscles: always drawn neutral.
     case knees, hands, ankles, feet, head, hair
 
@@ -73,10 +76,11 @@ enum BodyRegion {
             if has("middle", "lower") { return [(.trapezius, [.back])] }
             return [(.trapezius, both)]
         }
+        if has("latissimus", "lats") { return [(.lats, both)] }
         // The rotator cuff (a row on the re-painted rows and pulls, 2026-10-23)
         // lies on the shoulder blade, so it lights the upper back as the
         // infraspinatus always has.
-        if has("latissimus", "lats", "rhomboid", "teres", "infraspinatus", "rotator cuff", "supraspinatus", "upper back") {
+        if has("rhomboid", "teres", "infraspinatus", "rotator cuff", "supraspinatus", "upper back") {
             return [(.upperBack, both)]
         }
         if has("erector", "spinae", "lower back", "quadratus lumborum") { return [(.lowerBack, both)] }
@@ -257,7 +261,15 @@ private enum BodyMapShapes {
             return zip(BodyRegion.chestHeads, chestBands).map { ($0, path.intersection($1)) }
         }
     }
-    private static let back: [(BodyRegion, Path)] = BodyMapPaths.back.flatMap { region, ds in ds.map { (region, parse($0)) } }
+    private static let back: [(BodyRegion, Path)] = BodyMapPaths.back.flatMap { region, ds in
+        ds.map { d -> (BodyRegion, Path) in
+            let path = parse(d)
+            // Of the source's upper back, the lats are the long shapes down
+            // the ribs (to y 583); the infraspinatus and teres stop by y 415.
+            guard region == .upperBack, path.boundingRect.maxY > 450 else { return (region, path) }
+            return (.lats, path)
+        }
+    }
     private static let frontOutline = parse(BodyMapPaths.frontOutline)
     private static let backOutline = parse(BodyMapPaths.backOutline)
 
@@ -339,7 +351,7 @@ extension MuscleGroup {
     var bodyRegions: [BodyRegion] {
         switch self {
         case .chest: return BodyRegion.chestHeads
-        case .back: return [.upperBack, .lowerBack, .trapezius]
+        case .back: return [.upperBack, .lats, .lowerBack, .trapezius]
         case .shoulders: return [.deltoids]
         case .biceps: return [.biceps]
         case .triceps: return [.triceps]

@@ -576,8 +576,7 @@ struct Exercise3DView: View {
                 .transition(.opacity)
         }
 
-        VStack {
-            Spacer(minLength: 0)
+        Group {
             switch sheet {
             case .muscles:
                 MusclePanelSheet(
@@ -613,6 +612,12 @@ struct Exercise3DView: View {
                 EmptyView()
             }
         }
+        // Offered the whole height rather than a stack's share beside a
+        // spacer, so a panel that fits keeps its own height and a longer one
+        // scrolls in all of it, stopping under the header: the scrim there
+        // stays in reach to close it.
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+        .padding(.top, 64)
         .ignoresSafeArea(edges: .bottom)
     }
 
