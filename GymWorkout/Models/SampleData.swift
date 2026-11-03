@@ -3289,7 +3289,7 @@ enum SampleData {
                 MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30)
                            ]),
             ExerciseStance(label: "Side Lean", model: ExerciseModel(resource: "SingleArmLatPulldownSideLean", framing: ModelFraming(yaw: -2.6, zoom: 0.899, offset: [0.022, 0.056, 0.013])),
-                           note: "Ribs curl toward the pulling arm, palm turning up; the elbow ends about 4 cm lower",
+                           note: "Ribs curl toward the pulling arm, palm turning up, so the elbow finishes lower, nearer the hip",
                            activation: [
                 // Follows the SingleArmLatPulldownSideLean model's paint, the same
                 // as the upright model's: lat bright; trapezius, cuff, rear delt,
@@ -3369,7 +3369,7 @@ enum SampleData {
                 MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30)
                            ]),
             ExerciseStance(label: "High Bar", model: ExerciseModel(resource: "InvertedRowSmithHigh", framing: ModelFraming(yaw: -2.2, zoom: 0.637, offset: [-0.044, 0.078, -0.06])),
-                           note: "Bar about 1.08 m up: the body starts about 30° off the floor, an easier row",
+                           note: "Bar about waist height: the body starts more upright, which makes the row easier",
                            activation: [
                 // Follows the High Bar model's paint (InvertedRowSmithHigh, swapped
                 // in 2026-10-17 with the paint unchanged): trapezius, rhomboids,
@@ -3413,7 +3413,7 @@ enum SampleData {
                 MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.88)
                            ]),
             ExerciseStance(label: "Low", model: ExerciseModel(resource: "BeltSquatLow", framing: ModelFraming(yaw: -1.5, zoom: 0.767, offset: [0.004, -0.034, -0.061])),
-                           note: "Feet 6 cm further back, behind the cable: the hips stop about 8 cm higher; the model lights the quads",
+                           note: "Feet a little further back, behind the cable: the squat stops a little higher; the model lights the quads",
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.46)
@@ -3466,7 +3466,7 @@ enum SampleData {
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48)
                            ]),
             ExerciseStance(label: "Wide", model: ExerciseModel(resource: "WideStanceLegPress", framing: ModelFraming(yaw: -2.0, zoom: 0.656, offset: [0.043, 0.119, 0.094])),
-                           note: "Feet 66 cm apart, toes turned out about 27°; the model lights the inner thighs, glutes and hip flexors",
+                           note: "Feet well wider than the shoulders, toes turned out; the model lights the inner thighs, glutes and hip flexors",
                            activation: [
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.54),
                 // A legend-only name (the rig paints it on the sartorius),
@@ -3498,7 +3498,7 @@ enum SampleData {
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50)
                            ]),
             ExerciseStance(label: "Wide", model: ExerciseModel(resource: "SmithMachineSquatWide", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0])),
-                           note: "Feet 26 cm wider, toes out about 30°: knees bend a little less; the model lights the inner thighs, glutes and hip flexors",
+                           note: "Feet well wider than the shoulders, toes turned out more: knees bend a little less; the model lights the inner thighs, glutes and hip flexors",
                            activation: [
                 // The SmithMachineSquatWide model lights the adductors, glutes
                 // and sartorius (the rig's hip flexors) bright and the
@@ -3515,7 +3515,7 @@ enum SampleData {
                 MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.86)
                            ]),
             ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "SmithMachineSquatNarrow", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0])),
-                           note: "Feet 16 cm closer, just outside the hips, toes almost straight; the model lights the outer quad and glutes",
+                           note: "Feet closer, just outside the hips, toes almost straight; the model lights the outer quads and glutes",
                            activation: [
                 // Vastus lateralis and the glutes bright, the other quadriceps
                 // dim: both rows are primary at the exercise's fractions (stance
@@ -3534,7 +3534,7 @@ enum SampleData {
         // picked on viewport stills.
         "Incline Cable Press": [
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "InclineCablePress", framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013])),
-                           note: "Handles press up and 11 cm closer together, ending over the mid chest; the model lights the middle chest",
+                           note: "Handles press up and draw closer together, ending over the mid chest; the model lights the middle chest",
                            activation: [
                 // 2026-10-22: same model as the exercise, so the same list: chest
                 // rows from its paint by head (middle bright, upper and lower
@@ -3546,7 +3546,7 @@ enum SampleData {
                 MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.46)
                            ]),
             ExerciseStance(label: "Straight Up", model: ExerciseModel(resource: "InclineCablePressStraightUp", framing: ModelFraming(yaw: -1.0, zoom: 0.810, offset: [-0.009, 0.102, 0.013])),
-                           note: "Handles start 8 cm nearer the head and press straight up, staying 63 cm apart, to end over the collarbones; the model lights the upper chest",
+                           note: "Handles start nearer the head and press straight up, staying wide apart, to end over the collarbones; the model lights the upper chest",
                            activation: [
                 // 2026-10-22: the chest rows follow this model's paint by head:
                 // upper (clavicular) pec bright, middle and lower dim. The upper
@@ -3566,7 +3566,7 @@ enum SampleData {
         ],
         "Decline Cable Press": [
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "DeclineCablePress", framing: ModelFraming(yaw: -1.0, zoom: 0.633, offset: [0.003, -0.052, -0.004])),
-                           note: "Hands press from beside the lower chest to over the mid chest, drifting slightly toward the head and closing from 62 to 50 cm apart; the model lights the lower chest",
+                           note: "Hands press from beside the lower chest to over the mid chest, drifting slightly toward the head and closing in a little; the model lights the lower chest",
                            activation: [
                 MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
                 MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.59),
@@ -3575,7 +3575,7 @@ enum SampleData {
                 MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.34)
                            ]),
             ExerciseStance(label: "Straight Up", model: ExerciseModel(resource: "DeclineCablePressStraightUp", framing: ModelFraming(yaw: -1.0, zoom: 0.674, offset: [-0.058, -0.049, 0.090])),
-                           note: "Hands rise plumb, 65 cm apart, from beside the lower ribs to over the waistband, finishing about 35 cm nearer the hips; the model lights the lower chest",
+                           note: "Hands press straight up from beside the lower ribs, staying wide apart, to finish over the waist; the model lights the lower chest",
                            activation: [
                 MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.86),
                 MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.59),
@@ -3601,7 +3601,7 @@ enum SampleData {
                 MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.24)
                            ]),
             ExerciseStance(label: "To Thighs", model: ExerciseModel(resource: "HighToLowCableFlyToThighs", framing: ModelFraming(yaw: 0, zoom: 0.629, offset: [0.000, 0.025, 0.000])),
-                           note: "Hands sweep about 17 cm lower, finishing in front of the hips; the model lights the lower chest bright too",
+                           note: "Hands sweep lower, finishing in front of the hips; the model also lights the lower chest brightly",
                            activation: [
                 // 2026-10-22: chest rows follow the HighToLowCableFlyToThighs
                 // model's paint: middle and lower pec bright, upper pec dim. The
@@ -3625,7 +3625,7 @@ enum SampleData {
         ],
         "Plate-Loaded Chest Press": [
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "PlateLoadedChestPress", framing: ModelFraming(yaw: -0.7, zoom: 0.950, offset: [0.041, 0.107, -0.035])),
-                           note: "Upright handles gripped palms in, torso reclined about 22° on the pad; the model lights the middle and lower chest",
+                           note: "Upright handles gripped palms in, back resting on the reclined pad; the model lights the middle and lower chest",
                            activation: [
                 // Chest rows follow this model's paint by head (2026-10-22):
                 // middle and lower pec bright, upper pec dim, as the exercise.
@@ -3636,7 +3636,7 @@ enum SampleData {
                 MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48)
                            ]),
             ExerciseStance(label: "High Handles", model: ExerciseModel(resource: "PlateLoadedChestPressHighHandles", framing: ModelFraming(yaw: -0.7, zoom: 0.880, offset: [0.040, 0.050, -0.034])),
-                           note: "Seat about 14 cm higher, palms down on the horizontal top handles, hands about 18 cm wider; the model lights the middle and lower chest",
+                           note: "Seat set higher, palms down on the horizontal top handles, hands wider; the model lights the middle and lower chest",
                            activation: [
                 // Chest rows follow this model's paint by head (2026-10-22):
                 // middle and lower pec bright, upper pec dim, as on the
@@ -3656,7 +3656,7 @@ enum SampleData {
         ],
         "Chest Dip": [
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "ChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.218, 0.05])),
-                           note: "Knees bent to about 85°, feet trailing about 35 cm behind the hips on the dip station; the model lights the middle and lower chest and front delts",
+                           note: "Knees bent to about 90°, feet trailing behind the hips on the dip station; the model lights the middle and lower chest and front delts",
                            activation: [
                 // The ChestDip model's paint: chest rows by head (2026-10-22),
                 // the same list as the exercise's.
@@ -3667,7 +3667,7 @@ enum SampleData {
                 MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.50)
                            ]),
             ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "ChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.721, offset: [-0.032, -0.032, 0.05])),
-                           note: "Legs straight on a rack's dip handles, feet 8-14 cm behind the hips, so the hips bend about 13° less; the model lights the same middle and lower chest and front delts",
+                           note: "Legs straight on a rack's dip handles, feet just behind the hips, so the hips stay straighter; the model lights the middle and lower chest and front delts",
                            activation: [
                 // ChestDipStraightLegs paints the chest by head the same as
                 // ChestDip (middle and lower bright, upper dim; 2026-10-22), so
@@ -3681,7 +3681,7 @@ enum SampleData {
         ],
         "Weighted Chest Dip": [
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "WeightedChestDip", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.225, 0.049])),
-                           note: "Knees bent a little past 90°, feet trailing about 45 cm behind the hips; the model lights the middle and lower chest",
+                           note: "Knees bent a little past 90°, feet trailing behind the hips; the model lights the middle and lower chest",
                            activation: [
                 MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.90),
                 MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
@@ -3690,7 +3690,7 @@ enum SampleData {
                 MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.55)
                            ]),
             ExerciseStance(label: "Straight Legs", model: ExerciseModel(resource: "WeightedChestDipStraightLegs", framing: ModelFraming(yaw: -1.0, zoom: 0.694, offset: [-0.031, -0.035, 0.049])),
-                           note: "Legs almost straight below you, feet about 18 cm behind the hips; the model lights the middle and lower chest, as Standard does",
+                           note: "Legs almost straight below you, feet just behind the hips; the model lights the middle and lower chest",
                            activation: [
                 MuscleActivation(name: "Lower Pectoralis", rank: .primary, fraction: 0.90),
                 MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.86),
@@ -11824,7 +11824,7 @@ enum SampleData {
                 intro: "Go only as far as you can hold the position.",
                 why: "Rollouts produce some of the highest rectus abdominis and oblique activity measured in EMG studies, so a shorter, controlled reach is still very hard.",
                 mistake: "Rolling out further than you can hold, so the hips drop and the lower back arches.",
-                correct: "Roll out until your hips are nearly straight and your arms reach out past your head, about 90 cm of wheel travel here; stop sooner if your lower back starts to arch."
+                correct: "Roll out until your hips are nearly straight and your arms reach out past your head; stop sooner if your lower back starts to arch."
             ),
             TechniqueCue(
                 id: "ribs",
@@ -15465,7 +15465,7 @@ enum SampleData {
                 id: "feet",
                 title: "Base",
                 intro: "The feet are the other end of the plank.",
-                why: "Feet together on the toes keep the body line fixed; the higher the bench, the lighter the push (about 41% of body mass with the hands on a 60 cm box, against about 64% on the floor).",
+                why: "Feet together on the toes keep the body line fixed. The higher the bench, the less of your body weight you push, so lowering the hands over the weeks makes the exercise harder.",
                 mistake: "Feet sliding back or wide, so the body line and the angle keep changing.",
                 correct: "Tuck the toes, keep the feet together, and move the feet back or the hands lower as the exercise gets easy."
             )
@@ -30747,7 +30747,7 @@ enum SampleData {
                 id: "stance",
                 title: "Stance",
                 intro: "Feet wide, toes turned out.",
-                why: "A wide stance with the toes out lets the knees travel out over the feet as the thighs reach parallel. Wide stances asked more of the hip extensors than narrow ones in squat studies, and drew more glute activity in some of them, while squatting wide with the toes pointing straight ahead produced some of the largest knee and hip moments measured in one study.",
+                why: "A wide stance with the toes turned out lets the knees travel out over the feet as the thighs reach parallel, and it brings the hips and glutes more into the lift. Going wide with the toes pointing straight ahead stops the knees from following the feet and loads the knees and hips harder.",
                 mistake: "Standing wide with the toes pointing straight ahead, so the knees cannot follow the feet.",
                 correct: "Set your feet well wider than your shoulders, toes turned out about 30 to 45 degrees, and keep the knees in line with them."
             ),
@@ -30879,7 +30879,7 @@ enum SampleData {
                 id: "stance",
                 title: "Stance",
                 intro: "Feet wide, toes turned out.",
-                why: "A wide stance with the toes out lets the knees travel out over the feet as the thighs reach parallel. Wide stances asked more of the hip extensors than narrow ones in squat studies, and drew more glute activity in some of them, while squatting wide with the toes pointing straight ahead produced some of the largest knee and hip moments measured in one study.",
+                why: "A wide stance with the toes turned out lets the knees travel out over the feet as the thighs reach parallel, and it brings the hips and glutes more into the lift. Going wide with the toes pointing straight ahead stops the knees from following the feet and loads the knees and hips harder.",
                 mistake: "Standing wide with the toes pointing straight ahead, so the knees cannot follow the feet.",
                 correct: "Set your feet well wider than your shoulders, toes turned out about 30 to 45 degrees, and keep the knees in line with them."
             )
@@ -32072,7 +32072,7 @@ enum SampleData {
                 id: "stance",
                 title: "Stance Width",
                 intro: "Feet about hip-width apart in the middle of the platform.",
-                why: "A narrow stance keeps each knee travelling in a straight line over its foot. In leg press studies stance width changed quadriceps activity little, and the knee forces shifted rather than fell: in one study the narrow stance put more compressive force on the knee, the wide stance more tension on the ligament at the back of the knee (the PCL). With the feet touching, the knees have no room at the bottom and crowd in against each other.",
+                why: "A hip-width stance gives each knee a straight path over its foot, keeping the load lined up through the joint. With the feet so close they touch, the knees run out of room at the bottom and crowd in against each other.",
                 mistake: "Setting the feet so close they touch, the knees crowding in against each other at the bottom.",
                 correct: "Place the feet about hip-width apart, toes straight or turned out slightly, and keep space between the knees all the way down."
             ),
@@ -32781,7 +32781,7 @@ enum SampleData {
                 id: "bottom",
                 title: "Bottom of the Rep",
                 intro: "The heels come back down to about level with the platform on every rep.",
-                why: "Low in the rep the calf muscles are at their longest. In a study of straight-knee calf raises, training only the stretched range below a flat foot grew the gastrocnemius more than training only the range above it. That study measured only the gastrocnemius, so it does not show the same for the soleus; about level with the platform is the least to aim for, and letting the heels sink below it, if comfortable, adds the stretched part.",
+                why: "Low in the rep the calf muscles are at their longest. In a straight-knee study, training this stretched range grew the gastrocnemius more, though it is less clear for the soleus this lift targets. Level with the platform is the minimum; letting the heels sink lower adds more stretch if your ankles allow it.",
                 mistake: "Keeping the heels high between reps, so the pad only bobs near the top.",
                 correct: "Lower under control until the heels are level with the platform, then, if your ankles are comfortable, let them sink below it into a stretch before rising."
             ),
@@ -33900,7 +33900,7 @@ enum SampleData {
                 id: "grip",
                 title: "Grip Width",
                 intro: "The hands sit about shoulder-width apart, right above the shoulders.",
-                why: "A grip about as wide as the shoulders is the usual way to shift the bench press toward the triceps: in EMG studies, triceps activity was higher than with a wide grip, though not clearly higher than with a medium one, while the chest changed little. Much closer than that can bend the wrists sideways and make the bar harder to balance.",
+                why: "A grip about as wide as the shoulders shifts more of the press onto the triceps while the chest still does its share. Going much narrower bends the wrists sideways and makes the bar harder to balance.",
                 mistake: "Hands nearly touching in the middle of the bar, the wrists bending sideways.",
                 correct: "Grip the bar with your hands about shoulder-width apart, directly above your shoulders, thumbs wrapped around it."
             ),
@@ -33932,7 +33932,7 @@ enum SampleData {
                 id: "feet",
                 title: "Base",
                 intro: "The feet stay flat on the floor and the hips stay on the bench.",
-                why: "Feet planted apart on the floor give the press a stable base: in one study, pressing with the feet held up off the floor made every measured muscle work harder, the abdominals included, which the authors put down to the body being less stable without the feet's support. Feet flat with the hips, shoulders and head on the bench is the standard set-up, the one used in studies of this lift.",
+                why: "Feet planted wide on the floor give the press a stable base, so your effort goes into the bar rather than into staying balanced on the bench. With the feet up off the floor, the whole body has to work harder just to stay steady, and lifting the hips to force a rep up gives that base away.",
                 mistake: "The heels lifting or the feet drifting, and the hips rising off the bench to force a hard rep up.",
                 correct: "Plant both feet flat, set wider than your shoulders, and keep your hips on the bench for every rep."
             )
@@ -34681,7 +34681,7 @@ enum SampleData {
                 id: "stance",
                 title: "Distance",
                 intro: "Stand far enough back that the weight stack stays lifted at the bottom of every rep.",
-                why: "The bar comes closer to the low pulley as you hinge, so the stack sinks toward its rest at the bottom, right where the hamstrings are stretched. Standing back keeps the load on there; the model stands with its ankles about 60 cm from the pulley, and its stack stays about 3 cm clear at the bottom.",
+                why: "The bar comes closer to the low pulley as you hinge, so the stack sinks toward its rest at the bottom, right where the hamstrings are stretched. Standing far enough back keeps the cable loaded through that stretch instead of letting the weight touch down.",
                 mistake: "Standing too close to the pulley, so the stack touches down as you hinge and the hamstrings lose the load at the stretch.",
                 correct: "Hold the bar, then walk back until the stack stays clear of its rest with the bar lowered past your knees."
             )
@@ -34989,7 +34989,7 @@ enum SampleData {
                 id: "knee",
                 title: "Knee Angle",
                 intro: "The knees keep a soft, fixed bend for the whole rep.",
-                why: "A slight, fixed bend keeps the knees from locking back while the hips do the moving: in one study, good mornings done with the knees almost straight loaded the knees toward locking back. As loads get heavier, lifters tend to bend the knees further, which shortens the hamstrings: in another, the knee bend grew from about 17° to 25° as the bar went from half to 90% of the maximum.",
+                why: "A slight, fixed bend keeps the knees from locking back while the hips do the moving. As the weight gets heavier, lifters tend to bend the knees more, which slackens the hamstrings and takes the stretch off them.",
                 mistake: "The knees bending more and more on the way down, the hips sinking toward a squat.",
                 correct: "Unlock the knees a little before the first rep and hold that angle down and up; if they start to bend further, the load is too heavy."
             ),
@@ -34997,7 +34997,7 @@ enum SampleData {
                 id: "depth",
                 title: "Depth",
                 intro: "Each rep lowers until the hamstrings are stretched, then pauses.",
-                why: "The load on the hips is greatest at the bottom, where the trunk is closest to level and the bar furthest out in front of them. The studied good mornings went down to about level with the floor; this model stops about 25° above level, holds for half a second and stands back up.",
+                why: "The load on the hips peaks at the bottom, where the trunk is nearest level and the bar furthest in front of them. Going as deep as your back stays flat and pausing briefly there gives the hamstrings their stretch under load.",
                 mistake: "Stopping after a short nod forward, the chest barely tipping, so the hamstrings never reach a real stretch.",
                 correct: "Lower until you feel a strong stretch in the hamstrings or the back is about to round, pause, then drive the hips forward to stand tall."
             )
@@ -35101,7 +35101,7 @@ enum SampleData {
                 id: "feet",
                 title: "Foot Position",
                 intro: "The feet sit wide and flat on the floor, the knees apart.",
-                why: "A wide, planted stance astride the bench gives the seat a stable base, so the pelvis stays put and only the trunk moves. Here the ankles sit about 60 cm apart, a little in front of the knees.",
+                why: "A wide, planted stance astride the bench gives the seat a stable base, so the pelvis stays put and only the trunk moves. Setting the feet a little ahead of the knees extends that base in front of you as you lean.",
                 mistake: "Sitting with the feet close together or tucked under the bench, so the body rocks on the seat as it leans.",
                 correct: "Straddle the bench near its end with the feet flat, wider than the shoulders and a little in front of the knees."
             ),
@@ -35211,7 +35211,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hip Hinge",
                 intro: "The hips travel well back as the chest lowers under the fixed bar.",
-                why: "With the bar locked on its track, the chest can only come down if the hips move back behind it, and that backward hinge is what stretches the hamstrings. Here the hips travel about 40 cm back while the bar comes down only about 20 cm.",
+                why: "With the bar locked on its track, the chest can only come down if the hips move back behind it, and that backward hinge is what stretches the hamstrings. The hips should travel back much further than the bar travels down.",
                 mistake: "Bending the knees and sinking the hips straight down, so the bar slides down the rails in a squat and the hamstrings barely stretch.",
                 correct: "Push the hips straight back toward the wall behind you and let the chest lower only as the hips go back; stop when the hamstrings are tight."
             ),
@@ -35356,7 +35356,7 @@ enum SampleData {
             correctCue: "Straight line, knees to shoulders",
             mistakeCue: "Hips bend, backside pushes back",
             correctNote: "Held in one straight line, the body lowers as one piece around the knees, so the hamstrings brake the whole fall at the knee.",
-            mistakeNote: "When the hips bend, the body no longer lowers as one piece around the knees, so it is no longer the version tested and trained in the studies."
+            mistakeNote: "When the hips bend, the body stops lowering as one piece around the knees. Part of the drop turns into a hip hinge, so the hamstrings brake less of the fall at the knee, and the lower back may round."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.64, cy: 0.61),
@@ -36679,7 +36679,7 @@ enum SampleData {
                 id: "open",
                 title: "Knee Opening",
                 intro: "The top knee opens like a clamshell and closes slowly.",
-                why: "Opening the knee with the feet together turns the top hip out, work for the gluteus maximus, the back of the gluteus medius and the deep hip rotators beneath them. In EMG studies the gluteus maximus and medius were about equally active in the clam, and in most studies more active than the tensor fasciae latae.",
+                why: "Opening the knee with the feet together turns the top hip outward, the job of the gluteus maximus, the back of the gluteus medius and the deep hip rotators beneath them. You should feel it in the side and back of the hip rather than at the front.",
                 mistake: "Short, quick flicks that barely part the knees.",
                 correct: "Open the top knee as far as you can without the pelvis moving, pause, then close it slowly."
             ),
@@ -36784,7 +36784,7 @@ enum SampleData {
                 id: "body",
                 title: "Body Line",
                 intro: "Heels, hips and head stay in one straight line.",
-                why: "With your feet up, your hands carry more of your weight: at its peak, about 70% of body mass with the feet on a 30 cm box and 74% on a 61 cm box, against 64% on the floor. Held straight and braced, the body passes that load to the chest and arms in one piece.",
+                why: "With your feet up, your hands carry more of your body weight than in a floor push-up, and the higher the feet, the more they carry. Held straight and braced, the body passes that load to the chest and arms in one piece.",
                 mistake: "Letting the hips sag toward the floor as the arms tire.",
                 correct: "Squeeze your glutes and brace your abs so the body lowers and rises as one rigid piece."
             ),
@@ -36800,7 +36800,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Angle",
                 intro: "The elbows travel back at about 45° from the body.",
-                why: "Angled back about 45°, as this model's are (49° at the bottom), the elbows point toward your feet and the chest, front delts and triceps press together. ExRx files this push-up under the upper chest; in one EMG study, push-ups sloping 15° head-down worked the front delts and triceps harder than ones sloping 15° head-up, with mid-chest activity about the same.",
+                why: "With the elbows angled back about 45°, they point toward your feet and the chest, front delts and triceps press together. With the feet raised, the push moves toward the upper chest and front delts, and the triceps work harder than in a floor push-up.",
                 mistake: "Flaring the elbows straight out to the sides as the chest drops.",
                 correct: "Let the elbows bend back at about 45° to the ribs, so they point toward your feet at the bottom."
             ),
@@ -36898,7 +36898,7 @@ enum SampleData {
                 id: "drive",
                 title: "Explosive Push",
                 intro: "Push hard enough for the hands to leave the floor.",
-                why: "Pushing as fast as you can from the bottom makes the push-up a power exercise; in a review of 30 studies, upper-body plyometric training improved medicine-ball throws and strength over controls, though the certainty of that evidence was low or very low. In this model the hands lift about 5 cm.",
+                why: "Pushing as fast as you can from the bottom turns the push-up into a power exercise, training the chest, shoulders and triceps to produce force quickly. Upper-body plyometric training can improve throwing power and pressing strength; the hands only need to clear the floor.",
                 mistake: "Pushing at ordinary speed so the hands never leave the floor.",
                 correct: "From the bottom, drive the floor away as fast as you can until your hands lift off, then bring them straight back down."
             ),
@@ -36906,7 +36906,7 @@ enum SampleData {
                 id: "land",
                 title: "Landing",
                 intro: "Catch yourself on bent elbows and sink.",
-                why: "Landing on soft elbows lets the muscles brake the fall. In a lab study of clap push-ups, lifters met the floor with the elbows bent about 30° and let them bend about 20° more; this model bends from about 160° to about 100° before pressing back up.",
+                why: "Landing on soft elbows lets the muscles, not the joints, absorb the fall. Touching down with the elbows already slightly bent and letting them keep bending as you sink spreads out the impact and loads the muscles for the next push.",
                 mistake: "Landing on straight, locked arms.",
                 correct: "Let your hands meet the floor with the elbows slightly bent, sink under control, then press back to straight arms before the next rep."
             ),
@@ -37011,7 +37011,7 @@ enum SampleData {
                 id: "lean",
                 title: "Trunk Angle",
                 intro: "The chest tips forward as you lower.",
-                why: "Leaning forward lets you sink deep while the shoulder bends back less: in a lab study of bar dips, the lean supplied part of the depth that the shoulder would otherwise have to give. ExRx's chest dip bends at the hips and knees and targets the chest, where its triceps dip keeps the hips straight.",
+                why: "Leaning forward lets you sink deep while the shoulders bend back less, because the lean supplies part of the depth. The forward lean also brings the chest more into the press; an upright trunk shifts the work toward the triceps.",
                 mistake: "Holding the trunk bolt upright all the way down, as in a triceps dip.",
                 correct: "Start leaning well forward, about 35°, with your upper back rounded and chin tucked; let the lean grow to about 50° at the bottom, then come back to the start lean as you press up."
             ),
@@ -37019,7 +37019,7 @@ enum SampleData {
                 id: "depth",
                 title: "Depth",
                 intro: "Lower until the shoulders reach elbow height.",
-                why: "In competition a dip usually counts once the shoulders pass below the elbows; this model goes just past elbow height, the elbows bent to just under 80°. Lifters in lab studies used most, but not all, of their shoulders' backward range at the bottom of a bar dip.",
+                why: "Lowering until the shoulders reach elbow height takes the chest and triceps through a full range, about the depth most dip standards require for a rep. Sinking much deeper pushes the shoulders toward the end of their backward range, where they are most vulnerable.",
                 mistake: "Half reps that turn back with the elbows barely bent.",
                 correct: "Lower until your shoulders are level with your elbows, then press back up until your arms are almost straight."
             ),
@@ -37146,7 +37146,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Top Position",
                 intro: "Finish every rep with your arms almost straight.",
-                why: "Pressing back up to almost straight elbows, about 165° on this model, completes the triceps' share of the dip and gives you a steady top position to reset the lean and the plate before the next rep.",
+                why: "Pressing back up to almost straight elbows completes the triceps' share of the dip and gives you a steady top position to reset the lean and the plate before the next rep.",
                 mistake: "Cutting the press short with the elbows still bent and sinking straight into the next rep.",
                 correct: "Press until your arms are almost straight and your shoulders are down, pause for a moment, then start the next rep."
             ),
@@ -37250,7 +37250,7 @@ enum SampleData {
                 id: "path",
                 title: "Press Path",
                 intro: "Press up and forward along the bar's arc.",
-                why: "The handle climbs at about 50° here, and the arms finish about where they would at the top of a 40° incline bench press; in bench-press EMG studies, inclines of about 30-45° drew more upper-chest and front-delt activity than a flat bench.",
+                why: "The handle travels up and forward on an incline, so the arms finish about where they would at the top of an incline bench press. That angle puts more of the work on the upper chest and front delts than a flat press.",
                 mistake: "Stopping short with the elbows still well bent at the top.",
                 correct: "Drive the handle up and away until your arms are nearly straight in front of your face, then lower it back to your chest."
             ),
@@ -39182,7 +39182,7 @@ enum SampleData {
                 id: "bottom",
                 title: "Bottom of the Rep",
                 intro: "The heels sink below the top of the block on every rep.",
-                why: "Low in the rep the calf muscles are at their longest. In a study of straight-knee calf raises, training only the range below a flat foot grew the gastrocnemius more than training only the range above it. That study measured only the gastrocnemius, so it does not show the same for the soleus; sinking below the block simply adds the stretched part of the range.",
+                why: "Low in the rep the calf muscles are at their longest. Sinking below the block on every rep works them through that stretched part of the range instead of leaving it out.",
                 mistake: "Turning each rep around with the heels level with the block or higher.",
                 correct: "Lower under control until your heels sit below the top of the block and your calves feel a stretch, pause briefly, then rise."
             ),
@@ -39269,7 +39269,7 @@ enum SampleData {
                 id: "bottom",
                 title: "Bottom of the Rep",
                 intro: "The heels sink below the top of the block on every rep.",
-                why: "Low in the rep the calf muscles are at their longest. In a study of straight-knee calf raises, training only the range below a flat foot grew the gastrocnemius more than training only the range above it. That study measured only the gastrocnemius, so it does not show the same for the soleus; sinking below the block simply adds the stretched part of the range.",
+                why: "Low in the rep the calf muscles are at their longest. Sinking below the block on every rep works them through that stretched part of the range instead of leaving it out.",
                 mistake: "Turning each rep around with the heels level with the block or higher.",
                 correct: "Lower under control until your heels sit below the top of the block and your calves feel a stretch, pause briefly, then rise."
             ),
@@ -39356,7 +39356,7 @@ enum SampleData {
                 id: "bottom",
                 title: "Bottom of the Rep",
                 intro: "The left heel sinks below the top of the block on every rep.",
-                why: "Low in the rep the calf muscles are at their longest. In a study of straight-knee calf raises, training only the range below a flat foot grew the gastrocnemius more than training only the range above it. That study measured only the gastrocnemius, so it does not show the same for the soleus; sinking below the block simply adds the stretched part of the range.",
+                why: "Low in the rep the calf muscles are at their longest. Sinking below the block on every rep works them through that stretched part of the range instead of leaving it out.",
                 mistake: "Turning each rep around with the left heel level with the block or higher.",
                 correct: "Lower under control until your left heel sits below the top of the block and the calf feels a stretch, pause briefly, then rise."
             ),
@@ -39443,7 +39443,7 @@ enum SampleData {
                 id: "bottom",
                 title: "Bottom of the Rep",
                 intro: "The heels sink below the top of the block on every rep.",
-                why: "Low in the rep the calf muscles are at their longest. In a study of straight-knee calf raises, training only the range below a flat foot grew the gastrocnemius more than training only the range above it. That study measured only the gastrocnemius, so it does not show the same for the soleus; sinking below the block simply adds the stretched part of the range.",
+                why: "Low in the rep the calf muscles are at their longest. Sinking below the block on every rep works them through that stretched part of the range instead of leaving it out.",
                 mistake: "Turning each rep around with the heels level with the block or higher.",
                 correct: "Lower under control until your heels sit below the top of the block and your calves feel a stretch, pause briefly, then rise."
             ),
@@ -39620,7 +39620,7 @@ enum SampleData {
                 id: "top",
                 title: "Top of the Rep",
                 intro: "Rise until the heels are as high as they go, then pause.",
-                why: "From the bottom of the stretch to the top the heels travel about 17 cm here, from the stretch below the step to full height. ExRx notes the top of a calf raise stays hard because the ankle cannot straighten out the way other joints do, so a short pause there keeps the calves working at that end too.",
+                why: "Rising from the stretch below the step all the way to full height works the calves through their whole range. The top never gets easy, since the ankle cannot lock out like a knee or elbow, so a short pause there keeps the calves working at that end too.",
                 mistake: "Lowering again before the heels reach full height.",
                 correct: "Push through the balls of your feet until the heels are as high as they go, pause for about a second, then lower."
             ),
@@ -39628,7 +39628,7 @@ enum SampleData {
                 id: "knees",
                 title: "Straight Knees",
                 intro: "Keep the knees straight but not braced back, from bottom to top.",
-                why: "The gastrocnemius starts on the thigh bone above the knee, so it lifts best with the knee straight or nearly straight. ExRx keeps the knees straight here, or bends them slightly only in the stretch, and counts the quadriceps as helpers once they bend, so a deeper dip brings the thighs into the rise.",
+                why: "The gastrocnemius starts on the thigh bone above the knee, so it lifts best with the knee straight or nearly straight. Bending the knees in the stretch lets the thighs push you up, taking work away from the calves.",
                 mistake: "Bending the knees in the stretch and straightening them to spring back up.",
                 correct: "Set the knees straight without locking them hard, and move only at the ankles."
             ),
@@ -39708,7 +39708,7 @@ enum SampleData {
                 id: "top",
                 title: "Top of the Rep",
                 intro: "Rise as high as the ankles allow and pause.",
-                why: "With the knees bent the heels still rise about 12 cm here. A short pause at the top, which ExRx notes stays hard because the ankle cannot straighten out, makes each rep finish at the end of the range instead of turning back early.",
+                why: "With the knees bent the heels can still rise high, so take them all the way up. A short pause at the top, where the ankle cannot lock out and the raise stays hard, makes each rep finish at the end of the range instead of turning back early.",
                 mistake: "Turning back down with the heels only halfway up.",
                 correct: "Push through the balls of your feet until the heels are as high as they go with the knees still bent, pause for about a second, then lower."
             ),
@@ -40667,7 +40667,7 @@ enum SampleData {
                 id: "curl",
                 title: "Curl First",
                 intro: "Lift the head and shoulders first, then the rest of the back.",
-                why: "A sit-up begins as a trunk curl, the neck and upper back bending before the lower back lifts and the hips take over. In one EMG study a sit-up done as a trunk curl drew more rectus abdominis and external oblique activity on average, and less from the rectus femoris, a hip flexor, than the Army's hip-led sit-up, which the authors said may arch the lower back.",
+                why: "A sit-up begins as a trunk curl, the neck and upper back bending before the lower back lifts and the hips take over. Leading with the curl keeps the abdominals doing most of the lifting, rather than the hip flexors yanking you up on a stiff, arched back.",
                 mistake: "The lower back arching off the mat as you heave up stiffly from the hips.",
                 correct: "Tuck the chin slightly, peel the shoulder blades off the mat and keep rounding up until you are sitting."
             ),
@@ -40675,7 +40675,7 @@ enum SampleData {
                 id: "feet",
                 title: "Free Feet",
                 intro: "The feet stay flat on the mat with nothing holding them down.",
-                why: "Hooking the feet gives the hip flexors something to pull against. In one EMG study, fixing the feet lowered abdominal activity and raised it in the rectus femoris, a hip flexor, and in another, restrained feet also raised rectus femoris activity.",
+                why: "Hooking the feet gives the hip flexors something to pull against, so they take over the lift and the abdominals do less. With the feet free, the abs have to curl you up.",
                 mistake: "The feet lifting off the mat as you jerk the trunk up.",
                 correct: "Press the heels lightly into the mat and rise at a pace that keeps both feet down; if they lift, curl up more slowly."
             ),
@@ -40939,7 +40939,7 @@ enum SampleData {
                 id: "roller",
                 title: "Ankle Roller",
                 intro: "The roller holds your ankles; the legs stay relaxed.",
-                why: "A plate on the chest makes it more tempting to drag yourself up with the legs. Supported or fixed feet raised hip flexor activity in EMG studies, and in one of them lowered abdominal activity; ExRx adds that strong abs and flexible hip flexors matter before decline sit-ups.",
+                why: "A plate on the chest makes it more tempting to drag yourself up with the legs. Hauling on the roller lets the hip flexors do the lifting and leaves less for the abs. Get comfortable with the Decline Sit-Up without weight before adding a plate.",
                 mistake: "Hauling on the roller with the shins to get the plate moving.",
                 correct: "Hook the fronts of the ankles under the roller, knees bent, and start each rep from the trunk."
             ),
@@ -41114,7 +41114,7 @@ enum SampleData {
                 id: "down",
                 title: "One Leg at a Time",
                 intro: "One leg rises each rep: the left first, then the right. The other stays on the mat.",
-                why: "Rogue lists this single-leg V-up, the other leg kept on the ground, as an easier step toward the full V-up. One leg is lighter work for the abs than two: in an EMG study of leg lifts, lifting both legs needed the abdominals and lifting one did not.",
+                why: "Lifting one leg at a time is an easier step toward the full V-up, since one leg is a lighter load for the abs than two. Keep the other leg straight on the mat so every rep stays one leg at a time, and focus on curling the trunk up to meet the rising leg.",
                 mistake: "The resting leg drifting up off the mat with the working one.",
                 correct: "Keep the resting leg straight with the heel on the mat while the other leg rises, and switch legs every rep."
             ),
@@ -41199,7 +41199,7 @@ enum SampleData {
                 id: "twist",
                 title: "Rotation",
                 intro: "Turn the rib cage until the elbow meets the opposite knee.",
-                why: "The obliques turn the trunk: in a study of twisting curl-ups, the external oblique worked harder when the trunk turned away from its side and the internal oblique when it turned toward it. In an ACE-sponsored study of 13 ab exercises, the bicycle ranked first for the rectus abdominis and second for the obliques.",
+                why: "The obliques turn the trunk, each turn working the external oblique on one side with the internal oblique on the other. Studies rank the bicycle among the best ab exercises for the rectus abdominis and the obliques, but only when the rib cage really turns.",
                 mistake: "Barely turning, the chest still facing the ceiling and the elbow short of the knee.",
                 correct: "Lead with the shoulder: turn until your right elbow reaches your left knee, then turn the other way to meet the right knee."
             ),
@@ -41376,7 +41376,7 @@ enum SampleData {
                 id: "reach",
                 title: "Curl and Reach",
                 intro: "Reach toward the shoes by curling the shoulder blades off the mat.",
-                why: "ACE's version keeps curling until the shoulder blades lift completely off the floor; reaching with the arms alone moves the hands, not the trunk. With the legs held straight up and the hands behind the head, a similar crunch ranked fourth of 13 for the rectus abdominis in an ACE-sponsored study, the traditional crunch eleventh.",
+                why: "The reach should come from curling the trunk until the shoulder blades lift fully off the mat; reaching with the arms alone moves the hands, not the trunk. Studies find that with the legs held straight up, this crunch works the rectus abdominis harder than a standard floor crunch.",
                 mistake: "Reaching with the arms while the shoulder blades rise only halfway.",
                 correct: "Curl your head and shoulder blades up and reach both hands between your feet until your fingertips are a few centimetres from your shoes."
             ),
@@ -41740,7 +41740,7 @@ enum SampleData {
                 id: "twist",
                 title: "Rotation",
                 intro: "Each rep curls down and turns one shoulder across toward the opposite hip.",
-                why: "Turning the trunk to the right uses the left external oblique and the right internal oblique, and turning left the reverse (ExRx). In a study with fine-wire electrodes in twisting curl-ups, the internal oblique worked harder turning toward its own side and the external oblique turning away from it, while the rectus abdominis worked the same either way.",
+                why: "The obliques are the muscles that turn the trunk, so the turn is what sets this lift apart. Curling straight down leaves most of the work to the rectus abdominis; bringing one shoulder across toward the opposite hip adds the obliques' turning work on both sides of the waist.",
                 mistake: "Curling straight down with your shoulders square, no turn.",
                 correct: "As you curl, bring your left elbow down and across toward your right hip; on the next rep, your right elbow toward your left hip."
             ),
@@ -41858,7 +41858,7 @@ enum SampleData {
                 id: "feet",
                 title: "Foot Roller",
                 intro: "Your feet rest under the roller; they don't pull on it.",
-                why: "In a 42-person study of a seated crunch machine used with the feet behind ankle rollers, the rectus femoris worked at 65% of its maximum against 27% in a ball crunch, and the authors pointed to the bent hips and the fixed feet. In a sit-up study, bent and supported legs raised hip flexor activity without generally changing the abdominals'.",
+                why: "With the hips bent and the feet under the roller, the hip flexors can easily join in the crunch. Pulling your feet up against the roller lets the thighs help move the pads; leaving the feet relaxed keeps the abdominals doing the curling.",
                 mistake: "Pulling your feet up hard against the roller to help the curl.",
                 correct: "Tuck your feet under the roller with your heels on the floor and leave them relaxed there."
             ),
@@ -42302,7 +42302,7 @@ enum SampleData {
                 id: "leg",
                 title: "Leg Height",
                 intro: "The leg reaches straight back to about hip height, knee nearly straight.",
-                why: "Raising the leg to the horizontal is how one EMG study set this exercise up, and there the gluteus maximus of that leg was among the most active muscles. NASM's guide extends the arm and leg into one straight line while the spine stays neutral, so the heel stops at about the height of your back.",
+                why: "Raised to about hip height, the leg lines up with your back, so the glute of that leg holds it there while the spine stays neutral. Going higher arches the lower back instead of working the hip.",
                 mistake: "Kicking the heel up above hip height and sagging the lower back.",
                 correct: "Push the heel straight back until the leg is about level with your back, then stop there."
             ),
@@ -42310,7 +42310,7 @@ enum SampleData {
                 id: "arm",
                 title: "Arm Reach",
                 intro: "The hand reaches forward to about shoulder height, in front of your head.",
-                why: "With the arm forward and the opposite leg back, the trunk holds against both at once. One EMG study raised the arm to the horizontal, and in a spine-loading study adding the opposite arm to a leg lift made the exercise harder.",
+                why: "With the arm forward and the opposite leg back, the trunk has to hold against both at once, which makes it harder than lifting the leg alone. Reaching to shoulder height keeps the arm in line with your back without arching it.",
                 mistake: "Swinging the arm up high above the head.",
                 correct: "Reach the hand forward to shoulder height in front of your head, the elbow allowed to bend as here, and keep the shoulder away from your ear."
             ),
@@ -42326,7 +42326,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Tempo",
                 intro: "Lift slowly, hold the top briefly, lower under control.",
-                why: "ExRx asks for the arm and leg to be lifted deliberately with no jerking, and one EMG study took 2 seconds to lift, held for 5 and took 2 to lower. Here each way takes about a second, with a short hold at the top.",
+                why: "Lifting and lowering slowly, with no jerking, makes your trunk hold steady through the whole movement instead of letting momentum carry the arm and leg. A short hold at the top gives the trunk time to settle.",
                 mistake: "Flinging the arm and leg up and dropping them back down.",
                 correct: "Take about a second to lift, hold for a moment at the top, take a second to lower, then switch sides."
             )
@@ -42396,7 +42396,7 @@ enum SampleData {
                 id: "hang",
                 title: "Active Hang",
                 intro: "Start from a still hang on straight arms, then press the bar down toward your hips as the legs rise.",
-                why: "ExRx's note for this lift, which it also calls the strict toes-to-bar, is to try to decrease shoulder flexion as you go, that is, to bring the arms down toward the body, and Invictus coaches the strict version with the lats engaged, pressing down on the bar. Here the arms close on the trunk by about 40 degrees and the body tips back under the bar as the legs come up.",
+                why: "Pressing the straight arms down toward your hips engages the lats and locks the shoulders in place. That gives the legs a firm base to lift from and lets the body tip back under the bar as the feet rise toward it.",
                 mistake: "Hanging loose from the shoulders, the body sinking between them with the shoulders up by the ears.",
                 correct: "Pull the shoulders down away from the ears before the first rep and keep pressing the bar toward your hips as you lift."
             ),
@@ -42404,7 +42404,7 @@ enum SampleData {
                 id: "toes",
                 title: "Toes to the Bar",
                 intro: "Lift both feet at once until your toes reach the bar between your hands.",
-                why: "That is the finish of the rep: CrossFit's standard has both feet meet the bar at the same time, inside the hands, from a full hang, and Catalyst Athletics lifts the straight legs until the toes reach the bar. Here the toes come level with the bar, about 2 cm in front of it, and pause there for about half a second.",
+                why: "That is the finish of the rep: both feet touch the bar together, between the hands, starting from a full hang. A brief pause with the toes at the bar shows you got there under control rather than flicking the feet up.",
                 mistake: "Stopping with the feet around head height, well short of the bar.",
                 correct: "Keep lifting until your toes are at the bar between your hands, pause for a moment, then lower."
             ),
@@ -42420,7 +42420,7 @@ enum SampleData {
                 id: "pelvis",
                 title: "Pelvic Curl",
                 intro: "Curl the pelvis up toward your ribs as the legs rise, so the lower back rounds and carries the feet to the bar.",
-                why: "ExRx describes the lift as a hip raise that finishes with the waist flexing to bring the feet to the bar, and notes the abs only shorten if the waist actually flexes; Catalyst Athletics curls the pelvis up as in a crunch so the lift is not just hip flexion. Here the lower back rounds steadily as the legs rise. In an EMG study of 14 men the hanging straight-leg raise was the hardest of the three exercises tested for the abdominal wall.",
+                why: "Lifting the legs alone is mostly hip flexor work; the abs only shorten when the waist actually bends. Curling the pelvis up as in a crunch adds that bend, rounding the lower back to carry the feet the last part of the way to the bar.",
                 mistake: "Raising the legs with the lower back still arched, so they stall short of the bar.",
                 correct: "Keep rolling the pelvis up and rounding the lower back as the legs rise, until the toes reach the bar."
             ),
@@ -42493,7 +42493,7 @@ enum SampleData {
                 id: "hang",
                 title: "Active Hang",
                 intro: "Hang on straight arms with the shoulders pulled down, and keep the arms straight all set.",
-                why: "The arms only hold you here: the elbows stay straight, at about 177 degrees, through every rep and the shoulders stay square to the bar. Invictus's toes-to-bar guide asks for an active hang from the moment you take the bar, space between the ears and shoulders, which it says gives you tension through the body and control over your swing.",
+                why: "The arms only hold you here: straight elbows and shoulders square to the bar give the knees a fixed base to move from. Drawing the shoulders down from the moment you take the bar creates tension through the body and keeps the swing under control.",
                 mistake: "Hanging loose from the shoulders, the body sinking with the shoulders up by the ears.",
                 correct: "Grip a little wider than your shoulders, draw the shoulders down and keep the arms long while the knees move."
             ),
@@ -42501,7 +42501,7 @@ enum SampleData {
                 id: "side",
                 title: "Knees to the Side",
                 intro: "Draw the knees up and across toward one side: the left on the first rep, the right on the next.",
-                why: "ExRx files the hanging twisting knee raise under the obliques, the muscles that turn and side-bend the waist, and lifting the knees to one side turns and tilts the pelvis under the ribs. Here the knees point about 20 degrees off to the side at the top, the pelvis turned about 20 degrees toward it and that hip about 7 degrees higher, while the shoulders stay square.",
+                why: "The obliques turn and side-bend the waist. Taking the knees up toward one side turns the pelvis that way and lifts that hip toward the ribs while the shoulders stay square, so the obliques do the work.",
                 mistake: "Lifting the knees straight up the middle, which turns it into a plain hanging knee raise.",
                 correct: "Aim the knees toward the outside of one hip as they rise, keep the chest facing forward, then lower and switch sides."
             ),
@@ -42509,7 +42509,7 @@ enum SampleData {
                 id: "height",
                 title: "Height",
                 intro: "Lift until your knees are above your hips, the thighs a little past level.",
-                why: "ExRx raises the knees until the hips are fully flexed or the knees well above the hips, and CrossFit's hanging knee raise is not finished until the knees pass hip height. Here the thighs finish about 18 degrees above level with the knees bent a little past a right angle.",
+                why: "The rep is finished only once the knees pass hip height. The last part of the lift, as the thighs rise past level and the pelvis curls up, is where the abs work hardest; stopping lower leaves most of the work to the hip flexors.",
                 mistake: "Stopping with the thighs still below level.",
                 correct: "Keep the knees bent and lift them past hip height on every rep before you lower."
             ),
@@ -42525,7 +42525,7 @@ enum SampleData {
                 id: "switch",
                 title: "Alternate Sides",
                 intro: "Work the sides in turn: left, then right.",
-                why: "ExRx alternates the sides rep by rep, and equal reps each way give both sides of the waist the same work. The model alternates too: the knees go to the left from 0 to 4 seconds, then to the right.",
+                why: "Lifting to the left and to the right loads the two sides of the waist differently, so alternating every rep and doing the same number each way gives both sides equal work and keeps your stronger side from taking over.",
                 mistake: "Doing every rep to the same side, or drifting toward one side as you tire.",
                 correct: "Alternate every rep and finish each set with the same number of reps to each side."
             )
@@ -42610,7 +42610,7 @@ enum SampleData {
                 id: "top",
                 title: "Top Position",
                 intro: "Raise the legs until they point almost straight up.",
-                why: "ExRx raises the straight legs until the hips are fully flexed, and notes that lying down, legs taken past vertical stop loading the waist and hip flexors. Here they stop about 4 degrees short of vertical and pause for about half a second.",
+                why: "Raising the legs until they point almost straight up takes the hips through their full range. Past vertical, the legs' weight no longer loads the abs and hip flexors, so stop just short of it and hold for a moment.",
                 mistake: "Turning back down with the legs only halfway up.",
                 correct: "Lift until your feet are over your hips, hold for a moment, then lower."
             ),
@@ -42690,7 +42690,7 @@ enum SampleData {
                 id: "back",
                 title: "Lower Back",
                 intro: "Keep your lower back pressed into the mat while the legs kick.",
-                why: "Catalyst Athletics calls flutter kicks a hip flexor exercise that trains the abs to hold the pelvis and back still, the lower back pressed into the floor. In an EMG study of 35 male students moving straight legs alternately up and down while lying flat, the lower part of the rectus abdominis showed more activity than its upper part and the external oblique.",
+                why: "Flutter kicks move the legs with the hip flexors while the abs hold the pelvis and lower back still. With the back pressed into the mat, you should feel the work low in the abs.",
                 mistake: "The lower back arching up off the mat as the legs flutter.",
                 correct: "Brace before you start, keep the back flat and kick a little higher if it starts to lift."
             ),
@@ -42706,7 +42706,7 @@ enum SampleData {
                 id: "range",
                 title: "Kick Size",
                 intro: "Keep the kicks small and low: each heel travels only about 30 cm between its low and high points.",
-                why: "Catalyst Athletics keeps the range short, and ExRx notes that its scissor kick's very short range calls for more isometric-like endurance. Here each leg moves between about 5 and 27 degrees above the floor, the heels between about 14 and 47 cm up.",
+                why: "Short, low kicks keep both legs where their weight pulls hardest on the pelvis, so the abs must hold steady for the whole set. Swinging a leg up toward vertical takes that weight off and gives the abs a rest.",
                 mistake: "Swinging the top leg up high toward vertical on each kick.",
                 correct: "Keep both legs low and move them only a short way up and down, one up as the other goes down."
             ),
@@ -42714,7 +42714,7 @@ enum SampleData {
                 id: "heels",
                 title: "Heels Up",
                 intro: "Neither heel touches the mat until the set is over.",
-                why: "Catalyst Athletics keeps both heels off the floor, and ExRx makes its scissor kick slightly easier by letting alternate heels touch down each rep. Here the lower heel never comes closer than about 14 cm to the mat.",
+                why: "Keeping both heels off the mat means the abs and hip flexors hold the legs up for the whole set. Each time a heel taps down, the floor takes some of the leg's weight and the drill gets easier.",
                 mistake: "Letting the lower heel tap the mat between kicks.",
                 correct: "Keep the lower leg just off the mat on every kick; if you cannot, kick a little higher."
             ),
@@ -42722,7 +42722,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Rhythm",
                 intro: "Kick at an even pace you can keep for the whole set.",
-                why: "Catalyst Athletics programs flutter kicks as sets of 20 to 100 reps or 20 to 60 seconds of work. Here the legs swap about every 0.7 seconds without a pause, each leg kicking up once every 1.3 seconds.",
+                why: "Flutter kicks are an endurance drill, usually done as sets of 20 to 100 reps or 20 to 60 seconds of work. A steady, even rhythm, the legs swapping without a pause, keeps the abs holding for the whole set.",
                 mistake: "Racing the kicks until the legs drift up and the back lifts.",
                 correct: "Pick a pace you can hold, breathe steadily and end the set when the back starts to arch."
             )
@@ -42811,7 +42811,7 @@ enum SampleData {
                 id: "heels",
                 title: "Legs Low, Heels Up",
                 intro: "Keep the legs low but never let a heel touch the mat.",
-                why: "ExRx makes its own up-and-down scissor kick slightly easier by letting alternate heels touch the floor each rep. Here the legs stay between about 9 and 21 degrees above the floor, the lower heel at least about 20 cm up.",
+                why: "Low legs are a long, heavy lever, so the abs and hip flexors work hard to hold them up. Letting a heel rest on the mat as the legs cross hands part of that weight to the floor and makes the kick easier.",
                 mistake: "Letting the lower leg drop to the mat as the legs cross.",
                 correct: "Keep both heels off the mat as they cross, the under leg just below the top one."
             ),
@@ -42819,7 +42819,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Rhythm",
                 intro: "Open and cross at an even pace you can hold for the whole set.",
-                why: "Healthline's scissor kick guide, written for the up-and-down kind, asks for a rhythmic, controlled motion rather than a fast one. The model crosses every 1.3 seconds without stopping, the legs never resting in between.",
+                why: "A rhythmic, controlled pace keeps the abs holding the pelvis still for the whole set. Rushing turns each sweep into a swing, and stopping to rest the legs takes the load off, so keep crossing steadily without pauses.",
                 mistake: "Rushing the crosses until the legs flail and the back lifts.",
                 correct: "Pick a steady pace, breathe and keep every cross as wide and as low as the first."
             )
@@ -42980,7 +42980,7 @@ enum SampleData {
                 id: "hips",
                 title: "Square Hips",
                 intro: "Your hips stay level and facing the mat while a hand is off the floor.",
-                why: "With one hand up, the body rests on three points and tends to roll toward the free side; NASM uses shoulder taps as an anti-rotation drill with the cue keep the hips quiet. In a published shoulder-tap screen, the top score needs the hips not to rotate. Here the body shifts about 2.5 cm over the supporting hand and the hips stay square.",
+                why: "With one hand up, the body rests on three points and wants to roll toward the free side. Resisting that roll is the point of the drill: the hips stay quiet and the body shifts only slightly over the supporting hand.",
                 mistake: "The hip on the tapping side dropping toward the mat as the hand lifts.",
                 correct: "Brace before each tap and shift only slightly over the supporting hand, keeping both hip bones level and pointing at the mat."
             ),
@@ -42988,7 +42988,7 @@ enum SampleData {
                 id: "tap",
                 title: "The Tap",
                 intro: "The right hand taps the left shoulder, then the left hand taps the right, each going back to the floor between taps.",
-                why: "Every tap leaves the body on three points, and NASM notes that removing a point of contact increases the stabilising demand. The screen taps the opposite shoulder and returns to the plank each time.",
+                why: "Every tap leaves the body on three points, and NASM notes that taking away a point of contact raises the stabilising demand. Reaching all the way to the opposite shoulder and back to the floor each time keeps that demand on every rep.",
                 mistake: "Lifting the hand only partway, well short of the shoulder.",
                 correct: "Reach across until your fingers touch the outside of the opposite shoulder, then place the hand back under its own shoulder."
             ),
@@ -43004,7 +43004,7 @@ enum SampleData {
                 id: "feet",
                 title: "Foot Width",
                 intro: "Feet about hip-width apart, toes on the mat.",
-                why: "The feet are two of the three points you stand on while a hand is up, and the further apart they are, the wider that base. The shoulder-tap screen starts with the feet shoulder-width apart and lets you spread them to one and a half shoulder-widths if the taps cannot be done from that first position.",
+                why: "The feet are two of the three points you balance on while a hand is up, and the further apart they are, the wider and steadier that base. That makes a wider stance the simplest way to make the drill easier while you learn it.",
                 mistake: "Pressing the feet together, so the hips rock with every tap.",
                 correct: "Set your feet about hip-width apart as here, and move them wider if your hips start to turn."
             ),
@@ -43012,7 +43012,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Tempo",
                 intro: "Each tap takes under two seconds, with a brief touch at the shoulder.",
-                why: "NASM measures success by staying stable rather than finishing reps quickly, and the screen has the taps done in a controlled manner. Here each hand is up for about a second and a half and rests on the shoulder for about half a second.",
+                why: "NASM measures success by staying stable, not by finishing reps quickly. Slow, controlled taps give you time to shift your weight and settle the hips before each hand lifts.",
                 mistake: "Slapping the shoulders quickly while the hips rock side to side.",
                 correct: "Tap slowly enough that your hips stay still, about one tap every two seconds as here."
             )
@@ -43289,7 +43289,7 @@ enum SampleData {
                 id: "base",
                 title: "Narrow Base",
                 intro: "Your fists almost meet in front of you and your feet touch.",
-                why: "Bringing the hands and the feet together shrinks the base you balance on. The authors of an EMG study of the long-lever plank suggest that a smaller base, with the elbows set closer together, adds to what the longer lever does. Here the fists almost meet in front and the shoes touch.",
+                why: "Bringing the hands and the feet together shrinks the base you balance on, so your trunk has to work harder to stay still. Together with the elbows set forward, it makes this plank much harder than a regular one.",
                 mistake: "Spreading the feet wide to make the hold easier to balance.",
                 correct: "Make fists, bring them together in front of your face and set your feet together before you lift."
             ),
@@ -43549,7 +43549,7 @@ enum SampleData {
                 id: "top",
                 title: "Top Leg",
                 intro: "Your top leg rests on the bench at the ankle, knee straight, and holds you up.",
-                why: "With the bench at the ankle the top leg is a long lever, and its adductors hold the pelvis up by pressing that leg down into the bench. In a modelling study driven by EMG, the long-lever Copenhagen exercise put every adductor muscle it modelled, adductor longus, magnus and gracilis among them, in the top tier of eight adductor exercises.",
+                why: "With the bench at the ankle the top leg is a long lever, and its adductors hold the pelvis up by pressing that leg down into the bench. This long-lever hold is one of the hardest exercises you can do for the adductors.",
                 mistake: "Resting the knee, not the ankle, on the bench when you mean to do the full hold, which shortens the lever and makes it the easier, short-lever version.",
                 correct: "Rest the inside of your top foot and ankle on the bench, knee straight, and press down into it. If this is too hard, use the bench under the knee until you can hold it."
             ),
@@ -44528,7 +44528,7 @@ enum SampleData {
                 id: "range",
                 title: "Range",
                 intro: "Your shoulders travel from in front of your elbows to behind them, about 20 cm.",
-                why: "The further your shoulders slide behind your elbows, the longer the lever the abs hold. In an EMG study of a body saw done with the feet in suspension straps, starting from bent knees and sawing back as far as possible, the rectus abdominis reached about 103% of an isometric maximum and the serratus anterior almost 140%.",
+                why: "The further your shoulders slide behind your elbows, the longer the lever your abs have to hold. In one study, a full-range body saw worked the abs and the serratus anterior very hard, so the reach back is where the exercise does its work.",
                 mistake: "Rocking only a few centimetres, the shoulders staying over the elbows.",
                 correct: "Push back until your shoulders are well behind your elbows, as far as the line holds, then pull forward until they are in front again, moving from the shoulders, not the feet."
             ),
@@ -44552,7 +44552,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Tempo",
                 intro: "Each slide takes about a second and a half, with a short pause at each end.",
-                why: "In the EMG study the body saw was timed to a metronome: two seconds out, a one-second hold, two seconds back. A slow saw keeps the abs holding the line as the lever changes, rather than momentum carrying you through it.",
+                why: "A slow saw keeps your abs holding the line as the lever lengthens and shortens, instead of momentum carrying you through the ends. A short pause at each end makes you own the hardest position before you change direction.",
                 mistake: "Sawing fast and bouncing at each end.",
                 correct: "Slide back over a slow count, pause, slide forward, pause, and stop the set when your hips start to sag."
             )
@@ -44619,7 +44619,7 @@ enum SampleData {
                 id: "knees",
                 title: "Knee Height",
                 intro: "Your knees hover a few centimetres off the mat, under your hips.",
-                why: "With the knees off the floor your thighs and abs hold the body up instead of the knees resting on it. In an EMG study of the bear crawl the knees were raised only slightly off the ground, and raising the hips into the air or dropping the knees to the ground counted as lost form.",
+                why: "With the knees off the floor, your thighs and abs hold the body up instead of the knees resting on the mat. Keep them hovering just off the mat: pushing the hips into the air or dropping the knees to the floor both take the work off the muscles you are training.",
                 mistake: "Pushing the hips up into the air, knees high off the mat.",
                 correct: "Lift your knees just clear of the mat, about 4 cm here, keep them under your hips and hold that height while you crawl."
             ),
@@ -44643,7 +44643,7 @@ enum SampleData {
                 id: "pair",
                 title: "Opposite Limbs",
                 intro: "The right hand and left foot step together, then the left hand and right foot.",
-                why: "Stepping a hand and the opposite foot together leaves the other diagonal pair holding you, and it is how ACE, Calgary's coaching and Prehab Guys set the crawl up. The EMG study stepped the right hand and left foot, then the left hand and right foot.",
+                why: "Stepping a hand and the opposite foot together leaves the other diagonal pair holding you, so your weight stays balanced across the body. It also trains the trunk to stay steady as support switches from one diagonal to the other.",
                 mistake: "Stepping with the hand and foot of the same side.",
                 correct: "Move the right hand and left foot a short step together, set them down, then the left hand and right foot; crawl back the same way."
             ),
@@ -44651,7 +44651,7 @@ enum SampleData {
                 id: "hands",
                 title: "Hand Position",
                 intro: "Your hands land about under your shoulders with the arms nearly straight; each step here is about 14 cm.",
-                why: "Stacked under the shoulders, the arms take your weight straight down, so the shoulders and trunk can hold still while a hand lifts. The EMG study set the wrists under the shoulders, set each stepping hand down half a hand's length from the other, and counted bent elbows as lost form.",
+                why: "Stacked under the shoulders, the arms take your weight straight down, so the shoulders and trunk can hold still while a hand lifts. Don't let the elbows bend as you step, and keep the steps short: each hand lands only a little ahead of the other.",
                 mistake: "Reaching the hands far out in front of the shoulders.",
                 correct: "Set each hand under its shoulder with the arm long, take short, slow steps, and push the floor away."
             )
@@ -44688,7 +44688,7 @@ enum SampleData {
             correctCue: "Knees hover, back flat",
             mistakeCue: "Hips pushed up, knees high",
             correctNote: "With the knees just off the mat and the back flat, the shoulders, abs and thighs hold the body still while opposite limbs step.",
-            mistakeNote: "Pushing the hips up shortens the lever and takes work off the abs; the EMG study counted hips raised into the air as lost form."
+            mistakeNote: "Pushing the hips up shortens the lever and takes the work off your abs, turning the crawl into an easy walk on all fours. Lower your hips until your back is flat and your knees hover just off the mat."
         ),
         glows: [
             .init(DS.activation.opacity(0.50), rx: 0.08, ry: 0.03, cx: 0.52, cy: 0.43),
@@ -44737,7 +44737,7 @@ enum SampleData {
                 id: "hips",
                 title: "Level Hips",
                 intro: "Keep both hip bones level while one foot is off the floor.",
-                why: "Each lift leaves you on one leg for well over a second with both dumbbells. The hip muscles of the standing leg, the gluteus medius among them, keep the other side of the pelvis from sagging; in one farmer's walk study, group averages for the gluteus medius ran from about 26 to 47 percent of its maximum.",
+                why: "Each knee lift leaves you on one leg with both dumbbells for over a second. The hip muscles of the standing leg, the gluteus medius above all, have to work to stop the other side of the pelvis from dropping.",
                 mistake: "The hip on the lifted side dropping as the foot leaves the floor.",
                 correct: "Shift your weight onto the standing foot as the other one lifts, and keep the two sides of your pelvis at the same height until it is back down."
             ),
@@ -44944,7 +44944,7 @@ enum SampleData {
                 id: "depth",
                 title: "Squat Depth",
                 intro: "Sit down until the thighs are close to level with the floor.",
-                why: "ExRx takes the thruster's squat to the thighs just past level, and CrossFit's standard to the hip crease below the top of the knees. The lifter here stops about 15 degrees above level. Stopping much higher turns the squat into a short dip, so the legs drive the bar through less of their range.",
+                why: "Sitting down until the thighs reach about level gives the legs a long, powerful drive to pop the bar off the shoulders. Stopping well above that turns the squat into a short dip, so the legs push the bar through less of their range.",
                 mistake: "Stopping well short of level and driving up from a shallow squat.",
                 correct: "Sit down between your heels until your thighs are about level with the floor, deeper if your heels stay down and your back stays flat, then drive straight back up."
             ),
@@ -45041,7 +45041,7 @@ enum SampleData {
                 id: "depth",
                 title: "Squat Depth",
                 intro: "Squat until the tops of the thighs are nearly level with the floor.",
-                why: "ExRx takes the dumbbell thruster down until the thighs are just past level, and CrossFit's thruster standard takes the hip crease below the top of the knees; the lifter here stops about 20 degrees above level. A much shallower squat leaves the legs only a short dip to drive the dumbbells from.",
+                why: "A squat to about level lets the legs build speed over a long drive, and that speed is what carries the dumbbells off the shoulders. A much shallower squat leaves only a short dip to drive from, so the arms end up pressing more of the weight.",
                 mistake: "Cutting the squat short and standing up from well above level.",
                 correct: "Sit between your heels until your thighs are close to level, lower if your heels stay down and your chest stays up, then drive straight back up."
             ),
@@ -45142,7 +45142,7 @@ enum SampleData {
                 id: "depth",
                 title: "Squat Depth",
                 intro: "Lower until the thighs are close to level, the bells still in the rack.",
-                why: "ExRx takes a kettlebell front squat down until the thighs are just past level, and CrossFit's thruster standard puts the hip crease below the top of the knees. The lifter here stops about 20 degrees short of level; a much shallower squat gives the legs only a short dip to launch the bells from.",
+                why: "How deep you squat sets how much drive the legs can build. Sitting down until the thighs are close to level gives them a long push to launch the bells; a much shallower squat leaves only a short dip to drive from.",
                 mistake: "Bobbing only part of the way down and standing straight back up.",
                 correct: "Sit down between your feet until your thighs are close to level, deeper if your heels stay flat and the bells stay in the rack, then drive straight back up."
             ),
@@ -45353,7 +45353,7 @@ enum SampleData {
                 id: "top",
                 title: "Top of the Rep",
                 intro: "Straighten the left knee almost fully, then hold for a moment.",
-                why: "StrengthLog extends the knee fully without overextending it, and in Escamilla and colleagues' study quadriceps activity in the knee extension peaked near full extension, so stopping short skips the range where the quadriceps worked hardest. Here the knee reaches about 168 degrees and holds there for about three-quarters of a second.",
+                why: "The quadriceps work hardest as the knee nears full extension, so stopping short skips their most productive range. Straightening almost fully, without snapping the knee back, and pausing there keeps them loaded at the top.",
                 mistake: "Kicking the leg halfway up and dropping it straight back down, the knee never close to straight.",
                 correct: "Lift the roller until your left knee is almost straight, pause there, then lower it under control to where you started."
             ),
@@ -45369,7 +45369,7 @@ enum SampleData {
                 id: "rest",
                 title: "Resting Leg",
                 intro: "Only the left leg lifts; the right knee stays bent behind the roller.",
-                why: "Here the right knee stays at about 87 degrees for the whole set while the left leg does the work. The roller spans both shins, so a push from the right leg would take load off the left. In a 12-week study of women, one-leg knee extensions raised one-leg isometric strength more than two-leg ones did, though gains in the one-rep max and muscle thickness were similar.",
+                why: "The roller spans both shins, so any push from the resting leg takes load off the working one. Keeping the right knee bent at about a right angle and relaxed makes the left quadriceps lift everything, which is the point of training one leg at a time.",
                 mistake: "Pushing the roller up with both legs as the set gets hard.",
                 correct: "Tuck your right foot behind the roller, let that leg relax, and lift with the left only. Switch sides for the next set."
             )
@@ -45423,7 +45423,7 @@ enum SampleData {
                 id: "rack",
                 title: "Cross-Arm Rack",
                 intro: "The bar rests across the front of the shoulders, arms crossed, upper arms about level.",
-                why: "ExRx's barbell front squat crosses the arms with the hands on top of the bar and the upper arms parallel to the floor, and StrengthLog lists the crossed-forearm grip as one way to hold it. With the elbows up the shoulders form a shelf under the bar; with them down, the shelf tips and the bar rolls toward the hands. Here the upper arms stay within about 12 degrees of level all the way down.",
+                why: "With the elbows up at shoulder height, the fronts of the shoulders form a shelf the bar sits on. Let the elbows sink and the shelf tips, so the bar rolls toward your hands and drags your chest forward.",
                 mistake: "The elbows sinking as you squat, the bar rolling off the shoulders onto the hands.",
                 correct: "Set the bar on the front of your shoulders by the collarbones, cross your arms with each hand on top of the bar, and keep your elbows up at shoulder height through the whole rep."
             ),
@@ -45431,7 +45431,7 @@ enum SampleData {
                 id: "torso",
                 title: "Torso Angle",
                 intro: "The chest stays up and the trunk stays close to upright.",
-                why: "With the load in front, the front squat keeps the trunk more upright than the back squat: in Yavuz and colleagues' study the back squat had more trunk lean. ExRx keeps the back straight. The bar's track is fixed, so folding forward can only push the hips back behind it. Here the trunk leans about 18 degrees at the bottom.",
+                why: "With the load in front, the front squat keeps your trunk more upright than a back squat does. The Smith bar runs on a fixed track, so folding forward can only push your hips back behind it. A slight lean at the bottom is normal.",
                 mistake: "Folding forward at the bottom, the hips shooting back behind the bar.",
                 correct: "Brace before each rep, keep your chest up and your elbows high, and sit straight down between your heels."
             ),
@@ -45439,7 +45439,7 @@ enum SampleData {
                 id: "depth",
                 title: "Squat Depth",
                 intro: "Sit down until the thighs are about level with the floor.",
-                why: "ExRx takes the Smith front squat down until the thighs are just past parallel. Here the hip joints stop about 2 cm above the knees, thighs about level, and hold there for a moment before standing. Stopping well above that cuts the range the quadriceps work through.",
+                why: "Sitting down until the thighs are about level with the floor takes the quadriceps through a full range. A short pause there takes out the bounce, so you stand up with your legs, not momentum. Stopping well above level cuts the range the quads work through.",
                 mistake: "Stopping high, the knees bent only to about a right angle and the thighs still sloping down.",
                 correct: "Sit down until your thighs are about level with the floor, pause, then drive straight back up."
             ),
@@ -45447,7 +45447,7 @@ enum SampleData {
                 id: "knees",
                 title: "Knee Track",
                 intro: "The knees travel forward and slightly out, over the toes.",
-                why: "ExRx keeps the knees pointing the same way as the feet. Here the toes turn out about 15 degrees and at the bottom the knees sit about 4 cm outside the ankles, in line with the feet, and about 16 cm ahead of the ankles.",
+                why: "Knees that point the same way as the feet keep the knee joint lined up with the load. With the toes turned slightly out, the knees travel forward and a little outward over them; letting them drift inside the feet twists the knee under the bar.",
                 mistake: "The knees caving in toward each other at the bottom or as you stand up.",
                 correct: "Turn your toes slightly out and keep your knees pointing over them all the way down and back up."
             ),
@@ -45455,7 +45455,7 @@ enum SampleData {
                 id: "stance",
                 title: "Foot Position",
                 intro: "The feet sit under the bar, a little wider than the shoulders.",
-                why: "ExRx sets the feet under the bar for the Smith front squat. Because the bar can only move straight up and down, where the feet sit decides the load: in Abelbeck's model of a fixed-path squat, moving the feet forward lowered the load at the knee and raised it at the hip. Here the bar runs straight over the ankles.",
+                why: "The Smith bar only moves straight up and down, so where your feet sit decides how the work is shared. With the feet under the bar, the knees and hips share it; walking the feet forward eases the knees and shifts more of the load onto the hips.",
                 mistake: "Walking the feet well out in front of the bar, so you lean back against it and more of the work shifts to the hips.",
                 correct: "Before you unrack, set your feet under the bar about shoulder-width apart, toes turned slightly out, the bar over your ankles."
             )
@@ -45527,7 +45527,7 @@ enum SampleData {
                 id: "knee",
                 title: "Knee Tracking",
                 intro: "The left knee points the same way as the left foot.",
-                why: "ExRx has the stepping knee point the same way as the foot in the lateral step-up. Here the left knee points straight ahead like the foot and travels well forward, past the toes, at the bottom, with the shin tipped about 53 degrees; it stays on the line from the hip to the foot, never bowing in toward the other leg.",
+                why: "A knee that points the same way as the foot keeps the load running through the middle of the joint. The knee may travel past the toes at the bottom; what matters is that it stays in line with the hip and foot and never caves in.",
                 mistake: "The left knee caving in toward the midline as you push up.",
                 correct: "Keep your left knee pointing the same way as your toes from the bottom to the top."
             ),
@@ -45535,7 +45535,7 @@ enum SampleData {
                 id: "hips",
                 title: "Pelvis",
                 intro: "The hips stay level as the right foot leaves the floor.",
-                why: "Here the pelvis stays level for the whole rep while it travels about 33 cm sideways over the box. ExRx lists the gluteus medius among the step-up's stabilisers, and in a barbell lateral step-up study it was the most active of the hip muscles measured.",
+                why: "As your hips shift sideways over the box, the gluteus medius of the box leg holds the pelvis level while the other foot leaves the floor. Letting the free hip drop takes that work away and lets the box knee drift in.",
                 mistake: "The right hip dropping as the right foot lifts off the floor.",
                 correct: "Keep both hip bones level as you rise and lower, and step the right foot up and down slowly."
             ),
@@ -45543,7 +45543,7 @@ enum SampleData {
                 id: "torso",
                 title: "Torso Position",
                 intro: "Stay nearly upright, leaning a little forward at the bottom.",
-                why: "ExRx keeps the torso upright in the lateral step-up. Here the trunk leans about 18 degrees at the bottom and straightens to about 6 at the top, with the dumbbells hanging at the sides; folding further forward turns the step into a hip hinge.",
+                why: "A slight forward lean at the bottom helps you get your weight over the box foot, and you straighten up as you rise. With the dumbbells hanging at your sides, staying nearly upright keeps the work in the legs; folding further forward turns the step into a hip hinge.",
                 mistake: "Folding the chest down toward the box knee to heave yourself up.",
                 correct: "Keep your chest up and the dumbbells hanging straight down by your sides as you rise and lower."
             )
@@ -45615,7 +45615,7 @@ enum SampleData {
                 id: "bar",
                 title: "Bar Position",
                 intro: "The bar sits across the upper back, hands wide, elbows bent.",
-                why: "Here the bar rests across the upper back at the base of the neck, with the hands about 78 cm apart, well outside the shoulders. Held there, it stays over the body as the trunk tips forward at the start; a bar slipping down the back pulls the chest forward to balance it.",
+                why: "Resting across the upper back at the base of the neck, with a grip well outside the shoulders, the bar stays over your body as you lean forward to start. If it slides down your back, it pulls your chest forward to balance it.",
                 mistake: "The bar sliding down the back during the set, the chest tipping forward under it.",
                 correct: "Set the bar across your upper back at the base of your neck, take a wide grip well outside your shoulders and pull it into place."
             ),
@@ -45631,7 +45631,7 @@ enum SampleData {
                 id: "foot",
                 title: "Box Foot",
                 intro: "The whole front foot sits flat on the box.",
-                why: "With the whole foot down the heel takes part of the push and the knee can stay over the foot. Here the left heel stays flat on the box from the bottom, where the knee is bent about 92 degrees, to the top.",
+                why: "With the whole foot down, the heel shares the push and the knee can stay over the foot. Keep the heel flat on the box from the bottom, where the knee is bent to about a right angle, all the way to the top.",
                 mistake: "Only the ball of the foot on the box, the heel lifting as you drive up.",
                 correct: "Place your whole left foot flat on the box, toes pointing ahead, far enough in that the heel is well on."
             ),
@@ -45647,7 +45647,7 @@ enum SampleData {
                 id: "knee",
                 title: "Knee Tracking",
                 intro: "The front knee stays over the front foot.",
-                why: "ExRx has the leading knee point the same way as the foot. Here the left knee stays over the foot from the start to the top, about 6 cm ahead of the ankle and behind the toes at the bottom.",
+                why: "A front knee that points the same way as the foot keeps the load through the middle of the joint. At the bottom the knee sits a little ahead of the ankle but behind the toes; keep it over the foot all the way to the top.",
                 mistake: "The front knee caving in toward the other leg as you push up.",
                 correct: "Keep your left knee pointing over your middle toes all the way up and down."
             ),
@@ -45655,7 +45655,7 @@ enum SampleData {
                 id: "torso",
                 title: "Torso Angle",
                 intro: "Lean forward from the hips at the start, then stand tall on the box.",
-                why: "ExRx keeps the torso fairly upright, angled slightly forward with heavier loads, and notes that a stance further from the box works the gluteus maximus more. Here the trunk starts about 27 degrees forward and is upright at the top.",
+                why: "Leaning forward from the hips at the start puts your weight over the front foot, and heavier loads need a little more lean. Finish standing tall on the box. Standing a bit further back from the box also brings more of the gluteus maximus into the lift.",
                 mistake: "Rounding the back and dropping the chest over the knee to heave the bar up.",
                 correct: "Hinge forward from the hips with your back flat and chest up, then drive up until you stand tall over the box."
             )
@@ -45710,7 +45710,7 @@ enum SampleData {
                 id: "squeeze",
                 title: "Knee Squeeze",
                 intro: "Bring the knees together until the pads meet.",
-                why: "ExRx and StrengthLog both bring the legs together, pushing the pads toward each other; the adductor longus, adductor magnus and gracilis all pull the thigh in toward the midline. Here the knees close from about 78 cm apart to 25 cm, the pads meeting, and pause there for about half a second.",
+                why: "The adductor longus, adductor magnus and gracilis all pull the thigh in toward the midline. Squeezing until the pads meet and holding a brief pause makes them work through the end of the range instead of letting the weight pull your knees back open.",
                 mistake: "Stopping with the knees still well apart, the pads never meeting.",
                 correct: "Squeeze your knees in until the pads touch, hold for a moment, then let them open."
             ),
@@ -45726,7 +45726,7 @@ enum SampleData {
                 id: "stretch",
                 title: "Start Width",
                 intro: "Set the start where you feel a slight stretch, no wider.",
-                why: "ExRx sets the legs apart only until a slight stretch is felt before the first rep. Here each thigh starts about 42 degrees out from straight ahead. Forcing the knees wider than that puts the inner thigh at the end of its range under load.",
+                why: "Starting from a slight stretch gives the adductors a full, useful range to work through. Forcing the knees wider than that loads the inner thigh at the very end of its range, where it is easiest to strain.",
                 mistake: "Setting the levers so wide, or letting the knees open so far, that the inner thighs are pulled hard at the start of each rep.",
                 correct: "Set the lever so your knees start comfortably apart with a slight stretch, and stop each opening there."
             ),
@@ -45734,7 +45734,7 @@ enum SampleData {
                 id: "back",
                 title: "Back Position",
                 intro: "Sit back against the pad.",
-                why: "ExRx lies back in the machine before the first rep. Here the back rests on the pad, reclined about 8 degrees, the whole set, so the legs move and the trunk stays still.",
+                why: "Resting your back on the pad, slightly reclined, for the whole set keeps the trunk still so only the legs move. The squeeze then stays in the inner thighs, with no rocking of the body to help.",
                 mistake: "Slumping forward off the back pad, the lower back rounding as the knees close.",
                 correct: "Sit all the way back with your back flat on the pad and keep it there through every rep."
             ),
@@ -45801,8 +45801,8 @@ enum SampleData {
             TechniqueCue(
                 id: "feet",
                 title: "Foot Placement",
-                intro: "Both feet stay flat on the plate, wherever the stance picker sets them.",
-                why: "The picker moves the feet higher, lower, wider or narrower on the plate; the sled's path and timing stay the same. ExRx notes that feet set slightly high emphasise the gluteus maximus and slightly low the quadriceps, as a leg press study in women found, while in free-squat studies stance width changed glute and inner-thigh activity but did not single out any part of the quadriceps. In every stance here the heels stay down from top to bottom.",
+                intro: "Both feet stay flat on the plate, whichever stance you use.",
+                why: "Moving your feet on the plate shifts the work a little: a higher stance brings in more glutes, a lower one more quads, and a wider one more inner thigh. Whatever the stance, keep your heels down from top to bottom so you push through the whole foot.",
                 mistake: "The heels peeling off the plate at the bottom, the weight rolling onto the toes.",
                 correct: "Set your feet where the stance asks, toes turned out a little, and push through the heel and the ball of each foot on every rep."
             ),
@@ -45810,7 +45810,7 @@ enum SampleData {
                 id: "pad",
                 title: "Back Support",
                 intro: "The back, hips and shoulders stay against the pads from top to bottom.",
-                why: "The pad carries the trunk: in one study the hack squat drew less trunk muscle activity than the back squat at the same relative loads. Here the back rests on the pad, tipped about 17 degrees back, while the hips travel about 44 cm down. ExRx warns that if the pelvis starts to pull away from the back pad near the bottom, you should stop the sled just short of that point.",
+                why: "The pad supports your trunk, so the hack squat asks less of the back than a back squat and leaves the work to the legs. That only holds while your pelvis stays on the pad; if it starts to lift away near the bottom, stop just above that point.",
                 mistake: "The hips peeling off the pad at the bottom and the lower back rounding to chase more depth.",
                 correct: "Press your back and hips into the pad and stop the descent before your pelvis starts to tuck away from it."
             ),
@@ -45818,7 +45818,7 @@ enum SampleData {
                 id: "knees",
                 title: "Knee Tracking",
                 intro: "The knees bend out in line with the toes.",
-                why: "ExRx keeps the knees pointing the same way as the feet. The sled guides the trunk, not the knees, so this is still up to you. Here, at the bottom, each knee sits about 2 to 5 cm outside its ankle, in line with the slightly turned-out toes, in every stance.",
+                why: "The sled guides your trunk, not your knees, so keeping them in line is up to you. Knees that point the same way as the feet keep the joint loaded straight; in every stance, each knee should sit slightly outside its ankle at the bottom, over the turned-out toes.",
                 mistake: "The knees caving in toward each other at the bottom or as you drive up.",
                 correct: "Keep each knee pointing over your middle toes on the way down and on the way up."
             ),
@@ -45826,7 +45826,7 @@ enum SampleData {
                 id: "depth",
                 title: "Depth",
                 intro: "Lower until the thighs are about level with the floor or a little below.",
-                why: "StrengthLog squats as deep as you can with good form. Here the knees bend to between about 70 and 80 degrees, depending on the stance, the hips finish level with the knees or up to about 9 cm below them, and the bottom is held for about half a second. In one squat analysis the knee extensors worked closer to their maximum the deeper the squat, and full-range training has built more lower-body muscle than partial reps.",
+                why: "Go as deep as you can with good form: the knee extensors work harder the deeper you squat, and studies show full-range training builds more leg muscle than partial reps. Depth changes a little with the stance, but aim for thighs level or just below.",
                 mistake: "Stopping high, the knees bent only to about a right angle and the thighs still sloping down.",
                 correct: "Lower under control until your thighs are about level or a little lower, pause briefly, then drive the sled back up."
             ),
@@ -45834,7 +45834,7 @@ enum SampleData {
                 id: "top",
                 title: "Top of the Rep",
                 intro: "Stand up to a soft knee, not a hard lockout.",
-                why: "Here the knees open to about 150 to 155 degrees at the top, 25 to 30 degrees short of straight, and stay bent through the top hold, so the thighs keep holding the sled instead of resting it on locked joints. ExRx re-engages the support lever with the legs extended before you step off.",
+                why: "Stopping with the knees still slightly bent keeps your thighs holding the sled instead of resting it on locked joints. The muscles stay under tension from rep to rep, and the knees are never snapped straight under load.",
                 mistake: "Snapping the knees straight at the top of every rep.",
                 correct: "Drive up until your knees are still bent about 25 to 30 degrees, stop there, then start the next rep."
             )
@@ -45890,8 +45890,8 @@ enum SampleData {
             TechniqueCue(
                 id: "feet",
                 title: "Feet on the Plate",
-                intro: "The whole foot stays flat on the angled plate, wherever the stance picker sets it.",
-                why: "The picker moves the feet higher, lower, wider or narrower on the plate, and how deep the knees bend changes with them: here the bottom knee angle runs from about 65 degrees with the feet high to about 87 with them low. StrengthLog pushes back up through the heels, and on the hack squat ExRx keeps the heels down, pushing with both heel and forefoot. In every stance here the heels stay flat on the plate, which rises toward the toes.",
+                intro: "The whole foot stays flat on the angled plate, whichever stance you use.",
+                why: "Moving your feet higher, lower, wider or narrower on the plate changes how far your knees bend at the bottom. In every stance, keep your heels flat on the plate, which slopes up toward the toes, and push back up through the heel and forefoot together.",
                 mistake: "The heels lifting off the plate at the bottom, the weight rolling onto the toes.",
                 correct: "Set your feet where the stance asks, toes turned out a little, and push through your whole foot from the bottom to the top."
             ),
@@ -45899,7 +45899,7 @@ enum SampleData {
                 id: "pad",
                 title: "Back on the Pad",
                 intro: "The back and hips stay against the pad as it swings.",
-                why: "The pad carries the trunk along the machine's arc: here it tips you from about 20 degrees back at the top to between 30 and 38 at the bottom while the hips travel down and toward the plate. StrengthLog keeps the back pressed against the backrest throughout, and a supported hack squat has drawn less trunk muscle activity than a back squat. If the hips run out of room at the bottom, the pelvis tucks off the pad and the lower back rounds.",
+                why: "The pad carries your trunk along the machine's arc, tilting you further back as your hips travel down toward the plate, so the back works less and the legs work more. If the hips run out of room, the pelvis tucks off the pad and the lower back rounds.",
                 mistake: "The hips and lower back peeling off the pad at the bottom.",
                 correct: "Press your back and hips into the pad from the top to the bottom, and stop before your pelvis starts to tuck."
             ),
@@ -45907,7 +45907,7 @@ enum SampleData {
                 id: "knees",
                 title: "Knee Tracking",
                 intro: "The knees bend out in line with the toes.",
-                why: "The carriage guides the trunk, not the knees. ExRx keeps the knees pointing the same way as the feet on the hack squat, and the same holds here: at the bottom each knee finishes about 3 to 6 cm outside its ankle, in line with the slightly turned-out toes, in every stance.",
+                why: "The machine guides your trunk, not your knees, so lining them up is up to you. In every stance, keep each knee pointing the same way as the foot, finishing slightly outside the ankle at the bottom, over the turned-out toes.",
                 mistake: "The knees caving in toward each other as you drive up from the bottom.",
                 correct: "Keep each knee pointing over your middle toes on the way down and on the way up."
             ),
@@ -45915,7 +45915,7 @@ enum SampleData {
                 id: "depth",
                 title: "Depth",
                 intro: "Ride the pad down until the thighs are level with the floor or lower.",
-                why: "StrengthLog lowers the pendulum squat until the thighs are parallel to the floor or slightly lower. In the standard stance here the knees bend to about 67 degrees and the hips finish about 13 cm below the knees; with the feet low the thighs only reach about level. In one squat analysis the knee extensors worked closer to their maximum the deeper the squat.",
+                why: "The deep part of the arc is where the quadriceps work hardest, so aim for thighs parallel to the floor or a little lower. Most stances let you go below level; with the feet low on the plate, you may only reach level before your back starts to leave the pad.",
                 mistake: "Stopping partway down the arc, the hips still high and the knees bent only to about a right angle.",
                 correct: "Ride the pad down until your thighs are at least level with the floor, as far as your back stays on the pad."
             ),
@@ -45980,7 +45980,7 @@ enum SampleData {
                 id: "torso",
                 title: "Torso Angle",
                 intro: "Lean forward from the hips and hold the trunk still.",
-                why: "Here the trunk leans about 32 degrees forward, hands on the cable tower, and does not move while the leg travels. ExRx lists the erector spinae, obliques and quadratus lumborum as stabilisers for the standing cable hip extension: they hold the trunk still while the hip moves. Arching the lower back at the end of the kick lifts the leg higher, but that extra range comes from the spine, not the hip.",
+                why: "Leaning forward from the hips and holding the trunk still lets the hip do all the moving, while the back and core muscles keep the spine steady. If the lower back arches at the end of the kick, the leg rises higher, but the extra height comes from the spine, not the hip.",
                 mistake: "Arching the lower back to swing the leg higher behind you.",
                 correct: "Hold the tower, lean forward about 30 degrees from your hips and keep your back still from the first rep to the last."
             ),
@@ -45988,7 +45988,7 @@ enum SampleData {
                 id: "kick",
                 title: "Range of Motion",
                 intro: "Start with the knee up in front, then push the foot back until the leg is nearly straight.",
-                why: "ExRx attaches the cuff to a low pulley and pulls the cable back by extending the hip. Here each rep starts with the left knee up in front, the hip bent to about 80 degrees, and ends with the hip open to about 170 degrees and the knee nearly straight, the thigh about 36 degrees behind vertical. The leg pauses there for about a third of a second, then returns over about 1.4 seconds, as long as the push back took.",
+                why: "Moving from the knee up in front to the leg nearly straight behind you takes the hip through its whole range, so the glutes work both long and short. Pausing briefly at the back and returning as slowly as you pushed keeps the cable from yanking the leg forward.",
                 mistake: "Short kicks, the foot stopping under the hips with the knee still bent.",
                 correct: "Push your foot back until your leg is nearly straight behind you, pause, then bring the knee back up in front under control."
             ),
@@ -46004,7 +46004,7 @@ enum SampleData {
                 id: "stance",
                 title: "Standing Leg",
                 intro: "The right foot stands flat on the plate with a slightly bent knee.",
-                why: "Here the right foot stays flat on a low plate, about 6.5 cm high, with the knee bent to about 160 degrees for the whole set, and the left foot swings past it without touching the floor. The standing leg only holds you steady; the work is in the moving hip.",
+                why: "Standing on a low plate gives the working foot room to swing past without touching the floor. A slightly bent standing knee keeps you steady, so the work stays in the moving hip.",
                 mistake: "Locking the standing knee straight as the working leg kicks back.",
                 correct: "Stand on the plate with your whole right foot, keep a slight bend in that knee and let it hold still."
             ),
@@ -46563,7 +46563,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Hip Hinge",
                 intro: "The hips push back and the chest tips forward while the rope travels back between the thighs.",
-                why: "The pull-through is a hip hinge: the bend comes at the hips, which stretches the glutes and hamstrings against the cable. Here the trunk tips about 75 degrees forward while the knees go only from about 16 to 25 degrees of bend and the shins stay upright. Leading with the knees instead turns the rep into a squat.",
+                why: "The pull-through is a hip hinge: the bend comes at the hips, which stretches the glutes and hamstrings against the cable. The trunk tips well forward while the knees stay only slightly bent and the shins stay upright. Leading with the knees instead turns the rep into a squat.",
                 mistake: "Bending the knees and sinking the hips straight down as the rope goes back, so the rep becomes a squat.",
                 correct: "Push the hips straight back with soft knees until you feel the hamstrings stretch, pause briefly, then drive the hips forward to stand."
             ),
@@ -46587,7 +46587,7 @@ enum SampleData {
                 id: "arms",
                 title: "Arm Position",
                 intro: "The arms stay long and only hold the rope; the hips move it.",
-                why: "The arms just connect the rope to the body, so the glutes and hamstrings should do the pulling. Nearly straight arms also let the rope run back between the legs without rubbing. Here the elbows stay close to straight all rep, about 156 degrees standing and 142 at the bottom.",
+                why: "The arms just connect the rope to the body, so the glutes and hamstrings should do the pulling. Keeping the elbows nearly straight through the whole rep also lets the rope run back between the legs without rubbing.",
                 mistake: "Bending the elbows to row the rope up toward the stomach as you stand, the arms finishing the rep.",
                 correct: "Hold the rope ends with the palms facing each other and the elbows almost straight, and let the hips, not the arms, bring the rope forward."
             ),
@@ -46595,7 +46595,7 @@ enum SampleData {
                 id: "stance",
                 title: "Set-Up",
                 intro: "Stand facing away from a low pulley, feet about shoulder-width, far enough out that the stack stays lifted.",
-                why: "Walking out until the stack lifts keeps the load on for the whole rep; one coach calls not stepping far enough forward the biggest set-up mistake. Here the lifter stands about a metre in front of the pulley, so even at the bottom of the hinge the lifted plates stay about 3 cm above the rest of the stack. The feet need room for the rope to pass between them.",
+                why: "Walking out until the stack lifts keeps the load on for the whole rep, even at the bottom of the hinge; not stepping far enough forward is a common set-up mistake. The feet also need room between them for the rope to pass.",
                 mistake: "Standing so close to the pulley that the weight settles back onto the stack at the bottom of each hinge.",
                 correct: "Hold the rope between your legs, walk forward until the stack lifts, and set your feet about shoulder-width with the toes turned out a little."
             )
@@ -46665,7 +46665,7 @@ enum SampleData {
                 id: "lift",
                 title: "Range of Motion",
                 intro: "The legs rise from hanging straight down until they are level with the body or a little above.",
-                why: "Raising the legs against the strap is hip extension, the glutes' main job, and the rep is complete once the legs reach the line of the body. Here they travel about 97 degrees, from hanging straight down to about 3 degrees above level, and pause there for just under half a second.",
+                why: "Raising the legs against the strap is hip extension, the glutes' main job, and the rep is complete once the legs reach the line of the body. Lifting from hanging straight down to level or just above, with a brief squeeze at the top, works the glutes through their full range.",
                 mistake: "Stopping halfway, the legs swinging up only to about 45 degrees below level.",
                 correct: "Raise the legs until they line up with your body or a touch higher, squeeze the glutes for a moment, then lower."
             ),
@@ -46681,7 +46681,7 @@ enum SampleData {
                 id: "knees",
                 title: "Leg Position",
                 intro: "The legs stay long, the knees almost straight, and move together as one.",
-                why: "Straight legs keep the hamstrings pulling alongside the glutes: in maximal hip-extension tests, the hamstrings' share was highest with the knee fully straight. Here the knees hold about 176 degrees all rep.",
+                why: "Straight legs keep the hamstrings pulling alongside the glutes, because they help extend the hip most when the knee is straight. A slight softness at the knee is fine, but bending it further takes the hamstrings out of the lift.",
                 mistake: "Bending the knees as the legs come up, the heels curling toward the glutes.",
                 correct: "Keep the knees soft but long and the feet level with each other, and lift through the heels."
             ),
@@ -46689,7 +46689,7 @@ enum SampleData {
                 id: "lower",
                 title: "Lowering Control",
                 intro: "The legs come back down under control and hang still before the next lift.",
-                why: "The glutes and hamstrings keep working as they lower the legs: in a study of a pendulum reverse hyper like this one, worked at two seconds up and two seconds down, both stayed active on the way down. Here the lowering takes about 1.6 seconds against 1.4 up, and the legs hang for about half a second. Some coaches let the legs swing under the bench and use the rebound; this version does not.",
+                why: "The glutes and hamstrings keep working as they lower the legs, so a slow descent trains them too. Taking about as long to lower as to lift, then letting the legs hang still for a moment, stops the machine's pendulum from swinging them forward into a bounce.",
                 mistake: "Dropping the legs and letting the pendulum swing them forward under the bench to bounce into the next rep.",
                 correct: "Lower the legs under control until they hang straight down, pause, then start the next lift without a swing."
             ),
@@ -46761,7 +46761,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Hip Hinge",
                 intro: "The trunk folds forward at the hips while the back keeps its shape, from a straight line to about 27 degrees below level.",
-                why: "Bending at the hips with a still spine puts the work on the hip extensors: in a lab study on a 45-degree bench, the hip-led version loaded the hips and lower back more than curling down through the spine. That study set the bottom of each rep just before the spine started to bend; here the hips fold about 72 degrees.",
+                why: "Bending at the hips with a still spine puts the work on the hip extensors: a lab study on a 45-degree bench found the hip-led version loaded the hips more than curling down through the spine. Fold only as far as your back keeps its shape.",
                 mistake: "Rounding the back over the pad at the bottom to go lower, the head dropping toward the floor.",
                 correct: "Fold at the hips with your chest open and your head in line, and stop just before the back would start to round."
             ),
@@ -46777,7 +46777,7 @@ enum SampleData {
                 id: "pad",
                 title: "Pad Height",
                 intro: "The pad carries the upper thighs, its top edge a little below the hip crease.",
-                why: "With the hips clear of the pad they can fold over its edge, so the bend comes at the hips. Set too high, the pad presses into the belly and blocks the fold, and the back curls over it instead. Here its top edge sits about 9 cm below the hip joints.",
+                why: "With the hips clear of the pad they can fold over its edge, so the bend comes at the hips. Set too high, the pad presses into the belly and blocks the fold, and the back curls over it instead, so set its top edge just below your hip crease.",
                 mistake: "Setting the pad up at the hip bones or the belly, so the hips cannot fold and the back curls over the pad.",
                 correct: "Adjust the pad so its top edge sits just below your hip crease, your thighs resting along it."
             ),
@@ -46851,7 +46851,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Hip Hinge",
                 intro: "The trunk folds forward at the hips while the back keeps its shape, from a straight line to about 20 degrees below level.",
-                why: "Bending at the hips with a still spine puts the work on the hip extensors: in a lab study on a 45-degree bench, the hip-led version loaded the hips and lower back more than curling down through the spine. In another study, heavy 45-degree extensions done with a straight back drew more activity from the biceps femoris, one of the hamstrings, than Romanian deadlifts did, and more glute activity in the top half of the rep. Here the hips fold about 65 degrees.",
+                why: "Bending at the hips with a still spine puts the work on the glutes and hamstrings. Studies show that heavy 45-degree extensions done with a flat back work the hamstrings harder than the Romanian Deadlift, and the glutes more in the top half of the rep.",
                 mistake: "Rounding the back over the pad at the bottom to go lower, the head dropping toward the floor.",
                 correct: "Fold at the hips with your chest open and your head in line, and stop just before the back would start to round."
             ),
@@ -46867,7 +46867,7 @@ enum SampleData {
                 id: "pad",
                 title: "Pad Height",
                 intro: "The pad carries the upper thighs, its top edge a little below the hip crease.",
-                why: "With the hips clear of the pad they can fold over its edge, so the bend comes at the hips. Set too high, the pad presses into the belly and blocks the fold, and the back curls over it instead. Here its top edge sits about 9 cm below the hip joints.",
+                why: "With the hips clear of the pad they can fold over its edge, so the bend comes at the hips. Set too high, the pad presses into the belly and blocks the fold, and the back curls over it instead, so set its top edge just below your hip crease.",
                 mistake: "Setting the pad up at the hip bones or the belly, so the hips cannot fold and the back curls over the pad.",
                 correct: "Adjust the pad so its top edge sits just below your hip crease, your thighs resting along it."
             ),
@@ -46952,7 +46952,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Hip Hinge",
                 intro: "As the bell swings back, the hips push back and the chest tips forward while the knees bend only a little and the shins stay upright.",
-                why: "The swing is a hip hinge, not a squat: the glutes and hamstrings stretch as the hips fold, then snap them straight. In one study a hinge-style swing drew more hamstring activity than a squat-style swing. The model folds its hips to about 90 degrees but bends its knees only about 27.",
+                why: "The swing is a hip hinge, not a squat: the glutes and hamstrings stretch as the hips fold back, then snap the hips straight to throw the bell. A deep fold at the hips with only a slight knee bend keeps that stretch on the back of the legs.",
                 mistake: "Squatting the bell down: the knees bend further and push forward, the hips sink and the chest stays more upright.",
                 correct: "Push the hips straight back, keep the shins close to vertical and the knees soft, and let the chest tip forward over the bell."
             ),
@@ -46968,7 +46968,7 @@ enum SampleData {
                 id: "back",
                 title: "Flat Back",
                 intro: "The back keeps its standing shape at the bottom and the top, long from the hips to the head, the neck in line.",
-                why: "The swing loads the spine quickly: in a lab study, swings with a 16 kg bell put about 3,200 newtons of compression on the lower back while the back muscles worked at about half their maximum. A long, braced spine leaves the bending to the hips.",
+                why: "Each swing loads the lower back quickly and heavily, and the back muscles work hard just to hold the spine still. Keeping the spine long and braced leaves the bending to the hips, which is where the swing's power comes from.",
                 mistake: "Rounding the back and dropping the head as the bell swings between the legs.",
                 correct: "Brace before every swing, keep the spine long and the neck in line, and fold only at the hips."
             ),
@@ -46976,7 +46976,7 @@ enum SampleData {
                 id: "drive",
                 title: "Hip Drive",
                 intro: "The hips snap straight and the bell floats up to about chest height on straight arms.",
-                why: "The hips, not the shoulders, throw the bell. In the model they are straight by the time the bell passes hip height, and it keeps rising on its own for about another third of a second. Lifting it with the arms turns the top of each swing into a front raise and takes the work away from the hips.",
+                why: "The hips, not the shoulders, throw the bell: they are already straight as it passes hip height, and it floats on up by itself. Lifting it with the arms turns the top of each swing into a front raise and takes the work from the hips.",
                 mistake: "Raising the bell with the arms and shoulders, like a front raise, up toward head height.",
                 correct: "Drive the hips forward hard, keep the elbows straight and let the arms only guide the bell as it floats to about chest height."
             ),
@@ -47073,7 +47073,7 @@ enum SampleData {
                 id: "torso",
                 title: "Chest Up",
                 intro: "The chest stays up and the back flat, the trunk leaning only about halfway forward at the bottom.",
-                why: "The wide stance is what lets the trunk stay this upright: sumo pullers keep the trunk more vertical than conventional ones, and the model leans about 49 degrees at the bottom. A flat, braced back passes the drive from the legs to the bell; a chest that drops to meet the bell rounds the back.",
+                why: "The wide stance is what lets the trunk stay this upright: sumo pullers keep the trunk more vertical than conventional pullers. A flat, braced back passes the drive from the legs to the bell; a chest that drops to meet the bell rounds the back.",
                 mistake: "The chest dropping toward the bell and the back rounding at the bottom.",
                 correct: "Pull the chest up and the shoulders back, engage the lats, and sink the hips between the heels rather than folding over."
             ),
@@ -47166,7 +47166,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Hip Hinge",
                 intro: "The hips push back first, and the knees bend only as far as it takes to reach the handle with a flat back.",
-                why: "Sending the hips back loads the glutes and hamstrings, the main movers here. In the model the hips fold to about 50 degrees while the knees bend to about 104, the shins staying close to upright; sinking the hips straight down instead turns the rep into a squat.",
+                why: "Sending the hips back loads the glutes and hamstrings, the main movers here. The hips do the folding and the knees bend only as much as you need, the shins staying close to upright; sinking the hips straight down instead turns the rep into a squat.",
                 mistake: "Squatting the bell up: the hips sink straight down, the knees push forward and the chest stays more upright.",
                 correct: "Push the hips back as you lower, let the knees bend only as much as you need, and keep the shins nearly vertical."
             ),
@@ -47281,15 +47281,15 @@ enum SampleData {
                 id: "upperarm",
                 title: "Upper Arm Position",
                 intro: "The backs of your upper arms rest on the floor beside your ribs and stay there; only the forearms move.",
-                why: "Lying down pins the upper arms for you, so the elbow is the only joint that can work. In the model their angle changes by less than four degrees across both reps while the elbows close from 133 degrees to 62. The moment an elbow drags back along the floor, the shoulder starts lifting the bar and the curl gets shorter.",
+                why: "Lying down pins the upper arms for you, so the elbow is the only joint that can work. Keep the upper arms still as the elbows bend and straighten: the moment an elbow drags back along the floor, the shoulder starts lifting the bar and the curl gets shorter.",
                 mistake: "Sliding the elbows back toward the shoulders to help the bar up.",
                 correct: "Set the backs of your arms on the floor, elbows a little wider than your ribs, and keep them still for the whole set."
             ),
             TechniqueCue(
                 id: "stretch",
                 title: "Bottom of the Curl",
-                intro: "At the bottom the elbows open to about 133 degrees, with the bar down by your hips and the cable still pulling.",
-                why: "The cable keeps tension at the bottom, where a dumbbell would rest. Training the elbow flexors over a full range beat a partial range in a ten-week study: the 1RM rose 25.7% against 16.0%, and muscle thickness rose in both groups.",
+                intro: "At the bottom the arms are long, elbows still a little bent, with the bar down by your hips and the cable still pulling.",
+                why: "The cable keeps tension at the bottom, where a dumbbell would rest. Research shows that curling through the full range builds more strength than partial reps, so let the arms go long on every rep.",
                 mistake: "Stopping the bar halfway down and bouncing straight back up.",
                 correct: "Let the bar travel until your arms are long and you feel the biceps stretch, pause, then curl without a bounce."
             ),
@@ -47297,7 +47297,7 @@ enum SampleData {
                 id: "curl",
                 title: "Top of the Curl",
                 intro: "The bar travels about 30 cm along your body and finishes near your chest, hands a little wider than your shoulders.",
-                why: "Because the arms are flat, the bar moves along the body rather than up over it: in the model the hands come 30 cm closer to the shoulders but rise only 9 cm. That keeps the pull in line with the forearms all the way to the top, where the elbows close to about 62 degrees.",
+                why: "Because the arms are flat, the bar moves along the body rather than up over it. That keeps the cable pulling in line with the forearms all the way to the top, so the biceps stay loaded as the elbows close fully.",
                 mistake: "Pulling the bar up toward the face, so the forearms point at the ceiling and the work stops.",
                 correct: "Curl the bar along your body to your chest, squeeze, and lower it on the same line."
             ),
@@ -47305,15 +47305,15 @@ enum SampleData {
                 id: "trunk",
                 title: "Trunk",
                 intro: "The ribs, back and hips stay down on the floor the whole set.",
-                why: "Lying down is what takes the body out of the lift: with the back flat there is nothing to swing. In the model the pelvis and trunk hold one position frame to frame. Pushing the hips up turns the curl into a pull from the whole body and lets the cable win at the bottom.",
+                why: "Lying down takes the body out of the lift: with the back flat on the floor, there is nothing to swing. Pushing the hips up turns the curl into a whole-body pull and takes the work off the biceps.",
                 mistake: "Bridging the hips off the floor to drag the bar up on the last reps.",
                 correct: "Keep your ribs down and your hips on the floor; if you cannot, the weight is too heavy."
             ),
             TechniqueCue(
                 id: "base",
                 title: "Base",
-                intro: "Knees bent to about 82 degrees with the feet flat on the floor, hip-width apart.",
-                why: "The cable pulls you toward the machine, so the bent legs and flat feet are what hold your position. The model keeps its ankle joints 0.30 m apart and its knees at one angle for both reps.",
+                intro: "The knees stay bent and both feet stay flat on the floor, hip-width apart.",
+                why: "The cable pulls you toward the machine, so the bent legs and flat feet are what hold your position. Keeping the feet planted in one place and the knees at the same bend on every rep stops your body sliding along the floor.",
                 mistake: "Legs straight out or feet lifting, so the cable drags the body along the floor.",
                 correct: "Plant both feet flat, hip-width apart, with the knees bent, and press them down as you curl."
             )
@@ -47377,7 +47377,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Position",
                 intro: "The upper arms hang straight down at your sides and stay there.",
-                why: "In the model the upper arms sit within two degrees of straight down for the whole clip while the elbows close from 150 degrees to 49. Keeping them there means the bar is lifted by the elbow, not by the shoulder swinging it forward.",
+                why: "Keeping the upper arms pointing straight down means the bar is lifted by the elbow alone, not by the shoulder swinging it forward. Once the elbows drift ahead of the body, the front of the shoulder takes over the top of the curl and the forearms do less.",
                 mistake: "The elbows drifting forward as the bar rises, so the shoulders finish the curl.",
                 correct: "Tuck your upper arms against your ribs and keep them pointing at the floor through the whole rep."
             ),
@@ -47385,15 +47385,15 @@ enum SampleData {
                 id: "range",
                 title: "Range of Motion",
                 intro: "At the bottom the arms open to about 150 degrees, the bar in front of your thighs.",
-                why: "A full range built more strength than a partial one in a ten-week study of elbow flexion training (1RM up 25.7% against 16.0%). The cable keeps pulling at the bottom, so there is no resting point to stop at.",
+                why: "Research on elbow flexion training shows a full range builds more strength than a partial one. The cable keeps pulling at the bottom, so there is no resting point to stop at, and every rep should start from long arms.",
                 mistake: "Cutting the bottom half off and pumping the bar over a short range.",
                 correct: "Lower the bar until your arms are long and the cable is still tight, then curl it the whole way back up."
             ),
             TechniqueCue(
                 id: "swing",
                 title: "Body Position",
-                intro: "The trunk stays upright and still: the bar rises about 39 cm, from the thighs to about navel height.",
-                why: "The model stands at zero degrees of lean, its pelvis at one height for both reps. With a pronated grip the weight feels heavy early, which is where people start rocking the body to get the bar moving; the rock gives the lift to the hips instead of the forearms.",
+                intro: "The trunk stays upright and still while the bar rises from the thighs to about navel height.",
+                why: "A tall, still trunk leaves the forearms and elbows to move the bar. With an overhand grip the weight feels heavy right from the start, which is where people begin rocking the body to get the bar moving; that rock hands the lift to the hips.",
                 mistake: "Leaning back and throwing the hips forward to start the bar.",
                 correct: "Stand tall with your ribs down, brace the trunk, and start each rep from a dead stop."
             ),
@@ -47401,7 +47401,7 @@ enum SampleData {
                 id: "stance",
                 title: "Stance",
                 intro: "The feet stay flat, about hip-width apart, with the knees soft.",
-                why: "The cable pulls forward and down, so a square, still stance is what you curl against. The model keeps its ankle joints 0.30 m apart and its knees at about 175 degrees the whole set.",
+                why: "The cable pulls forward and down, so a square, still stance is what you curl against. Feet planted hip-width apart with the knees just soft give you a fixed base, so the pull cannot tip you toward the machine.",
                 mistake: "Shifting the weight onto the toes or stepping under the pull as the set gets hard.",
                 correct: "Set your feet hip-width apart, weight through the middle of each foot, and leave them there."
             )
@@ -47459,7 +47459,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Lockout",
                 intro: "Each rep finishes with the elbows straight, the arms in line with your trunk and the bar out past your head.",
-                why: "The model opens its elbows from 65 degrees to 172 and holds the lockout for about half a second before letting the bar back. Finishing the elbow is what loads the triceps hardest in this position, and the hold is what stops the set turning into a swing.",
+                why: "Straightening the elbow fully is what loads the triceps hardest in this position, so finish every rep with straight arms. Holding the lockout for a moment before letting the bar return stops the set turning into a swing.",
                 mistake: "Stopping short of straight and rushing back into the next rep.",
                 correct: "Push until your elbows are straight and your arms line up with your back, hold for a beat, then lower under control."
             ),
@@ -47467,7 +47467,7 @@ enum SampleData {
                 id: "upperarm",
                 title: "Upper Arm Position",
                 intro: "The upper arms sit beside your head, angled slightly up, and do not move.",
-                why: "With the trunk hinged over, the arms end up overhead relative to the shoulder, which is the position that stretches the long head of the triceps. Over twelve weeks, cable elbow extensions trained with the arm overhead grew the triceps more than the same work with the arm by the side: the long head 28.5% against 19.6%, the whole muscle 19.9% against 13.9%, even though the overhead arm lifted 34-39% less. In the model the upper arms hold +15 degrees above horizontal without changing by a degree.",
+                why: "With the trunk hinged over, your arms sit overhead relative to the shoulder, the position that stretches the long head of the triceps. In a 12-week study, overhead cable extensions grew the triceps, the long head most of all, more than the same work with the arms by the sides, even with less weight.",
                 mistake: "The upper arms dropping or swinging back as the bar comes down.",
                 correct: "Lock your upper arms beside your ears and let only the forearms travel."
             ),
@@ -47475,7 +47475,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Elbow Path",
                 intro: "The elbows stay about shoulder-width and point forward, past your head.",
-                why: "The bar runs 39 cm forward and back on one line in the model, hands 0.35-0.38 m apart. Elbows that splay out move the forearms off that line and hand part of the job to the shoulders.",
+                why: "Elbows that point forward keep the bar moving back and forth on one straight line, the forearms in line with the cable. Elbows that splay out pull the forearms off that line and hand part of the job to the shoulders.",
                 mistake: "Elbows flaring out to the sides as the bar is pressed away.",
                 correct: "Keep your elbows pointing forward and about shoulder-width, close enough that your arms brush past your head."
             ),
@@ -47483,7 +47483,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Hinge and Back",
                 intro: "The trunk is hinged to about horizontal, the back flat and still.",
-                why: "This is what puts the arms overhead without reaching overhead: the model keeps its trunk 82 degrees from vertical and its pelvis at one height, so the arms are the only thing that moves. A back that rounds or drops under the pull takes the stretch out of the position.",
+                why: "Hinging the trunk to about horizontal is what puts the arms overhead without reaching overhead. With the back flat and the hips still, the arms are the only thing that moves; a back that rounds or drops under the pull takes the stretch out of the position.",
                 mistake: "Rounding the back or letting the chest sink toward the floor as the cable pulls.",
                 correct: "Hinge from the hips with a flat back until your trunk is about parallel to the floor, brace, and hold it for the set."
             ),
@@ -47491,7 +47491,7 @@ enum SampleData {
                 id: "stance",
                 title: "Stance",
                 intro: "One foot forward and one back, about 0.7 m apart, the front knee soft.",
-                why: "The cable pulls you toward the machine, and a split stance resists that pull far better than a square one. The model keeps its lead knee at 136 degrees and its rear leg nearly straight for the whole clip.",
+                why: "The cable pulls you toward the machine, and a split stance resists that pull far better than a square one. With the front knee slightly bent and the back leg nearly straight, you stay planted while only the arms move.",
                 mistake: "Feet level and close together, so the body is tugged forward each rep.",
                 correct: "Stagger your feet about a stride apart, bend the front knee a little and keep your weight even between them."
             )
@@ -47546,7 +47546,7 @@ enum SampleData {
                 id: "drive",
                 title: "Hip Drive",
                 intro: "The working foot presses the plate back and up until the leg is straight behind you.",
-                why: "This is a hip extension with a long lever: in the model the plate travels 0.62 m back and 0.06 m up while the hip opens from 107 degrees to 158. Driving through the whole foot keeps the push behind you, which is where the glute works, rather than down, which only shortens the stroke.",
+                why: "This is a hip extension with a long lever: the plate travels back behind you as the hip opens from deeply bent to nearly straight. Driving through the whole foot keeps the push going backward, where the glute works, rather than down, which only shortens the stroke.",
                 mistake: "Short, fast half-presses that never straighten the hip.",
                 correct: "Push the plate away until your working leg is straight behind you, pause, and let it come back under control."
             ),
@@ -47562,7 +47562,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hips and Pelvis",
                 intro: "The hips stay square against the pad: only the working leg moves.",
-                why: "The pelvis in the model sits at one height for both reps, so every degree of the 51-degree hip swing comes from the hip joint. Twisting or hitching that side up adds range the glute is not producing and loads the lower back instead.",
+                why: "Keeping the pelvis level means all the movement comes from the hip joint, where the glute does the work. Twisting or hitching the working side up adds range the glute is not producing and loads the lower back instead.",
                 mistake: "Rolling the working hip up and open at the top to get more range.",
                 correct: "Keep both hip bones facing the pad and square to each other for the whole set."
             ),
@@ -47570,7 +47570,7 @@ enum SampleData {
                 id: "trunk",
                 title: "Trunk",
                 intro: "Chest and forearms stay on the pads, ribs down, the back flat.",
-                why: "The pads are what let the hip work alone: the model holds its trunk at 40 degrees and never changes it. Pushing the chest up or arching the lower back turns the press into a swing from the spine.",
+                why: "The pads hold your trunk still so the hip can work alone. Pushing the chest up or arching the lower back turns the press into a swing from the spine.",
                 mistake: "Arching the back and pushing the chest off the pad on the last reps.",
                 correct: "Rest your chest and forearms on the pads, keep your ribs down and your neck in line with your back."
             ),
@@ -47578,7 +47578,7 @@ enum SampleData {
                 id: "support",
                 title: "Standing Leg",
                 intro: "The standing foot stays flat with the knee soft.",
-                why: "The other leg holds the whole body against the press. In the model it stays at about 163 degrees - nearly straight but not locked - with the foot flat on the floor the whole set.",
+                why: "The standing leg holds your whole body steady against the press. Keep it nearly straight but not locked, with the foot flat on the floor, so it gives you a stable base without straining the knee.",
                 mistake: "Locking the standing knee or rising onto that toe each rep.",
                 correct: "Keep a small bend in the standing knee and the foot flat, with your weight through the middle of it."
             )
@@ -47634,7 +47634,7 @@ enum SampleData {
                 id: "pad",
                 title: "Pad and Drive",
                 intro: "The pad rides the back of your leg just above the knee; push it back and up in one arc.",
-                why: "In the model the roller sits 0.16 m from the knee joint and travels a 0.46 m arc - 0.40 m back and 0.23 m up - while the hip opens from 112 degrees to 161. Pressing against the same spot the whole way keeps the lever consistent and the drive coming from the hip.",
+                why: "Keeping the pad on the same spot just above the knee gives the hip a steady lever, so the drive comes from the glute opening the hip. Kicking with the foot shifts the work to the knee and lets the pad slip.",
                 mistake: "Kicking with the foot and letting the pad slide down the leg.",
                 correct: "Set the pad just above the knee and push it back and up with the whole leg, not the foot."
             ),
@@ -47642,7 +47642,7 @@ enum SampleData {
                 id: "finish",
                 title: "Finish Position",
                 intro: "The rep ends with the thigh in line with your trunk, not past it.",
-                why: "The model stops at 161 degrees of hip extension - the leg straight behind, no further. Past that point the hip has run out of range and the extra movement comes from the lower back.",
+                why: "Once the leg is straight behind you, the hip has reached the end of its range. Any extra height past that point comes from the lower back arching, not from the glute.",
                 mistake: "Swinging the leg as high as it will go and letting the back arch to allow it.",
                 correct: "Drive until your working thigh lines up with your body, hold for a beat, then lower it under control."
             ),
@@ -47650,7 +47650,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hips and Pelvis",
                 intro: "Both hips stay level and square against the pad.",
-                why: "The pelvis in the model never changes height or angle: it is the fixed point the leg swings from. Letting the working hip ride up turns a glute exercise into a side bend.",
+                why: "Your pelvis should be the fixed point the leg moves from. If the working hip rides up or twists open, the lower back and sides of the trunk take over, and a glute exercise turns into a side bend.",
                 mistake: "The working hip lifting and rotating open as the leg goes back.",
                 correct: "Keep your hip bones level and pressed to the pad, and stop the rep where they start to move."
             ),
@@ -47658,7 +47658,7 @@ enum SampleData {
                 id: "trunk",
                 title: "Trunk",
                 intro: "Chest and forearms rest on the pads with the ribs down and the spine long.",
-                why: "The machine holds your trunk so the hip can work alone - the model keeps its trunk at 42 degrees for the whole clip. A spine that arches or rounds under the pull adds range the glute did not make.",
+                why: "The machine supports your trunk so the hip can work on its own. Keep your trunk at the same angle for the whole set; a spine that arches or rounds under the load adds range the glute did not make.",
                 mistake: "Rounding the upper back or arching the lower back to help the leg through.",
                 correct: "Settle your chest on the pad, keep your ribs down and your neck in line with your spine."
             ),
@@ -47666,7 +47666,7 @@ enum SampleData {
                 id: "support",
                 title: "Standing Leg",
                 intro: "The standing foot stays flat on the floor with the knee soft.",
-                why: "It carries the body while the other hip works: in the model it holds about 156 degrees, nearly straight but not locked, and never leaves the floor.",
+                why: "It carries your body while the other hip works. A slightly bent knee and a flat foot give you a steady base; locking the knee or rising onto the toe shifts your hips and takes work away from the working side.",
                 mistake: "Pushing up onto that toe to help the working leg finish.",
                 correct: "Keep the standing knee slightly bent and the whole foot down for every rep."
             )
@@ -47723,7 +47723,7 @@ enum SampleData {
                 id: "drive",
                 title: "Hip Drive",
                 intro: "The hips lift until your thighs and trunk make one line, then hold for a beat.",
-                why: "In the model the pelvis rises 0.142 m and the hips open from 149 degrees to 172, with a short hold at the top of each rep. Finishing the hip - rather than stopping halfway or bouncing - is what makes the glute do the work.",
+                why: "Finishing the hip, with a short hold at the top of each rep, is what makes the glutes do the work. Stopping halfway or bouncing off the floor leaves the hardest part of the rep undone.",
                 mistake: "Bouncing the hips off the floor and never reaching a straight line.",
                 correct: "Squeeze your glutes to lift the hips until your body is straight from knees to shoulders, hold, then lower under control."
             ),
@@ -47731,7 +47731,7 @@ enum SampleData {
                 id: "band",
                 title: "Band and Knees",
                 intro: "The band sits above your knees, and you press the knees out against it the whole set.",
-                why: "Pushing out gives the glutes something to work against as well as the lift: in a study of ten men, adding a band raised upper gluteus maximus activity in both the barbell glute bridge and the hip thrust. In the model the knees press 0.024 m further apart as the hips come up.",
+                why: "Pushing out against the band gives the glutes a second job on top of lifting the hips, and a small study found that adding a band above the knees raised upper glute activity in both the glute bridge and the hip thrust. Keep the knees pressing out as the hips rise.",
                 mistake: "Letting the band pull the knees together as the hips rise.",
                 correct: "Press your knees out into the band from the first rep and hold that pressure at the top."
             ),
@@ -47739,15 +47739,15 @@ enum SampleData {
                 id: "ribs",
                 title: "Trunk",
                 intro: "The ribs stay down and the lower back keeps its normal shape at the top.",
-                why: "The lift should look like hip extension, not a back arch. The model's trunk tips with the pelvis and nothing else; bridging higher by arching only puts the range into the lumbar spine.",
+                why: "The lift should be hip extension, not a back arch. Your trunk moves as one piece with your pelvis; bridging higher by arching only puts the extra range into the lower back.",
                 mistake: "Arching the lower back to push the hips higher than the hips can go.",
                 correct: "Tuck your ribs down, brace lightly, and stop the lift where your hips stop moving."
             ),
             TechniqueCue(
                 id: "feet",
                 title: "Foot Position",
-                intro: "The feet stay flat and about 0.40 m apart, close enough that the shins come up near vertical at the top.",
-                why: "Where the feet sit decides how much of the lift the glutes get: the model keeps them planted and never shifts them. Feet too far away hand the work to the hamstrings.",
+                intro: "The feet stay flat and about hip-width apart, close enough that the shins come up near vertical at the top.",
+                why: "Where the feet sit decides how much of the lift the glutes get, so plant them and keep them there for the whole set. Feet too far away hand the work to the hamstrings.",
                 mistake: "Feet drifting away from the hips, or the heels lifting as the hips rise.",
                 correct: "Set your heels about a hand's length from your glutes, press through them, and keep both feet flat."
             ),
@@ -47755,7 +47755,7 @@ enum SampleData {
                 id: "head",
                 title: "Head and Arms",
                 intro: "The head stays on the mat and the arms rest flat at your sides.",
-                why: "There is nothing to push with: the arms only balance you. Keeping the head down and the neck long stops the lift turning into a neck brace at the top, as the hip thrust coaching also asks.",
+                why: "There is nothing to push with here: the arms only help you balance. Keeping the head down and the neck long stops you straining your neck at the top of each rep.",
                 mistake: "Pushing the head back into the mat or the hands into the floor to lever the hips up.",
                 correct: "Rest your arms flat at your sides, look at the ceiling, and let the hips do the lifting."
             )
@@ -47812,7 +47812,7 @@ enum SampleData {
                 id: "bar",
                 title: "Bar Position",
                 intro: "The bar rides across the top of your back, below the neck, with both hands the same width out on it.",
-                why: "That shelf of muscle across the top of the back is what carries the load: in the model the bar axis sits 9 cm from each shoulder blade, equal on the two sides, and 11 cm from the neck joint, and it holds there in every one of the 192 frames. The hands hold it overhand 0.79 m apart against shoulders 0.39 m apart, wide enough to pin the bar while the ankles work. Set there, the whole body rises straight up - the trunk stays within 1.5 degrees of vertical and the head and hips rise 6.5 cm with the heels.",
+                why: "The shelf of muscle across the top of your back is what carries the load, and an even grip about twice shoulder width pins the bar in place while the ankles work. Set there, your whole body rises straight up with the heels, trunk upright.",
                 mistake: "Resting the bar up on the neck, or taking hold of it off centre so one side carries more.",
                 correct: "Set the bar on the muscle across the top of your back, take an even grip about twice shoulder width, and stand tall before the first rep."
             ),
@@ -47820,7 +47820,7 @@ enum SampleData {
                 id: "knees",
                 title: "Straight Knees",
                 intro: "The knees stay straight but soft, so that only the ankles move.",
-                why: "The gastrocnemius crosses the knee as well as the ankle, so it is only at full length with the knee straight. In a 12-week study of untrained adults, the leg trained standing with the knee straight grew its lateral gastrocnemius 12.4% against 1.7% for the leg trained seated with the knee bent, and its medial head 9.2% against 0.6%, while the soleus grew about the same either way. The model holds both knees at about 175 degrees, with no change at all across the two reps.",
+                why: "The gastrocnemius crosses the knee as well as the ankle, so it is only fully stretched with the knee straight. Research has found that calf raises with straight knees grow the gastrocnemius far more than seated ones, so keep your knees straight but soft.",
                 mistake: "Dipping at the knees to bounce the bar up.",
                 correct: "Keep a small fixed bend in your knees, move at the ankles alone, and pick a load you can lift that way."
             ),
@@ -47828,7 +47828,7 @@ enum SampleData {
                 id: "top",
                 title: "Top of the Rep",
                 intro: "Push up until your heels are as high as your ankles will take them, and hold there for a moment.",
-                why: "This lift is one joint and a short range: in the model the ankle opens 36.6 degrees, the same on both sides, and the heels come about 7 cm up while the toes stay where they are. Stopping short throws away part of a range that is already small. The model holds the top for about 1.2 seconds on each of its two reps.",
+                why: "This lift is one joint and a short range, so every part of it counts. Stopping short of a full rise throws away part of a range that is already small, and pausing at the top makes the calves hold the squeeze.",
                 mistake: "Turning back halfway, with the ankles never fully pointed.",
                 correct: "Push through the balls of both feet until your heels are as high as they go, hold for a beat, then lower."
             ),
@@ -47836,7 +47836,7 @@ enum SampleData {
                 id: "bottom",
                 title: "Bottom of the Rep",
                 intro: "The heels come all the way back down to the floor before the next rep.",
-                why: "Low in the rep the calves are at their longest, but on the floor the heels can only come down to level, so touching down every rep is the least to aim for - the model returns to exactly the ankle angle it started from on each rep and waits there over half a second. Standing with the balls of the feet on a block lets the heels drop below level, and in an eight-week study of young women, training only that stretched range below a flat foot grew the medial gastrocnemius 15.2%, against 6.7% for the full range and 3.4% for the range above flat that this version works in.",
+                why: "Low in the rep the calves are at their longest, but on flat floor the heels only come down to level, so touch down on every rep. Standing with the balls of your feet on a block lets the heels drop lower, into the stretch that studies link to the most calf growth.",
                 mistake: "Stopping the heels above the floor, so every rep works the top half only.",
                 correct: "Lower under control until your heels are down and both feet flat, pause for a beat, then push back up."
             ),
@@ -47844,7 +47844,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Tempo",
                 intro: "Rise under control, hold the top, lower more slowly, and pause at the bottom.",
-                why: "Dropping and bouncing gives part of the job to the Achilles tendon: in a maximal ankle push started with a quick dip, the calf fibres stayed nearly the same length while the tendon stretched and sprang back. That made the push stronger, but it was the tendon storing and returning the energy, so a slow lowering and a pause at the bottom are what keep the work on the muscle. Standard calf coaching asks for the same thing - do not bounce, control the lowering. In the model the rise takes about 0.9 seconds and the lowering about 1.3.",
+                why: "Dropping and bouncing hands part of the job to the Achilles tendon, which stretches and recoils like a spring. A slow lowering and a pause at the bottom take that rebound away and keep the work on the calf muscles.",
                 mistake: "Dropping into the bottom and bouncing straight back up.",
                 correct: "Take about a second to rise, hold the top, take longer to lower than you took to rise, and start every rep from a dead stop."
             )
@@ -47867,7 +47867,7 @@ enum SampleData {
             mistakeBadge: "HEELS STOPPING SHORT",
             correctCue: "Heels to the floor, then up",
             mistakeCue: "Heels never reach the floor",
-            correctNote: "Flat feet to the top of the ankle is the whole 36 degrees this lift has, so every rep has to start with both heels down on the floor.",
+            correctNote: "The range from flat feet to a full rise is all this lift has, so start every rep with both heels down on the floor and finish it high on the balls of the feet.",
             mistakeNote: "Heels that stop above the floor cut off the end where the calves are at their longest, so each rep covers less of an already short range than it looks like it does."
         ),
         glows: [
@@ -47902,7 +47902,7 @@ enum SampleData {
                 id: "bell",
                 title: "Holding the Dumbbell",
                 intro: "One dumbbell hangs between your feet, with its top end on your toes and the handle trapped between them.",
-                why: "Your feet are the only thing holding it. Across the whole clip the model keeps the toes within 1.4 cm of the top end and the ankles a steady 14 cm apart, about the width of the dumbbell heads themselves, and neither hand ever comes closer than 1.2 m to the weight. The feet do not only squeeze, they roll: the ankle travels about 53 degrees as the shin comes up, from fully pointed at the bottom to flat under the shin at the top, and the dumbbell turns upright with the foot as it goes, from 29 degrees off vertical to 2.5. So the squeeze has to hold while the angle under it keeps changing.",
+                why: "Your feet are the only thing holding the weight, and they do not just squeeze, they roll: the ankles go from pointed at the bottom to bent at a right angle at the top, and the dumbbell turns upright with them. The squeeze has to hold the whole time that angle changes.",
                 mistake: "Letting the feet soften at the top, so the dumbbell tips or slides out of them.",
                 correct: "Trap the handle between your feet with the top end on your toes, keep your ankles about as far apart as the dumbbell is wide, and hold that squeeze until the weight is back down."
             ),
@@ -47910,7 +47910,7 @@ enum SampleData {
                 id: "curl",
                 title: "Range of Motion",
                 intro: "Each rep opens the knees to almost straight and bends them to about a right angle, both legs together.",
-                why: "The model runs 167 degrees down to 87, an 80-degree arc, with the left and right knees equal in every frame. With the weight out at your feet, the load on the knee is heaviest while the shin is level, near the straight end, and fades as the shin comes up toward vertical - that is the lever, not a study. Tests of knee-flexion strength put the most torque at about 30 degrees of bend in general, and with the hip straight, as it is here, right at that straight end; the calves pull on the knee hardest with the leg straight and barely at all past 90 degrees. The same review is clear that a prone curl is not where the hamstrings make their best torque, so the case for the long end here is the load on it: a review of range and muscle length found that a longer range pays off where there is real load in the stretched position.",
+                why: "With the weight out at your feet, the load on the knees is heaviest when your legs are nearly straight and the shins close to level, and it fades as the shins come up toward vertical. Opening to almost straight on every rep trains the hamstrings long and under that load, which is where a longer range pays off.",
                 mistake: "Short pumps at the top, with the knees never coming back near straight.",
                 correct: "Let the knees open until your legs are almost straight and the dumbbell is still under control, then curl to about a right angle."
             ),
@@ -47918,7 +47918,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hip Position",
                 intro: "The hips and the fronts of your thighs stay down on the bench for the whole set.",
-                why: "This is a curl with the hip held still: the pelvis sits at one height and the hip at one angle from the first frame to the last, barely short of straight at 158 degrees, so the hip never moves and the knee and the ankle do all of it. Coaching for the prone curl treats the hips or the lower back starting to move as the sign you have reached the end of your range, and a light brace through the middle is what stops the hips hiking and the back arching. The flat hip is simply what this lift is, not the stronger position for growth: over twelve weeks the machine version of this curl done seated, with the hips bent, grew the hamstrings about 14% against 9% for the prone one.",
+                why: "This is a curl with the hip held still, so the knees do all the work. If your hips or lower back start to move, you have reached the end of your range; a light brace through the middle stops the hips hiking and the back arching.",
                 mistake: "The hips lifting off the bench to drag the last rep up.",
                 correct: "Press your hips and thighs into the pad, brace lightly, and end the rep where they start to move."
             ),
@@ -47926,7 +47926,7 @@ enum SampleData {
                 id: "lower",
                 title: "Lowering Control",
                 intro: "The weight comes down slower than it goes up: about a second and a half down against about a second up.",
-                why: "That is the model timing rather than a rule, but it matches where the work is, because the resistance builds again as the shin comes back toward level. Hard eccentric leg curls also bite harder than they look: in one study thirteen men six months clear of heavy resistance training did six sets of ten lowering-only reps at 120% of what they could lift, with the weight raised back up for them after every rep, and ten of the thirteen ended with severe damage through the whole semitendinosus, though how much varied enormously from person to person. Lifters who had already trained a leg curl twice a week for twelve weeks barely showed it. Soreness in the first few sessions is normal, so ease into the slow lowering rather than pushing it from the first workout.",
+                why: "The resistance builds again as the shins come back toward level, so a slow lowering keeps the hamstrings working where the load is. Hard lowering can leave you very sore if you are new to leg curls, so ease into the slow tempo over your first few sessions.",
                 mistake: "Letting the knees fall open and the dumbbell drop at the end of a set.",
                 correct: "Take about half again as long coming down as going up, and keep squeezing your feet until the dumbbell is back at the bottom."
             ),
@@ -47934,7 +47934,7 @@ enum SampleData {
                 id: "upper",
                 title: "Upper Body",
                 intro: "Your chest rests on the pad, your head sits just past the end of the bench and your hands only hold its edges.",
-                why: "There is nothing up here to lift with: the feet carry the weight and the hands touch none of it. In the model the elbows hold 59 degrees, the head and neck stay level with the chest rather than craned up, and the hands never move - they sit 2.2 cm from the pad at the head end, 0.34 m apart, for the whole clip. Hauling on the bench or pushing the chest up only rocks the hips, which is the one thing this lift needs you not to do.",
+                why: "There is nothing up here to lift with: the feet carry the weight and the hands only steady you. Keep your arms and head still; hauling on the bench or pushing the chest up only rocks the hips, which is exactly what this lift needs you to avoid.",
                 mistake: "Pulling on the bench and lifting the chest and head to help the knees through the last reps.",
                 correct: "Rest your chest on the pad with your neck in line with your back, take a light hold of the bench edges, and let your legs do all of it."
             )
@@ -47991,7 +47991,7 @@ enum SampleData {
                 id: "press",
                 title: "Press and Hold",
                 intro: "Press the bar straight out from in front of your chest until your arms are long, and hold it out there.",
-                why: "The press is the only thing that moves in this lift: in the model the elbows open from 51 degrees to 162 and the hands finish 52 cm ahead of the shoulder against 20 cm at the chest, while everything below the shoulders holds one position. The model holds the far position for about 1.5 s of every rep. One published protocol measures a 15-second hold with the arms extended at shoulder height; another measures a 5-second hold with the hands pressed forward from chest level.",
+                why: "Only the arms move in this lift; everything below the shoulders holds one position. The cable pulls hardest on your trunk with the arms long, so holding the bar out for a second or two each rep is where the anti-rotation work happens.",
                 mistake: "Pumping the bar in and out and never holding it at arm's length.",
                 correct: "Press out until your elbows are straight, hold for a second or two with your shoulders square, then bring it back in front of your chest."
             ),
@@ -47999,7 +47999,7 @@ enum SampleData {
                 id: "level",
                 title: "Bar Height and Path",
                 intro: "The bar starts level with the middle of your chest and travels straight out, level, on one line.",
-                why: "In the model the bar moves 34 cm and all of it is forward: no rise, and under half a centimetre of drift to either side, so it stays dead level the whole way out. The pulley sits 1.31 m up and the bar 1.32 m, so the cable runs level into it. One published protocol holds the band at chest level with its anchor on the wall at 1 m; another extends the arms at shoulder height and reports no anchor height at all. Level is what keeps the pull across your body rather than up or down it.",
+                why: "Pressing on a level line keeps the cable pulling straight across your body rather than up or down it, so your trunk has to resist the turn. With the pulley at chest height, the cable runs level into the bar.",
                 mistake: "Pressing up and away, so the bar finishes above chest height.",
                 correct: "Set the pulley level with the middle of your chest and push the bar out on that line, hands level the whole way."
             ),
@@ -48007,7 +48007,7 @@ enum SampleData {
                 id: "square",
                 title: "Anti-Rotation",
                 intro: "The cable pulls from one side for the whole set, and the work is not letting it turn you.",
-                why: "This is what the lift is for. The cable leaves the machine about 1 m to the lifter's left and attaches to that end of the bar, yet the trunk angle, the pelvis height and both hip and knee angles are identical in every frame of the model - there is no turn in it anywhere. One published band test of this press asks for the same thing - the hands press forward in a horizontal plane while the lifter avoids twisting the torso - and the test stops as soon as compensating movement appears.",
+                why: "This is what the lift is for. The cable pulls the bar toward the machine the whole set, and your trunk, hips and knees should not move at all; once you have to twist to hold it, it is time to end the set.",
                 mistake: "Letting your chest turn toward the machine as the bar goes out.",
                 correct: "Point both shoulders and both hip bones straight ahead and keep them there; end the set when you can no longer hold them square."
             ),
@@ -48015,7 +48015,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hips and Pelvis",
                 intro: "Your hips stay level and still, and you stay tall over your feet.",
-                why: "Everything below the shoulders is frozen in the model: the pelvis sits at 0.903 m, the trunk leans 3.96 degrees forward and both hips hold 168 degrees, and not one of those changes across the clip. Keeping the pelvis quiet is the part of this exercise that has actually been measured - a study of twelve adults graded five Pallof variations by how much the pelvis accelerated during a 15-second hold, from 0.17 m per second squared kneeling on a foam pad up to 0.61 standing in a tandem stance on a hemisphere ball.",
+                why: "The pelvis is where the turn shows first. If your hips shift or lean while you hold the bar out, the cable is winning; a tall, still stance makes your trunk do the resisting.",
                 mistake: "Pushing the hips away from the machine, or leaning away from the cable to hold the bar out.",
                 correct: "Stand tall with your ribs down and your hips level, and let the cable pull without leaning or shifting away from it."
             ),
@@ -48023,7 +48023,7 @@ enum SampleData {
                 id: "stance",
                 title: "Stance",
                 intro: "Both feet stay planted about shoulder-width apart, with the knees a little bent.",
-                why: "The model stands with its ankles 0.36 m apart and its knees 0.29 m apart at about 167 degrees - soft, not locked - and neither foot moves a centimetre in the whole clip. What you stand on changes how much the pelvis moves while you hold: in that same study, feet together on the floor measured 0.22 m per second squared and a tandem stance 0.31, against 0.17 kneeling on a pad and 0.55 and 0.61 for the same two stances on a hemisphere ball.",
+                why: "Soft knees and two planted feet give the trunk a steady base to resist from. Your stance changes how hard the hold is: feet close together or split make the pelvis harder to keep still, and an unstable surface harder still, so start shoulder-width on the floor.",
                 mistake: "Letting a knee lock, or the weight sliding onto the leg nearest the machine.",
                 correct: "Plant both feet about shoulder-width apart, keep a small bend in both knees, and press your weight evenly through them for the whole set."
             )
@@ -48045,8 +48045,8 @@ enum SampleData {
             mistakeBadge: "LETTING IT TURN YOU",
             correctCue: "Shoulders square, bar straight out",
             mistakeCue: "Chest turns toward the machine",
-            correctNote: "Holding square is the whole exercise: in the model nothing below the shoulders moves, and the arms press the bar out on their own.",
-            mistakeNote: "Turning toward the pull gives the cable the one thing you are there to resist, and one published band test counts hip rotation as a compensation that ends the test."
+            correctNote: "Holding square is the whole exercise: nothing below the shoulders moves while the arms press the bar out and bring it back.",
+            mistakeNote: "Turning toward the pull gives the cable the one thing you are there to resist. Once your hips or chest start to rotate, end the set rather than grinding out more reps."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.06, ry: 0.06, cx: 0.56, cy: 0.36),
@@ -48078,7 +48078,7 @@ enum SampleData {
                 id: "bell",
                 title: "Overhead Arm",
                 intro: "The bell stays up over your shoulder with the elbow straight, and the arm itself does not move.",
-                why: "The arm is the one part of you that holds still: in the model the loaded elbow sits at 175 degrees for the whole clip and the upper arm stays between 81.7 and 82.3 degrees from horizontal, under a degree of change, so it keeps pointing at the ceiling while the trunk tips over. The bell still travels about 60 cm - 50 cm across your body, 28 cm down and 16 cm forward - because your shoulder travels under it, not because the arm bends. In a study of the Turkish get-up, the nearest lift anyone has measured that holds a bell overhead in one hand, the bell-side shoulder muscles were the busier ones in the stages where the free arm was not propping the body up, which is this lift all the way down.",
+                why: "The arm is the one part of you that holds still: it stays straight and points at the ceiling while the trunk tips over. The bell moves with you because your shoulder travels under it, so the shoulder on the bell side works the whole rep to keep it stacked.",
                 mistake: "Letting the elbow bend or the arm drift forward as the trunk comes down.",
                 correct: "Press the bell up, straighten the elbow, and keep the arm pointing straight up for the whole rep."
             ),
@@ -48086,7 +48086,7 @@ enum SampleData {
                 id: "eyes",
                 title: "Head and Eyes",
                 intro: "Your eyes stay on the bell, so the head turns and tips with the trunk.",
-                why: "The model does this the whole way through: the head is tipped back looking up at the bell at the top of the rep, and it traces the longest path across the frame of any joint tracked on this model. The rig keeps the head turned toward the bell in every frame and squarest at the bottom, where the line it faces along sits about 13 degrees off the bell - its closest of the clip. Keeping the eyes on the bell is what StrengthLog's windmill guide teaches, and no study has tested it, so treat it as the standard coaching cue rather than as something that holds the shoulder still for you.",
+                why: "Watching the bell lets you see straight away if the arm starts to drift off its line. Turning the head with the trunk, rather than dropping it, keeps the neck in line with the rest of the spine.",
                 mistake: "Dropping the head to watch the free hand, or tucking the chin into the chest.",
                 correct: "Find the bell with your eyes before the first rep and keep looking at it all the way down and back up."
             ),
@@ -48094,7 +48094,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hip Hinge",
                 intro: "The hips push back and over toward the bell side, and that is what lowers your trunk.",
-                why: "The movement is at the hips, not the waist: in the model both hips fold a long way - the left from 164 to 91 degrees, the right from 167 to 80 - while the pelvis drops only 2.1 cm and instead shifts 11 cm toward the loaded side and 9 cm back. The trunk ends up about 83 degrees from vertical, near horizontal and on a diagonal: the line from hips to neck finishes 43 cm forward and 40 cm toward the free side. The turn has to come from the hips, because the low back has little to give: in a 3D MRI study of ten people, each lumbar segment turned only 1.2 to 1.7 degrees even at 45 degrees of trunk rotation.",
+                why: "The movement happens at the hips, not the waist: both hips fold deeply as the pelvis shifts back and toward the bell side, until the trunk is close to horizontal. The turn has to come from the hips, because the low back has very little rotation to give.",
                 mistake: "Bending at the waist with the hips still underneath you, so the back rounds instead.",
                 correct: "Push the hips back and toward the bell side, keep the spine long, and let the turn come from your hips."
             ),
@@ -48102,7 +48102,7 @@ enum SampleData {
                 id: "reach",
                 title: "Free Hand",
                 intro: "The empty hand slides down the inside of the leg on its own side and shows you how far you have come.",
-                why: "It is a marker, not a support: the free hand holds nothing - all six parts of the kettlebell sit 9.9 to 13.0 cm from the other hand and travel with it - and in the model it drops 61 cm, finishing 23 cm from that ankle with the arm hanging near straight at about 176 degrees. Sliding it down the inside of the leg is how StrengthLog's guide describes the descent. The model takes about 1.5 s down, holds a third of a second at the bottom and takes 1.5 s back up.",
+                why: "The free hand is a guide, not a support: it takes no weight and simply tracks the inside of the leg to show you how deep you are. Take about 1.5 seconds down, pause briefly at the bottom, and take the same time back up.",
                 mistake: "Pushing on the leg to get lower, or reaching with the hand while the hips stay where they are.",
                 correct: "Let the hand run down the inside of that leg as the hips go back, stop where the hips stop, pause, then stand up at the same speed."
             ),
@@ -48110,7 +48110,7 @@ enum SampleData {
                 id: "legs",
                 title: "Feet and Legs",
                 intro: "Both feet are set before the first rep and never move, and both legs stay long.",
-                why: "The long legs are what leave the hips to do the work: in the model the ankle joints stay 0.36 m apart and hold the same spot in every frame, the left knee holds 177 degrees for the whole clip and the right moves only between 170 and 177 degrees. With the hips folded that far and the knees straight, the hamstrings are held long for the whole descent. The model paints them bright on both legs, with all three glutes.",
+                why: "Keeping the legs long leaves the work to the hips: with the feet planted and the knees nearly straight, the hamstrings stay on a stretch through the whole descent, and the glutes and hamstrings of both legs work to lower you and bring you back up.",
                 mistake: "Bending the knees to get the hand lower, or shuffling a foot as the trunk comes down.",
                 correct: "Set both feet about shoulder-width apart and flat, turned away from the bell side, keep both legs long, and let the depth come from your hips."
             )
@@ -48139,7 +48139,7 @@ enum SampleData {
             mistakeBadge: "BENDING AT THE WAIST",
             correctCue: "Hips travel back, spine long",
             mistakeCue: "Hips stay put, back rounds",
-            correctNote: "The hips make the whole movement: in the model the left hip travels through 72 degrees and the right through 87, while the pelvis shifts back and across and the trunk stays long.",
+            correctNote: "The hips make the whole movement: they fold back and across toward the bell side while the trunk stays long and the back keeps its shape. The legs stay straight and the bell arm keeps pointing at the ceiling.",
             mistakeNote: "Bending at the waist asks the low back for a turn it cannot give, and takes the work off the hips."
         ),
         glows: [
@@ -48174,7 +48174,7 @@ enum SampleData {
                 id: "pad",
                 title: "Pads and Shoulders",
                 intro: "The pads sit across the top of your shoulders, and you stand tall underneath them.",
-                why: "The pads are what let you move straight up and down under the load. Each one is 0.42 m long and 0.19 m deep, and in the model each pad is in contact with both the shoulder joint and the shoulder blade - its centre sits 0.04 m from one and 0.10 m from the other - so it loads the shelf of muscle across the top of the shoulders rather than the neck. Nothing on the machine touches your back: the nearest part to the spine is a lever arm 0.23 m away, so the trunk is held upright by you, not by a pad. Set under the pads the model never leaves vertical, holding half a degree off it in every one of the 192 frames, and the pads drop the same 29.6 cm as the hips. The honest case for the machine is that it lets you handle more weight - when ten men lifted both at matched relative loads, the hack squat took the heavier loads and drew less trunk muscle activity, for almost every muscle and phase measured, than the back squat - not that it works the legs harder.",
+                why: "The pads rest on the muscle across the top of your shoulders, not your neck, and guide you straight up and down. Nothing supports your back, so you keep your trunk upright yourself. The payoff is heavier loads with less trunk work than a back squat.",
                 mistake: "Letting the shoulders lift off the pads so the trunk folds forward out of the carriage.",
                 correct: "Stand tall with the pads across the top of your shoulders and your trunk straight, and keep it there for every rep."
             ),
@@ -48182,7 +48182,7 @@ enum SampleData {
                 id: "grip",
                 title: "Handles and Arms",
                 intro: "The handles beside the pads hold you in position; they are not something to pull on.",
-                why: "In this model the arms do nothing at all. The elbows hold 72.09 degrees and the upper arms -36.93 degrees from horizontal in every one of the 192 frames, the hands stay 0.36 m apart, and they drop 29.6 cm only because the carriage they are holding drops 29.6 cm with them. The grips find the hand as their nearest joint at 0.11 m, with the next joint 0.36 m away, so they reach your hands and nothing else. Pulling on them hands work to your arms and shoulders and lifts your shoulders off the pads, which is the one job the machine is doing for you.",
+                why: "Your arms stay set the whole time and only move because the carriage moves with you. Pulling on the handles shifts work to your arms and shoulders and lifts your shoulders off the pads, undoing the support the machine is there to give you.",
                 mistake: "Hauling on the handles to drag yourself out of the bottom of a hard rep.",
                 correct: "Take a light hold of the handles beside the pads, keep your arms set where they start, and let your legs move the weight."
             ),
@@ -48190,7 +48190,7 @@ enum SampleData {
                 id: "depth",
                 title: "Depth",
                 intro: "Every rep bends the knees from almost straight down to about a right angle.",
-                why: "That is 79 degrees of knee travel in this model, 167 degrees at the top to 88 at the bottom, with the hips and the whole carriage dropping 29.6 cm straight down. Training the long range is what pays: over twelve weeks, lifters who squatted to 120 degrees of knee bend gained more front-thigh size and more knee-extension strength than lifters who stopped at 60 degrees, although that was a free barbell squat rather than a guided machine. The deep end is also the loaded end, since knee forces rise as the knee bends further, so build the depth up over sets rather than dropping into it. The model takes 2.0 seconds down, holds the bottom for a third of a second and 1.7 seconds back up.",
+                why: "Training through a long range builds more front-thigh size and strength than stopping short. The bottom is also where your knees carry the most load, so build up to that depth over your warm-up sets rather than dropping straight into it.",
                 mistake: "Dropping fast into the bottom and bouncing straight back out of it.",
                 correct: "Lower under control until your knees are bent to about a right angle, hold for a beat, then drive back up."
             ),
@@ -48198,7 +48198,7 @@ enum SampleData {
                 id: "knees",
                 title: "Knee Tracking",
                 intro: "The knees travel out over the feet as you come down, never in.",
-                why: "In the model they spread through the descent: the knees start 0.240 m apart - just inside the feet, which stay pinned at 0.262 m - and finish 0.332 m apart, 7 cm wider than the feet at the bottom. Each knee also travels 28 cm forward over the plate and only 5 cm down. Both legs are doing the same job here, so neither knee should drift: one knee falling inward shortens the line your hip works through, and a fixed path will not correct it for you.",
+                why: "Your knees start just inside your feet and should spread as you descend, ending slightly wider than your feet at the bottom. Both legs share the work evenly, and a knee that caves in pulls the hip out of line - the machine's guided path will not stop it.",
                 mistake: "The knees rolling inward as the weight gets heavy or the depth gets deeper.",
                 correct: "Push your knees out over the middle of each foot on the way down, and keep them there on the way back up."
             ),
@@ -48206,7 +48206,7 @@ enum SampleData {
                 id: "feet",
                 title: "Foot Placement",
                 intro: "Both feet sit flat and centred on the plate, about hip-width apart, toes pointing forward.",
-                why: "The model keeps them 0.26 m apart and planted: the plate never moves at all, and in the frame the feet do not shift a single pixel across the whole clip. Where the feet sit does change the share of the work, which is why this machine is worth setting the same way every time and why it carries five stances to choose from - though that has been measured in barbell squats and leg presses, not in a hack squat. What has been tested and changed nothing is the angle of the feet: in ten experienced lifters, feet pointing straight ahead against feet turned out 30 degrees made no difference to muscle activity or to knee forces in a barbell squat or either of two leg presses. Nobody has tested it on this machine.",
+                why: "Where your feet sit changes how the work is shared between your thighs and hips, so set them in the same spot every time to keep your sets comparable. Turning the toes out does not shift work onto the inner thigh; studies of squats and leg presses found no difference.",
                 mistake: "Turning the toes out to feel the inner thigh, or moving the feet between sets.",
                 correct: "Set both feet flat and centred on the plate about hip-width apart with the toes forward, and use the same spot every set."
             )
@@ -48227,7 +48227,7 @@ enum SampleData {
             mistakeBadge: "KNEES DIVING IN",
             correctCue: "Knees out over the feet",
             mistakeCue: "Knees roll in at the bottom",
-            correctNote: "In the model the knees start just inside the feet and finish 7 cm wider, so the descent is the knees tracking out over them.",
+            correctNote: "Your knees start just inside your feet and track out over them as you lower, finishing a little wider than your feet at the bottom.",
             mistakeNote: "Knees drifting inward shorten the line your hip works through, and the fixed path will not correct it for you."
         ),
         glows: [
@@ -48261,7 +48261,7 @@ enum SampleData {
                 id: "kick",
                 title: "Range of Motion",
                 intro: "Drive the foot back and up until your leg lines up with your trunk, then lower it under control.",
-                why: "In the model the hip opens from 100 to 179 degrees - 179 is the thigh in line with the trunk - and the foot rises 0.89 m and travels 0.94 m behind the lifter. The thigh reaches that line about a second and a half in, and the last half second of the foot's travel is not more hip: the hip eases back to 165 degrees while the knee goes on straightening from 168 to 170. So the leg comes into line with the trunk and stops there; height past that comes from the lower back, not from the hip.",
+                why: "Your hip does its work until the thigh lines up with your trunk. Any height past that point comes from arching the lower back, not from the hip, so stopping there keeps the load on the glutes and off your spine.",
                 mistake: "Swinging the leg as high as it will go and letting the lower back arch to allow it.",
                 correct: "Push the foot back and up until your leg is in line with your trunk, pause for a beat, then lower it all the way down."
             ),
@@ -48269,7 +48269,7 @@ enum SampleData {
                 id: "knee",
                 title: "Working Knee",
                 intro: "The working knee keeps a bend in it the whole way: it is never straight.",
-                why: "In the model it starts 26 degrees short of straight and opens only to 170 degrees at the furthest point of the kick, so it is still 10 degrees bent where the leg is highest. That is the position the one loaded kickback anyone has measured was set up in: 15 resistance-trained men on a hip-extension machine at a six-rep maximum, their working knee held near 170 degrees. Each muscle there was measured against its own maximum, and the kickback drove biceps femoris to 106 per cent of it - more than three times what a leg press drew from the same muscle - while gluteus maximus read 77 per cent, no different from the leg press. A near-straight working knee is the setup here rather than a fault, and it is part of why the hamstrings share the top of the legend with the glutes on this lift.",
+                why: "A slight bend keeps the knee from locking and lets the hip drive the leg straight back. Held this close to straight, the knee also brings the hamstrings in hard alongside the glutes; a study of a loaded kickback found strong hamstring work in this position.",
                 mistake: "Locking the knee out at the top, or bending it so the heel comes toward you instead of the leg going back.",
                 correct: "Set a small bend in the working knee before the first rep and hold the same bend all the way back and all the way down."
             ),
@@ -48277,7 +48277,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hips and Pelvis",
                 intro: "Both hips stay level and square to the machine, and the leg travels straight back.",
-                why: "The pelvis in the model sits at 1.090 m at every sampled moment, and the working ankle travels 0.94 m backwards with no sideways movement at all - its across-the-body position never leaves 0.05 m. So the whole range comes from the working hip and knee, with nothing borrowed from a twist. Coaching for the machine version asks for the same thing: no rotation at the hips.",
+                why: "Keeping your pelvis level and still, with the leg travelling straight back rather than out to the side, makes the working hip and knee do all of the work. Twisting the hip open adds range that comes from rotation, not from the glute.",
                 mistake: "The working hip rolling up and open at the top to get the leg higher.",
                 correct: "Keep your hip bones level and facing the machine, and end the rep where they start to turn."
             ),
@@ -48285,7 +48285,7 @@ enum SampleData {
                 id: "torso",
                 title: "Torso Angle",
                 intro: "You hinge forward from the hips and hold it there: both hands on the upright carry your trunk.",
-                why: "The hinge is the position, not part of the rep. The model holds its trunk 67.5 degrees forward of vertical and its hips at 1.090 m from the first frame to the last, with both hands still on the machine 0.12 m apart, about 0.48 m in front of the shoulders and a hand below them. Leaning over does change what the hip does: in 21 trained female athletes, flexing the trunk 40 degrees raised gluteus maximus from 16.3 to 21.3 per cent of a maximum contraction - though it raised the hamstrings by as much again, so it is not a glute-specific effect - in a split squat, which is the nearest position anyone has measured, and nobody has measured a hinge as deep as this one. What leaning over does not do is take the lower back out of it: in the same study the erector spinae reading did not fall.",
+                why: "The hinge is your fixed position, not part of the rep, so hold it from the first rep to the last. Leaning forward makes the glutes and hamstrings work a little harder, but it does not spare the lower back, so keep your trunk braced.",
                 mistake: "Starting upright and folding further forward as the set goes on, so the trunk swings with each rep.",
                 correct: "Hold the upright with both hands, hinge forward from the hips until your back is about three quarters of the way to level, and keep it exactly there for every rep."
             ),
@@ -48293,7 +48293,7 @@ enum SampleData {
                 id: "stance",
                 title: "Standing Leg",
                 intro: "The standing foot stays flat on its platform with the knee soft.",
-                why: "It holds the whole body still while the other hip works, and in the model it never changes at all: 160 degrees of knee in every single sample, with the foot planted on a round platform. That is real work on that side - the nearest thing anyone has measured is a single-leg squat, where the support leg's gluteus medius reached 82 per cent of a maximum contraction, a harder job than the still hold this lift asks of it - so expect to feel it there too.",
+                why: "The standing leg holds your whole body still while the other hip works. Keeping that side steady is real work for the glute on the standing side, so expect to feel it there too.",
                 mistake: "Rising onto the standing toe, or letting that knee lock, to help the working leg finish.",
                 correct: "Keep a small bend in the standing knee with the whole foot down, and let the working leg do all the moving."
             )
@@ -48315,7 +48315,7 @@ enum SampleData {
             mistakeBadge: "HIP TWISTING OPEN",
             correctCue: "Hips level, leg straight back",
             mistakeCue: "Hip rolls open at the top",
-            correctNote: "In the model the foot travels 0.94 m behind the lifter without moving sideways at all, so the hip extends and nothing turns.",
+            correctNote: "The foot travels straight back behind you without drifting sideways, so the hip extends and nothing turns.",
             mistakeNote: "Rolling the hip open adds height the hip did not make, and it puts the end of every rep into the lower back."
         ),
         glows: [
@@ -48348,7 +48348,7 @@ enum SampleData {
                 id: "cuff",
                 title: "Attachment",
                 intro: "The cuff sits above the heel of the working ankle, and the pull comes from there.",
-                why: "It rides that foot exactly: in the model the cuff edge stays 0.01 m from the ankle joint, the velcro overlap 0.07 m and the snap clip 0.11 m, all unchanged at every moment checked, and the cuff travels about a metre through each rep while the stack plates rise 0.46 m. The cable runs past your shin and knee without touching either - 0.22 m off the shin at the bottom and 0.33 m off the thigh at the top - so there is clearance for it the whole way through.",
+                why: "Strapped snugly above the heel, the cuff moves with your foot and puts the pull right where the leg drives back. Set it so the cable runs clear of your shin and knee through the whole rep, with nothing rubbing or catching.",
                 mistake: "Strapping the cuff over the shin, or loose enough that it slides down toward the heel under load.",
                 correct: "Strap the cuff snugly just above the heel, clip it to the low pulley, and check it has not moved before the first rep."
             ),
@@ -48356,7 +48356,7 @@ enum SampleData {
                 id: "finish",
                 title: "Finish Position",
                 intro: "Drive the leg back until the hip stops opening, then stop there and lower it.",
-                why: "In the model the working ankle travels a metre back and 0.24 m up, and the knee opens from 80 degrees to 172 on the way out. The hip stops before the leg does: it opens to within six degrees of a straight line from trunk to thigh about 1.4 seconds in, then eases back to twenty degrees short of that line while the knee is still straightening, and the model holds that finish for about a third of a second. So the thigh finishes roughly level with your hips, not level with your back - on a bench this steep, a leg genuinely in line with your trunk would need far more hip extension than you have, and the only way to fake it is to lift your chest. How much bend you keep in the working knee shifts the share of the work, and this version straightens it: in prone hip extension a near-straight working knee has been measured with more hamstring and less gluteus maximus than a knee held bent.",
+                why: "On a bench this steep your hip runs out of extension early, so the thigh finishes about level with your hips, not in line with your back. Chasing more height means lifting your chest or rolling your pelvis, which moves the work into your lower back. Straightening the knee as the leg goes back also brings the hamstrings in more than a bent knee would.",
                 mistake: "Snapping the leg out and letting the pelvis roll over to get it higher.",
                 correct: "Push the heel back and up until the hip stops opening, with your thigh about level with your hips, hold for a beat, then lower it all the way back down."
             ),
@@ -48364,7 +48364,7 @@ enum SampleData {
                 id: "hips",
                 title: "Hips and Pelvis",
                 intro: "Both hips stay square against the pad, and only the working leg moves.",
-                why: "Nothing else in this model moves at all: the pelvis holds 0.987 m and the trunk one angle in every one of the 192 frames, and the resting leg holds a single position to the decimal, so the whole range comes from the working hip and knee. Rolling the pelvis over to lift the leg higher adds height the hip did not make. Coaching for the machine version asks for the same thing: no rotation at the hips.",
+                why: "With your pelvis, trunk and resting leg all held still, the whole range comes from the working hip and knee. Rolling the pelvis over to lift the leg higher adds height the hip did not make and takes the work off the glute.",
                 mistake: "The working hip rolling up and over to squeeze out the last of the range.",
                 correct: "Keep both hip bones flat and square to the pad, and stop the rep where they start to turn."
             ),
@@ -48372,7 +48372,7 @@ enum SampleData {
                 id: "trunk",
                 title: "Trunk",
                 intro: "Your chest rests on the incline pad and stays there, ribs down, for every rep.",
-                why: "The pad does the job your trunk would otherwise be doing: the model holds the trunk 44.5 degrees from vertical and the hips at 0.987 m, unchanged in all 192 frames, with both hands resting still on the machine. That support is the point of this version. Of five prone hip-extension positions compared in one study of 38 adults, the one with the trunk supported and the knee bent drew the most activity from both the upper and the lower gluteus maximus, and the authors recommend it on its ratio of lower-back to glute activity. Pushing the chest up to reach further turns the end of the rep into a back extension.",
+                why: "The pad supports your trunk so your lower back does not have to, which is the point of this version. With the trunk held still, the glutes get to do most of the work; pushing the chest up to reach further shifts the end of the rep into your lower back.",
                 mistake: "Pushing the chest up off the pad to swing the leg higher on the last reps.",
                 correct: "Settle your chest on the pad with your ribs down and your neck in line with your back, and keep it down for the whole set."
             ),
@@ -48380,7 +48380,7 @@ enum SampleData {
                 id: "support",
                 title: "The Other Leg",
                 intro: "The other leg stays bent and still along the pad: it is not a standing leg.",
-                why: "In the model it is frozen. The resting knee holds 116.8 degrees, the same to the decimal in every sample, and it rests on the pad itself - 0.008 m from it - while that foot hangs free past the end, with nothing within 0.23 m of it. So the leg is carried by the bench rather than planted on the ground. Leaving it exactly where it is is what keeps your pelvis still, which is the one thing this version gives you over a standing kickback.",
+                why: "The bench carries the resting leg, so it is not planted on the floor like a standing leg. Leaving it exactly where it is keeps your pelvis still, which is the main thing this version gives you over a standing kickback.",
                 mistake: "The resting leg drifting or pushing, so the hips shift a little on every rep.",
                 correct: "Settle the other leg along the pad with the knee bent and the foot off the end, and leave it where it is for the whole set."
             )
@@ -48436,7 +48436,7 @@ enum SampleData {
                 id: "setup",
                 title: "Start Position",
                 intro: "You set up over the bar with a flat back, hips higher than the knees and the shoulders just in front of it.",
-                why: "In the model the trunk starts 62 degrees forward with the knees at 98 and the hips at 57, and the back holds that shape while the bar leaves the floor. A back that rounds here loses the pull before it starts, because the hips can no longer drive against a long spine.",
+                why: "A flat, braced back lets the hips drive the bar off the floor through a solid spine. If the back rounds here, the pull leaks before it starts and the strain lands on your lower back instead of your hips and legs.",
                 mistake: "Rounding the lower back over the bar, or starting with the hips already high and the chest down.",
                 correct: "Set your feet about hip-width, take the bar a bit wider than your shoulders, drop your hips until your back is flat, and brace before you pull."
             ),
@@ -48444,7 +48444,7 @@ enum SampleData {
                 id: "pull",
                 title: "First Pull",
                 intro: "Off the floor the bar comes up slowly and stays close to your legs; the hips and shoulders rise together.",
-                why: "The model takes a full second over the first half: the pelvis rises from 0.58 m to 0.72 while the trunk comes up from 62 degrees to 27, and the knees open only from 98 to 111. Keeping the bar close keeps the load over your feet, where you can push against it.",
+                why: "A slow, steady first pull sets up the fast part of the lift: the hips and shoulders rise together and your chest comes up gradually as the bar climbs. Keeping the bar close keeps the load over your feet, where you can push against it.",
                 mistake: "Snatching the bar off the floor with the hips, so the chest drops and the bar swings away.",
                 correct: "Push the floor away steadily, let the bar brush up your shins and thighs, and keep your shoulders over it until it passes your knees."
             ),
@@ -48452,7 +48452,7 @@ enum SampleData {
                 id: "extend",
                 title: "Second Pull",
                 intro: "When the bar reaches your hips you drive hard: knees and hips open together and the heels come off the floor.",
-                why: "This is the part that actually throws the bar. In the model the knees go to 151 degrees, the hips to 169 and the trunk ends 8 degrees behind vertical, with the heels 6 cm up, all inside half a second, and the arms are still almost straight at 142 degrees while it happens.",
+                why: "This is the part that actually throws the bar. Your knees and hips snap open together, your body finishes leaning slightly back with the heels off the floor, and your arms stay almost straight while it happens.",
                 mistake: "Pulling early with the arms, so the legs never finish and the bar stalls at the hips.",
                 correct: "Drive through the whole foot until your body is one long line, let the heels leave the floor, and keep the arms long until then."
             ),
@@ -48460,7 +48460,7 @@ enum SampleData {
                 id: "catch",
                 title: "The Catch",
                 intro: "Only once the legs have finished do the elbows whip through and the knees re-bend to meet the bar.",
-                why: "The model catches in a quarter-squat: the knees fold back from 151 degrees to 101 as the elbows go from 142 to 52 and the bar arrives at 1.16 m. Dropping under is what lets you catch a bar you could never curl up - the legs put it there and the body goes to meet it.",
+                why: "You catch in a quarter-squat, your knees bending as the elbows spin through. Dropping under is what lets you catch a bar you could never curl up: the legs send it up and your body goes down to meet it.",
                 mistake: "Standing straight up and trying to pull the bar the last part of the way with the arms.",
                 correct: "As the bar peaks, pull yourself under it: spin the elbows around fast and bend the knees to receive it."
             ),
@@ -48468,7 +48468,7 @@ enum SampleData {
                 id: "rack",
                 title: "Rack Position",
                 intro: "You finish standing tall with the bar on the front of your shoulders and the elbows up.",
-                why: "The model stands out of the catch to 174 degrees at the knees with the elbows at 43 and holds the rack for two seconds. Elbows that stay up give the bar a shelf on the shoulders; elbows that drop leave it hanging on the hands and wrists.",
+                why: "Standing fully out of the catch and holding the rack for a moment shows you have the bar under control before the next rep. Elbows that stay up give the bar a shelf on the shoulders; elbows that drop leave it hanging on the hands and wrists.",
                 mistake: "Finishing with the elbows pointing down, so the bar rolls onto the wrists.",
                 correct: "Stand all the way up, keep the elbows high in front of you and let the bar rest on your shoulders, not in your hands."
             )
@@ -48529,7 +48529,7 @@ enum SampleData {
                 id: "hang",
                 title: "The Hang",
                 intro: "Each rep starts standing with the bar hanging at your hips, arms long.",
-                why: "The model begins at 0.92 m with the knees at 175 degrees and the trunk 10 degrees forward, and every rep returns to exactly that. Starting from the hang takes the floor out of the lift, so the whole rep is the hip drive and the catch - 0.60 m of bar travel against 1.24 m in the power clean.",
+                why: "Every rep starts from the same tall position, knees nearly straight and the trunk only slightly forward. Starting from the hang takes the floor out of the lift, so each rep trains just the hip drive and the catch, with a shorter bar path than the power clean.",
                 mistake: "Letting the bar hang off the shoulders with a rounded upper back between reps.",
                 correct: "Stand tall with the bar against your thighs, shoulders back, arms long, and set your back before each rep."
             ),
@@ -48537,7 +48537,7 @@ enum SampleData {
                 id: "dip",
                 title: "The Dip",
                 intro: "You push the hips back and let the bar slide down to just above the knee, then change direction.",
-                why: "The model dips to a 37-degree trunk angle with the knees at 150 and the bar at 0.79 m - just past the knee, not to the floor. The point is to stretch the hips, not to do a squat: the knees bend only 25 degrees while the trunk does the travelling.",
+                why: "The dip is a hinge, not a squat: the hips push back and the trunk tips forward while the knees bend only a little, and the bar stops just above the knee. That stretches the hips like a spring, ready for the drive.",
                 mistake: "Squatting the bar down to the shins, so the hips have nothing left to open.",
                 correct: "Hinge at the hips, let the bar brush down your thighs to just above the knee, and keep your back flat as you change direction."
             ),
@@ -48545,7 +48545,7 @@ enum SampleData {
                 id: "extend",
                 title: "Hip Drive",
                 intro: "From there you snap the hips open and drive through the floor.",
-                why: "In the model the trunk comes from 37 degrees back to 15 in half a second and the heels lift 5 cm as the bar passes the hips. That is the whole engine of the lift: the bar only rises because the hips threw it.",
+                why: "Your trunk snaps up out of the dip in a fraction of a second, and the heels rise as the bar passes the hips. That is the whole engine of the lift: the bar only rises because the hips threw it.",
                 mistake: "Pulling the bar up the body with the arms and shoulders while the hips stay folded.",
                 correct: "Drive your hips through to standing and let the bar ride up close to you; the arms stay long until the hips have finished."
             ),
@@ -48553,7 +48553,7 @@ enum SampleData {
                 id: "catch",
                 title: "The Catch",
                 intro: "The elbows whip under the bar while the knees bend to meet it.",
-                why: "The model receives it with the elbows at 62 degrees and the knees back at 110, then stands up to 175. Catching in a small dip is what makes the bar feel light; waiting for it with straight legs means curling the last part of the way.",
+                why: "Receiving the bar in a small dip and then standing up is what makes it feel light; waiting for it with straight legs means curling the last part of the way.",
                 mistake: "Trying to muscle the bar to the shoulders with straight legs.",
                 correct: "As the bar peaks, drop into a quarter-squat and spin your elbows through fast to receive it."
             ),
@@ -48561,7 +48561,7 @@ enum SampleData {
                 id: "rack",
                 title: "Rack Position",
                 intro: "The rep ends standing with the bar on the shoulders and the elbows high.",
-                why: "The model holds the rack for a second and a half with the elbows at 43 degrees before the next rep. The shelf is the shoulders, not the hands - the bar should sit against the front of them with the fingers only holding it in place.",
+                why: "Pausing in the rack with the elbows high shows the bar is secure before the next rep. The shelf is the shoulders, not the hands: the bar should sit against the front of them with the fingers only holding it in place.",
                 mistake: "Catching with low elbows so the bar lands on the wrists.",
                 correct: "Finish tall, elbows up and forward, bar resting on the front of your shoulders."
             )
@@ -48622,7 +48622,7 @@ enum SampleData {
                 id: "hang",
                 title: "The Hang",
                 intro: "You start standing with a dumbbell in each hand at your thighs, arms hanging straight.",
-                why: "The model starts with the elbows at 173 degrees and the hands 0.69 m apart at 0.92 m, and comes back to that between reps. Two bells let each arm find its own path, which is what makes this version easier on the wrists than a bar.",
+                why: "Starting on straight arms with the bells at your thighs makes the hips do the lifting, not the arms. Two bells let each arm find its own path, which is what makes this version easier on the wrists than a bar.",
                 mistake: "Starting with the bells already bent up, so the arms are doing the first part of the lift.",
                 correct: "Stand tall with a bell beside each thigh, arms long, shoulders set, and brace before the dip."
             ),
@@ -48630,7 +48630,7 @@ enum SampleData {
                 id: "dip",
                 title: "The Dip",
                 intro: "Push the hips back into a short hinge; the knees only soften.",
-                why: "In the model the trunk tips to 26 degrees and the knees bend from 175 to 137 - a hinge, not a squat. The bells drop barely 10 cm, to 0.83 m, because the dip is there to load the hips rather than to lower the weight.",
+                why: "The trunk tips forward while the knees bend only a little, so the dip is a hinge, not a squat. The bells travel just a short way down your thighs, because the dip is there to load the hips rather than to lower the weight.",
                 mistake: "Dropping into a squat with the chest upright, so the hips cannot drive.",
                 correct: "Hinge back at the hips with a flat back, let the bells travel down your thighs a little, and keep your weight through the middle of your feet."
             ),
@@ -48638,7 +48638,7 @@ enum SampleData {
                 id: "extend",
                 title: "Hip Drive",
                 intro: "Snap the hips open and drive through the floor until you are standing tall.",
-                why: "The heels lift 5 cm as the hips open in the model, and the bells rise past the hips on that drive alone, with the elbows still 172 degrees. Everything above the hips is just along for the ride at this point.",
+                why: "The hip drive alone carries the bells up past your hips, and your heels may come up slightly as you extend. The arms stay straight through this part; everything above the hips is just along for the ride.",
                 mistake: "Shrugging and curling the bells up instead of driving with the legs and hips.",
                 correct: "Drive your hips forward hard and stand tall, keeping the arms long until the bells are already moving."
             ),
@@ -48646,7 +48646,7 @@ enum SampleData {
                 id: "catch",
                 title: "The Catch",
                 intro: "The elbows drop under the bells fast and the knees bend a little to receive them.",
-                why: "The model catches with the elbows at about 68 degrees and the knees at 118, then stands up and finishes with the elbows at 31 and 35. Each bell swings out to 0.93 m apart at the widest and comes back in to 0.42 m at the shoulders, so the catch is also where you bring them back to you.",
+                why: "Bending the knees to catch lets your legs absorb the bells instead of your arms and lower back. The bells tend to drift out wide as they rise, so the catch is also where you bring them back in to your shoulders.",
                 mistake: "Letting the bells swing out wide and catching them away from the body with straight arms.",
                 correct: "Turn the elbows under quickly, bend the knees to meet the bells, and bring them in against your shoulders as you stand."
             ),
@@ -48654,7 +48654,7 @@ enum SampleData {
                 id: "rack",
                 title: "Rack Position",
                 intro: "Each rep finishes standing with the bells resting on the front of your shoulders.",
-                why: "The model holds that for a full second with the hands at 1.47 m before lowering. Resting them on the shoulders rather than holding them above means the set can go on long after the arms would have given out.",
+                why: "Pause there for a moment before you lower the bells. Resting them on the shoulders rather than holding them up in front means the set can go on long after the arms would have given out.",
                 mistake: "Holding the bells in the air in front of the shoulders instead of letting them rest on them.",
                 correct: "Stand tall, elbows forward and under, and let the bells sit against the front of your shoulders between reps."
             )
@@ -48713,7 +48713,7 @@ enum SampleData {
                 id: "swing",
                 title: "Bell Path",
                 intro: "The bell drops between your legs and comes back up close to your body, not out in an arc.",
-                why: "In the model the hand falls to 0.74 m with the arm straight and returns to the rack at 1.40 m, a travel of 0.85 m, and the bell stays in tight all the way. A bell that swings out flips over and bangs down on the wrist; keeping it close lets it roll around the hand instead.",
+                why: "The bell travels from between your legs up to the rack in one tight path, staying close to your body the whole way. A bell that swings out flips over and bangs down on the wrist; keeping it close lets it roll around the hand instead.",
                 mistake: "Letting the bell swing out in front and flip over onto the back of the wrist.",
                 correct: "Guide the bell back between your thighs and keep it brushing close to you as it comes up, so it rolls around your hand at the top."
             ),
@@ -48721,7 +48721,7 @@ enum SampleData {
                 id: "rack",
                 title: "Rack Position",
                 intro: "The bell finishes resting on the forearm and against the shoulder, elbow tucked in.",
-                why: "The model racks at 41 degrees of elbow bend with the hand at 1.40 m and holds it there between reps. In the rack the bell sits on you rather than in your grip, so you can keep going long after your forearm would have given out.",
+                why: "In the rack the bell sits on you rather than in your grip, with the elbow bent and tucked in. That lets you keep going long after your forearm would have given out.",
                 mistake: "Holding the bell off the body with a bent arm, so the grip and the shoulder carry it.",
                 correct: "Bring your elbow in against your ribs and let the bell settle on your forearm and shoulder before the next rep."
             ),
@@ -48729,7 +48729,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Hip Hinge",
                 intro: "Every rep is a hinge: the hips go back, the knees stay fairly straight, then the hips snap through.",
-                why: "The model folds the trunk to 37 degrees on the first cycle and 52 on the deepest, with the knees at 133 and 122, then stands tall again at 176 degrees of knee and 168 of hip. The lift is the hip snap, not an arm pull.",
+                why: "At the bottom the trunk leans well forward while the knees bend only a little, and at the top you stand fully tall again. The lift is the hip snap, not an arm pull.",
                 mistake: "Squatting the bell down and up, or pulling it to the shoulder with the arm.",
                 correct: "Push the hips back with a flat back, let the bell swing between your thighs, then drive the hips through and let the bell float up."
             ),
@@ -48737,7 +48737,7 @@ enum SampleData {
                 id: "free",
                 title: "Free Arm",
                 intro: "The arm that is not working hangs still at your side.",
-                why: "In the model it never moves: the right elbow holds 168 degrees and the hand stays at 0.92 m across the whole clip. Swinging it for momentum is where one-arm lifts start to twist, and the twist is what the trunk then has to fight.",
+                why: "Keeping it still keeps both shoulders facing the front. Swinging it for momentum is where one-arm lifts start to twist, and the twist is what the trunk then has to fight.",
                 mistake: "Throwing the free arm to help the bell up, so the shoulders turn with it.",
                 correct: "Let the free arm hang, or keep it tucked, and keep both shoulders facing the same way for the whole set."
             ),
@@ -48745,7 +48745,7 @@ enum SampleData {
                 id: "feet",
                 title: "Base",
                 intro: "The feet stay planted about hip-width apart and the heels stay down.",
-                why: "The model keeps its ankles 0.37 to 0.39 m apart and the heels on the floor for every rep - unlike the barbell cleans here, there is no heel lift in this one. Pressing the floor away is what the hips snap against.",
+                why: "The heels stay down on every rep; unlike a barbell clean, there is no rise onto the toes in this lift. Pressing the floor away is what the hips snap against.",
                 mistake: "Coming up onto the toes or letting the feet shuffle as the bell swings.",
                 correct: "Plant both feet about hip-width apart, grip the floor with your toes, and keep your heels down through the swing."
             )
@@ -48808,7 +48808,7 @@ enum SampleData {
                 id: "setup",
                 title: "Start Position",
                 intro: "You set up over the bar with a flat back, your shoulders just in front of it and a wide grip out toward the plates.",
-                why: "In the model the trunk starts 69 degrees forward with the knees at 83 and the hips at 46, the pelvis at 0.520 m, and the shoulder joint sits 3.5 cm in front of the bar - the same relation the library's Barbell Power Clean coaches. The hands are 1.09 m apart against 0.392 m at the shoulders, out by the plates. In the frame the pelvis sits a little above the knee, and nothing moves at all for the first ten frames; the bar does not leave the floor until 0.50 s and then travels 171.3 cm in one go, from 0.225 m to 1.938 m, so there is no second chance to fix a position once it moves.",
+                why: "Shoulders just in front of the bar and hips a little above the knees put you in your strongest pulling position, and the wide grip shortens the pull. Once the bar leaves the floor it goes overhead in one go, so there is no chance to fix your position mid-lift.",
                 mistake: "Rounding the lower back over the bar, or setting the hips high with the chest already down.",
                 correct: "Set your feet about hip-width, take a wide overhand grip out toward the plates, drop your hips until your back is flat with your shoulders just in front of the bar, and brace before you pull."
             ),
@@ -48816,7 +48816,7 @@ enum SampleData {
                 id: "pull",
                 title: "First Pull",
                 intro: "Off the floor the bar comes up close to your legs while your hips and shoulders rise together.",
-                why: "In the model the bar rises from 0.225 m to 1.019 m while the elbows stay almost straight the whole way - 152 degrees at the floor and still 149 at the top of the pull - and the pelvis and trunk come up together, 0.520 to 0.939 m and 69 degrees to 1. Keeping the bar in keeps the load over your feet, where you can push against it. Treat it as control rather than as extra weight: a study of ten lifters that changed the start position to cut horizontal bar travel did cut it, by about 40 mm in the snatch, but found no significant difference in peak power.",
+                why: "Keep the arms straight and let your hips and shoulders rise together, so your back angle holds as the bar comes up. Keeping the bar in keeps the load over your feet, where you can push against it.",
                 mistake: "Letting the bar swing out in front, or bending the arms to help it up.",
                 correct: "Push the floor away steadily, let the bar brush up your shins and thighs, and keep your arms long until it passes your hips."
             ),
@@ -48824,7 +48824,7 @@ enum SampleData {
                 id: "extend",
                 title: "Second Pull",
                 intro: "When the bar reaches your hips you drive hard: the knees and hips open together and the heels come off the floor.",
-                why: "This is the part that throws the bar. In the model the knees open to 150 degrees and the hips to 168, the trunk comes through vertical to 7 degrees past it, the heels lift 6.1 cm off the floor - 0.069 m to 0.130 m - at 1.92 s, and the arms are still 149 degrees while all of it happens. The heels are back down by 2.42 s, so the drive has them off the floor for 0.79 s, with a second 0.25 s lift later as each foot re-sets under the overhead hold - 1.04 s of the clip in all. That is why the calves are a low row here and no row at all on the kettlebell version, where the heel only ever rises 1.4 cm.",
+                why: "This is the part that throws the bar. The knees and hips open hard, the trunk comes up through vertical and the heels rise, all while the arms stay long. Bending the arms early bleeds off the power the legs are making.",
                 mistake: "Pulling with the arms before the legs have finished, so the bar stalls at the hips.",
                 correct: "Drive through the whole foot until your body is one long line, let the heels leave the floor, and keep the arms long until then."
             ),
@@ -48832,7 +48832,7 @@ enum SampleData {
                 id: "catch",
                 title: "The Catch",
                 intro: "Once the legs have finished you pull yourself under the bar and receive it on straight arms.",
-                why: "In the model the elbow folds from 149 degrees to 91 as the bar turns over and then snaps out to 177 inside a third of a second, while the pelvis drops from 0.939 m to 0.760 and the knees re-bend to 111 - a partial squat, well above parallel. The feet jump from 0.220 m to 0.300 m apart to receive it and step back in one at a time during the hold. The arms are already locked when the bar arrives: in a motion-capture study of the snatch the elbow was held at nearly full extension from the catch onward and the triceps only contracted after the turnover, to keep the arm straightened. StrengthLog says the same thing - catch the bar on straight arms over your head.",
+                why: "Pulling under lets you catch the bar in a partial squat, well above parallel, with your feet jumping slightly wider to receive it. Your arms should already be locked when the bar arrives: the triceps hold them straight rather than press the bar up.",
                 mistake: "Waiting for the bar with straight legs and trying to press it the last part of the way.",
                 correct: "As the bar peaks, pull yourself under it: punch your arms straight, let your feet jump out a little, and bend your knees to receive it overhead."
             ),
@@ -48840,7 +48840,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Overhead Lockout",
                 intro: "You finish standing tall with the bar locked overhead and stacked over your ankles.",
-                why: "The model holds it for 1.75 s with the elbows flat at 173 degrees and the bar at its peak 1.938 m - 0.504 m above the shoulder joint and 0.336 m above the head - and 1.5 cm in front of the ankle, so the load sits over the base rather than out in front of it. The hands are 0.098 m below the bar at 1.840 m, because the wrist sits above an overhand grip. The job up there is support, not pressing: the legs and hips put the bar there with the elbows still 149 degrees at the top of the pull, and the one study of the rotator cuff in this lift found the supraspinatus and infraspinatus at their most active during the turnover and the catch rather than the pull.",
+                why: "With the bar stacked over your ankles, the load sits over your base, so you can hold it still. The job up there is support, not pressing: the legs and hips put the bar there, and the rotator cuff works hardest steadying it in the turnover and catch.",
                 mistake: "Finishing with the bar out in front of your head, or pressing it out the last part of the way.",
                 correct: "Punch the bar up, lock your elbows, and stand tall with it stacked over your ankles until it stops moving."
             )
@@ -48869,8 +48869,8 @@ enum SampleData {
             mistakeBadge: "PRESSING IT UP",
             correctCue: "Legs throw it, arms just lock",
             mistakeCue: "Arms press the last part up",
-            correctNote: "The legs and hips put the bar overhead: in the model the elbows are still 149 degrees at the top of the pull and only snap straight once the bar is already there.",
-            mistakeNote: "Pressing it out caps the lift at what your shoulders can press; in the model the elbows are locked before the bar arrives."
+            correctNote: "The legs and hips put the bar overhead. The arms stay long through the pull and only snap straight once the bar is already up there, so they lock it rather than lift it.",
+            mistakeNote: "Pressing it out caps the lift at what your shoulders can press. It also means the bar arrives on bent arms instead of locked ones, so it is harder to hold still overhead."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.60, cy: 0.58),
@@ -48905,7 +48905,7 @@ enum SampleData {
                 id: "setup",
                 title: "Start Position",
                 intro: "You start low over the bell with a flat back, one hand on the handle and the other hanging free.",
-                why: "In the model the trunk starts 72 degrees forward with the hips at 56 and the knees at 67 - that is 113 degrees of knee bend, deeper than the barbell snatch starts with, so this is a low squatting start and not a hinge - the pelvis at 0.500 m and the working hand at 0.163 m with its depth at +0.43 m, half a metre forward of where it ends up at the catch, -0.08 m. The first ten frames are identical: it is a set position, not a swing. The bell stays in the left hand for the whole clip and never changes hands mid-rep. The feet are 0.30-0.32 m apart, a little closer than the 0.392 m at the shoulders.",
+                why: "The hips sit low and the knees bend deeply to reach a bell on the floor, so this is a low squatting start, not a hinge. Settle into the start position and hold it still before each pull rather than swinging into it, so the legs drive from a stable base.",
                 mistake: "Rounding the back to reach the bell, or starting with the shoulders already turned toward it.",
                 correct: "Set your feet about hip-width apart, drop your hips and bend your knees until you can take the handle with a flat back, and square both shoulders before you pull."
             ),
@@ -48913,7 +48913,7 @@ enum SampleData {
                 id: "pull",
                 title: "The Pull",
                 intro: "The legs and hips do the lifting; the arm stays long until the bell is already moving.",
-                why: "In the model the elbow is locked at 174 degrees for the whole pull and only folds once the bell is past 1.06 m. Below it the knees open from 67 degrees to 165, the hips from 56 to 168, the trunk comes from 72 degrees forward to 5 behind vertical, and both heels lift 5.8 cm - 0.069 m to 0.127 m - together, even though only one arm is loaded. One arm does not make this an arm exercise.",
+                why: "The elbow stays straight until the bell is above your hips, while the knees and hips straighten hard and both heels lift together, even though only one arm is loaded. One arm does not make this an arm exercise.",
                 mistake: "Curling the bell up with the arm instead of driving with the legs.",
                 correct: "Push the floor away and stand up hard, keeping the bell close to you and the arm long until your hips have finished."
             ),
@@ -48921,7 +48921,7 @@ enum SampleData {
                 id: "turnover",
                 title: "Turnover",
                 intro: "At the top of the pull the elbow folds and punches through, so the bell finishes above your hand rather than in front of it.",
-                why: "This is the fastest part of the lift: in the model the elbow goes from 174 degrees to 76 and back out to 134 in a little over half a second while the hand rises from 1.06 m to 1.84 m, and the hand travels 0.35 m back in toward the body as it happens. A motion-capture study of the barbell snatch has the deltoid taking over once the shoulder is more than halfway to full flexion, and the triceps only contracting after the turnover, to keep the arm straightened - so the punch is a turnover under the load, not a press of it.",
+                why: "This is the fastest part of the lift: the elbow folds and punches straight in a split second as the bell comes back in over your body. The shoulder carries the bell up and the triceps only fix the arm straight once you are under it, so the punch is a turnover, not a press.",
                 mistake: "Letting the bell swing out and catching it in front of the shoulder with a bent arm.",
                 correct: "As the bell peaks, turn your elbow under it fast and punch your hand straight up, so the bell lands over that shoulder."
             ),
@@ -48929,7 +48929,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Overhead Lockout",
                 intro: "The rep finishes standing tall with the bell locked out over the working shoulder.",
-                why: "The model holds it for 1.46 s, and from 3.33 to 4.50 s the whole pose stays put to within a millimetre, so it really is a hold rather than a drift: the elbow at 174 degrees, the knee at 175, the trunk upright, the hand 1.967 m up and the bell 0.47 m above the head and 0.23 m out to the working side - over that shoulder, not over the middle of your head. Coming down it racks the bell to the shoulder first: the elbow folds to 31 degrees while both knees hold 174-175 degrees, and the hips only re-hinge once the bell is back at shoulder height.",
+                why: "A still hold shows you own the weight, and keeping the bell over the working shoulder rather than over the middle of your head stacks it on the joint that supports it. Bringing it to the shoulder before you hinge keeps the way down under control.",
                 mistake: "Leaning away from the bell to get under it, or holding it up on a soft elbow.",
                 correct: "Stand all the way up with your elbow locked and the bell over that shoulder, hold it until it stops moving, then bring it down to your shoulder before you hinge."
             ),
@@ -48937,7 +48937,7 @@ enum SampleData {
                 id: "level",
                 title: "Shoulders Level",
                 intro: "One bell on one side wants to turn you; the work is keeping both shoulders and both hips facing the front.",
-                why: "The free arm does nothing in the model - its elbow only drifts between 146 and 170 degrees as the trunk stands up, and that hand never gets above 0.96 m - while the legs stay symmetrical, both knees moving through the same range and both heels leaving the floor together. The paint shows where the resisting happens: the obliques and the rectus abdominis are bright on the side away from the bell. The asymmetry is measurable: on force platforms the one-handed dumbbell snatch made the pull phase significantly longer on the lifting side, while peak force and catch loading rate tended to be higher on the free side without reaching significance, and the authors put that down to the uneven load changing pull and catch symmetry.",
+                why: "The free arm hangs quietly and both legs work evenly, so the twist from the one-sided load has to be resisted by your trunk. The obliques and abs on the side away from the bell do most of that work.",
                 mistake: "Throwing the free arm to help the bell up, so the shoulders twist with it.",
                 correct: "Let the free arm hang, keep both shoulders and hip bones facing the front, and do the same number of reps on each side."
             )
@@ -48966,8 +48966,8 @@ enum SampleData {
             mistakeBadge: "TWISTING TO THE BELL",
             correctCue: "Shoulders square, hips level",
             mistakeCue: "Chest turns toward the bell",
-            correctNote: "Held square, the legs do the lift: the model drives both knees through the same range and both heels leave the floor together, with the free arm hanging.",
-            mistakeNote: "Turning toward the bell hands the lift to the trunk, and the one force-plate study of this lift found the one-handed load already lengthening the pull on the lifting side."
+            correctNote: "Held square, the legs do the lift: both knees drive through the same range and both heels leave the floor together. The free arm just hangs, and the trunk only has to hold you steady.",
+            mistakeNote: "Turning toward the bell hands the lift to the trunk instead of the legs. A one-handed load already makes the two sides work unevenly, and twisting makes that worse."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.61, cy: 0.58),
@@ -49003,7 +49003,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Hip Hinge",
                 intro: "Every rep is a hinge: the hips go back, the knees bend only part way, then the hips snap through.",
-                why: "In the model the trunk folds to 55 degrees from vertical with the hips at 93, and the knees never bend past 107 - about half the bend the barbell snatch starts from - while the pelvis drops only 0.16 m, from 0.875 m to 0.720. Then it all opens again inside half a second: the hips to 169 degrees, the knees to 174 and the trunk to 1 degree from vertical. The bell arrives overhead on that snap. The low back is not heavily loaded either way: in the one study to measure it, a one-arm swing finished overhead kept L4/L5 compression under 3,200 N in every style at every point, which the authors call quite conservative and probably not of clinical significance.",
+                why: "The trunk folds well forward while the knees bend only part way, far less than in a Power Snatch start, and the hips drop only a little. Then everything opens in one fast snap to standing tall, and that snap is what sends the bell overhead.",
                 mistake: "Squatting the bell down and up, or pulling it overhead with the arm.",
                 correct: "Push your hips back with a flat back, let the bell swing between your thighs, then drive the hips through and let the bell float up."
             ),
@@ -49011,7 +49011,7 @@ enum SampleData {
                 id: "swing",
                 title: "Bell Path",
                 intro: "The bell drops back between your thighs and comes up close to you: drive it up, not out.",
-                why: "The model's bell covers 4.94 m of path in every rep, through a range of 1.709 m up and down, 0.693 m front to back and 0.464 m across the body, and at the bottom of the backswing it hangs between the legs at 0.323 m, 0.27 m from the working hand and touching nothing - the nearest thing to it is the far foot, 0.30 m away. Up and out are not the same thing: measured on a force platform, a one-handed kettlebell snatch put about 14% of its impulse into horizontal work against 23% for a two-handed swing, so the snatch is the more vertical of the two.",
+                why: "At the bottom of the backswing the bell hangs between your legs without touching them, then rises close to your body. Up and out are not the same thing: the snatch is a more vertical drive than a two-handed swing, so aim the bell at the ceiling, not forward.",
                 mistake: "Swinging the bell out in front, so it loops away from you and flips over at the top.",
                 correct: "Hike the bell back between your thighs, keep it brushing close to you on the way up, and send it straight up over your shoulder."
             ),
@@ -49019,7 +49019,7 @@ enum SampleData {
                 id: "insert",
                 title: "Hand Insertion",
                 intro: "Near the top you let your hand slide through the handle so the bell rolls around onto your forearm.",
-                why: "The bell turns over around the hand rather than being held still: in the model it sits 0.27 m from the hand at the drop, passes within 0.115 m at the turnover and settles 0.12 m away through the lockout, and the elbow folds to 55 degrees as it goes past the head. Hand insertion is one of the named phases of a competition rep, and your grip is what pays for the set - over a six-minute set with a hand change at halfway, the hand that worked the last three minutes lost about 10 kg of grip strength - so let the bell settle on the forearm instead of gripping it hard.",
+                why: "The bell turns over around your hand rather than being held still, so the handle needs to spin in a relaxed grip. Grip fatigue is what usually ends a long set, so let the bell settle on the forearm instead of squeezing it hard.",
                 mistake: "Gripping hard all the way up, so the bell flips over the hand and bangs down on the wrist.",
                 correct: "As the bell comes up, open your hand a little and let the handle turn in it so the bell rolls onto your forearm, then close your fingers to hold it."
             ),
@@ -49027,7 +49027,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Overhead Fixation",
                 intro: "Each rep finishes with the bell held still overhead, stacked over your shoulder and your foot.",
-                why: "The model holds it for 0.88 s a rep, and a third of the whole clip is spent up there: the elbow at 175 degrees, the hand 1.965 m up - 0.368 m above the head and 0.536 m above the shoulder joint - and only 1.5 cm to the side of the shoulder and 2.1 cm to the side of the ankle, so the load is stacked over the base. In kettlebell sport a rep only counts once the bell is locked out motionless overhead, and that overhead fixation is described as one of the two points of relative relaxation in the whole repetition.",
+                why: "With the elbow locked and the bell stacked over your shoulder and foot, the load sits over your base. In kettlebell sport a rep only counts once the bell is held still overhead, and this is one of the few moments in a rep where you can briefly relax.",
                 mistake: "Pressing the bell up at the top, or holding it out in front of the shoulder.",
                 correct: "Punch your hand up as the bell arrives, lock the elbow, and let it sit still over your shoulder for a moment before the next rep."
             ),
@@ -49035,7 +49035,7 @@ enum SampleData {
                 id: "base",
                 title: "Base",
                 intro: "Both feet stay planted about shoulder-width apart and the heels barely move.",
-                why: "The model keeps both ankles inside 0.07-0.08 m for all 192 frames: the heel lifts 1.4 cm at the top of each pull against 6.1 cm in the barbell snatch, the feet stay 0.38-0.39 m apart against 0.392 m at the shoulders, and in the frame each foot holds its place to within three pixels. That is the difference between this and the barbell snatch - and the rig paints no calf here, where it paints them on both of the others. Press the floor away evenly: in a six-minute set of kettlebell-sport snatches the two legs were measured carrying different front-to-back loads inside every rep.",
+                why: "Unlike a Power Snatch, the heels barely leave the floor here and the feet stay put for the whole set. Press the floor away evenly through both feet, so every rep starts from the same stable base.",
                 mistake: "Coming up onto the toes, or letting a foot shuffle as the bell swings.",
                 correct: "Plant both feet about shoulder-width apart, keep your heels down through the swing, and press evenly through both feet."
             )
@@ -49063,8 +49063,8 @@ enum SampleData {
             mistakeBadge: "SWINGING IT OUT",
             correctCue: "Bell close, driven straight up",
             mistakeCue: "Bell loops out and flips down",
-            correctNote: "Kept close and driven up, the bell rolls around the hand and settles on the forearm: the model sends 4.94 m of bell path through every rep without letting it get away.",
-            mistakeNote: "Let out in a loop, it flips over the hand onto the wrist instead of rolling round it, and the grip pays for that - the hand that finishes a six-minute set has already lost about 10 kg of it."
+            correctNote: "Kept close and driven up, the bell rolls around the hand and settles softly on the forearm. It stays under control on every rep instead of getting away from you.",
+            mistakeNote: "Let out in a loop, it flips over the hand onto the wrist instead of rolling round it. Your grip then has to fight it on every rep, and it gives out long before your legs and hips do."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.59, cy: 0.54),
@@ -49100,7 +49100,7 @@ enum SampleData {
                 id: "setup",
                 title: "Start Position",
                 intro: "You start in a deep squat over two dumbbells that stand clear of each foot, a hand's length in front of your toes.",
-                why: "In the model the first ten frames are identical, so this is a held set position and not a swing: the knees at 64.21 degrees - 116 degrees of knee bend, deeper than the barbell clean and jerk in this app starts with, 97.9 degrees - the hips at 51.15, the trunk 64.75 degrees forward and the pelvis at 0.4799 m, its lowest in the clip. So it is a squatting start, not a hinge. The bells sit well forward of the feet because the folded trunk puts the shoulders 29.2 cm in front of the ankle and the arms hang straight down from there: each bell centre is 32.00 cm in front of the ankle joint, 18.11 cm in front of the toe joint and 20.78 cm outside the ankle. The feet are close together, 0.1900 m between the ankles against 0.3922 m at the shoulders.",
+                why: "Starting from a deep squat rather than a hip hinge lets your legs do the first part of the pull. With your trunk leaning forward and your arms hanging straight from the shoulders, the bells sit a little in front of your feet, and the narrow stance keeps them clear of your legs.",
                 mistake: "Hinging down to the bells with the hips high and the chest already dropped.",
                 correct: "Set your feet about half a shoulder-width apart, squat down until you can take a handle in each hand with a flat back, and brace your trunk before you pull."
             ),
@@ -49108,7 +49108,7 @@ enum SampleData {
                 id: "pull",
                 title: "First Pull",
                 intro: "Both bells leave the floor together while your legs stand up and your arms stay long.",
-                why: "In the model the elbows do nothing at all through the first pull: 173.36 degrees at the floor and still 172.44 a second later, and they do not cross 172 degrees until 1.958 s. Underneath, the knees open from 65.20 to 119.94 degrees, the hips from 51.93 to 113.43, the trunk comes from 64.47 to 38.52 degrees forward and the pelvis rises from 0.486 m to 0.793 m, while the bells go from 0.009 m to 0.505 m, averaging 0.496 m/s. Both heels stay flat for all of it - they do not leave until 1.583 s. The knees never re-bend on the way up; what re-folds is the trunk, 38.01 degrees at 1.417 s back to 42.89 at 1.583 s while the knees keep extending, which reads as a scoop rather than a double knee bend. That reading is mechanics; the angles are measured.",
+                why: "Through the first pull your legs and hips do the lifting while your arms stay long and your heels stay flat. Your chest rises as you stand and the bells travel straight up beside your legs; bending your elbows this early takes the drive away from your legs.",
                 mistake: "Curling the bells up with the arms while the hips are still bent.",
                 correct: "Push the floor away and stand up, keeping both arms long and letting the bells rise straight up outside your knees."
             ),
@@ -49116,7 +49116,7 @@ enum SampleData {
                 id: "extend",
                 title: "Second Pull",
                 intro: "At the top of the pull everything opens at once and both heels come off the floor.",
-                why: "In the model the pelvis, the trunk and the heels all peak together at 1.875 s: the trunk swings through vertical to 4.65 degrees behind it, the pelvis reaches 0.9573 m, and both heels lift together - 5.81 cm on the left and 5.80 on the right - with the toes still planted, so each ankle swings 4.8 cm forward. The hip peaks one frame later at 162.65 degrees and the knee keeps extending five frames more, to 171.69 at 2.125 s. The elbows are still at 172.77 degrees when the heels are at their highest, so this is all legs. The heels are off the floor for 1.208 s in all, 1.583 to 2.750 s, and that is the calf work in this lift.",
+                why: "This is where the bells get their speed. Your hips, knees and ankles open together until your heels rise and you are up on your toes, while your arms are still straight, so the power comes from your legs and your calves finish the drive.",
                 mistake: "Bending the elbows to help the bells up before your hips have opened.",
                 correct: "Drive through the whole foot until your hips and knees are open and your body is one long line with your arms still long, and let your heels come up as it happens."
             ),
@@ -49124,7 +49124,7 @@ enum SampleData {
                 id: "catch",
                 title: "The Catch",
                 intro: "As your hips finish opening, the elbows whip under and you drop under the bells to catch them at your shoulders.",
-                why: "In the model the elbows fold from 171.9 degrees to 30.81 and 34.77 in a little under a second, 0.92 s, and the hands fly wide while they do - 0.698 m apart to 1.063 m at 2.250 s - before coming back to 0.4205 m at the shoulders, so the bells do not stay close to you through the turnover - take the shape from the model and keep them closer than it if you can. What you drop into is a dip, not a squat: the knee bottoms at 110.73 degrees and the pelvis at 0.7600 m, 19.7 cm below where the drive left it, and the elbows have already finished folding before the dip bottoms at 3.000 s. Then the lifter stands all the way up to 175.22 degrees and holds the rack still for 4 frames, 3.542 to 3.667 s, the hands 1.4739 m up and 3.92 cm above the shoulder joint. Two bells are not one bar: the left elbow racks 3.97 degrees deeper than the right, so each arm arrives on its own.",
+                why: "Dropping into a short knee bend lets you meet the bells instead of waiting for them, so your legs take the load, not your elbows. Keep the bells close as your elbows whip under, then stand fully and let both bells settle on your shoulders before you press.",
                 mistake: "Waiting for the bells with straight legs and letting the elbows take the whole load.",
                 correct: "As the bells peak, whip your elbows under them and bend your knees to meet them, then stand all the way up and settle the rack before you press."
             ),
@@ -49132,7 +49132,7 @@ enum SampleData {
                 id: "press",
                 title: "Strict Press",
                 intro: "From a dead stop at the shoulders the arms alone put the bells overhead - nothing below them moves.",
-                why: "This is the measurement that separates this lift from the jerks beside it. Over the press, 3.708 to 4.500 s, the elbow travels 143.13 degrees, from 30.87 to 174.00, while the ranges below the shoulders are exactly 0.0000 degrees at both knees, 0.0000 at the hip, 0.0000 at the trunk and 0.000 mm at the pelvis; the head moves 0.92 mm. The rack is held 0.167 s first, so the press also starts from a dead stop - which is how CrossFit defines its shoulder press, a press from standing without assistance from the legs, though that is coaching and not a measurement. The bells finish with their lowest point at 1.9825 m, 20.0 cm above the crown of the head, and the lockout holds 0.958 s. Two bells cost you weight for it: pressing 15 men at 80% of their one-rep maximum, a standing barbell press drew about 15% less anterior deltoid activity than standing dumbbells and allowed about 7% more weight.",
+                why: "This is what makes it a strict press rather than a jerk: from a still rack, your legs, hips and trunk stay put and only your arms move the bells. Two dumbbells need more shoulder control than a barbell, so expect to press a little less weight.",
                 mistake: "Dipping the knees and driving the bells up with the legs, turning it into a push press.",
                 correct: "Stand tall, hold the rack still, then press both bells straight up to locked elbows above your head, and lower them back to your shoulders before you bring them down."
             )
@@ -49163,8 +49163,8 @@ enum SampleData {
             mistakeBadge: "DIPPING TO PRESS",
             correctCue: "Legs still, arms press",
             mistakeCue: "Knees dip to start the bells",
-            correctNote: "The arms do the whole press in the model: 143.13 degrees of elbow extension with both knees, the hip and the trunk measuring a 0.0000 degree range and the pelvis 0.000 mm.",
-            mistakeNote: "Dipping the knees turns it into a push press. The one knee bend in this clip is the clean catch, 110.73 degrees at 3.000 s, and the lifter stands up to 175.22 and holds the rack before the press begins at 3.708 s."
+            correctNote: "Your arms do the whole press, from a still rack to locked elbows overhead. Keep your legs straight and your trunk braced so nothing below your shoulders moves.",
+            mistakeNote: "Dipping the knees to start the bells turns it into a push press. The only knee bend in this lift is the catch of the clean; stand all the way up and hold the rack still before you press."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.60, cy: 0.57),
@@ -49202,7 +49202,7 @@ enum SampleData {
                 id: "setup",
                 title: "Start Position",
                 intro: "You stand over two bells with your feet wide, hinged at the hips with a flat back and a handle in each hand.",
-                why: "In the model the trunk starts 58.8 degrees forward with the hips at 79.6 and the knees at only 103.4 - a hinge, not a squat - the pelvis at 0.6199 m and each hand at 0.3604 m. The feet are 0.600-0.607 m apart, 1.53 times the 0.3922 m at the shoulders, and the bells stand between them at 0.1179 m either side of the midline, 12.0 cm in front of the ankle joint and 0.5 cm behind the toe joint, so about over the balls of the feet. Each bell hangs 0.2721 m straight below its hand, 87.3 degrees below horizontal. The first nine frames are identical: it is a set position, not a swing, and both arms are loaded the whole way - the two elbows never differ by more than 0.1444 degrees.",
+                why: "Starting in a hip hinge with a wide stance makes room for the bells to swing back between your legs. Setting them over the balls of your feet, with both arms straight and already loaded, lets the first hike start smoothly instead of yanking the bells off the floor.",
                 mistake: "Rounding the back to reach the handles, or setting the bells out in front of your toes.",
                 correct: "Set your feet about half again wider than your shoulders, stand the bells between them over the balls of your feet, hinge until your back is flat, and take a handle in each hand."
             ),
@@ -49210,7 +49210,7 @@ enum SampleData {
                 id: "hike",
                 title: "Bell Path",
                 intro: "The bells go backwards first: hike them between your thighs with long arms, then let them swing through.",
-                why: "This is a swing clean, not a pull from the floor. In the model the bells leave the floor and travel 15.8 cm REARWARDS - bell centre depth +0.1200 to -0.0381 m, ending 3.8 cm behind the ankle joint, between the legs - while the trunk barely changes, 58.8 to 58.1 degrees, and the elbows lock out to 180.0. Then they swing 22.6 cm forward with the pelvis dead still at 0.6998 m, and only after that does the body extend. The two bells nearly touch down there: the gap between them closes to 1.53 cm at 0.917 s, and the nearest the left bell body ever comes to a leg joint is 0.2000 m, at 0.542 s. Each bell covers about 5.6 m of path over the rep, 5.561 m on the left and 5.667 m on the right.",
+                why: "This is a swing clean, not a pull from the floor: the bells travel back between your legs first, then swing forward while your hips stay loaded. Keeping them high between your thighs and close to you sets up the hip drive and stops them pulling you forward.",
                 mistake: "Lifting the bells off the floor like a deadlift, or letting them swing out in front of your knees.",
                 correct: "Tip the bells toward you, hike them back between your thighs with your arms long, and let them brush close to you as they swing through."
             ),
@@ -49218,7 +49218,7 @@ enum SampleData {
                 id: "drive",
                 title: "Hip Drive",
                 intro: "The hips snap the bells up: everything opens at once and the arms stay long while it happens.",
-                why: "The whole extension takes 0.208 s in the model: the knees open 115.2 to 174.5 degrees at 284 degrees a second, the hips 97.8 to 174.5 at 368, the trunk comes from 52.9 degrees forward to 4.5 and then 4.67 behind vertical at 1.375 s, the pelvis rises 0.711 to 0.8938 m and the bells 0.236 to 0.656 m - with the elbows still 176 to 180 degrees through all of it. The heels barely leave: 1.43 cm, over 1.125 s to 1.458 s, and nothing lifts at all during the press. Which muscles do that is paint and mechanics only: no study has measured a muscle in a two-bell kettlebell clean, and the one EMG study of a one-arm kettlebell swing, snatch and clean found no difference between the three lifts in the gluteus maximus and published no percentage.",
+                why: "Your hips and knees open hard and fast in one snap, taking you from a hinge to standing tall while your arms stay long. That snap, driven by your glutes and hamstrings, is what lifts the bells; your heels barely leave the floor.",
                 mistake: "Pulling the bells up with the arms before the hips have finished.",
                 correct: "Snap your hips through and stand up hard, keeping both arms long until the bells are already moving up."
             ),
@@ -49226,7 +49226,7 @@ enum SampleData {
                 id: "rack",
                 title: "Kettlebell Rack",
                 intro: "At the top of the drive your hands turn inside the handles and the bells roll round onto your forearms.",
-                why: "The bells change place completely: from hanging 0.2721 m straight below the hand at the set-up, each one ends the turnover 0.1154 m from the hand at 7.6 degrees ABOVE it and 108 degrees forward, resting on the arm. Only the handle and the beads are gripped hard - the handle stays 0.1036 m from hand_L at every frame, constant to 0.002 mm - while the bell body swings through 157.6 mm of hand distance. The elbows fold 176.3 to 38.6 degrees, 451 degrees a second over the first five frames, and the hands come in to 0.293 m, inside the 0.3922 m at the shoulders. It is a low rack, held 0.500 s: the hands finish 2.0 cm BELOW the shoulder joint and the bells 17.2 cm below the head, and the knees never re-bend to take it - the minimum over the turnover is 174.48 degrees.",
+                why: "Turning your hands inside the handles lets each bell roll round onto your forearm instead of flipping over and hitting your wrist. Keep your grip firm but not crushing and your elbows tucked, so the bells sit low against your chest while your legs stay straight.",
                 mistake: "Gripping hard so the bells flip over and bang down on your wrists instead of rolling round onto the forearms.",
                 correct: "Let your hands turn inside the handles so the bells roll round onto your forearms, tuck your elbows in to your ribs, and stand tall as they land."
             ),
@@ -49234,7 +49234,7 @@ enum SampleData {
                 id: "press",
                 title: "Strict Press",
                 intro: "From the rack the arms do all of it: no dip, no re-bend of the knees, just press both bells up.",
-                why: "Measured over the whole press, 2.458 to 3.333 s, the knee holds 175.96 degrees UNCHANGED and the pelvis 0.8835 m, changing by 0.00 mm, while the elbow runs 38.5 to 175.0 degrees and each hand rises 55.2 cm. In a family named for the jerk this is one of the two lifts whose legs contribute nothing to getting the load overhead - the dumbbell version is the other, measured at the same 0.0000 degree ranges. The hands do not travel straight either: they part to 0.928 m at 2.917 s and finish 0.532 m apart, 1.36 times the shoulder span, with the bells 8.5 cm behind the ankle joint and the elbow locked at 175.0 degrees, not 180. Standing is what the brace is for: in 15 healthy men pressing dumbbells two-handed at 80% of one rep maximum, rectus abdominis was about 81% lower seated than standing and external oblique about 58% lower, both p under 0.001.",
+                why: "With your legs locked and your hips still, your arms move the bells the whole way, which is what makes it a strict press. Standing also makes your abs and obliques work far harder than pressing seated, because they keep your trunk steady under the load.",
                 mistake: "Bending the knees to launch the bells, or leaning back to get under them.",
                 correct: "Brace with your ribs down and your glutes tight, keep your legs straight, and press both bells up until your elbows lock."
             )
@@ -49263,8 +49263,8 @@ enum SampleData {
             mistakeBadge: "DIPPING TO PRESS",
             correctCue: "Legs locked, arms press it",
             mistakeCue: "Knees dip to launch the bells",
-            correctNote: "The press in this model is strict from the first frame to the last: the knee holds 175.96 degrees unchanged and the pelvis moves 0.00 mm while each bell goes up 55.2 cm on the arms alone.",
-            mistakeNote: "Bending the knees to start it makes it a push press, which is a different exercise; nothing in the model's legs moves while the bells go overhead."
+            correctNote: "The press is strict from start to finish: your knees stay locked and your hips stay still while each bell goes up on your arms alone. Lock your elbows overhead before you lower the bells back to the rack.",
+            mistakeNote: "Bending the knees to start it makes it a push press, which is a different exercise. Keep your legs still the whole time the bells travel overhead."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.60, cy: 0.55),
@@ -49301,7 +49301,7 @@ enum SampleData {
                 id: "setup",
                 title: "Start Position",
                 intro: "You set up over a loaded bar on the floor with a flat back and your shoulders over the bar.",
-                why: "In the model the trunk starts 61.6 degrees forward - the most forward it gets in the whole clip - with the knees at 97.9 degrees, the hips at 57.2 and the pelvis at its lowest, 0.585 m. The shoulder joint sits 0.6 cm from the bar, almost directly over it, and the hands are 0.614 m apart against 0.392 m at the shoulders, 0.713 m in from each end of the 2.040 m bar. The plates rest on the floor with the bar axis at 0.225 m, 9.6 cm in front of the ankle joint. Nothing moves for the first eight frames and the bar leaves the floor between 0.333 and 0.375 s; the whole clean and jerk is one rep across 7.96 s, so there is no second chance to fix the position once it moves.",
+                why: "Starting with your shoulders over the bar and your back flat puts you in the strongest position to break the bar off the floor. The whole lift is one fast movement, so there is no chance to fix your position once the bar moves; set it before you pull.",
                 mistake: "Rounding the lower back over the bar, or setting the hips high with the chest already down.",
                 correct: "Set your feet about hip-width, take an overhand grip about a hand's width outside each shoulder, drop your hips until your back is flat with your shoulders over it, and brace."
             ),
@@ -49309,7 +49309,7 @@ enum SampleData {
                 id: "pull",
                 title: "The Pull",
                 intro: "Off the floor the bar comes up against your legs as your chest comes up and the hips follow.",
-                why: "Measured against the skin, the bar runs about 1.0 cm off the shins and thighs for the whole first pull - 1.06 cm at the set-up, 1.00 to 1.03 cm by 0.88 s, 1.76 cm at 1.00 s, 0.97 to 1.16 cm to 1.25 s - and only brushes the shorts at the hip at 1.375 s. The chest comes up faster than the hips: the trunk opens 61.6 degrees to 38.6 while the pelvis rises only 0.585 to 0.703 m, and the elbows stay long the whole way, 155.6 to 158.2 degrees. Keeping the bar in keeps the load over your feet - it starts 9.6 cm in front of the ankle joint and comes IN to 6.5 cm before the turnover. Past the knee the knees re-bend 119.6 to 108.9 degrees while the hips keep opening, and then everything extends at once: the trunk swings from 18.9 degrees in front of vertical to 14.0 behind it, the hips reach their clip maximum of 169.5 and both heels come 6.1 cm off the floor, the biggest lift of the two heels together in the clip, with the elbows still at 150.9 to 162.7. Only as the bar turns over does it swing out, to 30.7 cm in front of the ankle at 2.000 s.",
+                why: "Keeping the bar against your shins and thighs keeps the load over your feet, so your legs drive it up instead of your back chasing it out in front. Your chest rises a little ahead of your hips, and your arms stay long until the bar has passed your hips and your hips and knees have snapped open.",
                 mistake: "Letting the bar swing out in front, or bending the arms to help it up.",
                 correct: "Push the floor away steadily, let the bar brush up your shins and thighs and keep your arms long until it passes your hips, then open the hips and knees hard and let the heels come up."
             ),
@@ -49317,7 +49317,7 @@ enum SampleData {
                 id: "catch",
                 title: "The Catch",
                 intro: "You catch the clean high, in a quarter squat, and stand straight up with it on your shoulders.",
-                why: "The model catches the bar at 2.000 s and sinks only until 2.208 s. The knees bend to 97.8 degrees, which looks deep, but the honest measure is the thigh: it is still 43.0 degrees above horizontal, well above parallel, and the pelvis drops only to 0.701 m before standing to 0.909 m by 2.667 s. The bar settles 6.1 cm from its clean apex, 1.281 m to 1.220 m, onto a real rack: its surface sits 0.19 cm off the clavicular pectoral at the catch and 0.30 cm off the base of the throat at the rack hold. The elbows hang - the elbow joint stays 26.8 cm BELOW the shoulder and 5.6 cm in front of it through the rack - which is the jerk rack Catalyst Athletics describes, elbows down but in front of the bar. That is a coaching description, not a measurement.",
+                why: "Catching high, with your thighs well above parallel, saves your legs for the jerk and stops the bar dragging you into a full squat. Let the bar settle on your shoulders against your throat, elbows down but in front of the bar; that rack gives the dip and drive a solid base.",
                 mistake: "Riding the clean down into a deep front squat instead of standing it straight up.",
                 correct: "Meet the bar early with your elbows turning under it, let the knees give only a quarter of the way, and stand straight up into the rack."
             ),
@@ -49325,7 +49325,7 @@ enum SampleData {
                 id: "drive",
                 title: "Dip and Drive",
                 intro: "You dip a short way with your trunk vertical, then drive the bar up with your legs.",
-                why: "The dip here is small and quick: the knees bend 30.8 degrees, 175.2 to 144.4, between 3.042 and 3.333 s, the hip joint actually OPENS a little, 162.7 to 166.0, and the pelvis drops just 3.9 cm with the bar following it 4.1 cm. The trunk stays vertical, 0.4 degrees behind vertical to 0.6 in front. The drive then runs 0.250 s, 3.333 to 3.583 s - beside the 259 plus or minus 24 ms propulsion phase the NSCA 2023 position statement collects for the jerk - and lifts the bar 24 cm on the legs alone, elbows still racked at 43 degrees, heels 4.8 cm off the floor. For scale, the only force-plate study to follow a jerk's dip, drive and catch measured 58 plus or minus 9 degrees of dip knee flexion in seven recreational weightlifters, six men and one woman, so this model dips about half as deep; nobody has changed dip depth and measured the result, so take it as what this model does.",
+                why: "A short, quick dip with your trunk upright loads your legs like a spring without letting the bar tip you forward. Reverse it at once and drive hard: your legs, not your arms, launch the bar off your shoulders, and your heels come up as you finish.",
                 mistake: "Letting the chest tip forward in the dip, or dipping down into a half squat.",
                 correct: "Bend only at the knees, keep your trunk upright and the bar on your shoulders, then reverse it hard and let your heels leave the floor."
             ),
@@ -49333,7 +49333,7 @@ enum SampleData {
                 id: "split",
                 title: "Split Receive",
                 intro: "As the legs finish you punch under the bar and land in a split to receive it overhead.",
-                why: "The punch and the step happen inside a quarter of a second. Between 3.625 and 3.875 s the elbows open from 55.2 to 173.0 degrees while the pelvis drops 16.6 cm, 0.946 m to 0.780 m, under a bar that peaks at 1.940 m, and the fastest motion in the clip is the single frame that starts it, 13.24 cm of joint travel between 3.583 and 3.625 s. The feet land 60.4 cm apart front to back, the LEFT foot forward and the right back and up on its toe with the heel 8.2 cm off the floor, on a stance 22.0 cm wide, and the split is held 0.46 s. The front foot comes home first, by 4.750 s, then the back by 5.125 s - the recovery order Takano teaches and the StrengthLog guide lists, both coaching instructions with nothing measured behind them. Then it is a hold: the arms stay at 170 degrees or more for 1.67 s with the bar 45.5 cm above the head joint and 2.6 cm in front of it, over the body rather than out in front. This receive is the same one the Split Jerk trains on its own: both models hold the split at exactly 60.4 cm front to back with the LEFT foot forward, and peak within 2 mm of each other, 60.8 cm here against 61.0 there. What this lift puts in front of it is the clean from the floor.",
+                why: "Splitting your feet drops you under the bar as your arms lock, so you catch it overhead instead of pressing it up. Hold the bar over your head and trunk, not out in front, until it is steady, then step the front foot back first and the back foot after it.",
                 mistake: "Standing under the bar to press it out, or moving the feet before the legs have finished.",
                 correct: "Punch your arms straight as you jump the feet apart, land with the front heel flat and the back foot on its toe with that knee bent, then bring the front foot back first."
             )
@@ -49362,8 +49362,8 @@ enum SampleData {
             mistakeBadge: "PRESSING THE JERK OUT",
             correctCue: "Legs drive it, arms lock",
             mistakeCue: "Arms press it off the shoulders",
-            correctNote: "The legs put the bar up: in the model the bar rises 24 cm with the elbows still racked at 43 degrees, and they only open once it is already moving.",
-            mistakeNote: "Pressing it off the shoulders caps the jerk at what your shoulders can press; here the elbows do not start to open until the bar is 24 cm up."
+            correctNote: "The legs put the bar up. Your elbows stay in the rack while the drive launches the bar and only open once it is already moving, so your arms just lock it out.",
+            mistakeNote: "Pressing it off the shoulders caps the jerk at what your shoulders can press. Let the leg drive get the bar moving first, then punch your arms straight under it."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.54, cy: 0.59),
@@ -49402,7 +49402,7 @@ enum SampleData {
                 id: "rack",
                 title: "Front Rack",
                 intro: "The bar starts racked on the front of your shoulders, your hands deep under it and your elbows down.",
-                why: "In the model the bar sits at 1.465 m, 3.0 cm above the shoulder joint, with the elbows folded to 43.0 degrees. At the rack the bar is 7.3 cm above the wrist and 6.6 cm behind it, so the hand is under and in front of the bar rather than holding it up, and the grip is 0.614 m against 0.392 m between the shoulder joints - clean width. Catalyst Athletics teaches exactly this: the bar between the throat and the top of the shoulders, the hands as deep under it as possible, the elbows down but in front of the bar. Everett gives the reason - a bar held mainly in the arms keeps descending after the legs have started to extend again - which is coaching, not a measured outcome. The clip holds the rack 0.708 s a rep, the longest still pose in it. This is the jerk half of a clean and jerk, taken from a rack rather than cleaned: there is no pull from the floor anywhere in the clip and the plates never come within 1.198 m of it.",
+                why: "A solid rack puts the bar on your shoulders, not your arms, so the force of the dip and drive goes straight into it. Held mainly in the arms, the bar keeps sinking after your legs have started to push.",
                 mistake: "Carrying the bar on the hands with the elbows driven high, as in a clean rack.",
                 correct: "Set the bar across the front of your shoulders, push your hands as deep under it as they will go, and let your elbows hang down in front of the bar."
             ),
@@ -49410,7 +49410,7 @@ enum SampleData {
                 id: "dip",
                 title: "Dip",
                 intro: "You bend at the knees and drop a short way straight down, with your trunk staying upright.",
-                why: "In the model this is a knee-only dip. Over 0.250 to 0.583 s the pelvis drops 3.94 cm, 0.909 m to 0.870 m, and the knees go 175.2 degrees to 144.4, about 31 degrees, in 0.33 s. The trunk moves 0.99 degrees in all, the pelvis travels 0.00 cm front to back while the knees come 8.72 cm forward, and the hip angle actually OPENS, 162.7 to 166.0 degrees, so nothing hinges. Both heels stay flat and the elbows do not move: 43.1 degrees to 43.2. This dip is shallower than the coaching standard and than every measured value: Catalyst asks for roughly 10% of your height, Lake 2006 measured 58 plus or minus 9 degrees of dip knee flexion in seven recreational lifters against this model's 31, and Soriano 2024 a centre-of-mass dip of 0.20 m in sixteen resistance-trained participants, none of them a skilled weightlifter. Nobody has shown an optimum, so take the shape from the model and the depth from your own lift.",
+                why: "The dip loads your legs like a spring. Bending only at the knees, with your trunk upright, heels flat and elbows still, keeps the bar on your shoulders and lets the drive send it straight up. Keep it short, and find the depth that drives the bar hardest for you.",
                 mistake: "Tipping the chest forward or sitting the hips back, so the bar rolls off the shoulders.",
                 correct: "Keep your trunk upright and your heels flat, bend only at the knees, and sink a few inches - about a third of the way to a quarter squat."
             ),
@@ -49418,7 +49418,7 @@ enum SampleData {
                 id: "drive",
                 title: "Leg Drive",
                 intro: "Out of the bottom you drive the floor away with your legs, and your arms do nothing yet.",
-                why: "The drive takes 0.250 s in the model. The knees go 144.4 degrees back to 172, the pelvis 0.870 m to 0.955 m - 4.6 cm ABOVE its racked height - and the bar 1.423 m to 1.653 m, a rise of 23.0 cm, while the elbows are still at 41.7 degrees. Both heels leave the floor together and reach 4.77 cm up with both toes still down. The arms only open after all of that: the elbow jumps 9.25 degrees in the single frame at 0.875 s and runs 43 to 173 degrees in 0.333 s. From 0.000 s to 0.833 s it never leaves 39.4-43.2 degrees, so there is no press during the drive to describe. Everett warns that pressing early stops leg and hip power reaching the bar and leaves the work to the weaker arms - technique teaching, not a measured effect.",
+                why: "The legs do the lifting here: a hard drive straightens your knees, brings your heels up and launches the bar off your shoulders before your arms move. Pressing early stops the power of your legs and hips reaching the bar and leaves the work to your weaker arms.",
                 mistake: "Pressing with the arms before the legs have finished opening.",
                 correct: "Push the floor away hard with your legs and leave your arms where they are until the bar is already moving up."
             ),
@@ -49426,7 +49426,7 @@ enum SampleData {
                 id: "split",
                 title: "The Split",
                 intro: "As the bar leaves your shoulders you split your feet and drop under it.",
-                why: "In the model the feet split 61.0 cm front to back in 0.333 s, measured at the one frame both are at their widest, and widen sideways by only 7.3 cm. The pelvis drops 17.52 cm, 0.955 m to 0.780 m, while the hands go 25.9 cm up and 17.1 cm back. In the hold the front foot is flat and the rear foot stands on the ball of the foot with its heel 8.20 cm up, and that heel stays up for 1.83 s a rep. The rear knee is the more bent of the two, 110.5 degrees against 136.5 at the front - 26.0 degrees apart. Everett teaches that the back knee must stay bent, which stops it being driven into hyperextension as the weight arrives; that is coaching, and nothing in the literature measures a split stance or how the weight divides between the two feet.",
+                why: "The split drops you under the bar quickly and catches it on a long front-to-back base. The flat front foot and the bent back leg share the load; a back knee left straight can be jammed into hyperextension as the weight arrives.",
                 mistake: "Landing with both feet flat, or moving the feet before the legs have finished driving.",
                 correct: "Punch your arms up as the bar passes your head, jump one foot forward and the other back, and land with the front foot flat, the back heel up and the back knee bent."
             ),
@@ -49434,7 +49434,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Lockout",
                 intro: "You catch the bar with your arms locked overhead, then stand the split up under it.",
-                why: "The bar is not finished at the catch. In the model it is at 1.927 m when the split lands and rises a further 12.98 cm to its peak 2.057 m, purely from standing up - 59.26 cm above its racked height, 45.50 cm above the head joint and 2.60 cm in front of it, and 1.49 cm in front of the mid-stance point, so the load finishes over the base. The feet come back one at a time, the front one over 1.625-2.042 s and the rear one over 2.083-2.458 s, 0.42 s apart; Takano and the StrengthLog guide both teach the front foot first, which is coaching with nothing measured behind it. It never locks out straight: the elbows stop at 173.0 degrees, 7.0 degrees short, and the knees at 175.2 and 175.3, which is where they sit standing in the rack too. The lockout is held for 4 frames, 2.500 to 2.625 s.",
+                why: "The lift isn't over at the catch; it finishes when you stand out of the split. Recovering front foot first, with the bar held over the middle of your stance, keeps the weight over your base so it can't pull you forward or back.",
                 mistake: "Finishing with the bar out in front of your head, or standing both feet up at once.",
                 correct: "Punch the bar up until your elbows lock, bring the front foot back first and then the rear, and stand tall with the bar over your head."
             )
@@ -49460,8 +49460,8 @@ enum SampleData {
             mistakeBadge: "MOVING THE FEET EARLY",
             correctCue: "Drive first, then the feet",
             mistakeCue: "Feet split before the drive ends",
-            correctNote: "In the model the feet stay put until the drive is over: the knees are back to 172 degrees and both heels 4.77 cm up at 0.833 s, and only then do the feet leave the floor, the ankle gap opening from 0.238 m to 0.680 m by 1.083 s.",
-            mistakeNote: "Takano teaches that moving the feet before the drive is complete cuts the force that reaches the bar - a coaching instruction, not a measured outcome, since nothing in the literature times the feet against the drive."
+            correctNote: "Your feet stay planted until the drive is finished: your knees are straight and your heels have come up before either foot leaves the floor. Only then do you jump the feet apart into the split.",
+            mistakeNote: "Moving the feet before the drive is complete cuts the force that reaches the bar, so it doesn't climb high enough for you to get under it. Finish the push with your legs, then split."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.05, ry: 0.07, cx: 0.50, cy: 0.63),
@@ -49496,7 +49496,7 @@ enum SampleData {
                 id: "rack",
                 title: "Front Rack",
                 intro: "The bar starts racked on the front of your shoulders, your hands deep under it and your elbows hanging down.",
-                why: "The clip opens with the bar already racked at 1.4645 m - 3.00 cm above and 9.55 cm in front of the shoulder joint - and holds that pose still for 0.417 s at the top of every rep. There is no clean here and the bar never comes near the floor. The elbow is closed to 43.0 degrees with the upper arm only 21.5 degrees from hanging straight down, so the elbow sits 26.79 cm BELOW the shoulder joint and 5.57 cm in front of it: a jerk rack, not a clean rack, and nothing in the model lifts the elbows in front. The bar is resting across the front of the shoulders, not held up by the hands. Catalyst Athletics teaches the same shape, elbows down but in front of the bar and out to the sides; that is coaching, not measurement.",
+                why: "Resting the bar on the front of your shoulders, with the elbows down and only slightly in front, makes your body the platform for the drive. This is a jerk rack, not a clean rack: the hands steady the bar, they don't hold it up.",
                 mistake: "Carrying the bar on your hands with the elbows driven high, as in a clean rack.",
                 correct: "Rack the bar across the front of your shoulders, push your hands as deep under it as they will go, and let your elbows hang down just in front of it with the grip relaxed."
             ),
@@ -49504,7 +49504,7 @@ enum SampleData {
                 id: "dip",
                 title: "Dip",
                 intro: "A short dip straight down: the knees bend, the trunk stays upright and the hips barely move.",
-                why: "In the model the dip takes 0.292 s and is all knee and ankle. The knee goes 175.2 to 144.40 degrees - 30.8 degrees of flexion - the pelvis drops 3.94 cm to 0.8699 m, and the bar reaches 1.4234 m, its lowest point in the whole clip. The trunk moves only 0.99 degrees, from 0.42 behind vertical to 0.57 in front, and the hip actually OPENS, 162.7 to 166.0 degrees, so this is not a hinge and there is no chest to keep up. Both heels stay flat; the first one leaves the floor at t 0.667, after the dip has finished. The measured literature dips deeper than this model does - 58 plus or minus 9 degrees of knee flexion in seven recreational lifters (Lake 2006) and a centre-of-mass dip of 0.19 plus or minus 0.04 m in sixteen resistance-trained participants, none of them a skilled weightlifter (Soriano 2024) - and no study has shown an optimum depth.",
+                why: "The dip is all knees and ankles, not a hinge: your hips stay under the bar and your trunk stays upright, so the bar sinks straight down with you. Keep your heels down until the dip is done, and keep it short and quick.",
                 mistake: "The chest tipping forward in the dip instead of the body sinking straight down.",
                 correct: "Bend at the knees and sink straight down a few inches, trunk vertical and the whole foot on the floor, then reverse it without pausing at the bottom."
             ),
@@ -49512,7 +49512,7 @@ enum SampleData {
                 id: "drive",
                 title: "Leg Drive",
                 intro: "The legs throw the bar: they open fast out of the dip while the arms stay closed.",
-                why: "In the model the drive takes 0.250 s and does all the work. The knee opens 144.40 to 172.07 degrees, the pelvis rises 8.49 cm to 0.9548 m - its highest point in the clip, 4.55 cm above the rack - and the bar climbs 22.94 cm to 1.6528 m, while the elbow goes 43.2 to 41.7 degrees, closing slightly rather than helping. Both heels lift, peaking at 4.77 cm exactly at the top of the drive. Note what the model does NOT do: the knee stops 3.2 degrees short of its own clip maximum of 175.40, so this is not full extension - and coaches disagree about those last few degrees, CrossFit asking for full extension and Everett saying they add little and cost time under the bar, with nothing measured either way. Which muscles do the work is paint and mechanics only: no peer-reviewed EMG study of any jerk has been published.",
+                why: "The drive does the real work: your knees open fast, your heels come up and the bar leaves your shoulders while your arms are still bent. Make sure the bar is already rising before your arms join in.",
                 mistake: "Pressing with the arms before the legs have finished, so the bar stalls on the shoulders.",
                 correct: "Drive the whole foot into the floor and open your knees fast, letting the heels come up as the drive finishes, and keep your arms closed until then."
             ),
@@ -49520,7 +49520,7 @@ enum SampleData {
                 id: "under",
                 title: "Press Under",
                 intro: "Once the bar is moving, the arms punch you down under it rather than pressing it up.",
-                why: "This is the fastest thing in the clip: the elbow sweeps 41.7 to 173.0 degrees in 0.333 s, a mean 394 degrees per second. While it does, both feet leave the floor for 0.250 s (t 0.875 to 1.083, the toes 3.45 cm up) and land wider, the ankle gap 0.238 m at take-off and 0.300 m on landing - 8 cm wider than the 0.220 m it racks in, and still inside the 0.3922 m between the shoulder joints. The catch at t 1.083 is the deepest moment of the clip: knee 121.83 degrees, the pelvis 9.80 cm below the rack and 5.86 cm lower than the dip. Everett puts the mechanism plainly - in a jerk the attempt to press the bar up pushes the lifter down, so the arms move the body - and CrossFit teaches the arms locking out slightly before or as the feet land, which is what the model shows: on the frame the feet land, t 1.125, the elbow already reads 171.0 degrees, and one frame later it is at its 173.0 maximum.",
+                why: "This is the fastest part of the lift. Pushing against the rising bar drives your body down under it, while your feet hop slightly wider, still inside shoulder width. Aim for your elbows to lock as your feet land, so you catch the bar already fixed overhead.",
                 mistake: "Waiting with straight legs and pressing the bar up the last part of the way.",
                 correct: "As the legs finish, punch your arms straight and let that push drive you down under the bar, re-bending your knees as it locks out."
             ),
@@ -49528,7 +49528,7 @@ enum SampleData {
                 id: "lockout",
                 title: "Lockout",
                 intro: "You receive in a quarter squat with the bar locked over your ankles, then stand up with it.",
-                why: "The model holds the elbow at or above 170 degrees for 1.833 s a rep and flat at its maximum 173.0 degrees for 1.792 s. The bar peaks at 2.0574 m, and at the lockout it sits 45.50 cm above the head joint and only 1.49 cm in front of the ankle, having travelled 7.55 cm BACK from where it was racked, so the load finishes over the base rather than out in front of it. The receive is a quarter squat that rebounds to 130.16 degrees of knee and freezes there for 0.250 s, then stands to 175.3 degrees over 0.542 s; Catalyst Athletics calls any depth above a parallel squat a push jerk, and says that if the knees rebend at all after the dip and drive the lift is a push jerk rather than a push press - definitions from coaching, not measurements. There is no split: foot_L.Z minus foot_R.Z never exceeds 0.123 mm in 192 frames, which is the whole difference between this lift and the Split Jerk.",
+                why: "Catching in a quarter squat with the bar locked over your ankles keeps the weight over your base rather than out in front of you. Your feet land side by side, not split, which is what sets this lift apart from the Split Jerk.",
                 mistake: "Locking the bar out in front of your face, so it drags you forward out of the catch.",
                 correct: "Punch the bar up past your face and push your head through your arms to locked elbows, with the bar over your ankles, then stand up out of the quarter squat before you lower it."
             )
@@ -49554,8 +49554,8 @@ enum SampleData {
             mistakeBadge: "RECEIVING ON STRAIGHT LEGS",
             correctCue: "Knees re-bend to catch it",
             mistakeCue: "Knees stay locked straight",
-            correctNote: "The knees re-bend to receive: the catch bottoms at 121.83 degrees of knee at 1.083 s, rebounds to 130.16 and freezes there for 0.250 s before standing to 175.3, so the bar is caught on bent legs. The feet stay level while that happens - foot_L.Z minus foot_R.Z never exceeds 0.123 mm in 192 frames - and only widen, the ankle gap 0.238 m at take-off to 0.300 m on landing.",
-            mistakeNote: "Punching the bar up and keeping the legs straight turns this into a push press: Catalyst Athletics teaches that if the knees rebend at all after the dip and drive the lift is a push jerk, so a receive with no re-bend is the one that has lost the lift. That is a definition from coaching, not a measurement."
+            correctNote: "Your knees bend again as you receive the bar, so you catch it in a quarter squat on bent legs. Your feet stay level, landing just a little wider than they started, before you stand up with the bar locked overhead.",
+            mistakeNote: "Punching the bar up while keeping your legs straight turns this lift into a Push Press. Without the re-bend you have to press the bar the last part of the way with your arms alone, which limits how much weight you can put overhead."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.06, cx: 0.56, cy: 0.40),
@@ -49589,7 +49589,7 @@ enum SampleData {
                 id: "setup",
                 title: "Start Position",
                 intro: "You stand a short step back from a box that never moves, tall and still, with your arms loose and ready to swing.",
-                why: "In the model this is a held pose and not a wind-up: 61 frames are identical to better than a micron and the stand lasts 2.500 s in every rep. The knees are at 167.02 and 167.06 degrees, the hips 166.12, the trunk 1.58 degrees forward and the pelvis 0.9029 m - and note that the rig stands with about 13 degrees of soft knee, so every flexion figure in this entry is measured from 167.0 and not from straight. The stance is NARROWER than the shoulders: 0.3000 m between the ankles against a shouldergap frozen at 0.3922 m for all 384 frames, which is 76.5%, with each foot 0.1500 m off the midline. The box is a plain block 0.840 m wide, 0.380 m tall and 0.640 m deep that never moves at all - its bounding box and its centroid are bit-identical on every frame and its screen position has a range of 0.000000 - and its front face is 38.4 cm in front of the ankle joint and 24.6 cm in front of the toe. The hands are already wide and stay wide: the gap between them never drops below 0.6118 m, 1.56 to 1.85 times the shoulder span, and at this freeze the wrist is 0.3059 m off the midline against the collarbone at 0.0128 m. Nothing in the literature sets a box height. Dos Santos 2024 had 14 recreationally active men and 17 women jump onto boxes at five heights, from zero to 80% of each person's own maximum, and measured peak force, rate of force development, peak power, jump height and time to take-off: peak force was higher at 80% than at zero in the WOMEN only, with no significant difference on any other variable in the men or at any height below 80% in the women. So this model shows one box and not a prescription: the mesh is 38.0 cm tall, and because its base sits 1.2 cm into the floor the drawn top face is at 36.8 cm while the plane the lifter stands on is at 38.0 cm, so a reader measuring the box on screen gets 36.8 cm. The three coaching sources that do give a rule disagree with each other - Catalyst Athletics and Everett set the box deliberately low so the jump itself is maximal, NASM suggests 12 to 18 inches for beginners for landing control, and both reason from what you are training rather than from what you can clear. The setup step names NASM's beginner range as a starting point, as coaching and not as a finding, because the alternative the draft had - pick a box you can land on with your knees bending - asks a beginner to know how a box jump lands before they have done one.",
+                why: "A still, balanced start means every rep begins from the same place, so the jump comes from your legs rather than a shuffle. Pick the box for landing control, not for the height you can clear: a lower box lets you jump hard and land well.",
                 mistake: "Standing so close that you have to pike your hips to get your feet over the edge, or picking the tallest box you can reach.",
                 correct: "Stand about a foot's length back from the box with your feet a little inside shoulder-width and your weight over the whole foot, chest up and both arms hanging loose, and choose a box you can land on with your knees bending rather than the tallest one you can clear."
             ),
@@ -49597,7 +49597,7 @@ enum SampleData {
                 id: "dip",
                 title: "Countermovement",
                 intro: "You drop quickly into a short dip and swing both arms back behind your hips.",
-                why: "The dip runs from t 0.667, the last frozen frame, to t 1.250. Over it the knees go from 167.02 to 107.32 degrees, the hips from 166.12 to 116.31, the trunk from 1.58 to 33.45 degrees forward - its maximum anywhere in the clip - and the pelvis drops 16.3 cm to 0.7398 m, which is the lowest it reaches in 384 frames. The arms go with it: the wrist travels from z +0.1274 m to -0.1060 m at t 1.083, 23.3 cm back and behind the hips, with the elbow moving at most 12.65 degrees over the entire clip (159.10 to 171.75) and the two elbows agreeing to 0.000142 degrees on every frame, so this is a straight-arm swing from the shoulder and never a pull. The knee is not finished at t 1.250 either: it opens 3.8 degrees at t 1.333 and then re-flexes to 105.14 at t 1.500, which is its deepest point before the feet leave. That is about 62 degrees of bend from the standing 167.0 - between a quarter and a half squat - and only 0.167 s separates it from the last frame a toe is on the floor. This is not the knee-only dip of a jerk or a push press, where the trunk stays inside a degree of vertical; here it comes forward 32 degrees.",
+                why: "A quick dip loads the hips and knees like a spring, so you jump higher than from a held squat. The arms swing straight from the shoulders, the chest comes forward as the hips bend, and the dip stays between a quarter and a half squat.",
                 mistake: "Sinking slowly into a deep squat, or stopping at the bottom before you jump.",
                 correct: "Bend your knees and hips quickly into a short dip, about a quarter to a half squat, letting your chest come forward and both arms swing back past your hips, and go straight back up out of the bottom without pausing there."
             ),
@@ -49605,7 +49605,7 @@ enum SampleData {
                 id: "drive",
                 title: "Leg Drive",
                 intro: "Everything opens at once, your heels roll up over your toes, and you throw both arms up.",
-                why: "The heel lift is the measurement that defines this phase. Over t 1.458 to 1.667, 0.208 s, the ankle joint rises from 0.87 cm to 6.85 cm above its own resting height while the toe stays on the floor at 0.0141 to 0.0158 m, its resting value: the ankle angle opens from 82.8 to 142.6 degrees with the toe still planted. Underneath it the knee goes 106.9 to 166.9 degrees, the hip 128.0 to 163.1, and the trunk comes back up from 20.9 to 8.3 degrees forward. The feet do not slide while any of that happens - the ankle's front-to-back position is identical to 0.0000007 m across the 19 frames of the hold and the dip. The last frame with a toe down is t 1.667, and the knee's maximum for the jump, 174.36 degrees, is at t 1.750, two frames LATER: the extension finishes in the air, not on the floor. The arms finish with it - the wrist runs from 0.6884 m at t 1.333 to 2.1646 m at t 1.917, which is 11.4 cm above the head joint on that frame. Catalyst Athletics teaches exactly this swing, back then aggressively up, and Everett argues the opposite case for weightlifters, that removing the swing is how you make sure the legs and hips are doing the work. Both are coaching; the measured part is that the arms carry no load and the elbow never bends.",
+                why: "The jump comes from driving the floor away: hips, knees and ankles open together and your heels roll up while the toes stay planted, so the ankles add the last push. The feet don't slide, and the arm swing adds height without the elbows bending.",
                 mistake: "Pulling your feet up to reach the box instead of driving the floor away, and letting the arms stop at your hips.",
                 correct: "Drive the floor away through the whole foot until your hips, knees and ankles are all open and your heels have rolled up over your toes, and swing both arms up past your head as it happens."
             ),
@@ -49613,7 +49613,7 @@ enum SampleData {
                 id: "land",
                 title: "Landing",
                 intro: "Both feet arrive on the box together and your hips and knees keep bending to soak up the landing.",
-                why: "The flight is 11 frames, 0.458 s, with 0.500 s between the last and the first toe contact. The ankle reaches 0.6680 m at t 2.000 - 59.9 cm above the floor and 21.9 cm above the plane it is about to land on - and the toe crosses the box's front face (z 0.4636) 11.1 cm above the drawn top face - 11.5 cm by f45, the first frame already past it - so the box is cleared with room rather than scraped, and the pelvis PEAKS only 8.7 cm above the height it will stand at: by the last airborne frame, f51, it is already 5.1 cm BELOW that, and the whole fall from apex to settled is 27.7 cm. It is genuinely a two-foot landing: over the jump the knees stay within 0.57 degrees of each other and the ankles within 0.63 mm of height and 0.18 mm front to back, and both toes reach the box on the same frame. THE DRAWN LANDING IS NOT FLAT, which is a fact about the animation and not an instruction. The toe reaches its settled height at t 2.167 while the ankle is still 5.0 cm above where it will sit, and the heel does not arrive until t 2.333, 0.167 s later, with the ankle angle closing from 105.0 to 78.7 degrees over those five frames. The knee flexes from the standing 167.02 to 107.68 at the first frame of contact and 100.53 at t 2.250 - about 66 degrees of travel - and the ankles stay 0.3000 m apart through all of it, so the feet never widen to receive it. That heel timing is the rig's own and not a cue: a heel arriving 0.167 s late on a jump whose apex is 8.7 cm above the box is what a soft landing looks like in an animation, and it is still a whole-foot landing that the box has to be low enough and big enough to take. The lifter lands centred, not on the lip: the ankle settles 19.6 cm behind the front face and 44.4 cm in front of the back one, 51.7 cm forward of where it took off, after overshooting 3.8 cm and being pulled back. Landing on the box rather than the floor is where this lift is cheap, and that is a force result and not an activation one: Janikov 2023 put 20 recreationally trained men on force platforms for maximal countermovement jumps, 50 cm hurdle jumps and 50 cm box jumps and measured about 51% less peak impact force in the box jump, with no difference in peak velocity, peak vertical force, peak resultant force or total impulsion time. That study recorded no muscle activity at all.",
+                why: "Clear the edge with room to spare and land mid-box on both feet together. Bending the hips and knees spreads the landing out, and since you drop only a short way onto the box, the impact is about half that of a floor landing.",
                 mistake: "Landing with the knees straight, or landing on the balls of your feet near the front edge with the heels hanging off.",
                 correct: "Land on both feet at once, well back from the front edge of the box, toes down first and the heels following so the whole foot is down, keep your knees pointing out over your toes rather than letting them fall in, and keep bending your hips and knees until the landing goes quiet."
             ),
@@ -49621,7 +49621,7 @@ enum SampleData {
                 id: "down",
                 title: "The Step Down",
                 intro: "There is no jump down in this lift: you stand all the way up on the box and then step off one foot at a time.",
-                why: "After the landing the lifter stands up on the box over t 2.333 to 3.000, the pelvis rising 19.0 cm from 1.0922 to 1.2823 m while the trunk comes back from its peak 31.45 degrees at t 2.417 to 1.58, and then holds still for 0.750 s, 19 identical frames. The way down is a climb and not a jump. The right toe leaves the box at t 4.042 and reaches the floor at t 4.833, then the left leaves at t 5.125 and lands at t 6.000, so the descent runs t 3.875 to 6.000 - 2.125 s, 38.6% of the 5.500 s this rep spends moving - and the only flight anywhere in the 384 frames is the jump up. The RIGHT foot leads down in both reps and does not alternate. The clip's two deepest knees are both here and not in the jump: the left support knee bends to 66.5 degrees at t 4.833 while the right foot reaches for the floor, and the left swing knee to 45.08 at t 5.500, against the jump's own deepest 100.53, and the ankles come 0.7555 m apart at t 4.875 with one foot on each level. NASM's box-jump page is the named source for stepping down - it says to step down carefully and not to jump down, and lists jumping down among its errors - and that is coaching: nobody has compared stepping down with jumping down in a study, and the figure that circulates for how much force stepping down saves has no study behind it, so it is not quoted here in any form. What is measured is only how drop landings scale. Niu 2014 pooled 26 studies and found peak vertical ground reaction force rising as the square root of the drop height, and Gunay 2026 had 32 athletes drop-jump from 26, 35 and 42 cm and found peak knee moments rising with height, highest at 42 cm.",
+                why: "Stepping down keeps each rep to one hard jump up and one controlled landing. Jumping off the box adds a heavier landing every rep, and the higher the drop the harder it hits your knees; stepping down one foot at a time avoids that and lets you reset.",
                 mistake: "Jumping or dropping back off the box, or rebounding straight into the next rep.",
                 correct: "Stand all the way up on the box, then step down one foot at a time and reset both feet on the floor before the next jump - do not jump or drop off the box."
             )
@@ -49647,8 +49647,8 @@ enum SampleData {
             mistakeBadge: "STIFF-LEG LANDING",
             correctCue: "Knees bend as you land",
             mistakeCue: "Knees stay straight on the box",
-            correctNote: "In the model the knee is 167.02 degrees standing, 107.68 on the first frame the toe is on the box and 100.53 at t 2.250, so the landing is taken over about 66 degrees of knee travel - which is the part of this animation worth copying. The heel following the toe by 0.167 s is not: on a jump whose apex is only 8.7 cm above the box the instruction is a whole foot down, and the ankle closing 105.0 to 78.7 degrees over those five frames is how the rig draws a soft landing, not how to aim one.",
-            mistakeNote: "NASM lists landing with straight knees among its box-jump errors, and the force cost is measured, though never on a box: Myers 2011 had 16 healthy adults land from 40 cm and recorded peak vertical force of 1.63 against 2.60 body weights, with 55.4 against 36.8 degrees of knee travel, when they were told to land softly rather than stiffly, and Guy-Cherry 2018 measured 1.34 against 1.81 body weights across soft and stiff landings in 30 participants from the same height. Neither study used a box, and no study shows that any landing cue changes an injury rate."
+            correctNote: "Let your hips and knees keep bending after your feet touch the box, so the landing is spread over a deep bend instead of stopped in one jolt. Get the whole foot down, toes then heels, with your knees pointing out over your toes, and stay low until the landing is quiet.",
+            mistakeNote: "Landing on straight knees stops you almost instantly, so more of the force goes into your joints instead of being absorbed by your muscles. Studies show a soft, knees-bent landing cuts peak landing force by about a third compared with a stiff one. If you can't land with your knees bending, the box is too high."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.65, cy: 0.56),
@@ -49686,7 +49686,7 @@ enum SampleData {
                 id: "stance",
                 title: "On the Box",
                 intro: "You begin with your whole working foot already up on the box and the other foot flat on the floor behind you.",
-                why: "The clip opens and closes in the same pose, held still for 3.708 s of every 8.000 s cycle. The lead knee is already at 73.3 degrees and the lead hip at 94.8, the trunk is 9.6 degrees forward of vertical and the arms hang with the elbows at 171.7. The whole lead foot is on the box, the ankle 0.081 m and the toe 0.028 m above its top face, and it stays over the box footprint in 384 of 384 frames - 11 mm of side-to-side travel and 66 mm of fore-and-aft travel in the entire clip. The feet are 0.300 m apart sideways and 0.560 m apart front to back, and the floor foot ends the rep at the point it started, to 0.0 mm in both directions. The box is 0.840 m wide, 0.380 m tall and 0.640 m deep, which is 85% of this lifter's knee height, and it does not move by one micrometre at any frame. So this is a jump taken FROM a box by one leg, not a climb onto it: the lifter is never standing on the box with both feet, and the left leg leads in both reps. Box height is a choice, not a finding - no study compares step heights, and the 41.5 cm box in the one published measurement of this lift is that protocol's box, not a recommendation.",
+                why: "Starting with the whole foot flat on the box gives that leg a stable base to jump from, so the work comes from one leg rather than a climb. Keep the same foot up for the whole set, and pick a box a little below knee height that you can control.",
                 mistake: "Setting only the ball of the foot or the toes on the box, with the heel hanging over the edge.",
                 correct: "Put the whole of one foot flat on the box with the heel on the surface, leave the other foot flat on the floor behind you, and keep that same foot on the box for every rep of the set."
             ),
@@ -49694,7 +49694,7 @@ enum SampleData {
                 id: "dip",
                 title: "Lean and Load",
                 intro: "You lean out over the box foot and let that knee and ankle fold a little, then jump straight out of it.",
-                why: "The dip is small and it is not a squat. Over 0.542 to 0.833 s the lead knee closes from 72.9 to 65.3 degrees and the lead ankle from 88.8 to 79.2, but the pelvis drops only 0.015 m, from 0.856 m to 0.841 m. What actually travels is the trunk: it pitches from 10.0 to 27.5 degrees by 1.167 s, by which point the knee is already opening again. The lead knee passes 0.050 m in front of its own toe at the bottom and peaks 0.069 m past it, from 0.012 m behind at rest. The arms contribute nothing to this: the near hand moves at most 0.191 m from its resting place over the first 28 frames and its swing does not begin until 1.208 s. Reading those angles together, the load goes on by leaning the body over a foot that is already high rather than by sinking - that reading is mechanics, the angles are measured. ACE's own power version of this lift starts hinged forward from the hips, which is the same shape and is coaching, not measurement; ACE's upright-torso rule belongs to the strength step-up and carrying it here would be an inference.",
+                why: "The load goes on by leaning your chest forward over the box foot, not by squatting down. The hips drop only a little while the knee and ankle bend slightly and the knee moves past the toes, putting your weight on the box leg ready to drive.",
                 mistake: "Sitting the hips back into a squat, or dropping straight down with the chest kept upright.",
                 correct: "Let your chest travel forward over the box foot until your weight is on it, sink a couple of inches at that knee and ankle with your arms hanging, and jump straight out of the bottom."
             ),
@@ -49702,7 +49702,7 @@ enum SampleData {
                 id: "drive",
                 title: "Drive Up Off the Box",
                 intro: "One leg does all of it: the box leg straightens hard and throws you up off the box.",
-                why: "The floor foot leaves at the very start of this phase: the trail toe is off the ground at 1.208 s and take-off is at 1.708 s, so for the whole 0.500 s that produces the jump there is nothing under the back foot, and it stays airborne for 3.292 s in all. In the 12 frames from 1.208 to 1.667 s, 0.458 s, the lead knee opens from 69.2 to 167.3 degrees, the lead ankle from 77.7 to 153.1 - it peaks at 156.6 two frames later, in the air - and the trunk comes back from 26.6 to 4.5. The heel leaves the box before the toe does, 69 mm up at 1.667 s with the toe still down. Both hands climb 1.540 m, from 0.851 m at the hips to 2.391 m overhead, with the elbows never bending past 159.1 degrees, and the two arms mirror each other to one micrometre. The one measurement published under this name is of force, not of muscle: Glassbrook 2024 put ten professional male rugby league players on a plate under a 41.5 cm box and recorded 63.5 N/kg of peak vertical force for the step-up jump against 23.3 to 28.7 N/kg for three loaded step-up variations, and about 2006 N/s/kg of rate of force development against about 755 for a barbell step-up with a catch. No EMG of a step-up jump exists, so nothing here ranks one muscle against another.",
+                why: "The back foot leaves the floor as the drive begins, so the box leg makes the whole jump on its own. The knee and ankle straighten hard, the heel rolls up before the toes leave the box, and both arms swing up with long elbows to add height.",
                 mistake: "Keeping the back foot down and springing off the floor with it, so the jump comes out of two legs.",
                 correct: "Put your weight over the box foot and let the back foot go light, then drive that whole foot down into the box until the knee and ankle are straight, jumping straight up rather than forward, and swing both arms up past your head as you leave."
             ),
@@ -49710,7 +49710,7 @@ enum SampleData {
                 id: "flight",
                 title: "In the Air",
                 intro: "For a moment nothing is touching anything, and the back leg adds nothing to the height.",
-                why: "Both feet are off at once for 0.458 s, from 1.708 to 2.167 s - and that is the only window in the clip when they are. Measured from f40, the last frame the lead toe is on the box, the lead toe rises 0.208 m, the lead ankle 0.217 m, the pelvis 0.216 m and the whole-skeleton centroid 0.210 m; measured against the lifter's own fully extended stance on the box, where the pelvis sits at 1.282 m, the apex pelvis of 1.550 m is 0.268 m of air. The swing leg does much less than the usual coaching line suggests. At its highest, 1.917 s, the right kneecap is still 0.190 m BELOW the pelvis and the right hip angle is 121.05 degrees - it bottoms at 110.8 only later, on the catch at 2.417 s - so that thigh is never horizontal and the knee never reaches hip height. The hands finish 0.154 m above the head joint at their own apex, f44, and reach 0.194 m above it at f40, high enough that the near one leaves the top of the trainer frame for 10 of the 384 frames. One caution: the arc is animated rather than thrown. A 0.458 s hang would need a 0.257 m rise of the centre of mass and the measured rise from take-off is 0.210 m, about 82% of it, so no jump height can be read off the hang time or the other way round. Glassbrook 2024's force figures for this lift were taken at the box, in ten professional men, and say nothing about height. The cue does not ask you to copy that passive swing leg, either: on a one-foot catch onto a box the trail leg is the limb nearest the edge, so keeping it quiet and underneath you is the instruction, and that is a convention rather than anything this clip measures.",
+                why: "For a moment both feet are off and your body rises as one piece. The back leg isn't there to add height: keep it quiet and underneath you, because on a one-foot landing it is the leg closest to the edge of the box.",
                 mistake: "Kicking or tucking the back leg up to try to gain height, or letting it swing loose while you are in the air.",
                 correct: "Stay tall through the middle of the jump with both arms up and your eyes forward, and keep the back leg quiet and underneath you rather than kicking it up for height."
             ),
@@ -49718,7 +49718,7 @@ enum SampleData {
                 id: "land",
                 title: "Land and Stand",
                 intro: "The same foot catches you back on the box on its own, and then you stand all the way up on that one leg.",
-                why: "The lead toe is back on the box at 2.167 s and the foot lands on the spot it left: 5.5 mm across and 31.3 mm fore-and-aft from its last contact point. The knee is already re-flexed to 120.0 degrees before it touches and then gives only 3.8 degrees, to a low of 116.2, so almost none of the absorbing happens there - it happens in the trunk, which re-pitches from 13.1 to 24.1 degrees and reaches 25.3 by 2.417 s, and in the ankle, which gives from 110.0 to 88.8, while the pelvis comes down from 1.212 m to 1.163 m - a 4.9 cm give inside the catch itself, at the end of a 38.7 cm fall from the 1.551 m apex. That trunk fold is the animation's shortcut and not the lift: a one-leg catch absorbed at the trunk puts the drop through the lower back, so take it at the knee and the ankle instead of copying what you see here. Then a second, slower extension on the same leg: knee 119.1 to 166.9, hip 127.7 to 164.9, trunk 24.1 back to 3.6, pelvis up to 1.282 m, with a 0.333 s still hold balanced on the left leg at the top. The other foot does not reach the floor until 4.500 s, and it returns to the identical place it left. Landing soft is measured to cost less force, in two groups at the same 40 cm drop: Myers 2011 recorded 1.63 body weights soft against 2.60 stiff in 16 healthy adults, and Guy-Cherry 2018 1.34 soft, 1.50 self-selected and 1.81 stiff in 30 participants. ACE's cue for this lift is to land softly and quietly on the mid-foot and not to lock the knee, which is coaching, as is the knee tracking out over the toes that the cue asks for - nothing in this clip measures that, and the library badges it six times. Neither force study measured an injury outcome, so none is promised here.",
+                why: "Catch yourself on the same foot, on the spot it left, and let the knee and ankle bend to absorb the drop rather than folding at the waist, which puts the landing through your lower back. Then stand all the way up on that leg before the other foot comes down.",
                 mistake: "Catching the whole landing on a straight knee, letting the knee fall inward, or letting the heel slam down flat on the box.",
                 correct: "Let the same foot come back down well inside the edge of the box, let the knee and ankle bend as you catch yourself with that knee pointing out over your toes, then stand all the way tall on that leg before you lower the other foot down."
             )
@@ -49744,8 +49744,8 @@ enum SampleData {
             mistakeBadge: "STIFF-LEG LANDING",
             correctCue: "Land soft on the box leg",
             mistakeCue: "Catches it on a locked knee",
-            correctNote: "Dropping from 40 cm, Myers 2011 had 16 healthy adults peak at 1.63 body weights of force landing softly against 2.60 landing stiffly, with 55.4 degrees of knee travel from contact against 36.8, and Guy-Cherry 2018 measured 1.34 against 1.81 in 30 participants at the same height. This model gives only 3.8 degrees at the knee on the catch, 120.0 to 116.2, and folds the trunk from 13.1 to 25.3 degrees to take the rest - less knee than either study's soft landing, so take the drop at the knee and ankle rather than copying the trunk.",
-            mistakeNote: "What it costs is force and joint angle only: Guy-Cherry 2018 put electrodes on five leg muscles across soft, stiff and self-selected landings in 30 participants, found no difference in any of them, and scored the stiff landing higher for reactive strength, 0.93 against 0.64. Neither study tested an injury outcome."
+            correctNote: "Landing softly, with the knee and ankle bending, takes much less force than landing stiff; studies show peak force drops by about a third. Take the drop at the knee and ankle rather than by folding your chest forward, and land quietly on the mid-foot with the knee pointing out over your toes.",
+            mistakeNote: "A locked knee stops the drop almost instantly, so the force goes into the joint instead of being absorbed by the muscles. On one leg there is no other leg to share it, which makes a stiff catch on the box harder on the knee and harder to balance."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.07, cx: 0.58, cy: 0.53),
@@ -49784,7 +49784,7 @@ enum SampleData {
                 id: "dip",
                 title: "The Dip",
                 intro: "You bend your knees and send your hips back and down into a shallow squat before you jump.",
-                why: "The dip takes 0.750 s, from the last frozen frame at 0.250 s to 1.000 s. The knee goes 166.83 deg to 84.10 - 82.73 deg at a mean 110 deg/s - the hip 166.87 to 93.40, the trunk 1.58 deg to 41.08 forward and the ankle 105.0 to 76.1, while the pelvis drops 29.28 cm and goes 15.00 cm rearwards. It stays ABOVE PARALLEL: at the bottom the thigh is 25.9 deg below horizontal, the hip 18.8 cm above the knee. The heels are flat the whole way down, the first heel rise coming at f28, after the bottom; and the knees travel out, knee to knee going 0.3022 m standing to 0.5062 m at the bottom with the ankles frozen 0.3000 m apart, so each knee finishes about 10 cm outside its own ankle, 5.89 cm outside its own toe and 6.93 cm ahead of it. (Knee to knee peaks at 0.5151 m at f30, in the drive and not in the dip, which is the figure the draft quoted for this sentence.) Two conventions disagree about what comes next and this model sits between them: the NSCA squat jump test lowers to roughly 110 deg of knee and holds it 2-3 s with the hands on the hips, while Catalyst Athletics teaches changing direction immediately in the bottom; the model pauses the legs 0.167 s and swings the arms right through the pause. Bobbert 1996 measured six male volleyball players jumping 3.4 cm higher with a countermovement than from a held squat, attributing it to joint moments at the start of push-off and not to stored elastic energy. No study measures an optimal dip depth.",
+                why: "A quick dip to just above parallel loads the hips and knees, so you jump higher than from a held squat. Keep your heels flat on the way down and let your knees travel out over your toes, then turn around at the bottom without settling there.",
                 mistake: "Sinking to a full squat, or settling at the bottom long enough that the dip stops helping the jump.",
                 correct: "Bend your knees and send your hips back and down until your thighs are just above parallel, keeping your heels flat and your knees travelling out over your toes, then jump straight back up out of the bottom without settling there."
             ),
@@ -49792,7 +49792,7 @@ enum SampleData {
                 id: "arms",
                 title: "The Arm Swing",
                 intro: "Your arms swing back behind you as you dip, then forward and up as you jump.",
-                why: "The swing happens at the shoulder, not the elbow: the elbow sits at 171.75 deg standing, its minimum anywhere is 158.51 and its whole range 13.24 deg. Measured against its own shoulder joint, the hand is 36.28 cm BEHIND at f21 (0.875 s, the rearmost point), 52.32 cm IN FRONT at f31 (1.292 s), 36.19 cm ABOVE the shoulder at take-off and 46.86 cm above it at the apex - so the swing is still rising 10.66 cm after the feet have left the floor. It runs straight through the pause in the legs: over f24-f27, 0.167 s, 22 of the 26 measured joints move 0.000 mm while each hand covers 367.6 mm in a straight line - 374.7 mm of path - and each elbow 196.5 mm, 200.2 mm of path. Each hand covers 13.82 m over the clip against the pelvis's 4.39 m, the fastest single frame anywhere in it is 27.65 cm of travel by a hand, and the two arms mirror to under a micrometre. Chiu, Bryanton and Moolyk 2014, sixteen women volleyball players with motion capture, found the arm swing raised hip extensor and ankle plantar flexor joint moments and jump height, p <= 0.05; it recorded no EMG, so nothing here says which muscle the swing recruits. Taking the arms out is not a fault - it is the NSCA test protocol, which pins the hands to the hips to remove them.",
+                why: "The swing comes from the shoulders with the elbows long, back as you dip and up as you drive. Studies show a full arm swing helps the hips and ankles push harder and adds jump height. Jumping with your hands on your hips isn't wrong; it just takes the arms out.",
                 mistake: "Letting the arms hang through the jump, or throwing them by bending the elbows instead of swinging them.",
                 correct: "Let your arms swing back behind you as you dip, then throw them forward and overhead as you drive, keeping your elbows long and the swing coming from your shoulders."
             ),
@@ -49800,7 +49800,7 @@ enum SampleData {
                 id: "drive",
                 title: "The Drive",
                 intro: "Out of the bottom you push the floor away and finish up on the balls of your feet.",
-                why: "The drive takes 0.250 s, 1.167 to 1.417 s. The knee goes 84.70 deg to 167.01 at a mean 329 deg/s peaking at 898 in one frame, the hip 96.24 to 166.87, the trunk 38.82 deg forward to 0.33, and the pelvis rises 34.80 cm. The heels come up in order - 0.47 cm at f28, 1.65 at f29, 3.15 at f30 and 6.85 cm at take-off with both toes still planted - and stay up 0.7917 s a rep. The measurement that governs the cue: the ankle is the only joint that goes PAST its standing angle. From its 77.79 deg at f28, where this drive starts, it runs to 146.58 at take-off, 68.79 deg over the drive - 70.48 deg measured from the 76.10 at the bottom of the dip - and finishes 41.6 deg past the 104.99 it stands at, holding that angle through the entire flight. The hip and the knee do finish, they just stop at the pose the rig stands in: knee 84.70 to 167.01 against 166.83 standing, hip 96.24 to 166.87 against 166.87. That standing pose is also the clip's ceiling - knee maximum 167.01 on the left and 167.28 on the right, hip maximum 166.91 and 166.92 - so 167 is this rig's straight, about 13 deg short of a drawn 180, and nothing here reads the rig as a knee that stops short. Chiu 2014 measured the order rather than the amount: a longer delay between pelvis and knee extension went with higher jumps in sixteen women volleyball players (r = 0.82, p < 0.001 with an arm swing). No EMG of a squat jump exists, so nothing here says which muscle drives it: the calves rank primary because the model paints them bright, a painting decision and not a measurement.",
+                why: "As your hips and knees open all the way, your heels come up and your ankles extend, adding the last push of the jump. Leaving the floor off the balls of your feet lets your calves do their share.",
                 mistake: "Driving up flat-footed and leaving the floor with the heels down, so the ankles add nothing to the jump.",
                 correct: "Push the floor away hard and keep pushing until your hips and knees are all the way open, then let your heels come up so you leave the ground off the balls of your feet."
             ),
@@ -49808,7 +49808,7 @@ enum SampleData {
                 id: "flight",
                 title: "Flight",
                 intro: "You leave the floor with both feet at once and come back down on the same patch of floor.",
-                why: "Nine frames are fully airborne, f35 to f43, 0.3750 s of contact-free frames; fitting the toe height across them gives a parabola clean to 6.0e-08 m that crosses the resting toe height at frame 34.023 and frame 43.977, so the true flight time is 0.4148 s. The implied acceleration is 9.810 m/s2 and the take-off speed 2.035 m/s, which gives the measured IN-FLIGHT rise exactly: from take-off at f34, 21.10 cm at the toe and 21.29 cm at the ankle, the pelvis and the head alike. Measured instead against the standing pose the ankle finishes 28.14 cm higher, the pelvis 27.77 and the head 27.87, the difference being the extension taken before the feet leave. Below the shoulders the body is one rigid block that only translates - knee, hip, trunk and ankle gap are frozen to within 0.00001 deg over f34-f44 - while the ankles splay 3.94 cm as the plantarflexion rolls them outward, the toes staying put. Both feet leave and land together: foot_L and foot_R never differ in height by more than 0.204 mm across all 192 frames. And the feet land exactly where they took off, to 0.000 mm in x, y and z; over the whole 8 s the toes move 2.53 mm sideways and 7.80 mm front to back, so the jump is purely vertical, with no drift and no stance reset between reps. The 21.10 cm is this animation and not a target: no source prescribes a height for a training squat jump.",
+                why: "In the air your body rises and falls as one straight piece, with both feet leaving and landing together. Coming down on the same spot shows the jump went straight up; drifting means your push was off-centre. Height isn't the goal here; a clean, vertical jump is.",
                 mistake: "Drifting forward, back or sideways in the air, or leaving the floor one foot at a time.",
                 correct: "Jump straight up off both feet together, and land on the same patch of floor you left with your feet where they started."
             ),
@@ -49816,7 +49816,7 @@ enum SampleData {
                 id: "land",
                 title: "The Landing",
                 intro: "You land on the balls of your feet and let your knees bend to absorb the drop.",
-                why: "The toes touch at f44 with the ankle still at 146.58 deg and the heel 6.85 cm off the floor - a ball-of-foot landing - and the heel is not flat until f47, 0.125 s later. The knee then loses 30.5 deg in a single frame, 167.01 to 136.50 at 732 deg/s, and bottoms at 122.09 deg with the hip at 137.09 and the trunk 20.83 deg forward, the pelvis 10.30 cm below standing. So the landing is 38 deg shallower at the knee than the dip - 122.09 against 84.10, which is 45 deg of flexion from the standing 166.83 - and is absorbed in a quarter of a second; the stand-up then takes 0.333 s. What the softness buys is measured as force and joint angle, never as muscle work. Myers 2011, sixteen healthy adults landing from 40 cm under biplane fluoroscopy: peak vertical ground reaction force 1.63 +/- 0.73 body weights soft against 2.60 +/- 1.32 stiff (P < .001), knee flexion 55.4 +/- 8.8 deg against 36.8 +/- 11.1 (P < .01). Guy-Cherry 2018, thirty participants over three 40 cm landing styles: force 1.34 soft, 1.50 self-selected, 1.81 stiff body weights (p < 0.001), and NO difference in the EMG of five muscles (p > 0.66). A soft landing is about taking the force, not about working a muscle harder, and no study here shows a landing cue changing an injury rate.",
+                why: "Landing on the balls of your feet and letting your heels settle and knees bend spreads the force out instead of taking it in one jolt. Studies show a soft landing cuts peak force by about a third compared with a stiff one; the point is taking the force, not working a muscle harder.",
                 mistake: "Landing with straight legs, letting the knees fall inward, or slapping both heels down flat instead of rolling through the forefoot.",
                 correct: "Land toes first on the balls of your feet with your knees tracking out over your toes, let your heels settle and your knees bend to take the drop, then stand up and stand still before the next rep."
             )
@@ -49840,8 +49840,8 @@ enum SampleData {
             mistakeBadge: "KNEES CAVING IN",
             correctCue: "Knees out over the toes",
             mistakeCue: "Knees collapse inward on landing",
-            correctNote: "In the model the knees travel out, not in: knee to knee goes from 0.3022 m standing to 0.5062 m at the bottom of the dip while the ankles stay 0.3000 m apart, so each knee finishes about 10 cm outside its own ankle, 5.89 cm outside its own toe and 6.93 cm ahead of it, on both legs, which never differ by more than 0.269 deg at the knee.",
-            mistakeNote: "When the knees fall inward the load twists through the knee joint and the glutes do less to help absorb the landing. That is a different axis from landing softly, not the same one: Myers 2011 measured varus and valgus motion as similar between soft and stiff 40 cm landings in 16 adults, so a soft landing does not by itself keep the knees out. No study here tested a knee cue on a jump, and none shows that any landing cue changes an injury rate."
+            correctNote: "Let your knees travel out over your toes as you dip and as you land, while your feet stay where they are. Keeping the knees in line with the feet lets your glutes and thighs share the load evenly, with both legs moving the same way.",
+            mistakeNote: "When the knees fall inward the load twists through the knee joint and the glutes do less to help absorb the landing. Landing softly doesn't fix this on its own, so aim your knees out over your toes on every landing as well as bending them."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.56, cy: 0.63),
@@ -49877,7 +49877,7 @@ enum SampleData {
                 id: "hands",
                 title: "Quiet Hands",
                 intro: "The rope is turned by your wrists, not your arms, so your hands stay low and almost still while the rope goes round.",
-                why: "In this model the hands do not move at all. hand_L.x is +0.3061 m and hand_R.x -0.3061 m at every one of the 192 frames; handgap is frozen at 0.6122 m, 1.56 times the 0.3922 m between the shoulder joints, and each hand covers only 4.85 px of u on screen over the whole clip. The 8.95 cm the hands travel in y is the arm riding the body's 11.539 cm bob, and the elbow opens and closes 18.34 degrees in time with it. Each of the two handles is rigidly fixed to its own hand, 0.098234-0.098235 m from the hand joint across all 192 frames - a range of 0.0005 mm. The rope still turns 16 times, one revolution per bounce, so the turn is animated and the arms are passengers: there is no wrist circle to watch. Nor does the rope pass under the feet - its circle sits 14.1 cm in front of them, a rig artefact and not something to copy. Lee, in the CrossFit Journal (issue 62, 2007), coaches arms close to the sides, elbows pointing down at about 45 degrees and two-inch circles of the wrists. That is a coach's system, not a measurement, and no study of rope-skipping technique was found for this round; measured against it this model is wide, its elbow sitting about 6.5 cm outside the shoulder joint.",
+                why: "Small wrist circles turn the rope quickly for very little effort. Swinging from the shoulders widens the rope's arc, slows every turn and tires your shoulders long before your legs, so keep your elbows close and let your wrists do the turning.",
                 mistake: "Swinging the whole arm to turn the rope, so the hands drift out wide and the shoulders do the work.",
                 correct: "Keep your hands low and close to your sides, elbows in near your ribs and pointing down at about 45 degrees, and turn the rope with small wrist circles rather than swings of your arms."
             ),
@@ -49885,7 +49885,7 @@ enum SampleData {
                 id: "base",
                 title: "The Bottom",
                 intro: "Every bounce starts and finishes in the same narrow stance with your knees softly bent and your feet almost together.",
-                why: "The deepest frame of each cycle is its first. Knee 138.787 degrees, which is 41.2 degrees of bend; hip 156.404; ankle 103.571; trunk 2.579 forward; pelvis 0.88392 m; both heels flat on the floor and the rope directly overhead. The stance never changes: the ankle joints hold 0.1836-0.1900 m apart against 0.3922 m between the shoulder joints, so the feet sit at 46.8-48.5% of shoulder width, mean 47.9%, and each foot is toed out 6.00 degrees, perfectly mirrored. Both feet also leave and land together - the left and right knee never differ by more than 0.108 degrees, the hips by more than 0.205, and the hands are mirror images to 0.0005 mm - so there is no lead leg and nothing alternates. That is the plain two-foot bounce, and it is the version with the lighter landing: Lin and colleagues (2022) put 16 male adolescents through bounced and alternating rope jumping and found the two-foot bounce had the smaller vertical ground reaction force over 11-82% of ground contact (p < 0.001) with a smaller peak force and loading rate, and more hip and knee flexion. Their muscle data is standardised RMS amplitude, not a percentage of a maximum contraction, so it ranks muscles and yields no fraction.",
+                why: "A narrow stance with your toes pointing forward lets both feet leave and land together, so neither leg does more of the work and the rope has one small, compact target to pass under. A two-foot bounce with soft knees is also the gentler way to land: research has found lower landing forces with it than with alternating feet.",
                 mistake: "Letting the feet slide apart or turn out, or planting them wide as if for a squat.",
                 correct: "Stand with your feet almost touching and your toes pointing straight ahead, knees softly bent and your weight over the balls of your feet with the heels light on the floor, and keep that stance for the whole set."
             ),
@@ -49893,7 +49893,7 @@ enum SampleData {
                 id: "ankles",
                 title: "Ankle Drive",
                 intro: "The bounce comes from your ankles: your heels peel off the floor while the balls of your feet stay down.",
-                why: "From the bottom of each bounce to 0.1250 s the ball of the foot stays pinned - the toe joint reads exactly 0.015796 m at four consecutive frames - while the ankle opens 103.571 to 126.566 degrees and the heel rises 0 to 2.762 cm. Over the whole clip that ankle travels 25.92 degrees (103.571-129.494) against 15.93 at the knee (138.787-154.713) and 2.56 at the hip (156.404-158.966) - all four figures the left leg, the right agreeing to 0.24 degrees - so the ankle does more than the knee and hip together. The heel peaks 8.362 cm up at the top of the jump and is above the floor on 11 of the 12 frames of each cycle; it is only properly down on the bottom frame. Nothing above the hip contributes: trunk is frozen at 2.5793 degrees forward with a range of 0.00000 over all 192 frames, and the pelvis, spine, chest, neck, head, both clavicles, both scapulae and both upper arms each have 0.000 mm of x and z range - the upper body is a pure vertical elevator. That is why the paint lights the calves alone and brightest: of 10 painted meshes the 3 bright ones are both gastrocnemius heads and the soleus, with the quadriceps and hamstrings dim behind them and nothing above the knee lit at all.",
+                why: "Rising onto the balls of your feet lets your ankles and calves work like a spring, so each bounce costs little and lands softly. Your knees and hips only give a little and your upper body stays tall and still, which is why you feel it in your calves first.",
                 mistake: "Driving the bounce from the knees, so the heels stay stuck down and the calves never load.",
                 correct: "Push the floor away with the balls of your feet and let your heels lift clear as you go, then let them settle back down between bounces, so the ankle does the work rather than the knee."
             ),
@@ -49901,7 +49901,7 @@ enum SampleData {
                 id: "bounce",
                 title: "Take-Off",
                 intro: "You only have to clear the rope, so the bounce is tiny - a flick off the floor rather than a jump.",
-                why: "Take-off falls between 0.1250 and 0.1667 s of each cycle, when the toe joint leaves its pinned 0.015796 m. Flight is 5 frames, 0.2083 s, with the apex at 0.2500, and through all of it every leg angle is frozen: knee 154.713 and 154.820, hip 158.966 and 159.172, ankle 129.441-129.494, trunk 2.579, constant to 0.06 degrees while the whole body translates. The pelvis rises 11.539 cm, but most of that is the ankle opening over a planted forefoot. The toe joint itself rises 5.209 cm, from 0.015796 to 0.067886 m, and the drawn body's lowest pixel row moves only from 514 to 511 - 3 rows, about 1.7 cm at this framing's 5.645 mm per pixel row. Read the pelvis figure as jump height and you are out by a factor of about seven. The knee neither locks nor folds: its whole range is 15.93 degrees on the left leg this entry measures, 16.00 on the right and the deepest it ever gets is 41.2 degrees of bend. Lee's rule in the CrossFit Journal is to jump only high enough to clear the rope, and he gives that height three different ways in the same article - half an inch, three-quarters, and an inch - so barely off the floor is the honest version of it and no single figure is the standard. That is coaching, not a measurement.",
+                why: "The rope only needs a couple of centimetres to pass under you, so jumping higher is wasted effort and a harder landing. A low bounce with soft knees that stay almost still keeps your rhythm even and lets you skip for much longer.",
                 mistake: "Jumping as high as you can, or tucking the knees up, which costs height and air time on every single turn.",
                 correct: "Bounce barely off the floor, only as high as you need to clear the rope, and keep your knees soft and almost still instead of driving them up."
             ),
@@ -49909,7 +49909,7 @@ enum SampleData {
                 id: "land",
                 title: "Land and Go Again",
                 intro: "Land on the balls of your feet in the same spot and go straight into the next bounce - the rhythm is the exercise.",
-                why: "Landing falls between 0.3333 and 0.3750 s, when the toe joint comes back to exactly 0.015796 m, and there is no separate absorption phase: the knee goes back down the curve it came up, frame for frame, to 0.2 mm. Ground contact is 7 frames, 0.2917 s, against 5 frames, 0.2083 s, of flight - a 58/42 duty cycle at 120 bounces a minute. Those two times sit right on the measured ones: Kaewjaratwilai and colleagues (2025) had 10 female and 10 male Muay Thai athletes skip at 2.2 Hz on force plates and recorded contact times of 0.280 plus or minus 0.03 s and 0.275 plus or minus 0.05 s and flight times of 0.205 plus or minus 0.03 s and 0.245 plus or minus 0.05 s, none of the sex differences significant; their peak forces are in kN without the body masses, so there is no body-weight figure to quote. The feet also come down exactly where they left, foot_L at take-off and at landing being the same point to 0.0000 mm. Rate is not the dose, either - Town, Sol and Sinning (1980) had 19 males and 11 females skip for 5 minutes at each of 125, 135 and 145 skips a minute and found no difference in oxygen uptake, heart rate, ventilation or energy cost at any rate, averaging 11.7 to 12.5 METs. What the cue asks for - timing the bounce to the rope rather than to the sound of it - is the one genuinely hard part of learning to skip and it is not measured by anything here or in the sources; it is also the one thing this rig cannot show, because its rope circle misses the feet by 14.1 cm and so never hits the floor at all.",
+                why: "Each landing loads your ankles and calves like a spring for the next bounce, so pausing or landing flat wastes that energy and breaks the rhythm. Time each bounce to the rope coming down in front of you, not to the sound of it hitting the floor.",
                 mistake: "Pausing between bounces, or landing flat and heavy and then resetting the feet before the next turn.",
                 correct: "Land lightly on the balls of your feet in the spot you left, let your ankles and knees give a little, and go straight into the next bounce - time it to the rope coming down in front of you so it passes under your feet while you are off the floor."
             )
@@ -49932,8 +49932,8 @@ enum SampleData {
             mistakeBadge: "DRIFTING OFF THE SPOT",
             correctCue: "Lands on the same spot",
             mistakeCue: "Creeps forward with each bounce",
-            correctNote: "The model never moves. foot_L at take-off and at landing is the same point to 0.0000 mm - [0.09462, 0.12398, 0.04393] at both - and across the whole 8.000 s clip the toe joint travels 0.698 mm in x and 6.642 mm in z. The ankle joints hold 0.1836-0.1900 m apart throughout, both feet leave and land together, and the two knees never differ by more than 0.108 degrees. Sixteen bounces, one landing spot, and the pose repeats to 0.000 mm every 12 frames.",
-            mistakeNote: "Creeping forward is what happens when the bounce is driven by the knee rather than the ankle, and it is why the basic bounce is coached on one spot. There is nothing measured behind the fault: no study of rope-skipping technique - foot contact, jump height or elbow angle - was found for this round, so it is coaching convention, and Lee's own system reaches it only indirectly, by asking for the weight on the balls of the feet and the body upright and balanced."
+            correctNote: "Both feet leave and land together on the same spot, bounce after bounce. Push straight up from the balls of your feet with your body tall, so the rope stays centred under you and you never have to chase it.",
+            mistakeNote: "Creeping forward usually means the bounce is coming from your knees instead of your ankles, or you are leaning ahead of your feet. Each drift pulls the rope off-centre and makes a catch more likely, so keep your weight over the balls of your feet and your body upright."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.09, ry: 0.04, cx: 0.61, cy: 0.69),
@@ -49968,7 +49968,7 @@ enum SampleData {
                 id: "stance",
                 title: "Start Position",
                 intro: "You stand well back from a loaded sled with a hand on each upright post, your elbows set hard and your whole body tipped into one low line.",
-                why: "The grip and the stance are both measured and both wider or narrower than a reader would guess. The hands are WIDE: handgap is 0.6279 m against a shouldergap frozen at 0.392155 m for all 192 frames, so 160.1% of the shoulder span, and they take the posts FROM THE OUTSIDE - the wrists sit at x plus and minus 0.314 against post centres at plus and minus 0.280, 3.4 cm outside, over a 0.560 m post spacing. The feet are NARROW: anklegap at double support is 0.2882 m, 73.5% of the same shoulder span. The grip is a real grip, which the wrist joint alone would deny: hand_L sits 8.75 cm from Cylinder_097 and hand_R 9.03 cm from Cylinder_096 and no joint ever enters a sled mesh, but extending the elbow-to-wrist line past the wrist - which is where the hand mesh goes - reaches 0.10 cm and 0.36 cm from the post at 10 cm and is inside the post at 12 cm, and a 6x crop of the still shows fingers wrapped round both posts. The lifter starts and stays two thirds of a metre behind the frame: the forward-most toe reaches z -0.3404 against the sled's rear-most point at z +0.3250, a gap of 66.54 cm that never closes. The sled itself is nine static meshes - two 95 cm handle posts, a centre pin, three 40 cm plates, two 95 cm runners and a 72 by 70 cm deck, 74.0 cm wide by 104.5 cm tall by 95.0 cm deep - whose bounding boxes are bit-identical on all 192 frames. On screen only the two handle posts are wholly visible (u 0.0623..0.0893 and 0.1123..0.1431); 50.0% of the sled's projected points fall off the LEFT edge of the frame, so CLIPPED TO THE VISIBLE FRAME it runs u 0.0110..0.2957 and v 0.3611..0.7948, the plates show about a third of themselves and the centre pin is never seen at all - which is why this cue names the posts and nothing else. On load: the literature gives a prescription and this cue does not pass it on as one. Seitz 2017 had 20 rugby league players push at 75% of body mass and sprint 20 m faster at 4, 8 and 12 minutes afterwards, while 125% made them slower at every time point; Martinez-Serrano 2021 found peak power highest at 55%; but Cahill 2021 measured 90 high-school athletes and found that although the load-velocity relationship is highly linear in each individual (r greater than 0.96), the load needed for a given velocity decrement varies greatly between people - so a percentage printed for a general audience would mislead more readers than it helped. The one piece of safety evidence for a non-athletic reader is Baumann 2024: 36 apparently healthy older adults randomised to a progressive sled push or walking completed the protocol with no adverse events, a third of the sled group reporting minimal discomfort. It is an exploratory feasibility study on one machine and establishes no training effect.",
+                why: "Starting well back with long, braced arms lets you lean your whole body into the sled, so your legs drive it instead of your arms. Pick a load you can keep moving at a steady walk; too heavy and the sled stalls and your form breaks down.",
                 mistake: "Standing in close to the sled with the elbows folding and the chest resting on the handles, or loading it so heavy that it will not move at all.",
                 correct: "Take the handles where the sled puts them, walk your feet back behind you, and set your body into one low line from head to heels with your elbows braced."
             ),
@@ -49976,7 +49976,7 @@ enum SampleData {
                 id: "torso",
                 title: "Body Angle",
                 intro: "Your body is one low straight line leaning into the sled, and it holds that angle from the first step to the last.",
-                why: "THE LEAN IS THE ONE THING IN THIS CLIP THAT NEVER CHANGES, and it is the exercise. trunk reads 50.079990 to 50.080019 degrees across all 192 frames - a total of 0.0000296 degrees - and the lumbar, thoracic and neck chains are frozen with it at 170.679, 171.267 and 144.733, zero range on each. The whole midline is a rigid bar that only bobs 22.87 mm up and down: pelvis, spine, chest, neck and head all have an x range of 0.0000 mm and a z range of 0.0001 to 0.0002 mm. So the model shows one angle and CANNOT show it being lost, which is also why this entry badges the fault without a glow that could demonstrate it. The one posture choice the model does make visible is the head: the chest-to-neck segment tilts 55.833 degrees toward the facing direction while the neck-to-head segment tilts only 20.566, so the head is held 35.267 degrees UP off the trunk line - the lifter is looking ahead under a 50 degree lean, not tucked, and that never changes either. What is measured about the lean is measured in TOWING, not pushing, and the copy says so. Lockie 2003 towed 20 men at 12.6% and 32.2% of body mass and found trunk lean, hip flexion and ground contact time all increased while stride length fell about 10% and about 24%. Cronin 2008 towed 20 athletes at 15% and 20% and found sled towing increased trunk angle by 12.5 to 71.5% while a weighted vest at the same relative load DECREASED it by 1.7 to 13.0% - so the lean is the sled pulling the body forward, not the weight pressing it down. Osterwald 2021 took 33 athletes through 40 m at four velocity decrements and found hip, knee, ankle and trunk angle all changed significantly (p less than 0.05) with trunk lean rising LINEARLY with load, and concluded that heavy loads prevented mechanics reflective of maximum-velocity sprinting. All three are a harness, facing forward, with free arms. None of them prescribes an angle, and the only claim that pushing leans further than towing is secondary text on a page that will not open, so it is not used. The commonly quoted 45 degrees is coaching folklore with no standards body behind it; what the coaching sources agree on is holding the angle constant rather than letting the hips rise and the chest drop, which is why this cue says a low lean and gives no number. The model's own 50.08 degrees is close enough to 45 that the picture does not fight the words.",
+                why: "Leaning in points your leg drive forward into the sled instead of down into the floor. What matters is holding the same angle the whole way rather than chasing a particular one: a low lean with a flat back, your head up and your eyes on the lane ahead.",
                 mistake: "Letting the hips rise and the chest come up as the set goes on, so the push turns into a stand-up and the sled stops.",
                 correct: "Hold one low forward lean with a flat back and your hips in line with your shoulders for the whole set - if your hips rise and your chest comes up, the sled stops moving."
             ),
@@ -49984,7 +49984,7 @@ enum SampleData {
                 id: "drive",
                 title: "Leg Drive",
                 intro: "The legs do all of it. Your arms only connect you to the sled; they never fold and they never press.",
-                why: "The ranges settle it. knee_L travels 62.099 degrees over the clip (96.307 at f6 to 158.406 at f0, checked: 158.406 - 96.307) and knee_R 62.107; hip_L travels 35.298 degrees (113.294 to 148.592) and hip_R 35.208. Against that elbow_L moves 10.149 degrees (100.293 at f8 to 110.442 at f18) and elbow_R 10.083, handgap changes 2.204 mm over 192 frames and shouldergap changes 2.0e-07 m - frozen. The knee moves six times what the elbow does, and the arms are a fixed link rather than a motor. The only upper-body motion worth naming is not an arm action at all: the two shoulders stay exactly level with each other at every frame, yet each wrist moves 40.00 mm in y and the two see-saw out of phase (hand_L minus hand_R is -2.69 mm at f0, +37.31 mm at f8 and -42.69 mm at f24), so the grip slides about 2 cm up and down the static posts once per step - 10.9 px and 9.5 px on screen at 2.71 px per cm. That is the rig absorbing the body's 22.87 mm bob, and nothing in this entry describes the arms as doing anything. The knee drive itself is smaller than it looks and no cue asks for a high knee: the knee rises only 5.9 cm while the ankle rises 12.93 cm and the toe 9.65 cm, it travels 28.29 cm FORWARD rather than up, and it never comes above the hip - patella_L peaks at 0.5014 m against a pelvis at 0.8573 to 0.8802 m. On muscle: there is no %MVIC study of a sled push anywhere, so this cue claims no level and no ranking. The only EMG study of the movement is Martinez-Serrano 2021 - nine male amateur rugby union players, called a pilot by its own authors, three muscles, pushing at 20, 55 and 90% of body mass on an instrumented treadmill where the participants did not travel. A heavier sled significantly raised vastus lateralis and gastrocnemius medialis activity (p at or below 0.001 each) while biceps femoris did not change (p = 0.278). Its stated limitation is the non-normalisation of its activation values, so it supports a DIRECTION - heavier sled, more knee-extensor and calf demand, hamstring demand not following - and nothing on the app's HIGH, MODERATE or LOW scale.",
+                why: "Your hips and knees extend hard on every step, while your arms simply connect you to the sled. If your elbows bend, some of the force your legs produce is lost before it reaches the sled. You feel it most in your quads and calves, and a heavier sled works them harder.",
                 mistake: "Letting the elbows fold and hauling with the arms until the chest sinks onto the handles and the legs stop driving.",
                 correct: "Push the floor back with your legs, not with your arms - set your elbows at the start and never let them give, so your chest stays off the handles and the legs keep working."
             ),
@@ -49992,7 +49992,7 @@ enum SampleData {
                 id: "steps",
                 title: "Short Quick Steps",
                 intro: "The steps are short and fast, off the ball of each foot, and one foot is always on the floor.",
-                why: "The cadence is measured and it is a walk, not a sprint: 12 steps over 8.000 s is 1.5 steps per second, 90 STEPS PER MINUTE. Each step is 16 frames, 0.6667 s between the two double-support poses; the swinging foot is off the floor for ELEVEN frames, f1..f11 inclusive, which is 0.4167 s from the first airborne frame to the last and 0.5000 s contact to contact (f0 to f12). BOTH FEET ARE NEVER OFF THE FLOOR - 0 of 192 frames - and 126 of 192 frames have the left toe down, 126 the right, 60 BOTH and 0 NEITHER, so there is no flight phase anywhere and nothing here is explosive. The foot is the other measured fact. There is no heel joint on this rig, so the test is foot pitch, ankle to toe: the planted left foot sits at 46.29 degrees below horizontal at every one of its 126 contact frames, to two decimals, against 21.034 degrees for the same rig standing flat in Box Jump - 25.26 degrees more plantarflexion (checked: 46.2922 - 21.0340 = 25.2581). The lifter is on the balls of both feet for the entire clip and the heel is never down, which is defensible for a real sled push and which means a cue saying heel down or drive through the whole foot would be flatly contradicted on screen. On stride length, coaching is split - one guide calls long strides the fault and another calls overstriding the fault - and the measurement settles it awkwardly: Lockie 2003 found the LOAD itself shortened the stride about 10% at 12.6% of body mass and about 24% at 32.2%, so a short step is what a loaded sled forces rather than something the lifter chooses. This cue therefore asks for quick steps and badges no stride length. For scale, the swinging leg covers 46.20 cm of ankle path per step and finishes with a net displacement of 0.0000 cm.",
+                why: "Short, quick steps keep force going into the sled with no gap between pushes, and staying on the balls of your feet keeps you driving forward. A loaded sled shortens your stride on its own, so don't fight it by reaching for long strides.",
                 mistake: "Reaching for long slow strides, so each step waits on the other leg and the sled loses speed between pushes.",
                 correct: "Take short fast steps and push off the ball of each foot, keeping one foot on the floor the whole time rather than reaching for long strides."
             ),
@@ -50000,7 +50000,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Setting the Pace",
                 intro: "This one is timed, not counted. You pick a speed at the start and the job is to still be moving at that speed when the clock runs out.",
-                why: "The app measures this lift in SECONDS: ExerciseCatalog.swift:137 lists Sled Push in timedExercises, so measure(forExerciseNamed:) returns .time, and because SLED is not in isBodyweight()'s equipment list the weight column stays live - seconds with a load. Eleven of the nineteen shipped timed entries end a setup step with the phrase for the set time, and this entry follows them. The clip supports a tempo cue where the jump family's did not, and that is a measured difference rather than a preference: searching circularly for runs whose per-frame maximum joint step falls under 0.001 mm finds 0 of 192 frames and 0 of 192 frame intervals, and the same at 0.01, 0.1 and 1.0 mm - the smallest step anywhere is 3.901984 mm, at f31 to f32, which is also the loop seam, and the largest is 102.270420 mm at f16 to f17. Box Jump, by contrast, held 41.7% of its frames perfectly still. So this model moves continuously at one rate for the whole clip and a cue may speak about rate. What it cannot show is the fault: the clip is six bit-identical 32-frame cycles (a circular lag sweep agrees to 0.0000074506 mm at lag 32 and to no better than 102.2704 mm at lag 1, and each of cycles 1 to 5 matches cycle 0 frame for frame to 7.451e-06 mm Euclidean), and six identical cycles cannot fade, slow or break down. Pacing is therefore coaching and is named as such. It is also unprecedented on the badge surface: in 466 shipped blocks the library has never badged pace, rhythm, tempo, rushing, fatigue or breakdown, nor the breath, grip failure, head position or the environment - although the cue id tempo itself is well established, with 53 shipped uses. The only measured pacing datum anywhere in this family is on battle ropes rather than sleds - Ratamess 2015b found a shorter rest interval raised the metabolic cost of rope work, 52.8% against 40.5% of VO2max in men - and it is deliberately not carried onto a sled.",
+                why: "Because the set runs on the clock, how you spend your effort decides it. Starting too fast drains your legs early and the sled grinds to a halt; a pace you can hold keeps you driving with good form to the last second.",
                 mistake: "Sprinting the first few steps and then stalling with most of the clock left, or stopping the sled and restarting it over and over.",
                 correct: "Start at a pace you can keep to the end of the set time rather than sprinting the first few steps, and keep the sled moving the whole way instead of stopping and restarting it."
             )
@@ -50026,8 +50026,8 @@ enum SampleData {
             mistakeBadge: "LOSING THE LEAN",
             correctCue: "Body stays low behind the sled",
             mistakeCue: "Hips rise, chest comes up",
-            correctNote: "In the model the lean is the one thing that never changes: trunk reads 50.079990 to 50.080019 degrees across all 192 frames, a total of 0.0000296 degrees, with the lumbar, thoracic and neck chains frozen alongside it. That one angle is the whole exercise, and the model cannot show it being lost because it only ever holds the one pose.",
-            mistakeNote: "Nobody has measured a sled pushed by the hands; what is measured is towing. Lockie 2003 towed 20 men at 12.6% and 32.2% of body mass and found trunk lean, hip flexion and contact time all rose with load while stride length fell about 10% and about 24%; Cronin 2008 found towing raised trunk angle 12.5 to 71.5% while a vest at the same load lowered it; Osterwald 2021 found lean rising linearly with load in 33 athletes. None prescribes an angle, none pushed anything, and there is no injury mechanism - standing up simply stops the sled."
+            correctNote: "Your body stays in one low line behind the sled from the first step to the last, back flat and head up. Your arms stay long and your legs keep driving, so the sled moves at an even speed the whole way.",
+            mistakeNote: "As your legs tire it is natural to stand taller to get a rest, but the moment your hips rise and your chest lifts, your push goes up instead of forward and the sled stops. It is not dangerous, just wasted effort: sink back into your lean and keep stepping."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.62, cy: 0.55),
@@ -50065,7 +50065,7 @@ enum SampleData {
                 id: "path",
                 title: "Walking Backwards",
                 intro: "You travel backwards, away from the sled, so you cannot see the ground you are about to cover.",
-                why: "The direction IS the lift, and the clip states it in one channel that never moves: trunk sits at -13.67014 deg on all 192 frames, negative being backwards, with a range of 0.0000065 deg. At the reference frame f0 both feet are flat and level, the knees 34.408 deg short of straight, the thigh 14.799 deg forward of vertical and the shank 16.304 deg back - the knees-forward, hips-back, lean-away shape of a backward drag - and the hands hang 0.38461 m below the shoulder joint, constant to five decimals, with the upper arm 38.9341 deg from straight down. Nothing else in the frame carries the direction. The lifter does not travel: 18 of the 26 probed joints have world x and z frozen to 0.000358 mm or less, the head among them, so the model never turns to look behind it either, and the sled does not move. This is the only acute hazard in the family and the library has no badge for anything in the environment - 297 distinct mistake badges across 466 blocks and not one about a floor, a wall or a lane - so if a setup step and this string do not say it, no surface the reader can reach will. West 2014 measured the session rather than the technique: 11 strength-trained men, 5 sets of 2 x 20 m backward drags at 75 per cent of body mass, countermovement-jump peak power falling from 4,445 +/- 705 W to 3,464 +/- 819 W immediately after (p = 0.001) and back at baseline by 3 h, blood lactate 1.7 +/- 0.5 to 12.4 +/- 2.6 mmol/L and still raised at 60 min, and NO change in creatine kinase at any time point. That is the only thing measured about a backward drag anywhere, it is a programming fact rather than a technique one - a hard drag costs about a fifth of your jump power for up to three hours, with no marker of muscle damage - and it stays here, gated, rather than spending one of the four public setup steps. There is no EMG study of sled dragging at all and no governing-body standard for it, so nothing in this entry claims a muscle level or a trunk angle.",
+                why: "Walking backwards is the heart of this drag, and it is also its one real hazard, because you cannot see where you are stepping. A clear, straight lane and a quick glance over your shoulder every few steps stop you tripping or backing into someone.",
                 mistake: "Setting off backwards without looking at the lane first, or craning round so far that the lean collapses and the strap goes slack.",
                 correct: "Clear a straight lane behind you and look down it before the first step, then travel backwards along it and glance over your shoulder every few steps."
             ),
@@ -50073,7 +50073,7 @@ enum SampleData {
                 id: "torso",
                 title: "Lean Away",
                 intro: "Your hips sit back and your whole trunk leans away from the sled, so the strap never goes slack.",
-                why: "trunk is -13.67014 deg on every one of the 192 frames, a range of 0.0000065 deg - the most constant channel in the clip. The lean is real and worth naming, but it never changes, so there is no bracing cycle, no sway and no rounding in the animation: anything about not letting the torso rock is coaching and not a measurement. The shape it holds alongside the lean: the knees run 34.408 to 75.393 deg of flexion, the pelvis rides 0.847578 to 0.871296 m, and the hands stay 0.38461 m below the shoulder joint. The measured literature prescribes no angle. Keogh 2010 - 6 resistance-trained men, 3 x 25 m at 171.2 kg - found a heavy sprint-style sled PULL had a more horizontal trunk than acceleration sprinting, with smaller step lengths, lower step rates and longer ground contacts; but that is a forward harnessed pull, it measured no muscle activity at all, and more horizontal is relative to sprinting rather than a target. Lockie 2003 and Osterwald 2021 both find trunk lean rises with load on towed sprints and neither names a value, and no NASM or other governing-body sled guideline could be found. The familiar 45-degree figure is folklore and is not used. What the coaching sources are consistent about is the FAULT, for the drag specifically: standing up too tall. McGill 2009, the obvious strongman trunk citation, did not include a sled drag or a sled push and is deliberately not cited.",
+                why: "Leaning away puts your bodyweight against the strap, so it stays tight and your legs, not your back or arms, move the sled. Holding one steady lean for the whole set, without rocking or rounding, keeps that tension even on every step.",
                 mistake: "Standing up taller as the set goes on, so the strap goes slack and the sled stalls between steps.",
                 correct: "Sit your hips back and lean away from the sled, then hold that same angle from the first step to the last instead of letting your chest rise."
             ),
@@ -50081,7 +50081,7 @@ enum SampleData {
                 id: "arms",
                 title: "Arms Hang Long",
                 intro: "Your arms only hold the strap. The legs are what move the sled.",
-                why: "The arms are welded in space for the whole clip, so this string is coaching and not a description of the screen: handgap is frozen at 0.504002 m and shouldergap at 0.392155, both with a range of 0.000000; both elbows sit at 153.063 deg with a range of 0.00004 deg; hand_L world x and z are fixed to within 0.0003 mm; and on screen the hands move 0.00 px sideways and about 5 px vertically over the whole 8 s. There is no tug, no arm bend and no shoulder give anywhere, so the model shows neither this fault nor its fix. Note what 153.063 deg is NOT: it is about 27 deg of bend held unchanged, not a straight arm, with the hands 0.38461 m below the shoulder joint and the upper arm 38.9341 deg from straight down - which is why this says soft bend and never says straight. The strap is modelled as geometry rather than as rope: end to end it measures 1.004162 m at f8 and f24 and 1.021782 m at f0 and f16, a change of 17.620 mm or 1.75 per cent of its length on EVERY step, which no loaded strap does, so there is no slack-to-taut moment in the clip to point at. It never touches the lifter below the hands either: the nearest it comes to a leg joint is 317.4 mm, to the patella 345 mm and to the shin 369 mm, which with a 59.8 mm mesh is about 290 mm of air. The paint supports the cue only weakly, in that all of it here is dim: nine forearm muscles, both biceps heads and all three deltoid heads at level 0.2556, the forearm block reading as 10.6 per cent of the figure pixels in rows 250-332. The library badge for the fault is PULLING WITH THE ARMS, 4 uses - Cable Wood Chop :12188, Cable Shrug :25950, Machine Crunch :42236, Landmine Rotation :44452.",
+                why: "Your arms are only the link between you and the sled. Held at one soft bend, never fully straight and never pulling, they pass the force from your legs straight into the strap, so your grip lasts the whole set and your legs get the work.",
                 mistake: "Bending the elbows to haul the sled along, so the arms and the grip give out long before the legs do.",
                 correct: "Let your arms hang from your shoulders with the same soft bend at the elbow all the way through, so your hands only hold on and your legs move the sled."
             ),
@@ -50089,7 +50089,7 @@ enum SampleData {
                 id: "knee",
                 title: "Knees Stay Bent",
                 intro: "Both knees stay bent for the whole drag. They never straighten out at the top of a step.",
-                why: "knee_L runs 104.60730 to 145.59193 deg and knee_R 104.62132 to 145.60768, ranges of 40.98464 and 40.98635, and the two sides never differ by more than about 0.016 deg. So even at its tallest, frame f0 of every cycle, the knee is 34.408 deg short of straight, and at its deepest 75.393 - it never approaches a lockout anywhere in the clip. Read the THIGH rather than the published hip channel: A hip_L moves only 2.93370 deg, because the ray it measures runs to the chest while the hip joint sits 91.4 mm off the sagittal plane, whereas the thigh segment itself tilts 12.387 deg (14.799 to 27.186) toward the way the lifter faces. The quadriceps are the only BRIGHT paint on this lift - 4 of the 31 painted muscles at level 1.0000, the other 27 at 0.2556 - which matches the library row primaryMuscle QUADRICEPS, and they are the clearest paint in the render too, 44.2 per cent of the figure pixels in rows 332-395 and 28.2 per cent in rows 395-445. But there is NO EMG study of sled dragging, %MVIC or raw, so nothing here claims a level or a ranking for them. One thing the clip does that no lifter should read as an instruction: in each double-stance window both knees extend together, knee_L by 5.086 and knee_R by 5.088 deg over 4 frame intervals (0.1667 s), with the pelvis rising 11.824 mm. No real gait extends both knees in double support, so no string here asks for a two-legged push between steps.",
+                why: "The quadriceps on the front of your thighs drive a backward drag, and they keep working only while your knees stay bent. Drive every step back through a bent knee, without straightening at the top of the step, so the strap stays tight and the sled keeps following you.",
                 mistake: "Letting the knees straighten between steps, so the hips ride up and the quads stop doing the work.",
                 correct: "Keep a bend in both knees from the first step to the last, and push each step away through the front of your thighs rather than straightening the leg to get there."
             ),
@@ -50097,7 +50097,7 @@ enum SampleData {
                 id: "steps",
                 title: "Short Steady Steps",
                 intro: "Short, steady steps keep the sled moving. Long reaching steps let it stall.",
-                why: "THIS IS THE CUE THAT CARRIES WHAT THE MODEL CANNOT SHOW: the clip is a march on the spot in front of a sled that never moves. 18 of the 26 probed joints have world x and z frozen to 0.000358 mm or less over all 192 frames - chest, both clavicles, both forearms, both hands, head, neck, pelvis, both scapulae, spine, the pectoral marker, BOTH HIP JOINTS and both upper arms - and their only motion is a shared vertical bob between 23.7178 and 23.7187 mm. foot_L returns to z -0.020001 and y 0.068600 at f12 and foot_R to z -0.020001 and y 0.068565 at f28; whenever both feet are down they sit at the SAME z to 0.000000 m, so they are never staggered and stride length is zero. The nine static sled meshes travel 0.000 mm. What the clip does give is a cadence: a circular lag sweep finds a period of exactly 32 frames, 1.33333 s, with a residual of 0.000017 mm against 36.765361 mm at the nearest non-multiple, so 192 frames are 6.0000 cycles of two steps - 12 steps over 8.0000 s, 90 steps a minute, one step every 16 frame INTERVALS (0.66667 s). Each swing is 11 FRAMES, 0.4583 s by frame count, or 10 frame INTERVALS, 0.4167 s; lift-off to touch-down, f0 to f12 inclusive, is 13 frames (0.5417 s) or 12 intervals (0.5000 s). Per cycle that is 24 intervals of single support (1.0000 s, 75 per cent) and 8 of double support (0.3333 s, 25 per cent). That 90 a minute is this animation and not a prescription, which is why no public string quotes it. Two things the clip forbids: the thigh drives 12.387 deg forward while the ankle sweeps 86.35 mm BACKWARD and 123.38 mm UP and lands on the same spot, so the swing leg folds under rather than reaching back and no string says reach the trailing leg back; and a freeze sweep at 0.001 mm finds zero frozen frames and zero frozen intervals, the slowest interval in the clip moving 1.584843 mm, so there is no pause anywhere to hang a tempo on.",
+                why: "A sled that stops has to be started again from a standstill, which is the hardest part of the drag. Short, steady steps that land under your hips keep the strap tight and the sled sliding, while long reaching steps leave a pause between them.",
                 mistake: "Reaching each foot far back, or stamping away on the spot without actually covering any ground.",
                 correct: "Keep covering ground with short, steady steps and never let the sled come to a stop between them, so the strap stays tight the whole way."
             )
@@ -50128,8 +50128,8 @@ enum SampleData {
             mistakeBadge: "LOSING THE LEAN",
             correctCue: "Knees bent, leaning away",
             mistakeCue: "Torso stands up, knees lock",
-            correctNote: "In the model the lean never moves: trunk sits at -13.67014 deg, negative being backwards, on every one of the 192 frames, a range of 0.0000065 deg - and the knee never passes 145.59193 deg, which is still 34.408 deg short of straight, so the shape the clip holds is exactly the one this cue asks for.",
-            mistakeNote: "Standing up tall is the fault every general sled source names for the drag, and it is coaching rather than a measured outcome: there is no EMG study of sled dragging at all, no governing-body guideline for it, and no trial has tested a posture cue on a sled. The only evidence-backed prescription anywhere in the sled literature is LOAD rather than posture, and it comes from the push: Seitz 2017 found 75 per cent of body mass potentiated a later sprint while 125 per cent impaired it at every time point."
+            correctNote: "Your knees stay bent and your trunk leans away from the sled for the whole set, with your hips back and the strap tight. That one shape, held from the first step to the last, lets your legs do all of the pulling.",
+            mistakeNote: "As you tire, your chest rises and your knees straighten until you are standing tall. The strap goes slack between steps, the sled stalls, and each new step becomes a jerk on your arms and back instead of a steady push from the legs."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.09, cx: 0.62, cy: 0.54),
@@ -50166,7 +50166,7 @@ enum SampleData {
                 id: "setup",
                 title: "Start Position",
                 intro: "You sit strapped to the footplate at the front of the slide, knees bent, arms reaching straight out to the handle and your shoulders a little in front of your hips.",
-                why: "The catch is f0 and f96, and it is the quietest instant in the clip rather than a hold: the step from f95 to f96 is 0.5766 mm, the slowest of all 191 intervals, and no interval anywhere in the clip falls under 0.001 mm. Measured at f0 the knee is 76.699 degrees - 103.301 degrees of bend - the hip 53.599, the elbow 175.082, the trunk 15.3313 degrees forward, the derived ankle 107.182 and dorsiflexed, the seat at its forward end with pelvis z -0.060436, the hands at their furthest out with a midpoint z of +0.646861, and the scapulae at their widest with shouldergap 0.409358. The shoulders are 19.10 cm in front of the hips at that frame (clavicle_L z 0.1306 against pelvis z -0.0604), which is the part of the pose a reader can actually check on themselves. The grip is NARROWER than the shoulders and never changes: handgap is 0.245723 m on every one of the 192 frames, range 0.0000 m, on a 40.00 cm bar, which is 60.0 per cent of the shouldergap at the catch and 65.1 per cent at the finish. WHAT THIS POSE IS NOT is a full-compression catch, and that is why nothing in this entry mentions the shin: the knee joint sits 0.1797 m BEHIND the ankle in z (shin_L z 0.2749 against foot_L z 0.4546), so the shin leans 27.1007 degrees BACK from vertical in the sagittal plane and 27.1158 on the right, and the seat travels only 30.2194 cm in total. Hart 2006 teaches a vertical shin and roughly thirty degrees of forward body angle; the model gives 15.3313, which is 14.67 degrees short, so neither figure is quoted anywhere a reader can see. No catch angle is quoted as a standard at all: the studies that report them have five to seventeen rowers and disagree about which angles matter, and Soper and Hume 2004 concludes that research on ideal rowing technique is limited.",
+                why: "This start position is where every stroke begins, so its shape decides how well your legs can drive. Shoulders a little ahead of your hips, back flat and arms long set you up to push without your lower back taking the load. Pass through it smoothly rather than pausing.",
                 mistake: "Sitting at the front of the slide with the lower back rounded under and the shoulders already behind the hips.",
                 correct: "Strap both feet to the footplate and take the handle overhand with your hands a little inside the ends of the bar, then slide forward to the front of the slide with your back flat."
             ),
@@ -50174,7 +50174,7 @@ enum SampleData {
                 id: "drive",
                 title: "Leg Drive",
                 intro: "The legs go first. You push the footplate away with the arms still straight, and the handle and the seat leave together.",
-                why: "This is the one claim on this lift that the picture supports frame by frame. Measured by the knee the drive is f0 to f16 - 17 frames, 16 intervals, 0.6667 s - over which knee_L goes 76.6989 to 175.9928 degrees, 99.29 degrees of extension. Measured by the seat it is f0 to f15, 16 frames and 15 intervals, 0.6250 s, the pelvis travelling z -0.060436 to -0.362613, which is 30.2194 cm. THE ELBOW DOES NOT MOVE WHILE THAT HAPPENS: elbow_L is 175.0821 at f0, 174.8320 at f16 and 174.7482 at f18, so it stays inside 0.34 of a degree of its catch value across the whole leg drive, and only then folds 120.1099 degrees to 54.6383 by f30. The first frame it has given up a full degree is f19 at 173.4161, and f20 is already 165.0822. AND THE HANDLE AND THE SEAT BOTH START ON THE VERY FIRST INTERVAL: from f0 to f1 the pelvis moves 3.848 mm and the hand midpoint 5.060 mm, which is the model's own version of Hart's rule that the handle and the seat must move together on the drive and that a handle moving first means pulling with the back early. The order itself is coaching and is named as coaching: Hart 2006 in CrossFit Journal 50 teaches legs, then torso, then arms, Concept2 and British Rowing teach the same, and NO study tests the drive sequence against injury or performance - Soper and Hume 2004 says the biomechanical predictors of rowing performance are indistinct in the literature. What may NOT be said is that the legs are the hardest-working muscles here: the only MVIC-normalised study of rowing-machine rowing, Sha and Chiu 2026 with twelve subjects on a water ergometer, puts rectus femoris fifth of six muscles at 10.46 to 13.50 per cent of MVIC and biceps brachii first at 24.34 to 39.37. Vieira 2020 is the honest form of the leg claim: in twenty elite rowers all eight sampled lower-limb muscles were recruited and rectus femoris was active the LONGEST of them, so the legs are working even where their amplitude is modest.",
+                why: "Your legs are your largest muscles, so the stroke starts with them while the arms just hold on. When the handle and the seat leave together, the legs are doing the work; a handle that moves first means your back and arms have joined in too early.",
                 mistake: "Bending the elbows or opening the back while the knees are still bent, so the handle moves before the seat does.",
                 correct: "Push the footplate away with your legs while your arms stay straight and your body angle holds through the first half of the push, so the handle and the seat start moving together."
             ),
@@ -50182,7 +50182,7 @@ enum SampleData {
                 id: "swing",
                 title: "Body Swing",
                 intro: "Once the legs are driving hard, your trunk swings open from the hips and carries the handle on.",
-                why: "The swing is f8 to f24 - 17 frames, 16 intervals, 0.6667 s - and the trunk goes 15.3313 degrees forward to 20.1677 degrees back, a range of 35.4990 degrees, while the hip opens 53.5990 to 122.5228, which is 68.9239 degrees. It overlaps the leg drive at f8 to f16 and the arm pull at f18 to f24, and that overlap IS the sequence. IT IS A HIP SWING AND NOT A BACK SWING, and the rig proves it the hard way: the only lumbar proxy in this skeleton, the pelvis-spine-chest joint-chain angle, takes 33 distinct values over the whole clip - exactly as many as the trunk channel - and sits at 170.0789 degrees on 92 of the 192 frames and 173.6789 on 38, which are precisely the frame counts of the trunk channel's own two pinned windows. The chain is a deterministic function of the trunk angle, so there is no independent lumbar articulation in this rig at all, and its entire catch-to-finish excursion is 3.6000 degrees. The thoracic chain moves 8.4000. This is also the best-evidenced safety point in the whole conditioning family. Trease 2020, following 153 Australian international rowers over 48,611 athlete days, found the lumbar region the most frequently injured area with 84 of 270 injuries. Nugent 2021, pooling 22 studies and 429 participants, found that rowers WITHOUT low back pain hold neutral or anterior pelvic rotation at the catch and a flatter low back at the finish, while rowers WITH pain show greater posterior pelvic rotation at the catch, and that in both groups fatigue increases lumbar flexion at the catch, more on the ergometer than in a boat. Ng 2015 found no difference in mean lumbar angle between ten adolescent rowers with pain and ten without, but the painful group sat closer to end-range flexion for a greater proportion of the drive, came out of flexion less over the drive and spent more time in sustained flexion loading - so the fault is time spent near the end of the range, not one rounded stroke. Yamashita 2023 localised it: lumbar erector spinae activity was higher in the painful group at 0 to 10 per cent of the stroke cycle, p below 0.001, which is the catch. Wilson 2013 measured the drift directly, maximum lumbar flexion rising 4.4 plus or minus 0.9 degrees over an ergometer step test against 1.3 plus or minus 1.1 in a boat, p equals 0.035 - more than this model's entire 3.6000 degrees of lumbar range. Hart teaches a thirty-degree layback; the model gives 20.1677, which is 9.83 short, so no figure is quoted.",
+                why: "The swing adds your trunk's power to the legs, but it has to come from the hips. The lower back is where rowers get hurt most often, and it tends to round more at the start of the stroke as you tire, so keep your back flat even late in the set.",
                 mistake: "Opening the back before the legs are down, or getting the lean by rounding and then arching the lower back instead of rotating at the hips.",
                 correct: "Once the legs are driving hard, swing your trunk open from your hips until you are leaning back a little past upright, and keep your back flat the whole way rather than rounding it and then arching it."
             ),
@@ -50190,7 +50190,7 @@ enum SampleData {
                 id: "finish",
                 title: "The Finish",
                 intro: "The handle comes in last, to the bottom of your ribs, with your elbows going past your body and your shoulder blades drawing together.",
-                why: "The arm pull is f18 to f30 - 13 frames, 12 intervals, 0.5000 s - the elbow folding 174.7482 to 54.6383 degrees, 120.1099 degrees, and the finish itself is f30 to f34, 5 frames and 4 intervals, 0.1667 s. WHERE THE HANDLE ARRIVES, measured along the trunk rather than off the floor, because the trunk is laid back 20 degrees at that point: at f31 the hand midpoint projects 0.3136 m along the 0.5940 m axis from the hip joint to the neck joint, which is 52.8 per cent of the way up the trunk, and sits 0.0973 m out from that axis. The chest joint projects at 45.5 per cent, so the hands arrive 4.34 cm above it along the trunk, and they are 19.25 cm BELOW the collarbone joint in height. That is the bottom of the ribcage - not the collarbone and not the waist. The pull is flat, not an arc: the handle centroid's height stays inside 0.8400 to 0.8800 m, within 4 cm of level, across all 102.6285 cm of handle travel. The blades do draw together, and this is the one place the model shows a correction rather than a fault: shouldergap goes 0.409358 at f94 to 0.377253 at f28, which is 3.21 cm of scapular retraction. TWO THINGS THE MODEL FORBIDS HERE. The knee never straightens - knee_L maxes at 175.9932 and knee_R at 176.0943, both held to within 0.0008 of a degree for the whole of f16 to f54, 39 frames of every 96 - so nothing says the legs lock out and the correct string asks for a soft bend instead. And the wrist is never above the shoulder: hand_L sits 2.52 to 19.17 cm below clavicle_L on all 192 frames, 0 of 192 above it, so nothing says lift the handle. On the muscles, the paint and the measurement disagree in direction and neither is asserted here: the paint makes the traps, rhomboids and rear-delt group primary and the lats and biceps secondary, while Sha and Chiu 2026 ranks biceps brachii first of six at 24.34 to 39.37 per cent of MVIC and latissimus dorsi second at 20.29 to 24.93, on a water ergometer at a fixed stroke rate with twelve subjects and nine of this lift's sixteen bright muscles never measured.",
+                why: "Drawing the handle to the bottom of your ribs keeps the pull level and lets your shoulder blades and upper back finish the stroke. Pulling higher toward the collarbone makes you lift the handle and shrug, which wastes the drive and loads the top of the shoulders.",
                 mistake: "Hauling the handle up into the collarbone, shrugging the shoulders up instead of drawing the blades together, or heaving further back to get it there.",
                 correct: "Finish by drawing the handle in to the bottom of your ribs, elbows travelling past your body and your shoulder blades squeezing together, and leave a soft bend in your knees rather than locking them out."
             ),
@@ -50198,7 +50198,7 @@ enum SampleData {
                 id: "recovery",
                 title: "The Recovery",
                 intro: "Coming forward you reverse the order: hands away first, then the body tips forward, and only then do the knees bend and the seat slide you back.",
-                why: "The recovery is the drive run backwards, and the model does it in that order and in that time. The arms go away over f34 to f45 - 12 frames, 11 intervals, 0.4583 s - the elbow opening 54.6294 to 174.8232 degrees. The body comes over f42 to f58 - 17 frames, 16 intervals, 0.6667 s - the trunk going 20.1677 degrees back to 15.3313 forward. The slide is f54 to f95 by the knee, 42 frames and 41 intervals, 1.7083 s, knee 175.9932 to 76.7988, or f58 to f95 by the seat, 38 frames and 37 intervals, 1.5417 s. THE KNEE IS THE LAST OF THE THREE TO MOVE, and it is pinned while it waits: knee_L holds between 175.9928 and 175.9932 degrees, a spread of 0.0004, for the whole of f16 to f54. By the seat alone the stroke divides exactly - 15 intervals driving at 0.6250 s, 43 intervals parked at the finish at 1.7917 s, 38 intervals sliding forward at 1.5833 s, which is 96 intervals and 4.0000 s, and 0.6250 plus 1.7917 plus 1.5833 is 4.0000. Hart 2006 is the named coaching source and the wording is his: on the recovery the handle leads the body forward, the arms extend first and then forward flexion occurs at the hips, and you should feel your weight shift to the front of the seat before the knees begin to rise. ONE CAUTION THAT GOVERNS THIS WHOLE ENTRY: the clip runs at 15.000 strokes per minute with a drive-to-recovery ratio of 1 to 2.533 measured by seat motion, and that is a demonstration tempo. No stroke rate, no ratio and no cadence is quoted anywhere a reader can see, here or in any other cue.",
+                why: "Moving your hands and body first clears a straight path for the handle, so it never has to lift over your knees. Let your body tip forward from the hips until you feel your weight move to the front of the seat, then let the knees bend and slide forward unhurried.",
                 mistake: "Letting the knees come up before the hands and the body have gone forward, so the handle has to be lifted over them.",
                 correct: "Come forward in the reverse order - straighten your arms first, then let your trunk tip forward from your hips, and only then let your knees bend and the seat slide you back to the front."
             )
@@ -50228,8 +50228,8 @@ enum SampleData {
             mistakeBadge: "ARMS PULL EARLY",
             correctCue: "Legs finish before the elbows bend",
             mistakeCue: "Elbows bend before the legs finish",
-            correctNote: "In the model elbow_L is 175.0821 degrees at the catch, 174.8320 at f16 where the knee has already reached 175.9928, and 174.7482 at f18 - inside 0.34 of a degree of straight across the whole leg drive - and it only then folds 120.1099 degrees to 54.6383 by f30. The handle and the seat also start together, moving 5.060 mm and 3.848 mm respectively on the first interval of the stroke. The legs-then-arms order is the part of this animation worth copying.",
-            mistakeNote: "Hart 2006 in CrossFit Journal 50 is the named source and it is coaching, not a finding: the handle and the seat must move together on the drive, and a handle that moves first is evidence of pulling with the back early. No study tests the drive sequence against injury or against performance - Soper and Hume 2004 concludes that the biomechanical predictors of rowing performance are indistinct in the literature and that research on ideal technique is limited. What is measured is adjacent: Wilson 2014 reports that greater pelvic rotation at either end of the stroke is ideal as opposed to lumbar flexion and extension, and that this tends to be poorly demonstrated in novice rowers on ergometers."
+            correctNote: "Your arms stay straight while the legs push, and the elbows only start to bend once the legs are almost straight and your body has swung back. The handle and the seat start moving together, so the legs, not the arms, set the stroke going.",
+            mistakeNote: "The elbows bend, or the back opens, while the knees are still bent, so the handle races ahead of the seat. The smaller arm and back muscles take load the legs should carry, the stroke loses power, and the lower back tends to round instead of the hips rotating."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.66, cy: 0.43),
@@ -50269,7 +50269,7 @@ enum SampleData {
                 id: "stance",
                 title: "Stance",
                 intro: "Everything from the hips down holds one shape for the whole interval - the waves come out of your arms.",
-                why: "This stance is a hold, and the model proves it. trunk is 23.454590 to 23.454607 degrees forward over all 192 frames, a range of 0.000018 degrees, and every spine segment keeps its angle to 0.00002 degrees: pelvis to spine 11.7790, spine to chest 20.8001, chest to neck 28.8328, neck to head 15.2660. The knee works over 4.6131 degrees (122.2226 to 126.8357) and the hip over 2.2529 (135.9929 to 138.2458). The feet are pinned: foot_L travels 0.0253 mm and toe_L 0.0285 mm in eight seconds, which is numerical noise, and the ankle joints hold 0.4000 m apart to 0.00000009 m - 102.0% of the 0.39215 m between the shoulder joints - with the toe 13.5 cm ahead of the ankle. Calatayud and colleagues (2015) set exactly this base for the one battle-rope study with a percentage-of-maximum normalisation: 21 trained men, feet shoulder-width, half squat, trunk flexed forward about 30 to 45 degrees, asked for minimal lower-body and trunk movement with the waves driven by the shoulders. This clip is a little more upright than their range at 23.45 degrees and matches it in every other respect. One thing in the model is not worth copying: the pelvis rises and falls 15.958 mm forty times in eight seconds, 5.00 Hz, with the knee opening and closing 4.613 degrees in step (correlation +1.0000). That is the rig answering the strike rate, not a leg drive, and the instruction is to hold the bend rather than pump it.",
+                why: "A fixed base lets all your effort go into the rope. With your feet planted shoulder-width apart, knees bent and chest tipped forward, your legs hold steady rather than bouncing, so your shoulders and arms drive every wave and the stance does not fade as you tire.",
                 mistake: "Standing up out of the half squat as the set goes on, or shuffling the feet to find a new base once it gets hard.",
                 correct: "Set your feet about shoulder-width with your knees bent a little and your chest tipped forward over them, then leave your feet planted and hold that shape until the interval ends."
             ),
@@ -50277,7 +50277,7 @@ enum SampleData {
                 id: "hands",
                 title: "Hand Position",
                 intro: "Each hand drives down and up over a short range and never comes up past your shoulder.",
-                why: "The wrist swings 18.96 cm vertically (0.89140 to 1.08100 m), 10.61 cm fore and aft, and 0.0003 mm sideways - so 42.9 cm of 3-D path per wave, 37.9 cm of it vertical, in a single vertical plane. It is below the shoulder joint in 192 of 192 frames, by 20.43 to 39.13 cm, ahead of it by 29.49 to 40.10 cm, and 9.03 to 27.73 cm above the pelvis joint, and the upper arm never passes 34.705 degrees from straight down (17.340 to 34.705, a span of 17.365). That matters for what this lift is not: the painful-arc and subacromial literature is about 60 to 120 degrees of elevation, and this stroke never gets near it, so the shoulder worry here is not an overhead one. The hands sit 0.41216 to 0.46487 m apart, 105 to 118% of the 0.39215 m shoulder span, and never cross. Calatayud and colleagues (2015) asked their 21 trained men for waves generated primarily through shoulder flexion and extension with the arms straight and relaxed, and measured 63% of maximum (SEM 4.9) in the anterior deltoid during the alternating wave against 58 (6.9) with both arms together. The model flexes the elbow as the hand rises rather than holding it - most bent at the top, 113.498 degrees, straightest at the bottom, 131.314, correlation with hand height -0.9947 over a range of 17.816 - and a planar reconstruction of the wrist (worst error 7.3 mm) puts about 11.9 cm of the 18.96 cm rise on the shoulder swing and about 8.2 cm on that elbow bend. Both joints work; the shoulder does more. The paint agrees about where the effort is: of 22 painted meshes the 3 bright ones are the anterior deltoid and the two biceps heads, and all 751 bright pixels sit on the near arm between v 0.226 and v 0.339.",
+                why: "Keeping your hands below your shoulders keeps each wave short and fast and the arm well out of the overhead range that tends to irritate shoulders. The shoulder does most of the work, helped by the elbow, so you feel it in your front delts and biceps.",
                 mistake: "Swinging the hands up toward the shoulders or overhead, which turns a short fast stroke into a slow heavy one and empties the interval.",
                 correct: "Drive each hand down and straight back up over about twenty centimetres, keeping both fists below your shoulders and out in front of your hips, and drive from the shoulder and elbow rather than flicking the wrist."
             ),
@@ -50285,7 +50285,7 @@ enum SampleData {
                 id: "torso",
                 title: "Torso Control",
                 intro: "One arm going up while the other goes down tries to turn you, and your trunk is what refuses.",
-                why: "This is the one number in the study that is bigger for the alternating wave than for anything else. Calatayud and colleagues (2015), 21 trained men, 15 m rope of 4 cm and 14 kg, peak RMS over three repetitions at a 70 bpm metronome normalised to two five-second maximal contractions: the external oblique reached 73% of maximum (SEM 7.7) in the unilateral alternating wave against 54 (6.3) with both arms together, p = 0.02 - while the lumbar erector spinae went the other way, 51 (2.7) against 67 (3.9), p = 0.001. So alternating puts the work into the side wall of the trunk, and the reason is that the two arms are out of phase: the left hand tops out 0.200 s before the right, exactly half of the 0.400 s wave. In the clip the trunk simply does not move - 23.454590 to 23.454607 degrees over 192 frames, every spine segment steady to 0.00002 degrees, the gap between the shoulder joints constant to 0.00000014 m, and the head fixed in x and z to 0.0 and 0.2 micrometres, so it never turns, nods or looks away. The paint lights the external oblique, the internal oblique and the rectus abdominis dim, and 35.8% of the waist box on screen is painted. Nothing in this clip fatigues, either: four identical 48-frame cycles, so the model can show the hold but not the moment it fails.",
+                why: "Because your arms move out of step, research shows the alternating wave works the obliques on the sides of your trunk harder than a double-arm wave, while asking less of the lower back. Keeping the trunk square and still is what turns that twisting pull into core work.",
                 mistake: "Letting the shoulders turn with each stroke so the trunk twists, or rocking the chest up and down to help the arms along.",
                 correct: "Brace your middle, hold your shoulders down away from your ears and keep them square to the rope, so each arm works on its own without the trunk twisting."
             ),
@@ -50293,7 +50293,7 @@ enum SampleData {
                 id: "grip",
                 title: "Grip",
                 intro: "You hold the rope like a hammer, and how hard you squeeze decides how long the set lasts.",
-                why: "The rope end is in the fist, not floating: the first segment of each rope is rigidly parented to its wrist bone, and its offset from the wrist joint varies by 0.61 micrometres over all 192 frames (0.117468 to 0.117469 m on the right, 0.114122 to 0.114123 on the left). The rope surface sits 6.03 to 7.69 cm from the right wrist joint and 5.70 to 7.41 cm from the left and crosses the fist at about 48 degrees to the forearm, which is a hammer grip with the palms facing each other - the neutral grip Calatayud and colleagues (2015) specify. Each side here is a chain of 39 cylinders 3.61 cm thick, 5.64 to 5.88 m long, 11.51 m for the two together; their rope was 15 m, 4 cm and 14 kg. Nothing in the clip shows grip force, and no study measures it in a rope wave. What is measured is the outcome: Cao and colleagues (2026), a review of 21 studies and 590 participants aged 11 to 25, found grip strength improved with battle-rope training, Hedges g = 0.99 with a confidence interval of 0.30 to 1.67, p = 0.011 - the authors stress substantial variation between studies and call their subgroup work exploratory, and the interval is wide. The forearm is also the one working tissue this rig does not paint at all: 22 meshes are lit and not one of them is a forearm, so the forearms are named among the stabilisers instead of getting a row.",
+                why: "A hammer grip, palms facing each other and the rope end inside your fist, lets the waves come from your shoulders without the wrists twisting. Your forearms tire first in this drill, so squeezing only as hard as you need keeps them going to the end.",
                 mistake: "Squeezing the handle as hard as you can from the first stroke, so the forearms burn out well before the clock does.",
                 correct: "Grip firmly enough not to lose the rope and no harder than that - your forearms are what give out first."
             ),
@@ -50301,7 +50301,7 @@ enum SampleData {
                 id: "tempo",
                 title: "Tempo",
                 intro: "Battle ropes are an interval rather than a set of reps, and the pace you choose is the whole exercise.",
-                why: "The model gives a tempo, and it is a display speed rather than a target. A Fourier transform over the 192-frame loop makes hand height a near-pure sinusoid at 2.5000 Hz (20 cycles per 8.000 s loop, amplitude 0.093775 m, second harmonic only 0.008263), so one wave of one arm is 9.6 frames = 0.400 s - 150 strikes a minute per arm, 300 in all - and a left-plus-right pair is 24 frames = 1.000 s, of which the clip holds eight. The pose repeats every 48 frames = 2.000 s to 0.0001 mm, four identical cycles, and there is no held frame anywhere: 0 of 192 intervals move less than 0.001 mm and the smallest step in the clip is 13.5273 mm. Each wrist covers 8.5723 m in eight seconds at 0.1248 to 1.8765 m/s, mean 1.0771. Now the comparison: Calatayud and colleagues (2015) used a 70 bpm metronome and Ratamess and colleagues (2015) standardised 15 waves per arm in 15 seconds, which is 60 a minute per arm - so the clip is running at more than twice the only rates anyone has studied. Ratamess measured what the interval costs: 12 men and 10 women through eight 30-second bouts reached 52.8 plus or minus 5.5% of maximal oxygen uptake in men and 50.0 plus or minus 11.2% in women on one-minute rests, falling to 40.5 plus or minus 4.5% and 37.7 plus or minus 11.0% on two-minute rests. No study measures where a rope wave fails and none prescribes a pace, and in 466 shipped blocks this library has never once badged pace, rhythm or going out too hard. The rule in the correct string is coaching convention, not a measurement.",
+                why: "The pace you set decides how hard the interval is and whether it lasts. A speed you can hold keeps the waves big from start to finish, and the effort stays high enough to build your fitness, especially with short rests between rounds.",
                 mistake: "Going flat out for the first ten seconds, so the waves shrink to nothing long before the interval is over.",
                 correct: "Pick one speed you could hold for the whole interval and keep it from the first stroke to the last, and when the rope stops travelling end the set there rather than grinding on slower."
             )
@@ -50332,8 +50332,8 @@ enum SampleData {
             mistakeBadge: "SHRUGGING UP",
             correctCue: "Shoulders stay down and set",
             mistakeCue: "Shoulders ride up to the ears",
-            correctNote: "The model never shrugs. The gap between the shoulder joints holds 0.39215492 to 0.39215505 m across all 192 frames, a range of 0.00000014 m, and the clavicles, scapulae and upper arms each keep their offset from the pelvis to better than 0.0004 mm in every axis, while the head is fixed in x and z to 0.0 and 0.2 micrometres. There is also no top of the wave for the traps to grab: the wrist is below the shoulder joint in 192 of 192 frames, by 20.43 to 39.13 cm, and the upper arm never passes 34.705 degrees from straight down. The paint says the same - all three trapezius bands are dim, and the only bright meshes are the anterior deltoid and the two biceps heads.",
-            mistakeNote: "This one is coaching convention and not a measurement, and it is worth saying plainly: there is no study of battle rope shoulder position, scapular motion, impingement or what fatigue does to any of them. Rope sources agree on keeping the shoulders packed down and away from the ears and on cutting the interval short once rope speed drops, and this library already badges the same fault on three raises. The clip cannot settle it either way, because nothing in it degrades: four identical 48-frame cycles, a trunk that moves 0.000018 degrees and a head that moves 0.2 micrometres."
+            correctNote: "Your shoulders stay pulled down away from your ears and square to the rope for the whole interval, and your hands never rise above shoulder height. With the shoulders set, the waves come from the front of the shoulders and the arms, not from the neck and upper traps.",
+            mistakeNote: "As the interval wears on, the shoulders creep up toward your ears and the neck and upper traps start doing the work. The waves get smaller and choppier; once you cannot keep your shoulders down, that is the point to end the set."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.04, cx: 0.54, cy: 0.26),
@@ -50374,7 +50374,7 @@ enum SampleData {
                 id: "top",
                 title: "Overhead Start",
                 intro: "Every rep starts at the top, with both hands above your shoulders, the arms long and a little wider than your shoulders.",
-                why: "This is the half of the lift that separates the two rope entries, and it is measured. The hands are above the shoulder joint on 96 of 192 frames - exactly 50.0%, 12 frames in every rep - against 0 of 192 frames on Battle Rope Alternating Waves, where they never come above the shoulder at all. The upper arm sweeps 18.9017 to 153.3511 degrees from straight down, a range of 134.4494 degrees. The hands stay outside the shoulders the whole time: handgap runs 0.514571 to 0.555250 m against a shouldergap frozen at 0.392155 m for all 192 frames, so 131.2% to 141.6% of the shoulder span, and the gap is widest at the top. Underneath them the knee is at 173.2675 degrees, which is this rig's near-straight, so every flexion figure in this entry is measured from 173.27 and not from 180. The top is the only genuinely still moment in the clip: one interval per rep is frozen to better than 0.001 mm, which is 0.0417 s of interval time, and the rope is still moving through it - its largest centroid step on those eight intervals is 34.150665 mm. The model also leans back a little at the top, and this entry does not ask you to. Re-measured, because the measure report overstates it thirtyfold: trunk is behind vertical on 48 of 192 frames - eight lean-backs, one per rep, six frames each, which a run scan prints as nine runs only because the first one is split across the loop seam - and it reaches its full -4.919118 degrees on 24 of 192 frames, 3 per rep. Four point nine degrees is not an arch, and the whole lumbar chain moves 3.000 degrees across the clip, so there is nothing here to copy and nothing worth badging. No study has measured a rope slam, so nothing in this cue is a claim about muscles.",
+                why: "A high start gives the rope the longest distance to fall, so every slam has more behind it. Keep your hands a little wider than your shoulders and your ribs down, so the reach comes from your shoulders and not from leaning back.",
                 mistake: "Pushing the hips forward and arching the back to get the hands higher, or letting them stop at chest height so the rope never has anywhere to fall from.",
                 correct: "Take both hands up above your shoulders, elbows long and hands a little wider than your shoulders, with your ribs down so the reach comes from your shoulders, not from arching your back."
             ),
@@ -50382,7 +50382,7 @@ enum SampleData {
                 id: "body",
                 title: "The Slam",
                 intro: "The rope goes down because your whole body goes down - you sit and fold as the hands come through.",
-                why: "Over the descent, f1 to f13, which is 13 frames and 12 intervals = 0.5000 s, the knee goes 173.2675 to 114.1130 (59.1545 degrees), the hip 169.2028 to 118.0121 (51.1907 degrees over the descent; 51.9597 clip-wide, because the hip actually peaks at 169.9718 on the way UP at f22, two frames short of the top), and the trunk swings from 4.9191 degrees behind vertical to 37.3313 degrees forward - a 42.2505 degree swing. The pelvis drops 18.103 cm, the head 31.266 cm and the wrist 1.252535 m. THE KNEE AND THE HIP MOVE WITHIN 8 DEGREES OF EACH OTHER, so this model is neither a hinge nor a squat but both at once, which is why no cue here tells you to sit or to hinge instead of the other. Against all of that the elbow moves 14.6279 degrees in the entire clip. The fastest single interval of the descent is f6 to f7 at 5.509 m/s at the wrist. There is no EMG study of a rope slam anywhere, so nothing in this entry says which muscle does the work; what is published is metabolic. Faigenbaum 2018 (PMID 29683913, JSCR 32(5):1197-1206) put 15 boys, 10.6 plus or minus 1.4 years old, through a 10-minute progressive protocol of five rope exercises using a 12.8 m, 4.1 kg rope, 2 sets of 30 s each with 30 s rest, and double-arm slams were the fifth: values rose from 10.3 mL/kg/min and 103.2 bpm on the first set of the first exercise to 30.0 plus or minus 3.9 mL/kg/min and 168.6 plus or minus 11.8 bpm on the second set of the slams, which is 64.8% of treadmill peak VO2 and 86.4% of peak heart rate. Ratamess 2015a found a battle-rope protocol the most metabolically demanding of thirteen, and Faigenbaum attributes that to the slam in particular, explaining it by a substantial lower body contribution. Read both carefully: the sample is fifteen ten-year-old boys, the exercise order was fixed and progressive so the slam sat last and carries the fatigue of the four before it, and neither study measured a single muscle - the lower body contribution is the authors' explanation of a metabolic result, not a measurement of anything.",
+                why: "The force comes from your legs and hips: your knees and hips bend together while your trunk folds forward, so your whole body drops with the rope. That big lower-body share is also the likely reason slams leave you out of breath so quickly.",
                 mistake: "Standing upright and swinging only the arms, so the rope is thrown rather than driven and the legs never load.",
                 correct: "Slam with both hands together, bending your knees and folding at your hips by about the same amount as the hands come down, and let the rope follow your body rather than trying to throw it with your arms."
             ),
@@ -50390,7 +50390,7 @@ enum SampleData {
                 id: "elbow",
                 title: "Arms Stay Long",
                 intro: "Your arms only hold the rope - they do not bend to drive it down.",
-                why: "The model settles this one. The left elbow runs 141.8884 to 156.5163 degrees, a range of 14.6279, and the right 141.2888 to 156.8816, a range of 15.5928; the wrist sits 0.5083 to 0.5265 m from the shoulder against a fully extended 0.2879 + 0.2498 = 0.5377 m, so the whole reach varies by 18.1 mm over the clip. That is a straight-arm pendulum from the shoulder, and it straightens the way a reader would not guess: THE ELBOW IS STRAIGHTEST AT THE BOTTOM, 156.5163 degrees at f10, AND MOST BENT AT THE TOP, 141.8884 at f23. So a cue asking for a bend at the bottom, or for the elbows to chop the rope down, would contradict the animation as well as the mechanics. The grip never changes either: the nearest rope segment to the right wrist is a constant 0.1136 m away on all 192 frames and to the left wrist 0.1111 m, both to four decimal places, because the handles are parented 11 cm beyond the wrist joint. And both arms do the same thing - the two elbows differ by at most 4.7841 degrees, at f8, and mirroring the left hand onto the right leaves 18.4811 mm, also at f8 - so this is a double-arm slam with no lead side and nothing alternating. No study has measured any of this.",
+                why: "Long arms swing like a pendulum from your shoulders and pass your body's drive straight into the rope. Bending the elbows to chop the rope down leaks that force into a small arm push. Both arms move together - this is a two-handed slam with no lead side.",
                 mistake: "Bending the elbows to chop the rope down, which turns a whole-body slam into a small triceps push.",
                 correct: "Keep your elbows long the whole way and let your arms hang heavy from your shoulders - if anything they straighten as the rope goes down, and they should never pull it."
             ),
@@ -50398,7 +50398,7 @@ enum SampleData {
                 id: "bottom",
                 title: "Where It Finishes",
                 intro: "The hands stop around hip height with your knees and hips still bent, and the rope goes down out in front of you.",
-                why: "The lowest the wrist gets is 0.692912 m, which is 6.69 cm BELOW the pelvis joint at that instant (0.7598) and 23.34 cm ABOVE the kneecap (patella_L 0.4595). THE SLAM FINISHES AT HIP HEIGHT - not at the shins and not at the floor - so nothing in this entry says drive it into the ground or finish past your knees. At that moment the knee is at 114.1130 degrees, the hip at 118.0121 and the trunk 37.3313 degrees forward, all three at their clip extremes. The bottom is also not a hold a reader could time: the lower body is identical to within 1e-4 at f11, f12 and f13 - 3 frames, 2 intervals, 0.0833 s - while the wrist keeps sinking 5.33 mm and then 1.88 mm, so the pose bottoms at f11 and the hands at f13. Where the rope goes is measured too, and it is further out than most readers expect. Some part of the rope is on the floor on every one of the 192 frames, 6 to 19 segments per rope at any moment, and the nearest it ever touches down is z 1.5905 m at f10 against a toe frozen at z 0.134682 - 1.4559 m clear of the toes, about a stride - from where it lies on the floor out to 6.02 m. One honest warning about the picture: nothing visibly strikes the ground in this clip, row 0.80 of the frame carries no on-screen rope at all, and on frames f9 through f16, 8 frames of every 24, the whole visible rope is below the render's black floor horizon at v 0.5084. The strike the lift is named for is real, but you will not see it here.",
+                why: "Stopping at about hip height, knees and hips still bent, leaves you in a strong position to drive straight back up. Chasing the hands toward the floor only folds you deeper without adding to the slam, and the rope should land about a stride out in front of you.",
                 mistake: "Driving the hands down past the knees toward the floor, so the hips keep folding after the rope has already gone.",
                 correct: "Finish with your hands about hip height and your knees and hips still bent, driving the rope down and away from you rather than straight down at your own feet."
             ),
@@ -50406,7 +50406,7 @@ enum SampleData {
                 id: "drive",
                 title: "The Reload",
                 intro: "Standing back up is half the work: the rope only gets overhead again because your legs push the floor away.",
-                why: "This is the half readers treat as a rest, and in this clip it is the faster one. The ascent, f13 to f24, is 12 frames and 11 intervals = 0.4583 s, against the descent's 13 frames and 12 intervals = 0.5000 s, so THE WAY UP IS ONE INTERVAL SHORTER. Peak 3-D wrist speed is 6.083 m/s going up, at f20 to f21, against 5.509 m/s coming down; the means are 3.348 against 3.094 m/s. The clip's single largest per-frame joint step, 253.4732 mm, is the wrist on the way UP, and it happens eight times, once per rep. Only the VERTICAL component is faster coming down, 5.462 against 5.008 m/s, which is the whole of the usual claim that a slam is explosive downwards. Underneath it the knee opens 114.1130 to 173.2675 degrees and the hip 118.0121 to 169.9718, peaking at f22, two frames before the top, while the forefoot never moves at all - toe_L travels 0.0277 mm in total over 192 frames, toe_R 0.0234 mm, and the heel lifts 4.0150 cm at the top of each rep. So the push comes out of a planted foot. The pace this adds up to is one slam per 1.000 s, eight identical reps in 7.958 s, and the app logs this lift in seconds rather than reps - which is a property of the clip and not a recommendation, and is why the rate is left to you in the setup steps.",
+                why: "Standing up is as quick as the slam, and it is what sets up the next one. Drive through planted feet - your heels may rise a little at the top, but the front of the foot stays put - and open your knees and hips fully so the rope is back overhead before you slam again.",
                 mistake: "Treating the way up as a rest, so the rope goes slack and the next slam starts from nothing.",
                 correct: "Push the floor away and stand back up tall, letting the rope ride back up overhead - this half is as quick as the slam itself, not a recovery."
             )
@@ -50440,8 +50440,8 @@ enum SampleData {
             mistakeBadge: "ARMS ONLY",
             correctCue: "Hips and knees drive the rope down",
             mistakeCue: "Arms swing, legs and trunk still",
-            correctNote: "In the model the knee moves 59.1545 degrees, the hip 51.1907 and the trunk 42.2505 while the elbow moves 14.6279, and the elbow is straightest at the bottom of the slam rather than bent - so the rope is driven by the body and only held by the arms.",
-            mistakeNote: "ARMS ONLY has two shipped uses and this is the third; it is not an equipment word, so unlike this family's sled and ball faults it needed no new badge. Nobody has measured a rope slam, so this names a mechanical fault the model settles and makes no claim about which muscle works or about any injury rate."
+            correctNote: "Your knees, hips and trunk make the big movement while your elbows barely change. The arms stay long - straightest at the bottom of the slam, never bent to chop - so your body drives the rope and your arms just hold it.",
+            mistakeNote: "When only the arms swing, your shoulders and arms do all the work and the rope gets little force behind it. Your legs and hips stay out of it, so the arms tire early while the rest of you does nothing. Bend your knees and fold at your hips into every slam so your whole body takes the rope down."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.07, ry: 0.05, cx: 0.71, cy: 0.34),
@@ -50481,7 +50481,7 @@ enum SampleData {
                 id: "hands",
                 title: "Behind the Ball",
                 intro: "The ball is pushed from behind with the hands close together, not gripped on its sides.",
-                why: "The hands own this ball and nothing else comes near it. On every contact frame each wrist is exactly 0.1881 m from the ball centre, which is 0.0381 m - 3.81 cm - outside its 0.150 m surface, to better than 0.2 mm, and neither hand is ever inside the ball; the next nearest joint is the right pectoral support at 0.1069 m and then the clavicles at 0.1474 m. At maximum drive the hands squeeze IN rather than out: handgap falls from 0.2326 m at the hold to 0.1356 m at f10, so the two wrists are 13.6 cm apart behind a ball 30 cm across, with the ball centre 17.5 cm in front of and 1.7 cm above the hand midpoint. On screen the nearest joint to a visible ball point is hand_R at 1.3 px and hand_L at 6.6 px, then the pectoral support at 23.4 px. Held, the ball draws at u 0.3156..0.5371, v 0.2238..0.3537 - a disc of radius 42.6 px in front of the chest and below the chin. So the ball is driven by the hands for 34 of the 48 frames of each rep, 70.8% of it, and it is pushed from behind and never gripped at the sides.",
+                why: "With both hands behind the ball, the push goes straight through its centre and sends it out on a straight line. Gripping it on the sides lets the force slip around the ball and pulls the elbows out. Keep your hands close as you drive - they come in, not apart.",
                 mistake: "Holding the ball out away from the chest with the arms already half extended, so there is no push left to make.",
                 correct: "Hold the ball at chest height with both hands behind it and your thumbs close together, so the pass pushes the ball from behind rather than squeezing it from the sides."
             ),
@@ -50489,7 +50489,7 @@ enum SampleData {
                 id: "drive",
                 title: "The Pass",
                 intro: "This is a throw. Push the ball away as fast as you can and let it go.",
-                why: "The pass is 5 frame intervals long. The elbow opens from 59.87 degrees at f6 to 160.00 at f11 - 100.13 degrees in 5 INTERVALS, 0.2083 s - while hand_L.z travels from 0.2840 to 0.6691 m, 38.5 cm, and the heels leave the floor at f9. Release falls between f11 and f12 at (0.000, 1.102, 6.230) m/s, a speed of 6.326 m/s at 10.0 degrees above horizontal, and the outbound flight f12..f17 is exact ballistics: dz is +0.25957 m on every one of the five steps and the second difference of y is -0.01703 m per frame squared on every step, which is -9.810 m/s squared. What this trains is speed, and that is the one thing the literature is clear about. There is no EMG study of the chest pass at all, but the throw is a reliable and valid test of upper-body power - test-retest 0.996 and r = 0.906 with a jump power index in 20 sand volleyball players (Stockbrugger and Haennel 2001), ICC 0.94 with a 4 kg instrumented ball in 30 active adults, sensitive to upper-body fatigue where grip strength was not (Tremblay 2026), peak force and rate of force development reliable at ICC 0.82 or better in 20 young women (Johnson 2024). Intent is trainable: a maximum-speed warm-up raised chest-pass distance 0.50 m, 6.0%, in 93% of 45 young female basketball players, where a slow-speed warm-up did not (Iwata 2026). And six weeks of medicine-ball training raised throwing velocity 14% in 28 handball players while leaving precision unchanged (Raeder 2015) - so push for speed, not for accuracy.",
+                why: "This lift trains speed, so every rep should be a full-effort throw. The chest pass is a standard test of upper-body power, and studies show medicine-ball training raises throwing speed without costing accuracy - so go for speed first.",
                 mistake: "Pressing the ball out at ordinary bench-press speed, so the rep trains nothing a press does not.",
                 correct: "From your chest, push the ball away as hard and as fast as you can and let it leave your hands - this is a throw, not a press."
             ),
@@ -50497,7 +50497,7 @@ enum SampleData {
                 id: "catch",
                 title: "The Catch",
                 intro: "Half the rep is receiving the ball, and it is the only part that loads you quickly.",
-                why: "The catch is one frame interval and the absorb that follows is six. Between f25 and f26 each wrist goes from 0.2233 m outside the ball to exactly its held 0.0381 m, and the ball arrives at (0.000, -1.697, -4.551) m/s, a speed of 4.857 m/s. The elbow then closes 80.36 degrees in 6 INTERVALS - 0.2500 s, 142.00 at f26 to 61.64 at f32 - at a trunk whose entire range over the clip is 7.0000037 degrees, and the hips and knees barely help: hip 7.3854 degrees of range, knee 15.0868, anklegap 3.8 mm. A ball 30 cm across arriving in a quarter of a second at a near-static trunk is the only fast loading event in this lift, and nothing in the literature or in the library addresses it: the nearest thing the app owns is BOUNCING OFF THE FLOOR on the Barbell Floor Press, whose mistake cue is Elbows slam the floor, and that is about a barbell. Two things the clip does NOT give you. The deepest elbow of the rep is the wind-up and not the catch - 59.87 degrees at f6 against 61.64 at f32 - and the knee goes the other way by four thousandths of a degree, 129.3762 at f32 against 129.3871 at f5, which is nothing, so there is no measured sink into the catch to copy. And the return is not a bounce off anything: the ball leaves its turnaround RISING at 1.559 m/s having arrived falling at 0.943 m/s, comes back 9.45 cm higher than it went out, and keeps only 73.06% of its outgoing horizontal speed. Set the distance yourself and judge the catch yourself.",
+                why: "The catch is the only part of the rep where the ball loads you quickly. Giving with your elbows as it arrives spreads that force over a longer path, so your muscles slow the ball instead of your joints. Pick a distance where the ball comes back at a speed you can control.",
                 mistake: "Catching the ball on straight arms, so the elbows and shoulders stop it instead of the muscles.",
                 correct: "Meet the ball with your arms already reaching and let your elbows fold it in to your chest - and if a pass comes back off line, step aside and let it go rather than reaching for it."
             ),
@@ -50505,7 +50505,7 @@ enum SampleData {
                 id: "stance",
                 title: "Your Base",
                 intro: "The feet are a little inside shoulder-width and they never move.",
-                why: "The stance is narrower than the shoulders and it is frozen. anklegap is 0.3200 m against a shouldergap of 0.3922 m, which is 81.6% of shoulder width, and over 192 frames anklegap changes by 3.8 mm while shouldergap changes by 0.0000004 m. The feet themselves do not move at all: toe_L and toe_R are frozen on all three axes for all 192 frames, with ranges of 0.000000 m to seven decimals, and the heels rise 1.43 cm at most, on f9..f17 - 9 frames, 0.3750 s - peaking at f12. Nothing steps, shuffles or resets between reps, and the four reps are bit-identical to 0.000554 mm. There is also no leg drive to find here: knee range 15.0868 degrees over the whole clip, hip 7.3854, trunk 7.0000037, with no triple extension and no weight shift, so a wide base buys nothing and a step would only cost accuracy. On how many reps to do, the only study with per-exercise numbers for this movement had 14 children, mean age 10.1 years, with a 2.3 kg ball reach 15.0 and then 15.8 repetitions in 30 s - about one every 1.9-2.0 s - at 53.7% and then 63.4% of VO2peak; but its authors state the aim was not to disentangle the individual exercises, the exercise order was not randomised, and each exercise was likely influenced by fatigue from the one before, so those are ordered, confounded observations and not an effect of the chest pass (Faigenbaum 2018).",
+                why: "A fixed, slightly narrow stance keeps the throw in your upper body and sends the ball along the same line every time. Stepping or shuffling brings the legs into it and makes the return harder to catch.",
                 mistake: "Stepping into the throw or letting the feet drift wider, so the pass turns into a push press from the legs.",
                 correct: "Leave your feet where you set them - they do not step or shuffle into the throw, so every rep starts from the same base."
             ),
@@ -50513,7 +50513,7 @@ enum SampleData {
                 id: "torso",
                 title: "Quiet Trunk",
                 intro: "The trunk hardly moves. The pass comes from the arms and chest, not from leaning back.",
-                why: "The trunk is the quietest channel in the clip. Its whole range is 7.0000037 degrees, from 6.5793 at f32 to 13.5793 at f12, over only 40 distinct values with a flat plateau at 9.5793 across f5..f8 - a hand-keyed channel - and the lumbar and thoracic chains are frozen at 171.879 and 174.067 with zero range. The hands are never above the shoulder on any of the 192 frames, staying 9.29 to 17.02 cm below it, and the upper arm peaks at 73.7965 degrees from straight down. The reaching finish a thrower expects is not there either, and this is the one place the animation would mislead a reader who copied it. The elbow's maximum is 167.99985 degrees - a key set at 168, so the arm never straightens - and it arrives at f18, which is 6 frames (0.2500 s) after the first free-flight frame f12 and 7 frames (0.2917 s) after the last held frame f11, so it coincides with the ball's turnaround and not with the throw. At release the elbow is 160.00 and it then FLEXES to 158.47 at f13 before re-extending. What actually opens at f18 is the hands going apart - handgap 0.3178 m, the clip maximum - while hand_L.z moves BACKWARDS from 0.6766 m at f12 to 0.6523, a change of -0.0243 m. So the arms spread and drift back after the ball has gone, and finish long with the fingers chasing the ball is contradicted by the model. Keep the trunk still and let the ball go.",
+                why: "A still trunk keeps the pass in your arms and chest, which is what this drill trains. Leaning back or throwing your shoulders after the ball adds a little distance but takes work off the chest and arches your lower back. Once the ball is gone, let it go - there is no need to chase it with a long reach.",
                 mistake: "Rocking the trunk back and throwing the shoulders after the ball to add a little distance.",
                 correct: "Keep your chest up and your trunk almost still through the rep - the pass comes from your arms and chest, not from leaning back or swinging after the ball."
             )
@@ -50541,8 +50541,8 @@ enum SampleData {
             mistakeBadge: "ELBOWS FLARED",
             correctCue: "Hands behind the ball, elbows in",
             mistakeCue: "Elbows flare, hands go wide",
-            correctNote: "With the hands behind the ball and the elbows tracking in by the ribs, the push runs straight through the ball and the chest and triceps do it. The model holds that line and tightens it: handgap falls from 0.2326 m at the hold to 0.1356 m at the moment of maximum drive, so the two wrists finish 13.6 cm apart behind a ball 30 cm across, and each wrist stays exactly 3.81 cm outside the ball surface on every contact frame.",
-            mistakeNote: "Hands spread on to the sides of the ball push the elbows out level with the shoulders, so the force runs around the ball rather than through it and the front of the shoulder takes what the chest should. It is the commonest pressing fault the library badges - eight shipped blocks carry it, one of them another medicine ball lift - and this animation does the opposite at every frame, which is why it is worth naming."
+            correctNote: "With the hands behind the ball and the elbows tracking in by the ribs, the push runs straight through the ball and the chest and triceps do it. As you drive, the hands draw slightly closer together rather than spreading, which keeps the elbows from flaring.",
+            mistakeNote: "Hands spread on to the sides of the ball push the elbows out level with the shoulders, so the force runs around the ball rather than through it and the front of the shoulder takes what the chest should. It is one of the most common pressing faults, and it also sends the ball off line."
         ),
         glows: [
             .init(DS.activation.opacity(0.58), rx: 0.09, ry: 0.06, cx: 0.62, cy: 0.28),
@@ -50582,7 +50582,7 @@ enum SampleData {
                 id: "reach",
                 title: "Reach Overhead",
                 intro: "You take the ball from your chest and reach it straight overhead with your arms long.",
-                why: "The reach is f4..f12 of a 48-frame rep - 9 frames, 0.3333 s of elapsed time - and it is almost all shoulder. Shoulder flexion, measured as the upper-arm-to-wrist vector against straight down, goes 44.9 deg to 166.18 at f11, while the elbow only opens 75.37 to 149.29 and the knee comes back no further than 163.73. The ball rises from y 1.1789 m to 2.1211 at f12, its top surface at 2.2711, and the wrists peak at y 1.9593, which is 0.3674 m above the standing head height of 1.5919. It travels backwards as it rises - ball z 0.3738 to 0.0280 at f11, essentially straight above the pelvis, whose own z range is -0.1000 to 0.0100 - and it never comes near the face: the smallest clearance from the ball surface to the head joint anywhere in the clip is 0.2880 m, and to the neck 0.2914 m. The trunk goes 5.5434 deg PAST vertical into a backward lean at f11, and both heels leave the floor, foot_L 4.015 cm and foot_R 4.008 cm, above 1 cm over f7..f14. The library badges LEANING BACK on 16 blocks and ARCHING THE LOWER BACK on 2, and 5.54 deg is not enough to badge. No EMG study of a medicine ball slam exists, so nothing here names a muscle: Tsartsapakis 2025 plans exactly that measurement and is written in the future tense with no data.",
+                why: "The reach sets up the throw: the higher the ball goes, the more room you have to throw it down. It comes mainly from the shoulders, with the ball ending right above your hips and clear of your face, and your heels rising a little.",
                 mistake: "Pressing the ball up with bent elbows, or arching the lower back to get it overhead instead of reaching through the shoulders.",
                 correct: "Take the ball from your chest straight up over your head in one move, arms long, until it is stacked right above your hips, and let your heels come up as you reach."
             ),
@@ -50590,7 +50590,7 @@ enum SampleData {
                 id: "hinge",
                 title: "Fold At The Hips",
                 intro: "On the way down you fold forward at the hips while your back stays long.",
-                why: "The fold is at the hip and almost nowhere else. hip_L runs 170.9145 deg to 74.8139, a 96.1006 deg range clip-wide and 94.42 deg within a rep, while the lumbar chain from pelvis to spine to chest flexes only from 171.879 deg at rest to 166.479 at f22 - 5.400 deg against rest, and 6.900 deg clip-wide, because that same chain EXTENDS to 173.379 in the overhead reach - and the thoracic chain from spine to chest to neck goes 174.067 to 161.467, 12.600 deg against rest and 16.100 clip-wide. Segment lengths are rigid to 3e-07 m, so none of that is rig stretch. The head tucks 17.650 deg, the chest-neck-head angle going 175.433 to 157.783 at f28: the model is looking at the ball at the bottom, not up. And the hips drop far more than they travel back - pelvis y 0.9357 m to 0.4799, a 45.58 cm fall, against a z range of 0.11 m in total, 0.0000 at f0, 0.0067 at f12, -0.0600 at f19 and -0.1000 at f28 - which is why the pill says Hinge rather than the library's Hips back, a string whose own lifts send the hips much further behind them. Coaching is unanimous that the commonest slam fault is spinal flexion on the way down and that the fix is a hinge, but no source found is a standards body and none cites a measurement.",
+                why: "Folding at the hips puts the work into your hips and keeps your spine long. Rounding the lower back on the way down is the most common slam fault, so keep the bend at the hips and simply look down at the ball.",
                 mistake: "Rounding the lower back to drive the ball down, or bending at the waist with the hips left under you.",
                 correct: "Send the ball down by folding forward at your hips, and keep your back long from your hips to your head the whole way - the bend belongs at the hip, not in your spine."
             ),
@@ -50598,7 +50598,7 @@ enum SampleData {
                 id: "drive",
                 title: "The Slam",
                 intro: "You throw the ball down in front of you with your whole body, not with your arms.",
-                why: "The slam is f12..f19, 8 frames and 0.2917 s, and the arms do not pull. The elbow is 149.29 deg at f12, 157.49 at f18 and 156.64 at f19, then 165.46 at f20 and its clip maximum 167.6511 at f21 - after the ball has already hit the floor - so it OPENS about 18 deg across the throw. What moves is the trunk: -3.82 deg to 38.34, which is 42.16 deg across 7 intervals at a mean 145 deg/s, with hip 170.58 to 133.53, knee 163.73 to 135.63 and the wrists falling from y 1.9593 to 0.9591. The ball goes down and FORWARD first, z 0.0714 to 0.8843 at f18, then back to 0.8119 at f19, and lands at f21, t 0.875, at 8.7188 m/s vertically and 3.9830 m/s horizontally, 9.5853 m/s resultant. It is welded to the hands over f0..f19 and f28..f47, the wrists holding a fixed 0.188053 m radius, and free only over f20..f27. There is no catch: at the instant of impact the wrists are 0.4882 m ABOVE the ball centre and they do not touch it again for 0.2917 s. One frame of the release is scripted rather than ballistic - the f19-to-f20 interval shows -25.688 m/s2, about 2.6 g, and only f20-to-f21 is at g, -9.810, which is g to 0.04 per cent - so nothing here is built on the release instant.",
+                why: "The power comes from your trunk and hips driving forward and down, not from your arms pulling. Your arms stay long and simply carry the ball, and you release it in front of you rather than following it to the floor.",
                 mistake: "Pulling the ball down with the arms while the trunk stays upright, or chasing it to the floor instead of letting it go.",
                 correct: "Throw the ball down hard in front of you with your hips and trunk, keeping your arms long rather than pulling with them, then let it go and let it land."
             ),
@@ -50606,7 +50606,7 @@ enum SampleData {
                 id: "depth",
                 title: "Squat To The Ball",
                 intro: "After the ball lands you squat all the way down to it, pick it up and stand back up.",
-                why: "The pick-up is the biggest part of the rep and nobody has written about it: 28 of the 48 frames of a rep - 27 intervals, 1.1250 s of the 2.0000 s rep, 58 per cent - is the descent, the bottom hold and the stand. The descent is f19..f28, 10 frames and 0.3750 s: knee 135.63 deg to 61.9026 at a mean 196.6 deg/s, hip 133.53 to 74.81, trunk to its clip maximum 56.5450 at f26 and 56.33 at f28, the ankle 95.05 to 64.14 against 105.41 standing, the pelvis 0.8396 m to 0.4799 - 35.97 cm below where the slam left it and 41.92 cm below standing - and the head 1.3763 to 0.8831. At the bottom the HIP joint is 0.1120 m ABOVE the knee joint and the thigh slopes 15.09 deg down from hip to knee, so the squat stops just ABOVE parallel on the usual hip-crease-to-knee reading even though the knee itself is deeply flexed at 61.9026 deg - the hip is above the knee on all 192 frames, so no string here asks for depth below parallel, and the depth a lifter actually needs is whatever gets two hands under the ball with a long back. The bottom is frozen over f28..f30, 3 frames and 2 intervals, 0.0833 s, every joint identical to 0.001 mm, with the hands back on the ball at the same 0.188053 m radius. The stand is f31..f46, 16 frames and 0.6250 s, and the elbow re-folds 148.66 deg to 75.20 over the last six of them, re-racking the ball at the chest. No study, no library badge and no coaching source addresses this pick-up. The nearest measured figure is a RATE: Faigenbaum 2018, 14 children of mean age 10.1 years with a 2.3 kg ball, managed 15.1 then 16.1 double-arm slams in 30 s, about one every 1.9 to 2.0 s, which is this clip's own 2.000 s rep, at 62.8 and 63.6 per cent of VO2peak and 88.8 and 89.6 per cent of peak heart rate. Its authors say the protocol was not built to separate the exercises and that each row is confounded by fatigue from the one before, so it is a rate and a cost and not a muscle claim.",
+                why: "The pick-up takes more than half of every rep, so much of the work happens here. Squatting down with a long back lets your legs do the lifting, and you only need to go deep enough to get both hands under the ball.",
                 mistake: "Snatching the ball up off the floor with straight legs and a rounded back instead of squatting down to it.",
                 correct: "Keep going down after the slam: squat right down to the ball with your hips back and your back long, pick it up in both hands and stand all the way up with it at your chest."
             ),
@@ -50614,7 +50614,7 @@ enum SampleData {
                 id: "feet",
                 title: "Feet Stay Set",
                 intro: "Your feet stay where you set them, and your heels only leave the floor as you reach overhead.",
-                why: "The feet never move and the heels move once. anklegap runs 0.3800 to 0.3933 m, and that 1.33 cm is the ankle joints rotating rather than a step, against a shouldergap that is a dead constant 0.392155 m with a range of 3.11e-07 m - so the stance is shoulder-width. toe_L and toe_R travel 0.00033 mm and 0.00049 mm over all 192 frames: there is no step, no stance reset and no stance change anywhere in the clip. The heel is the one thing that leaves the floor, and it does it in the reach rather than in the squat. foot_L rests at 0.068600 m, is above 1 mm from f5, above 1 cm over f7..f14, peaks 4.015 cm up at f11 with foot_R at 4.008, and is back at its rest height to within 0.00025 mm for every frame of f20..f31 - the whole slam, the descent, the squat and the stand. So flat-footed is true of the half of the rep that loads the knee and false of the reach, and no string here may claim either half on its own. What the bottom asks of the ankle is real: 64.14 deg at f28 against 105.41 standing, which is 41.27 deg of dorsiflexion, achievable but not universal. The library badges HEELS LIFTING on 3 blocks, all of them squats, and that badge is wrong for this lift: here the heels lift on purpose.",
+                why: "Feet that stay in one place give every rep the same base, so the throw and the squat line up the same way each time. Your heels rise only in the reach; through the slam and the squat they stay flat, which takes good ankle mobility at the bottom.",
                 mistake: "Stepping or shuffling the feet between reps, or letting the heels peel off the floor at the bottom of the squat.",
                 correct: "Set your feet about shoulder-width and leave them there - your heels come up as you reach overhead, then stay down through the slam and the whole squat."
             )
@@ -50646,8 +50646,8 @@ enum SampleData {
             mistakeBadge: "ROUNDED LOWER BACK",
             correctCue: "Back long, fold at the hips",
             mistakeCue: "Lower back rounds to reach the ball",
-            correctNote: "The model does the correct version, measurably. The lumbar chain from pelvis to spine to chest flexes only 5.400 deg from its resting 171.879, to 166.479 at f22, and 6.900 deg across the whole clip, while hip_L folds 96.1006 deg from 170.9145 to 74.8139. The thoracic chain gives up 12.600 deg from rest. Segment lengths are rigid to 3e-07 m, so none of that is rig stretch, and the head tucks 17.650 deg at the bottom because the model is looking at the ball.",
-            mistakeNote: "Coaching is unanimous that the commonest fault in a slam is spinal flexion on the way down and that the fix is a hip hinge, but none of the sources found is a standards body and none cites a measurement. The only mechanistic evidence is Callaghan and McGill 2001, which took porcine cervical spinal units through up to 86 400 bending cycles at 1 Hz in vitro and saw repeated flexion initiate posterior annular herniation at modest compression - neither a human nor a lumbar spine, and no dose. No study has tested a rounded back on this lift."
+            correctNote: "The bend happens at the hips: they fold deeply while your lower back stays long and barely changes shape. Your upper back may soften slightly, and your head tips down at the bottom because your eyes are on the ball.",
+            mistakeNote: "The lower back rounds to get the ball to the floor, so the spine bends instead of the hips. Repeated over many fast reps, this is the slam fault coaches warn about most. Fix it by hinging at the hips and squatting lower rather than rounding your back to reach the ball."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.11, ry: 0.07, cx: 0.62, cy: 0.64),
