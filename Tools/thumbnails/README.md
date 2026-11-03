@@ -234,3 +234,36 @@ wall crop, and Lying Cable Curl and Cable Reverse Curl joined `BODY_ONLY`.
 `shots.sh` now passes the name through the environment, since
 "Farmer's Carry" broke its quoting. The library now has 473 exercises, all
 with a thumbnail.
+
+Rebuilt black-shoe models (2026-10-31): the 46 exercises whose models were
+rebuilt on the white-sneaker male master (see `Tools/model-pipeline/README.md`)
+were re-shot with their stored framings and pose times; their motion did not
+change. Walking Lunge's pose time moved from 7.83 s to 2.04 s, the first deep
+lunge, which is what its old tile showed: in still mode the viewport measures
+the rig's bounds at the pose time, and the rebuilt rig's master-only foot
+pivots (`FF_ankle_target_*`, `FF_ball_pivot_*`, unanimated by the old clip)
+follow the planted foot, not the lifter, so near the end of the walk the
+bounds no longer centre on the lifter and the tile cropped the head.
+
+Back fixes (2026-11-01): the 20 exercises whose models changed in the back
+round (see `Tools/model-pipeline/README.md`) were re-shot with
+`Tools/lab/shots.sh photo`. The four with a new bench or pose (One-Arm
+Dumbbell Row, Back Extension, Feet-Elevated Inverted Row, Pendlay Row) took
+fresh pose times and square framings. The Feet-Elevated Inverted Row joined
+`BODY_ONLY`, since it now hangs from the Inverted Row's Smith rack. The
+second pass that afternoon re-shot the Chest-Supported Dumbbell Row (incline
+bench), Seated Cable Row (N15 machine), Straight-Arm Pulldown and Single-Arm
+Lat Pulldown. Their square framings were re-solved, and the pose times
+stayed at 1.33 s. The Straight-Arm Pulldown was shot once more that evening
+on its single column and straight bar.
+
+Desktop "1-100" re-exports (2026-11-02): the 44 exercises whose models were
+replaced (see `Tools/model-pipeline/README.md`) were re-shot with
+`Tools/lab/shots.sh photo`. `posetime.py` gave new times to the lifts whose
+smoothed or re-timed reps moved the key pose (mostly 1.33 → 1.5 s, the Barbell
+Bent-Over Row 1.0 s, the Arnold Press its second rep at 5.5 s); the Wrist Curl
+(1.5 s) and Walking Lunge (2.04 s) keep their pinned times. `thumbsolve.py`
+re-framed the lifts with new equipment or timing (both seated presses, the
+incline and wrist curls, the Lying Leg Raise without its mat, the bent-over row
+and lat pulldown); the Cable Lateral Raise and Cable Rear Delt Fly, now on the
+dual cable station, joined `BODY_ONLY` like the Cable Y-Raise.

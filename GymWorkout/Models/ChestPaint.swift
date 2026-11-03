@@ -84,7 +84,7 @@ enum ChestPaint {
         "InclineCableFly": .init(upper: .secondary, middle: .primary, lower: .secondary),
         "InclineCablePress": .init(upper: .secondary, middle: .primary, lower: .secondary),
         "InclineCablePressStraightUp": .init(upper: .primary, middle: .secondary, lower: .secondary),
-        "InclineChestPressMachine": .init(upper: .secondary, middle: .primary, lower: .secondary),
+        "InclineChestPressMachine": .init(upper: .primary, middle: .secondary, lower: .secondary),
         "InclineDumbbellFly": .init(upper: .primary, middle: .secondary, lower: .secondary),
         "InclineDumbbellPress": .init(upper: .primary, middle: .secondary, lower: .secondary),
         "InclineDumbbellSqueezePress": .init(upper: .primary, middle: .secondary, lower: .secondary),

@@ -1123,3 +1123,154 @@ never locked or folded; folding toward a press stays the mistake its ghost
 shows. Checked on Blender renders of the app files (grip cross-sections,
 top views at the stretch); not rebuilt in the simulator (6.7 GB free).
 Library tiles were not re-shot.
+
+Rebuilt black-shoe models (2026-10-31): the 46 app models still in the old
+black shoes (slimmed against `Shared/AnatomyBody.usdc`; mostly the original
+1-50 back, shoulder and curl lifts) had no Blender source left on the Mac,
+the HIKSEMI SSD or the Trash, so each was rebuilt from its own app model on
+the male master (`Male_Fitness_20261001/Male_Fitness_EnhancedRig.blend`,
+white sneakers). The app USD is imported into a copy of the master (the old
+205-joint skeleton's rest pose matches the master's to 0.0 cm), every
+same-named bone is keyed per frame to the app's pose, and the constraints and
+transform drivers on keyed bones are muted so the motion is exact (the
+master's chest-out target, arm IK and grip-driven finger rig would move the
+elbows 2.6 cm, the chest 1.5 cm and the fingers up to 7.8 cm); the props are
+kept as `APP_<prim name>` (the master's machine library has the same names;
+no app code looks props up by name) and the paint is set through
+`MH_<Group>` from the app's lit levels. Files, tools and QA live on the SSD
+in `BLENDER/_dung_lai_tu_app_20261031/` (README_VI.md); their exports are in
+its `export/` folder, which `SourceExports/rebuilt-1031` links to (JOBS
+"rebuilt-1031"). Converted, `one_side_tiers.py` (nothing unlit),
+`shorts/rebase_shorts.py`, padded and slimmed against `AnatomyBodyV2.usdc`.
+Bulgarian Split Squat (Lean), 601 frames at 60 fps, fails `equiv.py` only
+because the 24 fps shared body's constant values land at rescaled sample
+times (all 7,212 attributes are equal at every sampled time), so its slim was
+taken by hand (3.3 MB; the old model was never slimmed, 20.5 MB). Against
+the old models every shared joint moves within 0.000 cm and every prop
+within 0.0 cm, none missing, and all 46 now reference `AnatomyBodyV2`. The
+master paints whole groups, so Back Extension's glutes and hamstrings and
+Walking Lunge's forearms and upper back go from faint to dim (their rows
+already call them secondary), and the upright Hip Abduction Machine lights
+all three glutes bright, as the Lean model the owner exported later does
+(its rows still call Gluteus Maximus secondary). Lying Leg Raise, rebuilt
+for its teal mat, already wore white shoes and was not swapped. The 46
+library tiles were re-shot with their stored framings (Walking Lunge at
+2.04 s, see `Tools/thumbnails/README.md`). The rebuilt .blends first moved their
+props through the USD importer's Transform Cache constraints, which read the
+app model by path; once the swap replaced those files (props now `APP_…`)
+Blender read garbage and threw the props ~10^28 m away. `tools/bake_props.py`
+on the SSD now keys every prop per frame from `app_cu/` (the 47 pre-swap
+app models) and deletes the constraints and cache files; re-exports match
+the old models at 0.00 cm (all joints, 347 props). The .blends also carry
+the 59-70 files' navy shorts (`tools/navy_shorts.py`); the app models keep
+the near-black shorts until they are re-exported.
+
+Chest fixes (2026-10-31 evening, JOBS "chest-fix-1031"; files, tools and QA in
+HIKSEMI `BLENDER/Fix_Chest101_20261031/`, README_VI.md): five owner notes
+fixed in the 101-190 .blends and re-exported. 105 Smith Machine Decline
+Press: the Smith bar height is the hands' mean height plus a keyed
+`FF_BarOffset`, which left the bar at the heel of the palm (39-42 mm along
+the hand, 90 mm on the approved 103/104); only the offset changed (bar +5 cm,
+hands as animated). 111/112 Dumbbell and Barbell Pullover: the app says "no
+arch" but the models arched (lower back 5-6 cm off the pad); their spine,
+chest, neck, head and thighs copy keyed world-space `REVIEW_*` empties, so
+`FF_BackArch` went to 0 with the pelvis lowered until the glutes sink 4 cm
+like the approved 06 fly, chest/neck/head kept in place, the spine re-aimed
+and the thighs turned about the knees (lower back now ~1.4 cm off the pad);
+their folders are flagged red for the owner's review. 123 Incline Chest
+Press Machine: upper chest painted bright, middle dim, as the incline
+presses 02/05 (its rows follow). 128 Single-Arm Landmine Press: the hand
+now stays in line with the forearm (it bent up to 56 deg), the bar end at the
+same point in the palm. 121 Cable Crossover had the Cable Fly's motion and
+never crossed; at the owner's request its hands now go on past the midline
+in the last part of the squeeze (6.6 cm past each other, 12 cm apart in
+height, left hand on top in rep 1 and right in rep 2), the copy saying "each
+rep" and "lower chest" to match; its folder is flagged red too.
+
+Back fixes (2026-11-01, JOBS "back-fix-1101"; files, tools and QA in HIKSEMI
+`BLENDER/Fix_Back_20261101/`, README_VI.md): the owner's 23-item back list,
+fixed in the .blends and re-exported. The rebuilt rows and pulls (barbell and
+dumbbell rows, pull-up, chin-up, both lat pulldowns, seated cable row, T-bar
+row, low inverted row) gained shoulder-blade phases (`tools/scap2.py`: the
+clavicles turn about the SC joint with the pull, the arms are re-solved by
+two-bone IK, and the bar, dumbbells, landmine, lat bar, cables and stacks
+follow; stack travel is geared by the ratio measured in each file, 0.7 on
+the lat machine). The Pendlay Row was re-posed: knees 84 to 130 deg, hips
+18 cm higher and back, the trunk near level, the bar starting on the floor
+over the mid-foot with the plates touching, and the bar in the fingers like
+the approved Smith grip. The One-Arm Dumbbell Row (lifter 9.6 cm lower) and
+the Feet-Elevated Inverted Row now use the master's flat `GYM_Bench`; the
+Back Extension stands on the master's 45-degree bench (`GYM2_BackExtension`,
+the IMP_B04 design), with the lifter moved 16.4 cm up into it. The
+Straight-Arm Pulldown's D-handles now hang along their cables, the
+Chest-Supported Row Machine's left hand was turned 180 deg back to mirror
+the right with its lever arms tilted 9 deg clear of the fists, and the High
+Row Machine's arms follow the shoulders about their axles. In the owner's
+files: the 152 Landmine Row's V-handle now carries the bar (it sat 1.5 cm
+above it and 14 deg off); the 155 Renegade Row's toes bend flat on the floor,
+and its export is the full two-arm clip (the app had frames 1-84, then a
+jump to 192); both 173 Single-Arm Lat Pulldown models turn the palm from
+facing in at the top to facing up at the bottom, with the D-handle hanging
+from the cable; the 189 Dumbbell Pullover Row's elbows bend to 140 deg; and
+the five shrugs gained forward-lean variants (`<name>_nghieng_truoc.blend`,
+models `Back/<Name>ShrugLean`, stance "Forward Lean"). All were converted,
+run through `one_side_tiers.py` and `shorts/rebase_shorts.py`, then padded
+and slimmed against `AnatomyBodyV2.usdc` (all attribute for attribute). Every
+changed source folder is flagged red. The rebuilt folders keep their blend
+names and gained a `dir` key in `plan.json`. Framings were re-solved for the
+four lifts with a new bench or pose and for the five lean stances.
+
+Back fixes, second pass (2026-11-01 afternoon, owner's answers). The
+Chest-Supported Dumbbell Row (item 6, owner picked the incline bench) now
+lies on the master's `GYM_Bench` at 35 degrees, the angle of the model's
+chest-to-belly line (`tools/incline17.py`): the back pad trimmed to
+26 x 80 cm (the master's 33 x 96 cm one put the hips 1 m up), feet on the
+floor astride the seat, the lifter 15.7 cm up. The copy's overhand grip,
+handles across the body, ran the inner dumbbell ends under the belly, so the
+hands go out to 31 cm each side and the bars' 6.4 cm stubs are cut flush
+with the end caps. The Seated Cable Row moved onto the library's N15 seated
+row, its frame painted `GYM_Charcoal`, with the N21 MAG pronated bar the
+model already gripped (`tools/n15_swap.py`). The rig's deforming cable curve
+is kept static round the pulleys, and its two moving ends are keyed tubes;
+the stack lifts 1:1 with the paid-out cable. Its copy said "Neutral grip"
+for a model that has always gripped overhand; on the owner's word the copy
+now says overhand. The Straight-Arm Pulldown's elbows open to 165 degrees at
+the top and 158 at the bottom (`scap2.py elbow= elbow1=`). That evening it
+moved to one cable (`tools/bar23.py`, owner: "nối 1 dây thôi dùng handle
+thanh xà"): the right column and both triangle handles went, the left column
+slid to the middle in front of the lifter, and one cable runs to the
+master's straight cable bar (`GYM2_CableStraightBar`, grips 47 cm apart).
+Its copy now speaks of the bar instead of two handles.
+Both Single-Arm Lat Pulldowns turn the bar square to the cable at the top
+(`d_handle_turn.py dev= square=`): 19 degrees of wrist deviation plus a 19
+degree squarer grip, so the D-handle lies along its cable all clip. JOBS
+gained `back-fix-1101/17_chest_supported_dumbbell_row`; the five were
+converted, tiered, rebased, padded and slimmed as before, and three framings
+re-solved.
+
+Desktop "1-100" folder, 2026-11-02 (JOBS "1-100-1102"): the owner edited the
+red rebuilt .blend files (back, shoulders, biceps, wrist curl, and the rebuilt
+leg, abs and inverted-row lifts), flagged them green and exported 44 of them to
+`~/Desktop/1-100`, with the Bench Dip re-export of 2026-10-31 evening. All 44
+replace their app models (clones in `SourceExports/1-100-1102/`, with the
+exports' `textures/color_010102.exr`), converted, tiered, rebased, padded and
+slimmed against `AnatomyBodyV2.usdc` as usual. The male Hack Squat export was
+left out (the male lift is out of the app). Against the models they replace:
+the toes turn out 5 degrees on most lifts (the toe joints move ~5 cm); the
+shoulder fixes of 2026-11-01 are in (the Machine Lateral Raise's D-loop handle
+turned out to the back of the hand, the lateral raises' elbows fixed at 160
+degrees); the Barbell Bent-Over Row and Lat Pulldown change their rep timing,
+not their path; the Dumbbell Shoulder Press, Arnold Press and Incline Dumbbell
+Curl sit on `GYM_Bench` (the curl's back at 70 degrees), the Wrist Curl's bench
+lost its base rails and the Lying Leg Raise its teal mat. Bench Dip, Hip
+Abduction Machine, both inverted rows, Spider Curl and Cable Curl move as
+before. Nine lifts changed their paint and their rows follow it (Walking
+Lunge loses its faint forearm and trapezius rows, Back Extension its glute and
+hamstring rows, Dumbbell Shoulder Press drops the front delt to secondary,
+Dumbbell Row and Feet-Elevated Inverted Row swap the lats and rear delts, the
+rear-delt flies and Face Pull gain a dim Lateral Deltoid, the Dumbbell Lateral
+Raise dim front and rear delts); the Hip Abduction Machine and Lying Leg Raise
+keep their known rank differences. Copy changed only where the model now
+contradicts it: the Lying Leg Raise lies on the floor, the incline curl's
+bench reads about 70 degrees. Six framings were re-solved (both seated
+presses, both cable-station lifts, the incline curl and wrist curl).

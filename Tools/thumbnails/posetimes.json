@@ -35,7 +35,7 @@
   "length": 7.96
  },
  "Walking Lunge": {
-  "time": 7.83,
+  "time": 2.04,
   "disp": 17.02,
   "length": 7.96
  },
@@ -135,103 +135,103 @@
   "length": 7.96
  },
  "Barbell Bent-Over Row": {
-  "time": 1.33,
-  "disp": 1.24,
-  "length": 7.96
+  "time": 1.0,
+  "disp": 1.6,
+  "length": 4.96
  },
  "Dumbbell Row": {
   "time": 1.33,
-  "disp": 1.26,
+  "disp": 1.73,
   "length": 7.96
  },
  "One-Arm Dumbbell Row": {
   "time": 1.33,
-  "disp": 0.63,
+  "disp": 0.86,
   "length": 7.96
  },
  "Chest-Supported Dumbbell Row": {
   "time": 1.33,
-  "disp": 1.26,
+  "disp": 1.75,
   "length": 7.96
  },
  "Pull-Up": {
   "time": 1.33,
-  "disp": 2.57,
+  "disp": 3.18,
   "length": 7.96
  },
  "Chin-Up": {
   "time": 1.33,
-  "disp": 2.38,
+  "disp": 3.07,
   "length": 7.96
  },
  "Lat Pulldown": {
-  "time": 1.33,
-  "disp": 2.08,
+  "time": 1.5,
+  "disp": 2.56,
   "length": 7.96
  },
  "Close-Grip Lat Pulldown": {
   "time": 1.33,
-  "disp": 2.19,
+  "disp": 2.46,
   "length": 7.96
  },
  "Seated Cable Row": {
   "time": 1.33,
-  "disp": 1.32,
+  "disp": 1.6,
   "length": 7.96
  },
  "Straight-Arm Pulldown": {
   "time": 1.33,
-  "disp": 2.39,
+  "disp": 2.86,
   "length": 7.96
  },
  "T-Bar Row": {
   "time": 1.33,
-  "disp": 1.32,
+  "disp": 1.66,
   "length": 7.96
  },
  "Chest-Supported Row Machine": {
-  "time": 1.33,
-  "disp": 1.49,
+  "time": 1.5,
+  "disp": 1.7,
   "length": 7.96
  },
  "High Row Machine": {
   "time": 0.83,
-  "disp": 2.01,
+  "disp": 2.14,
   "length": 7.96
  },
  "Back Extension": {
   "time": 1.33,
-  "disp": 3.03,
+  "disp": 3.06,
   "length": 7.96
  },
  "Barbell Overhead Press": {
-  "time": 1.33,
-  "disp": 2.07,
-  "length": 7.96
- },
- "Dumbbell Shoulder Press": {
-  "time": 1.33,
-  "disp": 1.83,
-  "length": 7.96
- },
- "Arnold Press": {
-  "time": 1.67,
-  "disp": 1.82,
-  "length": 7.96
- },
- "Machine Shoulder Press": {
-  "time": 1.33,
-  "disp": 1.9,
-  "length": 7.96
- },
- "Dumbbell Lateral Raise": {
-  "time": 1.33,
+  "time": 1.5,
   "disp": 2.08,
   "length": 7.96
  },
+ "Dumbbell Shoulder Press": {
+  "time": 1.5,
+  "disp": 1.82,
+  "length": 7.96
+ },
+ "Arnold Press": {
+  "time": 5.5,
+  "disp": 1.8,
+  "length": 7.96
+ },
+ "Machine Shoulder Press": {
+  "time": 1.5,
+  "disp": 1.87,
+  "length": 7.96
+ },
+ "Dumbbell Lateral Raise": {
+  "time": 1.5,
+  "disp": 2.24,
+  "length": 7.96
+ },
  "Cable Lateral Raise": {
-  "time": 1.33,
-  "disp": 1.19,
+  "time": 1.5,
+  "disp": 1.17,
   "length": 7.96
  },
  "Machine Lateral Raise": {
@@ -240,18 +240,18 @@
   "length": 7.96
  },
  "Dumbbell Front Raise": {
-  "time": 1.33,
-  "disp": 1.97,
+  "time": 1.5,
+  "disp": 1.93,
   "length": 7.96
  },
  "Reverse Dumbbell Fly": {
-  "time": 1.33,
-  "disp": 2.02,
+  "time": 1.5,
+  "disp": 2.01,
   "length": 7.96
  },
  "Reverse Pec Deck": {
-  "time": 1.33,
-  "disp": 2.0,
+  "time": 1.5,
+  "disp": 1.99,
   "length": 7.96
  },
  "Face Pull": {
@@ -260,13 +260,13 @@
   "length": 7.96
  },
  "Cable Rear Delt Fly": {
-  "time": 1.33,
-  "disp": 1.99,
+  "time": 1.5,
+  "disp": 1.97,
   "length": 7.96
  },
  "Barbell Curl": {
   "time": 1.33,
-  "disp": 0.72,
+  "disp": 0.59,
   "length": 7.96
  },
  "Triceps Pushdown": {
@@ -361,7 +361,7 @@
  },
  "Hip Abduction Machine": {
   "time": 1.33,
-  "disp": 0.9,
+  "disp": 0.88,
   "length": 7.96
  },
  "Hip Abduction Machine (Lean)": {
@@ -711,12 +711,12 @@
  },
  "Inverted Row": {
   "time": 1.33,
-  "disp": 1.1,
+  "disp": 1.35,
   "length": 7.96
  },
  "Feet-Elevated Inverted Row": {
   "time": 1.33,
-  "disp": 1.1,
+  "disp": 1.35,
   "length": 7.96
  },
  "Underhand Inverted Row": {
@@ -1376,7 +1376,7 @@
  },
  "V-Squat": {
   "time": 1.33,
-  "disp": 2.99,
+  "disp": 2.97,
   "length": 7.96
  },
  "Vertical Leg Press": {
@@ -1451,7 +1451,7 @@
  },
  "Pendlay Row": {
   "time": 1.33,
-  "disp": 1.24,
+  "disp": 1.59,
   "length": 7.96
  },
  "Dumbbell Curl": {
@@ -1481,7 +1481,7 @@
  },
  "Reverse Curl": {
   "time": 1.33,
-  "disp": 0.79,
+  "disp": 0.81,
   "length": 7.96
  },
  "Wrist Curl": {
@@ -1946,7 +1946,7 @@
  },
  "Lying Leg Raise": {
   "time": 1.67,
-  "disp": 3.57,
+  "disp": 3.58,
   "length": 7.96
  },
  "Flutter Kick": {

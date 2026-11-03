@@ -2090,10 +2090,14 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -2, zoom: 0.856, offset: [-0.053, 0.143, -0.117])),
         "Dumbbell Row":                 ExerciseModel(resource: "DumbbellRow",
                                         framing: ModelFraming(yaw: -2, zoom: 1.215, offset: [-0.027, 0.233, -0.06])),
+        // Re-solved 2026-11-01: the model now kneels on the master's flat
+        // bench (1.38 m long), the lifter 9.6 cm lower than on the old one.
         "One-Arm Dumbbell Row":         ExerciseModel(resource: "OneArmDumbbellRow",
-                                        framing: ModelFraming(yaw: -2, zoom: 0.860, offset: [-0.001, 0.118, -0.003])),
+                                        framing: ModelFraming(yaw: -2, zoom: 0.754, offset: [0.012, 0.140, 0.027])),
+        // Re-solved 2026-11-01: the lifter now lies on a 35-degree incline
+        // bench with the feet on the floor, longer than the old standing pose.
         "Chest-Supported Dumbbell Row": ExerciseModel(resource: "ChestSupportedDumbbellRow",
-                                        framing: ModelFraming(yaw: -2, zoom: 1.215, offset: [-0.027, 0.233, -0.06])),
+                                        framing: ModelFraming(yaw: -2, zoom: 0.917, offset: [0.000, 0.148, -0.001])),
         "Pull-Up":                      ExerciseModel(resource: "PullUp",
                                         framing: ModelFraming(yaw: -2.6, zoom: 0.724, offset: [-0.082, -0.046, -0.049])),
         "Chin-Up":                      ExerciseModel(resource: "ChinUp",
@@ -2102,13 +2106,17 @@ enum SampleData {
                                         framing: ModelFraming(yaw: 0.5, zoom: 0.866, offset: [-0.087, 0.017, -0.048])),
         "Close-Grip Lat Pulldown":      ExerciseModel(resource: "CloseGripLatPulldown",
                                         framing: ModelFraming(yaw: 0.5, zoom: 0.857, offset: [-0.085, 0.011, -0.047])),
+        // Re-solved 2026-11-01: the library's N15 seated row (long bench,
+        // raised footplate) puts the legs level, so the lifter is longer.
         "Seated Cable Row":             ExerciseModel(resource: "SeatedCableRow",
-                                        framing: ModelFraming(yaw: -2.2, zoom: 0.971, offset: [0.017, 0.113, 0.023])),
+                                        framing: ModelFraming(yaw: -2.2, zoom: 0.787, offset: [-0.002, 0.045, -0.003])),
         // Re-solved for the 382×655 trainer with the 1-50 redo (2026-09-29):
         // the old values, fitted at the pre-drawer aspect, cut off the
-        // lifter's right side; the columns now crop instead.
+        // lifter's right side; the columns now crop instead. Again 2026-11-01:
+        // straight arms on one cable and a straight bar from a single column
+        // centred in front, small enough now to keep the whole setup in frame.
         "Straight-Arm Pulldown":        ExerciseModel(resource: "StraightArmPulldown",
-                                        framing: ModelFraming(yaw: -2.5, zoom: 0.94, offset: [-0.063, 0.044, -0.047])),
+                                        framing: ModelFraming(yaw: -2.5, zoom: 0.863, offset: [-0.112, 0.009, -0.083])),
         "T-Bar Row":                    ExerciseModel(resource: "TBarRow",
                                         framing: ModelFraming(yaw: -2.7, zoom: 0.809, offset: [0.135, 0.18, 0.064])),
         "Chest-Supported Row Machine":  ExerciseModel(resource: "ChestSupportedRowMachine",
@@ -2117,21 +2125,26 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -2.5, zoom: 0.86, offset: [-0.007, 0.033, -0.005])),
         // Seen from behind-left (-1.9) since 2026-09-30: the model is the
         // lower-back (spine-curling) back extension, and from behind (-2.5)
-        // the pad hid the rounded spine at the bottom of every rep.
+        // the pad hid the rounded spine at the bottom of every rep. Re-solved
+        // 2026-11-01 on the 45-degree bench, the lifter 16 cm higher.
         "Back Extension":               ExerciseModel(resource: "BackExtension",
-                                        framing: ModelFraming(yaw: -1.9, zoom: 0.637, offset: [-0.013, 0.057, -0.037])),
+                                        framing: ModelFraming(yaw: -1.9, zoom: 0.669, offset: [-0.025, 0.012, -0.074])),
         "Barbell Overhead Press":       ExerciseModel(resource: "BarbellOverheadPress",
                                         framing: ModelFraming(yaw: -0.5, zoom: 0.654, offset: [-0.009, -0.083, 0.005])),
+        // Re-solved 2026-11-02: on the owner's 196 bench (GYM_Bench, back at 90°).
         "Dumbbell Shoulder Press":      ExerciseModel(resource: "DumbbellShoulderPress",
-                                        framing: ModelFraming(yaw: -0.5, zoom: 0.838, offset: [-0.016, 0.016, 0.009])),
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.795, offset: [-0.002, 0.039, 0.001])),
+        // Re-solved 2026-11-02: on the owner's 196 bench (GYM_Bench, back at 90°).
         "Arnold Press":                 ExerciseModel(resource: "ArnoldPress",
-                                        framing: ModelFraming(yaw: -0.5, zoom: 0.839, offset: [-0.005, 0.016, 0.003])),
+                                        framing: ModelFraming(yaw: -0.5, zoom: 0.796, offset: [0.010, 0.040, -0.005])),
         "Machine Shoulder Press":       ExerciseModel(resource: "MachineShoulderPress",
                                         framing: ModelFraming(yaw: -0.6, zoom: 0.894, offset: [0.002, 0.033, -0.001])),
         "Dumbbell Lateral Raise":       ExerciseModel(resource: "DumbbellLateralRaise",
                                         framing: ModelFraming(yaw: -0.25, zoom: 0.736, offset: [-0.01, 0.028, 0.003])),
+        // Re-solved 2026-11-02: the dual cable station stands 1.2 m to the side, so the
+        // lifter is framed and the station crops (the cable runs out of frame).
         "Cable Lateral Raise":          ExerciseModel(resource: "CableLateralRaise",
-                                        framing: ModelFraming(yaw: -0.25, zoom: 0.842, offset: [-0.019, -0.023, 0.005])),
+                                        framing: ModelFraming(yaw: -0.25, zoom: 0.986, offset: [-0.200, 0.044, 0.051])),
         "Machine Lateral Raise":        ExerciseModel(resource: "MachineLateralRaise",
                                         framing: ModelFraming(yaw: -0.25, zoom: 0.931, offset: [0.008, 0.045, -0.002])),
         "Dumbbell Front Raise":         ExerciseModel(resource: "DumbbellFrontRaise",
@@ -2142,8 +2155,9 @@ enum SampleData {
                                         framing: ModelFraming(yaw: 0.4, zoom: 0.846, offset: [0.032, 0.112, 0.013])),
         "Face Pull":                    ExerciseModel(resource: "FacePull",
                                         framing: ModelFraming(yaw: -2.7, zoom: 0.874, offset: [-0.061, 0.019, -0.029])),
+        // Re-solved 2026-11-02: the dual cable station in front of the lifter crops.
         "Cable Rear Delt Fly":          ExerciseModel(resource: "CableRearDeltFly",
-                                        framing: ModelFraming(yaw: -2.8, zoom: 0.689, offset: [-0.104, -0.005, -0.037])),
+                                        framing: ModelFraming(yaw: -2.8, zoom: 0.656, offset: [-0.014, 0.032, -0.005])),
         "Barbell Curl":                       ExerciseModel(resource: "BarbellCurl",
                                         framing: ModelFraming(yaw: -0.4, zoom: 0.615, offset: [0.004, 0.019, -0.002])),
         "Biceps Curl":                        ExerciseModel(resource: "BicepsCurl",
@@ -2449,8 +2463,9 @@ enum SampleData {
         // from behind the head (-2.2): side-on, the near plate hid the lifter.
         "Inverted Row":                        ExerciseModel(resource: "InvertedRowSmithLow",
                                         framing: ModelFraming(yaw: -2.2, zoom: 0.572, offset: [-0.017, 0.152, -0.023])),
+        // Re-solved 2026-11-01: the Smith low bar with the feet on a flat bench.
         "Feet-Elevated Inverted Row":          ExerciseModel(resource: "FeetElevatedInvertedRow",
-                                        framing: ModelFraming(yaw: -1.35, zoom: 0.558, offset: [0.009, 0.096, -0.038])),
+                                        framing: ModelFraming(yaw: -1.35, zoom: 0.523, offset: [0.017, 0.151, -0.075])),
         "Underhand Inverted Row":              ExerciseModel(resource: "UnderhandInvertedRow",
                                         framing: ModelFraming(yaw: -1.35, zoom: 0.578, offset: [0.009, 0.131, -0.041])),
         // Batch 161-190 (2026-09-25), solved at 382×655. Pull-ups and pulldowns
@@ -2829,12 +2844,16 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.8, zoom: 0.628, offset: [-0.115, -0.033, 0.119])),
         // Exercises 1-50 redone (2026-09-29), solved at 382×655 like the
         // batches above; Close-Grip Bench Press uses the bench lifts' framing.
+        // Re-solved 2026-11-01 for the re-posed model (straighter knees, the
+        // bar starting on the floor over the mid-foot).
         "Pendlay Row":                        ExerciseModel(resource: "PendlayRow",
-                                        framing: ModelFraming(yaw: -2.0, zoom: 0.803, offset: [-0.058, 0.219, -0.126])),
+                                        framing: ModelFraming(yaw: -2.0, zoom: 0.930, offset: [-0.027, 0.221, -0.058])),
         "Dumbbell Curl":                      ExerciseModel(resource: "DumbbellCurl",
                                         framing: ModelFraming(yaw: -0.4, zoom: 0.892, offset: [0.016, 0.03, -0.007])),
+        // Re-solved 2026-11-02: GYM_Bench at 70° (long base) replaces the teal bench;
+        // the whole bench stays in frame.
         "Incline Dumbbell Curl":              ExerciseModel(resource: "InclineDumbbellCurl",
-                                        framing: ModelFraming(yaw: -0.9, zoom: 0.975, offset: [-0.028, 0.149, 0.036])),
+                                        framing: ModelFraming(yaw: -0.9, zoom: 0.716, offset: [-0.051, 0.125, 0.064])),
         "Preacher Curl":                      ExerciseModel(resource: "PreacherCurl",
                                         framing: ModelFraming(yaw: -0.8, zoom: 0.969, offset: [0.063, 0.123, -0.065])),
         "Cable Curl":                         ExerciseModel(resource: "CableCurl",
@@ -2843,8 +2862,9 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.2, zoom: 0.877, offset: [-0.019, 0.028, 0.049])),
         "Reverse Curl":                       ExerciseModel(resource: "ReverseCurl",
                                         framing: ModelFraming(yaw: -0.4, zoom: 0.823, offset: [0.031, 0.03, -0.013])),
+        // Re-solved 2026-11-02: the bench lost its base rails, a smaller setup.
         "Wrist Curl":                         ExerciseModel(resource: "WristCurl",
-                                        framing: ModelFraming(yaw: -0.7, zoom: 0.918, offset: [0.024, 0.124, -0.02])),
+                                        framing: ModelFraming(yaw: -0.7, zoom: 0.981, offset: [0.081, 0.158, -0.068])),
         "Close-Grip Bench Press":             ExerciseModel(resource: "CloseGripBenchPress", framing: .bench),
         // The drive's "1-500/401-500" folder (2026-10-04): the 30 exports from
         // 106 on that were not in the app, solved at 382×655 (solve_all.py,
@@ -3251,9 +3271,12 @@ enum SampleData {
         // neither model lights the obliques, and a fourth secondary row would
         // overflow the one-line legend. The content, labels and ghosts are
         // written for the upright model.
+        // Since 2026-11-01 both models hold the D-handle hanging from the
+        // cable (it no longer turns with the wrist) and both turn the palm
+        // from facing in at the top to facing up at the bottom.
         "Single-Arm Lat Pulldown": [
             ExerciseStance(label: "Upright", model: ExerciseModel(resource: "SingleArmLatPulldown", framing: ModelFraming(yaw: -2.6, zoom: 0.899, offset: [0.022, 0.056, 0.013])),
-                           note: "Torso upright and square, free hand on your waist; the model lights the lat",
+                           note: "Torso upright and square, palm turning up as you pull; the model lights the lat",
                            activation: [
                 // Follows the SingleArmLatPulldown model's paint, the same as the
                 // exercise's own list: lat bright; trapezius, cuff, rear delt,
@@ -3278,6 +3301,45 @@ enum SampleData {
                 MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.30),
                 MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30)
                            ]),
+        ],
+        // Forward-lean stances of the five shrugs (owner note 2026-11-01,
+        // HIKSEMI BLENDER/Fix_Back_20261101, `tools/shrug_lean.py`): the hips
+        // hinge about 12° and sit 3 cm further back (the trunk ends about 14°
+        // off vertical), the neck comes forward and the head bows 12°; the
+        // arms hang from the shoulders as on the upright model and the weight
+        // stays in the hands (on the Smith machine the lifter stands 8 cm
+        // further back, since the bar only runs up and down its rails). Both
+        // models are painted alike, so both stances keep the exercise's list.
+        // The lean models' framings were solved for them (ASPECT 0.5832).
+        "Dumbbell Shrug": [
+            ExerciseStance(label: "Upright", model: ExerciseModel(resource: "DumbbellShrug", framing: ModelFraming(yaw: -0.5, zoom: 0.885, offset: [-0.024, 0.040, 0.013])),
+                           note: "Stand tall with the arms hanging and shrug straight up"),
+            ExerciseStance(label: "Forward Lean", model: ExerciseModel(resource: "DumbbellShrugLean", framing: ModelFraming(yaw: -0.5, zoom: 0.874, offset: [-0.006, 0.043, 0.003])),
+                           note: "Hinge slightly at the hips, neck forward and head a little down"),
+        ],
+        "Barbell Shrug": [
+            ExerciseStance(label: "Upright", model: ExerciseModel(resource: "BarbellShrug", framing: ModelFraming(yaw: -0.8, zoom: 0.671, offset: [-0.023, 0.028, 0.024])),
+                           note: "Stand tall with the arms hanging and shrug straight up"),
+            ExerciseStance(label: "Forward Lean", model: ExerciseModel(resource: "BarbellShrugLean", framing: ModelFraming(yaw: -0.8, zoom: 0.658, offset: [0.000, 0.034, 0.000])),
+                           note: "Hinge slightly at the hips, neck forward and head a little down"),
+        ],
+        "Smith Machine Shrug": [
+            ExerciseStance(label: "Upright", model: ExerciseModel(resource: "SmithMachineShrug", framing: ModelFraming(yaw: -0.5, zoom: 0.885, offset: [0.003, 0.040, -0.002])),
+                           note: "Stand tall with the arms hanging and shrug straight up"),
+            ExerciseStance(label: "Forward Lean", model: ExerciseModel(resource: "SmithMachineShrugLean", framing: ModelFraming(yaw: -0.5, zoom: 0.888, offset: [0.007, 0.044, -0.004])),
+                           note: "Step back a little and hinge at the hips, neck forward and head a little down"),
+        ],
+        "Cable Shrug": [
+            ExerciseStance(label: "Upright", model: ExerciseModel(resource: "CableShrug", framing: ModelFraming(yaw: -0.5, zoom: 0.885, offset: [-0.026, 0.040, 0.014])),
+                           note: "Stand tall with the arms hanging and shrug straight up"),
+            ExerciseStance(label: "Forward Lean", model: ExerciseModel(resource: "CableShrugLean", framing: ModelFraming(yaw: -0.5, zoom: 0.874, offset: [-0.009, 0.043, 0.005])),
+                           note: "Hinge slightly at the hips, neck forward and head a little down"),
+        ],
+        "Trap Bar Shrug": [
+            ExerciseStance(label: "Upright", model: ExerciseModel(resource: "TrapBarShrug", framing: ModelFraming(yaw: -0.8, zoom: 0.878, offset: [-0.024, 0.040, 0.024])),
+                           note: "Stand tall with the arms hanging and shrug straight up"),
+            ExerciseStance(label: "Forward Lean", model: ExerciseModel(resource: "TrapBarShrugLean", framing: ModelFraming(yaw: -0.8, zoom: 0.871, offset: [-0.012, 0.046, 0.012])),
+                           note: "Hinge slightly at the hips, neck forward and head a little down"),
         ],
         // The Inverted Row on a Smith machine (Desktop "100-200" folder,
         // 2026-10-11), the bar hooked at two heights. The low bar (75 cm)
@@ -4416,7 +4478,7 @@ enum SampleData {
             CueAnnotation(cueID: "feet", label: "Feet flat, back on pad",
                           labelPoint: CGPoint(x: 0.22, y: 0.85),
                           labelSide: .trailing, leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "No shrugging",
+            CueAnnotation(cueID: "scapula", label: "Retract scapula",
                           labelPoint: CGPoint(x: 0.97, y: 0.30),
                           leaderLength: 46, joint: "scapula_L")
         ],
@@ -4518,7 +4580,7 @@ enum SampleData {
             CueAnnotation(cueID: "feet", label: "Feet flat on floor",
                           labelPoint: CGPoint(x: 0.82, y: 0.85),
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "Back flat on pad",
+            CueAnnotation(cueID: "scapula", label: "Retract scapula",
                           labelPoint: CGPoint(x: 0.340, y: 0.340),
                           leaderLength: 42, joint: "scapula_L")
         ],
@@ -4526,10 +4588,10 @@ enum SampleData {
             TechniqueCue(
                 id: "scapula",
                 title: "Scapular Position",
-                intro: "A seated fly still needs a stable base to squeeze against.",
-                why: "Keeping the back and shoulder blades against the pad stops the torso from helping the squeeze.",
-                mistake: "Arching or twisting off the backrest to force the handles together.",
-                correct: "Press the whole back into the pad and keep it there through every rep."
+                intro: "The machine sets the arc of the arms; the shoulder blades decide whether the chest or the shoulders finish the squeeze.",
+                why: "Shoulder blades held back and down against the pad keep the chest stretched at the open position and leading the squeeze, instead of the front delts taking over as the shoulders roll forward.",
+                mistake: "Letting the shoulders roll forward off the pad as the handles meet, or arching off the backrest to force them together.",
+                correct: "Pull the shoulder blades back and down into the pad before the first rep and keep them pinned there through every squeeze."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -4587,7 +4649,7 @@ enum SampleData {
         stabilisers: ["serratus anterior", "rotator cuff"],
         setup: [
             "Set the seat so the handles sit at chest height.",
-            "Sit tall with your back against the pad.",
+            "Sit tall with your back against the pad and your shoulder blades pulled back and down.",
             "Take the handles out wide with your elbows soft."
         ],
         comparison: FormComparisonCopy(
@@ -5148,22 +5210,23 @@ enum SampleData {
             // delts, rotator cuff and forearms get secondary rows (the forearms
             // leave the stabilisers), as on the rows of the 101-200 pass. The
             // lats, middle trapezius and biceps keep their ranks and fractions.
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.78),
+            // The owner's 2026-11-02 re-export paints the rear delts and the
+            // rotator cuff bright and the lats dim, so those three swap ranks
+            // (the paint sets the rank, the EMG the fraction; fractions kept).
             MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.74),
             // Posterior Deltoid: with a neutral grip and the elbows near the
             // body, as here, seated rows showed the posterior deltoid (72.3
             // %MVIC) ahead of the middle trapezius (64.5) and the upper and
             // lower lats (57.8, 53.7; Vasconcelos et al. 2023, Int J Strength
             // Cond 3(1)), so the row takes 0.72, the Dumbbell Bent-Over Row's
-            // value for the same grip. The paint and the EMG disagree on its
-            // rank: the model dims it, so it is secondary (the paint sets the
-            // rank, the EMG the fraction).
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.72),
+            // value for the same grip. Primary now that the model lights it
+            // bright, as the EMG ranks it.
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.72),
             // Rotator Cuff: no normalised EMG of the cuff in a row was found;
-            // estimate, MODERATE 0.50, as on the Face Pull, whose cuff is dim
-            // too, a step under the 0.60 (the Pendlay Row's) most rows give a
-            // bright cuff.
-            MuscleActivation(name: "Rotator Cuff", rank: .secondary, fraction: 0.50),
+            // estimate, MODERATE 0.50, as on the Face Pull, a step under the
+            // 0.60 (the Pendlay Row's) most rows give a bright cuff.
+            MuscleActivation(name: "Rotator Cuff", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.78),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.46),
             // Forearms: the grip on the dumbbells. No normalised EMG found;
             // estimate, LOW 0.30, the grip value of the Pendlay Row and the
@@ -5788,7 +5851,7 @@ enum SampleData {
         annotations: [
             backAnnotation("elbow", "Elbows drive back", "forearm_L", slot: (x: 160.1 / 382.0, y: 195.2 / 655.0), leader: 52),
             backAnnotation("barpath", "Handle to the abdomen", "attachment_LatissimusDorsi_L", slot: (x: 205.9 / 382.0, y: 155.2 / 655.0), leader: 44),
-            backAnnotation("grip", "Neutral grip", "hand_L", slot: (x: 120.3 / 382.0, y: 304.6 / 655.0), side: .trailing, leader: 34),
+            backAnnotation("grip", "Overhand grip", "hand_L", slot: (x: 120.3 / 382.0, y: 304.6 / 655.0), side: .trailing, leader: 34),
             backAnnotation("feet", "Knees soft", "patella_L", slot: backSlotBase, side: .trailing, leader: 40),
             backAnnotation("scapula", "Set blades first", "scapula_L", slot: (x: 228.1 / 382.0, y: 115.3 / 655.0), leader: 46)
         ],
@@ -5812,10 +5875,10 @@ enum SampleData {
             TechniqueCue(
                 id: "grip",
                 title: "Grip",
-                intro: "A neutral grip suits the seated row's straight-back pulling line.",
-                why: "Palms facing each other let the elbow track straight back without twisting the wrist.",
+                intro: "This seated row uses a bar held overhand, the hands just outside shoulder width.",
+                why: "With the palms down and the hands a little wider, the elbows travel slightly out from the ribs, bringing the mid-back and rear delts in alongside the lats.",
                 mistake: "Cutting the stretch short at the front instead of reaching the arms fully forward.",
-                correct: "Hold a neutral grip and let the arms extend fully forward between reps."
+                correct: "Hold the bar overhand and let the arms extend fully forward between reps."
             ),
             TechniqueCue(
                 id: "barpath",
@@ -5915,16 +5978,16 @@ enum SampleData {
                 id: "grip",
                 title: "Grip",
                 intro: "Grip width barely matters here — the arms don't bend either way.",
-                why: "An overhand grip on the two handles, about shoulder-width apart, keeps the shoulders working evenly.",
+                why: "An overhand grip on the bar, about shoulder-width apart, keeps the shoulders working evenly.",
                 mistake: "An uneven grip that lets one arm dominate the pull.",
-                correct: "Take the handles overhand, about shoulder-width apart, and pull them evenly."
+                correct: "Take the bar overhand, about shoulder-width apart, and pull it down evenly."
             ),
             TechniqueCue(
                 id: "barpath",
-                title: "Handle Path",
-                intro: "The handles trace a wide arc from shoulder height to the thighs.",
+                title: "Bar Path",
+                intro: "The bar traces a wide arc from shoulder height to the thighs.",
                 why: "Sweeping the straight arms down in an arc, finishing near the thighs, works the lats through shoulder extension with no help from the biceps.",
-                mistake: "Pushing the handles straight down toward the floor instead of sweeping them in an arc.",
+                mistake: "Pushing the bar straight down toward the floor instead of sweeping it in an arc.",
                 correct: "Sweep the arms down and back in an arc until the hands reach the thighs."
             ),
             TechniqueCue(
@@ -6383,11 +6446,12 @@ enum SampleData {
             // whose 45° Roman chair activated the biceps femoris more than a
             // Romanian deadlift and the gluteus maximus at least as much, kept
             // the back straight and hinged at the hips: the other version.
-            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.85),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.30),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30)
+            // The owner's 2026-11-02 re-export leaves the glutes and hamstrings
+            // unlit (faint before), the erector version Schoenfeld describes, so
+            // their LOW rows (0.30 each) join the stabilisers.
+            MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.85)
         ],
-        stabilisers: ["quadratus lumborum", "adductor magnus"],
+        stabilisers: ["gluteus maximus", "hamstrings", "quadratus lumborum", "adductor magnus"],
         setup: [
             "Set the hip pad so its top edge sits at your hip bones.",
             "Hook your ankles snugly under the roller.",
@@ -6802,39 +6866,24 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's own paint, unchanged since
-            // 2026-10-01: the quadriceps and glutes bright, the forearms and
-            // the upper back (trapezius and rhomboids) faint, the hamstrings
-            // unlit. The old list predates the rules that bright glutes are
-            // primary, that an unlit group loses its rows and that each lit
-            // group gets a row: Gluteus Maximus moves up from secondary to
+            // The list follows the model's own paint: the quadriceps and glutes
+            // bright, everything else unlit (the forearms and the upper back
+            // were faint until the 2026-11-02 re-export). The old list predates
+            // the rules that bright glutes are primary and that an unlit group
+            // loses its rows: Gluteus Maximus moves up from secondary to
             // primary (its 0.62 kept); the Hamstrings row (0.35) is gone, as on
             // the Reverse Lunge and the split squats, whose models leave the
-            // hamstrings unlit too; and the faint upper back, named with the
-            // stabilisers until now to keep the legend to three secondary
-            // names, gets a LOW Trapezius row now that the legend has room.
+            // hamstrings unlit too.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.83),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
-            // The model lights the grip faintly: the forearm flexors and
-            // extensors and the brachioradialis. Holding a dumbbell works both
-            // the forearm flexors and extensors (Mogk & Keir 2003, Ergonomics
-            // 46(9):956-975), and a heavy load held at the sides taxes the grip
-            // enough that a loaded-carry study strapped the hands to take grip
-            // out of it (Decker et al. 2026, Int J Strength Cond 6(1),
-            // doi:10.47206/ijsc.v6i1.566). LOW, the app's dumbbell-grip value
-            // (the dumbbell curls, 0.30); no lunge EMG of the forearms was
-            // found, so it is an estimate.
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30),
-            // Trapezius (faint, new row, named whole as the whole muscle is
-            // lit; the rhomboids, lit with it, stay among the stabilisers): no
-            // lunge EMG of it was found, so 0.28 is a LOW estimate, set just
-            // under the forearms' 0.30. A load hanging from the hand drew
-            // 21-28% MVIC from the upper trapezius in one-handed carries of
-            // 35-45% of body weight (Bordelon et al. 2021, J Strength Cond Res
-            // 35(Suppl 1):S114-S119).
-            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.28)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62)
+            // The owner's 2026-11-02 re-export leaves the forearms and the
+            // upper back unlit (faint before), so their LOW Forearms (0.30) and
+            // Trapezius (0.28) rows go back to the stabilisers: the hands still
+            // hold the dumbbells (Mogk & Keir 2003, Ergonomics 46(9):956-975)
+            // and the upper trapezius steadies a load hanging from the hand
+            // (Bordelon et al. 2021, J Strength Cond Res 35(Suppl 1):S114-S119).
         ],
-        stabilisers: ["gluteus medius", "adductors", "calves", "rhomboids", "core"],
+        stabilisers: ["gluteus medius", "adductors", "calves", "forearms", "trapezius", "rhomboids", "core"],
         setup: [
             "Hold a dumbbell in each hand at your sides.",
             "Stand tall with your feet hip-width apart.",
@@ -7634,8 +7683,11 @@ enum SampleData {
             )
         ],
         activation: [
-            MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.84),
+            // The owner's 2026-11-02 re-export lights the side delts bright and
+            // dims the front delts (both bright before), so Anterior Deltoid
+            // drops to secondary (the paint sets the rank; its 0.84 kept).
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.84),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["rotator cuff", "serratus anterior", "biceps brachii"],
@@ -7900,16 +7952,19 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's own paint (the 2026-09-27 model,
-            // never re-exported since, so its paint is unchanged): the side
-            // delts bright, the trapezius and rhomboids dim, the front delts
-            // unlit. So the Anterior Deltoid row (0.48) is gone, as on the
-            // lateral raises of the 201-300 pass; the Upper Trapezius row
-            // stands for the dim upper back.
+            // The list follows the model's own paint: the side delts bright; the
+            // trapezius and rhomboids dim; on the owner's 2026-11-02 re-export
+            // the front and rear delts dim too (unlit before). The Upper
+            // Trapezius row stands for the dim upper back. The Anterior Deltoid
+            // row returns at its old 0.48; the Posterior Deltoid leaves the
+            // stabilisers for a row, an estimate (no normalised lateral-raise
+            // EMG of it was found), LOW-MODERATE 0.40, under the front delt.
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.88),
-            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.45)
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.48),
+            MuscleActivation(name: "Upper Trapezius", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.40)
         ],
-        stabilisers: ["posterior deltoid", "rotator cuff", "serratus anterior", "core"],
+        stabilisers: ["rotator cuff", "serratus anterior", "core"],
         setup: [
             "Stand tall with a dumbbell in each hand at your sides.",
             "Feet hip-width, knees soft.",
@@ -8279,7 +8334,8 @@ enum SampleData {
             // disagree on it: in prone horizontal abduction at 100° with the
             // arm turned out, the middle deltoid works about as hard as the
             // posterior (87 vs 88% MVIC, Reinold et al. 2004, below); the
-            // paint wins.
+            // paint wins. (The 2026-11-02 re-export dims the side delts: the
+            // row is back, below.)
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.86),
             // The 2026-09-29 model lights the rotator cuff bright with the rear
             // delt. Prone horizontal abduction (arm turned out) was one of four
@@ -8289,7 +8345,10 @@ enum SampleData {
             // JOSPT 34:385-394). MODERATE: the arm is not turned out here and
             // the rear delt leads.
             MuscleActivation(name: "Rotator Cuff", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.58)
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.58),
+            // The owner's 2026-11-02 re-export dims the side delts (unlit
+            // before), so the Lateral Deltoid row returns at its old 0.40.
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["erector spinae", "hamstrings", "forearms"],
         setup: [
@@ -8477,7 +8536,11 @@ enum SampleData {
         activation: [
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Rotator Cuff", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Rotator Cuff", rank: .secondary, fraction: 0.50),
+            // The owner's 2026-11-02 re-export dims the side delts (unlit
+            // before): a new row. No normalised face-pull EMG of the middle
+            // deltoid was found; estimate, 0.40, the reverse flies' value.
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["lower trapezius", "biceps brachii", "core"],
         setup: [
@@ -8571,13 +8634,17 @@ enum SampleData {
             // disagree on it: in prone horizontal abduction at 100° with the
             // arm turned out, the middle deltoid works about as hard as the
             // posterior (87 vs 88% MVIC, Reinold et al. 2004, J Orthop Sports
-            // Phys Ther 34:385-394); the paint wins.
+            // Phys Ther 34:385-394); the paint wins. (The 2026-11-02 re-export
+            // dims the side delts: the row is back, below.)
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.86),
             // Lit bright with the rear delt on the 2026-09-29 model (dim on the
             // one before); the same horizontal abduction as the Reverse
             // Dumbbell Fly (Townsend et al. 1991; Reinold et al. 2004).
             MuscleActivation(name: "Rotator Cuff", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.54)
+            MuscleActivation(name: "Middle Trapezius", rank: .secondary, fraction: 0.54),
+            // The owner's 2026-11-02 re-export dims the side delts (unlit
+            // before), so the Lateral Deltoid row returns at its old 0.40.
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["lower trapezius", "core"],
         setup: [
@@ -13785,7 +13852,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.52, y: 0.80),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "No shrugging",
+            CueAnnotation(cueID: "scapula", label: "Retract scapula",
                           labelPoint: CGPoint(x: 0.717, y: 0.54),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L")
@@ -13833,23 +13900,24 @@ enum SampleData {
             )
         ],
         activation: [
-            // 2026-10-22: the chest rows follow the model's paint by head. It
-            // lights the middle (sternal) pec bright and the upper (clavicular)
-            // and lower (abdominal) heads dim, so the old primary Upper
-            // Pectoralis row becomes Middle Pectoralis and keeps its 0.84. The
-            // paint disagrees with that old row and with the EMG: on a 30°
-            // barbell incline at 60% 1RM the upper head is the most active
+            // The chest rows follow the model's paint by head. Since the
+            // 2026-10-31 re-paint (the owner's "tô lại ngực trên") the model
+            // lights the upper (clavicular) pec bright and the middle (sternal)
+            // and lower (abdominal) heads dim, as the incline barbell and
+            // dumbbell presses do, and the paint now agrees with the EMG: on a
+            // 30° barbell incline at 60% 1RM the upper head is the most active
             // (~30 %MVIC) while the middle (~16.6) and lower (~13.2) fall below
             // their flat-bench values (Rodríguez-Ridao et al. 2020, Int J
             // Environ Res Public Health 17(19):7339, PMID 33049982, Fig. 3).
-            // The paint wins. No per-head EMG for an incline machine was found,
-            // so both new rows are estimates: upper 0.66, high MODERATE under
-            // the bright head as the EMG ranks it first; lower 0.37 (LOW), 0.84
-            // scaled by 13.2/30, as on the Incline Dumbbell Press.
-            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.66),
+            // Upper Pectoralis is primary with the 0.84 the old primary row
+            // had. No per-head EMG for an incline machine was found, so the
+            // other two are estimates: middle 0.46 (MODERATE) and lower 0.37
+            // (LOW), 0.84 scaled by 16.6/30 and 13.2/30, as on the Incline
+            // Dumbbell Press.
+            MuscleActivation(name: "Upper Pectoralis", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.62),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Middle Pectoralis", rank: .secondary, fraction: 0.46),
             MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.37)
         ],
         stabilisers: ["rotator cuff", "serratus anterior"],
@@ -13898,7 +13966,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.76, y: 0.66),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "No shrug",
+            CueAnnotation(cueID: "scapula", label: "Retract scapula",
                           labelPoint: CGPoint(x: 0.77, y: 0.51),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L")
@@ -14010,7 +14078,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.52, y: 0.825),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "No shrugging",
+            CueAnnotation(cueID: "scapula", label: "Retract scapula",
                           labelPoint: CGPoint(x: 0.60, y: 0.725),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "scapula_L")
@@ -14128,7 +14196,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.586, y: 0.82),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "foot_L"),
-            CueAnnotation(cueID: "scapula", label: "No shrugging",
+            CueAnnotation(cueID: "scapula", label: "Retract scapula",
                           labelPoint: CGPoint(x: 0.575, y: 0.76),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "upper_arm_R")
@@ -15139,7 +15207,7 @@ enum SampleData {
                 intro: "The hands pass each other at the finish.",
                 why: "Crossing the hands past the midline shortens the pecs further than a fly that stops with the hands touching, adding a harder squeeze at the end.",
                 mistake: "Stopping short with the hands apart, or crossing them high in front of the face.",
-                correct: "Bring the hands together at chest height and let one pass over the other by a hand's width; switch which hand goes on top each set."
+                correct: "Bring the hands together in front of the lower chest and let one pass over the other by a hand's width; switch which hand goes on top each rep."
             ),
             TechniqueCue(
                 id: "elbow",
@@ -15202,9 +15270,9 @@ enum SampleData {
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "HANDS MEET TOO HIGH",
-            correctCue: "Hands cross at chest height",
+            correctCue: "Hands cross at the lower chest",
             mistakeCue: "Hands meet at the face",
-            correctNote: "Crossing at chest height keeps the pecs pulling in line with their fibres to the end of the rep.",
+            correctNote: "Crossing in front of the lower chest keeps the pecs pulling in line with their fibres to the end of the rep.",
             mistakeNote: "Finishing high in front of the face hands the finish to the front delts."
         ),
         glows: [
@@ -18427,11 +18495,14 @@ enum SampleData {
             // cuff is dim too, and under the 0.60 most rows give a bright cuff
             // (the Underhand Inverted Row gives its bright one 0.50); Forearms
             // LOW 0.30, the Underhand Inverted Row's, as the hands hold part of
-            // the body weight on the bar.
+            // the body weight on the bar. The owner's 2026-11-02 re-export
+            // paints the rear delts bright and the lats dim, as the Inverted
+            // Row's model does, so the two swap ranks as there (the paint sets
+            // the rank; the fractions kept).
             MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.84),
-            MuscleActivation(name: "Latissimus Dorsi", rank: .primary, fraction: 0.78),
+            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.54),
+            MuscleActivation(name: "Latissimus Dorsi", rank: .secondary, fraction: 0.78),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.54),
             MuscleActivation(name: "Rotator Cuff", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30)
         ],
@@ -33201,7 +33272,7 @@ enum SampleData {
                 intro: "An incline bench, the back flat on the pad.",
                 why: "Leaning back with the arms hanging extends the shoulders, which stretches the biceps' long head, the head that starts above the shoulder joint. That is what sets the incline curl apart; a bench set upright, or sitting up off it, leaves the arms in line with the body as in an ordinary seated curl.",
                 mistake: "The bench set too upright, or sitting up off it, so the arms hang in line with the body instead of behind it.",
-                correct: "Set the back pad to about 65°, sit back with the hips at the back of the seat, and keep the back on the pad from the first rep to the last."
+                correct: "Set the back pad to about 70°, sit back with the hips at the back of the seat, and keep the back on the pad from the first rep to the last."
             ),
             TechniqueCue(
                 id: "arms",
@@ -33244,7 +33315,7 @@ enum SampleData {
         ],
         stabilisers: ["anterior deltoid"],
         setup: [
-            "Set the back pad of an incline bench to about 65°.",
+            "Set the back pad of an incline bench to about 70°.",
             "Sit back, back and shoulders on the pad, feet flat.",
             "Hold a dumbbell in each hand, palms facing forward.",
             "Let your arms hang straight down, behind your body."
@@ -42522,10 +42593,10 @@ enum SampleData {
             TechniqueCue(
                 id: "back",
                 title: "Lower Back",
-                intro: "Keep your lower back on the mat the whole time; only the legs move.",
-                why: "Lifting the legs is hip flexion. ExRx notes that without waist flexion the rectus abdominis and external oblique only hold the pelvis and waist steady, and the authors of one EMG study describe the hip flexors' pull tending to arch the lower back while the abs hold the pelvis. Here the pelvis and lower back do not move at all.",
-                mistake: "The lower back arching off the mat as the legs come down low.",
-                correct: "Brace before each rep, keep the lower back down on the mat and lower the legs only as far as you can keep it there."
+                intro: "Keep your lower back on the floor the whole time; only the legs move.",
+                why: "Lifting the legs is the hip flexors' job, and their pull tends to tip the pelvis and arch the lower back. Your abs work by holding the pelvis still against that pull, so a back that stays flat means they are doing their part.",
+                mistake: "The lower back arching off the floor as the legs come down low.",
+                correct: "Brace before each rep, keep the lower back down on the floor and lower the legs only as far as you can keep it there."
             ),
             TechniqueCue(
                 id: "legs",
@@ -42546,18 +42617,18 @@ enum SampleData {
             TechniqueCue(
                 id: "head",
                 title: "Head and Shoulders",
-                intro: "Rest your head and shoulders on the mat for the whole set.",
+                intro: "Rest your head and shoulders on the floor for the whole set.",
                 why: "The legs rise at the hips, so lifting the head does not help them up; it only bends the neck and upper back. Here the head, shoulders and arms stay down from the first rep to the last.",
                 mistake: "Lifting the head and shoulders and straining the neck as the legs go up.",
-                correct: "Keep the back of your head on the mat, the chin slightly tucked and the arms resting beside you."
+                correct: "Keep the back of your head on the floor, the chin slightly tucked and the arms resting beside you."
             ),
             TechniqueCue(
                 id: "lower",
                 title: "Lowering",
-                intro: "Lower the legs a little slower than you raised them and stop with the heels just above the mat.",
-                why: "ExRx makes its lying leg raises easier by letting the heels touch the floor each rep and harder by not letting them. Here the heels hover about 5 cm off the mat between reps, and the legs take about 1.6 seconds to come down against about 1.4 to go up.",
-                mistake: "Dropping the legs so the heels thump into the mat.",
-                correct: "Lower under control and hold the heels just off the mat before the next rep."
+                intro: "Lower the legs a little slower than you raised them and stop with the heels just above the floor.",
+                why: "Hovering the heels just off the floor between reps keeps the abs and hip flexors under tension; touching down gives them a rest. Lowering a little slower than you lift also gives you time to stop the lower back arching as the legs get low.",
+                mistake: "Dropping the legs so the heels thump into the floor.",
+                correct: "Lower under control and hold the heels just off the floor before the next rep."
             )
         ],
         activation: [
@@ -42575,16 +42646,16 @@ enum SampleData {
         ],
         stabilisers: ["transverse abdominis", "quadriceps"],
         setup: [
-            "Lie on your back on a mat, legs straight and about hip-width apart.",
-            "Rest your arms beside you, palms down, and your head on the mat.",
-            "Brace your abs and lift your heels just off the mat."
+            "Lie on your back on the floor, legs straight and about hip-width apart.",
+            "Rest your arms beside you, palms down, and your head on the floor.",
+            "Brace your abs and lift your heels just off the floor."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "BACK ARCHING",
             correctCue: "Lower back stays down",
             mistakeCue: "Back arches as legs lower",
-            correctNote: "With the lower back held on the mat, the abs keep the pelvis still while the hip flexors move the legs.",
+            correctNote: "With the lower back held on the floor, the abs keep the pelvis still while the hip flexors move the legs.",
             mistakeNote: "When the lower back arches, the abs have stopped holding the pelvis against the hip flexors' pull."
         ),
         glows: [

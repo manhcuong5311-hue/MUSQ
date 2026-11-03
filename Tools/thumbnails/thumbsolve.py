@@ -40,6 +40,9 @@ BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Gri
              # these lifters small in the tile.
              "Inverted Row", "Cable Shoulder Press", "Single-Arm Cable Shoulder Press",
              "Iso-Lateral Chest Press", "Plate-Loaded Chest Press",
+             # Back fixes (2026-11-01): the feet-elevated row now hangs from the
+             # same Smith rack as the Inverted Row, with a bench under the feet.
+             "Feet-Elevated Inverted Row",
              # Desktop "300-400" folder (2026-10-12): the M30 Smith rack and the
              # M29 station left these lifters a third of the tile or less.
              "Smith Machine Split Squat", "Smith Machine Bulgarian Split Squat",
@@ -49,7 +52,11 @@ BODY_ONLY = {"Wide-Grip Lat Pulldown", "Reverse-Grip Lat Pulldown", "Neutral-Gri
              # White-sneaker re-shoot (2026-10-21): the two new cable curls'
              # tower and the chest pass's rebound wall left the lifter small.
              "Lying Cable Curl", "Cable Reverse Curl", "Medicine Ball Chest Pass",
-             "Battle Rope Alternating Waves", "Battle Rope Slams"}
+             "Battle Rope Alternating Waves", "Battle Rope Slams",
+             # Shoulder re-exports (2026-11-02): the dual cable station of the
+             # Cable Lateral Raise (1.2 m to the side) and the Cable Rear Delt
+             # Fly (in front), framed body-only like the Cable Y-Raise.
+             "Cable Lateral Raise", "Cable Rear Delt Fly"}
 # Held parts a lift lets crop (401-500, 2026-10-04): the landmine chest press's
 # 1.9 m bar, as in its trainer framing.
 # The battle ropes (2026-10-21) run 3 m to the anchor and left the lifter a
