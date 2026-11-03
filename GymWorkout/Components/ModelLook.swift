@@ -21,19 +21,19 @@ enum ModelLook: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .black: return "Black"
-        case .charcoal: return "Charcoal"
-        case .light: return "Light"
-        case .highContrast: return "High contrast"
+        case .black: return String(localized: "Black", comment: "Model color option")
+        case .charcoal: return String(localized: "Charcoal", comment: "Model color option")
+        case .light: return String(localized: "Light", comment: "Model color option (a light grey)")
+        case .highContrast: return String(localized: "High contrast", comment: "Model color option")
         }
     }
 
     var detail: String {
         switch self {
-        case .black: return "The deep black of the web guide, with a soft sheen."
-        case .charcoal: return "A dark grey with lit edges, easy to read on a phone."
-        case .light: return "A lighter grey, for bright rooms and low screen brightness."
-        case .highContrast: return "A black lifter on a pale ground."
+        case .black: return String(localized: "The deep black of the web guide, with a soft sheen.")
+        case .charcoal: return String(localized: "A dark grey with lit edges, easy to read on a phone.")
+        case .light: return String(localized: "A lighter grey, for bright rooms and low screen brightness.")
+        case .highContrast: return String(localized: "A black lifter on a pale ground.")
         }
     }
 

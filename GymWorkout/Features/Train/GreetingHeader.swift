@@ -144,10 +144,9 @@ struct Greeting: Equatable {
          roomy: Bool = false, now: Date = Date(), calendar: Calendar = .current) {
         let today = calendar.startOfDay(for: now)
         let day = calendar.startOfDay(for: selected)
-        let you = name.map { ", \($0)" } ?? ""
         // Lines longer than a hello only take the name when it's short, so
         // they still fit the header's one line.
-        let shortYou = (name?.count ?? 0) <= (roomy ? 18 : 10) ? you : ""
+        let shortName = (name?.count ?? 0) <= (roomy ? 18 : 10) ? name : nil
         // Changes daily, so the lines do; steady through the day, so a
         // redraw never swaps them.
         let ordinal = calendar.ordinality(of: .day, in: .era, for: day) ?? 0
@@ -155,8 +154,8 @@ struct Greeting: Equatable {
         if day == today {
             let moment = Self.moment(sessions: sessions, today: today, calendar: calendar)
             let seed = ordinal &+ moment.name.count
-            hello = Self.pick(Self.hellos(hour: calendar.component(.hour, from: now), you: you), seed)
-            lines = Self.lines(for: moment, you: shortYou, next: next, seed: seed)
+            hello = Self.pick(Self.hellos(hour: calendar.component(.hour, from: now), name: name), seed)
+            lines = Self.lines(for: moment, name: shortName, next: next, seed: seed)
             replays = false
         } else {
             let session = sessions.first { calendar.isDate($0.day, inSameDayAs: day) }
@@ -195,52 +194,107 @@ struct Greeting: Equatable {
 
     // MARK: - Today
 
-    private static func hellos(hour: Int, you: String) -> [String] {
+    /// Each with the name and without it, so a language can put the name
+    /// where it reads naturally.
+    private static func hellos(hour: Int, name: String?) -> [String] {
         switch hour {
-        case 5..<12: return ["Good morning\(you)", "Morning\(you)", "Hello\(you)"]
-        case 12..<17: return ["Good afternoon\(you)", "Hey\(you)", "Hello\(you)"]
-        case 17..<22: return ["Good evening\(you)", "Evening\(you)", "Hello\(you)"]
-        default: return ["Hello\(you)", "Hi\(you)", "Still up\(you)?"]
+        case 5..<12:
+            return name.map {
+                [String(localized: "Good morning, \($0)", comment: "Train greeting with the user's name"),
+                 String(localized: "Morning, \($0)", comment: "Train greeting with the user's name"),
+                 String(localized: "Hello, \($0)", comment: "Train greeting with the user's name")]
+            } ?? [String(localized: "Good morning", comment: "Train greeting"),
+                  String(localized: "Morning", comment: "Train greeting"),
+                  String(localized: "Hello", comment: "Train greeting")]
+        case 12..<17:
+            return name.map {
+                [String(localized: "Good afternoon, \($0)", comment: "Train greeting with the user's name"),
+                 String(localized: "Hey, \($0)", comment: "Train greeting with the user's name"),
+                 String(localized: "Hello, \($0)", comment: "Train greeting with the user's name")]
+            } ?? [String(localized: "Good afternoon", comment: "Train greeting"),
+                  String(localized: "Hey", comment: "Train greeting"),
+                  String(localized: "Hello", comment: "Train greeting")]
+        case 17..<22:
+            return name.map {
+                [String(localized: "Good evening, \($0)", comment: "Train greeting with the user's name"),
+                 String(localized: "Evening, \($0)", comment: "Train greeting with the user's name"),
+                 String(localized: "Hello, \($0)", comment: "Train greeting with the user's name")]
+            } ?? [String(localized: "Good evening", comment: "Train greeting"),
+                  String(localized: "Evening", comment: "Train greeting"),
+                  String(localized: "Hello", comment: "Train greeting")]
+        default:
+            return name.map {
+                [String(localized: "Hello, \($0)", comment: "Train greeting with the user's name"),
+                 String(localized: "Hi, \($0)", comment: "Train greeting with the user's name"),
+                 String(localized: "Still up, \($0)?", comment: "Train greeting late at night, with the user's name")]
+            } ?? [String(localized: "Hello", comment: "Train greeting"),
+                  String(localized: "Hi", comment: "Train greeting"),
+                  String(localized: "Still up?", comment: "Train greeting late at night")]
         }
     }
 
-    private static func lines(for moment: Moment, you: String, next: String?, seed: Int) -> [String] {
+    private static func lines(for moment: Moment, name: String?, next: String?, seed: Int) -> [String] {
         let day = next.map(sessionName)
-        let ask = day.map { ["\($0) today?", "Ready for \($0)?", "\($0) is up next."] }
-            ?? ["What are we training today?", "What's on today?", "Pick a group to start."]
+        let ask = day.map {
+            [String(localized: "\($0) today?", comment: "A split's day: “Push day today?”"),
+             String(localized: "Ready for \($0)?", comment: "A split's day: “Ready for Push day?”"),
+             String(localized: "\($0) is up next.", comment: "A split's day: “Push day is up next.”")]
+        } ?? [String(localized: "What are we training today?"), String(localized: "What's on today?"),
+              String(localized: "Pick a group to start.")]
         // The first line follows a hello that already said the name.
         func first(_ options: [String]) -> String { pick(options, seed, 1) }
         func last(_ options: [String]) -> String { pick(options, seed, 2) }
         switch moment {
         case .firstWorkout:
-            return [first(["Welcome to MUSQ.", "Let's log your first workout.", "Every routine starts here."]),
-                    last(["Pick a group below to start.", "Your first set starts here.", "Tap a group to begin."])]
+            return [first([String(localized: "Welcome to MUSQ."), String(localized: "Let's log your first workout."),
+                           String(localized: "Every routine starts here.")]),
+                    last([String(localized: "Pick a group below to start."), String(localized: "Your first set starts here."),
+                          String(localized: "Tap a group to begin.")])]
         case .doneToday(let sets):
             // Usually plays without a hello (the workout is completed later
             // in the day), so it can take the name.
-            return [first(["Workout done. Nice work\(you)!", "That's a wrap for today.", "\(count(sets, "set")) today. Strong work.",
-                           "Another one in the books.", "Done and dusted!"]),
-                    last(["Rest up. You earned it.", "Recovery starts now.", "See you next session.",
-                          "Eat well, sleep well."])]
+            let done = name.map { String(localized: "Workout done. Nice work, \($0)!", comment: "With the user's name") }
+                ?? String(localized: "Workout done. Nice work!")
+            let count = sets == 1 ? String(localized: "1 set today. Strong work.")
+                : String(localized: "\(sets) sets today. Strong work.")
+            return [first([done, String(localized: "That's a wrap for today."), count,
+                           String(localized: "Another one in the books."), String(localized: "Done and dusted!")]),
+                    last([String(localized: "Rest up. You earned it."), String(localized: "Recovery starts now."),
+                          String(localized: "See you next session."), String(localized: "Eat well, sleep well.")])]
         case .inProgress(let sets):
-            return [first(["\(count(sets, "set")) in. Keep going!", "Nice pace. Keep it up.", "You're in the zone."]),
-                    last(["Finish strong.", "One set at a time.", "Keep it rolling."])]
+            let count = sets == 1 ? String(localized: "1 set in. Keep going!")
+                : String(localized: "\(sets) sets in. Keep going!")
+            return [first([count, String(localized: "Nice pace. Keep it up."), String(localized: "You're in the zone.")]),
+                    last([String(localized: "Finish strong."), String(localized: "One set at a time."),
+                          String(localized: "Keep it rolling.")])]
         case .planned(let groups):
-            return [first(["\(phrase(groups, capitalized: true)) on the plan today.", "Your workout's ready.",
-                           "\(phrase(groups, capitalized: true)) today. Let's go."]),
-                    last(["Ready when you are.", "The first set's the hardest.", "Time to move."])]
+            return [first([String(localized: "\(phrase(groups, capitalized: true)) on the plan today.",
+                                  comment: "The muscle groups planned: “Chest & abs on the plan today.”"),
+                           String(localized: "Your workout's ready."),
+                           String(localized: "\(phrase(groups, capitalized: true)) today. Let's go.",
+                                  comment: "The muscle groups planned: “Chest & abs today. Let's go.”")]),
+                    last([String(localized: "Ready when you are."), String(localized: "The first set's the hardest."),
+                          String(localized: "Time to move.")])]
         case .yesterday(let groups):
             let named = (1...2).contains(groups.count)
-                ? ["Yesterday: \(phrase(groups)). Nice!", "Yesterday's \(phrase(groups))? Solid."]
-                : ["Big session yesterday. Solid."]
-            return [first(["Great session yesterday.", "Strong one yesterday!"] + named), last(ask)]
+                ? [String(localized: "Yesterday: \(phrase(groups)). Nice!",
+                          comment: "The muscle groups trained: “Yesterday: chest & abs. Nice!”"),
+                   String(localized: "Yesterday's \(phrase(groups))? Solid.",
+                          comment: "The muscle groups trained: “Yesterday's chest & abs? Solid.”")]
+                : [String(localized: "Big session yesterday. Solid.")]
+            return [first([String(localized: "Great session yesterday."), String(localized: "Strong one yesterday!")] + named),
+                    last(ask)]
         case .rested(let days):
-            return [first(["\(days) days of rest. Feeling fresh?", "Feeling recharged?", "Good to see you again."]),
+            return [first([String(localized: "\(days) days of rest. Feeling fresh?"), String(localized: "Feeling recharged?"),
+                           String(localized: "Good to see you again.")]),
                     last(ask)]
         case .comeback(let days):
-            return [first(["Welcome back!", "It's been \(days) days. Missed you!", "Every comeback starts with one set."]),
-                    last(day.map { ["Ease in with \($0)?", "Start light with \($0)?"] }
-                         ?? ["Let's start light today.", "One workout at a time."])]
+            return [first([String(localized: "Welcome back!"), String(localized: "It's been \(days) days. Missed you!"),
+                           String(localized: "Every comeback starts with one set.")]),
+                    last(day.map {
+                        [String(localized: "Ease in with \($0)?", comment: "A split's day: “Ease in with Leg day?”"),
+                         String(localized: "Start light with \($0)?", comment: "A split's day: “Start light with Leg day?”")]
+                    } ?? [String(localized: "Let's start light today."), String(localized: "One workout at a time.")])]
         }
     }
 
@@ -258,13 +312,21 @@ struct Greeting: Equatable {
         init(_ day: Date, today: Date, calendar: Calendar) {
             let offset = calendar.dateComponents([.day], from: today, to: day).day ?? 0
             switch offset {
-            case -1: title = "Yesterday"; plain = "yesterday"; on = "yesterday"
-            case 1: title = "Tomorrow"; plain = "tomorrow"; on = "tomorrow"
+            case -1:
+                title = String(localized: "Yesterday")
+                plain = String(localized: "yesterday", comment: "A day inside a sentence: “Trained yesterday”")
+                on = plain
+            case 1:
+                title = String(localized: "Tomorrow", comment: "A day opening a sentence")
+                plain = String(localized: "tomorrow", comment: "A day inside a sentence: “Planning tomorrow?”")
+                on = plain
             case -6...6:
-                title = day.formatted(.dateTime.weekday(.wide)); plain = title; on = "on \(title)"
+                title = day.formatted(.dateTime.weekday(.wide)); plain = title
+                on = String(localized: "on \(title)", comment: "A day inside a sentence: “on Wednesday”, “on Mon 21 Sep”")
             default:
                 title = day.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
-                plain = title; on = "on \(title)"
+                plain = title
+                on = String(localized: "on \(title)", comment: "A day inside a sentence: “on Wednesday”, “on Mon 21 Sep”")
             }
         }
     }
@@ -272,29 +334,52 @@ struct Greeting: Equatable {
     private static func pastLines(_ session: WorkoutSession?, when: When, seed: Int) -> [String] {
         if let session, session.hasCompletedSets {
             let groups = trained(session)
-            return [pick(["Trained \(phrase(groups)) \(when.on).", "\(when.title): \(phrase(groups)).",
-                          "\(phrase(groups, capitalized: true)) \(when.on). Nice!"], seed, 1),
-                    pick(["\(count(session.completedSetCount, "set")) logged. Nice work!", "Solid session.",
-                          "Every set counts.", "That one paid off."], seed, 2)]
+            let sets = session.completedSetCount
+            return [pick([String(localized: "Trained \(phrase(groups)) \(when.on).",
+                                 comment: "Muscle groups, then the day: “Trained chest & abs on Wednesday.”"),
+                          String(localized: "\(when.title): \(phrase(groups)).",
+                                 comment: "A day, then its muscle groups: “Wednesday: chest & abs.”"),
+                          String(localized: "\(phrase(groups, capitalized: true)) \(when.on). Nice!",
+                                 comment: "Muscle groups, then the day: “Chest & abs on Wednesday. Nice!”")], seed, 1),
+                    pick([sets == 1 ? String(localized: "1 set logged. Nice work!")
+                            : String(localized: "\(sets) sets logged. Nice work!"),
+                          String(localized: "Solid session."), String(localized: "Every set counts."),
+                          String(localized: "That one paid off.")], seed, 2)]
         }
         if let session, !session.groups.isEmpty {
-            return [pick(["\(when.title)'s plan: \(phrase(session.groups)).",
-                          "\(when.title): \(phrase(session.groups)) planned."], seed, 1),
-                    pick(["Trained it? Log your sets below.", "Did you train? Log it below."], seed, 2)]
+            return [pick([String(localized: "\(when.title)'s plan: \(phrase(session.groups)).",
+                                 comment: "A day, then the muscle groups planned: “Wednesday's plan: chest & abs.”"),
+                          String(localized: "\(when.title): \(phrase(session.groups)) planned.",
+                                 comment: "A day, then the muscle groups planned: “Wednesday: chest & abs planned.”")],
+                         seed, 1),
+                    pick([String(localized: "Trained it? Log your sets below."),
+                          String(localized: "Did you train? Log it below.")], seed, 2)]
         }
-        return [pick(["Nothing logged \(when.on).", "\(when.title) was a rest day.", "A quiet day \(when.on)."], seed, 1),
-                pick(["Trained that day? Log it below.", "Rest days count too.", "Recovery is training too."], seed, 2)]
+        return [pick([String(localized: "Nothing logged \(when.on).", comment: "A day: “Nothing logged on Wednesday.”"),
+                      String(localized: "\(when.title) was a rest day.", comment: "A day: “Wednesday was a rest day.”"),
+                      String(localized: "A quiet day \(when.on).", comment: "A day: “A quiet day on Wednesday.”")], seed, 1),
+                pick([String(localized: "Trained that day? Log it below."), String(localized: "Rest days count too."),
+                      String(localized: "Recovery is training too.")], seed, 2)]
     }
 
     private static func futureLines(_ session: WorkoutSession?, when: When, next: String?, seed: Int) -> [String] {
         if let session, !session.groups.isEmpty {
-            return [pick(["\(phrase(session.groups, capitalized: true)) planned for \(when.plain).",
-                          "\(when.title): \(phrase(session.groups))."], seed, 1),
-                    pick(["Looking good.", "Future you says thanks.", "Plan ahead, show up ready."], seed, 2)]
+            return [pick([String(localized: "\(phrase(session.groups, capitalized: true)) planned for \(when.plain).",
+                                 comment: "Muscle groups, then the day: “Chest & abs planned for Wednesday.”"),
+                          String(localized: "\(when.title): \(phrase(session.groups)).",
+                                 comment: "A day, then its muscle groups: “Wednesday: chest & abs.”")], seed, 1),
+                    pick([String(localized: "Looking good."), String(localized: "Future you says thanks."),
+                          String(localized: "Plan ahead, show up ready.")], seed, 2)]
         }
-        return [pick(["What's the plan for \(when.plain)?", "Planning \(when.plain)?", "Looking ahead to \(when.plain)?"], seed, 1),
-                pick(next.map(sessionName).map { ["How about \($0)?", "\($0) fits \(when.plain).", "\($0) looks right."] }
-                     ?? ["What will you train?", "Pick a group to plan it."], seed, 2)]
+        return [pick([String(localized: "What's the plan for \(when.plain)?", comment: "A day: “What's the plan for Wednesday?”"),
+                      String(localized: "Planning \(when.plain)?", comment: "A day: “Planning Wednesday?”"),
+                      String(localized: "Looking ahead to \(when.plain)?", comment: "A day: “Looking ahead to Wednesday?”")],
+                     seed, 1),
+                pick(next.map(sessionName).map {
+                    [String(localized: "How about \($0)?", comment: "A split's day: “How about Push day?”"),
+                     String(localized: "\($0) fits \(when.plain).", comment: "A split's day, then a day: “Push day fits Wednesday.”"),
+                     String(localized: "\($0) looks right.", comment: "A split's day: “Push day looks right.”")]
+                } ?? [String(localized: "What will you train?"), String(localized: "Pick a group to plan it.")], seed, 2)]
     }
 
     // MARK: - Words
@@ -313,7 +398,10 @@ struct Greeting: Equatable {
     /// so "Back" can't read as the word. Nonisolated: it only builds a
     /// string, and `Optional.map` takes it from outside the main actor.
     nonisolated private static func sessionName(_ split: String) -> String {
-        split.hasPrefix("Legs") ? "Leg\(split.dropFirst(4)) day" : "\(split) day"
+        // The split's name is already in the current language; only the
+        // English "Legs" turns into "Leg" here.
+        let name = split.hasPrefix("Legs") ? "Leg\(split.dropFirst(4))" : split
+        return String(localized: "\(name) day", comment: "A split's day inside a sentence: “Push day”, “Leg A day”")
     }
 
     /// "biceps", "chest & abs", "3 groups". In a pair, Abs & Core is just
@@ -321,17 +409,18 @@ struct Greeting: Equatable {
     private static func phrase(_ groups: [MuscleGroup], capitalized: Bool = false) -> String {
         let text: String
         switch groups.count {
-        case 0: text = "your workout"
+        case 0: text = String(localized: "your workout", comment: "Stands in for the muscle groups inside a sentence")
         case 1: text = groups[0].title.lowercased()
-        case 2: text = groups.map { $0 == .abs ? "abs" : $0.title.lowercased() }.joined(separator: " & ")
-        default: text = "\(groups.count) groups"
+        case 2:
+            let names = groups.map {
+                $0 == .abs ? String(localized: "abs", comment: "Abs & Core in a pair of groups: “chest & abs”")
+                    : $0.title.lowercased()
+            }
+            text = String(localized: "\(names[0]) & \(names[1])",
+                          comment: "Adds the last muscle to a list: “chest & abs”, “Lats, upper back & lower back”")
+        default: text = String(localized: "\(groups.count) groups", comment: "Three or more muscle groups inside a sentence")
         }
         return capitalized ? text.prefix(1).uppercased() + text.dropFirst() : text
-    }
-
-    /// "1 set", "6 sets".
-    private static func count(_ value: Int, _ noun: String) -> String {
-        "\(value) \(value == 1 ? noun : noun + "s")"
     }
 
     /// One of `options` for the day's seed. Each line of a sequence passes

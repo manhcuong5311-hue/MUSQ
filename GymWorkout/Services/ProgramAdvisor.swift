@@ -36,10 +36,14 @@ enum ProgramAdvisor {
     /// comes round, which depends on the lower-body focus.
     static func recommendationReason(daysPerWeek: Int) -> String {
         switch daysPerWeek {
-        case 3: return "every session trains both the upper and the lower body, so no muscle waits a whole week."
-        case ...2: return "each session covers half the body, so two days reach every muscle."
-        case 4: return "the upper and lower body take turns training and resting."
-        default: return "shorter, focused sessions, and each muscle rests while the others work."
+        case 3: return String(localized: "every session trains both the upper and the lower body, so no muscle waits a whole week.",
+                              comment: "Finishes “<split> suits N days a week best: …”")
+        case ...2: return String(localized: "each session covers half the body, so two days reach every muscle.",
+                                 comment: "Finishes “<split> suits N days a week best: …”")
+        case 4: return String(localized: "the upper and lower body take turns training and resting.",
+                              comment: "Finishes “<split> suits N days a week best: …”")
+        default: return String(localized: "shorter, focused sessions, and each muscle rests while the others work.",
+                               comment: "Finishes “<split> suits N days a week best: …”")
         }
     }
 
@@ -59,33 +63,51 @@ enum ProgramAdvisor {
         let groups: [MuscleGroup]
     }
 
+    /// The days' names in the current language. They are only ever shown
+    /// (the plan page, the Train heading, the greeting), never matched.
+    private enum DayName {
+        static var upper: String { String(localized: "Upper", comment: "Split day: the upper body") }
+        static var lower: String { String(localized: "Lower", comment: "Split day: the lower body") }
+        static var lowerA: String { String(localized: "Lower A", comment: "Split day: the first of two lower-body days") }
+        static var lowerB: String { String(localized: "Lower B", comment: "Split day: the second of two lower-body days") }
+        static var front: String { String(localized: "Front", comment: "Split day: the front of the body") }
+        static var back: String {
+            String(localized: "splitDay.back", defaultValue: "Back", comment: "Split day: the back of the body")
+        }
+        static var push: String { String(localized: "Push", comment: "Split day: the pressing muscles") }
+        static var pull: String { String(localized: "Pull", comment: "Split day: the pulling muscles") }
+        static var legs: String { String(localized: "Legs", comment: "Split day: the legs") }
+        static var legsA: String { String(localized: "Legs A", comment: "Split day: the first of two leg days") }
+        static var legsB: String { String(localized: "Legs B", comment: "Split day: the second of two leg days") }
+    }
+
     /// A split's days in order. A lower-body focus puts the lower groups
     /// first and, where the split has room, adds a second lower day, so legs
     /// and glutes come up twice in each rotation.
     static func days(of split: TrainingSplit, lowerFocus: Bool) -> [SplitDay] {
         switch (split, lowerFocus) {
         case (.upperLower, false):
-            return [SplitDay(name: "Upper", groups: [.chest, .back, .shoulders, .biceps, .triceps]),
-                    SplitDay(name: "Lower", groups: [.quads, .hamstrings, .glutes, .abs])]
+            return [SplitDay(name: DayName.upper, groups: [.chest, .back, .shoulders, .biceps, .triceps]),
+                    SplitDay(name: DayName.lower, groups: [.quads, .hamstrings, .glutes, .abs])]
         case (.upperLower, true):
-            return [SplitDay(name: "Lower A", groups: [.glutes, .hamstrings, .abs]),
-                    SplitDay(name: "Upper", groups: [.back, .chest, .shoulders, .biceps, .triceps]),
-                    SplitDay(name: "Lower B", groups: [.quads, .glutes])]
+            return [SplitDay(name: DayName.lowerA, groups: [.glutes, .hamstrings, .abs]),
+                    SplitDay(name: DayName.upper, groups: [.back, .chest, .shoulders, .biceps, .triceps]),
+                    SplitDay(name: DayName.lowerB, groups: [.quads, .glutes])]
         case (.frontBack, false):
-            return [SplitDay(name: "Front", groups: [.chest, .shoulders, .quads, .biceps, .abs]),
-                    SplitDay(name: "Back", groups: [.back, .hamstrings, .glutes, .triceps])]
+            return [SplitDay(name: DayName.front, groups: [.chest, .shoulders, .quads, .biceps, .abs]),
+                    SplitDay(name: DayName.back, groups: [.back, .hamstrings, .glutes, .triceps])]
         case (.frontBack, true):
-            return [SplitDay(name: "Front", groups: [.quads, .chest, .shoulders, .biceps, .abs]),
-                    SplitDay(name: "Back", groups: [.glutes, .hamstrings, .back, .triceps])]
+            return [SplitDay(name: DayName.front, groups: [.quads, .chest, .shoulders, .biceps, .abs]),
+                    SplitDay(name: DayName.back, groups: [.glutes, .hamstrings, .back, .triceps])]
         case (.pushPullLegs, false):
-            return [SplitDay(name: "Push", groups: [.chest, .shoulders, .triceps]),
-                    SplitDay(name: "Pull", groups: [.back, .biceps]),
-                    SplitDay(name: "Legs", groups: [.quads, .hamstrings, .glutes])]
+            return [SplitDay(name: DayName.push, groups: [.chest, .shoulders, .triceps]),
+                    SplitDay(name: DayName.pull, groups: [.back, .biceps]),
+                    SplitDay(name: DayName.legs, groups: [.quads, .hamstrings, .glutes])]
         case (.pushPullLegs, true):
-            return [SplitDay(name: "Legs A", groups: [.glutes, .hamstrings]),
-                    SplitDay(name: "Push", groups: [.chest, .shoulders, .triceps]),
-                    SplitDay(name: "Legs B", groups: [.quads, .glutes, .abs]),
-                    SplitDay(name: "Pull", groups: [.back, .biceps])]
+            return [SplitDay(name: DayName.legsA, groups: [.glutes, .hamstrings]),
+                    SplitDay(name: DayName.push, groups: [.chest, .shoulders, .triceps]),
+                    SplitDay(name: DayName.legsB, groups: [.quads, .glutes, .abs]),
+                    SplitDay(name: DayName.pull, groups: [.back, .biceps])]
         }
     }
 
@@ -111,16 +133,19 @@ enum ProgramAdvisor {
         return (counts.min() ?? 0)...(counts.max() ?? 0)
     }
 
-    /// "about 2× a week", "1–2× a week", "less than once a week".
+    /// "about 2× a week", "1–2× a week", "less than once a week", finishing
+    /// "Every muscle …". The × is in the localized strings, not the numbers.
     static func frequencyText(_ range: ClosedRange<Double>) -> String {
         func times(_ value: Double) -> String {
             let half = (value * 2).rounded() / 2
-            return half.formatted(.number.precision(.fractionLength(0...1))) + "×"
+            return half.formatted(.number.precision(.fractionLength(0...1)))
         }
-        if range.upperBound < 0.9 { return "less than once a week" }
+        if range.upperBound < 0.9 {
+            return String(localized: "less than once a week", comment: "Finishes “Every muscle …”")
+        }
         let low = times(range.lowerBound), high = times(range.upperBound)
-        if low == high { return "about \(low) a week" }
-        return "\(low.dropLast())–\(high) a week"
+        if low == high { return String(localized: "about \(low)× a week", comment: "Finishes “Every muscle …”") }
+        return String(localized: "\(low)–\(high)× a week", comment: "Finishes “Every muscle …”: a range of times a week")
     }
 
     /// Whether suggestions lean towards the lower body.
@@ -182,6 +207,7 @@ struct WalkSuggestion: Hashable {
     /// "≈ 2.8 km · 30 min · 100 kcal".
     var detail: String {
         let km = kilometres.formatted(.number.precision(.fractionLength(1)))
-        return "≈ \(km) km · \(minutes) min · \(kilocalories) kcal"
+        return String(localized: "≈ \(km) km · \(minutes) min · \(kilocalories) kcal",
+                      comment: "A walk's estimated distance, time and energy")
     }
 }

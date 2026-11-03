@@ -154,12 +154,13 @@ struct TrainView: View {
     }
 
     private var dayEyebrow: String {
-        isToday ? "TODAY" : selectedDay
+        isToday ? String(localized: "TODAY") : selectedDay
             .formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)).uppercased()
     }
 
     private var dayTitle: String {
-        isToday ? "Recommended Workout" : isPast ? "Workout Log" : "Plan Ahead"
+        isToday ? String(localized: "Recommended Workout")
+            : isPast ? String(localized: "Workout Log") : String(localized: "Plan Ahead")
     }
 
     private var showsLegend: Bool { !isPast && cardColors.mode != .off }
@@ -264,13 +265,19 @@ struct TrainView: View {
 
     /// Names the split's day: the one the suggestion comes from.
     private func recommendedTitle(_ recommended: [MuscleGroup]) -> String {
-        let day = splitDay(for: recommended)
-        let title = isToday ? "RECOMMENDED TODAY" : "RECOMMENDED"
-        return day.map { "\(title) · \($0.name.uppercased())" } ?? title
+        let day = splitDay(for: recommended)?.name.uppercased()
+        if isToday {
+            return day.map { String(localized: "RECOMMENDED TODAY · \($0)",
+                                    comment: "Section title, then the split's day it comes from: “RECOMMENDED TODAY · PUSH”") }
+                ?? String(localized: "RECOMMENDED TODAY")
+        }
+        return day.map { String(localized: "RECOMMENDED · \($0)",
+                                comment: "Section title, then the split's day it comes from: “RECOMMENDED · PUSH”") }
+            ?? String(localized: "RECOMMENDED")
     }
 
-    private static let restedNote =
-        "Everything in the rotation was trained recently. Pick any group below — recovery times are only estimates."
+    private static let restedNote = String(localized:
+        "Everything in the rotation was trained recently. Pick any group below — recovery times are only estimates.")
 
     @ViewBuilder
     private var content: some View {
@@ -284,7 +291,7 @@ struct TrainView: View {
         }
 
         if isPast {
-            groupSection("LOG A WORKOUT", groups: groups.trainable, records: groups.records, trained: [])
+            groupSection(String(localized: "LOG A WORKOUT"), groups: groups.trainable, records: groups.records, trained: [])
         } else {
             if !groups.recommended.isEmpty {
                 groupSection(recommendedTitle(groups.recommended),
@@ -298,10 +305,12 @@ struct TrainView: View {
                     .padding(.top, 16)
             }
             if !groups.recent.isEmpty {
-                groupSection("RECENTLY TRAINED", groups: groups.recent, records: groups.records, trained: groups.trained)
+                groupSection(String(localized: "RECENTLY TRAINED"), groups: groups.recent, records: groups.records,
+                             trained: groups.trained)
             }
             if !groups.others.isEmpty {
-                groupSection("MORE MUSCLE GROUPS", groups: groups.others, records: groups.records, trained: groups.trained)
+                groupSection(String(localized: "MORE MUSCLE GROUPS"), groups: groups.others, records: groups.records,
+                             trained: groups.trained)
             }
         }
     }
@@ -326,7 +335,8 @@ struct TrainView: View {
         let state = isPast ? MuscleCardState.ready : MuscleCardState(record?.status)
         // What the group opens on: the user's own list, else the preset.
         let exerciseCount = store.preview(group, level: store.defaultLevel(for: group)).count
-        let exercises = "\(exerciseCount) \(exerciseCount == 1 ? "exercise" : "exercises")"
+        let exercises = exerciseCount == 1 ? String(localized: "1 exercise")
+            : String(localized: "\(exerciseCount) exercises")
         // Recent load that doesn't hold the group back. A past day is a log,
         // not advice, so it shows none.
         let note: String? = isPast ? nil : record?.sideNotes.first.map { RecoveryText.sideNote($0, now: referenceTime) }
@@ -339,7 +349,8 @@ struct TrainView: View {
             secondary = RecoveryText.ready(record.readyParts)
         } else if let record, state != .ready {
             detail = RecoveryText.trainedAgo(record.lastTrainedAt, now: referenceTime)
-            secondary = "Est. \(RecoveryText.remaining(record.hoursRemaining))"
+            secondary = String(localized: "Est. \(RecoveryText.remaining(record.hoursRemaining))",
+                               comment: "Estimated recovery time left: “Est. ~35h remaining”")
         } else if !isPast, let last = record?.lastCountedAt {
             // READY alone can't tell a group trained two days ago from one
             // never trained, so say when it last was, where a recovering card
@@ -517,7 +528,7 @@ struct TrainView: View {
         }
     }
 
-    private static let completeHint = "Mark at least one set done to complete the workout."
+    private static let completeHint = String(localized: "Mark at least one set done to complete the workout.")
 
     private func workoutHeader(_ session: WorkoutSession) -> some View {
         let done = session.exercises.reduce(0) { $0 + $1.completedSets.count }
@@ -757,7 +768,7 @@ struct TrainView: View {
     @ViewBuilder
     private func sections(_ groups: DayGroups, planned: [MuscleGroup], width: CGFloat) -> some View {
         if isPast {
-            gridSection("LOG A WORKOUT", groups: groups.trainable, records: groups.records,
+            gridSection(String(localized: "LOG A WORKOUT"), groups: groups.trainable, records: groups.records,
                         trained: [], width: width)
         } else {
             if !groups.recommended.isEmpty {
@@ -773,11 +784,11 @@ struct TrainView: View {
                     .frame(maxWidth: .infinity)
             }
             if !groups.recent.isEmpty {
-                gridSection("RECENTLY TRAINED", groups: groups.recent, records: groups.records,
+                gridSection(String(localized: "RECENTLY TRAINED"), groups: groups.recent, records: groups.records,
                             trained: groups.trained, width: width)
             }
             if !groups.others.isEmpty {
-                gridSection("MORE MUSCLE GROUPS", groups: groups.others, records: groups.records,
+                gridSection(String(localized: "MORE MUSCLE GROUPS"), groups: groups.others, records: groups.records,
                             trained: groups.trained, width: width)
             }
         }
@@ -925,7 +936,8 @@ struct WorkoutGroupRow: View {
                     Spacer()
                     MuscleStateLabel(state: state, size: regular ? 9.5 : 8.5)
                 }
-                Text("\(exercises.count) \(exercises.count == 1 ? "exercise" : "exercises") · \(done) of \(total) sets done")
+                Text(exercises.count == 1 ? "1 exercise · \(done) of \(total) sets done"
+                     : "\(exercises.count) exercises · \(done) of \(total) sets done")
                     .font(.ui(regular ? 13 : 12))
                     .foregroundStyle(DS.silver.opacity(0.55))
                     .lineLimit(regular ? 1 : nil)

@@ -98,7 +98,22 @@ struct MusclePresetView: View {
     private var isPlanned: Bool { !planned.isEmpty }
     private var rows: [WorkoutExercise] { isPlanned ? planned : preview }
     private var isToday: Bool { Calendar.current.isDateInToday(day) }
-    private var dayName: String { isToday ? "Today's" : RecoveryText.day(day) + "'s" }
+    // Phrases with the day in them are written out whole, for today and for
+    // another day ("Yesterday", "Mon 21 Sep"), so a language can put the
+    // day where it goes rather than where English's "Mon 21 Sep's" does.
+    private var addToDayTitle: String {
+        isToday ? String(localized: "Add to Today's Workout")
+            : String(localized: "Add to \(RecoveryText.day(day))'s Workout",
+                     comment: "The day: Yesterday, or a date such as Mon 21 Sep")
+    }
+    /// "TODAY'S WORKOUT · 5 EXERCISES".
+    private var headerMeta: String {
+        let workout = isToday ? String(localized: "TODAY'S WORKOUT")
+            : String(localized: "\(RecoveryText.day(day).uppercased())'S WORKOUT",
+                     comment: "The day: YESTERDAY, or a date such as MON 21 SEP")
+        let count = rows.count == 1 ? String(localized: "1 EXERCISE") : String(localized: "\(rows.count) EXERCISES")
+        return "\(workout) · \(count)"
+    }
     private var isPast: Bool { Calendar.current.startOfDay(for: day) < Calendar.current.startOfDay(for: Date()) }
 
     /// The moment recovery is judged at, as on Train: now for today, the
@@ -166,7 +181,7 @@ struct MusclePresetView: View {
         .sheet(item: $picker) { mode in
             ExercisePickerView(
                 group: group,
-                title: { if case .replace = mode { return "Choose Another" } else { return "Add Exercise" } }(),
+                title: { if case .replace = mode { return String(localized: "Choose Another") } else { return String(localized: "Add Exercise") } }(),
                 alreadyAdded: Set(rows.map(\.exerciseName))
             ) { name in
                 ensurePlanned()
@@ -196,11 +211,13 @@ struct MusclePresetView: View {
 
     private var groupRemovalDialog: PresetConfirmation<Bool> {
         PresetConfirmation(
-            title: "Remove \(group.title) from \(dayName.lowercased()) workout?",
+            title: isToday ? String(localized: "Remove \(group.title) from today's workout?")
+                : String(localized: "Remove \(group.title) from \(RecoveryText.day(day).lowercased())'s workout?",
+                         comment: "A muscle group, then the day in lower case: yesterday, or a date such as mon 21 sep"),
             isPresented: $confirmsRemoval,
             presenting: true,
-            action: "Remove",
-            message: { _ in "Sets you've already marked done are removed too." },
+            action: String(localized: "Remove"),
+            message: { _ in String(localized: "Sets you've already marked done are removed too.") },
             onConfirm: { _ in
                 store.removeGroup(group, on: day)
                 dismiss()
@@ -209,26 +226,30 @@ struct MusclePresetView: View {
 
     private func exerciseRemovalDialog(isPresented: Binding<Bool>) -> PresetConfirmation<WorkoutExercise> {
         PresetConfirmation(
-            title: "Remove \(removingExercise?.exerciseName ?? "Exercise")?",
+            title: removingExercise.map { String(localized: "Remove \($0.exerciseName)?", comment: "An exercise name") }
+                ?? String(localized: "Remove Exercise?"),
             isPresented: isPresented,
             presenting: removingExercise,
-            action: "Remove",
+            action: String(localized: "Remove"),
             message: { exercise in
                 let done = exercise.completedSets.count
-                return done == 1 ? "The set you've marked done is removed too."
-                    : "The \(done) sets you've marked done are removed too."
+                return done == 1 ? String(localized: "The set you've marked done is removed too.")
+                    : String(localized: "The \(done) sets you've marked done are removed too.")
             },
             onConfirm: { remove($0) })
     }
 
     private var presetDeletionDialog: PresetConfirmation<PresetLevel> {
         PresetConfirmation(
-            title: "Delete \(deletingPreset?.name ?? "Preset") for \(group.title)?",
+            title: deletingPreset.map {
+                String(localized: "Delete \($0.name) for \(group.title)?",
+                       comment: "A saved preset (Preset 2), then a muscle group")
+            } ?? String(localized: "Delete Preset for \(group.title)?"),
             isPresented: Binding(get: { deletingPreset != nil },
                                  set: { if !$0 { deletingPreset = nil } }),
             presenting: deletingPreset,
-            action: "Delete",
-            message: { _ in "Days you've already planned keep their exercises." },
+            action: String(localized: "Delete"),
+            message: { _ in String(localized: "Days you've already planned keep their exercises.") },
             onConfirm: { deletePreset($0) })
     }
 
@@ -304,7 +325,7 @@ struct MusclePresetView: View {
                     .font(.ui(layout.isWide ? 22 : layout.text(.screenTitle), .semibold))
                     .tracking(regular ? -0.4 : -0.25)
                     .foregroundStyle(DS.silver)
-                MetaLine(text: "\(dayName.uppercased()) WORKOUT · \(rows.count) \(rows.count == 1 ? "EXERCISE" : "EXERCISES")")
+                MetaLine(text: headerMeta)
                     // One line in the split's list pane, beside Reorder.
                     .lineLimit(regular ? 1 : nil)
                     .minimumScaleFactor(regular ? 0.8 : 1)
@@ -468,7 +489,7 @@ struct MusclePresetView: View {
             .accessibilityElement(children: .combine)
         } else if !rows.isEmpty {
             VStack(spacing: 10) {
-                WideButton(title: "Add to \(dayName) Workout", prominent: true) {
+                WideButton(title: addToDayTitle, prominent: true) {
                     withAnimation { ensurePlanned() }
                 }
                 .dsCTA(360)
@@ -559,13 +580,16 @@ struct MusclePresetView: View {
     private var levelCaption: String {
         // Only a group with no built-in preset can be on a level it doesn't offer.
         guard levels.contains(level) else {
-            return "There's no built-in preset for \(group.title). Add exercises, then save the list as a preset."
+            return String(localized: "There's no built-in preset for \(group.title). Add exercises, then save the list as a preset.")
         }
-        let suggested = store.profile != nil && level == store.suggestedLevel ? " Suggested for you." : ""
+        // A sentence of its own after the caption.
+        let suggested = store.profile != nil && level == store.suggestedLevel ? " " + String(localized: "Suggested for you.") : ""
         switch level {
-        case .basic: return "Machines and supported positions — a good place to start." + suggested
-        case .advanced: return "Free-weight compounds that need more balance and bracing." + suggested
-        case .mine, .mine2, .mine3: return "Your saved \(level.name) for \(group.title)."
+        case .basic: return String(localized: "Machines and supported positions — a good place to start.") + suggested
+        case .advanced: return String(localized: "Free-weight compounds that need more balance and bracing.") + suggested
+        case .mine, .mine2, .mine3:
+            return String(localized: "Your saved \(level.name) for \(group.title).",
+                          comment: "A saved preset (Preset 1, 2 or 3), then a muscle group")
         }
     }
 
@@ -748,7 +772,7 @@ struct MusclePresetView: View {
             // An empty list (no built-in preset) has nothing to add yet;
             // Add Exercise plans the group with its first pick.
             VStack(alignment: footerAlignment, spacing: 8) {
-                WideButton(title: "Add to \(dayName) Workout", prominent: true) {
+                WideButton(title: addToDayTitle, prominent: true) {
                     withAnimation { ensurePlanned() }
                 }
                 .dsCTA(DS.Layout.ctaMaxWidth, alignment: .leading)
@@ -797,7 +821,8 @@ struct MusclePresetView: View {
                     Section("Save this list as") {
                         ForEach(saveSlots, id: \.self) { slot in
                             let existing = store.customPreset(for: group, slot)
-                            let title = existing == nil ? slot.name : slot == level ? "Update \(slot.name)" : "Replace \(slot.name)"
+                            let title = existing == nil ? slot.name
+                                : slot == level ? String(localized: "Update \(slot.name)") : String(localized: "Replace \(slot.name)")
                             if isLocked(slot) {
                                 Button { paywall.show(.preset) } label: {
                                     Label(title, systemImage: "lock.fill")
@@ -806,7 +831,8 @@ struct MusclePresetView: View {
                             } else {
                                 Button { saveAsPreset(slot) } label: {
                                     Label(title, systemImage: existing == nil ? "bookmark" : "arrow.triangle.2.circlepath")
-                                    Text(existing.map { "\($0.count) \($0.count == 1 ? "exercise" : "exercises")" } ?? "Empty")
+                                    Text(existing.map { $0.count == 1 ? String(localized: "1 exercise") : String(localized: "\($0.count) exercises") }
+                                         ?? String(localized: "Empty", comment: "A preset slot with nothing saved in it"))
                                 }
                             }
                         }
@@ -963,12 +989,13 @@ struct MusclePresetView: View {
             changes.append((exercise, name))
         }
         guard !changes.isEmpty else {
-            show(Toast(text: "No other exercises to swap in yet."))
+            show(Toast(text: String(localized: "No other exercises to swap in yet.")))
             return
         }
         let before = isPlanned ? nil : preview
         apply(changes)
-        show(Toast(text: changes.count == 1 ? "1 exercise swapped" : "\(changes.count) exercises swapped",
+        show(Toast(text: changes.count == 1 ? String(localized: "1 exercise swapped")
+                                            : String(localized: "\(changes.count) exercises swapped"),
                    undo: Dictionary(uniqueKeysWithValues: changes.map { ($0.0.id, $0.0.exerciseName) }),
                    previewBefore: before))
     }
@@ -976,12 +1003,13 @@ struct MusclePresetView: View {
     private func swap(_ exercise: WorkoutExercise) {
         shown.formUnion(rows.map(\.exerciseName))
         guard let name = replacement(for: exercise, in: rows.map(\.exerciseName), context: rotationContext) else {
-            show(Toast(text: "No other exercise like this to swap in yet."))
+            show(Toast(text: String(localized: "No other exercise like this to swap in yet.")))
             return
         }
         let before = isPlanned ? nil : preview
         apply([(exercise, name)])
-        show(Toast(text: "Swapped for \(name)", undo: [exercise.id: exercise.exerciseName], previewBefore: before))
+        show(Toast(text: String(localized: "Swapped for \(name)", comment: "An exercise name"),
+                   undo: [exercise.id: exercise.exerciseName], previewBefore: before))
     }
 
     /// Puts each new exercise in its row: in the day's plan when there is
@@ -1041,7 +1069,9 @@ struct MusclePresetView: View {
 
     private func show(_ newToast: Toast) {
         withAnimation(.easeOut(duration: 0.2)) { toast = newToast }
-        AccessibilityNotification.Announcement(newToast.text + (newToast.canUndo ? ". Undo available." : "")).post()
+        AccessibilityNotification.Announcement(newToast.canUndo
+            ? String(localized: "\(newToast.text). Undo available.", comment: "VoiceOver: the note just shown, then that it can be undone")
+            : newToast.text).post()
     }
 
     private func saveAsPreset(_ preset: PresetLevel) {
@@ -1053,14 +1083,17 @@ struct MusclePresetView: View {
         if isPlanned { store.markLevel(preset, for: group, on: day) }
         withAnimation(.easeOut(duration: 0.18)) { level = preset }
         show(before == nil
-             ? Toast(text: "Saved as \(preset.name). Find it under ⋯ next to \(group.title) on Train.")
-             : Toast(text: "\(preset.name) updated", restoresPreset: preset, presetBefore: before, levelBefore: levelBefore))
+             ? Toast(text: String(localized: "Saved as \(preset.name). Find it under ⋯ next to \(group.title) on Train.",
+                                  comment: "A saved preset (Preset 2), then a muscle group; Train is the tab"))
+             : Toast(text: String(localized: "\(preset.name) updated", comment: "A saved preset (Preset 2) was saved over"),
+                     restoresPreset: preset, presetBefore: before, levelBefore: levelBefore))
     }
 
     private func deletePreset(_ preset: PresetLevel) {
         let before = store.customPreset(for: group, preset)
         store.deleteCustomPreset(for: group, preset)
-        show(Toast(text: "\(preset.name) deleted", restoresPreset: preset, presetBefore: before, levelBefore: level))
+        show(Toast(text: String(localized: "\(preset.name) deleted", comment: "A saved preset (Preset 2) was deleted"),
+                   restoresPreset: preset, presetBefore: before, levelBefore: level))
         guard level == preset else { return }
         withAnimation(.easeOut(duration: 0.18)) {
             level = store.suggestedLevel
@@ -1194,7 +1227,11 @@ struct PresetExerciseRow: View {
         )
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(exercise.exerciseName), \(exercise.sets.count) sets of \(exercise.repRange.label) \(exercise.isTimed ? "seconds" : "reps"), \(done) done"
+        .accessibilityLabel((exercise.isTimed
+            ? String(localized: "\(exercise.exerciseName), \(exercise.sets.count) sets of \(exercise.repRange.label) seconds, \(done) done",
+                     comment: "VoiceOver: exercise name, sets, a range such as 30–45, sets done")
+            : String(localized: "\(exercise.exerciseName), \(exercise.sets.count) sets of \(exercise.repRange.label) reps, \(done) done",
+                     comment: "VoiceOver: exercise name, sets, a range such as 8–12, sets done"))
                             + (caution.map { ", \($0.lowercased())" } ?? ""))
     }
 }
@@ -1271,14 +1308,18 @@ struct TargetEditorSheet: View {
             VStack(spacing: 4) {
                 // Add Set has no cap: past 10 the range grows to the sets
                 // already there, never below the ones done.
-                stepper("Sets", value: $sets,
+                stepper(String(localized: "Sets"), value: $sets,
                         range: max(1, exercise.completedSets.count)...max(10, exercise.sets.count))
                 if exercise.isTimed {
-                    stepper("Seconds from", value: $lower, range: 5...300, step: 5)
-                    stepper("Seconds up to", value: $upper, range: lower...300, step: 5)
+                    stepper(String(localized: "Seconds from", comment: "Stepper: the low end of a timed set's target"),
+                            value: $lower, range: 5...300, step: 5)
+                    stepper(String(localized: "Seconds up to", comment: "Stepper: the high end of a timed set's target"),
+                            value: $upper, range: lower...300, step: 5)
                 } else {
-                    stepper("Reps from", value: $lower, range: 1...50)
-                    stepper("Reps up to", value: $upper, range: lower...50)
+                    stepper(String(localized: "Reps from", comment: "Stepper: the low end of the rep target"),
+                            value: $lower, range: 1...50)
+                    stepper(String(localized: "Reps up to", comment: "Stepper: the high end of the rep target"),
+                            value: $upper, range: lower...50)
                 }
             }
             .padding(.top, 18)

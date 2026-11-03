@@ -10,13 +10,32 @@ import SwiftUI
 // MARK: - Labels
 
 /// Section eyebrow: `CONTINUE TRAINING`, `MUSCLE GROUPS`, …
+///
+/// Literal text is localized (`SectionEyebrow(text: "HISTORY")`); a String
+/// is shown as given, so data and already-localized text pass straight
+/// through. The same holds for MetaLine, WideButton, FilterChip,
+/// MonoSegmentedControl, CueSection's label and MistakeBanner below; the
+/// callouts always show their text as given.
 struct SectionEyebrow: View {
     var text: String
-    var size: CGFloat = 11
-    var em: CGFloat = 0.10
-    var color: Color = DS.silver.opacity(0.45)
+    var size: CGFloat
+    var em: CGFloat
+    var color: Color
 
     @Environment(\.dsLayout) private var layout
+
+    @_disfavoredOverload
+    init(text: String, size: CGFloat = 11, em: CGFloat = 0.10, color: Color = DS.silver.opacity(0.45)) {
+        self.text = text
+        self.size = size
+        self.em = em
+        self.color = color
+    }
+
+    init(text: String.LocalizationValue, size: CGFloat = 11, em: CGFloat = 0.10,
+         color: Color = DS.silver.opacity(0.45)) {
+        self.init(text: String(localized: text), size: size, em: em, color: color)
+    }
 
     /// The default size grows to 12 in regular; a size the caller chose is
     /// left alone.
@@ -35,11 +54,24 @@ struct SectionEyebrow: View {
 /// Monospaced meta line under a title: `CHEST · BARBELL · INTERMEDIATE`.
 struct MetaLine: View {
     var text: String
-    var size: CGFloat = 9.5
-    var em: CGFloat = 0.08
-    var color: Color = DS.silver.opacity(0.4)
+    var size: CGFloat
+    var em: CGFloat
+    var color: Color
 
     @Environment(\.dsLayout) private var layout
+
+    @_disfavoredOverload
+    init(text: String, size: CGFloat = 9.5, em: CGFloat = 0.08, color: Color = DS.silver.opacity(0.4)) {
+        self.text = text
+        self.size = size
+        self.em = em
+        self.color = color
+    }
+
+    init(text: String.LocalizationValue, size: CGFloat = 9.5, em: CGFloat = 0.08,
+         color: Color = DS.silver.opacity(0.4)) {
+        self.init(text: String(localized: text), size: size, em: em, color: color)
+    }
 
     /// The default size grows to 10.5 in regular, like `SectionEyebrow`.
     private var resolvedSize: CGFloat {
@@ -117,13 +149,31 @@ struct GlassSquareButton<Content: View>: View {
 struct WideButton: View {
     var title: String
     var prominent: Bool
-    var fontSize: CGFloat = 13.5
-    var verticalPadding: CGFloat = 13
-    var cornerRadius: CGFloat = 13
-    var border: Color? = nil
+    var fontSize: CGFloat
+    var verticalPadding: CGFloat
+    var cornerRadius: CGFloat
+    var border: Color?
     var action: () -> Void
 
     @Environment(\.dsLayout) private var layout
+
+    @_disfavoredOverload
+    init(title: String, prominent: Bool, fontSize: CGFloat = 13.5, verticalPadding: CGFloat = 13,
+         cornerRadius: CGFloat = 13, border: Color? = nil, action: @escaping () -> Void) {
+        self.title = title
+        self.prominent = prominent
+        self.fontSize = fontSize
+        self.verticalPadding = verticalPadding
+        self.cornerRadius = cornerRadius
+        self.border = border
+        self.action = action
+    }
+
+    init(title: String.LocalizationValue, prominent: Bool, fontSize: CGFloat = 13.5, verticalPadding: CGFloat = 13,
+         cornerRadius: CGFloat = 13, border: Color? = nil, action: @escaping () -> Void) {
+        self.init(title: String(localized: title), prominent: prominent, fontSize: fontSize,
+                  verticalPadding: verticalPadding, cornerRadius: cornerRadius, border: border, action: action)
+    }
 
     var body: some View {
         let size = layout.isRegular ? (fontSize * 1.1 * 2).rounded() / 2 : fontSize
@@ -158,6 +208,17 @@ struct FilterChip: View {
 
     @Environment(\.dsLayout) private var layout
 
+    @_disfavoredOverload
+    init(title: String, selected: Bool, action: @escaping () -> Void) {
+        self.title = title
+        self.selected = selected
+        self.action = action
+    }
+
+    init(title: String.LocalizationValue, selected: Bool, action: @escaping () -> Void) {
+        self.init(title: String(localized: title), selected: selected, action: action)
+    }
+
     var body: some View {
         Button(action: action) {
             Text(title)
@@ -185,18 +246,52 @@ struct MonoSegmentedControl<Value: Hashable>: View {
     var options: [(value: Value, title: String)]
     @Binding var selection: Value
 
-    var fontSize: CGFloat = 9.5
-    var em: CGFloat = 0.08
-    var itemPaddingH: CGFloat = 11
-    var itemPaddingV: CGFloat = 6
-    var itemRadius: CGFloat = 8
-    var trackRadius: CGFloat = 10
-    var trackPadding: CGFloat = 3
-    var trackColor: Color = DS.silver.opacity(0.06)
-    var inactiveBackground: Color = .clear
-    var fillsWidth: Bool = false
+    var fontSize: CGFloat
+    var em: CGFloat
+    var itemPaddingH: CGFloat
+    var itemPaddingV: CGFloat
+    var itemRadius: CGFloat
+    var trackRadius: CGFloat
+    var trackPadding: CGFloat
+    var trackColor: Color
+    var inactiveBackground: Color
+    var fillsWidth: Bool
 
     @Environment(\.dsLayout) private var layout
+
+    /// Titles shown as given: built from data or already localized.
+    @_disfavoredOverload
+    init(options: [(value: Value, title: String)], selection: Binding<Value>,
+         fontSize: CGFloat = 9.5, em: CGFloat = 0.08, itemPaddingH: CGFloat = 11, itemPaddingV: CGFloat = 6,
+         itemRadius: CGFloat = 8, trackRadius: CGFloat = 10, trackPadding: CGFloat = 3,
+         trackColor: Color = DS.silver.opacity(0.06), inactiveBackground: Color = .clear,
+         fillsWidth: Bool = false) {
+        self.options = options
+        self._selection = selection
+        self.fontSize = fontSize
+        self.em = em
+        self.itemPaddingH = itemPaddingH
+        self.itemPaddingV = itemPaddingV
+        self.itemRadius = itemRadius
+        self.trackRadius = trackRadius
+        self.trackPadding = trackPadding
+        self.trackColor = trackColor
+        self.inactiveBackground = inactiveBackground
+        self.fillsWidth = fillsWidth
+    }
+
+    /// A literal list, `[(.week, "THIS WEEK"), (.month, "THIS MONTH")]`:
+    /// the titles are localized.
+    init(options: [(value: Value, title: String.LocalizationValue)], selection: Binding<Value>,
+         fontSize: CGFloat = 9.5, em: CGFloat = 0.08, itemPaddingH: CGFloat = 11, itemPaddingV: CGFloat = 6,
+         itemRadius: CGFloat = 8, trackRadius: CGFloat = 10, trackPadding: CGFloat = 3,
+         trackColor: Color = DS.silver.opacity(0.06), inactiveBackground: Color = .clear,
+         fillsWidth: Bool = false) {
+        self.init(options: options.map { ($0.value, String(localized: $0.title)) }, selection: selection,
+                  fontSize: fontSize, em: em, itemPaddingH: itemPaddingH, itemPaddingV: itemPaddingV,
+                  itemRadius: itemRadius, trackRadius: trackRadius, trackPadding: trackPadding,
+                  trackColor: trackColor, inactiveBackground: inactiveBackground, fillsWidth: fillsWidth)
+    }
 
     var body: some View {
         let size = layout.isRegular ? fontSize + 1 : fontSize
@@ -439,11 +534,11 @@ struct MuscleActivationRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline) {
-                Text(muscle.name)
+                Text(muscle.name.localizedContent)
                     .font(.ui(nameSize, .semibold))
                     .foregroundStyle(DS.silver)
                 Spacer(minLength: 8)
-                Text(muscle.rank.rawValue)
+                Text(muscle.rank.title.uppercased())
                     .font(.mono(8.5, .semibold))
                     .trackingEm(0.10, size: 8.5)
                     .foregroundStyle(muscle.rank.tagForeground)
@@ -542,7 +637,19 @@ struct SheetScaffold<Content: View>: View {
 struct CueSection: View {
     var label: String
     var text: String
-    var labelColor: Color = DS.silver.opacity(0.4)
+    var labelColor: Color
+
+    @_disfavoredOverload
+    init(label: String, text: String, labelColor: Color = DS.silver.opacity(0.4)) {
+        self.label = label
+        self.text = text
+        self.labelColor = labelColor
+    }
+
+    /// A literal label is localized; `text` (cue copy) is shown as given.
+    init(label: String.LocalizationValue, text: String, labelColor: Color = DS.silver.opacity(0.4)) {
+        self.init(label: String(localized: label), text: text, labelColor: labelColor)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -564,6 +671,15 @@ struct CueSection: View {
 /// The `SHOWING COMMON MISTAKE · …` banner.
 struct MistakeBanner: View {
     var text: String
+
+    @_disfavoredOverload
+    init(text: String) {
+        self.text = text
+    }
+
+    init(text: String.LocalizationValue) {
+        self.init(text: String(localized: text))
+    }
 
     var body: some View {
         HStack(spacing: 7) {

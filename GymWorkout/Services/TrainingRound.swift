@@ -24,8 +24,8 @@ enum TrainingRound {
 
         var title: String {
             switch self {
-            case .fullRound: return "Full round"
-            case .weekly: return "Weekly"
+            case .fullRound: return String(localized: "Full round", comment: "When the Train cards' edges start over")
+            case .weekly: return String(localized: "Weekly", comment: "When the Train cards' edges start over")
             }
         }
     }

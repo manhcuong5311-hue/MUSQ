@@ -22,6 +22,7 @@ struct ProfileView: View {
     @Environment(Ads.self) private var ads
     @Environment(Paywall.self) private var paywall
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openURL) private var openURL
     @Environment(\.dsLayout) private var layout
     @AppStorage(ModelLook.storageKey) private var modelLook: ModelLook = .charcoal
     @State private var editsProfile = false
@@ -172,7 +173,8 @@ struct ProfileView: View {
         var parts: [String] = []
         if let name = store.profile?.name, !name.isEmpty { parts.append(name.uppercased()) }
         if let goal = store.profile?.goal { parts.append(goal.title.uppercased()) }
-        parts.append(purchases.isPremium ? "PREMIUM" : "FREE")
+        parts.append(purchases.isPremium ? String(localized: "PREMIUM", comment: "Plan: MUSQ Premium")
+                                         : String(localized: "FREE", comment: "Plan: the free version"))
         return parts.joined(separator: " · ")
     }
 
@@ -323,7 +325,7 @@ struct ProfileView: View {
         store.profile?.name = name.isEmpty ? nil : name
     }
 
-    private func fact(_ label: String, _ value: String) -> some View {
+    private func fact(_ label: String.LocalizationValue, _ value: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             MetaLine(text: label, size: layout.value(8.5, 10))
             Text(value)
@@ -338,11 +340,14 @@ struct ProfileView: View {
     /// 3,000 steps after workouts."
     private func planSummary(_ profile: UserProfile) -> String {
         let split = ProgramAdvisor.split(for: profile).title
-        var parts = [profile.daysPerWeek.map { "\(split), \($0) days a week" } ?? split]
-        if ProgramAdvisor.isLowerFocused(profile) { parts.append("Lower-body focus") }
-        parts.append("\(store.suggestedLevel.title.capitalized) presets")
+        var parts = [profile.daysPerWeek.map {
+            String(localized: "\(split), \($0) days a week", comment: "Plan summary: the split, e.g. Front / Back, 3 days a week")
+        } ?? split]
+        if ProgramAdvisor.isLowerFocused(profile) { parts.append(String(localized: "Lower-body focus")) }
+        parts.append(String(localized: "\(store.suggestedLevel.name) presets", comment: "Plan summary, e.g. Basic presets"))
         if let walk = store.walkSuggestion {
-            parts.append("walk \(walk.steps.formatted()) steps after workouts")
+            parts.append(String(localized: "walk \(walk.steps.formatted()) steps after workouts",
+                                comment: "Plan summary, the last item after a ·, so lower case"))
         }
         return parts.joined(separator: " · ") + "."
     }
@@ -354,6 +359,15 @@ struct ProfileView: View {
         return VStack(alignment: .leading, spacing: 10) {
             SectionEyebrow(text: "SETTINGS")
             VStack(spacing: 0) {
+                // MUSQ follows the iPhone's language (2026-11-02); iOS keeps a
+                // per-app Language choice on the app's page in Settings, which
+                // relaunches the app in it.
+                settingRow("Language", detail: "MUSQ follows your \(DS.deviceNoun)'s language. Pick another one for MUSQ alone in Settings.") {
+                    pillButton(L10n.currentLanguageName.uppercased()) {
+                        if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+                    }
+                }
+                Hairline(opacity: 0.06)
                 settingRow("Units", detail: "Switching only changes how weights are shown.") {
                     MonoSegmentedControl(
                         options: WeightUnit.allCases.map { ($0, $0.symbol.uppercased()) },
@@ -455,7 +469,7 @@ struct ProfileView: View {
         return VStack(alignment: .leading, spacing: 10) {
             SectionEyebrow(text: "TRAIN CARD COLORS")
             VStack(spacing: 0) {
-                settingRow("Card colors", detail: cardColorDetail) {
+                settingRow(String(localized: "Card colors"), detail: cardColorDetail) {
                     menu(selection: cardColors.$mode, options: CardColorMode.allCases, title: \.title)
                 }
                 if cardColors.mode != .off {
@@ -485,21 +499,24 @@ struct ProfileView: View {
     }
 
     private var cardColorDetail: String {
-        let done = cardColors.reset == .weekly ? "done this week" : "done this round"
         switch cardColors.mode {
-        case .all: return "Red while a group recovers, yellow once it's \(done), green while it's still due."
-        case .redGreen: return "Red while a group recovers, green while it's still due."
-        case .off: return "No colored edges on the Train tab."
+        case .all: return cardColors.reset == .weekly
+            ? String(localized: "Red while a group recovers, yellow once it's done this week, green while it's still due.")
+            : String(localized: "Red while a group recovers, yellow once it's done this round, green while it's still due.")
+        case .redGreen: return String(localized: "Red while a group recovers, green while it's still due.")
+        case .off: return String(localized: "No colored edges on the Train tab.")
         }
     }
 
     private func toneDetail(_ tone: MuscleCardTone, reset: TrainingRound.Reset) -> String {
         switch tone {
-        case .waiting: return "Trained and still recovering."
+        case .waiting: return String(localized: "Trained and still recovering.")
         case .recent: return reset == .weekly
-            ? "Trained this week and recovered."
-            : "Trained this round and recovered; it waits for the rest of the round."
-        case .due: return reset == .weekly ? "Not trained yet this week." : "Not trained yet this round."
+            ? String(localized: "Trained this week and recovered.")
+            : String(localized: "Trained this round and recovered; it waits for the rest of the round.")
+        case .due: return reset == .weekly
+            ? String(localized: "Not trained yet this week.")
+            : String(localized: "Not trained yet this round.")
         }
     }
 
@@ -516,7 +533,7 @@ struct ProfileView: View {
 
     private var premiumRows: some View {
         VStack(spacing: 0) {
-            settingRow("MUSQ Premium", detail: premiumDetail) {
+            settingRow(String(localized: "MUSQ Premium"), detail: premiumDetail) {
                 pillButton(purchases.isPremium ? "ACTIVE" : "UPGRADE", prominent: !purchases.isPremium) {
                     paywall.show(.profile)
                 }
@@ -573,13 +590,13 @@ struct ProfileView: View {
 
     private var premiumDetail: String {
         switch purchases.activePlan {
-        case Purchases.ProductID.yearly: return "Your yearly plan is active."
-        case Purchases.ProductID.monthly: return "Your monthly plan is active."
-        case Purchases.ProductID.lifetime: return "Lifetime. Premium is yours for good."
+        case Purchases.ProductID.yearly: return String(localized: "Your yearly plan is active.")
+        case Purchases.ProductID.monthly: return String(localized: "Your monthly plan is active.")
+        case Purchases.ProductID.lifetime: return String(localized: "Lifetime. Premium is yours for good.")
         default:
             return purchases.isPremium
-                ? "Premium is on."
-                : "Common mistakes, Preset 2 and 3, no ads."
+                ? String(localized: "Premium is on.")
+                : String(localized: "Common mistakes, Preset 2 and 3, no ads.")
         }
     }
 
@@ -593,7 +610,15 @@ struct ProfileView: View {
 
     private var cardPadding: CGFloat { layout.value(14, 18) }
 
-    /// A small capsule action; prominent (silver) when it's an offer.
+    /// A small capsule action; prominent (silver) when it's an offer. A
+    /// literal title is localized; a String (the language's own name) shows
+    /// as given.
+    private func pillButton(_ title: String.LocalizationValue, prominent: Bool = false,
+                            action: @escaping () -> Void) -> some View {
+        pillButton(String(localized: title), prominent: prominent, action: action)
+    }
+
+    @_disfavoredOverload
     private func pillButton(_ title: String, prominent: Bool = false,
                             action: @escaping () -> Void) -> some View {
         let size: CGFloat = layout.value(10, 11)
@@ -612,7 +637,15 @@ struct ProfileView: View {
 
     /// Title and what it does, then the control. On iPad the text stops at
     /// 380pt, so in a wide column the control stays near the words it sets
-    /// instead of drifting to the far edge.
+    /// instead of drifting to the far edge. Literal text is localized here;
+    /// Strings show as given, so a literal beside a String is wrapped in
+    /// String(localized:) at the call.
+    private func settingRow<Control: View>(_ title: String.LocalizationValue, detail: String.LocalizationValue,
+                                           @ViewBuilder control: () -> Control) -> some View {
+        settingRow(String(localized: title), detail: String(localized: detail), control: control)
+    }
+
+    @_disfavoredOverload
     private func settingRow<Control: View>(_ title: String, detail: String,
                                            @ViewBuilder control: () -> Control) -> some View {
         HStack(alignment: .center, spacing: 12) {
@@ -658,9 +691,9 @@ struct ProfileView: View {
         .dsHover()
     }
 
-    private func moreButton(_ title: String, action: @escaping () -> Void) -> some View {
+    private func moreButton(_ title: String.LocalizationValue, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Text(title)
+            Text(String(localized: title))
                 .font(.ui(layout.value(13, 14), .semibold))
                 .foregroundStyle(DS.silver.opacity(0.7))
                 .frame(maxWidth: .infinity)

@@ -96,13 +96,15 @@ final class Purchases {
     /// "7 days", read from the yearly plan's offer so the copy can't drift
     /// from App Store Connect.
     var trialLength: String {
-        guard let period = yearly?.subscription?.introductoryOffer?.period else { return "7 days" }
+        guard let period = yearly?.subscription?.introductoryOffer?.period else {
+            return String(localized: "7 days", comment: "Free trial length")
+        }
         switch period.unit {
-        case .day: return period.value == 1 ? "1 day" : "\(period.value) days"
-        case .week: return "\(period.value * 7) days"
-        case .month: return period.value == 1 ? "1 month" : "\(period.value) months"
-        case .year: return period.value == 1 ? "1 year" : "\(period.value) years"
-        @unknown default: return "7 days"
+        case .day: return period.value == 1 ? String(localized: "1 day") : String(localized: "\(period.value) days")
+        case .week: return String(localized: "\(period.value * 7) days")
+        case .month: return period.value == 1 ? String(localized: "1 month") : String(localized: "\(period.value) months")
+        case .year: return period.value == 1 ? String(localized: "1 year") : String(localized: "\(period.value) years")
+        @unknown default: return String(localized: "7 days", comment: "Free trial length")
         }
     }
 
@@ -170,7 +172,7 @@ final class Purchases {
         case unverified
 
         var errorDescription: String? {
-            "The App Store couldn't verify this purchase. Try again, or use Restore Purchases."
+            String(localized: "The App Store couldn't verify this purchase. Try again, or use Restore Purchases.")
         }
     }
 }

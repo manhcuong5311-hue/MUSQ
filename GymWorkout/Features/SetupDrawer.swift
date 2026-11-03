@@ -145,7 +145,9 @@ struct SetupStepList: View {
                     Text(String(format: "%02d", index + 1))
                         .font(.mono(10, .semibold))
                         .foregroundStyle(DS.silver.opacity(0.4))
-                    Text(step)
+                    // SampleData copy; a step passed in already localized
+                    // comes back unchanged.
+                    Text(step.localizedContent)
                         .font(.ui(size))
                         .cssLineHeight(size, 1.45)
                         .foregroundStyle(DS.silver.opacity(0.85))

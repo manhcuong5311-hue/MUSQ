@@ -382,7 +382,10 @@ struct PremiumHeroCard: View {
             .cssLineHeight(detailSize, 1.45)
             .foregroundStyle(DS.silver.opacity(0.6))
             .fixedSize(horizontal: false, vertical: true)
-        let cta = WideButton(title: trial ? "Try \(trialLength.capitalized) Free" : "Get Premium · \(price)/year",
+        // English title-cases the trial on the button ("Try 7 Days Free"); a
+        // translation keeps the length as it's written there.
+        let buttonTrial = Bundle.main.preferredLocalizations.first == "en" ? trialLength.capitalized : trialLength
+        let cta = WideButton(title: trial ? "Try \(buttonTrial) Free" : "Get Premium · \(price)/year",
                              prominent: true, fontSize: 16, verticalPadding: 16, cornerRadius: 14) {
             buy(yearly)
         }
@@ -447,7 +450,7 @@ struct PremiumHeroCard: View {
             defer { isWorking = false }
             do {
                 if try await purchases.purchase(product) == .pending {
-                    alert = "Your purchase is waiting for approval. Premium turns on as soon as it goes through."
+                    alert = String(localized: "Your purchase is waiting for approval. Premium turns on as soon as it goes through.")
                 }
             } catch {
                 alert = error.localizedDescription
@@ -462,7 +465,7 @@ struct PremiumHeroCard: View {
             do {
                 try await purchases.restore()
                 if !purchases.isPremium {
-                    alert = "No MUSQ Premium purchase was found for this Apple Account."
+                    alert = String(localized: "No MUSQ Premium purchase was found for this Apple Account.")
                 }
             } catch {
                 alert = error.localizedDescription

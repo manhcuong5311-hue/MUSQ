@@ -52,10 +52,13 @@ struct ExerciseLibraryView: View {
         level == nil || exercise.difficulty == level
     }
 
+    /// The meta line in English and as shown, so a muscle or equipment
+    /// typed in either language finds the exercise.
     private func matchesQuery(_ exercise: Exercise) -> Bool {
         query.isEmpty
             || exercise.name.localizedCaseInsensitiveContains(query)
             || exercise.meta.localizedCaseInsensitiveContains(query)
+            || exercise.localizedMeta.localizedCaseInsensitiveContains(query)
     }
 
     private func count(in group: MuscleGroupName) -> Int {
@@ -171,11 +174,13 @@ struct ExerciseLibraryView: View {
         }
         .menuOrder(.fixed)
         .dsHover(.highlight)
-        .accessibilityLabel(level.map { "Level filter, \($0.rawValue.capitalized)" } ?? "Level filter")
+        .accessibilityLabel(level.map { String(localized: "Level filter, \($0.title)",
+                                               comment: "VoiceOver: the level filter and the level it is set to") }
+                            ?? String(localized: "Level filter"))
     }
 
     private func levelOption(_ option: Difficulty?) -> some View {
-        let title = option?.rawValue.capitalized ?? "All levels"
+        let title = option?.title ?? String(localized: "All levels")
         let count = count(at: option)
         return Button {
             withAnimation(.easeOut(duration: 0.18)) { level = option }
@@ -185,7 +190,7 @@ struct ExerciseLibraryView: View {
             } else {
                 Text(title)
             }
-            Text("\(count) \(count == 1 ? "exercise" : "exercises")")
+            Text(count == 1 ? "1 exercise" : "\(count) exercises")
         }
     }
 
@@ -204,7 +209,7 @@ struct ExerciseLibraryView: View {
     }
 
     private var resultText: String {
-        "\(visible.count) \(visible.count == 1 ? "EXERCISE" : "EXERCISES")"
+        visible.count == 1 ? String(localized: "1 EXERCISE") : String(localized: "\(visible.count) EXERCISES")
     }
 
     /// `size` is the label's mono size: 9 beside the phone's result line,
@@ -217,7 +222,7 @@ struct ExerciseLibraryView: View {
                 Circle()
                     .fill(level.dotColor)
                     .frame(width: 5, height: 5)
-                Text(level.rawValue)
+                Text(level.title.uppercased())
                     .font(.mono(size, .semibold))
                     .trackingEm(0.09, size: size)
                 Image(systemName: "xmark")
@@ -231,7 +236,7 @@ struct ExerciseLibraryView: View {
         }
         .buttonStyle(.plain)
         .dsHover(.highlight)
-        .accessibilityLabel("Clear level filter, \(level.rawValue.capitalized)")
+        .accessibilityLabel("Clear level filter, \(level.title)")
     }
 
     private var filterChips: some View {
@@ -247,7 +252,7 @@ struct ExerciseLibraryView: View {
     @ViewBuilder
     private var chipButtons: some View {
         ForEach(MuscleGroupName.allCases) { group in
-            FilterChip(title: "\(group.rawValue) · \(count(in: group))", selected: !savedOnly && group == filter) {
+            FilterChip(title: "\(group.title) · \(count(in: group))", selected: !savedOnly && group == filter) {
                 withAnimation(.easeOut(duration: 0.18)) {
                     savedOnly = false
                     filter = group
@@ -450,14 +455,14 @@ struct ExerciseLibraryView: View {
         VStack(alignment: .leading, spacing: 2) {
             railEyebrow("BROWSE")
 
-            railRow("All", count: count(in: .all), isOn: !savedOnly && filter == .all) {
+            railRow(MuscleGroupName.all.title, count: count(in: .all), isOn: !savedOnly && filter == .all) {
                 GroupGlyph(group: .all, isOn: !savedOnly && filter == .all)
             } action: {
                 savedOnly = false
                 filter = .all
             }
 
-            railRow("Saved", count: savedCount, isOn: savedOnly) {
+            railRow(String(localized: "Saved"), count: savedCount, isOn: savedOnly) {
                 Image(systemName: savedOnly ? "heart.fill" : "heart")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(DS.silver.opacity(savedOnly ? 1 : 0.55))
@@ -467,7 +472,7 @@ struct ExerciseLibraryView: View {
 
             ForEach(MuscleGroupName.allCases.filter { $0 != .all }) { group in
                 let isOn = !savedOnly && filter == group
-                railRow(group.rawValue, count: count(in: group), isOn: isOn) {
+                railRow(group.title, count: count(in: group), isOn: isOn) {
                     GroupGlyph(group: group, isOn: isOn)
                 } action: {
                     savedOnly = false
@@ -478,7 +483,7 @@ struct ExerciseLibraryView: View {
             railEyebrow("LEVEL")
                 .padding(.top, 18)
 
-            railRow("All levels", count: count(at: nil), isOn: level == nil) {
+            railRow(String(localized: "All levels"), count: count(at: nil), isOn: level == nil) {
                 Circle()
                     .strokeBorder(DS.silver.opacity(level == nil ? 0.8 : 0.4), lineWidth: 1.2)
                     .frame(width: 9, height: 9)
@@ -487,7 +492,7 @@ struct ExerciseLibraryView: View {
             }
 
             ForEach(Difficulty.allCases, id: \.self) { option in
-                railRow(option.rawValue.capitalized, count: count(at: option), isOn: level == option) {
+                railRow(option.title, count: count(at: option), isOn: level == option) {
                     Circle()
                         .fill(option.dotColor)
                         .frame(width: 8, height: 8)
@@ -499,7 +504,7 @@ struct ExerciseLibraryView: View {
         .padding(10)
     }
 
-    private func railEyebrow(_ text: String) -> some View {
+    private func railEyebrow(_ text: String.LocalizationValue) -> some View {
         SectionEyebrow(text: text)
             .padding(.horizontal, 12)
             .padding(.top, 10)
@@ -542,7 +547,7 @@ struct ExerciseLibraryView: View {
         }
         .buttonStyle(.plain)
         .dsHover(.highlight, radius: 12)
-        .accessibilityLabel("\(title), \(count) \(count == 1 ? "exercise" : "exercises")")
+        .accessibilityLabel(count == 1 ? "\(title), 1 exercise" : "\(title), \(count) exercises")
         .accessibilityAddTraits(isOn ? .isSelected : [])
     }
 
@@ -675,7 +680,7 @@ struct ExerciseCard: View {
 
             // 10pt rather than the regular 10.5, so a muscle and its
             // equipment still fit across the narrowest card.
-            MetaLine(text: exercise.meta, size: 10, em: 0.06)
+            MetaLine(text: exercise.localizedMeta, size: 10, em: 0.06)
                 .lineLimit(1)
                 .padding(.top, 5)
         }
@@ -730,7 +735,7 @@ struct ExerciseCard: View {
             Circle()
                 .fill(exercise.difficulty.dotColor)
                 .frame(width: 5, height: 5)
-            Text(exercise.difficulty.rawValue)
+            Text(exercise.difficulty.title.uppercased())
                 .font(.mono(9, .semibold))
                 .trackingEm(0.09, size: 9)
                 .foregroundStyle(DS.silver.opacity(0.7))
@@ -814,14 +819,14 @@ struct ExerciseRow: View {
                     .tracking(-0.1)
                     .foregroundStyle(DS.silver)
 
-                MetaLine(text: exercise.meta, em: 0.06)
+                MetaLine(text: exercise.localizedMeta, em: 0.06)
                     .padding(.top, 5)
 
                 HStack(spacing: 6) {
                     Circle()
                         .fill(exercise.difficulty.dotColor)
                         .frame(width: 5, height: 5)
-                    Text(exercise.difficulty.rawValue)
+                    Text(exercise.difficulty.title.uppercased())
                         .font(.mono(9, .semibold))
                         .trackingEm(0.09, size: 9)
                         .foregroundStyle(DS.silver.opacity(0.5))

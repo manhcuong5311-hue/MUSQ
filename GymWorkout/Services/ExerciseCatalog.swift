@@ -111,14 +111,16 @@ enum ExerciseCatalog {
                 "PLYO BOX", "JUMP ROPE", "BATTLE ROPE", "ROWER"].contains(exercise.equipment)
     }
 
-    /// Step-by-step setup, from the exercise's trainer content.
+    /// Step-by-step setup, from the exercise's trainer content, in the
+    /// current language (for display only).
     static func setupSteps(for exercise: Exercise) -> [String] {
-        SampleData.content(for: exercise)?.setup ?? []
+        SampleData.content(for: exercise)?.setup.map { L10n.content($0) } ?? []
     }
 
-    /// The form cues from the trainer content, as (title, what to do).
+    /// The form cues from the trainer content, as (title, what to do), in the
+    /// current language (for display only).
     static func formCues(for exercise: Exercise) -> [(title: String, text: String)] {
-        SampleData.content(for: exercise)?.cues.map { ($0.title, $0.correct) } ?? []
+        SampleData.content(for: exercise)?.cues.map { (L10n.content($0.title), L10n.content($0.correct)) } ?? []
     }
 
     // MARK: - Storage

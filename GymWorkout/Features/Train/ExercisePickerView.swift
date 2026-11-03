@@ -50,6 +50,8 @@ private struct PickerContent: View {
         query.isEmpty
             || exercise.name.localizedCaseInsensitiveContains(query)
             || exercise.meta.localizedCaseInsensitiveContains(query)
+            // The meta line as shown, when that isn't English.
+            || exercise.localizedMeta.localizedCaseInsensitiveContains(query)
     }
 
     private var recommended: [Exercise] {
@@ -102,10 +104,11 @@ private struct PickerContent: View {
                 // its place in; the phone keeps them scrolling away.
                 LazyVStack(alignment: .leading, spacing: 0, pinnedViews: regular ? [.sectionHeaders] : []) {
                     if !recommended.isEmpty {
-                        section("RECOMMENDED FOR \(group.title.uppercased())", recommended)
+                        section(String(localized: "RECOMMENDED FOR \(group.title.uppercased())",
+                                       comment: "Exercise picker section; the muscle group's name"), recommended)
                     }
                     if !others.isEmpty {
-                        section("ALL EXERCISES", others)
+                        section(String(localized: "ALL EXERCISES"), others)
                     }
                     if recommended.isEmpty && others.isEmpty {
                         Text("No exercises match “\(query)”.")
@@ -180,15 +183,16 @@ private struct PickerContent: View {
                 Text(exercise.name)
                     .font(.ui(regular ? 15.5 : 14.5, .semibold))
                     .foregroundStyle(DS.silver)
-                MetaLine(text: exercise.meta, size: regular ? 10 : 9, em: 0.05)
+                MetaLine(text: exercise.localizedMeta, size: regular ? 10 : 9, em: 0.05)
             }
 
             Spacer(minLength: 6)
 
             if alreadyAdded.contains(exercise.name) {
-                tag("ADDED")
+                tag(String(localized: "ADDED", comment: "Exercise picker tag: already in the list"))
             } else if let role {
-                tag(role == .primary ? "PRIMARY" : "SECONDARY")
+                tag(role == .primary ? String(localized: "PRIMARY", comment: "Muscle role: a main mover")
+                                     : String(localized: "SECONDARY", comment: "Muscle role: a helper"))
             }
         }
         .padding(.vertical, regular ? 11 : 9)

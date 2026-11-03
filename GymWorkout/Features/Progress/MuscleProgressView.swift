@@ -126,9 +126,10 @@ struct MuscleProgressView: View {
     private var stats: some View {
         let week = weekTotals
         return HStack(spacing: 8) {
-            StatTile(label: "Workouts", value: loggedSessions.count.formatted())
-            StatTile(label: "This week", value: week.count.formatted())
-            StatTile(label: "Volume this week",
+            StatTile(label: String(localized: "Workouts"), value: loggedSessions.count.formatted())
+            StatTile(label: String(localized: "This week", comment: "Stat tile: workouts logged this week"),
+                     value: week.count.formatted())
+            StatTile(label: String(localized: "Volume this week"),
                      value: StatTile.compact(store.unit.fromKilograms(week.volume)),
                      unit: store.unit.symbol)
         }
@@ -193,15 +194,31 @@ struct MuscleProgressView: View {
         .animation(.easeOut(duration: 0.2), value: side)
     }
 
+    // A whole sentence per period, so a translation can put "this week"
+    // where its language does.
     private func accessibilityText(_ activity: [MuscleActivity]) -> String {
         let trained = activity.filter { $0.level != .notTrained }
-            .map { "\($0.muscle.title) \($0.setsLabel)" }
-        return trained.isEmpty ? "No muscles trained \(period.phrase)"
-            : "Trained \(period.phrase): " + trained.joined(separator: ", ")
+            .map { String(localized: "progress.groupSets", defaultValue: "\($0.muscle.title) \($0.setsLabel)",
+                          comment: "VoiceOver: a muscle group and its sets, e.g. Chest 14 sets") }
+        if trained.isEmpty {
+            return period == .week
+                ? String(localized: "No muscles trained this week", comment: "VoiceOver")
+                : String(localized: "No muscles trained this month", comment: "VoiceOver")
+        }
+        let list = trained.joined(separator: ", ")
+        return period == .week
+            ? String(localized: "Trained this week: \(list)",
+                     comment: "VoiceOver: each group trained and its sets, e.g. Chest 14 sets, Back 3 sets")
+            : String(localized: "Trained this month: \(list)",
+                     comment: "VoiceOver: each group trained and its sets, e.g. Chest 14 sets, Back 3 sets")
     }
 
     private var emptyNote: some View {
-        Text("No completed sets \(period.phrase) yet. Sets you mark Done in Train show up here.")
+        Text(period == .week
+             ? String(localized: "No completed sets this week yet. Sets you mark Done in Train show up here.",
+                      comment: "Done is the set's button, Train the tab")
+             : String(localized: "No completed sets this month yet. Sets you mark Done in Train show up here.",
+                      comment: "Done is the set's button, Train the tab"))
             .font(.ui(13))
             .cssLineHeight(13, 1.5)
             .foregroundStyle(DS.silver.opacity(0.5))
@@ -283,7 +300,7 @@ struct MuscleProgressView: View {
                         // No preset reaches these groups, so say where their
                         // exercises are.
                         Text(!trainable.contains(entry.muscle) && entry.level == .notTrained
-                             ? "Not trained · add exercises from the Exercises tab"
+                             ? String(localized: "Not trained · add exercises from the Exercises tab", comment: "Exercises is the tab")
                              : entry.level.title)
                             .font(.ui(12))
                             .foregroundStyle(DS.silver.opacity(0.5))
@@ -309,7 +326,8 @@ struct MuscleProgressView: View {
                 .accessibilityElement(children: .combine)
             }
 
-            Text("Effective sets: each completed set counts \(Self.weight(.primary)) for its primary muscles and \(Self.weight(.secondary)) for secondary ones.")
+            Text("Effective sets: each completed set counts \(Self.weight(.primary)) for its primary muscles and \(Self.weight(.secondary)) for secondary ones.",
+                 comment: "The two weights: 1 and 0.5")
                 .font(.ui(11.5))
                 .cssLineHeight(11.5, 1.5)
                 .foregroundStyle(DS.silver.opacity(0.4))
@@ -331,7 +349,7 @@ extension MuscleProgressView {
                 SectionEyebrow(text: "PERSONAL RECORDS")
                 Spacer()
                 if !all.isEmpty {
-                    MetaLine(text: "\(all.count) \(all.count == 1 ? "EXERCISE" : "EXERCISES")", em: 0.08)
+                    MetaLine(text: all.count == 1 ? "1 EXERCISE" : "\(all.count) EXERCISES", em: 0.08)
                 }
             }
             if all.isEmpty {
@@ -402,8 +420,8 @@ extension MuscleProgressView {
         }
     }
 
-    private func logNote(_ text: String) -> some View {
-        Text(text)
+    private func logNote(_ text: String.LocalizationValue) -> some View {
+        Text(String(localized: text))
             .font(.ui(13))
             .cssLineHeight(13, 1.5)
             .foregroundStyle(DS.silver.opacity(0.5))
@@ -411,9 +429,9 @@ extension MuscleProgressView {
             .dsReadable(560, alignment: .leading)
     }
 
-    private func moreButton(_ title: String, action: @escaping () -> Void) -> some View {
+    private func moreButton(_ title: String.LocalizationValue, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Text(title)
+            Text(String(localized: title))
                 .font(.ui(13, .semibold))
                 .foregroundStyle(DS.silver.opacity(0.7))
                 .frame(maxWidth: .infinity)
@@ -424,9 +442,10 @@ extension MuscleProgressView {
         .dsHover(.highlight, radius: 12)
     }
 
+    /// "1", "0.5"; in the locale's format ("0,5" in Vietnamese).
     fileprivate static func weight(_ role: ContributionRole) -> String {
         let w = role.defaultWeight
-        return w.rounded() == w ? String(Int(w)) : String(w)
+        return w.rounded() == w ? String(Int(w)) : w.formatted()
     }
 }
 
@@ -621,12 +640,14 @@ extension MuscleProgressView {
         let trained = activity.filter { $0.level != .notTrained }.count
         let columns = width >= 560 ? 4 : 2
         return LazyVGrid(columns: DS.flexibleColumns(columns, spacing: 12), spacing: 12) {
-            StatTile(label: "Workouts", value: loggedSessions.count.formatted())
-            StatTile(label: "This week", value: week.count.formatted())
-            StatTile(label: "Volume this week",
+            StatTile(label: String(localized: "Workouts"), value: loggedSessions.count.formatted())
+            StatTile(label: String(localized: "This week", comment: "Stat tile: workouts logged this week"),
+                     value: week.count.formatted())
+            StatTile(label: String(localized: "Volume this week"),
                      value: StatTile.compact(store.unit.fromKilograms(week.volume)),
                      unit: store.unit.symbol)
-            StatTile(label: "Groups trained", value: trained.formatted(), unit: "/\(activity.count)")
+            StatTile(label: String(localized: "Groups trained", comment: "Stat tile: muscle groups trained in the period, shown as 5/12"),
+                     value: trained.formatted(), unit: "/\(activity.count)")
         }
     }
 
@@ -898,7 +919,8 @@ extension MuscleProgressView {
                 activityCard(activity.sorted(by: bySets), maxSets: maxSets, barWidth: barWidth)
             }
 
-            Text("Effective sets: each completed set counts \(Self.weight(.primary)) for its primary muscles and \(Self.weight(.secondary)) for secondary ones.")
+            Text("Effective sets: each completed set counts \(Self.weight(.primary)) for its primary muscles and \(Self.weight(.secondary)) for secondary ones.",
+                 comment: "The two weights: 1 and 0.5")
                 .font(.ui(12))
                 .cssLineHeight(12, 1.5)
                 .foregroundStyle(DS.silver.opacity(0.4))
@@ -908,7 +930,7 @@ extension MuscleProgressView {
         }
     }
 
-    private func activityGroup(_ title: String, _ entries: [MuscleActivity],
+    private func activityGroup(_ title: String.LocalizationValue, _ entries: [MuscleActivity],
                                maxSets: Double, barWidth: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             MetaLine(text: title, em: 0.1)
@@ -944,7 +966,7 @@ extension MuscleProgressView {
                         .font(.ui(15, .semibold))
                         .foregroundStyle(DS.silver)
                     Text(untrainable && entry.level == .notTrained
-                         ? "Not trained · add exercises from the Exercises tab"
+                         ? String(localized: "Not trained · add exercises from the Exercises tab", comment: "Exercises is the tab")
                          : entry.level.title)
                         .font(.ui(12.5))
                         .foregroundStyle(DS.silver.opacity(0.5))

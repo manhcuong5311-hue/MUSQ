@@ -16,7 +16,10 @@ import SwiftUI
 enum BodySide: CaseIterable {
     case front, back
 
-    var title: String { self == .front ? "FRONT" : "BACK" }
+    var title: String {
+        self == .front ? String(localized: "FRONT", comment: "Body map: the front view")
+                       : String(localized: "BACK", comment: "Body map: the back view (not the muscle group)")
+    }
 }
 
 /// One drawable region of the map. Cases match the source data's slugs,
@@ -178,8 +181,8 @@ struct BodyMapFigure: View {
 
     private func accessibilityText(_ lit: [BodyRegion: MuscleActivation]) -> String {
         let names = muscles.filter { m in lit.values.contains { $0.id == m.id } }
-            .map { "\($0.name), \($0.rank.rawValue.lowercased())" }
-        let view = side == .front ? "Front of body" : "Back of body"
+            .map { "\($0.name.localizedContent), \($0.rank.title.lowercased())" }
+        let view = side == .front ? String(localized: "Front of body") : String(localized: "Back of body")
         return names.isEmpty ? view : "\(view): " + names.joined(separator: "; ")
     }
 }

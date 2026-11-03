@@ -19,6 +19,17 @@ enum AppTab: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    /// The tab's name on screen. Keyed apart from the same words elsewhere
+    /// ("Train" the button), since the bar has room for less.
+    var title: String {
+        switch self {
+        case .train: return String(localized: "tab.train", defaultValue: "Train", comment: "Tab name")
+        case .exercises: return String(localized: "tab.exercises", defaultValue: "Exercises", comment: "Tab name")
+        case .muscles: return String(localized: "tab.muscles", defaultValue: "Muscles", comment: "Tab name")
+        case .profile: return String(localized: "tab.profile", defaultValue: "Profile", comment: "Tab name")
+        }
+    }
+
     /// Outline when idle, filled when selected — the same silhouette, so the
     /// bar reads by shape and the selection by weight.
     func symbol(selected: Bool) -> String {
@@ -82,7 +93,7 @@ struct TabBarView: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(tab.rawValue)
+                .accessibilityLabel(tab.title)
                 .accessibilityAddTraits(isOn ? .isSelected : [])
             }
         }
@@ -137,7 +148,7 @@ struct TabItemLabel: View {
                             Capsule().fill(DS.silver.opacity(0.09))
                         }
                     }
-                Text(tab.rawValue)
+                Text(tab.title)
                     .font(.ui(10, isOn ? .semibold : .medium))
                     .foregroundStyle(isOn ? DS.silver : DS.silver.opacity(0.45))
             }
@@ -152,7 +163,7 @@ struct TabItemLabel: View {
                             Capsule().fill(DS.silver.opacity(0.09))
                         }
                     }
-                Text(tab.rawValue)
+                Text(tab.title)
                     .font(.ui(10, isOn ? .semibold : .medium))
                     .foregroundStyle(isOn ? DS.silver : DS.silver.opacity(0.45))
                     .lineLimit(1)
@@ -163,7 +174,7 @@ struct TabItemLabel: View {
                 TabGlyph(color: isOn ? DS.silver : DS.silver.opacity(0.55),
                          symbol: tab.symbol(selected: isOn), size: 20)
                     .symbolEffect(.bounce, value: bounce)
-                Text(tab.rawValue)
+                Text(tab.title)
                     .font(.ui(15, isOn ? .semibold : .medium))
                     .foregroundStyle(isOn ? DS.silver : DS.silver.opacity(0.55))
                 Spacer(minLength: 0)

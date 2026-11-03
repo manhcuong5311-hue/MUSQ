@@ -23,14 +23,14 @@ enum MuscleCardState: Hashable {
 
     var label: String {
         switch self {
-        case .ready: return "READY"
-        case .partlyReady: return "PARTLY READY"
-        case .almostReady: return "ALMOST READY"
-        case .recovering: return "RECOVERING"
-        case .completedToday: return "COMPLETED TODAY"
-        case .completed: return "COMPLETED"
-        case .inProgress: return "IN PROGRESS"
-        case .planned: return "PLANNED"
+        case .ready: return String(localized: "READY", comment: "Muscle group state")
+        case .partlyReady: return String(localized: "PARTLY READY", comment: "Muscle group state")
+        case .almostReady: return String(localized: "ALMOST READY", comment: "Muscle group state")
+        case .recovering: return String(localized: "RECOVERING", comment: "Muscle group state")
+        case .completedToday: return String(localized: "COMPLETED TODAY", comment: "Muscle group state")
+        case .completed: return String(localized: "COMPLETED", comment: "Muscle group state")
+        case .inProgress: return String(localized: "IN PROGRESS", comment: "Muscle group state")
+        case .planned: return String(localized: "PLANNED", comment: "Muscle group state")
         }
     }
 
@@ -135,7 +135,9 @@ struct MuscleGroupCard<Accessory: View>: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(group.title), \(state.label.lowercased()), \(detail)"
                             + (secondaryDetail.map { ", \($0)" } ?? "")
-                            + (tone == .due ? ", due" : ""))
+                            + (tone == .due
+                               ? ", " + String(localized: "due", comment: "VoiceOver, last on a muscle card: not trained yet this round")
+                               : ""))
         .overlay(alignment: .bottomTrailing) {
             // Centred under the figure: the 44pt control's middle on the
             // figure's, whatever the figure's width.

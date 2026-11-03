@@ -14,6 +14,19 @@ enum Difficulty: String, CaseIterable {
     case intermediate = "INTERMEDIATE"
     case advanced = "ADVANCED"
 
+    /// The level on screen, "Beginner"; upper-case it for the mono tags.
+    /// Keyed apart from `TrainingExperience`, which may read differently.
+    var title: String {
+        switch self {
+        case .beginner: return String(localized: "difficulty.beginner", defaultValue: "Beginner",
+                                      comment: "Exercise difficulty level")
+        case .intermediate: return String(localized: "difficulty.intermediate", defaultValue: "Intermediate",
+                                          comment: "Exercise difficulty level")
+        case .advanced: return String(localized: "difficulty.advanced", defaultValue: "Advanced",
+                                      comment: "Exercise difficulty level")
+        }
+    }
+
     /// Difficulty is a *metric*, not an interactive element, so it is allowed
     /// to borrow the warm ramp. Beginner stays neutral.
     var dotColor: Color {
@@ -35,6 +48,20 @@ enum MuscleGroupName: String, CaseIterable, Identifiable {
     case core = "Core"
 
     var id: String { rawValue }
+
+    /// The name on screen; `rawValue` stays English.
+    var title: String {
+        switch self {
+        case .all: return String(localized: "All", comment: "Library filter: every muscle group")
+        case .chest: return String(localized: "Chest", comment: "Muscle group")
+        case .back: return String(localized: "muscleGroup.back", defaultValue: "Back",
+                                  comment: "Muscle group (not the back button)")
+        case .shoulders: return String(localized: "Shoulders", comment: "Muscle group")
+        case .arms: return String(localized: "Arms", comment: "Muscle group")
+        case .legs: return String(localized: "Legs", comment: "Muscle group")
+        case .core: return String(localized: "Core", comment: "Muscle group")
+        }
+    }
 }
 
 struct Exercise: Identifiable, Hashable {
@@ -48,11 +75,15 @@ struct Exercise: Identifiable, Hashable {
     let difficulty: Difficulty
 
     /// Monospaced meta line under a library row: `PECTORALIS MAJOR · BARBELL`.
+    /// English, for the library search; show `localizedMeta`.
     var meta: String { "\(primaryMuscle) · \(equipment)" }
 
-    /// Monospaced meta line under the trainer's title.
+    /// `meta` in the current language, for display.
+    var localizedMeta: String { "\(L10n.content(primaryMuscle)) · \(L10n.content(equipment))" }
+
+    /// Monospaced meta line under the trainer's title, localized.
     var trainerMeta: String {
-        "\(category.rawValue.uppercased()) · \(equipment) · \(difficulty.rawValue)"
+        "\(category.title.uppercased()) · \(L10n.content(equipment)) · \(difficulty.title.uppercased())"
     }
 
     /// Stable key for the replaceable render slot backing this row.
@@ -78,6 +109,15 @@ struct TechniqueCue: Identifiable, Hashable {
 enum ActivationRank: String, Codable {
     case primary = "PRIMARY"
     case secondary = "SECONDARY"
+
+    /// The rank on screen, "Primary"; `rawValue` is what history stores.
+    /// Upper-case it for the tags.
+    var title: String {
+        switch self {
+        case .primary: return String(localized: "Primary", comment: "Muscle activation rank")
+        case .secondary: return String(localized: "Secondary", comment: "Muscle activation rank")
+        }
+    }
 
     var tagBackground: Color {
         switch self {
@@ -112,13 +152,14 @@ struct MuscleActivation: Identifiable, Hashable {
     /// gets the same word, whichever exercise it appears in.
     var activation: String {
         switch fraction {
-        case 0.70...: return "HIGH ACTIVATION"
-        case 0.40..<0.70: return "MODERATE ACTIVATION"
-        default: return "LOW ACTIVATION"
+        case 0.70...: return String(localized: "HIGH ACTIVATION")
+        case 0.40..<0.70: return String(localized: "MODERATE ACTIVATION")
+        default: return String(localized: "LOW ACTIVATION")
         }
     }
 
-    var percentLabel: String { "\(Int((fraction * 100).rounded()))%" }
+    /// "62%", in the current locale's percent format.
+    var percentLabel: String { Int((fraction * 100).rounded()).formatted(.percent) }
 }
 
 // MARK: - Trainer content

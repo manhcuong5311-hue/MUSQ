@@ -159,7 +159,7 @@ struct AppSidebar: View {
         }
         .buttonStyle(.plain)
         .keyboardShortcut(KeyEquivalent(Character(String(index + 1))), modifiers: .command)
-        .accessibilityLabel(tab.rawValue)
+        .accessibilityLabel(tab.title)
         .accessibilityAddTraits(isOn ? .isSelected : [])
     }
 

@@ -113,10 +113,10 @@ struct MuscleActivationContent: View {
 
     /// Names this lift's own stabilisers — the muscles under the 20% cut.
     private var stabiliserNote: String {
-        let names = stabilisers.joined(separator: ", ")
+        let names = stabilisers.map { L10n.content($0) }.joined(separator: ", ")
         return stabilisers.count == 1
-            ? "Stabiliser — \(names) — contributes below 20% and is hidden."
-            : "Stabilisers — \(names) — contribute below 20% and are hidden."
+            ? String(localized: "Stabiliser — \(names) — contributes below 20% and is hidden.")
+            : String(localized: "Stabilisers — \(names) — contribute below 20% and are hidden.")
     }
 
     /// Front and back side by side on the studio ground, both always shown so
@@ -153,8 +153,8 @@ struct MuscleActivationContent: View {
 
     private func legend(size: CGFloat) -> some View {
         HStack(spacing: 16) {
-            legendItem(DS.activation, ActivationRank.primary.rawValue, size: size)
-            legendItem(ActivationRank.secondary.barColor, ActivationRank.secondary.rawValue, size: size)
+            legendItem(DS.activation, ActivationRank.primary.title.uppercased(), size: size)
+            legendItem(ActivationRank.secondary.barColor, ActivationRank.secondary.title.uppercased(), size: size)
         }
         .frame(maxWidth: .infinity)
     }
@@ -286,8 +286,8 @@ struct CueDetailContent: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline) {
                 VStack(alignment: .leading, spacing: 0) {
-                    MetaLine(text: String(format: "TECHNIQUE CUE %02d", number), em: 0.10)
-                    Text(cue.title)
+                    MetaLine(text: "TECHNIQUE CUE \(String(format: "%02d", number))", em: 0.10)
+                    Text(cue.title.localizedContent)
                         .font(.ui(22, .semibold))
                         .tracking(-0.45)
                         .foregroundStyle(DS.silver)
@@ -303,7 +303,7 @@ struct CueDetailContent: View {
                 }
             }
 
-            Text(cue.intro)
+            Text(cue.intro.localizedContent)
                 .font(.ui(14))
                 .cssLineHeight(14, 1.55)
                 .foregroundStyle(DS.silver.opacity(0.68))
@@ -311,12 +311,12 @@ struct CueDetailContent: View {
                 .padding(.top, 12)
 
             VStack(alignment: .leading, spacing: 15) {
-                CueSection(label: "WHY IT MATTERS", text: cue.why)
+                CueSection(label: "WHY IT MATTERS", text: cue.why.localizedContent)
                 Hairline()
-                CueSection(label: "COMMON MISTAKE", text: cue.mistake,
+                CueSection(label: "COMMON MISTAKE", text: cue.mistake.localizedContent,
                            labelColor: DS.activationText)
                 Hairline()
-                CueSection(label: "CORRECT FORM", text: cue.correct)
+                CueSection(label: "CORRECT FORM", text: cue.correct.localizedContent)
             }
             .padding(.top, 20)
 
@@ -370,8 +370,8 @@ struct CueDetailContent: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 0) {
-                    MetaLine(text: String(format: "TECHNIQUE CUE %02d", number), em: 0.10)
-                    Text(cue.title)
+                    MetaLine(text: "TECHNIQUE CUE \(String(format: "%02d", number))", em: 0.10)
+                    Text(cue.title.localizedContent)
                         .font(.ui(20, .semibold))
                         .tracking(-0.4)
                         .foregroundStyle(DS.silver)
@@ -399,18 +399,19 @@ struct CueDetailContent: View {
                     .transition(.opacity)
             } else {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(cue.intro)
+                    Text(cue.intro.localizedContent)
                         .font(.ui(14.5))
                         .cssLineHeight(14.5, 1.55)
                         .foregroundStyle(DS.silver.opacity(0.68))
                         .fixedSize(horizontal: false, vertical: true)
 
                     VStack(alignment: .leading, spacing: 16) {
-                        regularSection("WHY IT MATTERS", cue.why)
+                        regularSection(String(localized: "WHY IT MATTERS"), cue.why.localizedContent)
                         Hairline()
-                        regularSection("COMMON MISTAKE", cue.mistake, labelColor: DS.activationText)
+                        regularSection(String(localized: "COMMON MISTAKE"), cue.mistake.localizedContent,
+                                       labelColor: DS.activationText)
                         Hairline()
-                        regularSection("CORRECT FORM", cue.correct)
+                        regularSection(String(localized: "CORRECT FORM"), cue.correct.localizedContent)
                     }
                     .padding(.top, 18)
                 }
@@ -492,8 +493,8 @@ private struct FormModeToggle: View {
 
     var body: some View {
         HStack(spacing: 4) {
-            segment(.correct, title: "CORRECT FORM", locked: false)
-            segment(.mistake, title: "COMMON MISTAKE", locked: mistakeLocked)
+            segment(.correct, title: String(localized: "CORRECT FORM"), locked: false)
+            segment(.mistake, title: String(localized: "COMMON MISTAKE"), locked: mistakeLocked)
         }
         .padding(3)
         .frame(height: 44)
@@ -594,7 +595,7 @@ struct MistakeContent: View {
                 }
             }
 
-            Text(cue.mistake)
+            Text(cue.mistake.localizedContent)
                 .font(.ui(14))
                 .cssLineHeight(14, 1.5)
                 .foregroundStyle(DS.silver.opacity(0.8))
@@ -627,7 +628,7 @@ struct MistakeContent: View {
                 .trackingEm(0.11, size: 10)
                 .foregroundStyle(DS.activationText)
 
-            Text(cue.mistake)
+            Text(cue.mistake.localizedContent)
                 .font(.ui(14.5))
                 .cssLineHeight(14.5, 1.5)
                 .foregroundStyle(DS.silver.opacity(0.8))

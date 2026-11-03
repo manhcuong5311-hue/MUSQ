@@ -227,7 +227,8 @@ private struct DayChip: View {
         .buttonStyle(.plain)
         .dsHover(.highlight, radius: 13)
         .accessibilityLabel(day.formatted(date: .complete, time: .omitted))
-        .accessibilityValue([isToday ? "Today" : nil, isMarked ? "Workout logged" : nil]
+        .accessibilityValue([isToday ? String(localized: "Today") : nil,
+                             isMarked ? String(localized: "Workout logged") : nil]
             .compactMap { $0 }.joined(separator: ", "))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }

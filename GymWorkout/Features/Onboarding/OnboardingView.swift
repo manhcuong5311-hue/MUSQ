@@ -296,7 +296,7 @@ struct OnboardingView: View {
         }
     }
 
-    private static let welcomeCaption = "Tell us about your experience, goal, week and body, and we'll shape your split, presets and recovery estimates around you."
+    private static let welcomeCaption = String(localized: "Tell us about your experience, goal, week and body, and we'll shape your split, presets and recovery estimates around you.")
 
     /// 330 on iPhone; up to 440 on iPad, less in a short window, where the
     /// welcome page doesn't scroll.
@@ -318,9 +318,9 @@ struct OnboardingView: View {
 
     private var experiencePage: some View {
         QuestionPage(
-            eyebrow: "EXPERIENCE",
-            title: "How long have you been training?",
-            caption: "Sets how long recovery estimates run and which presets you start on."
+            eyebrow: String(localized: "EXPERIENCE", comment: "Training experience"),
+            title: String(localized: "How long have you been training?"),
+            caption: String(localized: "Sets how long recovery estimates run and which presets you start on.")
         ) {
             option(.beginner, in: $experience, symbol: "leaf",
                    title: "Just starting", detail: "New to the gym, or back after a long break.")
@@ -333,9 +333,9 @@ struct OnboardingView: View {
 
     private var sexPage: some View {
         QuestionPage(
-            eyebrow: "ABOUT YOU",
-            title: "What's your sex?",
-            caption: "Female plans bring more lower-body work — glutes, hamstrings and quads — into your split. Any muscle can still be trained any day."
+            eyebrow: String(localized: "ABOUT YOU"),
+            title: String(localized: "What's your sex?"),
+            caption: String(localized: "Female plans bring more lower-body work — glutes, hamstrings and quads — into your split. Any muscle can still be trained any day.")
         ) {
             option(.female, in: $sex, symbol: "figure.stand.dress", title: "Female",
                    detail: "Lower-body focus: legs and glutes twice in each rotation.")
@@ -348,9 +348,9 @@ struct OnboardingView: View {
 
     private var goalPage: some View {
         QuestionPage(
-            eyebrow: "GOAL",
-            title: "What's your main goal?",
-            caption: "Shapes which preset each muscle group opens on. You can switch at any time."
+            eyebrow: String(localized: "GOAL", comment: "The fitness goal"),
+            title: String(localized: "What's your main goal?"),
+            caption: String(localized: "Shapes which preset each muscle group opens on. You can switch at any time.")
         ) {
             option(.loseWeight, in: $goal, symbol: "figure.walk.motion", title: "Lose weight",
                    detail: "Easier presets, plus a walking target after each workout.")
@@ -363,14 +363,16 @@ struct OnboardingView: View {
 
     private var daysPage: some View {
         QuestionPage(
-            eyebrow: "SCHEDULE",
-            title: "How many days a week can you train?",
-            caption: "Sets how your week is split. Train suggests the most recovered day each time, so a missed day never breaks the plan."
+            eyebrow: String(localized: "SCHEDULE", comment: "Training days a week"),
+            title: String(localized: "How many days a week can you train?"),
+            caption: String(localized: "Sets how your week is split. Train suggests the most recovered day each time, so a missed day never breaks the plan.",
+                            comment: "Train is the tab")
         ) {
             ForEach(ProgramAdvisor.daysPerWeekOptions, id: \.self) { days in
                 let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
-                OptionCard(symbol: "calendar", title: "\(days) days a week",
-                           detail: "\(suggested.title) · every muscle \(frequency(suggested, days)).",
+                OptionCard(symbol: "calendar", title: String(localized: "\(days) days a week", comment: "Training days a week, 2 to 6"),
+                           detail: String(localized: "\(suggested.title) · every muscle \(frequency(suggested, days)).",
+                                          comment: "The split that suits the days (Front / Back), then how often each muscle comes round: about 2× a week"),
                            isSelected: daysPerWeek == days) {
                     withAnimation(.easeOut(duration: 0.15)) {
                         // A new schedule brings its own split; the next
@@ -387,14 +389,16 @@ struct OnboardingView: View {
         let days = daysPerWeek ?? 3
         let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
         return QuestionPage(
-            eyebrow: "SPLIT",
-            title: "How do you want to split your week?",
-            caption: "\(suggested.title) suits \(days) days a week best: \(ProgramAdvisor.recommendationReason(daysPerWeek: days))"
+            eyebrow: String(localized: "SPLIT", comment: "The training split: how the week's sessions divide the body"),
+            title: String(localized: "How do you want to split your week?"),
+            caption: String(localized: "\(suggested.title) suits \(days) days a week best: \(ProgramAdvisor.recommendationReason(daysPerWeek: days))",
+                            comment: "The split (Front / Back), the days a week, then why it fits")
         ) {
             ForEach(TrainingSplit.allCases) { option in
                 OptionCard(symbol: Self.symbol(option), title: option.title,
-                           detail: "\(Self.summary(option)) Every muscle \(frequency(option, days)).",
-                           badge: option == suggested ? "BEST FIT" : nil,
+                           detail: String(localized: "\(Self.summary(option)) Every muscle \(frequency(option, days)).",
+                                          comment: "The split's days in a sentence, then how often each muscle comes round: about 2× a week"),
+                           badge: option == suggested ? String(localized: "BEST FIT", comment: "Tag on the split that suits the days a week best") : nil,
                            isSelected: split == option) {
                     withAnimation(.easeOut(duration: 0.15)) { split = option }
                 }
@@ -412,9 +416,9 @@ struct OnboardingView: View {
 
     private static func summary(_ split: TrainingSplit) -> String {
         switch split {
-        case .upperLower: return "Upper body one day, lower body the next."
-        case .frontBack: return "Chest, shoulders, quads and biceps one day; back, hamstrings, glutes and triceps the next."
-        case .pushPullLegs: return "Chest, shoulders and triceps; then back and biceps; then legs."
+        case .upperLower: return String(localized: "Upper body one day, lower body the next.")
+        case .frontBack: return String(localized: "Chest, shoulders, quads and biceps one day; back, hamstrings, glutes and triceps the next.")
+        case .pushPullLegs: return String(localized: "Chest, shoulders and triceps; then back and biceps; then legs.")
         }
     }
 
@@ -424,10 +428,11 @@ struct OnboardingView: View {
 
     private var bodyPage: some View {
         QuestionPage(
-            eyebrow: "BODY",
-            title: "Your height and weight",
-            caption: "Used for estimates such as the distance and calories of a walk. "
-                + (DS.isPad ? "Kept only on this iPad." : "Kept only on this phone.")
+            eyebrow: String(localized: "BODY", comment: "Height and weight"),
+            title: String(localized: "Your height and weight"),
+            caption: DS.isPad
+                ? String(localized: "Used for estimates such as the distance and calories of a walk. Kept only on this iPad.")
+                : String(localized: "Used for estimates such as the distance and calories of a walk. Kept only on this phone.")
         ) {
             MonoSegmentedControl(
                 options: [(WeightUnit.kg, "KG · CM"), (.lb, "LB · FT")],
@@ -477,9 +482,14 @@ struct OnboardingView: View {
         let pairs = layout.tier == .regular
         let dayLabelSize: CGFloat = layout.value(9, 10)
 
-        let rotationCard = PlanCard(symbol: Self.symbol(chosen), title: "\(chosen.title), \(days) days a week",
-                                    detail: (ProgramAdvisor.isLowerFocused(profile) ? "Lower-body focus. " : "")
-                                        + "Every muscle \(frequency(chosen, days)). Train suggests the most recovered day.") {
+        let rotationCard = PlanCard(symbol: Self.symbol(chosen),
+                                    title: String(localized: "\(chosen.title), \(days) days a week",
+                                                  comment: "Plan summary: the split, e.g. Front / Back, 3 days a week"),
+                                    detail: ProgramAdvisor.isLowerFocused(profile)
+                                        ? String(localized: "Lower-body focus. Every muscle \(frequency(chosen, days)). Train suggests the most recovered day.",
+                                                 comment: "How often each muscle comes round: about 2× a week. Train is the tab")
+                                        : String(localized: "Every muscle \(frequency(chosen, days)). Train suggests the most recovered day.",
+                                                 comment: "How often each muscle comes round: about 2× a week. Train is the tab")) {
             VStack(alignment: .leading, spacing: layout.value(7, 9)) {
                 ForEach(Array(rotation.enumerated()), id: \.offset) { index, day in
                     HStack(alignment: .firstTextBaseline, spacing: 10) {
@@ -496,20 +506,28 @@ struct OnboardingView: View {
             }
             .padding(.top, 4)
         }
-        let presetsCard = PlanCard(symbol: "slider.horizontal.3", title: "\(level.title.capitalized) presets",
+        let presetsCard = PlanCard(symbol: "slider.horizontal.3",
+                                   title: String(localized: "\(level.name) presets", comment: "Plan summary, e.g. Basic presets"),
                                    detail: level == .basic
-                                    ? "Machines and supported positions to start. Switch to Advanced on any muscle group."
-                                    : "Free-weight compounds to start. Switch to Basic on any muscle group.",
+                                    ? String(localized: "Machines and supported positions to start. Switch to Advanced on any muscle group.",
+                                             comment: "Advanced is the preset level")
+                                    : String(localized: "Free-weight compounds to start. Switch to Basic on any muscle group.",
+                                             comment: "Basic is the preset level"),
                                    fillsHeight: pairs)
         let walkCard = profile.flatMap { profile -> PlanCard<EmptyView>? in
             guard profile.goal == .loseWeight else { return nil }
             let walk = ProgramAdvisor.walk(for: profile, experience: experience ?? .beginner)
-            return PlanCard(symbol: "figure.walk", title: "Walk \(walk.steps.formatted()) steps after each workout",
-                            detail: "\(walk.detail). Aim for \(WalkSuggestion.dailySteps.formatted())+ steps across the day.",
+            return PlanCard(symbol: "figure.walk",
+                            title: String(localized: "Walk \(walk.steps.formatted()) steps after each workout",
+                                          comment: "The steps: 3,000"),
+                            detail: String(localized: "\(walk.detail). Aim for \(WalkSuggestion.dailySteps.formatted())+ steps across the day.",
+                                           comment: "The walk's estimate (≈ 2.8 km · 30 min · 100 kcal), then a day's steps: 8,000"),
                             fillsHeight: pairs)
         }
-        let recoveryCard = PlanCard(symbol: "clock.arrow.circlepath", title: "Recovery",
-                                    detail: "Estimates tuned for \((experience ?? .beginner).title.lowercased()) lifters.",
+        let recoveryCard = PlanCard(symbol: "clock.arrow.circlepath",
+                                    title: String(localized: "Recovery", comment: "Plan card: the recovery estimates"),
+                                    detail: String(localized: "Estimates tuned for \((experience ?? .beginner).title.lowercased()) lifters.",
+                                                   comment: "The training experience in lower case: beginner, intermediate or advanced"),
                                     fillsHeight: pairs)
 
         return ScrollView(showsIndicators: false) {
@@ -565,13 +583,14 @@ struct OnboardingView: View {
     // MARK: - Pieces
 
     private func option<Value: Hashable>(_ value: Value, in selection: Binding<Value?>, symbol: String,
-                                         title: String, detail: String) -> some View {
-        OptionCard(symbol: symbol, title: title, detail: detail, isSelected: selection.wrappedValue == value) {
+                                         title: String.LocalizationValue, detail: String.LocalizationValue) -> some View {
+        OptionCard(symbol: symbol, title: String(localized: title), detail: String(localized: detail),
+                   isSelected: selection.wrappedValue == value) {
             withAnimation(.easeOut(duration: 0.15)) { selection.wrappedValue = value }
         }
     }
 
-    private func wheel<Content: View>(_ label: String, @ViewBuilder content: () -> Content) -> some View {
+    private func wheel<Content: View>(_ label: String.LocalizationValue, @ViewBuilder content: () -> Content) -> some View {
         VStack(spacing: 4) {
             SectionEyebrow(text: label, size: layout.value(9.5, 10.5))
             content()
@@ -738,8 +757,8 @@ private enum StageLight: Hashable {
     var caption: String? {
         switch self {
         case .sampler: return nil
-        case .lowerBody: return "LOWER-BODY FOCUS"
-        case .day(let name, _): return "DAY 1 · \(name.uppercased())"
+        case .lowerBody: return String(localized: "LOWER-BODY FOCUS")
+        case .day(let name, _): return String(localized: "DAY 1 · \(name.uppercased())", comment: "The split's first day: DAY 1 · PUSH")
         }
     }
 

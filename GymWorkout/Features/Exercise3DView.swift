@@ -175,14 +175,14 @@ struct Exercise3DView: View {
             }
 
             if let content {
-                SetupDrawer(steps: content.setup, isExpanded: $setupExpanded,
+                SetupDrawer(steps: content.setup.map { L10n.content($0) }, isExpanded: $setupExpanded,
                             accessory: AnyView(addToTodayButton))
                     .frame(maxHeight: .infinity, alignment: .bottom)
             }
 
             if showingMistake, let content {
                 VStack {
-                    MistakeBanner(text: "COMMON MISTAKE · \(content.cue(cueID).title.uppercased())")
+                    MistakeBanner(text: "COMMON MISTAKE · \(content.cue(cueID).title.localizedContent.uppercased())")
                         .padding(.top, 72)
                     Spacer()
                 }
@@ -255,7 +255,8 @@ struct Exercise3DView: View {
     private func addToToday() {
         let alreadyThere = store.isInToday(exercise.name)
         guard let group = store.addToToday(exerciseNamed: exercise.name) else { return }
-        showToast(alreadyThere ? "Already in today's \(group.title) workout" : "Added to today · \(group.title)")
+        showToast(alreadyThere ? String(localized: "Already in today's \(group.title) workout")
+                               : String(localized: "Added to today · \(group.title)"))
     }
 
     private func showToast(_ text: String) {
@@ -383,7 +384,7 @@ struct Exercise3DView: View {
             // Five segments share the width: a smaller face and tighter
             // padding keep STANDARD on one line.
             MonoSegmentedControl(
-                options: stances.indices.map { (value: $0, title: stances[$0].label.uppercased()) },
+                options: stances.indices.map { (value: $0, title: stances[$0].label.localizedContent.uppercased()) },
                 selection: $stance,
                 fontSize: 8.5,
                 em: 0.04,
@@ -392,7 +393,7 @@ struct Exercise3DView: View {
             )
             .accessibilityLabel("Stance")
             if let note = currentStance?.note {
-                Text(note)
+                Text(note.localizedContent)
                     .font(.ui(12, .regular))
                     .foregroundStyle(DS.silver.opacity(0.62))
                     .lineLimit(2)
@@ -446,7 +447,7 @@ struct Exercise3DView: View {
                 y: annotation.labelPoint.y * size.height
             )
             TrackedCallout(
-                text: annotation.label,
+                text: annotation.label.localizedContent,
                 labelPoint: label,
                 labelSide: annotation.labelSide,
                 dot: dotPoint(annotation, label: label),
@@ -463,7 +464,7 @@ struct Exercise3DView: View {
                 if layout.isRegular { revealCue(annotation.cueID) }
             }
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Technique cue: \(annotation.label)")
+            .accessibilityLabel("Technique cue: \(annotation.label.localizedContent)")
         }
     }
 
@@ -509,9 +510,9 @@ struct Exercise3DView: View {
             if !content.primaryMuscles.isEmpty {
                 legendRow(
                     dot: DS.activation,
-                    name: content.primaryMuscles.map { $0.name.uppercased() }
+                    name: content.primaryMuscles.map { $0.name.localizedContent.uppercased() }
                         .joined(separator: " · "),
-                    rank: "PRIMARY",
+                    rank: ActivationRank.primary.title.uppercased(),
                     nameOpacity: 0.85,
                     rankOpacity: 0.45,
                     size: size
@@ -520,9 +521,9 @@ struct Exercise3DView: View {
             if !content.secondaryMuscles.isEmpty {
                 legendRow(
                     dot: DS.activationSoft.opacity(0.5),
-                    name: content.secondaryMuscles.map { $0.name.uppercased() }
+                    name: content.secondaryMuscles.map { $0.name.localizedContent.uppercased() }
                         .joined(separator: " · "),
-                    rank: "SECONDARY",
+                    rank: ActivationRank.secondary.title.uppercased(),
                     nameOpacity: 0.55,
                     rankOpacity: 0.6,
                     size: size
@@ -870,7 +871,7 @@ struct Exercise3DView: View {
         // Centred on the pane, clear of the button column on the right.
         VStack(spacing: 8) {
             if showingMistake {
-                MistakeBanner(text: "COMMON MISTAKE · \(content.cue(cueID).title.uppercased())")
+                MistakeBanner(text: "COMMON MISTAKE · \(content.cue(cueID).title.localizedContent.uppercased())")
                     .transition(.opacity)
             }
             if let toast {
@@ -1001,12 +1002,12 @@ struct Exercise3DView: View {
                             .trackingEm(0.06, size: 10.5)
                             .foregroundStyle(DS.silver.opacity(0.4))
                         VStack(alignment: .leading, spacing: 5) {
-                            Text(cue.title)
+                            Text(cue.title.localizedContent)
                                 .font(.ui(15, .semibold))
                                 .tracking(-0.15)
                                 .foregroundStyle(DS.silver)
                                 .multilineTextAlignment(.leading)
-                            Text(cue.intro)
+                            Text(cue.intro.localizedContent)
                                 .font(.ui(13.5))
                                 .cssLineHeight(13.5, 1.4)
                                 .foregroundStyle(DS.silver.opacity(0.6))
@@ -1024,8 +1025,8 @@ struct Exercise3DView: View {
                 }
                 .buttonStyle(.plain)
                 .dsHover(.highlight, radius: 16)
-                .accessibilityLabel("Technique cue \(number): \(cue.title)")
-                .accessibilityHint(cue.intro)
+                .accessibilityLabel("Technique cue \(number): \(cue.title.localizedContent)")
+                .accessibilityHint(cue.intro.localizedContent)
             }
         }
         .background(card.fill(DS.surfaceDim).overlay(card.fill(Self.cardWash)))
@@ -1039,7 +1040,7 @@ struct Exercise3DView: View {
     private func setupSection(_ content: ExerciseContent) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             SectionEyebrow(text: content.setup.count == 1 ? "SETUP · 1 STEP" : "SETUP · \(content.setup.count) STEPS")
-            SetupStepList(steps: content.setup)
+            SetupStepList(steps: content.setup.map { L10n.content($0) })
                 .padding(.top, 14)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

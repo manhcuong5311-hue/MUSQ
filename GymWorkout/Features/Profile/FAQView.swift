@@ -39,7 +39,7 @@ struct FAQView: View {
                 widePage
             } else {
                 VStack(spacing: 0) {
-                    HistoryHeader(title: "Help & FAQ", meta: "MUSQ", onBack: { dismiss() })
+                    HistoryHeader(title: String(localized: "Help & FAQ"), meta: "MUSQ", onBack: { dismiss() })
                         // Shares the column below, so the back button sits on
                         // the content's leading edge. Nil bounds on iPhone.
                         .frame(maxWidth: layout.isRegular ? columnWidth : nil)
@@ -296,41 +296,43 @@ struct FAQView: View {
 
     // MARK: - Content
 
+    /// The plans answer's first sentence while there's a trial to offer. A
+    /// whole sentence of its own for translation; the space after it isn't.
     private var trial: String {
         purchases.yearlyOffersFreeTrial
-            ? "The yearly plan starts with a \(purchases.trialLength) free trial for Apple Accounts that haven't had one. "
+            ? String(localized: "The yearly plan starts with a \(purchases.trialLength) free trial for Apple Accounts that haven't had one.") + " "
             : ""
     }
 
     private var sections: [FAQSection] {
         [
-            FAQSection(title: "PREMIUM & BILLING", items: [
-                FAQItem(question: "What's free, and what does Premium add?",
-                        answer: "Every exercise, its 3D model, setup and key tips, the workout log, history, recovery and Preset 1 are free. MUSQ Premium adds the common mistakes drawn over the lifter, Preset 2 and 3 for every muscle group, and removes ads."),
-                FAQItem(question: "What plans are there?",
-                        answer: "\(trial)Premium comes as a yearly subscription or a one-time lifetime purchase. Prices are shown in your local currency on the Premium screen before you pay."),
-                FAQItem(question: "How do I cancel my subscription?",
-                        answer: "Open the Settings app on your \(DS.deviceNoun), tap your name, then Subscriptions, choose MUSQ and tap Cancel Subscription. Cancel at least 24 hours before the renewal date to avoid being charged; Premium stays on until the end of the period you've paid for. Cancelling during a free trial ends it without charge."),
-                FAQItem(question: "How do I get a refund?",
-                        answer: "Payments are handled by Apple. Request a refund at reportaproblem.apple.com, signed in with the Apple Account you paid with."),
-                FAQItem(question: "I paid, but Premium isn't on. What do I do?",
-                        answer: "Open the Premium screen from Profile and tap Restore Purchases, signed in with the Apple Account you paid with. This also brings Premium to a new iPhone or iPad. If it still doesn't show, write to us below."),
+            FAQSection(title: String(localized: "PREMIUM & BILLING"), items: [
+                FAQItem(question: String(localized: "What's free, and what does Premium add?"),
+                        answer: String(localized: "Every exercise, its 3D model, setup and key tips, the workout log, history, recovery and Preset 1 are free. MUSQ Premium adds the common mistakes drawn over the lifter, Preset 2 and 3 for every muscle group, and removes ads.")),
+                FAQItem(question: String(localized: "What plans are there?"),
+                        answer: trial + String(localized: "Premium comes as a yearly subscription or a one-time lifetime purchase. Prices are shown in your local currency on the Premium screen before you pay.")),
+                FAQItem(question: String(localized: "How do I cancel my subscription?"),
+                        answer: String(localized: "Open the Settings app on your \(DS.deviceNoun), tap your name, then Subscriptions, choose MUSQ and tap Cancel Subscription. Cancel at least 24 hours before the renewal date to avoid being charged; Premium stays on until the end of the period you've paid for. Cancelling during a free trial ends it without charge.")),
+                FAQItem(question: String(localized: "How do I get a refund?"),
+                        answer: String(localized: "Payments are handled by Apple. Request a refund at reportaproblem.apple.com, signed in with the Apple Account you paid with.")),
+                FAQItem(question: String(localized: "I paid, but Premium isn't on. What do I do?"),
+                        answer: String(localized: "Open the Premium screen from Profile and tap Restore Purchases, signed in with the Apple Account you paid with. This also brings Premium to a new iPhone or iPad. If it still doesn't show, write to us below.")),
             ]),
-            FAQSection(title: "TRAINING", items: [
-                FAQItem(question: "How is recovery estimated?",
-                        answer: "Each completed set loads the muscles the exercise works, directly or as a helper. How long a muscle needs depends on how many sets it took and your training experience (Profile › Settings). The estimates are a guide, not medical advice: if you're still sore or something hurts, rest longer."),
-                FAQItem(question: "What do the red, yellow and green card edges mean?",
-                        answer: "Red: the group is still recovering. Yellow: trained this round and recovered. Green: not trained yet this round, so it's due. In Profile › Train Card Colors you can choose when green starts over (after your full split or each week), change the colours, or turn the edges off."),
-                FAQItem(question: "Which sets count?",
-                        answer: "Only sets you mark done. Planned but unfinished sets never count toward recovery, records or history."),
-                FAQItem(question: "Can I change my split or goal?",
-                        answer: "Yes. Tap Edit next to About You in Profile to change your goal, days a week and split. Your workout history stays as it is."),
+            FAQSection(title: String(localized: "TRAINING", comment: "Help & FAQ section"), items: [
+                FAQItem(question: String(localized: "How is recovery estimated?"),
+                        answer: String(localized: "Each completed set loads the muscles the exercise works, directly or as a helper. How long a muscle needs depends on how many sets it took and your training experience (Profile › Settings). The estimates are a guide, not medical advice: if you're still sore or something hurts, rest longer.")),
+                FAQItem(question: String(localized: "What do the red, yellow and green card edges mean?"),
+                        answer: String(localized: "Red: the group is still recovering. Yellow: trained this round and recovered. Green: not trained yet this round, so it's due. In Profile › Train Card Colors you can choose when green starts over (after your full split or each week), change the colours, or turn the edges off.")),
+                FAQItem(question: String(localized: "Which sets count?"),
+                        answer: String(localized: "Only sets you mark done. Planned but unfinished sets never count toward recovery, records or history.")),
+                FAQItem(question: String(localized: "Can I change my split or goal?"),
+                        answer: String(localized: "Yes. Tap Edit next to About You in Profile to change your goal, days a week and split. Your workout history stays as it is.")),
             ]),
-            FAQSection(title: "DATA, ADS & PRIVACY", items: [
-                FAQItem(question: "Where is my workout data kept?",
-                        answer: "On your \(DS.deviceNoun) only. MUSQ has no account and doesn't upload your workouts. Deleting the app deletes them, so keep it installed (or back up your \(DS.deviceNoun)) to keep your history."),
-                FAQItem(question: "Why do I see ads, and how do I change my ad choices?",
-                        answer: "Ads keep the free version free; no full-screen ad appears mid-workout. Premium removes them. Where the law requires a choice, you can change it any time from Profile › Privacy Choices, and tracking follows your answer to Apple's tracking prompt (Settings › Privacy & Security › Tracking)."),
+            FAQSection(title: String(localized: "DATA, ADS & PRIVACY"), items: [
+                FAQItem(question: String(localized: "Where is my workout data kept?"),
+                        answer: String(localized: "On your \(DS.deviceNoun) only. MUSQ has no account and doesn't upload your workouts. Deleting the app deletes them, so keep it installed (or back up your \(DS.deviceNoun)) to keep your history.")),
+                FAQItem(question: String(localized: "Why do I see ads, and how do I change my ad choices?"),
+                        answer: String(localized: "Ads keep the free version free; no full-screen ad appears mid-workout. Premium removes them. Where the law requires a choice, you can change it any time from Profile › Privacy Choices, and tracking follows your answer to Apple's tracking prompt (Settings › Privacy & Security › Tracking).")),
             ]),
         ]
     }

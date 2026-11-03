@@ -201,14 +201,14 @@ struct PremiumView: View {
     private var headline: (title: String, message: String) {
         switch reason {
         case .mistake:
-            return ("See the mistakes before you make them",
-                    "Premium draws each exercise's common mistakes over the lifter, so you know what bad form looks like before it creeps in.")
+            return (String(localized: "See the mistakes before you make them"),
+                    String(localized: "Premium draws each exercise's common mistakes over the lifter, so you know what bad form looks like before it creeps in."))
         case .preset:
-            return ("Three presets for every muscle",
-                    "Preset 1 is free. Premium adds Preset 2 and 3 for every muscle group, so a different session for each one is a tap away.")
+            return (String(localized: "Three presets for every muscle"),
+                    String(localized: "Preset 1 is free. Premium adds Preset 2 and 3 for every muscle group, so a different session for each one is a tap away."))
         case .onboarding, .profile:
-            return ("Train with MUSQ Premium",
-                    "Everything in MUSQ stays free to train with. Premium adds the common mistakes, more presets and no ads.")
+            return (String(localized: "Train with MUSQ Premium"),
+                    String(localized: "Everything in MUSQ stays free to train with. Premium adds the common mistakes, more presets and no ads."))
         }
     }
 
@@ -287,14 +287,14 @@ struct PremiumView: View {
                 }
                 if let monthly = purchases.monthly {
                     PlanTile(title: "Monthly", price: monthly.displayPrice, period: "per month",
-                             detail: "Billed monthly, cancel anytime", badge: nil,
+                             detail: String(localized: "Billed monthly, cancel anytime"), badge: nil,
                              isSelected: selection == Purchases.ProductID.monthly) {
                         selection = Purchases.ProductID.monthly
                     }
                 }
                 if let lifetime = purchases.lifetime {
                     PlanTile(title: "Lifetime", price: lifetime.displayPrice, period: "once",
-                             detail: "One payment, Premium for good", badge: nil,
+                             detail: String(localized: "One payment, Premium for good"), badge: nil,
                              isSelected: selection == Purchases.ProductID.lifetime) {
                         selection = Purchases.ProductID.lifetime
                     }
@@ -313,14 +313,14 @@ struct PremiumView: View {
                 }
                 if let monthly = purchases.monthly {
                     PlanCard(title: "Monthly", price: monthly.displayPrice, period: "per month",
-                             detail: "Billed monthly, cancel anytime", badge: nil,
+                             detail: String(localized: "Billed monthly, cancel anytime"), badge: nil,
                              isSelected: selection == Purchases.ProductID.monthly) {
                         selection = Purchases.ProductID.monthly
                     }
                 }
                 if let lifetime = purchases.lifetime {
                     PlanCard(title: "Lifetime", price: lifetime.displayPrice, period: "once",
-                             detail: "One payment, Premium for good", badge: nil,
+                             detail: String(localized: "One payment, Premium for good"), badge: nil,
                              isSelected: selection == Purchases.ProductID.lifetime) {
                         selection = Purchases.ProductID.lifetime
                     }
@@ -387,19 +387,31 @@ struct PremiumView: View {
         }
     }
 
-    /// Names only the plans the cards offer, at the prices they show.
+    /// Names only the plans the cards offer, at the prices they show. Each
+    /// sentence is a whole string for translation, and the plans are listed
+    /// the way the language lists two things.
     private var termsText: String {
         var plans: [String] = []
-        if let monthly = purchases.monthly { plans.append("Monthly (\(monthly.displayPrice) a month)") }
-        if let yearly = purchases.yearly { plans.append("Yearly (\(yearly.displayPrice) a year)") }
+        if let monthly = purchases.monthly {
+            plans.append(String(localized: "Monthly (\(monthly.displayPrice) a month)", comment: "Subscription terms: a plan and its price"))
+        }
+        if let yearly = purchases.yearly {
+            plans.append(String(localized: "Yearly (\(yearly.displayPrice) a year)", comment: "Subscription terms: a plan and its price"))
+        }
         var parts: [String] = []
         if !plans.isEmpty {
-            let charged = showsTrial
-                ? "when you confirm, or, with the Yearly free trial, when the trial ends unless you cancel at least 24 hours before"
-                : "when you confirm"
-            parts.append("\(plans.joined(separator: " and ")) \(plans.count == 1 ? "is an auto-renewing subscription" : "are auto-renewing subscriptions"). Payment is charged to your Apple Account \(charged). A subscription renews automatically until cancelled: cancel at least 24 hours before the end of the current period to stop the next renewal, which is charged within 24 hours before that. Manage or cancel it in Settings › Apple Account › Subscriptions.")
+            let names = plans.formatted(.list(type: .and))
+            parts.append(plans.count == 1
+                         ? String(localized: "\(names) is an auto-renewing subscription.",
+                                  comment: "Subscription terms: one plan and its price, e.g. Yearly ($29.99 a year)")
+                         : String(localized: "\(names) are auto-renewing subscriptions.",
+                                  comment: "Subscription terms: two plans and their prices, e.g. Monthly ($4.99 a month) and Yearly ($29.99 a year)"))
+            parts.append(showsTrial
+                         ? String(localized: "Payment is charged to your Apple Account when you confirm, or, with the Yearly free trial, when the trial ends unless you cancel at least 24 hours before.")
+                         : String(localized: "Payment is charged to your Apple Account when you confirm."))
+            parts.append(String(localized: "A subscription renews automatically until cancelled: cancel at least 24 hours before the end of the current period to stop the next renewal, which is charged within 24 hours before that. Manage or cancel it in Settings › Apple Account › Subscriptions."))
         }
-        if purchases.lifetime != nil { parts.append("Lifetime is a one-time purchase.") }
+        if purchases.lifetime != nil { parts.append(String(localized: "Lifetime is a one-time purchase.")) }
         return parts.joined(separator: " ")
     }
 
@@ -456,9 +468,9 @@ struct PremiumView: View {
 
     private var activePlanName: String? {
         switch purchases.activePlan {
-        case Purchases.ProductID.yearly: return "Yearly"
-        case Purchases.ProductID.monthly: return "Monthly"
-        case Purchases.ProductID.lifetime: return "Lifetime"
+        case Purchases.ProductID.yearly: return String(localized: "Yearly")
+        case Purchases.ProductID.monthly: return String(localized: "Monthly")
+        case Purchases.ProductID.lifetime: return String(localized: "Lifetime")
         default: return nil
         }
     }
@@ -466,13 +478,13 @@ struct PremiumView: View {
     private var activeMessage: String {
         switch purchases.activePlan {
         case Purchases.ProductID.yearly:
-            return "Thank you for supporting MUSQ. Everything below stays unlocked while your yearly plan renews."
+            return String(localized: "Thank you for supporting MUSQ. Everything below stays unlocked while your yearly plan renews.")
         case Purchases.ProductID.monthly:
-            return "Thank you for supporting MUSQ. Everything below stays unlocked while your monthly plan renews."
+            return String(localized: "Thank you for supporting MUSQ. Everything below stays unlocked while your monthly plan renews.")
         case Purchases.ProductID.lifetime:
-            return "Thank you for supporting MUSQ. Everything below is yours for good."
+            return String(localized: "Thank you for supporting MUSQ. Everything below is yours for good.")
         default:
-            return "Thank you for supporting MUSQ."
+            return String(localized: "Thank you for supporting MUSQ.")
         }
     }
 
@@ -501,8 +513,8 @@ struct PremiumView: View {
 
     /// The billed price stays the card's big number; this line only explains it.
     private func yearlyDetail(_ yearly: Product) -> String {
-        if showsTrial { return "\(trialLength) free, then \(yearly.displayPrice)/year" }
-        return "\((yearly.price / 12).formatted(yearly.priceFormatStyle)) a month, billed yearly"
+        if showsTrial { return String(localized: "\(trialLength) free, then \(yearly.displayPrice)/year") }
+        return String(localized: "\((yearly.price / 12).formatted(yearly.priceFormatStyle)) a month, billed yearly")
     }
 
     /// "SAVE 66%": a year of Yearly against twelve months of Monthly. Only
@@ -512,7 +524,8 @@ struct PremiumView: View {
         guard let yearly = purchases.yearly, let monthly = purchases.monthly,
               monthly.price > 0 else { return nil }
         let percent = NSDecimalNumber(decimal: (1 - yearly.price / (monthly.price * 12)) * 100).intValue
-        return percent >= 10 ? "SAVE \(percent)%" : nil
+        // An Int's percent style shows 66 as "66%", in the language's own form.
+        return percent >= 10 ? String(localized: "SAVE \(percent.formatted(.percent))") : nil
     }
 
     // MARK: - Actions
@@ -524,14 +537,16 @@ struct PremiumView: View {
     /// No price until a returned plan is selected; the button is disabled
     /// until then anyway.
     private var buttonTitle: String {
-        guard let product = selectedProduct else { return "Get Premium" }
+        guard let product = selectedProduct else { return String(localized: "Get Premium") }
         switch product.id {
         case Purchases.ProductID.yearly:
-            return showsTrial ? "Start Free Trial" : "Subscribe · \(product.displayPrice) a year"
+            return showsTrial
+                ? String(localized: "Start Free Trial")
+                : String(localized: "Subscribe · \(product.displayPrice) a year")
         case Purchases.ProductID.monthly:
-            return "Subscribe · \(product.displayPrice) a month"
+            return String(localized: "Subscribe · \(product.displayPrice) a month")
         default:
-            return "Get Lifetime · \(product.displayPrice)"
+            return String(localized: "Get Lifetime · \(product.displayPrice)")
         }
     }
 
@@ -540,12 +555,12 @@ struct PremiumView: View {
         switch product.id {
         case Purchases.ProductID.yearly:
             return showsTrial
-                ? "\(trialLength) free, then \(product.displayPrice) a year until cancelled. Cancel anytime in Settings."
-                : "Renews at \(product.displayPrice) a year until cancelled. Cancel anytime in Settings."
+                ? String(localized: "\(trialLength) free, then \(product.displayPrice) a year until cancelled. Cancel anytime in Settings.")
+                : String(localized: "Renews at \(product.displayPrice) a year until cancelled. Cancel anytime in Settings.")
         case Purchases.ProductID.monthly:
-            return "Renews at \(product.displayPrice) a month until cancelled. Cancel anytime in Settings."
+            return String(localized: "Renews at \(product.displayPrice) a month until cancelled. Cancel anytime in Settings.")
         default:
-            return "One payment. No subscription."
+            return String(localized: "One payment. No subscription.")
         }
     }
 
@@ -571,7 +586,7 @@ struct PremiumView: View {
             defer { isWorking = false }
             do {
                 if try await purchases.purchase(product) == .pending {
-                    alert = "Your purchase is waiting for approval. Premium turns on as soon as it goes through."
+                    alert = String(localized: "Your purchase is waiting for approval. Premium turns on as soon as it goes through.")
                 }
             } catch {
                 alert = error.localizedDescription
@@ -586,7 +601,7 @@ struct PremiumView: View {
             do {
                 try await purchases.restore()
                 if !purchases.isPremium {
-                    alert = "No MUSQ Premium purchase was found for this Apple Account."
+                    alert = String(localized: "No MUSQ Premium purchase was found for this Apple Account.")
                 }
             } catch {
                 alert = error.localizedDescription
@@ -704,7 +719,9 @@ private struct PremiumHero: View {
                 .padding(.vertical, imageInset)
                 .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                 .accessibilityHidden(true)
-            MistakeBanner(text: "COMMON MISTAKE · KNEE TRACKING")
+            // The Back Squat's own cue title, so the banner reads as the
+            // trainer's does in every language.
+            MistakeBanner(text: "COMMON MISTAKE · \(L10n.content("Knee Tracking").uppercased())")
                 .padding(layout.value(12, 14))
         }
         .frame(height: layout.value(210, 220))
@@ -724,6 +741,13 @@ private struct FeatureTable: View {
         /// Also in the free version; every row is in Premium.
         let free: Bool
         var id: String { title }
+
+        /// The title is literal copy, localized here.
+        init(symbol: String, title: String.LocalizationValue, free: Bool) {
+            self.symbol = symbol
+            self.title = String(localized: title)
+            self.free = free
+        }
     }
 
     var rows: [Row]
@@ -800,6 +824,13 @@ struct BenefitRow: View {
 
     @Environment(\.dsLayout) private var layout
 
+    /// The title and detail are literal copy, localized here.
+    init(symbol: String, title: String.LocalizationValue, detail: String.LocalizationValue) {
+        self.symbol = symbol
+        self.title = String(localized: title)
+        self.detail = String(localized: detail)
+    }
+
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: symbol)
@@ -826,6 +857,13 @@ private struct BenefitTile: View {
     var symbol: String
     var title: String
     var detail: String
+
+    /// The title and detail are literal copy, localized here.
+    init(symbol: String, title: String.LocalizationValue, detail: String.LocalizationValue) {
+        self.symbol = symbol
+        self.title = String(localized: title)
+        self.detail = String(localized: detail)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -864,6 +902,19 @@ private struct PlanCard: View {
     var action: () -> Void
 
     @Environment(\.dsLayout) private var layout
+
+    /// The plan's name and period are literal and localized here; the
+    /// detail and badge come localized, the price as the App Store wrote it.
+    init(title: String.LocalizationValue, price: String, period: String.LocalizationValue, detail: String,
+         badge: String?, isSelected: Bool, action: @escaping () -> Void) {
+        self.title = String(localized: title)
+        self.price = price
+        self.period = String(localized: period)
+        self.detail = detail
+        self.badge = badge
+        self.isSelected = isSelected
+        self.action = action
+    }
 
     var body: some View {
         let radius: CGFloat = layout.value(16, 18)
@@ -929,6 +980,18 @@ private struct PlanTile: View {
     var action: () -> Void
 
     private static let radius: CGFloat = 18
+
+    /// Localized as PlanCard's are.
+    init(title: String.LocalizationValue, price: String, period: String.LocalizationValue, detail: String,
+         badge: String?, isSelected: Bool, action: @escaping () -> Void) {
+        self.title = String(localized: title)
+        self.price = price
+        self.period = String(localized: period)
+        self.detail = detail
+        self.badge = badge
+        self.isSelected = isSelected
+        self.action = action
+    }
 
     var body: some View {
         Button(action: action) {

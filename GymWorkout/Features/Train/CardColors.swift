@@ -32,9 +32,12 @@ enum MuscleCardTone: Hashable, CaseIterable {
 
     func title(reset: TrainingRound.Reset) -> String {
         switch self {
-        case .waiting: return "Recovering"
-        case .recent: return reset == .weekly ? "Done this week" : "Done this round"
-        case .due: return "Due"
+        case .waiting: return String(localized: "Recovering", comment: "Train card edge: the group is still recovering")
+        case .recent:
+            return reset == .weekly
+                ? String(localized: "Done this week", comment: "Train card edge: trained this week and recovered")
+                : String(localized: "Done this round", comment: "Train card edge: trained this round and recovered")
+        case .due: return String(localized: "Due", comment: "Train card edge: not trained yet this round, its turn")
         }
     }
 }
@@ -49,9 +52,9 @@ enum CardColorMode: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .all: return "All"
-        case .redGreen: return "Red & green"
-        case .off: return "Off"
+        case .all: return String(localized: "All", comment: "Card colors setting: every edge colour shows")
+        case .redGreen: return String(localized: "Red & green", comment: "Card colors setting: only the red and green edges")
+        case .off: return String(localized: "Off", comment: "Card colors setting: no coloured edges")
         }
     }
 

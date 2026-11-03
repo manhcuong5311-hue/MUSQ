@@ -35,8 +35,9 @@ struct RestTimerBar: View {
             card {
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 2) {
-                        SectionEyebrow(text: "REST", size: 9.5)
-                        Text(String(format: "%d:%02d", seconds / 60, seconds % 60))
+                        SectionEyebrow(text: String(localized: "REST", comment: "Over the rest timer's countdown"),
+                                       size: 9.5)
+                        Text(Duration.seconds(seconds).formatted(.time(pattern: .minuteSecond)))
                             .font(.mono(layout.isRegular ? 26 : 22, .semibold))
                             .foregroundStyle(DS.silver)
                             .contentTransition(.numericText(countsDown: true))

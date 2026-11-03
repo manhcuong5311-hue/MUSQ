@@ -11,8 +11,7 @@ import Foundation
 enum ActivityPeriod: String, CaseIterable, Hashable {
     case week, month
 
-    var title: String { rawValue.uppercased() }
-    var phrase: String { self == .week ? "this week" : "this month" }
+    var title: String { self == .week ? String(localized: "WEEK") : String(localized: "MONTH") }
 
     func interval(containing date: Date, calendar: Calendar = .current) -> DateInterval {
         let component: Calendar.Component = self == .week ? .weekOfYear : .month
@@ -32,10 +31,10 @@ enum ActivityLevel: Int, Comparable {
 
     var title: String {
         switch self {
-        case .notTrained: return "Not trained"
-        case .low: return "Low activity"
-        case .trained: return "Trained"
-        case .high: return "High activity"
+        case .notTrained: return String(localized: "Not trained", comment: "Activity level of a muscle group")
+        case .low: return String(localized: "Low activity", comment: "Activity level of a muscle group")
+        case .trained: return String(localized: "Trained", comment: "Activity level of a muscle group")
+        case .high: return String(localized: "High activity", comment: "Activity level of a muscle group")
         }
     }
 
@@ -49,14 +48,18 @@ struct MuscleActivity: Identifiable, Hashable {
 
     var id: MuscleGroup { muscle }
 
-    /// "14", "3.5" — effective sets can be halves.
+    /// "14", "3.5" — effective sets can be halves. In the locale's format
+    /// ("3,5" in Vietnamese).
     var setsValue: String {
         effectiveSets.rounded() == effectiveSets
-            ? String(Int(effectiveSets)) : String(format: "%.1f", effectiveSets)
+            ? String(Int(effectiveSets)) : effectiveSets.formatted(.number.precision(.fractionLength(1)))
     }
 
     /// "14 sets", "1 set".
-    var setsLabel: String { "\(setsValue) \(effectiveSets == 1 ? "set" : "sets")" }
+    var setsLabel: String {
+        effectiveSets == 1 ? String(localized: "1 set", comment: "Effective sets of a muscle group")
+            : String(localized: "\(setsValue) sets", comment: "Effective sets of a muscle group; can be a half (3.5)")
+    }
 }
 
 /// The chest's three heads in a period, for the muscle map's chest bands:
@@ -151,12 +154,21 @@ struct MuscleActivityCalculator {
         var items: [AttentionItem] = []
         for muscle in candidates {
             guard let entry = byMuscle[muscle] else { continue }
+            // Whole sentences for each period and count, so translations
+            // can order the words their own way.
             switch entry.level {
             case .notTrained:
-                items.append(AttentionItem(activity: entry, reason: "Not trained \(period.phrase)"))
+                let reason = period == .week ? String(localized: "Not trained this week")
+                    : String(localized: "Not trained this month")
+                items.append(AttentionItem(activity: entry, reason: reason))
             case .low:
-                items.append(AttentionItem(activity: entry,
-                                           reason: "\(entry.setsValue) effective \(entry.effectiveSets == 1 ? "set" : "sets") \(period.phrase)"))
+                let one = entry.effectiveSets == 1, sets = entry.setsValue
+                let reason = period == .week
+                    ? (one ? String(localized: "1 effective set this week")
+                        : String(localized: "\(sets) effective sets this week"))
+                    : (one ? String(localized: "1 effective set this month")
+                        : String(localized: "\(sets) effective sets this month"))
+                items.append(AttentionItem(activity: entry, reason: reason))
             case .trained, .high:
                 // Clearly behind the other trained groups in the same area.
                 let peers = candidates
@@ -166,9 +178,12 @@ struct MuscleActivityCalculator {
                 guard !peers.isEmpty else { continue }
                 let average = peers.reduce(0, +) / Double(peers.count)
                 if entry.effectiveSets < average * 0.5 {
-                    let area = muscle.area == .upper ? "upper-body" : muscle.area == .lower ? "lower-body" : "core"
-                    items.append(AttentionItem(activity: entry,
-                                               reason: "Less training than your other \(area) muscle groups"))
+                    let reason = muscle.area == .upper
+                        ? String(localized: "Less training than your other upper-body muscle groups")
+                        : muscle.area == .lower
+                        ? String(localized: "Less training than your other lower-body muscle groups")
+                        : String(localized: "Less training than your other core muscle groups")
+                    items.append(AttentionItem(activity: entry, reason: reason))
                 }
             }
         }

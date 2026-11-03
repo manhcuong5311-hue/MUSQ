@@ -51,7 +51,8 @@ struct SessionHistoryView: View {
                                     .foregroundStyle(DS.silver.opacity(0.6))
                             }
                             if session.completedAt == nil {
-                                Text("Still in progress — finish it from Train.")
+                                Text("Still in progress — finish it from Train.",
+                                     comment: "Train is the name of the Train tab")
                                     .font(.ui(layout.pt(12, 13)))
                                     .foregroundStyle(DS.silver.opacity(0.4))
                                     .dsReadable(560, alignment: .leading)
@@ -156,24 +157,25 @@ struct SessionHistoryView: View {
         // The tiles keep their own ground, the band's colour, so on the band
         // they read as one strip of totals.
         let tiles = HStack(spacing: 0) {
-            StatTile(label: "Exercises", value: done.count.formatted())
+            StatTile(label: String(localized: "Exercises"), value: done.count.formatted())
             divider
-            StatTile(label: "Sets", value: session.completedSetCount.formatted())
+            StatTile(label: String(localized: "Sets"), value: session.completedSetCount.formatted())
             if session.volume > 0 {
                 divider
-                StatTile(label: "Volume",
+                StatTile(label: String(localized: "Volume", comment: "Training volume: weight × reps, summed"),
                          value: StatTile.compact(unit.fromKilograms(session.volume)),
                          unit: unit.symbol)
             }
         }
+        let worked = Set(done.map(\.group)).map(\.title).sorted().joined(separator: ", ")
         return ViewThatFits(in: .horizontal) {
             HStack(spacing: 24) {
                 tiles
                 BodyMapPair(source: .fills(front: fills, back: fills), figureHeight: 120,
                             showsCaptions: false)
                     .accessibilityElement(children: .contain)
-                    .accessibilityLabel("Groups worked: "
-                                        + Set(done.map(\.group)).map(\.title).sorted().joined(separator: ", "))
+                    .accessibilityLabel(String(localized: "Groups worked: \(worked)",
+                                               comment: "VoiceOver: the muscle groups a workout reached"))
             }
             tiles
         }
@@ -309,17 +311,18 @@ struct ExerciseHistoryView: View {
         let unit = store.unit
         var tiles: [(label: String, value: String)] = []
         if let heaviest = record.heaviest, let weight = heaviest.weight {
-            tiles.append(("Heaviest", "\(unit.format(weight)) × \(heaviest.reps)"))
+            tiles.append((String(localized: "Heaviest", comment: "Record: the heaviest set"),
+                          "\(unit.format(weight)) × \(heaviest.reps)"))
         }
         if let best = record.bestSet, let estimate = best.estimatedMax {
-            tiles.append(("Est. 1RM", unit.total(estimate)))
+            tiles.append((String(localized: "Est. 1RM", comment: "Estimated one-rep max"), unit.total(estimate)))
         }
         if let best = record.bestUnloaded {
             tiles.append(record.measure == .time
-                         ? ("Longest hold", SetMeasure.clock(best.reps))
-                         : ("Most reps", "\(best.reps)"))
+                         ? (String(localized: "Longest hold"), SetMeasure.clock(best.reps))
+                         : (String(localized: "Most reps"), "\(best.reps)"))
         }
-        tiles.append(("Days logged", "\(record.dayCount)"))
+        tiles.append((String(localized: "Days logged"), "\(record.dayCount)"))
         let roomy = layout.containerWidth - 2 * layout.gutter >= 560
         let count = columns ?? (layout.isRegular && roomy ? tiles.count : 2)
         let spacing: CGFloat = layout.isRegular ? 12 : 8
@@ -330,7 +333,8 @@ struct ExerciseHistoryView: View {
                     StatTile(label: tile.label, value: tile.value)
                 }
             }
-            Text("Est. 1RM uses the Epley formula on your best loaded set. A set marked PR beat every earlier set of this exercise.")
+            Text("Est. 1RM uses the Epley formula on your best loaded set. A set marked PR beat every earlier set of this exercise.",
+                 comment: "PR is the personal-record tag on a logged set")
                 .font(.ui(layout.pt(11.5, 12)))
                 .cssLineHeight(layout.pt(11.5, 12), 1.5)
                 .foregroundStyle(DS.silver.opacity(0.4))
@@ -407,7 +411,7 @@ struct ExerciseHistoryView: View {
                     HStack(alignment: .firstTextBaseline) {
                         SectionEyebrow(text: "HISTORY")
                         Spacer()
-                        MetaLine(text: "\(days.count) \(days.count == 1 ? "DAY" : "DAYS")", em: 0.08)
+                        MetaLine(text: days.count == 1 ? "1 DAY" : "\(days.count) DAYS", em: 0.08)
                     }
                     dayList(days)
                 }
@@ -537,19 +541,22 @@ private struct ExerciseTrend {
         }
     }
 
+    /// The chart's value label, read by VoiceOver.
     var title: String {
         switch kind {
-        case .estimatedMax: return "Est. 1RM"
-        case .hold: return "Longest hold"
-        case .reps: return "Most reps"
+        case .estimatedMax: return String(localized: "Est. 1RM", comment: "Estimated one-rep max")
+        case .hold: return String(localized: "Longest hold")
+        case .reps: return String(localized: "Most reps")
         }
     }
 
     var caption: String {
         switch kind {
-        case .estimatedMax: return "BEST EST. 1RM · \(unit.symbol.uppercased())"
-        case .hold: return "LONGEST HOLD"
-        case .reps: return "MOST REPS"
+        case .estimatedMax:
+            return String(localized: "BEST EST. 1RM · \(unit.symbol.uppercased())",
+                          comment: "Trend chart caption: the best estimated one-rep max each day, then KG or LB")
+        case .hold: return String(localized: "LONGEST HOLD")
+        case .reps: return String(localized: "MOST REPS")
         }
     }
 
@@ -577,7 +584,8 @@ private struct ExerciseTrendChart: View {
         let domain = trend.domain
         Chart(trend.points) { point in
             AreaMark(x: .value("Day", point.day, unit: .day),
-                     yStart: .value("Floor", domain.lowerBound),
+                     yStart: .value(Text("Floor", comment: "VoiceOver: the bottom of the trend chart's shaded area"),
+                                    domain.lowerBound),
                      yEnd: .value(trend.title, point.value))
                 .interpolationMethod(.monotone)
                 .foregroundStyle(
@@ -678,7 +686,7 @@ struct SetChips: View {
                         .font(.mono(size, .semibold))
                         .foregroundStyle(DS.silver.opacity(0.8))
                     if isRecord {
-                        Text("PR")
+                        Text("PR", comment: "Personal-record tag on a logged set")
                             .font(.mono(tagSize, .bold))
                             .trackingEm(0.08, size: tagSize)
                             .foregroundStyle(DS.silver)
@@ -688,7 +696,10 @@ struct SetChips: View {
                 .padding(.vertical, regular ? 7 : 5)
                 .background(Capsule().fill(DS.silver.opacity(0.06)))
                 .overlay(Capsule().strokeBorder(DS.silver.opacity(isRecord ? 0.45 : 0), lineWidth: 1))
-                .accessibilityLabel(SetText.short(set, measure: measure, unit: unit) + (isRecord ? ", personal record" : ""))
+                .accessibilityLabel(isRecord
+                                    ? String(localized: "\(SetText.short(set, measure: measure, unit: unit)), personal record",
+                                             comment: "VoiceOver: a logged set, e.g. 60 kg × 10, that set a record")
+                                    : SetText.short(set, measure: measure, unit: unit))
             }
         }
     }
@@ -863,13 +874,13 @@ struct RecordRow: View {
 
     private var headline: (value: String, label: String) {
         if record.measure == .time, let best = record.bestUnloaded {
-            return (SetMeasure.clock(best.reps), "LONGEST")
+            return (SetMeasure.clock(best.reps), String(localized: "LONGEST", comment: "Record tag under a hold's time"))
         }
         if let heaviest = record.heaviest, let weight = heaviest.weight {
-            return (unit.format(weight), "HEAVIEST")
+            return (unit.format(weight), String(localized: "HEAVIEST", comment: "Record tag under a weight"))
         }
         if let best = record.bestUnloaded {
-            return ("\(best.reps)", "MOST REPS")
+            return ("\(best.reps)", String(localized: "MOST REPS"))
         }
         return ("–", "")
     }
@@ -877,9 +888,11 @@ struct RecordRow: View {
     private var detail: String {
         var parts: [String] = []
         if let best = record.bestSet, let weight = best.weight, let estimate = best.estimatedMax {
-            parts.append("Best set \(unit.format(weight)) × \(best.reps) · est. 1RM \(unit.total(estimate))")
+            parts.append(String(localized: "Best set \(unit.format(weight)) × \(best.reps) · est. 1RM \(unit.total(estimate))",
+                                comment: "Record row: the best set (weight × reps), then its estimated one-rep max"))
         }
-        parts.append("Last done \(RecoveryText.dayPhrase(record.lastDone))")
+        parts.append(String(localized: "Last done \(RecoveryText.dayPhrase(record.lastDone))",
+                            comment: "Record row; the value is “today”, “yesterday” or “on Mon 21 Sep”"))
         return parts.joined(separator: " · ")
     }
 }
@@ -927,7 +940,8 @@ enum SessionText {
     static func summary(_ session: WorkoutSession, unit: WeightUnit) -> String {
         let done = session.exercises.filter { !$0.completedSets.isEmpty }.count
         let sets = session.completedSetCount
-        var parts = ["\(done) \(done == 1 ? "exercise" : "exercises")", "\(sets) \(sets == 1 ? "set" : "sets")"]
+        var parts = [done == 1 ? String(localized: "1 exercise") : String(localized: "\(done) exercises"),
+                     sets == 1 ? String(localized: "1 set") : String(localized: "\(sets) sets")]
         if session.volume > 0 { parts.append(unit.total(session.volume)) }
         return parts.joined(separator: " · ")
     }

@@ -66,7 +66,7 @@ struct XRayDemoView: View {
             .keyboardShortcut(.cancelAction)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(demo.title)
+                Text(demo.title.localizedContent)
                     .font(.ui(16, .semibold))
                     .tracking(-0.25)
                     .foregroundStyle(DS.silver)
@@ -81,7 +81,7 @@ struct XRayDemoView: View {
     /// What the clip is showing right now.
     private var caption: some View {
         let phase = demo.phase(at: stage.time)
-        return Text(phase?.caption ?? demo.summary)
+        return Text(L10n.content(phase?.caption ?? demo.summary))
             .font(.ui(13, .semibold))
             .foregroundStyle(DS.silver)
             .multilineTextAlignment(.center)
@@ -101,7 +101,7 @@ struct XRayDemoView: View {
 
             SectionEyebrow(text: "ANGLE", size: 9.5)
             MonoSegmentedControl(
-                options: demo.angles.map { ($0, $0.title) },
+                options: demo.angles.map { ($0, $0.localizedTitle) },
                 selection: Binding(get: { stage.view }, set: { stage.pick($0) }),
                 fillsWidth: true
             )
@@ -110,7 +110,8 @@ struct XRayDemoView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 7) {
                     ForEach(demo.phases, id: \.chip) { phase in
-                        FilterChip(title: phase.chip, selected: demo.phase(at: stage.time)?.chip == phase.chip) {
+                        FilterChip(title: phase.chip.localizedContent,
+                                   selected: demo.phase(at: stage.time)?.chip == phase.chip) {
                             stage.seek(to: phase.jump)
                         }
                     }
@@ -128,7 +129,7 @@ struct XRayDemoView: View {
                 scrubber
 
                 MonoSegmentedControl(
-                    options: [(Float(0.25), "0.25×"), (Float(0.5), "0.5×"), (Float(1), "1×")],
+                    options: [(Float(0.25), speedTitle(0.25)), (Float(0.5), speedTitle(0.5)), (Float(1), speedTitle(1))],
                     selection: Binding(get: { stage.speed }, set: { stage.speed = $0 })
                 )
                 .accessibilityLabel("Playback speed")
@@ -139,6 +140,11 @@ struct XRayDemoView: View {
                 .foregroundStyle(DS.silver.opacity(0.4))
                 .frame(maxWidth: .infinity, alignment: .center)
         }
+    }
+
+    /// "0.25×", with the current locale's decimal separator.
+    private func speedTitle(_ speed: Float) -> String {
+        String(localized: "\(speed.formatted())×", comment: "Playback speed as a multiple of normal, e.g. 0.5× is half speed")
     }
 
     /// The clip's progress; tap or drag along it to jump.
@@ -172,8 +178,8 @@ struct XRayDemoView: View {
 
     private var legend: some View {
         HStack(spacing: 14) {
-            swatch(Color(red: 0.93, green: 0.86, blue: 0.72), demo.boneLabel)
-            swatch(DS.activation, demo.muscleLabel)
+            swatch(Color(red: 0.93, green: 0.86, blue: 0.72), demo.boneLabel.localizedContent)
+            swatch(DS.activation, demo.muscleLabel.localizedContent)
         }
     }
 
@@ -185,6 +191,30 @@ struct XRayDemoView: View {
                 .foregroundStyle(DS.silver.opacity(0.7))
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
+        }
+    }
+}
+
+private extension XRayView {
+    /// `title` in the current language. The angle names are the viewer's own
+    /// controls rather than demo copy, so they go through Localizable, not the
+    /// data table; `title` in XRayDemos stays as written.
+    var localizedTitle: String {
+        switch self {
+        case .auto: return String(localized: "xray.angle.auto", defaultValue: "AUTO",
+                                  comment: "X-ray angle picker, short: follows the clip on its own")
+        case .back: return String(localized: "xray.angle.back", defaultValue: "BACK",
+                                  comment: "X-ray angle picker, short: from behind")
+        case .backThreeQuarter: return String(localized: "xray.angle.backThreeQuarter", defaultValue: "BACK ¾",
+                                              comment: "X-ray angle picker, short: three-quarter view from behind")
+        case .side: return String(localized: "xray.angle.side", defaultValue: "SIDE",
+                                  comment: "X-ray angle picker, short: from the side")
+        case .top: return String(localized: "xray.angle.top", defaultValue: "TOP",
+                                 comment: "X-ray angle picker, short: from above")
+        case .hand: return String(localized: "xray.angle.hand", defaultValue: "HAND",
+                                  comment: "X-ray angle picker, short: close on the hand")
+        case .palm: return String(localized: "xray.angle.palm", defaultValue: "PALM",
+                                  comment: "X-ray angle picker, short: into the palm")
         }
     }
 }

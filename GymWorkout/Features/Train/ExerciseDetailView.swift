@@ -408,8 +408,8 @@ struct ExerciseDetailView: View {
         let secondary = parts.filter { $0.role == .secondary }.map(\.part)
         return VStack(alignment: .leading, spacing: 12) {
             SectionEyebrow(text: "TARGET MUSCLES")
-            if !primary.isEmpty { muscleLine("PRIMARY", primary, lit: true) }
-            if !secondary.isEmpty { muscleLine("SECONDARY", secondary, lit: false) }
+            if !primary.isEmpty { muscleLine(String(localized: "PRIMARY", comment: "Muscle role: a main mover"), primary, lit: true) }
+            if !secondary.isEmpty { muscleLine(String(localized: "SECONDARY", comment: "Muscle role: a helper"), secondary, lit: false) }
         }
     }
 
@@ -457,7 +457,7 @@ struct ExerciseDetailView: View {
                     .foregroundStyle(DS.silver.opacity(0.5))
             }
             ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
-                stepRow("STEP \(index + 1)", step, stacked: stacked)
+                stepRow(String(localized: "STEP \(index + 1)"), step, stacked: stacked)
             }
             if !cues.isEmpty {
                 Text("FORM CUES")
@@ -527,7 +527,8 @@ struct ExerciseDetailView: View {
             HStack(alignment: .firstTextBaseline) {
                 SectionEyebrow(text: "SETS")
                 Spacer()
-                MetaLine(text: "TARGET \(item.sets.count) × \(item.repRange.label) \(item.isTimed ? "SEC" : "REPS")",
+                MetaLine(text: item.isTimed ? "TARGET \(item.sets.count) × \(item.repRange.label) SEC"
+                                            : "TARGET \(item.sets.count) × \(item.repRange.label) REPS",
                          em: 0.06)
             }
 
@@ -717,13 +718,15 @@ struct SetColumns: View {
     var body: some View {
         let m = SetRow.Metrics.of(layout)
         HStack(spacing: m.spacing) {
-            label("SET", width: m.numberWidth, max: nil)
+            label(String(localized: "SET", comment: "Set logger column: the set's number"),
+                  width: m.numberWidth, max: nil, alignment: .leading)
             if measure == .reps {
                 label(unit.symbol.uppercased(), width: m.weightWidth, max: m.weightMax)
-                label("REPS", width: m.countWidth, max: m.countMax)
+                label(String(localized: "REPS", comment: "Set logger column"), width: m.countWidth, max: m.countMax)
             } else {
-                label("TIME", width: m.holdWidth + m.spacing + m.countWidth,
-                      max: m.countMax.map { m.holdWidth + m.spacing + $0 })
+                label(String(localized: "TIME", comment: "Set logger column: a timed set's seconds"),
+                      width: m.holdWidth + m.spacing + m.countWidth,
+                      max: m.countMax.map { m.holdWidth + m.spacing + $0 }, alignment: .leading)
             }
             Spacer(minLength: 0)
             if layout.isRegular {
@@ -737,14 +740,15 @@ struct SetColumns: View {
         .accessibilityHidden(true)
     }
 
-    private func label(_ text: String, width: CGFloat, max: CGFloat?) -> some View {
+    /// `alignment` is passed in rather than read from the text, which is
+    /// localized: SET and TIME start their columns, the rest are centred.
+    private func label(_ text: String, width: CGFloat, max: CGFloat?, alignment: Alignment = .center) -> some View {
         let size: CGFloat = layout.isRegular ? 9.5 : 8.5
         return Text(text)
             .font(.mono(size, .semibold))
             .trackingEm(0.08, size: size)
             .foregroundStyle(DS.silver.opacity(0.35))
-            .modifier(SetColumnWidth(width: width, max: max,
-                                     alignment: text == "SET" || text == "TIME" ? .leading : .center))
+            .modifier(SetColumnWidth(width: width, max: max, alignment: alignment))
     }
 }
 
@@ -852,7 +856,8 @@ struct SetRow: View {
                 WeightField(weight: set.weight, unit: unit, placeholder: placeholder,
                             setID: set.id, focus: focus, nextSetID: nextSetID, onCommit: onWeight)
                     .modifier(SetColumnWidth(width: m.weightWidth, max: m.weightMax))
-                    .accessibilityLabel("Set \(number) weight in \(unit == .kg ? "kilograms" : "pounds")")
+                    .accessibilityLabel(unit == .kg ? "Set \(number) weight in kilograms"
+                                                    : "Set \(number) weight in pounds")
                 counter
             } else if let holdStart {
                 runningHold(since: holdStart)
@@ -901,7 +906,7 @@ struct SetRow: View {
 
     private var placeholder: String {
         if let placeholderWeight { return unit.number(placeholderWeight) }
-        return isBodyweight ? "BW" : "–"
+        return isBodyweight ? String(localized: "BW", comment: "Weight field placeholder: short for bodyweight") : "–"
     }
 
     // MARK: Reps or seconds
@@ -1013,7 +1018,11 @@ struct SetRow: View {
         .disabled(!canLog || holdStart != nil)
         .opacity(canLog ? 1 : 0.4)
         .accessibilityLabel("Set \(number) done")
-        .accessibilityValue(set.isCompleted ? "Done" : "Not done")
+        // Its own key: the set's state, not the keyboard's Done button.
+        .accessibilityValue(set.isCompleted
+                            ? String(localized: "set.done", defaultValue: "Done",
+                                     comment: "VoiceOver value: the set is marked done")
+                            : String(localized: "Not done"))
     }
 }
 

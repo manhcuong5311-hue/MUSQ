@@ -108,11 +108,14 @@ struct RecoveryInfoSheet: View {
 
     private var facts: some View {
         VStack(alignment: .leading, spacing: 12) {
-            fact("LAST TRAINED",
+            fact(String(localized: "LAST TRAINED"),
                  "\(RecoveryText.day(record.lastTrainedAt)) · \(RecoveryText.trainedAgo(record.lastTrainedAt))")
-            fact("ESTIMATED RECOVERY TARGET", RecoveryText.hours(record.recoveryTargetHours))
-            fact("APPROXIMATELY", record.hoursRemaining > 0
-                 ? "\(RecoveryText.hours(record.hoursRemaining)) remaining" : "Ready")
+            fact(String(localized: "ESTIMATED RECOVERY TARGET"), RecoveryText.hours(record.recoveryTargetHours))
+            fact(String(localized: "APPROXIMATELY", comment: "Recovery sheet: label over the time left"),
+                 record.hoursRemaining > 0
+                 ? String(localized: "\(RecoveryText.hours(record.hoursRemaining)) remaining",
+                          comment: "Time left to recover, e.g. \"12 hours remaining\"")
+                 : String(localized: "Ready", comment: "Recovery status"))
         }
     }
 
@@ -196,11 +199,13 @@ struct RecoveryInfoSheet: View {
         case .partlyReady:
             let tired = RecoveryText.list(record.tiredParts.map(\.part)).lowercased()
             let ready = RecoveryText.list(record.readyParts).lowercased()
-            return "Still recovering: \(tired) (trained \(RecoveryText.dayPhrase(record.lastTrainedAt))). "
-                + "Ready: \(ready). You can still train \(group.title.lowercased()) — "
-                + "go lighter on exercises that lean on the \(tired)."
+            let day = RecoveryText.dayPhrase(record.lastTrainedAt)
+            let name = group.title.lowercased()
+            // One sentence, so a translation can put the parts in its own order.
+            return String(localized: "Still recovering: \(tired) (trained \(day)). Ready: \(ready). You can still train \(name) — go lighter on exercises that lean on the \(tired).",
+                          comment: "Recovery sheet, group partly ready: the tired muscles, when they were trained (\"yesterday\", \"on Mon 21 Sep\"), the ready muscles, the muscle group, the tired muscles again")
         default:
-            return "You trained this muscle recently. Recovery time is only an estimate and can vary."
+            return String(localized: "You trained this muscle recently. Recovery time is only an estimate and can vary.")
         }
     }
 }

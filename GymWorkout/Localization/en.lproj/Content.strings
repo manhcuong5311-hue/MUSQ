@@ -1,0 +1,3 @@
+/* English is the source language: L10n.content falls back to the English
+   string itself, so this table stays empty. It is here so the app bundle
+   lists English as one of its localizations next to Vietnamese. */

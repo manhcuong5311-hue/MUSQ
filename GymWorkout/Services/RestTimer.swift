@@ -99,8 +99,8 @@ final class RestTimer {
         let interval = date.timeIntervalSinceNow
         guard interval >= 1 else { return }
         let content = UNMutableNotificationContent()
-        content.title = "Rest over"
-        content.body = "Time for your next set."
+        content.title = String(localized: "Rest over", comment: "Notification title: the rest between sets has ended")
+        content.body = String(localized: "Time for your next set.")
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
         center.add(UNNotificationRequest(identifier: Self.notificationID, content: content, trigger: trigger))

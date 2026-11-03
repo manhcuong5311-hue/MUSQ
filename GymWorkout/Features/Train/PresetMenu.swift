@@ -35,7 +35,9 @@ struct PresetMenu: View {
                 .dsHover(.highlight)
         }
         .menuOrder(.fixed)
-        .accessibilityLabel("\(group.title) presets")
+        // Its own key: "%@ presets" elsewhere names a preset level ("Basic presets").
+        .accessibilityLabel(String(localized: "presetMenu.label", defaultValue: "\(group.title) presets",
+                                   comment: "VoiceOver: the ⋯ menu of a muscle group's presets, e.g. “Chest presets”"))
     }
 }
 
@@ -66,7 +68,7 @@ struct PresetMenuSections: View {
                 } else {
                     Button {} label: {
                         Text(level.name)
-                        Text("Empty")
+                        Text("Empty", comment: "A preset slot with nothing saved in it")
                     }
                     .disabled(true)
                 }
@@ -91,9 +93,11 @@ struct PresetMenuSections: View {
     }
 
     /// "4 exercises · Barbell Bench Press, Cable Fly, …", cut short by the
-    /// menu.
+    /// menu. The names stay English.
     private func summary(_ items: [PresetItem]) -> String {
-        "\(items.count) \(items.count == 1 ? "exercise" : "exercises") · "
-            + items.map(\.exerciseName).joined(separator: ", ")
+        let names = items.map(\.exerciseName).joined(separator: ", ")
+        return items.count == 1
+            ? String(localized: "1 exercise · \(names)", comment: "A saved preset: its size, then its exercises")
+            : String(localized: "\(items.count) exercises · \(names)", comment: "A saved preset: its size, then its exercises")
     }
 }

@@ -122,7 +122,7 @@ struct TrainerUnavailableView: View {
                                     Text(item.name)
                                         .font(.ui(15, .semibold))
                                         .foregroundStyle(DS.silver)
-                                    MetaLine(text: item.meta, em: 0.06)
+                                    MetaLine(text: item.localizedMeta, em: 0.06)
                                         .padding(.top, 4)
                                 }
                                 Spacer(minLength: 8)
@@ -298,7 +298,7 @@ struct TrainerUnavailableView: View {
                         .font(.ui(15, .semibold))
                         .foregroundStyle(DS.silver)
                         .lineLimit(1)
-                    MetaLine(text: item.meta, em: 0.06)
+                    MetaLine(text: item.localizedMeta, em: 0.06)
                         .lineLimit(1)
                         .padding(.top, 4)
                 }

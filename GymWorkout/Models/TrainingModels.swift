@@ -22,10 +22,22 @@ enum MuscleGroup: String, CaseIterable, Codable, Identifiable, Hashable {
 
     var id: String { rawValue }
 
+    /// The group's name on screen, localized; `rawValue` is the stored key.
     var title: String {
         switch self {
-        case .abs: return "Abs & Core"
-        default: return rawValue.capitalized
+        case .chest: return String(localized: "Chest", comment: "Muscle group")
+        case .back: return String(localized: "muscleGroup.back", defaultValue: "Back",
+                                  comment: "Muscle group (not the back button)")
+        case .shoulders: return String(localized: "Shoulders", comment: "Muscle group")
+        case .biceps: return String(localized: "Biceps", comment: "Muscle group")
+        case .triceps: return String(localized: "Triceps", comment: "Muscle group")
+        case .forearms: return String(localized: "Forearms", comment: "Muscle group")
+        case .abs: return String(localized: "Abs & Core", comment: "Muscle group")
+        case .glutes: return String(localized: "Glutes", comment: "Muscle group")
+        case .quads: return String(localized: "Quads", comment: "Muscle group")
+        case .hamstrings: return String(localized: "Hamstrings", comment: "Muscle group")
+        case .calves: return String(localized: "Calves", comment: "Muscle group")
+        case .adductors: return String(localized: "Adductors", comment: "Muscle group")
         }
     }
 
@@ -84,12 +96,12 @@ enum MusclePart: String, CaseIterable, Codable, Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .frontDelts: return "Front delts"
-        case .sideDelts: return "Side delts"
-        case .rearDelts: return "Rear delts"
-        case .lats: return "Lats"
-        case .upperBack: return "Upper back"
-        case .lowerBack: return "Lower back"
+        case .frontDelts: return String(localized: "Front delts", comment: "Muscle part")
+        case .sideDelts: return String(localized: "Side delts", comment: "Muscle part")
+        case .rearDelts: return String(localized: "Rear delts", comment: "Muscle part")
+        case .lats: return String(localized: "Lats", comment: "Muscle part")
+        case .upperBack: return String(localized: "Upper back", comment: "Muscle part")
+        case .lowerBack: return String(localized: "Lower back", comment: "Muscle part")
         default: return group.title
         }
     }
@@ -188,9 +200,13 @@ enum PresetLevel: String, Codable, CaseIterable, Hashable {
     var isSaved: Bool { slot != nil }
 
     /// "PRESET 2", "BASIC".
-    var title: String { slot.map { "PRESET \($0)" } ?? rawValue.uppercased() }
+    var title: String { name.uppercased() }
     /// "Preset 2", "Basic".
-    var name: String { slot.map { "Preset \($0)" } ?? rawValue.capitalized }
+    var name: String {
+        slot.map { String(localized: "Preset \($0)") }
+            ?? (self == .basic ? String(localized: "Basic", comment: "Built-in preset level")
+                               : String(localized: "Advanced", comment: "Built-in preset level"))
+    }
 }
 
 /// A set target: reps, or seconds for a timed exercise (see `SetMeasure`).
@@ -226,17 +242,19 @@ enum SetMeasure: String, Codable, Hashable {
 
     /// "10–12" or "30–45s".
     func label(_ range: RepRange) -> String {
-        self == .time ? "\(range.label)s" : range.label
+        self == .time ? String(localized: "\(range.label)s", comment: "A target in seconds, e.g. 30–45s") : range.label
     }
 
     /// "10 reps", or a held time: "45s", "1:05".
     func value(_ count: Int) -> String {
-        self == .time ? Self.clock(count) : "\(count) \(count == 1 ? "rep" : "reps")"
+        self == .time ? Self.clock(count)
+            : (count == 1 ? String(localized: "\(count) rep") : String(localized: "\(count) reps"))
     }
 
     /// "45s" under a minute, "1:05" from a minute on.
     static func clock(_ seconds: Int) -> String {
-        seconds < 60 ? "\(seconds)s" : String(format: "%d:%02d", seconds / 60, seconds % 60)
+        seconds < 60 ? String(localized: "\(seconds)s", comment: "Seconds, abbreviated: 45s")
+                     : String(format: "%d:%02d", seconds / 60, seconds % 60)
     }
 }
 
@@ -342,7 +360,14 @@ enum TrainingExperience: String, Codable, CaseIterable, Identifiable {
     case beginner, intermediate, advanced
 
     var id: String { rawValue }
-    var title: String { rawValue.capitalized }
+
+    var title: String {
+        switch self {
+        case .beginner: return String(localized: "Beginner", comment: "Training experience")
+        case .intermediate: return String(localized: "Intermediate", comment: "Training experience")
+        case .advanced: return String(localized: "Advanced", comment: "Training experience")
+        }
+    }
 }
 
 // MARK: - Profile
@@ -356,9 +381,9 @@ enum Sex: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .female: return "Female"
-        case .male: return "Male"
-        case .unspecified: return "Prefer not to say"
+        case .female: return String(localized: "Female")
+        case .male: return String(localized: "Male")
+        case .unspecified: return String(localized: "Prefer not to say")
         }
     }
 }
@@ -370,9 +395,9 @@ enum FitnessGoal: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .loseWeight: return "Lose weight"
-        case .buildMuscle: return "Build muscle"
-        case .getFit: return "Get fit"
+        case .loseWeight: return String(localized: "Lose weight", comment: "Fitness goal")
+        case .buildMuscle: return String(localized: "Build muscle", comment: "Fitness goal")
+        case .getFit: return String(localized: "Get fit", comment: "Fitness goal")
         }
     }
 }
@@ -387,9 +412,9 @@ enum TrainingSplit: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .upperLower: return "Upper / Lower"
-        case .frontBack: return "Front / Back"
-        case .pushPullLegs: return "Push / Pull / Legs"
+        case .upperLower: return String(localized: "Upper / Lower", comment: "Training split")
+        case .frontBack: return String(localized: "Front / Back", comment: "Training split")
+        case .pushPullLegs: return String(localized: "Push / Pull / Legs", comment: "Training split")
         }
     }
 }
@@ -473,8 +498,8 @@ enum RestSetting: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .auto: return "Auto"
-        case .off: return "Off"
+        case .auto: return String(localized: "Auto", comment: "Rest timer setting")
+        case .off: return String(localized: "Off", comment: "Rest timer setting")
         case .s60: return "1:00"
         case .s90: return "1:30"
         case .s120: return "2:00"
@@ -509,10 +534,10 @@ enum RecoveryStatus: Hashable {
 
     var title: String {
         switch self {
-        case .ready: return "Ready"
-        case .partlyReady: return "Partly ready"
-        case .almostReady: return "Almost ready"
-        case .recovering: return "Recovering"
+        case .ready: return String(localized: "Ready", comment: "Recovery status")
+        case .partlyReady: return String(localized: "Partly ready", comment: "Recovery status")
+        case .almostReady: return String(localized: "Almost ready", comment: "Recovery status")
+        case .recovering: return String(localized: "Recovering", comment: "Recovery status")
         }
     }
 
