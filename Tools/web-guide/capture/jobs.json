@@ -1,0 +1,102 @@
+[
+ {
+  "slug": "barbell-bench-press",
+  "orbit": "57deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "incline-dumbbell-press",
+  "orbit": "57deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "dumbbell-bench-press",
+  "orbit": "57deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "push-up",
+  "orbit": "69deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "cable-fly",
+  "orbit": "0deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "back-squat",
+  "orbit": "57deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "deadlift",
+  "orbit": "115deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "romanian-deadlift",
+  "orbit": "0deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "leg-press",
+  "orbit": "115deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "barbell-hip-thrust",
+  "orbit": "40deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "bulgarian-split-squat",
+  "orbit": "0deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "goblet-squat",
+  "orbit": "0deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "walking-lunge",
+  "orbit": "0deg 75deg auto",
+  "pose": 7.83
+ },
+ {
+  "slug": "leg-extension",
+  "orbit": "29deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "lying-leg-curl",
+  "orbit": "77deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "pull-up",
+  "orbit": "149deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "lat-pulldown",
+  "orbit": "-29deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "barbell-bent-over-row",
+  "orbit": "115deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "dumbbell-row",
+  "orbit": "115deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "seated-cable-row",
+  "orbit": "126deg 75deg auto",
+  "pose": 1.33
+ }
+]

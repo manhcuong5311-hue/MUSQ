@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MUSQ capture</title>
+<script>self.ModelViewerElement = { meshoptDecoderLocation: '/exercises/assets/meshopt_decoder.js', minimumRenderScale: 1 };</script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.1.0/dist/model-viewer.min.js"></script>
+<style>
+  body { margin: 0; background: #3a3d42; color: #eee; font: 13px ui-monospace, monospace; }
+  model-viewer { width: 720px; height: 720px; background: transparent; }
+</style>
+</head>
+<body>
+<model-viewer id="mv" disable-zoom shadow-intensity="1" shadow-softness="0.9" exposure="1.05"
+  environment-image="neutral" tone-mapping="neutral" interaction-prompt="none"></model-viewer>
+<pre id="log"></pre>
+<script type="module">
+// Shoots every job in jobs.json: <slug>-poster.png at t=0 (what the page's
+// viewer shows first) and <slug>-pose.png at the clip's most telling pose.
+const mv = document.getElementById('mv');
+const log = (s) => { document.getElementById('log').textContent += s + '\n'; };
+const only = new URLSearchParams(location.search).get('only');
+const jobs = (await (await fetch('/__capture/jobs.json')).json()).filter((j) => !only || j.slug === only);
+await customElements.whenDefined('model-viewer');
+const settle = async () => {
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await new Promise((r) => setTimeout(r, 500));
+};
+const shot = async (name) => {
+  await settle();
+  const blob = await mv.toBlob({ mimeType: 'image/png' });
+  await fetch('/__save?name=' + name, { method: 'POST', body: blob });
+};
+log('dpr ' + devicePixelRatio);
+for (const j of jobs) {
+  const loaded = new Promise((r) => mv.addEventListener('load', r, { once: true }));
+  mv.cameraOrbit = j.orbit;
+  mv.src = `/exercises/${j.slug}/musq-${j.slug}.glb`;
+  await loaded;
+  mv.jumpCameraToGoal();
+  mv.play(); mv.pause();
+  mv.currentTime = 0;
+  await shot(j.slug + '-poster.png');
+  mv.currentTime = j.pose;
+  await shot(j.slug + '-pose.png');
+  log(j.slug + ' ok');
+}
+log('ALLDONE');
+</script>
+</body>
+</html>
