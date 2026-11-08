@@ -4289,7 +4289,6 @@
       }
     },
     "More options" : {
-      "extractionState" : "stale",
       "localizations" : {
         "vi" : {
           "stringUnit" : {
@@ -8178,7 +8177,6 @@
       }
     },
     "Viewport Guides" : {
-      "extractionState" : "stale",
       "localizations" : {
         "vi" : {
           "stringUnit" : {

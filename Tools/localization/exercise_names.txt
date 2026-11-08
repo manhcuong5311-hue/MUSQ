@@ -30,7 +30,6 @@ Barbell Curl
 Barbell Floor Press
 Barbell Front Raise
 Barbell Hip Thrust
-Barbell Lunge
 Barbell Overhead Press
 Barbell Power Clean
 Barbell Preacher Curl
@@ -39,7 +38,6 @@ Barbell Reverse Wrist Curl
 Barbell Seated Calf Raise
 Barbell Shrug
 Barbell Single-Leg Romanian Deadlift
-Barbell Split Squat
 Barbell Standing Calf Raise
 Barbell Static Hold
 Barbell Step-Up
@@ -57,7 +55,6 @@ Behind-the-Neck Press
 Belt Squat
 Bench Dip
 Bent-Knee Calf Raise
-Bent-Over Cable Overhead Triceps Extension
 Biceps Curl
 Bicycle Crunch
 Bird Dog
@@ -67,7 +64,6 @@ Bodyweight Standing Calf Raise
 Box Jump
 Box Squat
 Bulgarian Split Squat
-Bulgarian Split Squat (Lean)
 Cable Chest Press
 Cable Crossover
 Cable Crunch
@@ -165,7 +161,6 @@ Dumbbell Side Bend
 Dumbbell Single-Leg Romanian Deadlift
 Dumbbell Snatch
 Dumbbell Spider Curl
-Dumbbell Split Squat
 Dumbbell Squeeze Press
 Dumbbell Standing Calf Raise
 Dumbbell Static Hold
@@ -257,7 +252,6 @@ Low Cable Row
 Low-to-High Cable Fly
 Lu Raise
 Lunge
-Lunge (Lean)
 Lying Cable Curl
 Lying Leg Curl
 Lying Leg Raise
@@ -282,7 +276,6 @@ Medicine Ball Push-Up
 Medicine Ball Russian Twist
 Medicine Ball Slam
 Mountain Climber
-Narrow-Stance Leg Press
 Neutral-Grip Chin-Up
 Neutral-Grip Dumbbell Press
 Neutral-Grip Dumbbell Shoulder Press
@@ -401,12 +394,12 @@ Smith Machine Romanian Deadlift
 Smith Machine Seated Calf Raise
 Smith Machine Shoulder Press
 Smith Machine Shrug
-Smith Machine Split Squat
 Smith Machine Squat
 Smith Machine Upright Row
 Snatch-Grip Deadlift
 Spider Curl
 Split Jerk
+Split Squat
 Squat
 Squat Jump
 Stability Ball Crunch
@@ -460,7 +453,6 @@ Wide-Grip Lat Pulldown
 Wide-Grip Pull-Up
 Wide-Grip Push-Up
 Wide-Grip Seated Cable Row
-Wide-Stance Leg Press
 Wrist Curl
 Wrist Roller
 Y-Raise

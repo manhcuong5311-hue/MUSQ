@@ -7638,14 +7638,6 @@ enum FaultPoses {
             "rear": shallow(0.12, ahead: 0.12),
             "foot": heelsUp("L")
         ],
-        "Lunge (Lean)": [
-            "lean": headDropped(),
-            // The lower back rounding.
-            "core": FaultPose(chains: [spine], moves: [.shift(["spine"], forward: -0.14), .shift(["chest"], forward: -0.05)]),
-            "front": kneesIn("L").seen(faceOn),
-            "rear": rearLegPushing("R"),
-            "foot": heelsUp("L")
-        ],
         "Bulgarian Split Squat": [
             "torso": leanedForward(24).seen(sideOn),
             // The dumbbells drifting forward and pulling the chest down.
@@ -7657,17 +7649,6 @@ enum FaultPoses {
             // Drifting forward instead of down.
             "depth": shallow(0.1, ahead: 0.12, withArms: false).seen(sideOn),
             "front": heelsUp("L").seen(sideOn)
-        ],
-        "Bulgarian Split Squat (Lean)": [
-            "lean": backRounded().seen(sideOn),
-            // Dropping straight down, the lean only in the shoulders.
-            "hips": FaultPose(chains: [spine],
-                              moves: [.turn(pivot: "pelvis", points: torso, axis: .lateral, degrees: 20),
-                                      .turn(pivot: "chest", points: ["neck", "head"], axis: .lateral, degrees: -40)],
-                              view: sideOn),
-            "knee": kneesIn("R"),
-            "rear": rearLegPushing("L").seen(-0.6),
-            "front": heelsUp("R").seen(sideOn)
         ],
         "Back Squat": [
             // The bar slid down onto the rear delts, the lean deepening.
@@ -7944,56 +7925,6 @@ enum FaultPoses {
                               moves: [.turn(pivot: "thigh_R", points: ["shin_R", "foot_R", "foot_R.tip"], axis: .lateral, degrees: 30)]),
             "ribs": bridgeArched(0.22, chest: 0.1)
         ],
-        "Cable Glute Kickback": [
-            // Stood up tall, the back arching.
-            "torso": FaultPose(chains: [spine],
-                               moves: [.turn(pivot: "pelvis", points: torso, axis: .lateral, degrees: 30), .shift(["spine"], forward: 0.05)]),
-            // The hip opening out as the leg goes back.
-            "hips": FaultPose(chains: [leg("L"), hips],
-                              moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 22)],
-                              view: -0.9),
-            // Swung too high, the lower back arching.
-            "kick": FaultPose(chains: [leg("L"), spine],
-                              moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: -25),
-                                      .shift(["spine"], forward: 0.07)],
-                              strength: .whenStraight("shin_L")),
-            // Hauling on the frame: the trunk leans off it and the arm bends
-            // to pull (2026-10-22; the twist about the spine it used to draw
-            // lay along the spine from this side and showed nothing).
-            "grip": pulledOnSupport(strength: .always).seen(faceOn)
-        ],
-        "Cable Side Kick": [
-            "torso": leanedAway(16, strength: .between("foot_L", "foot_R", from: 0.43, to: 1.26)),
-            // Hips and toes turned up: the leg swings forward, not out.
-            "hips": FaultPose(chains: [leg("L"), hips],
-                              moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: 22),
-                                      .turn(pivot: "foot_L", points: ["foot_L.tip"], axis: .lateral, degrees: 40)],
-                              strength: .between("foot_L", "foot_R", from: 0.43, to: 1.26), view: -0.7),
-            // Short kicks that stop low.
-            "kick": FaultPose(chains: [leg("L"), hips],
-                              moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: -18)],
-                              strength: .between("foot_L", "foot_R", from: 0.43, to: 1.26)),
-            // Turned to -0.9 so the raised toes stand clear of the shin rather
-            // than lying along it.
-            "foot": toesUp(50, .between("foot_L", "foot_R", from: 0.43, to: 1.26)).seen(-0.9),
-            "grip": pulledOnSupport(strength: .between("foot_L", "foot_R", from: 0.43, to: 1.26))
-        ],
-        "Cable Hip Abduction": [
-            "torso": leanedAway(16, strength: .between("foot_L", "foot_R", from: 0.49, to: 1.14)),
-            // The working hip hitched up toward the ribs.
-            "hips": FaultPose(chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
-                              moves: [.shift(["thigh_L", "shin_L", "foot_L", "foot_L.tip"], rise: 0.08), .shift(["pelvis"], rise: 0.04)],
-                              strength: .between("foot_L", "foot_R", from: 0.49, to: 1.14)),
-            // Swung as high as it goes, the trunk tipping to allow it.
-            "lift": FaultPose(chains: [leg("L"), hips, spine],
-                              moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 22),
-                                      .turn(pivot: "pelvis", points: torso, axis: .forward, degrees: 8)],
-                              strength: .between("foot_L", "foot_R", from: 0.49, to: 1.14)),
-            // Turned to -0.9 so the raised toes stand clear of the shin rather
-            // than lying along it.
-            "foot": toesUp(75, .between("foot_L", "foot_R", from: 0.49, to: 1.14)).seen(-0.9),
-            "grip": pulledOnSupport(strength: .between("foot_L", "foot_R", from: 0.49, to: 1.14))
-        ],
         "Hip Abduction Machine": [
             // Slumping forward to shove the pads apart.
             "back": FaultPose(chains: [spine],
@@ -8004,18 +7935,6 @@ enum FaultPoses {
             "hips": FaultPose(chains: [spine, legs, hips], moves: [.shift(["pelvis", "thigh_*"] + torso, rise: 0.1)], view: -1.2),
             "feet": seatedFeetPushing.seen(-1.2),
             "grip": seatedRocked(-14).seen(-1.2)
-        ],
-        "Hip Abduction Machine (Lean)": [
-            "lean": backRounded().seen(-1.2),
-            // Short reps: the knees stop well inside the full range.
-            "push": FaultPose(chains: [legs, hips], moves: [.shift(["shin_*"], outward: -0.15)],
-                              strength: .between("shin_L", "shin_R", from: 0.44, to: 1.17)),
-            // Sliding forward on the seat to lean further.
-            "hips": FaultPose(chains: [spine, legs, hips],
-                              moves: [.shift(["pelvis", "thigh_*"] + torso, ahead: 0.1), .resolve(["shin_*"])],
-                              view: -1.2),
-            "feet": seatedFeetPushing.seen(-1.2),
-            "grip": seatedRocked(14).seen(-1.2)
         ],
         // MARK: Shoulders
         "Barbell Overhead Press": [
@@ -9268,7 +9187,7 @@ enum FaultPoses {
         // rack's near front upright crosses the lifter (at -1.1 it ran through
         // the trunk). The front knee caving in turns toward face-on, a total
         // of about -0.2 (faceOn at -1.3, 0.8 at -1.0) or 0.1 (0.8 at -0.7).
-        "Barbell Split Squat": [
+        "Split Squat": [
             // The bar slid down the back, the chest tipping to balance it.
             "bar": barSlidLow,
             "torso": leanedForward(20, withBar: true),
@@ -9276,26 +9195,6 @@ enum FaultPoses {
             // Stopping halfway, the hips drifting forward instead of down.
             "depth": shallow(0.18, ahead: 0.1, withBar: true),
             "heel": heelsUp("L")
-        ],
-        "Dumbbell Split Squat": [
-            // The dumbbells swinging forward off the sides at the bottom.
-            "grip": armsSwungForward(28, strength: .withBend("shin_L")),
-            "torso": leanedForward(20),
-            "knee": kneesIn("L").seen(faceOn),
-            "depth": shallow(0.18, ahead: 0.1),
-            "heel": heelsUp("L")
-        ],
-        "Smith Machine Split Squat": [
-            // The bar low on the back, held on its track: the chest tips, the
-            // hips slide back (~8 cm, ~13 pt as framed).
-            "bar": barLowOnTrack,
-            // Hips back behind the fixed bar, the chest folding under it.
-            "torso": hipsBehindFixedBar(14),
-            "knee": kneesIn("L").seen(0.8),
-            // Stopping high on the track: straight up, the bar on its rails.
-            "depth": shallow(0.18, withBar: true),
-            // Front foot too close to the bar: the heel peels up.
-            "stance": frontFootTooClose
         ],
         "Front-Foot-Elevated Split Squat": [
             "grip": armsSwungForward(28, strength: .withBend("shin_L")),
@@ -9363,15 +9262,6 @@ enum FaultPoses {
             // Pushing back off the ball of the front foot.
             "drive": heelsUp("front")
         ],
-        "Barbell Lunge": [
-            "step": lungeStepShort(0.35).seen(-0.45),
-            // The chest dropping and the upper back rounding under the bar.
-            "torso": chestDropped(16, withBar: true, strength: .withBend("shin_front")).seen(-0.45),
-            // The front foot landing on the back foot's line, ~24 cm in.
-            "track": lungeStepInLine(0.4).seen(0.6),
-            "knee": kneesIn("front").seen(0.6),
-            "drive": heelsUp("front").seen(-0.45)
-        ],
         "Smith Machine Reverse Lunge": [
             // The front foot set under the bar: ~21 cm further back, where
             // the rails keep the bar over it, so at the bottom the knee is
@@ -9384,6 +9274,9 @@ enum FaultPoses {
             // Rounding under the bar instead of hinging; the bar stays on its
             // rails, so only the spine moves.
             "lean": backRounded(.withBend("shin_front")),
+            // The bar low on the back, held on its track: the chest tips
+            // forward under it (as the Smith split squat).
+            "bar": barLowOnTrack,
             "knee": kneesIn("front").seen(1.0),
             // Standing up off the back leg: its knee straightens first.
             // Turned 0.3 (a total of -0.4): as framed (-0.7) the
@@ -9600,9 +9493,10 @@ enum FaultPoses {
         // framed; the stance turns to the back-left (total -2.6).
         "Single-Arm Cable Curl": [
             "elbow": elbowsForward(35, side: "L"),
-            // Short reps: shoulder-to-wrist 0.906 torso lengths at the model's
-            // bottom (172°), 0.78 at 120°.
-            "range": curlBottomCut("L", from: 0.8, to: 0.89),
+            // Short reps: shoulder-to-wrist 0.877 torso lengths at the model's
+            // bottom (150° since the 2026-11-07 swap, which stops short of
+            // lockout; 0.906 at 172° before), 0.78 at 120°.
+            "range": curlBottomCut("L", from: 0.8, to: 0.87),
             // The near shoulder rolled forward and shrugged, the working arm
             // carried with it; drawn on the working side only: side-on, the
             // free arm's ghost would cross the trunk.
@@ -10219,25 +10113,6 @@ enum FaultPoses {
             "hip": pressHipLifted,
             "back": lowerBackArched(0.14)
         ],
-        "Narrow-Stance Leg Press": [
-            // Feet touching, the knees crowding in together.
-            "stance": pressFeetTogether.seen(-0.7),
-            "lockout": kneesSnapped,
-            // A smaller cave than the default 0.17: these knees start only
-            // 0.11 m from the midline, so 0.09 (~5 cm each) brings them to
-            // ~0.06 m, just touching, instead of through each other.
-            "knee": kneesIn("*", 0.09).seen(-0.7),
-            "depth": pressHipsCurled,
-            "back": lowerBackArched(0.14)
-        ],
-        "Wide-Stance Leg Press": [
-            // Wide but low on the platform: knees past the toes, heels up.
-            "stance": pressFeetLow(),
-            "lockout": kneesSnapped,
-            "knee": kneesIn().seen(-0.7),
-            "depth": pressHipsCurled,
-            "back": lowerBackArched(0.14)
-        ],
         // MARK: 30-leg set single-leg and heel-elevated squats (2026-09-28)
         // The heel-elevated and cyclist squats are framed three-quarter from
         // the left (yaw -1.0): sagittal faults turn -0.4 (a total of -1.4, near
@@ -10262,6 +10137,9 @@ enum FaultPoses {
             "heels": heelsUp().seen(-0.4)
         ],
         "Cyclist Squat": [
+            // The bar slid down the back, the chest tipping (as the
+            // heel-elevated squat).
+            "bar": barSlidLow.seen(-0.4),
             // Feet set out wide like a regular squat.
             "stance": singleStanceWide.seen(0.8),
             // Hips back, shins upright, the chest tipping forward.

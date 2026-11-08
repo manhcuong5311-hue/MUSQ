@@ -1289,3 +1289,122 @@ matches the approved .blend to 0.000 cm. The paint changed only on the
 clavicular head (dim -> bright), so both lifts' Upper Pectoralis rows are
 primary now (fractions kept) and `chest_paint.py` rewrote their two
 `ChestPaint` entries. Tiles re-shot; framings kept.
+
+Desktop "1-100" folder, 2026-11-07 (JOBS "1-100-1107"): the 79 exports of
+2026-11-04/05 still outside the app ("chỉ cần thay model": model swaps, the
+owner's tweaks being small). The two pullovers swapped on 2026-11-03 are
+byte-identical and were left out. Cloned to `SourceExports/1-100-1107/`
+(`_names.tsv`, `textures/`): triceps 050-058 and 055B, shoulders 29, 30, 191,
+192, 204, 215B, 216 and 221, the five shrug leans, biceps 40-48 and 236-268
+(no 244) with the Biceps Curl, forearms 49 and 269-280, and the Lunge, Lunge
+(Lean) and Squat. Converted, `one_side_tiers.py` (the nine one-sided lifts),
+`shorts/rebase_shorts.py` (all but the Assisted Dip, which keeps its own
+rotated rig and stays ~21 MB), padded and slimmed against `AnatomyBodyV2.usdc`,
+all attribute for attribute (131.6 MB for the 79, 111 MB before).
+
+The arm lifts carry the elbow helper joints of `BLENDER/Co_duoi_tay_20261104`
+(`HLP_biceps_L/R`, `HLP_triceps_L/R`, children of `upper_arm`, scaled by
+drivers from the elbow angle), the eight wrist lifts also `HLP_wflex_L/R` and
+`HLP_wext_L/R`. Blender writes them into the middle of the joint order (55-56
+and 124-125; 13-14 and 84-85 for the wrist pair), so every body mesh's joint
+indices change. No separate shared body was needed after all: a slim against
+`AnatomyBodyV2.usdc` keeps the model's joint list, the renumbered joint
+indices and the arm muscles' new weights as overrides, 0.15-0.5 MB more per
+model than against a body built from an arm export (tried as
+`AnatomyBodyArms`/`AnatomyBodyWrist` from the Barbell Curl and Wrist Curl:
+1.05-1.75 MB against 1.21-1.93 MB), less than a second 20 MB body. RealityKit
+plays the helpers' scale: the Barbell Curl's motion is unchanged to 0.0 cm,
+yet the harness stills differ over the upper arm.
+
+The Desktop's `238_spider_curl` was saved and exported from the older
+`exercises_191_280` .blend (no helper joints; the bar 5.0 cm off the palm
+against 3.8). The app's Spider Curl comes from the rebuilt
+`🟢_dung_lai_tu_app_20261031/238` file, flagged green after the helpers went
+in, so that file was exported headless instead
+(`238_spider_curl_rebuilt.usdc`): motion, paint and props as the app's
+model, plus the helpers.
+
+Against the models they replace (`drive_diff.py` read against copies of the
+old models): 73 move as before (71 to 0.0 cm, the two reverse wrist curls'
+heads 0.8 cm). The 2026-11-04 fixes the owner approved and exported: Smith Machine
+Shoulder Press down to the neck (bar z 1.19 m, 21.9 cm), Single-Arm Cable
+Curl stopping at 150 degrees with no pause at the bottom and the elbow pinned
+(19.4 cm), Dumbbell Shoulder Press and Arnold Press leaning back 7.5 degrees
+against the pad and pressing straight up (15.6/16.1 cm), 055B and 055 with the
+upper arms lowered (12 and 9 degrees) and the pulley raised to 1.6 and 0.78 m
+(11.2/8.4 cm). The 215B and 246 rope strands now move (eight tube segments
+each), the 246 rope ends sit in the fists; benches moved 2-7 cm on four lifts,
+and the Cable Preacher Curl's arm pad stands on a post now
+(`Q191_Preacher_ROOT_001`). The 2026-11-04 pulley raise left 055's and 055B's
+`S50_Riser` (the cable inside the column, from the top pulley down to the
+exit pulley) centred but 27 and 22 cm too long, poking 6-8 cm out of the
+column top. `BLENDER/Fix_055_Riser_20261107` scaled its keyed Z in both
+.blend files so it runs exactly from the exit pulley's centre to 1.95 m (0.78
+and 1.60 m up), as on the other S50 models, and JOBS reads headless exports of
+the fixed files (`*_riserfix.usdc`): the same as the owner's 2026-11-05 exports
+but for that one scale.
+The 055 file was named "🟢 BIẾN THỂ ĐỂ SAU" (variants later) and went in as
+the Overhead Cable Triceps Extension model.
+
+Paint changed on four, and their rows follow: Seated Barbell Overhead Press
+front delts bright (Anterior Deltoid primary), Alternating Dumbbell Front Raise
+side delts bright (Lateral Deltoid primary), Lunge and Lunge (Lean) the left
+hamstrings dim (Hamstrings secondary, 0.30 estimated and the Lean's old 0.50
+back). Copy changed only where the model now contradicts it: 055's setup puts
+the pulley at about thigh height, and the Single-Arm Cable Curl's range cue
+and comparison note say the arm lowers to almost straight and curls straight
+back up (its range ghost's window now ends at the new bottom, 0.87 torso
+lengths). Vietnamese merged. Framings kept: old/new harness stills of 17
+lifts (the changed ones and a sample of the helper-only ones) kept every
+lifter and machine in frame. 13 library tiles re-shot with their stored
+framings and pose times (both seated dumbbell presses, the Smith press,
+055, 055B, the Single-Arm Cable Curl, the two re-painted shoulder lifts,
+both lunges, the Rope Hammer Curl, Cable Preacher Curl and EZ Bar Spider
+Curl, whose bench lost a stray rod).
+
+Later the same day, on the owner's notes: the Overhead Cable Triceps Extension
+(055) twisted the humerus about its own axis by up to 52 degrees each rep (the
+elbow and upper arm stayed put, but the plane the elbow bends in turned with
+the elbow point), there since its first export; 055B does not (0), the approved
+Dumbbell Overhead Triceps Extension 11-15. `BLENDER/Fix_055_Twist_20261107`
+turns the hand IK targets and elbow poles back about each upper arm, frame by
+frame, to 15% of the twist (7.8 degrees at most; elbow 0.001 mm, elbow angle
+and timing unchanged) and rebuilds the S50 rope, cable and stack as the
+2026-11-04 tool did. JOBS reads its headless export
+(`055_overhead_cable_triceps_extension_twistfix.usdc`); its tile was re-shot.
+On the owner's word ("gộp vào app có 2 biến thể 1 bài", keeping 055's copy)
+the Bent-Over Cable Overhead Triceps Extension is no longer an exercise of its
+own: its model is the "Bent-Over" stance of the Overhead Cable Triceps
+Extension (with "Standing"), both with the framings they had, sharing 055's
+cues, setup, ghosts and muscle list. Its catalog entry, trainer content, tile,
+Vietnamese strings and thumbnail entries are gone; the model stays
+(`Triceps/BentOverCableOverheadTricepsExtension`).
+
+Owner's Leg list, 2026-11-07 (HIKSEMI `BLENDER/Fix_Leg_20261107/`,
+README_VI.md). In the .blend files the lunges and split squats light the
+hamstrings dim on the loaded leg (the front leg; both legs on the lifts that
+alternate), following the owner's own Lunge and Lunge (Lean): 15 files, all
+flagged red for the owner to review and export, so the app models are
+unchanged until then. The Goblet Squat lights its glutes bright (`MH_Glutes` 2)
+and went in at once (JOBS "leg-1107", a headless export that differs from the
+legs-1028 model only in that paint), with its Gluteus Maximus row primary.
+In the app, lifts that were separate exercises for one movement are now
+stances of one, each keeping its model, framing and muscle list, under the
+main lift's cues, setup and ghosts:
+- Lunge: Upright / Lean (was Lunge (Lean)).
+- Bulgarian Split Squat: Upright / Lean.
+- Forward Lunge: Bodyweight / Barbell (was Barbell Lunge, which steps forward
+  too; a barbell lunge in place is the split squat).
+- Split Squat: Barbell / Dumbbell / Smith Machine. It is the Barbell Split
+  Squat renamed (tile `lib-split-squat`), absorbing the Dumbbell and Smith
+  Machine Split Squats.
+- The Narrow- and Wide-Stance Leg Press exercises are gone: they were the 45° models
+  already offered as the Wide and Narrow stances of the 45-Degree Leg Press.
+  The Leg Press on the older `GYM_LegPress` machine stays an exercise.
+The dropped entries lose their catalog line, trainer content, ghosts, tile,
+thumbnail entries and Vietnamese strings; their models stay. Saved workouts
+and presets keep old names, so `ExerciseCatalog.mergedNames` maps each to the
+exercise that now carries it (055B included). The Smith Machine Reverse Lunge
+and Cyclist Squat gained a `bar` cue ("Bar high on the traps") that opens the
+back-bar x-ray, with the Smith split squat's and heel-elevated squat's bar
+ghosts.

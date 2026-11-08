@@ -12,8 +12,28 @@ import Foundation
 enum ExerciseCatalog {
 
     static func exercise(named name: String) -> Exercise? {
-        byName[name]
+        byName[name] ?? mergedNames[name].flatMap { byName[$0] }
     }
+
+    /// Exercises folded into another as one of its stances (2026-11-07).
+    /// Saved workouts, presets and history keep the old name, which resolves
+    /// to the exercise that now carries that stance.
+    static let mergedNames: [String: String] = [
+        "Bent-Over Cable Overhead Triceps Extension": "Overhead Cable Triceps Extension",
+        "Lunge (Lean)": "Lunge",
+        "Bulgarian Split Squat (Lean)": "Bulgarian Split Squat",
+        "Barbell Lunge": "Forward Lunge",
+        "Barbell Split Squat": "Split Squat",
+        "Dumbbell Split Squat": "Split Squat",
+        "Smith Machine Split Squat": "Split Squat",
+        "Narrow-Stance Leg Press": "45-Degree Leg Press",
+        "Wide-Stance Leg Press": "45-Degree Leg Press",
+        "Hip Abduction Machine (Lean)": "Hip Abduction Machine",
+        // The male cable kickback left the app for the female one (owner,
+        // 2026-11-07); the male Cable Side Kick and Cable Hip Abduction have no
+        // stand-in.
+        "Cable Glute Kickback": "Standing Hinge Kickback",
+    ]
 
     /// How an exercise loads each muscle part.
     ///

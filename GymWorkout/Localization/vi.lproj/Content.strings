@@ -22,10 +22,6 @@
 "QUADRICEPS" = "CƠ TỨ ĐẦU ĐÙI";
 /* Squat · equipment */
 "BODYWEIGHT" = "KHÔNG DỤNG CỤ";
-/* Lunge (Lean) · primaryMuscle */
-"GLUTEUS MAXIMUS" = "CƠ MÔNG LỚN";
-/* Bulgarian Split Squat (Lean) · equipment */
-"BENCH" = "GHẾ TẬP";
 /* Dumbbell Sumo Squat · primaryMuscle */
 "QUADS + GLUTES" = "TỨ ĐẦU ĐÙI + CƠ MÔNG";
 /* Kettlebell Goblet Squat · equipment */
@@ -36,6 +32,8 @@
 "BELT" = "ĐAI";
 /* Hip Adduction Machine · primaryMuscle */
 "ADDUCTORS" = "NHÓM CƠ KHÉP ĐÙI";
+/* Cable Knee-Drive Kickback · primaryMuscle */
+"GLUTEUS MAXIMUS" = "CƠ MÔNG LỚN";
 /* Concentration Curl · primaryMuscle */
 "BICEPS BRACHII" = "CƠ NHỊ ĐẦU CÁNH TAY";
 /* Barbell Thruster · primaryMuscle */
@@ -108,12 +106,14 @@
 "TOWEL" = "KHĂN";
 /* Wrist Roller · equipment */
 "WRIST ROLLER" = "CON LĂN CỔ TAY";
-/* Cable Side Kick · primaryMuscle */
-"GLUTEUS MEDIUS" = "CƠ MÔNG NHỠ";
+/* Single-Leg Hip Thrust · equipment */
+"BENCH" = "GHẾ TẬP";
 /* Swiss Ball Leg Curl · equipment */
 "SWISS BALL" = "BÓNG TẬP";
 /* Sliding Leg Curl · equipment */
 "SLIDERS" = "ĐĨA TRƯỢT";
+/* Standing Hip Abduction · primaryMuscle */
+"GLUTEUS MEDIUS" = "CƠ MÔNG NHỠ";
 /* Diamond Push-Up · primaryMuscle */
 "TRICEPS + CHEST" = "CƠ TAM ĐẦU + CƠ NGỰC";
 /* Medicine Ball Chest Pass · equipment */
@@ -276,6 +276,50 @@
 "Legs almost straight below you, feet just behind the hips; the model lights the middle and lower chest" = "Chân gần như thẳng ngay dưới người, bàn chân ngay sau hông; mô hình tô sáng ngực giữa và ngực dưới";
 /* stancesByExercise · label */
 "Rope" = "Dây thừng";
+/* stancesByExercise · label */
+"Standing" = "Đứng";
+/* stancesByExercise · note */
+"Stand facing away from the stack, the rope over your head from a pulley at about thigh height" = "Đứng quay lưng về cột tạ, dây thừng vòng qua đầu từ ròng rọc đặt ngang đùi";
+/* stancesByExercise · label */
+"Bent-Over" = "Cúi người";
+/* stancesByExercise · note */
+"Hinge forward until the back is nearly level, a high pulley behind you; the arms reach out past the head" = "Gập hông đến khi lưng gần nằm ngang, ròng rọc cao ở sau lưng; hai tay vươn ra quá đầu";
+/* stancesByExercise · note */
+"Trunk upright over the hips, hands on the hips" = "Thân thẳng trên hông, hai tay chống hông";
+/* stancesByExercise · label */
+"Lean" = "Nghiêng người";
+/* stancesByExercise · note */
+"Hinge forward about 30° with a flat back; the glutes take more of the work" = "Gập người về trước khoảng 30°, lưng thẳng; mông làm nhiều hơn";
+/* stancesByExercise · note */
+"Trunk nearly upright over the front leg; the quads lead" = "Thân gần thẳng trên chân trước; đùi trước làm chính";
+/* stancesByExercise · note */
+"Trunk leaned forward over the front thigh; the glutes work harder" = "Thân đổ về trước trên đùi trước; mông làm nhiều hơn";
+/* stancesByExercise · label */
+"Bodyweight" = "Không dụng cụ";
+/* stancesByExercise · note */
+"Hands on the hips; step forward and push back to standing, legs alternating" = "Tay chống hông; bước tới rồi đẩy về tư thế đứng, đổi chân luân phiên";
+/* stancesByExercise · label */
+"Barbell" = "Tạ đòn";
+/* stancesByExercise · note */
+"Bar high on the upper back; the same step with the trunk upright" = "Thanh đặt cao trên lưng trên; bước như trên, thân thẳng";
+/* Bulgarian Split Squat · muscle */
+"Gluteus Medius" = "Cơ mông nhỡ";
+/* stancesByExercise · note */
+"Sit tall against the pad; the side glutes lead" = "Ngồi thẳng tựa đệm; mông nhỡ và mông bé làm chính";
+/* stancesByExercise · note */
+"Lean the trunk forward off the pad; the gluteus maximus takes over" = "Đổ thân về trước, rời đệm; mông lớn làm chính";
+/* Hip Abduction Machine · muscle */
+"Gluteus Minimus" = "Cơ mông bé";
+/* stancesByExercise · note */
+"Bar high on the upper back, feet split front and back" = "Thanh đặt cao trên lưng trên, hai chân tách trước sau";
+/* Weighted Frog Pump · label */
+"Dumbbell" = "Tạ đơn";
+/* stancesByExercise · note */
+"A dumbbell in each hand, arms hanging by the sides" = "Mỗi tay một tạ đơn, tay buông hai bên";
+/* stancesByExercise · label */
+"Smith Machine" = "Máy Smith";
+/* stancesByExercise · note */
+"Bar on the upper back in the Smith rails; it runs straight up and down" = "Thanh trên lưng trên trong khung Smith; thanh chạy thẳng lên xuống";
 /* Barbell Bench Press · label */
 "Keep wrists stacked" = "Giữ cổ tay thẳng";
 /* Barbell Bench Press · label */
@@ -3783,7 +3827,7 @@
 /* Overhead Cable Triceps Extension · correct */
 "Stand with the feet hip-width or one foot forward, knees soft, and hold that position." = "Đứng hai chân rộng bằng hông hoặc một chân bước lên trước, gối hơi chùng, và giữ nguyên tư thế đó.";
 /* Overhead Cable Triceps Extension · setup */
-"Attach a rope to a low pulley." = "Gắn dây thừng vào ròng rọc thấp.";
+"Attach a rope to a pulley at about thigh height." = "Gắn dây thừng vào ròng rọc đặt ngang đùi.";
 /* Overhead Cable Triceps Extension · setup */
 "Face away from the stack with the rope behind your head." = "Quay lưng về phía cột tạ, dây ở sau đầu.";
 /* Overhead Cable Triceps Extension · setup */
@@ -4076,8 +4120,6 @@
 "Standing so close to the bench that the front heel lifts, or balancing on the rear toes and pushing off with them." = "Đứng quá sát ghế đến mức gót chân trước nhấc lên, hoặc giữ thăng bằng trên mũi chân sau và đạp bằng mũi chân đó.";
 /* Bulgarian Split Squat · correct */
 "Rest the laces of the rear foot on a knee-height bench and place the front foot far enough forward that it stays flat at the bottom." = "Đặt mu bàn chân sau lên ghế cao ngang gối và đặt chân trước đủ xa về phía trước để bàn chân vẫn phẳng ở điểm thấp nhất.";
-/* Bulgarian Split Squat · muscle */
-"Gluteus Medius" = "Cơ mông nhỡ";
 /* Bulgarian Split Squat · setup */
 "Stand about a stride in front of a knee-height bench." = "Đứng trước một chiếc ghế cao ngang gối, cách khoảng một bước chân.";
 /* Bulgarian Split Squat · setup */
@@ -4092,62 +4134,6 @@
 "A flat front foot with the shin near vertical keeps the load on the front leg's quads and glutes." = "Bàn chân trước đặt phẳng với cẳng chân gần thẳng đứng giữ tải trên cơ tứ đầu đùi và nhóm cơ mông của chân trước.";
 /* Bulgarian Split Squat · mistakeNote */
 "When the front heel lifts, balance shifts onto the toes and the knee takes a sharp, unstable load." = "Khi gót chân trước nhấc lên, trọng tâm dồn lên mũi chân và gối phải chịu tải dồn gắt, thiếu ổn định.";
-/* Bulgarian Split Squat (Lean) · label */
-"Lean ~40° from the hips" = "Nghiêng ~40° từ hông";
-/* Bulgarian Split Squat (Lean) · label */
-"Hips back, not just down" = "Đẩy hông ra sau, không chỉ hạ";
-/* Bulgarian Split Squat (Lean) · label */
-"Back knee drops straight down" = "Gối sau hạ thẳng xuống";
-/* Bulgarian Split Squat (Lean) · title */
-"Torso Lean" = "Nghiêng thân";
-/* Bulgarian Split Squat (Lean) · intro */
-"Leaning forward is what makes this variation glute-biased." = "Nghiêng người ra trước là điều khiến biến thể này thiên về cơ mông.";
-/* Bulgarian Split Squat (Lean) · why */
-"A forward lean of about 40° increases gluteus maximus and hamstring activity compared with an upright split squat, while the quadriceps still work hard." = "Nghiêng người ra trước khoảng 40° làm tăng hoạt động của cơ mông lớn và nhóm cơ đùi sau so với split squat thân thẳng, trong khi cơ tứ đầu đùi vẫn làm việc nặng.";
-/* Bulgarian Split Squat (Lean) · mistake */
-"Rounding the back to get the chest down instead of hinging at the hips." = "Cong lưng để hạ ngực xuống thay vì gập hông.";
-/* Bulgarian Split Squat (Lean) · correct */
-"Keep the spine long and tilt the torso forward from the hips to roughly 40° before you descend." = "Giữ cột sống vươn dài và nghiêng thân ra trước từ hông đến khoảng 40° trước khi hạ xuống.";
-/* Bulgarian Split Squat (Lean) · intro */
-"The hips travel back as well as down." = "Hông vừa lùi ra sau vừa hạ xuống.";
-/* Bulgarian Split Squat (Lean) · why */
-"Sending the hips back lengthens the glutes and hamstrings of the front leg, so they drive the ascent." = "Đẩy hông ra sau kéo dài cơ mông và cơ đùi sau của chân trước, nhờ đó chúng dẫn dắt pha đứng lên.";
-/* Bulgarian Split Squat (Lean) · mistake */
-"Dropping straight down with the lean held only at the shoulders." = "Hạ thẳng xuống, chỉ giữ độ nghiêng ở vai.";
-/* Bulgarian Split Squat (Lean) · correct */
-"Push the hips back as you lower, keeping the torso angle fixed throughout the rep." = "Đẩy hông ra sau khi hạ xuống, giữ góc thân cố định trong suốt mỗi lần.";
-/* Bulgarian Split Squat (Lean) · why */
-"Tracking over the middle toes keeps the knee aligned while the hip does more of the work." = "Gối đi theo hướng các ngón chân giữa giúp gối thẳng hàng trong khi hông đảm nhận nhiều phần việc hơn.";
-/* Bulgarian Split Squat (Lean) · title */
-"Rear Leg" = "Chân sau";
-/* Bulgarian Split Squat (Lean) · intro */
-"The back leg stays passive while its knee drops." = "Chân sau giữ thụ động trong khi gối của nó hạ xuống.";
-/* Bulgarian Split Squat (Lean) · why */
-"Resting the rear laces on the bench keeps that leg relaxed, so as the back knee drops toward the floor nearly all the load stays on the front leg." = "Đặt mu bàn chân sau lên ghế giúp chân đó thả lỏng, nên khi gối sau hạ về phía sàn, gần như toàn bộ tải vẫn nằm trên chân trước.";
-/* Bulgarian Split Squat (Lean) · mistake */
-"Pushing off the rear toes to help the front leg up." = "Đạp mũi chân sau để giúp chân trước đứng lên.";
-/* Bulgarian Split Squat (Lean) · correct */
-"Rest the rear laces on a knee-height bench, let that leg relax, and lower until the back knee is just above the floor." = "Đặt mu bàn chân sau lên ghế cao ngang gối, thả lỏng chân đó, và hạ xuống đến khi gối sau chỉ cách sàn một chút.";
-/* Bulgarian Split Squat (Lean) · title */
-"Front Foot" = "Chân trước";
-/* Bulgarian Split Squat (Lean) · intro */
-"Drive through the heel and mid-foot." = "Đạp qua gót và giữa bàn chân.";
-/* Bulgarian Split Squat (Lean) · why */
-"Pushing through the heel keeps the load on the posterior chain the lean is meant to target." = "Đạp qua gót chân giữ tải trên chuỗi cơ sau, đúng nhóm cơ mà tư thế nghiêng nhắm đến.";
-/* Bulgarian Split Squat (Lean) · mistake */
-"Rising onto the ball of the front foot, which shifts the work back to the quads." = "Kiễng lên mũi bàn chân trước, khiến công việc dồn ngược về cơ tứ đầu đùi.";
-/* Bulgarian Split Squat (Lean) · correct */
-"Keep the whole front foot planted and push the floor away through the heel as you stand." = "Giữ cả bàn chân trước bám sàn và đạp sàn qua gót chân khi đứng lên.";
-/* Bulgarian Split Squat (Lean) · setup */
-"Hands on your hips, lean forward about 40° from the hips." = "Chống tay lên hông, nghiêng người ra trước khoảng 40° từ hông.";
-/* Bulgarian Split Squat (Lean) · correctCue */
-"Lean from the hips, spine long" = "Nghiêng từ hông, lưng vươn dài";
-/* Bulgarian Split Squat (Lean) · mistakeCue */
-"Back rounds instead of hinging" = "Cong lưng thay vì gập hông";
-/* Bulgarian Split Squat (Lean) · correctNote */
-"Hinging from the hips with a long spine lets the lean load the glutes and hamstrings of the front leg." = "Gập hông với cột sống vươn dài giúp tư thế nghiêng dồn tải lên cơ mông và cơ đùi sau của chân trước.";
-/* Bulgarian Split Squat (Lean) · mistakeNote */
-"Rounding the back to fake the lean puts the load on the lumbar spine and leaves the glutes no more involved than an upright split squat." = "Cong lưng để giả độ nghiêng sẽ dồn tải lên cột sống thắt lưng, và cơ mông cũng không tham gia nhiều hơn so với split squat thân thẳng.";
 /* Dumbbell Romanian Deadlift · label */
 "Dumbbells slide down the thighs" = "Tạ đơn trượt dọc đùi";
 /* Dumbbell Romanian Deadlift · label */
@@ -4622,212 +4608,6 @@
 "A level pelvis makes the working glutes both lift and stabilise the hips." = "Khung chậu ngang buộc cơ mông bên tập vừa nâng vừa ổn định hông.";
 /* Single-Leg Glute Bridge · mistakeNote */
 "When the hips twist or sag, the load leaks away from the working side and the lower back takes over." = "Khi hông xoay hoặc tụt xuống, tải bị thất thoát khỏi bên tập và lưng dưới phải gánh thay.";
-/* Cable Glute Kickback · label */
-"Hinge forward, spine long" = "Gập hông về trước, lưng vươn dài";
-/* Cable Glute Kickback · label */
-"Hips square to the stack" = "Hông ngay ngắn, hướng cột tạ";
-/* Cable Glute Kickback · label */
-"Kick back from the hip" = "Đá chân ra sau từ hông";
-/* Cable Glute Kickback · label */
-"Cuff on the working ankle" = "Đai ở cổ chân bên tập";
-/* Cable Glute Kickback · label */
-"Hands on the frame" = "Hai tay vịn khung máy";
-/* Cable Glute Kickback · intro */
-"A slight forward lean gives the leg room to travel." = "Hơi nghiêng người về trước để chân có khoảng di chuyển.";
-/* Cable Glute Kickback · why */
-"Hinging forward lets the hip extend fully without the lower back arching to make up the range." = "Gập hông về trước giúp hông duỗi hết biên độ mà lưng dưới không phải ưỡn lên để bù phần biên độ còn thiếu.";
-/* Cable Glute Kickback · mistake */
-"Standing bolt upright and arching the back to get the leg behind the body." = "Đứng thẳng đơ người rồi ưỡn lưng để đưa được chân ra sau thân người.";
-/* Cable Glute Kickback · correct */
-"Hold the frame, hinge forward a little from the hips and keep the spine long." = "Vịn khung máy, hơi gập hông về trước và giữ cột sống vươn dài.";
-/* Cable Glute Kickback · intro */
-"The hips stay facing the stack." = "Hông luôn hướng về phía cột tạ.";
-/* Cable Glute Kickback · why */
-"Square hips keep the movement in the sagittal plane, so the gluteus maximus extends the hip instead of the pelvis rotating." = "Hông ngay ngắn giữ chuyển động trong mặt phẳng đứng dọc, nhờ đó cơ mông lớn duỗi hông thay vì khung chậu bị xoay.";
-/* Cable Glute Kickback · mistake */
-"Opening the hip outward as the leg kicks back." = "Mở hông ra ngoài khi đá chân ra sau.";
-/* Cable Glute Kickback · correct */
-"Keep both hip bones pointing at the machine for every rep." = "Giữ hai bên xương hông hướng về phía máy ở mọi lần đá.";
-/* Cable Glute Kickback · intro */
-"The movement ends where the hip does." = "Động tác kết thúc khi hông hết biên độ.";
-/* Cable Glute Kickback · why */
-"Kicking back only as far as the hip extends keeps the tension in the glute rather than the lumbar spine." = "Chỉ đá ra sau đến mức hông còn duỗi được sẽ giữ độ căng ở cơ mông thay vì ở cột sống thắt lưng.";
-/* Cable Glute Kickback · mistake */
-"Swinging the leg high with momentum and arching the back at the top." = "Vung chân lên cao bằng đà và ưỡn lưng ở điểm cao nhất.";
-/* Cable Glute Kickback · correct */
-"Drive the heel back and slightly up, squeeze the glute at the end and return under control." = "Đẩy gót chân ra sau và hơi lên trên, siết cơ mông ở cuối động tác rồi đưa chân về có kiểm soát.";
-/* Cable Glute Kickback · title */
-"Attachment" = "Điểm gắn cáp";
-/* Cable Glute Kickback · intro */
-"The cable pulls from the ankle." = "Dây cáp kéo từ cổ chân.";
-/* Cable Glute Kickback · why */
-"An ankle cuff on a low pulley keeps the resistance in line with the kick." = "Đai cổ chân gắn vào ròng rọc thấp giữ lực cản cùng hướng với cú đá.";
-/* Cable Glute Kickback · mistake */
-"Letting the cable slacken at the start so the load only appears at the end." = "Để dây cáp chùng ở đầu động tác, khiến tải chỉ xuất hiện ở cuối.";
-/* Cable Glute Kickback · correct */
-"Strap the cuff around the working ankle and step back until there is tension at the start." = "Quấn đai quanh cổ chân bên tập và lùi lại cho đến khi dây cáp căng ngay từ đầu động tác.";
-/* Cable Glute Kickback · title */
-"Support" = "Điểm tựa";
-/* Cable Glute Kickback · intro */
-"The frame steadies you." = "Khung máy giúp bạn đứng vững.";
-/* Cable Glute Kickback · why */
-"Holding the frame takes balance out of the lift, so the working glute can be loaded properly." = "Vịn khung máy giúp bạn không phải lo giữ thăng bằng, nhờ đó cơ mông bên tập được chịu tải đúng mức.";
-/* Cable Glute Kickback · mistake */
-"Pulling on the frame to twist the body into the kick." = "Kéo vào khung máy để vặn người theo cú đá.";
-/* Cable Glute Kickback · correct */
-"Hold the frame with both hands, arms relaxed, standing leg slightly bent." = "Vịn khung máy bằng hai tay, cánh tay thả lỏng, chân trụ hơi chùng.";
-/* Cable Glute Kickback · stabilisers */
-"standing-leg glutes" = "nhóm cơ mông chân trụ";
-/* Cable Glute Kickback · setup */
-"Attach an ankle cuff to the low pulley and strap it to your working ankle." = "Gắn đai cổ chân vào ròng rọc thấp và quấn vào cổ chân bên tập.";
-/* Cable Glute Kickback · setup */
-"Face the stack and hold the frame with both hands." = "Quay mặt về phía cột tạ và vịn khung máy bằng hai tay.";
-/* Cable Glute Kickback · setup */
-"Step back until the cable is tight and hinge forward slightly." = "Lùi lại cho đến khi dây cáp căng và hơi gập hông về trước.";
-/* Cable Glute Kickback · mistakeBadge */
-"BACK ARCHING" = "ƯỠN LƯNG";
-/* Cable Glute Kickback · correctCue */
-"Hip extends, spine still" = "Hông duỗi, cột sống yên";
-/* Cable Glute Kickback · mistakeCue */
-"Lower back arches to lift the leg" = "Lưng dưới ưỡn lên để nâng chân";
-/* Cable Glute Kickback · correctNote */
-"Keeping the spine still ends the kick at full hip extension, which is where the glute is working hardest." = "Giữ cột sống yên giúp cú đá dừng ở điểm hông duỗi hết, cũng là lúc cơ mông làm việc mạnh nhất.";
-/* Cable Glute Kickback · mistakeNote */
-"Arching the back lifts the leg higher but the extra range comes from the spine, not the glute." = "Ưỡn lưng giúp nâng chân cao hơn, nhưng phần biên độ thêm đó đến từ cột sống chứ không phải từ cơ mông.";
-/* Cable Side Kick · label */
-"Stand tall, no lean" = "Đứng thẳng, không nghiêng";
-/* Cable Side Kick · label */
-"Hips face forward" = "Hông hướng ra trước";
-/* Cable Side Kick · label */
-"Sweep the leg out" = "Đưa chân ra ngoài";
-/* Cable Side Kick · label */
-"Toes point forward" = "Mũi chân hướng ra trước";
-/* Cable Side Kick · label */
-"Hold the rail lightly" = "Nắm nhẹ thanh vịn";
-/* Cable Side Kick · intro */
-"The torso stays upright while the leg moves." = "Thân người giữ thẳng trong khi chân di chuyển.";
-/* Cable Side Kick · why */
-"Leaning away from the working leg shortens the range at the hip and lets the trunk muscles take over from the gluteus medius." = "Nghiêng người về phía ngược với chân tập làm ngắn biên độ ở hông và để nhóm cơ thân làm thay việc của cơ mông nhỡ.";
-/* Cable Side Kick · mistake */
-"Tipping the torso away to lift the leg higher." = "Nghiêng thân sang phía ngược lại để nâng chân cao hơn.";
-/* Cable Side Kick · correct */
-"Stand tall, shoulders over the hips, and let only the leg move." = "Đứng thẳng, vai ở ngay trên hông, và chỉ để chân di chuyển.";
-/* Cable Side Kick · intro */
-"Keep the hips square to the front." = "Giữ hông ngay ngắn, hướng thẳng ra trước.";
-/* Cable Side Kick · why */
-"Facing forward keeps the leg moving straight out to the side, which is the gluteus medius's line of pull." = "Hướng thẳng ra trước giúp chân di chuyển thẳng sang ngang, đúng hướng kéo của cơ mông nhỡ.";
-/* Cable Side Kick · mistake */
-"Turning the hips and toes up, which swaps in the hip flexors." = "Xoay hông và mũi chân hướng lên trên, khiến nhóm cơ gấp hông vào làm thay.";
-/* Cable Side Kick · correct */
-"Point both hip bones forward for the whole set." = "Giữ hai bên xương hông hướng ra trước suốt cả hiệp.";
-/* Cable Side Kick · intro */
-"From across the body to out wide." = "Từ bắt chéo trước người đến dang rộng sang ngang.";
-/* Cable Side Kick · why */
-"Starting with the leg crossed in front lengthens the abductors, so the side glute works through its full range." = "Bắt đầu với chân bắt chéo phía trước giúp kéo giãn nhóm cơ dạng hông, nhờ đó cơ mông bên hoạt động hết biên độ.";
-/* Cable Side Kick · mistake */
-"Short, fast kicks that stop low and never cross the midline." = "Đá ngắn và nhanh, dừng ở thấp và không bao giờ đưa chân qua đường giữa cơ thể.";
-/* Cable Side Kick · correct */
-"Let the leg cross slightly in front, then sweep it out to the side under control and return slowly." = "Để chân hơi bắt chéo phía trước, rồi đưa chân sang ngang có kiểm soát và đưa về chậm.";
-/* Cable Side Kick · intro */
-"The toes lead forward, not up." = "Mũi chân hướng ra trước, không hướng lên.";
-/* Cable Side Kick · why */
-"Toes forward or slightly down keep the gluteus medius in charge; rotating the foot up hands the work to the hip flexors." = "Mũi chân hướng ra trước hoặc hơi chúc xuống giúp cơ mông nhỡ giữ vai trò chính; xoay bàn chân hướng lên sẽ chuyển việc cho nhóm cơ gấp hông.";
-/* Cable Side Kick · mistake */
-"Turning the toes toward the ceiling as the leg rises." = "Xoay mũi chân hướng lên trần khi nâng chân.";
-/* Cable Side Kick · correct */
-"Keep the toes pointing forward throughout the kick." = "Giữ mũi chân hướng ra trước suốt cú đá.";
-/* Cable Side Kick · intro */
-"Hold on just enough to balance." = "Chỉ vịn vừa đủ để giữ thăng bằng.";
-/* Cable Side Kick · why */
-"A light hand on the rail removes the balance demand so you can load the moving side." = "Đặt nhẹ tay lên thanh vịn giúp bạn không phải lo giữ thăng bằng, nhờ đó có thể dồn tải cho bên chân đang chuyển động.";
-/* Cable Side Kick · mistake */
-"Pulling on the rail to lean the body." = "Kéo thanh vịn để nghiêng người.";
-/* Cable Side Kick · correct */
-"Hold the rail with the near hand and keep the standing knee soft." = "Nắm thanh vịn bằng tay phía gần máy và giữ gối chân trụ hơi chùng.";
-/* Cable Side Kick · stabilisers */
-"standing-leg gluteus medius" = "cơ mông nhỡ chân trụ";
-/* Cable Side Kick · setup */
-"Attach an ankle cuff to the low pulley and strap it to the far ankle." = "Gắn đai cổ chân vào ròng rọc thấp và quấn vào cổ chân phía xa cột tạ.";
-/* Cable Side Kick · setup */
-"Stand side-on to the stack, hold the rail with your near hand and rest the other on your hip." = "Đứng quay ngang với cột tạ, nắm thanh vịn bằng tay phía gần và đặt tay còn lại lên hông.";
-/* Cable Side Kick · setup */
-"Let the working leg cross slightly in front, toes forward." = "Để chân tập hơi bắt chéo phía trước, mũi chân hướng ra trước.";
-/* Cable Side Kick · mistakeBadge */
-"TORSO LEANING" = "NGHIÊNG THÂN";
-/* Cable Side Kick · correctCue */
-"Upright torso, leg sweeps out" = "Thân thẳng, chân đưa ra ngoài";
-/* Cable Side Kick · mistakeCue */
-"Torso tips to lift the leg" = "Thân nghiêng để nâng chân";
-/* Cable Side Kick · correctNote */
-"Staying upright makes the side glute lift the leg through the full range." = "Giữ người thẳng buộc cơ mông bên nâng chân qua hết biên độ.";
-/* Cable Side Kick · mistakeNote */
-"Leaning away lifts the foot higher but the extra range comes from the trunk, not the hip." = "Nghiêng người ra xa giúp bàn chân lên cao hơn, nhưng phần biên độ thêm đó đến từ thân chứ không phải từ hông.";
-/* Cable Hip Abduction · label */
-"Stay upright" = "Giữ thân thẳng";
-/* Cable Hip Abduction · label */
-"Pelvis level" = "Khung chậu ngang";
-/* Cable Hip Abduction · label */
-"Lift out, not up" = "Đưa ra, không đưa lên";
-/* Cable Hip Abduction · label */
-"Toes forward" = "Mũi chân ra trước";
-/* Cable Hip Abduction · label */
-"Hand on the post" = "Tay vịn trụ máy";
-/* Cable Hip Abduction · intro */
-"Only the leg moves." = "Chỉ có chân di chuyển.";
-/* Cable Hip Abduction · why */
-"An upright torso keeps the movement at the hip, so the gluteus medius lifts the leg." = "Thân thẳng giữ chuyển động ở khớp hông, nhờ đó cơ mông nhỡ nâng chân.";
-/* Cable Hip Abduction · mistake */
-"Leaning the upper body away from the moving leg." = "Nghiêng thân trên ra xa chân đang chuyển động.";
-/* Cable Hip Abduction · correct */
-"Stand tall with the shoulders stacked over the hips." = "Đứng thẳng, vai thẳng hàng ngay trên hông.";
-/* Cable Hip Abduction · title */
-"Pelvis" = "Khung chậu";
-/* Cable Hip Abduction · intro */
-"Keep the pelvis still and level." = "Giữ khung chậu yên và ngang bằng.";
-/* Cable Hip Abduction · why */
-"Hiking the hip on the working side lets the side trunk muscles lift the leg instead of the glute." = "Nhấc hông bên tập lên khiến nhóm cơ bên thân nâng chân thay cho cơ mông.";
-/* Cable Hip Abduction · mistake */
-"Shrugging the working hip up toward the ribs." = "Kéo hông bên tập lên về phía xương sườn.";
-/* Cable Hip Abduction · correct */
-"Keep both hip bones level and move the leg from the hip joint." = "Giữ hai bên xương hông ngang bằng và di chuyển chân từ khớp hông.";
-/* Cable Hip Abduction · intro */
-"A modest, controlled range." = "Biên độ vừa phải, có kiểm soát.";
-/* Cable Hip Abduction · why */
-"The hip abducts about 30–45°; past that the pelvis tips and the glute stops doing the work." = "Hông dạng được khoảng 30–45°; quá mức đó khung chậu sẽ nghiêng và cơ mông không còn làm việc.";
-/* Cable Hip Abduction · mistake */
-"Swinging the leg as high as possible." = "Vung chân lên cao hết mức có thể.";
-/* Cable Hip Abduction · correct */
-"Lift the leg out to the side until the pelvis wants to move, pause, and lower slowly." = "Nâng chân sang ngang đến khi khung chậu bắt đầu muốn dịch chuyển, dừng lại, rồi hạ chậm.";
-/* Cable Hip Abduction · intro */
-"Lead with the heel, toes forward." = "Gót chân dẫn đầu, mũi chân hướng ra trước.";
-/* Cable Hip Abduction · why */
-"Keeping the foot facing forward keeps the gluteus medius in its line of pull." = "Giữ bàn chân hướng ra trước giúp cơ mông nhỡ nằm đúng hướng kéo của nó.";
-/* Cable Hip Abduction · mistake */
-"Rotating the toes up toward the ceiling." = "Xoay mũi chân hướng lên trần.";
-/* Cable Hip Abduction · correct */
-"Keep the toes forward, or slightly down, as the leg moves." = "Giữ mũi chân hướng ra trước, hoặc hơi chúc xuống, khi chân di chuyển.";
-/* Cable Hip Abduction · intro */
-"The post is for balance." = "Trụ máy dùng để giữ thăng bằng.";
-/* Cable Hip Abduction · why */
-"Light support lets you focus on the working hip without the standing leg wobbling." = "Vịn nhẹ giúp bạn tập trung vào hông bên tập mà chân trụ không bị chao đảo.";
-/* Cable Hip Abduction · mistake */
-"Leaning on the post to move the body." = "Tì vào trụ máy để di chuyển thân người.";
-/* Cable Hip Abduction · correct */
-"Rest the near hand on the post, standing knee soft." = "Đặt tay phía gần lên trụ máy, gối chân trụ hơi chùng.";
-/* Cable Hip Abduction · setup */
-"Stand side-on to the stack, one hand on the balance post and the other on your hip." = "Đứng quay ngang với cột tạ, một tay vịn trụ giữ thăng bằng, tay kia đặt lên hông.";
-/* Cable Hip Abduction · setup */
-"Stand tall with the hips level and the standing knee soft." = "Đứng thẳng, hông ngang bằng và gối chân trụ hơi chùng.";
-/* Cable Hip Abduction · mistakeBadge */
-"HIP HIKING" = "NHẤC HÔNG LÊN";
-/* Cable Hip Abduction · correctCue */
-"Pelvis level, leg moves out" = "Khung chậu ngang, chân đưa ra";
-/* Cable Hip Abduction · mistakeCue */
-"Hip hikes to lift the leg" = "Hông nhấc lên để nâng chân";
-/* Cable Hip Abduction · correctNote */
-"With a level pelvis the gluteus medius lifts the leg by itself." = "Khi khung chậu ngang bằng, cơ mông nhỡ tự mình nâng chân.";
-/* Cable Hip Abduction · mistakeNote */
-"Hiking the hip moves the leg with the trunk muscles, so it looks like more range but the glute does less." = "Nhấc hông khiến chân được nâng bằng nhóm cơ thân, nên trông có vẻ biên độ lớn hơn nhưng cơ mông lại làm ít hơn.";
 /* Hip Abduction Machine · label */
 "Push knees out" = "Đẩy gối ra ngoài";
 /* Hip Abduction Machine · label */
@@ -4894,58 +4674,6 @@
 "A slow return keeps the gluteus medius working on the way in as well as the way out." = "Trở về chậm giữ cơ mông nhỡ làm việc cả khi khép vào lẫn khi đẩy ra.";
 /* Hip Abduction Machine · mistakeNote */
 "Letting the weight stack slam the pads together throws away half of every rep." = "Để cột tạ kéo hai đệm đập vào nhau là bỏ phí một nửa của mỗi lần đẩy.";
-/* Hip Abduction Machine (Lean) · label */
-"Lean forward from the hips" = "Nghiêng người về trước từ hông";
-/* Hip Abduction Machine (Lean) · intro */
-"Leaning forward changes which glute fibres work." = "Nghiêng người về trước làm thay đổi những thớ cơ mông tham gia làm việc.";
-/* Hip Abduction Machine (Lean) · why */
-"With the hips flexed further, the upper fibres of the gluteus maximus act more as hip abductors, so the lean shifts more of the work onto the glute max." = "Khi hông gập sâu hơn, các thớ trên của cơ mông lớn đóng vai trò cơ dạng hông nhiều hơn, nên tư thế nghiêng chuyển thêm phần việc sang cơ mông lớn.";
-/* Hip Abduction Machine (Lean) · mistake */
-"Rounding the back to lean instead of hinging at the hips." = "Gù lưng để nghiêng người thay vì gập hông.";
-/* Hip Abduction Machine (Lean) · correct */
-"Keep the spine long and tip the torso forward from the hips, then hold that angle for the set." = "Giữ cột sống vươn dài, nghiêng thân về trước từ hông, rồi giữ nguyên góc đó suốt hiệp.";
-/* Hip Abduction Machine (Lean) · why */
-"Driving the pads apart from a flexed-hip position trains the glutes at a longer length." = "Đẩy hai đệm tách ra từ tư thế hông gập giúp tập nhóm cơ mông ở trạng thái được kéo dài hơn.";
-/* Hip Abduction Machine (Lean) · mistake */
-"Short reps that stop well before the end of the range." = "Làm các lần đẩy ngắn, dừng lại khi còn cách khá xa cuối biên độ.";
-/* Hip Abduction Machine (Lean) · correct */
-"Press the knees out as far as the hips allow, pause, then return slowly." = "Đẩy gối ra xa hết mức hông cho phép, dừng lại, rồi trở về chậm.";
-/* Hip Abduction Machine (Lean) · intro */
-"The hips stay planted as you lean." = "Hông vẫn áp chặt vào ghế khi bạn nghiêng người.";
-/* Hip Abduction Machine (Lean) · why */
-"Keeping the glutes on the seat makes the lean come from the hips rather than sliding forward." = "Giữ mông trên ghế giúp tư thế nghiêng đến từ hông chứ không phải từ việc trượt người ra trước.";
-/* Hip Abduction Machine (Lean) · mistake */
-"Sliding forward on the seat to lean further." = "Trượt người ra trước trên ghế để nghiêng được sâu hơn.";
-/* Hip Abduction Machine (Lean) · correct */
-"Stay seated right back, then hinge forward over the thighs." = "Ngồi lùi hẳn vào trong, rồi gập hông đổ người về trước trên đùi.";
-/* Hip Abduction Machine (Lean) · why */
-"Relaxed feet keep the effort at the hips." = "Bàn chân thả lỏng giữ lực tập trung ở hông.";
-/* Hip Abduction Machine (Lean) · mistake */
-"Pressing the feet into the rests to help the pads apart." = "Ấn bàn chân vào bệ để giúp đẩy hai đệm ra.";
-/* Hip Abduction Machine (Lean) · correct */
-"Keep the feet flat and relaxed on the footrests." = "Giữ bàn chân phẳng và thả lỏng trên bệ để chân.";
-/* Hip Abduction Machine (Lean) · intro */
-"Hold on to keep the lean steady." = "Nắm tay cầm để giữ tư thế nghiêng ổn định.";
-/* Hip Abduction Machine (Lean) · why */
-"Holding the handles supports the forward lean so the torso does not bob with each rep." = "Nắm tay cầm hỗ trợ tư thế nghiêng về trước để thân người không nhấp nhô theo mỗi lần đẩy.";
-/* Hip Abduction Machine (Lean) · mistake */
-"Pulling on the handles to rock forward and back." = "Kéo tay cầm để lắc người ra trước, ra sau.";
-/* Hip Abduction Machine (Lean) · correct */
-"Hold the handles and keep the torso angle fixed." = "Nắm tay cầm và giữ cố định góc nghiêng của thân.";
-/* Hip Abduction Machine (Lean) · muscle */
-"Gluteus Minimus" = "Cơ mông bé";
-/* Hip Abduction Machine (Lean) · setup */
-"Sit with your feet on the footrests and the pads outside your knees." = "Ngồi với bàn chân đặt trên bệ để chân và đệm ở mặt ngoài gối.";
-/* Hip Abduction Machine (Lean) · setup */
-"Hold the handles and lean forward from the hips." = "Nắm tay cầm và nghiêng người về trước từ hông.";
-/* Hip Abduction Machine (Lean) · correctCue */
-"Hinge from the hips" = "Gập người từ hông";
-/* Hip Abduction Machine (Lean) · mistakeCue */
-"Back rounds to lean" = "Gù lưng để nghiêng";
-/* Hip Abduction Machine (Lean) · correctNote */
-"Hinging from the hips puts the glutes in a flexed position, where the upper glute max helps abduct." = "Gập người từ hông đưa nhóm cơ mông vào tư thế hông gập, khi đó phần trên của cơ mông lớn hỗ trợ dạng hông.";
-/* Hip Abduction Machine (Lean) · mistakeNote */
-"Rounding the back leans the shoulders without flexing the hips, so the glutes gain nothing from the lean." = "Gù lưng chỉ đưa vai về trước mà không gập hông, nên cơ mông không được lợi gì từ tư thế nghiêng.";
 /* Step-Up · label */
 "Chest up, slight lean" = "Ưỡn ngực, hơi nghiêng tới";
 /* Step-Up · label */
@@ -4978,6 +4706,8 @@
 "The knee caving inward as you drive up." = "Gối đổ vào trong khi đạp người lên.";
 /* Step-Up · correct */
 "Keep the knee in line with the middle of the foot from bottom to top." = "Giữ gối thẳng hàng với giữa bàn chân từ dưới lên trên.";
+/* Step-Up · title */
+"Pelvis" = "Khung chậu";
 /* Step-Up · intro */
 "Keep the hips level on the way up and down." = "Giữ hông ngang bằng cả khi bước lên lẫn bước xuống.";
 /* Step-Up · why */
@@ -5576,6 +5306,8 @@
 "Leaning away from the pad to swing the legs." = "Ngả người rời khỏi đệm để vung chân.";
 /* Captain's Chair Leg Raise · correct */
 "Press the lower and upper back lightly into the pad throughout." = "Áp nhẹ lưng dưới và lưng trên vào đệm trong suốt động tác.";
+/* Captain's Chair Leg Raise · title */
+"Support" = "Điểm tựa";
 /* Captain's Chair Leg Raise · intro */
 "The forearms carry the body." = "Cẳng tay đỡ toàn bộ cơ thể.";
 /* Captain's Chair Leg Raise · why */
@@ -6050,6 +5782,10 @@
 "Stopping halfway, or pushing the hips forward instead of down." = "Dừng giữa chừng, hoặc đẩy hông ra trước thay vì hạ xuống.";
 /* Lunge · correct */
 "Keep the back heel up and lower until the back knee is just above the floor, then press back up." = "Giữ gót chân sau nhấc lên và hạ xuống đến khi gối sau chỉ còn cách sàn một chút, rồi đẩy người lên lại.";
+/* Lunge · title */
+"Front Foot" = "Chân trước";
+/* Lunge · intro */
+"Drive through the heel and mid-foot." = "Đạp qua gót và giữa bàn chân.";
 /* Lunge · why */
 "Pushing through the whole front foot keeps you balanced and uses the glutes as well as the quadriceps to stand up." = "Dồn lực qua cả bàn chân trước giúp bạn giữ thăng bằng và huy động cả cơ mông lẫn cơ tứ đầu đùi để đứng lên.";
 /* Lunge · mistake */
@@ -6072,64 +5808,6 @@
 "With the front knee in line with the toes and the foot flat, the quadriceps and glutes of the front leg drive the rep." = "Khi gối trước thẳng hàng với mũi chân và bàn chân áp sàn, cơ tứ đầu đùi và cơ mông của chân trước sẽ tạo lực cho động tác.";
 /* Lunge · mistakeNote */
 "When the front knee caves in, the hip stops controlling the leg and the knee takes a twisting load." = "Khi gối trước đổ vào trong, hông không còn kiểm soát được chân và gối phải chịu lực vặn xoắn.";
-/* Lunge (Lean) · label */
-"Lean ~30° from the hips" = "Nghiêng ~30° từ hông";
-/* Lunge (Lean) · label */
-"Back flat, core braced" = "Lưng phẳng, gồng cơ lõi";
-/* Lunge (Lean) · label */
-"Heel down" = "Gót bám sàn";
-/* Lunge (Lean) · intro */
-"The lean is what moves this lunge toward the glutes." = "Chính độ nghiêng người đưa kiểu lunge này thiên về cơ mông.";
-/* Lunge (Lean) · why */
-"Tilting the trunk forward shifts the load toward the hip, so the front leg's gluteus maximus and hamstrings work harder than in an upright lunge." = "Nghiêng thân về trước dồn tải về phía hông, nên cơ mông lớn và nhóm cơ đùi sau của chân trước làm việc nhiều hơn so với lunge thẳng người.";
-/* Lunge (Lean) · mistake */
-"Rounding the back or dropping the head to get the chest lower." = "Cong lưng hoặc cúi đầu để hạ ngực thấp hơn.";
-/* Lunge (Lean) · correct */
-"Keep the spine long, tilt the torso about 30° forward from the hips and hold that angle for the whole rep." = "Giữ cột sống vươn dài, nghiêng thân khoảng 30° về trước từ hông và giữ nguyên góc đó trong suốt mỗi lần.";
-/* Lunge (Lean) · title */
-"Trunk Brace" = "Gồng chặt thân";
-/* Lunge (Lean) · intro */
-"The lean comes from the hips and is held by a braced trunk." = "Độ nghiêng đến từ hông và được giữ vững nhờ thân gồng chặt.";
-/* Lunge (Lean) · why */
-"Bracing keeps the spine neutral while the torso tilts, so the extra load goes to the glutes and hamstrings rather than the lower back." = "Gồng chặt giữ cột sống trung lập khi thân nghiêng, nhờ đó phần tải tăng thêm dồn vào cơ mông và cơ đùi sau thay vì lưng dưới.";
-/* Lunge (Lean) · mistake */
-"Letting the lower back round or sag as you go down and come back up." = "Để lưng dưới cong tròn hoặc võng xuống khi hạ xuống và đứng lên.";
-/* Lunge (Lean) · correct */
-"Breathe in, brace as if about to be pushed, and hold the same flat-back angle for the whole rep." = "Hít vào, gồng chặt như sắp bị ai đẩy, và giữ nguyên góc lưng phẳng đó trong suốt mỗi lần.";
-/* Lunge (Lean) · intro */
-"The front knee follows the line of the toes." = "Gối trước đi theo hướng mũi chân.";
-/* Lunge (Lean) · why */
-"With the torso leaning, the hip takes more of the work; a knee that tracks over the toes keeps the joint aligned while it does." = "Khi thân nghiêng, hông đảm nhận nhiều việc hơn; gối đi đúng hướng mũi chân giữ cho khớp thẳng hàng trong lúc đó.";
-/* Lunge (Lean) · mistake */
-"The front knee caving inward as you push back up." = "Gối trước đổ vào trong khi đẩy người lên.";
-/* Lunge (Lean) · correct */
-"Keep the front knee pointing the same way as the foot and the front heel down as you lower." = "Giữ gối trước hướng cùng chiều với bàn chân và gót chân trước bám sàn khi hạ xuống.";
-/* Lunge (Lean) · title */
-"Back Leg" = "Chân sau";
-/* Lunge (Lean) · intro */
-"The back leg is there for balance." = "Chân sau đóng vai trò giữ thăng bằng.";
-/* Lunge (Lean) · why */
-"Dropping the back knee straight down keeps nearly all the load on the front leg." = "Hạ gối sau thẳng xuống giúp giữ gần như toàn bộ tải ở chân trước.";
-/* Lunge (Lean) · mistake */
-"Pushing off the back toes to help the front leg stand up." = "Đạp vào mũi chân sau để giúp chân trước đứng lên.";
-/* Lunge (Lean) · correct */
-"Keep the back heel up, lower the back knee to just above the floor and let the front leg do the lifting." = "Giữ gót chân sau nhấc lên, hạ gối sau đến khi chỉ còn cách sàn một chút và để chân trước đảm nhận việc nâng người.";
-/* Lunge (Lean) · intro */
-"Drive through the heel." = "Dồn lực qua gót chân.";
-/* Lunge (Lean) · why */
-"Pushing through the heel and mid-foot keeps the load on the glutes and hamstrings the lean is meant to target." = "Dồn lực qua gót chân và giữa bàn chân giữ tải ở cơ mông và cơ đùi sau, đúng nhóm cơ mà tư thế nghiêng nhắm đến.";
-/* Lunge (Lean) · mistake */
-"Rising onto the ball of the front foot, which shifts the work back to the quadriceps and the knee." = "Kiễng lên mũi bàn chân của chân trước, khiến lực dồn ngược về cơ tứ đầu đùi và gối.";
-/* Lunge (Lean) · correct */
-"Keep the whole front foot planted, push the floor away through the heel, and do the same reps on the other leg." = "Giữ cả bàn chân trước bám chắc sàn, dùng gót chân đẩy sàn ra xa, và tập số lần tương tự với chân bên kia.";
-/* Lunge (Lean) · setup */
-"Step one foot forward about a stride's length and lift your back heel." = "Bước một chân lên trước khoảng một sải bước và nhấc gót chân sau.";
-/* Lunge (Lean) · setup */
-"Tilt your torso about 30° forward from the hips, back flat." = "Nghiêng thân khoảng 30° về trước từ hông, lưng phẳng.";
-/* Lunge (Lean) · correctNote */
-"Leaning from the hips with a long spine lets the front leg's glutes and hamstrings take more of the load." = "Nghiêng từ hông với cột sống vươn dài giúp cơ mông và cơ đùi sau của chân trước nhận nhiều tải hơn.";
-/* Lunge (Lean) · mistakeNote */
-"Rounding the back to fake the lean loads the lower back and leaves the glutes working no harder than in an upright lunge." = "Cong lưng để giả độ nghiêng sẽ dồn tải lên lưng dưới, còn cơ mông thì làm việc không hơn gì khi lunge thẳng người.";
 /* Barbell Floor Press · label */
 "Elbows ~45°, touch lightly" = "Khuỷu tay ~45°, chạm nhẹ";
 /* Barbell Floor Press · label */
@@ -10542,6 +10220,8 @@
 "Torso tilted to the rack" = "Thân nghiêng về phía giá";
 /* Leaning Lateral Raise · label */
 "Hold the rack lightly" = "Vịn giá thật nhẹ";
+/* Leaning Lateral Raise · title */
+"Torso Lean" = "Nghiêng thân";
 /* Leaning Lateral Raise · intro */
 "The torso tilts toward the rack, away from the dumbbell." = "Thân người nghiêng về phía giá, ra xa tạ đơn.";
 /* Leaning Lateral Raise · why */
@@ -11080,6 +10760,8 @@
 "Forearm level, elbow 90°" = "Cẳng tay ngang, khuỷu 90°";
 /* Cable External Rotation · label */
 "Torso square, no twist" = "Thân thẳng, không xoay";
+/* Cable External Rotation · label */
+"Stand tall, no lean" = "Đứng thẳng, không nghiêng";
 /* Cable External Rotation · intro */
 "The elbow stays pinned to your side." = "Khuỷu tay luôn ép sát bên thân.";
 /* Cable External Rotation · why */
@@ -12178,54 +11860,6 @@
 "Short step, knee crowds forward" = "Bước ngắn, gối dồn ra trước";
 /* Forward Lunge · correctNote */
 "A long step lets both knees reach 90° with the front shin close to upright, so the quadriceps and glutes share the work." = "Bước dài giúp cả hai gối gập đến 90° với ống chân trước gần thẳng đứng, nên cơ tứ đầu đùi và cơ mông chia sẻ công việc.";
-/* Barbell Lunge · label */
-"Chest up, tall" = "Ưỡn ngực, thẳng";
-/* Barbell Lunge · label */
-"Feet hip-width" = "Chân rộng bằng hông";
-/* Barbell Lunge · intro */
-"Each rep starts with one long step forward, the bar riding with you." = "Mỗi lần bắt đầu bằng một bước dài về phía trước, thanh tạ di chuyển theo bạn.";
-/* Barbell Lunge · why */
-"A step long enough for both knees to reach about 90° keeps the front shin near upright and the bar over the middle of the stance; in a lunge study, a short step loaded the front of the knee more near the bottom. A fully upright shin shifts some load to the back knee, so aim for 90° at both knees, not the longest step." = "Bước đủ dài để cả hai gối gập khoảng 90° giữ ống chân trước gần thẳng đứng và thanh nằm trên giữa thế đứng; trong một nghiên cứu về lunge, bước ngắn dồn nhiều tải hơn lên phía trước gối gần điểm thấp nhất. Ống chân hoàn toàn thẳng đứng chuyển một phần tải sang gối sau, nên hãy nhắm 90° ở cả hai gối, không phải bước dài nhất.";
-/* Barbell Lunge · intro */
-"Stay tall under the bar." = "Giữ người thẳng dưới thanh.";
-/* Barbell Lunge · why */
-"With the bar on the upper back, an upright torso keeps it over the middle of the stance; letting the chest drop tips the bar forward, loads the lower back and pushes the weight onto the front toes." = "Khi thanh nằm trên lưng trên, thân thẳng đứng giữ thanh ở trên giữa thế đứng; để ngực đổ xuống làm thanh nghiêng ra trước, dồn tải lên thắt lưng và đẩy trọng lượng lên mũi chân trước.";
-/* Barbell Lunge · mistake */
-"The chest dropping and the upper back rounding under the bar as you lower." = "Ngực đổ xuống và lưng trên cong gù dưới thanh khi hạ xuống.";
-/* Barbell Lunge · correct */
-"Keep the chest up, the elbows down under the bar and the upper back tight, eyes forward." = "Giữ ngực ưỡn, khuỷu tay hướng xuống dưới thanh và lưng trên siết chặt, mắt nhìn trước.";
-/* Barbell Lunge · title */
-"Foot Width" = "Độ rộng chân";
-/* Barbell Lunge · intro */
-"Each foot keeps its own track, about hip-width apart." = "Mỗi chân đi theo đường riêng, cách nhau khoảng bằng hông.";
-/* Barbell Lunge · why */
-"Hip-width tracks give a stable base under the bar; stepping onto the back foot's line, like walking a tightrope, narrows it. In a barbell lunge study, feet at half hip-width let the weight sway about a quarter more from side to side over the front foot." = "Hai đường rộng bằng hông tạo nền vững dưới thanh; bước chân lên đường của chân sau, như đi trên dây, làm nền hẹp lại. Trong một nghiên cứu về barbell lunge, hai chân cách nhau bằng nửa độ rộng hông khiến trọng lượng lắc ngang trên chân trước nhiều hơn khoảng một phần tư.";
-/* Barbell Lunge · mistake */
-"Stepping the front foot in line with, or across, the back foot." = "Bước chân trước thẳng hàng với, hoặc bắt chéo qua, chân sau.";
-/* Barbell Lunge · correct */
-"Step straight forward from the hip so the feet land about hip-width apart, as if on two rails." = "Bước thẳng ra trước từ hông để hai chân tiếp đất cách nhau khoảng bằng hông, như đi trên hai đường ray.";
-/* Barbell Lunge · intro */
-"The front leg pushes you and the bar back to the start." = "Chân trước đẩy bạn và thanh tạ trở về vị trí ban đầu.";
-/* Barbell Lunge · why */
-"Pressing through the whole front foot keeps the bar over a stable base and makes the front leg's hip and knee extensors do the return; in a joint-moment study of the forward lunge the hip extensors supplied the largest share of the effort, though the knee bends most. Rocking onto the toes tips the bar forward." = "Đạp qua cả bàn chân trước giữ thanh trên một nền vững và buộc nhóm cơ duỗi hông và duỗi gối của chân trước thực hiện pha trở về; trong một nghiên cứu mô-men khớp về forward lunge, nhóm cơ duỗi hông đóng góp phần lớn nhất, dù gối là khớp gập nhiều nhất. Nhón lên mũi chân làm thanh nghiêng ra trước.";
-/* Barbell Lunge · correct */
-"Keep the front foot flat, press through the heel and mid-foot and step back until the feet are together under the bar, then lunge with the other leg." = "Giữ bàn chân trước phẳng, đạp qua gót và giữa bàn chân, bước về đến khi hai chân chụm lại dưới thanh, rồi lunge với chân kia.";
-/* Barbell Lunge · setup */
-"Set the bar in a rack just below shoulder height." = "Đặt thanh trên giá, thấp hơn vai một chút.";
-/* Barbell Lunge · setup */
-"Step under it and rest it on your upper traps, hands about a hand's width outside your shoulders." = "Bước vào dưới thanh, đặt thanh lên cơ thang trên, hai tay rộng hơn vai khoảng một bàn tay mỗi bên.";
-/* Barbell Lunge · setup */
-"Stand up, step back and set your feet hip-width apart." = "Đứng lên, lùi lại và đặt hai chân rộng bằng hông.";
-/* Barbell Lunge · mistakeBadge */
-"FEET IN LINE" = "CHÂN CHUNG ĐƯỜNG";
-/* Barbell Lunge · correctCue */
-"Feet about hip-width apart" = "Chân rộng khoảng bằng hông";
-/* Barbell Lunge · mistakeCue */
-"Front foot lands in line" = "Chân trước đáp cùng đường";
-/* Barbell Lunge · correctNote */
-"Landing each foot on its own track keeps a wide base, so the bar stays balanced over the stance." = "Đặt mỗi chân trên đường riêng giữ nền rộng, nên thanh luôn cân bằng trên thế đứng.";
-/* Barbell Lunge · mistakeNote */
-"Stepping onto the back foot's line narrows the base, so the bar and hips sway more from side to side and each rep is harder to balance." = "Bước lên đường của chân sau làm nền hẹp lại, nên thanh và hông lắc ngang nhiều hơn và mỗi lần khó giữ thăng bằng hơn.";
 /* Smith Machine Reverse Lunge · label */
 "Feet ahead of bar" = "Chân đặt trước thanh";
 /* Smith Machine Reverse Lunge · label */
@@ -12272,8 +11906,18 @@
 "Pushing up off the back foot, the back knee straightening first." = "Đẩy lên bằng chân sau, gối sau duỗi thẳng trước.";
 /* Smith Machine Reverse Lunge · correct */
 "Keep the back foot light, press through the whole front foot and stand up on the front leg, then step the back foot in beside it." = "Giữ chân sau nhẹ, đạp qua cả bàn chân trước và đứng lên trên chân trước, rồi bước chân sau về cạnh nó.";
+/* Smith Machine Reverse Lunge · intro */
+"The bar rests high on the upper traps and runs on a fixed track." = "Thanh tạ đặt cao trên cơ thang trên và chạy theo một ray cố định.";
+/* Smith Machine Reverse Lunge · why */
+"The rails hold the bar's line, so the body has to stay stacked under it. Resting the bar high on the traps lets you keep the lunge's slight forward hinge without the bar dragging the chest down." = "Ray giữ cố định đường đi của thanh, nên cơ thể phải luôn thẳng hàng bên dưới nó. Đặt thanh cao trên cơ thang giúp bạn giữ độ gập hông nhẹ của động tác lunge mà thanh không kéo ngực xuống.";
+/* Smith Machine Reverse Lunge · mistake */
+"Setting the bar low on the back of the shoulders, so the chest tips forward as you step back under it." = "Đặt thanh thấp trên mặt sau vai, khiến ngực đổ về trước khi bạn bước lùi dưới thanh.";
+/* Smith Machine Reverse Lunge · correct */
+"Rest the bar across the upper traps, hands wider than the shoulders, brace, then turn the bar to unhook it." = "Đặt thanh ngang cơ thang trên, hai tay rộng hơn vai, gồng chặt cơ lõi, rồi xoay thanh để tháo khỏi móc.";
 /* Smith Machine Reverse Lunge · setup */
 "Set the Smith bar just below shoulder height." = "Đặt thanh máy Smith thấp hơn vai một chút.";
+/* Smith Machine Reverse Lunge · setup */
+"Step under it and rest it on your upper traps, hands about a hand's width outside your shoulders." = "Bước vào dưới thanh, đặt thanh lên cơ thang trên, hai tay rộng hơn vai khoảng một bàn tay mỗi bên.";
 /* Smith Machine Reverse Lunge · setup */
 "Stand with your feet hip-width, heels about half a foot's length in front of the bar." = "Đứng hai chân rộng bằng hông, gót chân ở trước thanh khoảng nửa chiều dài bàn chân.";
 /* Smith Machine Reverse Lunge · mistakeBadge */
@@ -12354,148 +11998,86 @@
 "With the pelvis square, the standing hip has to hold the pelvis steady while the front thigh lowers and lifts you." = "Khi khung chậu hướng thẳng, hông chân trụ phải giữ khung chậu vững trong khi đùi chân trước đưa người xuống và lên.";
 /* Curtsy Lunge · mistakeNote */
 "When the hips open toward the back leg, the cross disappears: the rep turns into a twisted reverse lunge and loses the angle that makes the curtsy different." = "Khi hông mở về phía chân sau, bước chéo biến mất: động tác thành một reverse lunge bị vặn người và mất đi góc chéo làm nên sự khác biệt của Curtsy Lunge.";
-/* Barbell Split Squat · label */
+/* Split Squat · label */
 "Stay tall" = "Thân thẳng";
-/* Barbell Split Squat · intro */
+/* Split Squat · label */
+"Heel down" = "Gót bám sàn";
+/* Split Squat · intro */
 "The bar sits high across the upper traps." = "Thanh tạ đặt cao ngang cơ thang trên.";
-/* Barbell Split Squat · why */
+/* Split Squat · why */
 "A high bar keeps the torso upright over the split stance, which suits this quadriceps-led lift; in back squats a lower bar brings more forward lean." = "Đặt thanh cao giữ thân người thẳng đứng trên thế chân trước sau, phù hợp với bài tập chủ yếu dùng cơ tứ đầu đùi này; ở back squat, đặt thanh thấp hơn khiến thân nghiêng về trước nhiều hơn.";
-/* Barbell Split Squat · mistake */
+/* Split Squat · mistake */
 "The bar sliding down onto the back of the shoulders, the chest tipping forward to balance it." = "Thanh tạ trượt xuống mặt sau vai, ngực đổ về trước để giữ thăng bằng cho thanh.";
-/* Barbell Split Squat · correct */
+/* Split Squat · correct */
 "Set the bar across the upper traps just below the neck, hands wider than the shoulders, and keep the chest tall under it." = "Đặt thanh ngang cơ thang trên, ngay dưới cổ, hai tay rộng hơn vai, và giữ ngực mở dưới thanh.";
-/* Barbell Split Squat · intro */
+/* Split Squat · intro */
 "The torso stays tall under the bar." = "Thân người luôn thẳng dưới thanh tạ.";
-/* Barbell Split Squat · why */
+/* Split Squat · why */
 "Upright, the bar stays over the middle of the stance and the legs do the work. Leaning forward with a bar on the back lengthens the lever on the lower back and makes the load hard to balance on a narrow split stance." = "Khi thân thẳng, thanh tạ nằm trên khoảng giữa hai chân và chân làm việc. Nghiêng người về trước với thanh trên lưng làm dài cánh tay đòn tác động lên thắt lưng và khiến tải khó giữ thăng bằng trên thế chân trước sau hẹp.";
-/* Barbell Split Squat · mistake */
+/* Split Squat · mistake */
 "The chest tipping forward at the bottom, taking the bar out in front of the hips." = "Ngực đổ về trước ở điểm thấp nhất, đưa thanh tạ ra phía trước hông.";
-/* Barbell Split Squat · correct */
+/* Split Squat · correct */
 "Brace, keep the chest up and the shoulders over the hips, and let the bar travel straight down and up." = "Gồng chặt cơ lõi, giữ ngực mở và vai ở trên hông, để thanh tạ đi thẳng xuống và lên.";
-/* Barbell Split Squat · intro */
+/* Split Squat · intro */
 "The front knee travels in line with the front foot." = "Gối trước di chuyển thẳng hàng với bàn chân trước.";
-/* Barbell Split Squat · why */
+/* Split Squat · why */
 "Some forward knee travel is normal and loads the quadriceps. A knee that caves inward often shows the hip losing control of the thigh, so the knee takes the load at an angle." = "Gối đi ra trước một chút là bình thường và tạo tải cho cơ tứ đầu đùi. Gối đổ vào trong thường cho thấy hông đang mất kiểm soát đùi, khiến gối chịu tải theo một góc lệch.";
-/* Barbell Split Squat · mistake */
+/* Split Squat · mistake */
 "The front knee caving inward toward the back leg at the bottom or on the way up." = "Gối trước đổ vào trong về phía chân sau ở điểm thấp nhất hoặc khi đứng lên.";
-/* Barbell Split Squat · correct */
+/* Split Squat · correct */
 "Keep the front knee pointing over the middle toes, in line with the foot, all the way down and up." = "Giữ gối trước hướng trên các ngón chân giữa, thẳng hàng với bàn chân, suốt lúc xuống và lên.";
-/* Barbell Split Squat · intro */
+/* Split Squat · intro */
 "Each rep sinks straight down until the back knee is just off the floor." = "Mỗi lần hạ thẳng xuống cho đến khi gối sau chỉ còn cách sàn một chút.";
-/* Barbell Split Squat · why */
+/* Split Squat · why */
 "Lowering until the front thigh is about parallel takes the front leg's quadriceps and glutes through a long range. Letting the hips drift forward instead of down shortens the rep and leaves the back knee high." = "Hạ xuống đến khi đùi trước gần song song với sàn giúp cơ tứ đầu đùi và nhóm cơ mông của chân trước đi qua một biên độ dài. Để hông trôi về trước thay vì hạ xuống làm ngắn mỗi lần và khiến gối sau vẫn ở cao.";
-/* Barbell Split Squat · mistake */
+/* Split Squat · mistake */
 "Stopping halfway, the hips drifting forward instead of sinking, so the back knee stays well off the floor." = "Dừng ở nửa chừng, hông trôi về trước thay vì hạ xuống, nên gối sau vẫn cách xa sàn.";
-/* Barbell Split Squat · correct */
+/* Split Squat · correct */
 "Lower the back knee straight down until it is just above the floor and the front thigh is about parallel, then drive up through the front foot." = "Hạ gối sau thẳng xuống đến khi nó chỉ còn cách sàn một chút và đùi trước gần song song với sàn, rồi đẩy lên bằng bàn chân trước.";
-/* Barbell Split Squat · intro */
+/* Split Squat · intro */
 "The whole front foot stays planted." = "Cả bàn chân trước luôn bám sàn.";
-/* Barbell Split Squat · why */
+/* Split Squat · why */
 "Pressure through the heel and mid-foot keeps you balanced over the front leg so the quadriceps and glutes can drive the rep. Forward knee travel is fine; a heel that lifts tips the load onto the toes." = "Dồn lực qua gót và giữa bàn chân giúp bạn giữ thăng bằng trên chân trước để cơ tứ đầu đùi và nhóm cơ mông đẩy mỗi lần. Gối đi ra trước không sao; gót nhấc lên sẽ dồn tải lên mũi chân.";
-/* Barbell Split Squat · mistake */
+/* Split Squat · mistake */
 "The front heel peeling off the floor as the knee drives forward, usually from a stance that is too short." = "Gót chân trước bong khỏi sàn khi gối đẩy ra trước, thường do khoảng cách hai chân quá ngắn.";
-/* Barbell Split Squat · correct */
+/* Split Squat · correct */
 "Set a long enough stance, keep the front heel down and push the floor away through the heel and mid-foot." = "Đứng hai chân đủ xa, giữ gót chân trước bám sàn và đạp sàn ra xa qua gót và giữa bàn chân.";
-/* Barbell Split Squat · setup */
+/* Split Squat · setup */
 "Set the bar in a rack at upper-chest height and take it high across your upper traps." = "Đặt thanh trên giá ở ngang ngực trên và đỡ thanh cao ngang cơ thang trên.";
-/* Barbell Split Squat · setup */
+/* Split Squat · setup */
 "Grip it wider than your shoulders and step back from the rack." = "Cầm thanh rộng hơn vai và lùi ra khỏi giá.";
-/* Barbell Split Squat · setup */
+/* Split Squat · setup */
 "Step one foot a long stride forward, feet hip-width apart." = "Bước một chân lên trước một sải dài, hai bàn chân rộng bằng hông.";
-/* Barbell Split Squat · setup */
+/* Split Squat · setup */
 "Rise onto the ball of the back foot and brace, chest tall." = "Nhón lên mũi bàn chân sau và gồng chặt cơ lõi, ngực mở.";
-/* Barbell Split Squat · mistakeBadge */
+/* Split Squat · mistakeBadge */
 "TORSO TIPS FORWARD" = "THÂN ĐỔ VỀ TRƯỚC";
-/* Barbell Split Squat · correctCue */
+/* Split Squat · correctCue */
 "Chest up, bar over mid-stance" = "Mở ngực, thanh ở giữa hai chân";
-/* Barbell Split Squat · mistakeCue */
+/* Split Squat · mistakeCue */
 "Chest tips forward under the bar" = "Ngực đổ về trước dưới thanh";
-/* Barbell Split Squat · correctNote */
+/* Split Squat · correctNote */
 "Staying tall keeps the bar over the middle of the stance, so the front leg's quadriceps and glutes drive the rep." = "Giữ thân thẳng giúp thanh tạ nằm trên khoảng giữa hai chân, để cơ tứ đầu đùi và nhóm cơ mông của chân trước đẩy mỗi lần.";
-/* Barbell Split Squat · mistakeNote */
+/* Split Squat · mistakeNote */
 "Tipping forward takes the bar out in front of the hips, lengthening the lever on the lower back and making the narrow stance hard to balance." = "Đổ người về trước đưa thanh tạ ra phía trước hông, làm dài cánh tay đòn tác động lên thắt lưng và khiến thế chân hẹp khó giữ thăng bằng.";
-/* Dumbbell Split Squat · label */
+/* Front-Foot-Elevated Split Squat · label */
 "Dumbbells at sides" = "Tạ đơn hai bên hông";
-/* Dumbbell Split Squat · intro */
+/* Front-Foot-Elevated Split Squat · intro */
 "The dumbbells hang straight down at your sides." = "Hai tạ đơn buông thẳng xuống hai bên người.";
-/* Dumbbell Split Squat · why */
+/* Front-Foot-Elevated Split Squat · why */
 "Hanging at arm's length beside the hips, the weights keep the centre of mass low, which steadies the split stance and lets the torso stay upright while the front leg does the work. In lunges, barbell and dumbbell loading have drawn similar thigh and calf muscle activity." = "Buông thẳng theo cánh tay bên cạnh hông, tạ giữ trọng tâm ở thấp, giúp thế chân trước sau vững hơn và cho phép thân người giữ thẳng trong khi chân trước làm việc. Ở bài lunge, tải bằng tạ đòn và tạ đơn cho mức hoạt động của cơ đùi và cơ bắp chân tương tự nhau.";
-/* Dumbbell Split Squat · mistake */
+/* Front-Foot-Elevated Split Squat · mistake */
 "The dumbbells swinging forward in front of the thighs at the bottom instead of hanging at the sides." = "Tạ đơn đung đưa ra trước đùi ở điểm thấp nhất thay vì buông ở hai bên.";
-/* Dumbbell Split Squat · correct */
+/* Front-Foot-Elevated Split Squat · correct */
 "Hold the dumbbells with the palms facing in, arms long and shoulders down, and let them travel straight down and up beside the hips." = "Cầm tạ đơn với lòng bàn tay hướng vào trong, tay buông dài và vai hạ xuống, để tạ đi thẳng xuống và lên bên cạnh hông.";
-/* Dumbbell Split Squat · intro */
+/* Front-Foot-Elevated Split Squat · intro */
 "The torso stays tall, shoulders over the hips." = "Thân người luôn thẳng, vai ở trên hông.";
-/* Dumbbell Split Squat · why */
+/* Front-Foot-Elevated Split Squat · why */
 "Upright, the load stays over the front leg, where the quadriceps and glutes share the work. A deliberate forward lean adds work for the glutes and hamstrings, as lunge and Bulgarian split squat studies with the trunk tipped forward have shown, but folding over at the bottom also asks the lower back to hold the trunk and is harder to balance on a split stance." = "Khi thân thẳng, tải nằm trên chân trước, nơi cơ tứ đầu đùi và nhóm cơ mông cùng chia việc. Chủ động nghiêng người về trước làm tăng việc cho cơ mông và cơ đùi sau, như các nghiên cứu về lunge và Bulgarian split squat với thân đổ về trước đã cho thấy, nhưng gập người ở điểm thấp nhất cũng buộc thắt lưng phải giữ thân và khó giữ thăng bằng hơn trên thế chân trước sau.";
-/* Dumbbell Split Squat · mistake */
+/* Front-Foot-Elevated Split Squat · mistake */
 "The chest folding forward over the front thigh at the bottom of the rep without meaning to." = "Ngực vô tình gập về trước, đổ xuống đùi trước ở điểm thấp nhất của mỗi lần.";
-/* Dumbbell Split Squat · correct */
+/* Front-Foot-Elevated Split Squat · correct */
 "Keep the chest up and the shoulders stacked over the hips from the top of the rep to the bottom." = "Giữ ngực mở và vai thẳng hàng trên hông từ điểm cao nhất đến điểm thấp nhất của mỗi lần.";
-/* Dumbbell Split Squat · setup */
-"Hold a dumbbell in each hand at your sides, palms facing in." = "Mỗi tay cầm một tạ đơn ở hai bên người, lòng bàn tay hướng vào trong.";
-/* Dumbbell Split Squat · setup */
-"Rise onto the ball of the back foot." = "Nhón lên mũi bàn chân sau.";
-/* Dumbbell Split Squat · setup */
-"Stand tall with your shoulders over your hips." = "Đứng thẳng, vai ở trên hông.";
-/* Dumbbell Split Squat · correctCue */
-"Knee in line with the foot" = "Gối thẳng hàng bàn chân";
-/* Dumbbell Split Squat · correctNote */
-"With the knee over the middle toes, the front leg's quadriceps and glutes drive the rep straight up." = "Khi gối ở trên các ngón chân giữa, cơ tứ đầu đùi và nhóm cơ mông của chân trước đẩy người thẳng lên.";
-/* Dumbbell Split Squat · mistakeNote */
-"When the front knee caves in, the hip is often losing control of the thigh and the knee takes the load at an angle." = "Khi gối trước đổ vào trong, hông thường đang mất kiểm soát đùi và gối phải chịu tải theo một góc lệch.";
-/* Smith Machine Split Squat · label */
-"Chest up, hips under" = "Mở ngực, hông dưới thanh";
-/* Smith Machine Split Squat · label */
-"Long stance" = "Sải chân dài";
-/* Smith Machine Split Squat · intro */
-"The bar rests high on the upper traps and runs on a fixed track." = "Thanh tạ đặt cao trên cơ thang trên và chạy theo một ray cố định.";
-/* Smith Machine Split Squat · why */
-"The rails hold the bar's line, so the body has to stay stacked under it. With the bar high on the traps the torso can stay upright while the legs do the work." = "Ray giữ cố định đường đi của thanh, nên cơ thể phải luôn thẳng hàng bên dưới nó. Với thanh đặt cao trên cơ thang, thân người có thể giữ thẳng trong khi chân làm việc.";
-/* Smith Machine Split Squat · mistake */
-"Setting the bar low on the back of the shoulders, so the chest tips forward and the hips slide back under the fixed bar." = "Đặt thanh thấp trên mặt sau vai, khiến ngực đổ về trước và hông trượt ra sau dưới thanh cố định.";
-/* Smith Machine Split Squat · correct */
-"Rest the bar across the upper traps, hands wider than the shoulders, brace, then turn the bar to unhook it." = "Đặt thanh ngang cơ thang trên, hai tay rộng hơn vai, gồng chặt cơ lõi, rồi xoay thanh để tháo khỏi móc.";
-/* Smith Machine Split Squat · intro */
-"The hips stay under the fixed bar, the torso close to upright." = "Hông luôn ở dưới thanh cố định, thân người gần như thẳng đứng.";
-/* Smith Machine Split Squat · why */
-"The bar can only move straight up and down, so leaning forward means the hips slide back behind it and the chest folds toward the thigh, shifting work from the front knee to the hips and lower back." = "Thanh chỉ có thể đi thẳng lên xuống, nên nghiêng người về trước nghĩa là hông trượt ra sau thanh và ngực gập về phía đùi, chuyển việc từ gối trước sang hông và thắt lưng.";
-/* Smith Machine Split Squat · mistake */
-"The hips sliding back behind the bar and the chest folding forward under it at the bottom." = "Hông trượt ra sau thanh và ngực gập về trước bên dưới thanh ở điểm thấp nhất.";
-/* Smith Machine Split Squat · correct */
-"Keep the hips under the bar and the chest up, and sink straight down along the bar's track." = "Giữ hông dưới thanh và ngực mở, rồi hạ thẳng xuống theo ray của thanh.";
-/* Smith Machine Split Squat · intro */
-"Each rep sinks straight down the bar's track until the back knee is just off the floor." = "Mỗi lần hạ thẳng xuống theo ray của thanh cho đến khi gối sau chỉ còn cách sàn một chút.";
-/* Smith Machine Split Squat · why */
-"Lowering until the front thigh is about parallel takes the front leg's quadriceps and glutes through a long range. The rails fix the bar's path, so how far you lower is the main thing left to control." = "Hạ xuống đến khi đùi trước gần song song với sàn giúp cơ tứ đầu đùi và nhóm cơ mông của chân trước đi qua một biên độ dài. Ray cố định đường đi của thanh, nên hạ sâu bao nhiêu là điều chính còn lại bạn cần kiểm soát.";
-/* Smith Machine Split Squat · mistake */
-"Stopping halfway down the track, the hips high and the back knee well off the floor." = "Dừng ở nửa đường ray, hông còn cao và gối sau cách xa sàn.";
-/* Smith Machine Split Squat · intro */
-"The feet split so the bar runs over the middle of the stance." = "Hai chân đứng trước sau sao cho thanh chạy trên khoảng giữa hai chân.";
-/* Smith Machine Split Squat · why */
-"The Smith bar only moves straight up and down, so where the front foot sits decides how the work is shared: closer under the bar, the knee travels further forward and the quadriceps work harder; further ahead, the glutes and hamstrings do more. Forward knee travel is fine; the problem is a foot so close that the heel cannot stay down." = "Thanh máy Smith chỉ đi thẳng lên xuống, nên vị trí bàn chân trước quyết định cách chia việc: đặt gần dưới thanh hơn, gối đi ra trước nhiều hơn và cơ tứ đầu đùi làm việc nặng hơn; đặt xa ra trước hơn, nhóm cơ mông và cơ đùi sau làm nhiều hơn. Gối đi ra trước không sao; vấn đề là bàn chân đặt quá gần đến mức gót không thể bám sàn.";
-/* Smith Machine Split Squat · mistake */
-"Setting the front foot so close under the bar that the front heel peels up as the knee drives forward at the bottom." = "Đặt bàn chân trước quá sát dưới thanh khiến gót chân trước bong lên khi gối đẩy ra trước ở điểm thấp nhất.";
-/* Smith Machine Split Squat · correct */
-"Step the front foot far enough ahead of the bar that the whole foot stays flat at the bottom, the back foot behind it, hip-width apart, so the bar runs over the middle of the stance." = "Bước bàn chân trước ra trước thanh đủ xa để cả bàn chân vẫn phẳng ở điểm thấp nhất, bàn chân sau ở phía sau, hai chân rộng bằng hông, để thanh chạy trên khoảng giữa hai chân.";
-/* Smith Machine Split Squat · setup */
-"Set the Smith bar at upper-chest height and step under it." = "Đặt thanh máy Smith ngang ngực trên và bước vào dưới thanh.";
-/* Smith Machine Split Squat · setup */
-"Rest it high across your upper traps, hands wider than your shoulders." = "Đặt thanh cao ngang cơ thang trên, hai tay rộng hơn vai.";
-/* Smith Machine Split Squat · setup */
-"Split your feet a long stride apart, the bar over the middle of your stance." = "Đứng hai chân trước sau cách nhau một sải dài, thanh ở trên khoảng giữa hai chân.";
-/* Smith Machine Split Squat · setup */
-"Rise onto the ball of the back foot, then turn the bar to unhook it." = "Nhón lên mũi bàn chân sau, rồi xoay thanh để tháo khỏi móc.";
-/* Smith Machine Split Squat · mistakeBadge */
-"FRONT FOOT TOO CLOSE" = "CHÂN TRƯỚC QUÁ GẦN";
-/* Smith Machine Split Squat · correctCue */
-"Foot ahead of the bar, heel down" = "Chân ra trước thanh, gót bám sàn";
-/* Smith Machine Split Squat · mistakeCue */
-"Foot under the bar, heel lifts" = "Chân dưới thanh, gót nhấc lên";
-/* Smith Machine Split Squat · correctNote */
-"With the front foot ahead of the bar, the whole foot stays planted and the fixed bar travels over the middle of the stance." = "Khi bàn chân trước đặt ra trước thanh, cả bàn chân bám sàn và thanh cố định đi trên khoảng giữa hai chân.";
-/* Smith Machine Split Squat · mistakeNote */
-"Tucked under the fixed bar, the front knee has to travel well forward and the heel peels up, tipping the load onto the toes." = "Khi đặt sát dưới thanh cố định, gối trước phải đi ra trước nhiều và gót bong lên, dồn tải lên mũi chân.";
 /* Front-Foot-Elevated Split Squat · intro */
 "The step lets the back knee sink almost to the floor." = "Bục kê cho phép gối sau hạ xuống gần chạm sàn.";
 /* Front-Foot-Elevated Split Squat · why */
@@ -12516,6 +12098,8 @@
 "Place the whole front foot on the step, keep the heel down and push through the heel and mid-foot to stand." = "Đặt cả bàn chân trước lên bục, giữ gót áp xuống bục và đẩy qua gót và giữa bàn chân để đứng lên.";
 /* Front-Foot-Elevated Split Squat · setup */
 "Place a low step, about 10 cm high, in front of you." = "Đặt một bục thấp, cao khoảng 10 cm, trước mặt.";
+/* Front-Foot-Elevated Split Squat · setup */
+"Hold a dumbbell in each hand at your sides, palms facing in." = "Mỗi tay cầm một tạ đơn ở hai bên người, lòng bàn tay hướng vào trong.";
 /* Front-Foot-Elevated Split Squat · setup */
 "Put your whole front foot on the step, a long stride ahead of the back foot." = "Đặt cả bàn chân trước lên bục, cách bàn chân sau một sải dài.";
 /* Front-Foot-Elevated Split Squat · setup */
@@ -12556,6 +12140,8 @@
 "Reach one foot back and rest its laces on the bench." = "Đưa một chân ra sau và đặt mu bàn chân lên ghế.";
 /* Rear-Foot-Elevated Split Squat · setup */
 "Set your front foot flat, hip-width from the back foot." = "Đặt phẳng bàn chân trước, cách bàn chân sau bằng độ rộng hông.";
+/* Rear-Foot-Elevated Split Squat · correctCue */
+"Knee in line with the foot" = "Gối thẳng hàng bàn chân";
 /* Rear-Foot-Elevated Split Squat · correctNote */
 "With the knee in line with the foot, the front leg's quadriceps and glutes drive the rep while the hip holds the thigh steady." = "Khi gối thẳng hàng với bàn chân, cơ tứ đầu đùi và nhóm cơ mông của chân trước đẩy mỗi lần trong khi hông giữ đùi ổn định.";
 /* Rear-Foot-Elevated Split Squat · mistakeNote */
@@ -12576,8 +12162,22 @@
 "Staying tall lets the bar travel straight down and up, so the front leg does the lifting under a load the trunk can hold." = "Giữ thân thẳng giúp thanh tạ đi thẳng xuống và lên, để chân trước đảm nhận việc nâng với mức tải mà thân người giữ vững được.";
 /* Barbell Bulgarian Split Squat · mistakeNote */
 "Leaning forward with a bar on the back is hard to control on one leg and loads the lower back; technique guides advise against it with a loaded bar." = "Nghiêng người về trước với thanh trên lưng rất khó kiểm soát trên một chân và dồn tải lên thắt lưng; các hướng dẫn kỹ thuật khuyên không nên làm vậy khi thanh có tải.";
+/* Smith Machine Bulgarian Split Squat · why */
+"The rails hold the bar's line, so the body has to stay stacked under it. With the bar high on the traps the torso can stay upright while the legs do the work." = "Ray giữ cố định đường đi của thanh, nên cơ thể phải luôn thẳng hàng bên dưới nó. Với thanh đặt cao trên cơ thang, thân người có thể giữ thẳng trong khi chân làm việc.";
+/* Smith Machine Bulgarian Split Squat · mistake */
+"Setting the bar low on the back of the shoulders, so the chest tips forward and the hips slide back under the fixed bar." = "Đặt thanh thấp trên mặt sau vai, khiến ngực đổ về trước và hông trượt ra sau dưới thanh cố định.";
+/* Smith Machine Bulgarian Split Squat · intro */
+"The hips stay under the fixed bar, the torso close to upright." = "Hông luôn ở dưới thanh cố định, thân người gần như thẳng đứng.";
+/* Smith Machine Bulgarian Split Squat · why */
+"The bar can only move straight up and down, so leaning forward means the hips slide back behind it and the chest folds toward the thigh, shifting work from the front knee to the hips and lower back." = "Thanh chỉ có thể đi thẳng lên xuống, nên nghiêng người về trước nghĩa là hông trượt ra sau thanh và ngực gập về phía đùi, chuyển việc từ gối trước sang hông và thắt lưng.";
+/* Smith Machine Bulgarian Split Squat · mistake */
+"The hips sliding back behind the bar and the chest folding forward under it at the bottom." = "Hông trượt ra sau thanh và ngực gập về trước bên dưới thanh ở điểm thấp nhất.";
+/* Smith Machine Bulgarian Split Squat · correct */
+"Keep the hips under the bar and the chest up, and sink straight down along the bar's track." = "Giữ hông dưới thanh và ngực mở, rồi hạ thẳng xuống theo ray của thanh.";
 /* Smith Machine Bulgarian Split Squat · intro */
 "Sink straight down the bar's track until the back knee is a hand's width off the floor." = "Hạ thẳng xuống theo ray của thanh cho đến khi gối sau cách sàn khoảng một bàn tay.";
+/* Smith Machine Bulgarian Split Squat · mistake */
+"Stopping halfway down the track, the hips high and the back knee well off the floor." = "Dừng ở nửa đường ray, hông còn cao và gối sau cách xa sàn.";
 /* Smith Machine Bulgarian Split Squat · setup */
 "Set the Smith bar at upper-chest height, a knee-height bench a short step behind it." = "Đặt thanh máy Smith ngang ngực trên, một chiếc ghế cao ngang gối ở phía sau thanh một bước ngắn.";
 /* Smith Machine Bulgarian Split Squat · setup */
@@ -12939,8 +12539,6 @@
 /* Single-Arm Cable Curl · label */
 "Upper arm still" = "Cánh tay trên giữ yên";
 /* Single-Arm Cable Curl · label */
-"Lower all the way" = "Hạ hết cỡ";
-/* Single-Arm Cable Curl · label */
 "Stand tall" = "Đứng thẳng";
 /* Single-Arm Cable Curl · label */
 "Feet hip-width apart" = "Chân rộng bằng hông";
@@ -12952,14 +12550,12 @@
 "The elbow drifting forward and up as the handle rises." = "Khuỷu tay trôi ra trước và lên trên khi tay cầm đi lên.";
 /* Single-Arm Cable Curl · correct */
 "Keep the elbow close to the ribs and curl until the handle is in front of the shoulder, palm facing it, without swinging the elbow forward." = "Giữ khuỷu tay sát sườn và cuốn đến khi tay cầm ở trước vai, lòng bàn tay hướng về vai, mà không vung khuỷu tay ra trước.";
-/* Single-Arm Cable Curl · intro */
-"Each rep starts from a straight arm." = "Mỗi lần bắt đầu từ tư thế tay duỗi thẳng.";
 /* Single-Arm Cable Curl · why */
-"Facing a low pulley from a step away, the cable runs down and a little forward from the hanging hand, so it barely resists the first part of the curl, which is light and easy to cut short. Lowering until the arm is straight still takes the elbow through its whole range, and full-range curl training has built more strength than mid-range partial reps." = "Khi đứng quay mặt về ròng rọc thấp, cách một bước, dây cáp chạy xuống và hơi ra trước từ bàn tay đang buông, nên hầu như không cản phần đầu của động tác cuốn, đoạn vừa nhẹ vừa dễ bị cắt ngắn. Hạ đến khi tay thẳng vẫn đưa khuỷu tay đi hết biên độ, và tập cuốn tay hết biên độ đã phát triển sức mạnh nhiều hơn so với lặp một phần ở đoạn giữa biên độ.";
+"Facing a low pulley from a step away, the cable runs down and a little forward from the hanging hand, so it barely resists the first part of the curl, which is light and easy to cut short. Lowering until the arm is almost straight still takes the elbow through nearly its whole range, and full-range curl training has built more strength than mid-range partial reps." = "Khi đứng quay mặt về ròng rọc thấp, cách một bước, dây cáp chạy xuống và hơi ra trước từ bàn tay đang buông, nên hầu như không cản phần đầu của động tác cuốn, đoạn vừa nhẹ vừa dễ bị cắt ngắn. Hạ đến khi tay gần như thẳng vẫn đưa khuỷu tay đi gần hết biên độ, và tập cuốn tay hết biên độ đã phát triển sức mạnh nhiều hơn so với lặp một phần ở đoạn giữa biên độ.";
 /* Single-Arm Cable Curl · mistake */
-"Stopping each rep with the elbow still bent, the handle never getting back to the thigh." = "Dừng mỗi lần khi khuỷu tay vẫn còn gập, tay cầm không bao giờ về lại đến đùi.";
+"Stopping each rep halfway down, the elbow still well bent." = "Dừng mỗi lần ở lưng chừng, khuỷu tay vẫn còn gập nhiều.";
 /* Single-Arm Cable Curl · correct */
-"Lower under control until the arm hangs straight with the handle by the thigh, the stack still just off its rest, then curl again." = "Hạ xuống có kiểm soát đến khi tay buông thẳng với tay cầm cạnh đùi, tạ vẫn chưa chạm xuống, rồi cuốn lên lại.";
+"Lower under control until the arm is almost straight, the stack still off its rest, then curl straight back up without resting at the bottom." = "Hạ xuống có kiểm soát đến khi tay gần như thẳng, tạ vẫn chưa chạm xuống, rồi cuốn lên lại ngay, không nghỉ ở dưới.";
 /* Single-Arm Cable Curl · intro */
 "The shoulders stay down and back." = "Vai luôn hạ xuống và kéo ra sau.";
 /* Single-Arm Cable Curl · why */
@@ -12995,7 +12591,7 @@
 /* Single-Arm Cable Curl · mistakeCue */
 "Elbow swings forward and up" = "Khuỷu vung ra trước và lên";
 /* Single-Arm Cable Curl · correctNote */
-"With the upper arm still, the elbow flexors move the handle from a straight arm to the top." = "Khi cánh tay trên đứng yên, nhóm cơ gấp khuỷu đưa tay cầm từ tư thế tay thẳng lên đến đỉnh.";
+"With the upper arm still, the elbow flexors move the handle from an almost straight arm to the top." = "Khi cánh tay trên đứng yên, nhóm cơ gấp khuỷu đưa tay cầm từ tư thế tay gần như thẳng lên đến đỉnh.";
 /* Single-Arm Cable Curl · mistakeNote */
 "When the elbow travels forward, the front deltoid joins in and the top of the curl turns into a front raise." = "Khi khuỷu tay đi ra trước, cơ delta trước tham gia và phần đỉnh của động tác cuốn biến thành nâng tay ra trước.";
 /* High Cable Curl · label */
@@ -13132,6 +12728,8 @@
 "Straighten fully" = "Duỗi thẳng hẳn";
 /* Cable Hammer Curl · label */
 "Firm wrists" = "Cổ tay vững";
+/* Cable Hammer Curl · label */
+"Feet hip-width" = "Chân rộng bằng hông";
 /* Cable Hammer Curl · intro */
 "The upper arms stay by your sides; only the forearms move." = "Cánh tay trên giữ sát hai bên người; chỉ cẳng tay chuyển động.";
 /* Cable Hammer Curl · why */
@@ -14810,54 +14408,6 @@
 "With both hips on the seat, the pelvis stays square and the working thigh takes the load." = "Khi hai bên hông áp trên ghế, khung chậu giữ thẳng và đùi chân tập nhận tải.";
 /* Single-Leg Press · mistakeNote */
 "Lowering past the point where the working hip lifts tilts the pelvis and hands part of the load to the lower back." = "Hạ quá điểm mà hông bên chân tập nhấc lên sẽ làm nghiêng khung chậu và chuyển một phần tải sang thắt lưng.";
-/* Narrow-Stance Leg Press · title */
-"Stance Width" = "Độ rộng chân";
-/* Narrow-Stance Leg Press · intro */
-"Feet about hip-width apart in the middle of the platform." = "Hai chân rộng khoảng bằng hông, ở giữa bàn đạp.";
-/* Narrow-Stance Leg Press · why */
-"A hip-width stance gives each knee a straight path over its foot, keeping the load lined up through the joint. With the feet so close they touch, the knees run out of room at the bottom and crowd in against each other." = "Đặt chân rộng bằng hông giúp mỗi gối đi theo một đường thẳng trên bàn chân, giữ lực truyền thẳng hàng qua khớp. Khi hai bàn chân sát đến mức chạm nhau, ở điểm thấp nhất gối hết chỗ và bị chen ép vào nhau.";
-/* Narrow-Stance Leg Press · mistake */
-"Setting the feet so close they touch, the knees crowding in against each other at the bottom." = "Đặt hai chân sát đến mức chạm nhau, gối chen ép vào nhau ở điểm thấp nhất.";
-/* Narrow-Stance Leg Press · correct */
-"Place the feet about hip-width apart, toes straight or turned out slightly, and keep space between the knees all the way down." = "Đặt hai chân rộng khoảng bằng hông, mũi chân thẳng hoặc hơi mở ra ngoài, và giữ khoảng cách giữa hai gối suốt pha hạ.";
-/* Narrow-Stance Leg Press · setup */
-"Place your feet hip-width apart in the middle of the platform." = "Đặt hai chân rộng bằng hông ở giữa bàn đạp.";
-/* Narrow-Stance Leg Press · mistakeBadge */
-"FEET TOO CLOSE" = "CHÂN QUÁ SÁT";
-/* Narrow-Stance Leg Press · correctCue */
-"Hip-width, knees over the feet" = "Rộng bằng hông, gối theo bàn chân";
-/* Narrow-Stance Leg Press · mistakeCue */
-"Feet touching, knees crowd in" = "Chân chạm nhau, gối chen vào";
-/* Narrow-Stance Leg Press · correctNote */
-"With the feet hip-width apart, each knee tracks straight over its foot and the quadriceps drive the press." = "Khi hai chân rộng bằng hông, mỗi gối đi thẳng trên bàn chân của nó và cơ tứ đầu đùi thực hiện động tác đẩy.";
-/* Narrow-Stance Leg Press · mistakeNote */
-"With the feet touching, the knees run out of room at the bottom and press in against each other." = "Khi hai bàn chân chạm nhau, gối hết chỗ ở điểm thấp nhất và ép vào nhau.";
-/* Wide-Stance Leg Press · label */
-"Feet wide, toes turned out" = "Chân rộng, mũi chân mở ra";
-/* Wide-Stance Leg Press · intro */
-"Feet wider than the shoulders, toes turned out a little." = "Hai chân rộng hơn vai, mũi chân hơi mở ra ngoài.";
-/* Wide-Stance Leg Press · why */
-"A wide stance lets the thighs open out and can make room for a deeper rep. In leg press studies stance width changed quadriceps activity little, and one found more hamstring activity with a wide stance set high on the platform; in squats, the widest stance drew more glute activity. The feet still need to sit high enough on the platform for the heels to stay down." = "Đặt chân rộng cho phép đùi mở ra và có thể tạo chỗ để xuống sâu hơn. Trong các nghiên cứu về leg press, độ rộng chân ít làm thay đổi hoạt động của cơ tứ đầu đùi, và một nghiên cứu ghi nhận nhóm cơ đùi sau hoạt động nhiều hơn khi đứng chân rộng và đặt cao trên bàn đạp; với squat, thế chân rộng nhất huy động cơ mông nhiều hơn. Bàn chân vẫn cần đặt đủ cao trên bàn đạp để gót luôn áp xuống.";
-/* Wide-Stance Leg Press · mistake */
-"Setting the feet wide but low on the platform, so the heels peel up and the knees drive far forward at the bottom." = "Đặt chân rộng nhưng thấp trên bàn đạp, khiến gót bong lên và gối đẩy xa ra trước ở điểm thấp nhất.";
-/* Wide-Stance Leg Press · correct */
-"Place the feet about one and a half shoulder-widths apart in the middle of the platform, toes turned out a little, and keep the heels down." = "Đặt hai chân cách nhau khoảng một lần rưỡi độ rộng vai ở giữa bàn đạp, mũi chân hơi mở ra ngoài, và giữ gót áp xuống.";
-/* Wide-Stance Leg Press · intro */
-"The knees push out in line with the turned-out toes." = "Gối đẩy ra ngoài, thẳng hàng với mũi chân đang mở ra.";
-/* Wide-Stance Leg Press · why */
-"With the feet wide and turned out, the thighs have to open to follow them. Knees that follow the toes keep the load lined up through the joint; knees that cave in toward each other take it at an angle. In leg press studies thigh muscle activity and knee forces did not differ between straight and turned-out feet, so the aim is simply that the knees follow the feet." = "Khi hai chân rộng và mũi chân mở ra, đùi phải mở ra để đi theo. Gối đi theo mũi chân giúp tải thẳng hàng qua khớp; gối đổ vào trong về phía nhau sẽ nhận tải theo một góc lệch. Trong các nghiên cứu về leg press, hoạt động của cơ đùi và lực lên gối không khác nhau giữa mũi chân để thẳng và mở ra, nên mục tiêu đơn giản là gối đi theo bàn chân.";
-/* Wide-Stance Leg Press · mistake */
-"The knees caving in toward each other, inside the line of the toes, at the bottom or on the way up." = "Gối đổ vào trong về phía nhau, lọt vào trong đường mũi chân, ở điểm thấp nhất hoặc khi đẩy lên.";
-/* Wide-Stance Leg Press · correct */
-"Push the knees out over the middle toes all the way down and up." = "Đẩy gối ra ngoài, thẳng hàng với các ngón chân giữa trong suốt pha hạ và pha đẩy.";
-/* Wide-Stance Leg Press · setup */
-"Place your feet wider than your shoulders in the middle of the platform, toes turned out a little." = "Đặt hai chân rộng hơn vai ở giữa bàn đạp, mũi chân hơi mở ra ngoài.";
-/* Wide-Stance Leg Press · mistakeCue */
-"Knees cave in toward each other" = "Gối đổ vào trong chụm nhau";
-/* Wide-Stance Leg Press · correctNote */
-"With the knees following the turned-out toes, the wide stance opens the hips and the load stays lined up through the knees." = "Khi gối đi theo mũi chân đang mở ra, thế chân rộng giúp mở hông và tải luôn thẳng hàng qua gối.";
-/* Wide-Stance Leg Press · mistakeNote */
-"When the knees cave in toward each other in a wide stance, the knee takes the load at an angle and the hips lose the room the stance was for." = "Khi gối đổ vào trong về phía nhau ở thế chân rộng, gối nhận tải theo một góc lệch và hông mất đi khoảng trống mà thế chân này tạo ra.";
 /* Heel-Elevated Squat · label */
 "Bar high on traps" = "Thanh cao trên cơ thang";
 /* Heel-Elevated Squat · label */
@@ -14948,6 +14498,8 @@
 "Setting the feet out wide like a regular squat, which shares more of the work with the hips." = "Đặt chân rộng như squat thông thường, khiến hông gánh nhiều việc hơn.";
 /* Cyclist Squat · correct */
 "Place the feet about hip-width apart or closer, both heels on the wedge, toes pointing nearly straight ahead." = "Đặt hai chân rộng khoảng bằng hông hoặc gần hơn, cả hai gót trên nêm, mũi chân gần như hướng thẳng ra trước.";
+/* Cyclist Squat · why */
+"This squat keeps the trunk upright and lets the knees travel far forward. A high bar keeps the load over the mid-foot in that position; a bar sliding lower on the back tips the chest forward and shifts work from the quadriceps toward the hips." = "Bài squat này giữ thân thẳng và để gối đi xa về trước. Thanh đặt cao giữ tải ngay trên giữa bàn chân ở tư thế đó; thanh trượt thấp xuống lưng làm ngực đổ về trước và chuyển bớt việc từ đùi trước sang hông.";
 /* Cyclist Squat · setup */
 "Set a heel wedge or slant board in front of a squat rack." = "Đặt một miếng nêm kê gót hoặc ván nghiêng trước khung squat.";
 /* Cyclist Squat · setup */
@@ -15594,6 +15146,8 @@
 "When the elbow swings forward, the arm leaves the position behind the body, the front deltoid joins in and the top of the curl turns into a front raise." = "Khi khuỷu tay vung ra trước, tay rời khỏi vị trí phía sau thân, cơ delta trước tham gia và phần đỉnh của động tác cuốn biến thành động tác nâng tạ trước mặt.";
 /* Reverse Curl · label */
 "Elbows by your sides" = "Khuỷu tay sát người";
+/* Reverse Curl · label */
+"Lower all the way" = "Hạ hết cỡ";
 /* Reverse Curl · intro */
 "An overhand grip, the wrists straight from bottom to top." = "Cầm sấp, cổ tay thẳng từ dưới lên trên.";
 /* Reverse Curl · why */
@@ -17190,8 +16744,6 @@
 "Stopping short under the weight, the hips hanging below the top on every rep." = "Dừng sớm dưới sức nặng của tạ, hông dừng thấp hơn đỉnh ở mỗi lần.";
 /* Weighted Frog Pump · correct */
 "Drive through the outer edges of the feet until the hips can rise no further, squeeze for a moment, then lower the dumbbell under control." = "Đẩy qua mép ngoài bàn chân đến khi hông không thể nâng thêm, siết trong giây lát, rồi hạ tạ đơn xuống có kiểm soát.";
-/* Weighted Frog Pump · title */
-"Dumbbell" = "Tạ đơn";
 /* Weighted Frog Pump · intro */
 "The dumbbell rests across the hips, steadied by both hands." = "Tạ đơn nằm ngang trên hông, hai tay giữ cho vững.";
 /* Weighted Frog Pump · why */
@@ -17222,6 +16774,8 @@
 "Arching finishes the rep with the lower back instead of the hips, so the glutes stop short of full hip extension." = "Ưỡn lưng kết thúc mỗi lần bằng lưng dưới thay vì hông, nên cơ mông dừng lại trước khi hông duỗi hoàn toàn.";
 /* Cable Hip Adduction · label */
 "Upper body still" = "Thân trên yên";
+/* Cable Hip Adduction · label */
+"Hand on the post" = "Tay vịn trụ máy";
 /* Cable Hip Adduction · label */
 "Leg straight" = "Chân thẳng";
 /* Cable Hip Adduction · label */
@@ -17270,6 +16824,8 @@
 "Adductor Longus" = "Cơ khép dài";
 /* Cable Hip Adduction · muscle */
 "Adductor Magnus" = "Cơ khép lớn";
+/* Cable Hip Adduction · stabilisers */
+"standing-leg gluteus medius" = "cơ mông nhỡ chân trụ";
 /* Cable Hip Adduction · setup */
 "Attach an ankle cuff to a low pulley and strap it around the ankle nearest the stack." = "Gắn đai cổ chân vào ròng rọc thấp và quấn quanh cổ chân phía gần cột tạ.";
 /* Cable Hip Adduction · setup */
@@ -17288,6 +16844,8 @@
 "Dropping the working hip tilts the leg across with the pelvis, so the foot travels further while the inner thigh does less." = "Sụt hông bên tập làm chân nghiêng băng qua cùng khung chậu, nên bàn chân đi xa hơn trong khi mặt trong đùi làm ít hơn.";
 /* Standing Hip Abduction · label */
 "Out to the side" = "Dang sang bên";
+/* Standing Hip Abduction · label */
+"Toes forward" = "Mũi chân ra trước";
 /* Standing Hip Abduction · intro */
 "Stand tall; only the leg moves." = "Đứng thẳng; chỉ chân chuyển động.";
 /* Standing Hip Abduction · why */
@@ -19864,6 +19422,8 @@
 "Set your feet hip-width apart, toes forward, legs straight." = "Đặt hai chân rộng bằng hông, mũi chân hướng thẳng, chân thẳng.";
 /* Wall Tibialis Raise · setup */
 "Let your arms hang by your sides and brace your trunk lightly." = "Thả hai tay xuôi bên người và gồng nhẹ thân.";
+/* Wall Tibialis Raise · mistakeBadge */
+"FEET TOO CLOSE" = "CHÂN QUÁ SÁT";
 /* Wall Tibialis Raise · correctCue */
 "Heels well out from the wall" = "Gót đặt xa tường";
 /* Wall Tibialis Raise · mistakeCue */
@@ -21230,6 +20790,8 @@
 "Lift your legs so the knees are over your hips, bent to 90°, shins level." = "Nhấc chân lên để gối ở trên hông, gập 90°, ống chân song song mặt sàn.";
 /* Dead Bug · setup */
 "Press your lower back gently into the mat and brace your abs." = "Ép nhẹ thắt lưng xuống thảm và gồng chặt cơ bụng.";
+/* Dead Bug · mistakeBadge */
+"BACK ARCHING" = "ƯỠN LƯNG";
 /* Dead Bug · mistakeCue */
 "Lower back lifts as the leg lowers" = "Thắt lưng nhấc lên khi hạ chân";
 /* Dead Bug · correctNote */
@@ -21656,6 +21218,8 @@
 "Walking the hands out well in front of the shoulders." = "Đưa tay ra xa phía trước vai.";
 /* Mountain Climber · correct */
 "Set your hands under or just in front of your shoulders and keep them planted, arms straight." = "Đặt tay dưới hoặc hơi phía trước vai và giữ chắc tại chỗ, tay duỗi thẳng.";
+/* Mountain Climber · title */
+"Back Leg" = "Chân sau";
 /* Mountain Climber · intro */
 "The leg going back straightens fully, toes on the mat." = "Chân đưa ra sau duỗi thẳng hoàn toàn, mũi chân chạm thảm.";
 /* Mountain Climber · why */
@@ -21726,6 +21290,8 @@
 "The hips sagging toward the floor between taps." = "Hông sụp về phía sàn giữa các lần chạm.";
 /* Plank Shoulder Tap · correct */
 "Squeeze your glutes and pull your ribs down so your hips stay in line with your shoulders and heels." = "Siết cơ mông và kéo xương sườn xuống để hông thẳng hàng với vai và gót chân.";
+/* Plank Shoulder Tap · title */
+"Foot Width" = "Độ rộng chân";
 /* Plank Shoulder Tap · intro */
 "Feet about hip-width apart, toes on the mat." = "Hai bàn chân rộng khoảng bằng hông, mũi chân chạm thảm.";
 /* Plank Shoulder Tap · why */
@@ -23794,6 +23360,8 @@
 "Bring your left knee up in front with the cable taut before the first rep." = "Trước lần đầu tiên, đưa gối trái lên phía trước sao cho cáp căng.";
 /* Cable Knee-Drive Kickback · correctCue */
 "Hip opens, back still" = "Hông mở, lưng yên";
+/* Cable Knee-Drive Kickback · mistakeCue */
+"Lower back arches to lift the leg" = "Lưng dưới ưỡn lên để nâng chân";
 /* Cable Knee-Drive Kickback · correctNote */
 "Keeping the trunk still ends the kick where the hip runs out of range, so the glutes do the work." = "Giữ thân yên khiến cú đá dừng ở nơi hông hết biên độ, nên nhóm cơ mông đảm nhận phần việc.";
 /* Cable Knee-Drive Kickback · mistakeNote */
@@ -24548,74 +24116,6 @@
 "Standing still leaves the bar to the forearms, which is why this curl is done with less weight than a normal one." = "Đứng yên để cẳng tay tự nâng thanh, đó là lý do bài cuốn này dùng mức tạ nhẹ hơn bài thông thường.";
 /* Cable Reverse Curl · mistakeNote */
 "A hip swing throws the bar past the hardest part of the curl and loads the lower back instead." = "Đánh hông đẩy thanh vượt qua đoạn khó nhất của động tác cuốn và dồn tải sang thắt lưng.";
-/* Bent-Over Cable Overhead Triceps Extension · label */
-"Straighten the elbows" = "Duỗi thẳng khuỷu tay";
-/* Bent-Over Cable Overhead Triceps Extension · label */
-"Upper arms fixed" = "Cánh tay trên cố định";
-/* Bent-Over Cable Overhead Triceps Extension · label */
-"Flat back, hips hinged" = "Lưng phẳng, gập hông";
-/* Bent-Over Cable Overhead Triceps Extension · label */
-"Split stance, knee soft" = "Chân trước sau, gối chùng";
-/* Bent-Over Cable Overhead Triceps Extension · intro */
-"Each rep finishes with the elbows straight, the arms in line with your trunk and the bar out past your head." = "Mỗi lần kết thúc khi khuỷu tay duỗi thẳng, tay thẳng hàng với thân và thanh vươn ra quá đầu.";
-/* Bent-Over Cable Overhead Triceps Extension · why */
-"Straightening the elbow fully is what loads the triceps hardest in this position, so finish every rep with straight arms. Holding the lockout for a moment before letting the bar return stops the set turning into a swing." = "Duỗi thẳng hoàn toàn khuỷu tay là điều dồn tải mạnh nhất vào cơ tam đầu cánh tay ở tư thế này, nên hãy kết thúc mỗi lần với tay thẳng. Giữ tư thế duỗi thẳng một chút trước khi để thanh trở lại giúp hiệp tập không biến thành lấy đà.";
-/* Bent-Over Cable Overhead Triceps Extension · mistake */
-"Stopping short of straight and rushing back into the next rep." = "Dừng trước khi tay thẳng hẳn và vội vàng vào lần tiếp theo.";
-/* Bent-Over Cable Overhead Triceps Extension · correct */
-"Push until your elbows are straight and your arms line up with your back, hold for a beat, then lower under control." = "Đẩy đến khi khuỷu tay duỗi thẳng và cánh tay thẳng hàng với lưng, giữ một nhịp, rồi hạ xuống có kiểm soát.";
-/* Bent-Over Cable Overhead Triceps Extension · intro */
-"The upper arms sit beside your head, angled slightly up, and do not move." = "Cánh tay trên nằm cạnh đầu, hơi chếch lên, và không di chuyển.";
-/* Bent-Over Cable Overhead Triceps Extension · why */
-"With the trunk hinged over, your arms sit overhead relative to the shoulder, the position that stretches the long head of the triceps. In a 12-week study, overhead cable extensions grew the triceps, the long head most of all, more than the same work with the arms by the sides, even with less weight." = "Khi thân gập về trước, cánh tay nằm ở vị trí qua đầu so với vai, đúng tư thế kéo giãn đầu dài của cơ tam đầu cánh tay. Trong một nghiên cứu 12 tuần, bài duỗi tay với cáp ở tư thế tay qua đầu làm cơ tam đầu, nhất là đầu dài, phát triển nhiều hơn so với cùng khối lượng tập khi tay để cạnh thân, dù dùng mức tạ nhẹ hơn.";
-/* Bent-Over Cable Overhead Triceps Extension · mistake */
-"The upper arms dropping or swinging back as the bar comes down." = "Cánh tay trên rơi xuống hoặc đánh ra sau khi thanh trở về.";
-/* Bent-Over Cable Overhead Triceps Extension · correct */
-"Lock your upper arms beside your ears and let only the forearms travel." = "Khóa cánh tay trên cạnh tai và chỉ để cẳng tay di chuyển.";
-/* Bent-Over Cable Overhead Triceps Extension · intro */
-"The elbows stay about shoulder-width and point forward, past your head." = "Khuỷu tay giữ rộng khoảng bằng vai và hướng ra trước, vượt quá đầu.";
-/* Bent-Over Cable Overhead Triceps Extension · why */
-"Elbows that point forward keep the bar moving back and forth on one straight line, the forearms in line with the cable. Elbows that splay out pull the forearms off that line and hand part of the job to the shoulders." = "Khuỷu tay hướng ra trước giữ thanh đi tới lui trên một đường thẳng, cẳng tay thẳng hàng với dây cáp. Khuỷu tay bành ra sẽ kéo cẳng tay lệch khỏi đường đó và chuyển một phần việc sang vai.";
-/* Bent-Over Cable Overhead Triceps Extension · mistake */
-"Elbows flaring out to the sides as the bar is pressed away." = "Khuỷu tay mở rộng ra hai bên khi đẩy thanh ra xa.";
-/* Bent-Over Cable Overhead Triceps Extension · correct */
-"Keep your elbows pointing forward and about shoulder-width, close enough that your arms brush past your head." = "Giữ khuỷu tay hướng ra trước và rộng khoảng bằng vai, đủ khép để cánh tay lướt sát qua đầu.";
-/* Bent-Over Cable Overhead Triceps Extension · title */
-"Hinge and Back" = "Gập hông và lưng";
-/* Bent-Over Cable Overhead Triceps Extension · intro */
-"The trunk is hinged to about horizontal, the back flat and still." = "Thân người gập tới gần nằm ngang, lưng phẳng và giữ yên.";
-/* Bent-Over Cable Overhead Triceps Extension · why */
-"Hinging the trunk to about horizontal is what puts the arms overhead without reaching overhead. With the back flat and the hips still, the arms are the only thing that moves; a back that rounds or drops under the pull takes the stretch out of the position." = "Gập thân xuống gần song song với sàn giúp tay ở tư thế qua đầu mà không cần vươn tay lên trên đầu. Khi lưng phẳng và hông giữ yên, chỉ có tay chuyển động; lưng cong hoặc tụt xuống dưới lực kéo sẽ làm mất độ giãn của tư thế này.";
-/* Bent-Over Cable Overhead Triceps Extension · mistake */
-"Rounding the back or letting the chest sink toward the floor as the cable pulls." = "Cong lưng hoặc để ngực chùng xuống về phía sàn khi cáp kéo.";
-/* Bent-Over Cable Overhead Triceps Extension · correct */
-"Hinge from the hips with a flat back until your trunk is about parallel to the floor, brace, and hold it for the set." = "Gập hông với lưng phẳng đến khi thân gần song song với sàn, gồng chặt và giữ nguyên suốt cả hiệp.";
-/* Bent-Over Cable Overhead Triceps Extension · intro */
-"One foot forward and one back, about 0.7 m apart, the front knee soft." = "Một chân trước, một chân sau, cách nhau khoảng 0,7 m, gối trước hơi chùng.";
-/* Bent-Over Cable Overhead Triceps Extension · why */
-"The cable pulls you toward the machine, and a split stance resists that pull far better than a square one. With the front knee slightly bent and the back leg nearly straight, you stay planted while only the arms move." = "Cáp kéo bạn về phía máy, và thế chân trước sau chống lại lực kéo đó tốt hơn nhiều so với đứng hai chân ngang hàng. Với gối trước hơi gập và chân sau gần như thẳng, bạn đứng vững trong khi chỉ có tay chuyển động.";
-/* Bent-Over Cable Overhead Triceps Extension · mistake */
-"Feet level and close together, so the body is tugged forward each rep." = "Hai chân ngang hàng và đứng sát nhau, khiến cơ thể bị kéo ra trước mỗi lần.";
-/* Bent-Over Cable Overhead Triceps Extension · correct */
-"Stagger your feet about a stride apart, bend the front knee a little and keep your weight even between them." = "Đặt hai chân so le cách nhau khoảng một bước, hơi gập gối trước và chia đều trọng lượng giữa hai chân.";
-/* Bent-Over Cable Overhead Triceps Extension · setup */
-"Clip a straight bar to a high pulley and take it in both hands, palms down, hands about shoulder-width apart." = "Móc thanh thẳng vào ròng rọc cao và cầm bằng hai tay, lòng bàn tay úp xuống, hai tay rộng khoảng bằng vai.";
-/* Bent-Over Cable Overhead Triceps Extension · setup */
-"Step back a stride and stagger your feet, front knee soft, so the cable is tight." = "Lùi lại một bước và đặt hai chân so le, gối trước hơi chùng, để cáp căng.";
-/* Bent-Over Cable Overhead Triceps Extension · setup */
-"Hinge from the hips with a flat back until your trunk is about parallel to the floor, the bar by the back of your head." = "Gập hông với lưng phẳng đến khi thân gần song song với sàn, thanh ở sau đầu.";
-/* Bent-Over Cable Overhead Triceps Extension · setup */
-"Set your upper arms beside your ears pointing slightly up, brace your trunk, and keep them there for the set." = "Đặt cánh tay trên cạnh tai, hơi chếch lên, gồng chặt thân và giữ nguyên như vậy suốt cả hiệp.";
-/* Bent-Over Cable Overhead Triceps Extension · mistakeBadge */
-"UPPER ARMS DROPPING" = "CÁNH TAY TRÊN RƠI XUỐNG";
-/* Bent-Over Cable Overhead Triceps Extension · correctCue */
-"Upper arms fixed beside the head" = "Cánh tay trên cố định cạnh đầu";
-/* Bent-Over Cable Overhead Triceps Extension · mistakeCue */
-"Upper arms swing down with the bar" = "Cánh tay trên rơi xuống theo thanh";
-/* Bent-Over Cable Overhead Triceps Extension · correctNote */
-"Holding the upper arms still keeps the triceps stretched over the shoulder and leaves the elbow to do the work." = "Giữ yên cánh tay trên giúp cơ tam đầu luôn được kéo giãn qua vai và để khuỷu tay làm việc.";
-/* Bent-Over Cable Overhead Triceps Extension · mistakeNote */
-"Letting them drop turns the lift into a pulldown and takes away the overhead position the exercise is for." = "Để cánh tay rơi xuống biến bài tập thành động tác kéo xuống và đánh mất tư thế tay qua đầu, vốn là mục đích của bài.";
 /* Machine Glute Press · label */
 "Press the plate back" = "Đẩy bàn đạp ra sau";
 /* Machine Glute Press · label */
@@ -24668,6 +24168,8 @@
 "Locking the standing knee or rising onto that toe each rep." = "Khóa thẳng gối trụ hoặc kiễng lên mũi chân trụ mỗi lần.";
 /* Machine Glute Press · correct */
 "Keep a small bend in the standing knee and the foot flat, with your weight through the middle of it." = "Giữ gối trụ hơi gập và bàn chân đặt phẳng, dồn trọng lượng qua giữa bàn chân.";
+/* Machine Glute Press · stabilisers */
+"standing-leg glutes" = "nhóm cơ mông chân trụ";
 /* Machine Glute Press · setup */
 "Set the foot plate so your working knee starts bent well under your hip, and load the machine." = "Chỉnh bàn đạp sao cho gối chân tập bắt đầu ở tư thế gập sâu dưới hông, rồi chọn mức tạ cho máy.";
 /* Machine Glute Press · setup */
@@ -25236,6 +24738,8 @@
 "Back until the hip stops" = "Đạp đến khi hông dừng";
 /* Incline Bench Cable Kickback · label */
 "Other knee stays put" = "Gối kia giữ yên";
+/* Incline Bench Cable Kickback · title */
+"Attachment" = "Điểm gắn cáp";
 /* Incline Bench Cable Kickback · intro */
 "The cuff sits above the heel of the working ankle, and the pull comes from there." = "Đai đặt phía trên gót chân của cổ chân bên tập, và lực kéo đến từ đó.";
 /* Incline Bench Cable Kickback · why */

@@ -135,12 +135,12 @@ enum PresetProvider {
             .basic: [
                 item("Glute Bridge", 3, 12, 15),
                 item("Hip Abduction Machine", 3, 12, 15),
-                item("Cable Glute Kickback", 3, 12, 15)
+                item("Standing Hinge Kickback", 3, 12, 15)
             ],
             .advanced: [
-                item("Bulgarian Split Squat (Lean)", 3, 8, 12),
+                item("Bulgarian Split Squat", 3, 8, 12),
                 item("Single-Leg Glute Bridge", 3, 10, 12),
-                item("Cable Hip Abduction", 3, 12, 15),
+                item("Banded Hip Abduction", 3, 12, 15),
                 item("Walking Lunge", 3, 10, 12)
             ]
         ],
