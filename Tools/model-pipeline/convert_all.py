@@ -1779,6 +1779,25 @@ JOBS = {
     "1-100-1108/496_step_up_jump":                                    "Legs/StepUpJump",
     "1-100-1108/498_squat_jump":                                      "Legs/SquatJump",
     "1-100-1108/Push-Up":                                             "Chest/pushup",
+    # Desktop "1-100" folder again, 2026-11-08 evening (exports of 09:47 to 18:30, `_names.tsv`): the owner's
+    # exports of the week's red-list fixes, each a minute or two after the blend's last save, all flagged 🟢.
+    # 145 is whole this time (1-192). 063B and 498B are new variants, stances in the app.
+    "1-100-1108b/063_walking_lunge":                                  "Legs/WalkingLunge",
+    "1-100-1108b/063B_walking_lunge_lean":                            "Legs/WalkingLungeLean",
+    "1-100-1108b/078_glute_bridge":                                   "Legs/GluteBridge",
+    "1-100-1108b/083_standing_calf_raise":                            "Legs/StandingCalfRaise",
+    "1-100-1108b/084_seated_calf_raise":                              "Legs/SeatedCalfRaise",
+    "1-100-1108b/121_cable_crossover":                                "Chest/CableCrossover",
+    "1-100-1108b/145_snatch_grip_deadlift":                           "Back/SnatchGripDeadlift",
+    "1-100-1108b/169_wide_grip_lat_pulldown":                         "Back/WideGripLatPulldown",
+    "1-100-1108b/174_kneeling_lat_pulldown":                          "Back/KneelingLatPulldown",
+    "1-100-1108b/373_swiss_ball_leg_curl":                            "Legs/SwissBallLegCurl",
+    "1-100-1108b/374_sliding_leg_curl":                               "Legs/SlidingLegCurl",
+    "1-100-1108b/375_single_leg_sliding_curl":                        "Legs/SingleLegSlidingCurl",
+    "1-100-1108b/484_power_snatch":                                   "Legs/PowerSnatch",
+    "1-100-1108b/485_dumbbell_snatch":                                "Legs/DumbbellSnatch",
+    "1-100-1108b/486_kettlebell_snatch":                              "Legs/KettlebellSnatch",
+    "1-100-1108b/498B_squat_jump_arms_forward":                       "Legs/SquatJumpArmsForward",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs

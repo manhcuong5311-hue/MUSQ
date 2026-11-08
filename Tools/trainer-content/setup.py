@@ -161,7 +161,7 @@ SETUP = {
     ],
     "Walking Lunge": [
         "Hold a dumbbell in each hand at your sides.",
-        "Stand tall with your feet hip-width apart.",
+        "Stand tall with your feet close together.",
         "Clear space ahead to walk forward in long steps.",
     ],
     "Reverse Lunge": [
@@ -1597,7 +1597,7 @@ SETUP = {
     "Seated Calf Raise": [
         "Sit on the seat with the balls of your feet on the edge of the platform, heels off.",
         "Set the pad on your lower thighs, just above the knees, knees at about 90°.",
-        "Hold the handles, rise onto your toes a little and release the safety catch.",
+        "Hold the handles, rise onto the balls of your feet a little and release the safety catch.",
         "Sit tall with your trunk still.",
     ],
     "Leg Press Calf Raise": [
@@ -2628,7 +2628,7 @@ SETUP = {
         "Work the whole set with one hand, then set the bell down and do the same number with the other.",
     ],
     "Kettlebell Snatch": [
-        "Stand a kettlebell on the floor a little in front of you and set your feet about shoulder-width apart.",
+        "Stand a kettlebell on the floor a little in front of you and set your feet just inside shoulder-width.",
         "Hinge at the hips with a flat back, take the handle in one hand and tilt the bell toward you.",
         "Hike it back between your thighs to start the first swing, with the free arm hanging at your side.",
         "Work one side for the whole set, then set the bell down and swap hands.",

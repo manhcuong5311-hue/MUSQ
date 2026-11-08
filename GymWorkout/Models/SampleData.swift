@@ -3784,6 +3784,40 @@ enum SampleData {
             ExerciseStance(label: "On Boxes", model: ExerciseModel(resource: "DumbbellSumoSquatOnBoxes", framing: ModelFraming(yaw: -0.5, zoom: 0.864, offset: [0.002, -0.020, -0.001])),
                            note: "Feet on two boxes about 20 cm high, so the dumbbell sinks between them; squat below parallel"),
         ],
+        // Desktop "1-100" folder again, 2026-11-08 evening: the Leg list's
+        // Walking Lunge Lean (063B) and the 401-500 Squat Jump with the arms
+        // forward (498B) as stances, framed as above.
+        "Walking Lunge": [
+            ExerciseStance(label: "Upright", model: ExerciseModel(resource: "WalkingLunge", framing: ModelFraming(yaw: 0, zoom: 0.649, offset: [0, 0.010, 0])),
+                           note: "Trunk upright over the hips, a dumbbell in each hand at your sides"),
+            ExerciseStance(label: "Lean", model: ExerciseModel(resource: "WalkingLungeLean", framing: ModelFraming(yaw: 0, zoom: 0.652, offset: [0.002, 0.012, 0])),
+                           note: "Hinge forward about 30° with a flat back; the glutes take more of the work"),
+        ],
+        "Squat Jump": [
+            ExerciseStance(label: "Arm Swing", model: ExerciseModel(resource: "SquatJump", framing: ModelFraming(yaw: -0.8, zoom: 0.67, offset: [0.02, -0.077, -0.021])),
+                           note: "Swing the arms back as you dip and up overhead as you jump"),
+            ExerciseStance(label: "Arms Forward", model: ExerciseModel(resource: "SquatJumpArmsForward", framing: ModelFraming(yaw: -0.8, zoom: 0.768, offset: [0.048, -0.019, -0.049])),
+                           note: "Reach both arms straight out in front as you sink to parallel, then bring them back to your sides as you jump",
+                           activation: [
+                // 2026-11-08: follows the SquatJumpArmsForward model's paint
+                // (the owner's 498B variant): the quadriceps and glutes bright
+                // and the hamstrings dim, as on the Arm Swing model, but the
+                // owner paints the calves dim on this variant (bright on Arm
+                // Swing), so Gastrocnemius and Soleus are secondary rows here.
+                // Their 0.78 and 0.60 are the exercise list's, kept as
+                // estimates with only the rank following the paint: no EMG of
+                // this arm action was found, and squat and countermovement
+                // jumps showed much the same lower-limb EMG with and without
+                // an arm swing, the gastrocnemius and soleus among the
+                // muscles recorded (Kovács et al. 2023, Physical Activity and
+                // Health).
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56),
+                MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.78),
+                MuscleActivation(name: "Soleus", rank: .secondary, fraction: 0.60),
+                MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+                           ]),
+        ],
     ]
 
     static func hasTrainer(_ exercise: Exercise) -> Bool {
@@ -6949,16 +6983,22 @@ enum SampleData {
         ],
         activation: [
             // The list follows the model's own paint: the quadriceps and glutes
-            // bright, everything else unlit (the forearms and the upper back
-            // were faint until the 2026-11-02 re-export). The old list predates
-            // the rules that bright glutes are primary and that an unlit group
-            // loses its rows: Gluteus Maximus moves up from secondary to
-            // primary (its 0.62 kept); the Hamstrings row (0.35) is gone while this
-            // model leaves the hamstrings unlit (the 2026-11-08 Reverse Lunge
-            // and split squat models light them dim again, and their rows are
-            // back; this lift's re-painted export is still to come).
+            // bright, the hamstrings dim, everything else unlit (the forearms
+            // and the upper back were faint until the 2026-11-02 re-export).
+            // The old list predates the rules that bright glutes are primary
+            // and that an unlit group loses its rows: Gluteus Maximus moved up
+            // from secondary to primary (its 0.62 kept), and the Hamstrings row
+            // (0.35) went on 2026-10-27, as that model left the hamstrings
+            // unlit. The 2026-11-08 model lights them dim on both legs (the
+            // legs swap every step; the owner's Leg list, 2026-11-07), so
+            // Hamstrings is back as a secondary row at 0.35, its value before
+            // it left: an estimate, between the dumbbell Reverse Lunge's 0.32
+            // and the Split Squat's 0.40. The Lean stance's model
+            // (WalkingLungeLean, 2026-11-08) is painted alike, so both stances
+            // keep this list.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.83),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.35)
             // The owner's 2026-11-02 re-export leaves the forearms and the
             // upper back unlit (faint before), so their LOW Forearms (0.30) and
             // Trapezius (0.28) rows go back to the stabilisers: the hands still
@@ -6969,7 +7009,7 @@ enum SampleData {
         stabilisers: ["gluteus medius", "adductors", "calves", "forearms", "trapezius", "rhomboids", "core"],
         setup: [
             "Hold a dumbbell in each hand at your sides.",
-            "Stand tall with your feet hip-width apart.",
+            "Stand tall with your feet close together.",
             "Clear space ahead to walk forward in long steps."
         ],
         comparison: FormComparisonCopy(
@@ -10248,15 +10288,24 @@ enum SampleData {
             )
         ],
         activation: [
-            // Follows the 2026-09-30 model's paint (owner's call, 2026-10-01):
-            // the glutes and the quadriceps bright, the hamstrings faint, the
-            // erector spinae unlit (named with the stabilisers instead). EMG
-            // would rank the quadriceps lower here (2-4 %MVIC, Cini and Lima
-            // 2014, Cad Educ Fis Esporte 12(2):53-59); the paint wins so the
-            // list and the model agree.
+            // Follows the model's paint (owner's call, 2026-10-01: the list
+            // follows the model). The owner's 2026-11-08 re-paint lights the
+            // glutes and the hamstrings bright and the quadriceps faint (the
+            // quadriceps were bright and the hamstrings faint before); the
+            // erector spinae stays unlit (named with the stabilisers instead).
+            // So Hamstrings moves up to primary and Quadriceps down to a LOW
+            // secondary, and neither keeps its fraction: 0.36 would read LOW
+            // on a primary and 0.66 MODERATE on a faint row. Hamstrings 0.45
+            // is an estimate, the Barbell Hip Thrust's, whose model also
+            // lights the glutes and the hamstrings bright; Quadriceps 0.24,
+            // its value on 2026-10-01 before the list followed the then-bright
+            // paint, is an estimate too, under that hip thrust's dim 0.40. The
+            // paint now agrees with the EMG, which puts the quadriceps low in
+            // a bridge (2-4 %MVIC, Cini and Lima 2014, Cad Educ Fis Esporte
+            // 12(2):53-59).
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.66),
-            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.45),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["gluteus medius", "erector spinae", "adductors", "core"],
         setup: [
@@ -31943,7 +31992,7 @@ enum SampleData {
         setup: [
             "Sit on the seat with the balls of your feet on the edge of the platform, heels off.",
             "Set the pad on your lower thighs, just above the knees, knees at about 90°.",
-            "Hold the handles, rise onto your toes a little and release the safety catch.",
+            "Hold the handles, rise onto the balls of your feet a little and release the safety catch.",
             "Sit tall with your trunk still."
         ],
         comparison: FormComparisonCopy(
@@ -35014,9 +35063,9 @@ enum SampleData {
                 id: "ribs",
                 title: "Lower Back",
                 intro: "The glutes and hamstrings lift the hips, not the lower back.",
-                why: "The top of the rep is a straight line from the shoulders to the knees. Arching to push the hips higher takes them past that line and moves the work onto the lower back.",
+                why: "Arching to push the hips higher gets the extra height from the lower back, not the hips, so the work moves off the glutes and hamstrings.",
                 mistake: "Arching the lower back at the top to push the hips higher.",
-                correct: "At the top, stop when your knees, hips and shoulders line up, ribs down and glutes tight."
+                correct: "At the top, keep your ribs down and glutes tight instead of arching to push the hips higher."
             ),
             TechniqueCue(
                 id: "hips",
@@ -47963,19 +48012,35 @@ enum SampleData {
             // maximus, biceps femoris or deltoids, and more external oblique in
             // the snatch than the swing). Glutes, hamstrings and quadriceps
             // bright (the kettlebell's hinge keeps the quadriceps dim), the
-            // trapezius bright where the bar or dumbbell is pulled high, the
-            // deltoids, erector spinae and calves dim; the one-arm lifts light
-            // the obliques of the free side. Fractions keep their old values.
+            // deltoids, erector spinae and calves dim (the kettlebell lights no
+            // calves); the one-arm lifts light the obliques of the free side.
+            // Fractions keep their old values.
+            // 2026-11-08: the owner's export of the third-pull fix lights the
+            // glutes, hamstrings and quadriceps bright and the upper back,
+            // front and side delts, rotator cuff, biceps, erector spinae and
+            // calves dim. The owner re-painted the upper back dim before
+            // exporting (the 11-07 scheme had it bright), so Trapezius is
+            // secondary again with its 0.70, as on the cleans: ranks follow
+            // the paint, fractions stay where they were. The front and side
+            // delts, bright on the old model, now match their secondary rows.
+            // The biceps (dim on the old model too; the 11-07 scheme had them
+            // off) and the newly lit rotator cuff leave the stabilisers for
+            // secondary rows: Biceps Brachii at 0.30, its value before
+            // 2026-11-07 and the cleans' for their dim biceps, and Rotator
+            // Cuff at 0.34, the Kettlebell Windmill's value for its overhead
+            // hold. Both are estimates.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.70),
-            MuscleActivation(name: "Trapezius", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.70),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.45),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Rotator Cuff", rank: .secondary, fraction: 0.34),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30),
             MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["core", "forearms", "latissimus dorsi", "biceps brachii", "triceps brachii", "rotator cuff", "soleus"],
+        stabilisers: ["core", "forearms", "latissimus dorsi", "triceps brachii", "soleus"],
         setup: [
             "Load a bar on the floor and stand with your feet about hip-width apart, the bar about over the middle of your feet.",
             "Take a wide overhand grip out toward the plates - wide enough that the bar meets your hip crease when you stand up with it.",
@@ -48071,20 +48136,33 @@ enum SampleData {
             // maximus, biceps femoris or deltoids, and more external oblique in
             // the snatch than the swing). Glutes, hamstrings and quadriceps
             // bright (the kettlebell's hinge keeps the quadriceps dim), the
-            // trapezius bright where the bar or dumbbell is pulled high, the
-            // deltoids, erector spinae and calves dim; the one-arm lifts light
-            // the obliques of the free side. Fractions keep their old values.
+            // deltoids, erector spinae and calves dim (the kettlebell lights no
+            // calves); the one-arm lifts light the obliques of the free side.
+            // Fractions keep their old values.
+            // 2026-11-08: the owner's export of the third-pull fix lights the
+            // glutes, hamstrings and quadriceps bright, the erector spinae and
+            // calves dim, the bell side's front and side delts and upper back
+            // dim, and the free side's obliques and rectus abdominis dim (both
+            // bright on the old model). The owner re-painted the upper back
+            // dim before exporting (the 11-07 scheme had it bright), so
+            // Trapezius is secondary again with its 0.70, as on the cleans:
+            // ranks follow the paint, fractions stay where they were. Rectus
+            // Abdominis (off in the 11-07 scheme) leaves the stabilisers for a
+            // secondary row at 0.30, its value before 2026-11-07 (a primary
+            // then) and the Kettlebell Clean's for its dim free-side rectus
+            // abdominis: an estimate.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.70),
-            MuscleActivation(name: "Trapezius", rank: .primary, fraction: 0.70),
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.70),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.60),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.45),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30),
             MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["rectus abdominis", "quadratus lumborum", "forearms", "latissimus dorsi", "triceps brachii", "biceps brachii", "rotator cuff", "soleus"],
+        stabilisers: ["quadratus lumborum", "forearms", "latissimus dorsi", "triceps brachii", "biceps brachii", "rotator cuff", "soleus"],
         setup: [
             "Stand one dumbbell on the floor just in front of you, with your feet about hip-width apart.",
             "Drop your hips and bend your knees until you can take the handle in one hand with a flat back, and let the other arm hang.",
@@ -48164,10 +48242,10 @@ enum SampleData {
             TechniqueCue(
                 id: "base",
                 title: "Base",
-                intro: "Both feet stay planted about shoulder-width apart and the heels barely move.",
+                intro: "Both feet stay planted a little inside shoulder-width and the heels barely move.",
                 why: "Unlike a Power Snatch, the heels barely leave the floor here and the feet stay put for the whole set. Press the floor away evenly through both feet, so every rep starts from the same stable base.",
                 mistake: "Coming up onto the toes, or letting a foot shuffle as the bell swings.",
-                correct: "Plant both feet about shoulder-width apart, keep your heels down through the swing, and press evenly through both feet."
+                correct: "Plant both feet a little inside shoulder-width, keep your heels down through the swing, and press evenly through both feet."
             )
         ],
         activation: [
@@ -48180,9 +48258,19 @@ enum SampleData {
             // maximus, biceps femoris or deltoids, and more external oblique in
             // the snatch than the swing). Glutes, hamstrings and quadriceps
             // bright (the kettlebell's hinge keeps the quadriceps dim), the
-            // trapezius bright where the bar or dumbbell is pulled high, the
-            // deltoids, erector spinae and calves dim; the one-arm lifts light
-            // the obliques of the free side. Fractions keep their old values; the obliques' LOW 0.40 is an estimate.
+            // deltoids, erector spinae and calves dim (the kettlebell lights no
+            // calves); the one-arm lifts light the obliques of the free side.
+            // Fractions keep their old values.
+            // 2026-11-08: the owner's export lights the glutes and hamstrings
+            // bright, the quadriceps and erector spinae dim, the bell side's
+            // front and side delts, upper back and biceps dim, and the free
+            // side's obliques and rectus abdominis dim; the triceps, dim on the
+            // old model, are unlit and stay a stabiliser. The biceps (dim on
+            // the old model too; the 11-07 scheme had them off) leave the
+            // stabilisers for a secondary row at 0.30, Biceps Brachii's value
+            // before 2026-11-07, and Rectus Abdominis joins at 0.30, the
+            // Kettlebell Clean's value for its dim free-side rectus abdominis.
+            // Both are estimates, as is the Obliques row's 0.40.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.53),
@@ -48190,11 +48278,13 @@ enum SampleData {
             MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.45),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.40),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["rectus abdominis", "quadratus lumborum", "forearms", "triceps brachii", "biceps brachii", "adductors", "calves"],
+        stabilisers: ["quadratus lumborum", "forearms", "triceps brachii", "adductors", "calves"],
         setup: [
-            "Stand a kettlebell on the floor a little in front of you and set your feet about shoulder-width apart.",
+            "Stand a kettlebell on the floor a little in front of you and set your feet just inside shoulder-width.",
             "Hinge at the hips with a flat back, take the handle in one hand and tilt the bell toward you.",
             "Hike it back between your thighs to start the first swing, with the free arm hanging at your side.",
             "Work one side for the whole set, then set the bell down and swap hands."

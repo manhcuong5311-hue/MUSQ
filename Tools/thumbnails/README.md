@@ -271,3 +271,15 @@ dual cable station, joined `BODY_ONLY` like the Cable Y-Raise.
 Pullovers, 2026-11-03: the Dumbbell and Barbell Pullover re-exports (flat
 back, upper chest bright) were re-timed (`posetime.py`, 1.33 -> 1.5 s) and
 re-framed (`thumbsolve.py`), and their two tiles re-shot.
+
+Desktop "1-100" re-exports, 2026-11-08: the morning batch's 47 exercises were
+re-shot with `Tools/lab/shots.sh photo` at their stored framings and pose
+times, except the two band lifts, re-framed for their skinned bands (see
+`Tools/model-pipeline/README.md`). The evening batch's 14, the week's red-list
+fixes, were re-shot the same way. `thumbsolve.py` re-framed the Seated Calf
+Raise (footplate moved), the Cable Crossover (its station lost the pull-up
+bar), and the Swiss Ball Leg Curl and Single-Leg Sliding Curl (lower tops);
+`posetime.py` moved the Sliding and Single-Leg Sliding Curls from 1.83 to
+2.0 s. The Walking Lunge kept its framing: the re-solve (zoom 0.828) only
+shrank the figure, and at its pinned 2.04 s the new footwork still fits the
+old one (0.898).

@@ -1517,3 +1517,93 @@ reviewer and a verifier:
   strings).
 `setup.py` follows. 47 library tiles were re-shot with their stored framings
 and pose times.
+
+Desktop "1-100" folder again, 2026-11-08 evening (JOBS "1-100-1108b"): the
+owner emptied the folder and exported 16 lifts from the week's red-list
+rounds (09:47 to 18:30), each a minute or two after its blend's last save, all
+flagged 🟢. Cloned to `SourceExports/1-100-1108b/` (`_names.tsv`,
+`textures/`). The models they replace, the round's SampleData and
+Content.strings starting points and the replaced tiles are kept in
+`SourceExports/_app_before_1108b/`. 14 replaced app models and two became new
+stance models, `Legs/WalkingLungeLean` (063B) and `Legs/SquatJumpArmsForward`
+(498B). They were converted, put through `one_side_tiers.py` (the one-arm
+snatches and the Single-Leg Sliding Curl) and `shorts/rebase_shorts.py`,
+padded, and slimmed against `AnatomyBodyV2.usdc`. 145 is whole this time
+(frames 1-192).
+
+Against the models they replace (both converted: all joints every 8 frames,
+equipment boxes, paint by group and side):
+- Motion:
+  - Walking Lunge: new footwork. The feet come close together between steps,
+    each step lands out to its own side, the rear foot rises onto its toes and
+    the stance leg stays straight.
+  - Glute Bridge and the three leg curls: the upper back stays on the mat, and
+    the curls' B tops are lower.
+  - Calf raises: toes flat, rolling over the ball of the foot; the deck and
+    footplate moved 3-7 cm.
+  - Cable Crossover: fixed 20 degree elbows.
+  - Snatch-Grip Deadlift: knees out at 15 degrees, grip turned.
+  - Snatches: bar and bell close to the body; the kettlebell stance is
+    3.5 cm narrower per foot.
+- Equipment only:
+  - Wide-Grip Lat Pulldown: the bar sits in the fists.
+  - Kneeling Lat Pulldown: machine scaled x1.187.
+  - Cable Crossover: the station lost its pull-up bar and height-stop pins.
+- Paint:
+  - Glute Bridge: hamstrings bright, quadriceps faint (owner repaint).
+  - Walking Lunge: hamstrings dim.
+  - Power Snatch: front and side delts dim, rotator cuff newly dim.
+  - One-arm snatches: the free side's abs and obliques dim.
+  - 498B: calves dim (bright on 498).
+At their stored framings nothing leaves the view, so framings were kept. The
+Walking Lunge is 0.1 wider to the left, and the bigger kneeling tower crops at
+the top as before.
+
+Rows follow paint, set by a workflow with one author and one adversarial
+verifier per family; every item was verified:
+- Walking Lunge: Hamstrings secondary 0.35.
+- Glute Bridge: Hamstrings primary 0.45, Quadriceps LOW secondary 0.24.
+- Power Snatch: Trapezius secondary, plus Rotator Cuff 0.34 and Biceps
+  Brachii 0.30.
+- Dumbbell Snatch: Trapezius secondary, plus Rectus Abdominis 0.30.
+- Kettlebell Snatch: Biceps Brachii and Rectus Abdominis 0.30.
+The comments say which values are estimates.
+
+Stances:
+- Walking Lunge: Upright / Lean. 063B has the same paint as 063, so the Lean
+  uses the exercise's list.
+- Squat Jump: Arm Swing / Arms Forward. On 498B the arms reach straight
+  forward as the lifter sinks to parallel, then return to the sides for the
+  jump. Arms Forward has its own list, with the calves secondary at their
+  0.78 / 0.60.
+Labels and notes have Vietnamese ("Arm Swing" = "Vung tay", "Arms Forward" =
+"Tay ra trước").
+
+The Lean keeps the Upright's front-on framing until the owner picks. The
+three-quarter view that the Reverse Lunge Lean got would shrink this walking
+lift to about 0.7, and the fixed cue labels would cover its head and chest.
+Trainer stills of the three options are in
+`_app_before_1108b/walking_lunge_lean_views.jpg`.
+
+Known stance trade-offs: on Arms Forward, the shared "Swing the arms" label
+and the dip cue's "just above parallel"; on the Lean, "Torso stays tall".
+
+Copy changed where a model now contradicts it, again checked by a reviewer
+and a verifier:
+- Walking Lunge setup: the feet start close together.
+- Swiss Ball Leg Curl: its top is no longer a straight shoulder-knee line
+  (the why and correct lines).
+- Seated Calf Raise setup: the balls of the feet, not the toes.
+- Kettlebell Snatch: feet a little inside shoulder-width (three strings).
+`setup.py` follows. The 14 tiles were re-shot (see
+`Tools/thumbnails/README.md`).
+
+Left for the owner:
+- Calf raises' shared top-of-rep ghost: it now bends the knees to about
+  155 degrees, because it was sized for the old tiptoe foot.
+- Cable Crossover's Fly Arc ghost: at the squeeze it is straighter than the
+  model's 20 degree arms.
+- Snatch-Grip Deadlift: the correct model's bar runs 15-21 cm off the legs
+  mid-pull. This is pre-existing.
+- Lean model: a fleck of muscle shows through the front of the shorts'
+  waistband.

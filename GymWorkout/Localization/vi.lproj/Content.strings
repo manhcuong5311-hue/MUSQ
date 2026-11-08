@@ -340,6 +340,18 @@
 "On Boxes" = "Trên bục";
 /* stancesByExercise · note */
 "Feet on two boxes about 20 cm high, so the dumbbell sinks between them; squat below parallel" = "Đứng trên hai bục cao khoảng 20 cm để tạ đơn hạ xuống giữa hai bục; squat sâu hơn mức song song";
+/* stancesByExercise · label */
+"Arm Swing" = "Vung tay";
+/* stancesByExercise · note */
+"Swing the arms back as you dip and up overhead as you jump" = "Vung tay ra phía sau khi hạ người và vung lên qua đầu khi bật nhảy";
+/* stancesByExercise · label */
+"Arms Forward" = "Tay ra trước";
+/* stancesByExercise · note */
+"Reach both arms straight out in front as you sink to parallel, then bring them back to your sides as you jump" = "Duỗi thẳng hai tay ra phía trước lúc hạ người đến khi đùi song song sàn, rồi đưa tay về hai bên người khi bật nhảy";
+/* Lying Leg Curl · muscle */
+"Gastrocnemius" = "Cơ bụng chân";
+/* Standing Calf Raise · muscle */
+"Soleus" = "Cơ dép";
 /* Barbell Bench Press · label */
 "Keep wrists stacked" = "Giữ cổ tay thẳng";
 /* Barbell Bench Press · label */
@@ -2359,7 +2371,7 @@
 /* Walking Lunge · setup */
 "Hold a dumbbell in each hand at your sides." = "Mỗi tay cầm một tạ đơn, buông hai bên người.";
 /* Walking Lunge · setup */
-"Stand tall with your feet hip-width apart." = "Đứng thẳng, hai chân rộng bằng hông.";
+"Stand tall with your feet close together." = "Đứng thẳng, hai chân đặt sát nhau.";
 /* Walking Lunge · setup */
 "Clear space ahead to walk forward in long steps." = "Chừa đủ khoảng trống phía trước để bước tới bằng những bước dài.";
 /* Walking Lunge · mistakeBadge */
@@ -2428,6 +2440,8 @@
 "Pushing through the back toe to help stand up, letting it share the work the front leg should be doing alone." = "Đạp qua mũi chân sau để hỗ trợ đứng lên, khiến nó chia bớt phần việc mà lẽ ra chân trước phải tự làm.";
 /* Reverse Lunge · correct */
 "Press through the front heel and midfoot to stand tall, bringing the back leg through to finish the step." = "Đạp qua gót và giữa bàn chân trước để đứng thẳng người, đưa chân sau về để hoàn tất bước chân.";
+/* Reverse Lunge · setup */
+"Stand tall with your feet hip-width apart." = "Đứng thẳng, hai chân rộng bằng hông.";
 /* Reverse Lunge · setup */
 "Brace your core before each step back." = "Gồng chặt cơ lõi trước mỗi lần bước lùi.";
 /* Reverse Lunge · mistakeBadge */
@@ -4342,8 +4356,6 @@
 "Yanking on the handles to heave the weight up." = "Giật mạnh tay cầm để kéo tạ lên.";
 /* Lying Leg Curl · correct */
 "Hold the handles, rest the chest on the bench and keep the upper body relaxed." = "Nắm tay cầm, áp ngực lên ghế và giữ thân trên thả lỏng.";
-/* Lying Leg Curl · muscle */
-"Gastrocnemius" = "Cơ bụng chân";
 /* Lying Leg Curl · setup */
 "Lie face down on the bench, knees just off the end of the pad." = "Nằm sấp trên ghế, gối vừa ra ngoài mép đệm.";
 /* Lying Leg Curl · setup */
@@ -14679,8 +14691,6 @@
 /* Standing Calf Raise · correct */
 "Rise in about a second, hold the top briefly, take about two seconds to lower and pause for a moment at the bottom." = "Nâng lên trong khoảng một giây, giữ ngắn ở đỉnh, hạ xuống trong khoảng hai giây và dừng một chút ở điểm thấp nhất.";
 /* Standing Calf Raise · muscle */
-"Soleus" = "Cơ dép";
-/* Standing Calf Raise · muscle */
 "Fibularis Longus" = "Cơ mác dài";
 /* Standing Calf Raise · stabilisers */
 "tibialis posterior" = "cơ chày sau";
@@ -14747,7 +14757,7 @@
 /* Seated Calf Raise · setup */
 "Set the pad on your lower thighs, just above the knees, knees at about 90°." = "Đặt đệm lên phần dưới đùi, ngay trên gối, gối gập khoảng 90°.";
 /* Seated Calf Raise · setup */
-"Hold the handles, rise onto your toes a little and release the safety catch." = "Nắm tay cầm, nhón mũi chân lên một chút và mở chốt an toàn.";
+"Hold the handles, rise onto the balls of your feet a little and release the safety catch." = "Nắm tay cầm, nhón lên phần trước bàn chân một chút và mở chốt an toàn.";
 /* Seated Calf Raise · setup */
 "Sit tall with your trunk still." = "Ngồi thẳng người, giữ yên thân.";
 /* Seated Calf Raise · mistakeBadge */
@@ -16503,11 +16513,11 @@
 /* Swiss Ball Leg Curl · intro */
 "The glutes and hamstrings lift the hips, not the lower back." = "Nhóm cơ mông và cơ đùi sau nâng hông, không phải lưng dưới.";
 /* Swiss Ball Leg Curl · why */
-"The top of the rep is a straight line from the shoulders to the knees. Arching to push the hips higher takes them past that line and moves the work onto the lower back." = "Ở đỉnh mỗi lần, cơ thể là một đường thẳng từ vai đến gối. Ưỡn lưng để đẩy hông cao hơn làm hông vượt quá đường đó và chuyển phần việc sang lưng dưới.";
+"Arching to push the hips higher gets the extra height from the lower back, not the hips, so the work moves off the glutes and hamstrings." = "Ưỡn lưng để đẩy hông cao hơn thì độ cao thêm đến từ lưng dưới chứ không phải từ hông, nên phần việc chuyển khỏi cơ mông và cơ đùi sau.";
 /* Swiss Ball Leg Curl · mistake */
 "Arching the lower back at the top to push the hips higher." = "Ưỡn lưng dưới ở đỉnh để đẩy hông cao hơn.";
 /* Swiss Ball Leg Curl · correct */
-"At the top, stop when your knees, hips and shoulders line up, ribs down and glutes tight." = "Ở đỉnh, dừng lại khi gối, hông và vai thẳng hàng, sườn hạ xuống và cơ mông siết chặt.";
+"At the top, keep your ribs down and glutes tight instead of arching to push the hips higher." = "Ở đỉnh, giữ sườn hạ xuống và cơ mông siết chặt thay vì ưỡn lưng để đẩy hông lên cao hơn.";
 /* Swiss Ball Leg Curl · intro */
 "The hips stay up for the whole set." = "Hông giữ trên cao suốt cả hiệp.";
 /* Swiss Ball Leg Curl · why */
@@ -25261,15 +25271,15 @@
 /* Kettlebell Snatch · correct */
 "Punch your hand up as the bell arrives, lock the elbow, and let it sit still over your shoulder for a moment before the next rep." = "Đấm bàn tay lên khi tạ ấm tới, khóa khuỷu tay, và để tạ nằm yên trên vai một lúc trước lần tiếp theo.";
 /* Kettlebell Snatch · intro */
-"Both feet stay planted about shoulder-width apart and the heels barely move." = "Hai bàn chân bám chắc sàn, rộng khoảng bằng vai, gót chân hầu như không di chuyển.";
+"Both feet stay planted a little inside shoulder-width and the heels barely move." = "Hai bàn chân bám chắc sàn, hẹp hơn vai một chút, gót chân hầu như không di chuyển.";
 /* Kettlebell Snatch · why */
 "Unlike a Power Snatch, the heels barely leave the floor here and the feet stay put for the whole set. Press the floor away evenly through both feet, so every rep starts from the same stable base." = "Khác với Power Snatch, gót chân hầu như không rời sàn ở bài này và hai bàn chân giữ nguyên vị trí suốt cả hiệp. Đạp sàn đều qua cả hai bàn chân, để mỗi lần đều bắt đầu từ cùng một thế đứng vững.";
 /* Kettlebell Snatch · mistake */
 "Coming up onto the toes, or letting a foot shuffle as the bell swings." = "Kiễng lên mũi chân, hoặc để một bàn chân xê dịch khi tạ ấm vung.";
 /* Kettlebell Snatch · correct */
-"Plant both feet about shoulder-width apart, keep your heels down through the swing, and press evenly through both feet." = "Đặt hai bàn chân rộng khoảng bằng vai, giữ gót chân chạm sàn suốt cú vung, và đạp đều qua cả hai bàn chân.";
+"Plant both feet a little inside shoulder-width, keep your heels down through the swing, and press evenly through both feet." = "Đặt hai bàn chân hẹp hơn vai một chút, giữ gót chân chạm sàn suốt cú vung, và đạp đều qua cả hai bàn chân.";
 /* Kettlebell Snatch · setup */
-"Stand a kettlebell on the floor a little in front of you and set your feet about shoulder-width apart." = "Đặt một quả tạ ấm trên sàn hơi phía trước mặt và đứng hai chân rộng khoảng bằng vai.";
+"Stand a kettlebell on the floor a little in front of you and set your feet just inside shoulder-width." = "Đặt một quả tạ ấm trên sàn hơi phía trước mặt và đứng hai chân hẹp hơn vai một chút.";
 /* Kettlebell Snatch · setup */
 "Hike it back between your thighs to start the first swing, with the free arm hanging at your side." = "Hất tạ ra sau giữa hai đùi để bắt đầu cú vung đầu tiên, tay tự do buông thõng bên hông.";
 /* Kettlebell Snatch · mistakeBadge */
