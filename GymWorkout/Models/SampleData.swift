@@ -2994,10 +2994,18 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.832, offset: [0.009, 0.02, -0.033])),
         "Calf Raise Pulse":                   ExerciseModel(resource: "CalfRaisePulse",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.835, offset: [0.009, 0.021, -0.032])),
+        // 2026-11-08: the bands are real meshes skinned to the rig now, and
+        // the viewport fits the rig's bounds with them in their rest shape,
+        // which for the dorsiflexion band runs out to its kettlebell anchor
+        // (bounds 1.92 m long, centred 0.78 m further toward the feet). Zoom
+        // and offset were changed by the same amounts (fitted on harness
+        // stills) so both lifters sit where they did: zoom 0.761 -> 0.817,
+        // offset z 0.036 -> 0.365; plantar flexion 0.833 -> 0.832, 0.01 ->
+        // 0.06.
         "Banded Plantar Flexion":             ExerciseModel(resource: "BandedPlantarFlexion",
-                                        framing: ModelFraming(yaw: -0.8, zoom: 0.833, offset: [-0.009, 0.21, 0.01])),
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.832, offset: [-0.009, 0.21, 0.06])),
         "Banded Dorsiflexion":                ExerciseModel(resource: "BandedDorsiflexion",
-                                        framing: ModelFraming(yaw: -0.8, zoom: 0.761, offset: [-0.035, 0.224, 0.036])),
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.817, offset: [-0.035, 0.224, 0.365])),
         "Sit-Up":                             ExerciseModel(resource: "SitUp",
                                         framing: ModelFraming(yaw: -1.35, zoom: 0.607, offset: [-0.011, 0.168, 0.049])),
         "Weighted Sit-Up":                    ExerciseModel(resource: "WeightedSitUp",
@@ -3412,7 +3420,7 @@ enum SampleData {
         ],
         "Smith Machine Squat": [
             ExerciseStance(label: "Standard", model: ExerciseModel(resource: "SmithMachineSquat", framing: ModelFraming(yaw: 0, zoom: 0.619, offset: [0, 0.023, 0])),
-                           note: "Feet about shoulder width (40 cm apart), toes out about 10°; the model lights the quads and glutes",
+                           note: "Feet about shoulder width (40 cm apart), toes out about 15°; the model lights the quads and glutes",
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50)
@@ -3422,13 +3430,15 @@ enum SampleData {
                            activation: [
                 // The SmithMachineSquatWide model lights the adductors, glutes
                 // and sartorius (the rig's hip flexors) bright and the
-                // quadriceps dim (vastus lateralis unlit). McCaw & Melrose 1999
-                // (Med Sci Sports Exerc 31(3):428-436): a wider stance raised
-                // gluteus maximus and adductor longus EMG and did not change the
-                // quadriceps, so the quadriceps keep 0.86 and the glutes go up
-                // 0.06, as on the female wide stances. No normalised EMG found
-                // for the adductors or hip flexors; estimates (0.44 as on the
-                // sumo squats; 0.40, the lowest moderate value).
+                // quadriceps dim. The 2026-11-08 model lights the vastus
+                // lateralis dim with the rest of the quadriceps (it was unlit
+                // before), which the Quadriceps row already covers. McCaw &
+                // Melrose 1999 (Med Sci Sports Exerc 31(3):428-436): a wider
+                // stance raised gluteus maximus and adductor longus EMG and did
+                // not change the quadriceps, so the quadriceps keep 0.86 and the
+                // glutes go up 0.06, as on the female wide stances. No normalised
+                // EMG found for the adductors or hip flexors; estimates (0.44 as
+                // on the sumo squats; 0.40, the lowest moderate value).
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56),
                 MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.44),
                 MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
@@ -3674,10 +3684,24 @@ enum SampleData {
             ExerciseStance(label: "Barbell", model: ExerciseModel(resource: "BarbellLunge", framing: ModelFraming(yaw: -0.6, zoom: 0.690, offset: [0.057, 0.057, -0.039])),
                            note: "Bar high on the upper back; the same step with the trunk upright",
                            activation: [
+                // Follows the BarbellLunge model's paint: the quadriceps and
+                // the glutes bright on both legs (the lunge switches legs
+                // between reps), so their rows are primary (the gluteus medius
+                // is part of the Glutes paint). The 2026-11-08 model also
+                // lights the hamstrings dim on both legs (the owner's Leg list,
+                // 2026-11-07), unlit before, so Hamstrings is back as a
+                // secondary row at 0.28, its value before it left the Barbell
+                // Lunge's list: Muyor et al. 2020 (PLoS One 15(4):e0230841)
+                // studied this lift (bar on the upper traps, a step forward to
+                // 90° at the knee) and found the biceps femoris the least
+                // active of the six muscles they measured.
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50),
-                MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.48)
+                MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.48),
+                MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.28)
                            ]),
+            ExerciseStance(label: "Dumbbell", model: ExerciseModel(resource: "ForwardLungeDumbbell", framing: ModelFraming(yaw: -1.3, zoom: 0.664, offset: [0.035, 0.034, -0.126])),
+                           note: "A dumbbell in each hand, arms hanging by the sides; the same step with the trunk upright"),
         ],
         // Owner's Leg list 2 (2026-11-07): the lean model is a stance of the
         // machine, with the gluteus maximus primary ("lean vào mông lớn chính").
@@ -3703,10 +3727,62 @@ enum SampleData {
             ExerciseStance(label: "Smith Machine", model: ExerciseModel(resource: "SmithMachineSplitSquat", framing: ModelFraming(yaw: -0.7, zoom: 0.885, offset: [-0.041, 0.082, 0.035])),
                            note: "Bar on the upper back in the Smith rails; it runs straight up and down",
                            activation: [
+                // The 2026-11-08 model lights the front leg's hamstrings
+                // dim beside the bright quadriceps and glutes, so
+                // Hamstrings is back as a secondary row at 0.32, the value
+                // the Smith Machine Split Squat had until 2026-10-27: an
+                // estimate, as no Smith split squat EMG was found, the
+                // Split Squat's 0.40 lowered for the Smith machine (the
+                // Smith squat drew less biceps femoris activity than the
+                // free squat, Schwanbeck et al. 2009, J Strength Cond Res).
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.58),
-                MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.34)
+                MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.34),
+                MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.32)
                            ]),
+        ],
+        // Desktop "1-100" folder, 2026-11-08: the Leg list's new variants
+        // (BLENDER/Fix_Leg_20261107) as stances. Framings: the solver at the
+        // exercise's yaw, applied as a change to the exercise's own framing
+        // so the camera holds still when the stance changes.
+        "Reverse Lunge": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "ReverseLunge", framing: ModelFraming(yaw: 0, zoom: 0.897, offset: [0, 0.028, 0])),
+                           note: "Trunk upright over the hips, a dumbbell in each hand at your sides"),
+            // Turned three-quarter (-0.8, the solver's fit; owner's pick):
+            // from the front the 30° hinge does not show.
+            ExerciseStance(label: "Lean", model: ExerciseModel(resource: "ReverseLungeLean", framing: ModelFraming(yaw: -0.8, zoom: 0.875, offset: [0.013, 0.056, -0.013])),
+                           note: "Hinge forward about 30° with a flat back; the glutes take more of the work"),
+            ExerciseStance(label: "Leg Lift", model: ExerciseModel(resource: "ReverseLungeLegLift", framing: ModelFraming(yaw: 0, zoom: 0.897, offset: [-0.008, 0.028, 0])),
+                           note: "Drive the back knee up to hip height as you stand and pause, balanced on the front leg"),
+            ExerciseStance(label: "Bodyweight", model: ExerciseModel(resource: "ReverseLungeBodyweight", framing: ModelFraming(yaw: 0, zoom: 0.897, offset: [0, 0.028, 0])),
+                           note: "No dumbbells, hands on the hips, which makes the lunge easier"),
+        ],
+        "Curtsy Lunge": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "CurtsyLunge", framing: ModelFraming(yaw: -0.5, zoom: 0.892, offset: [0.008, 0.031, -0.004])),
+                           note: "Hands clasped at the chest; step back and across, then bring the foot back beside the other"),
+            ExerciseStance(label: "Leg Lift", model: ExerciseModel(resource: "CurtsyLungeLegLift", framing: ModelFraming(yaw: -0.5, zoom: 0.887, offset: [0.036, 0.029, -0.019])),
+                           note: "As you stand, drive the back knee up in front to hip height, knee bent 90°, balancing on one leg",
+                           activation: [
+                // 2026-11-08: follows the CurtsyLungeLegLift model's paint,
+                // the Standard model's bright quadriceps and glutes plus the
+                // hamstrings dim on both legs (unlit on the Standard model),
+                // so Hamstrings joins as a secondary row. No curtsy lunge EMG
+                // was found, so 0.24 is an estimate: about half the Gluteus
+                // Maximus row, as in a bodyweight reverse lunge the front
+                // leg's biceps femoris peaked at 17% MVIC against the gluteus
+                // maximus's 37% (Hoogenboom et al. 2024, Appl Sci
+                // 14(24):11480); the bodyweight Forward Lunge also has 0.24.
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.48),
+                MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.48),
+                MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.24)
+                           ]),
+        ],
+        "Dumbbell Sumo Squat": [
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "DumbbellSumoSquat", framing: ModelFraming(yaw: -0.5, zoom: 0.905, offset: [0.008, 0.039, -0.004])),
+                           note: "Feet wide on the floor, toes turned out; sink until the thighs are parallel"),
+            ExerciseStance(label: "On Boxes", model: ExerciseModel(resource: "DumbbellSumoSquatOnBoxes", framing: ModelFraming(yaw: -0.5, zoom: 0.864, offset: [0.002, -0.020, -0.001])),
+                           note: "Feet on two boxes about 20 cm high, so the dumbbell sinks between them; squat below parallel"),
         ],
     ]
 
@@ -6656,17 +6732,20 @@ enum SampleData {
             )
         ],
         activation: [
-            // Follows the 2026-10-17 model's paint: quadriceps bright, glutes
-            // faint (dim before the swap), lower back unlit (as before). The
-            // Erector Spinae row (0.50) is dropped and the gluteus maximus
-            // falls from 0.40 to a LOW 0.36, the value the library's other
-            // faint rows take (the Romanian Deadlift's forearms and
-            // quadriceps). That is the paint's call, not the EMG's: front, full
+            // Follows the model's paint. The 2026-10-17 model lit the glutes
+            // faint and left the lower back unlit, so the Erector Spinae row
+            // (0.50) was dropped and the gluteus maximus fell from 0.40 to a
+            // LOW 0.36, the value the library's other faint rows take (the
+            // Romanian Deadlift's quadriceps). The 2026-11-08 model lights the
+            // glutes bright with the quadriceps (the lower back is still
+            // unlit), so Gluteus Maximus moves up to primary and gets its 0.40
+            // back, since 0.36 was the faint paint's value, not the EMG's.
+            // 0.40 is an estimate, as on the Zercher Squat's bright glutes,
+            // and stays under the Back Squat's 0.62 even though front, full
             // and parallel squats drew similar gluteus maximus amplitudes
-            // (Contreras et al. 2016, J Appl Biomech 32(1):16-22), so 0.36 is
-            // an estimate.
+            // (Contreras et al. 2016, J Appl Biomech 32(1):16-22).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.94),
-            MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.40)
         ],
         stabilisers: ["upper back", "adductors", "core"],
         setup: [
@@ -6874,9 +6953,10 @@ enum SampleData {
             // were faint until the 2026-11-02 re-export). The old list predates
             // the rules that bright glutes are primary and that an unlit group
             // loses its rows: Gluteus Maximus moves up from secondary to
-            // primary (its 0.62 kept); the Hamstrings row (0.35) is gone, as on
-            // the Reverse Lunge and the split squats, whose models leave the
-            // hamstrings unlit too.
+            // primary (its 0.62 kept); the Hamstrings row (0.35) is gone while this
+            // model leaves the hamstrings unlit (the 2026-11-08 Reverse Lunge
+            // and split squat models light them dim again, and their rows are
+            // back; this lift's re-painted export is still to come).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.83),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62)
             // The owner's 2026-11-02 re-export leaves the forearms and the
@@ -6974,14 +7054,20 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the 2026-10-17 model's paint, which lights only
-            // the front leg's glutes and quads, both bright: the gluteus
-            // maximus is now primary beside the quadriceps (fractions kept
-            // where they were). The grip, trapezius and rhomboids are no
-            // longer lit, so the Forearms row is gone, and the hamstrings,
-            // unlit in both the old and new exports, left the list.
+            // The 2026-10-17 model lit only the front leg's glutes and quads,
+            // both bright, so the gluteus maximus became primary beside the
+            // quadriceps (fractions kept where they were); the grip, trapezius
+            // and rhomboids were no longer lit, so the Forearms row went, and
+            // the hamstrings, unlit then, left the list. The 2026-11-08 model
+            // also lights the front leg's hamstrings dim (the owner's Leg list,
+            // 2026-11-07), so Hamstrings is back as a secondary row at 0.32,
+            // its value before it left. That fits the EMG: in a bodyweight
+            // reverse lunge the front leg's biceps femoris peaked at 17% MVIC,
+            // under half its gluteus maximus's 37% (Hoogenboom et al. 2024,
+            // Appl Sci 14(24):11480).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.65)
+            MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.65),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.32)
         ],
         stabilisers: ["gluteus medius", "adductors", "trapezius", "rhomboids", "core"],
         setup: [
@@ -9565,16 +9651,22 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the 2026-10-17 model's paint: the front leg's
-            // quadriceps and glutes (maximus, medius and minimus meshes) are
-            // bright, as they were before, but the hamstrings, dim on the
-            // 2026-10-10 model, are no longer lit, so their row is gone. The
-            // bright glutes are now primary rows instead of the secondary rows
-            // the split-squat family used to give them, their fractions left
-            // where the EMG put them.
+            // The list follows the model's paint: the front leg's quadriceps
+            // and glutes (maximus, medius and minimus meshes) are bright, so
+            // the glutes are primary rows instead of the secondary rows the
+            // split-squat family used to give them, their fractions left where
+            // the EMG put them. The 2026-11-08 model lights the front leg's
+            // hamstrings dim again (dim on the 2026-10-10 model, unlit on the
+            // 2026-10-17 one, so their row went), and Hamstrings returns as a
+            // secondary row at 0.48 (0.40, the flat split squat's value, until
+            // 2026-10-23), as on the Rear-Foot-Elevated Split Squat, the same
+            // lift: the rear-foot-elevated split squat drew more biceps
+            // femoris activity than the split squat (Mausehund et al. 2019,
+            // J Strength Cond Res).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.58),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["adductors", "forearms", "erector spinae", "trapezius", "rhomboids", "core"],
         setup: [
@@ -10446,16 +10538,23 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the 2026-10-17 model's paint: only the quads and
-            // glutes are lit (bright, working leg), so the Gluteus Maximus and
-            // Gluteus Medius rows are now primary (fractions kept). The upper
-            // back and forearms are no longer lit, so the Trapezius and
-            // Forearms rows are gone.
+            // The 2026-10-17 model lit only the quads and glutes (bright,
+            // working leg), so the Gluteus Maximus and Gluteus Medius rows
+            // became primary (fractions kept); the upper back and forearms were
+            // no longer lit, so the Trapezius and Forearms rows went. The
+            // 2026-11-08 model also lights the working leg's hamstrings dim, so
+            // they move from the stabilisers to a secondary row. Of four loaded
+            // step-ups the standard one drew the most biceps femoris and
+            // semitendinosus activity (Simenz et al. 2012, J Strength Cond Res
+            // 26(12):3398-3405), but that sets no level beside the other rows,
+            // so 0.25, the Step-Up Jump's value (its model lights the same
+            // hamstrings dim), is an estimate.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
         ],
-        stabilisers: ["hamstrings", "adductors", "core"],
+        stabilisers: ["adductors", "core"],
         setup: [
             "Stand facing a knee-height box, a dumbbell in each hand.",
             "Place your whole working foot flat on the box.",
@@ -10537,14 +10636,33 @@ enum SampleData {
             )
         ],
         activation: [
-            // Follows the 2026-10-17 model's paint (owner's re-paint, 2026-10-14..16):
-            // the triceps and the anterior deltoid are now bright (were dim) and
-            // the chest only dim (was bright), so the triceps and front delts are
-            // primary and the pectoralis secondary. Ranks follow the paint; the
-            // fractions stay where the EMG put them, so the pectoralis keeps 0.84.
+            // Follows the model's paint. The triceps and the anterior deltoid
+            // are bright (since the owner's re-paint for the 2026-10-17 model;
+            // they were dim before), so both are primary; ranks follow the
+            // paint and the fractions stay where the EMG put them.
+            // 2026-11-08: the new model paints the chest by head, the middle
+            // (sternal) pec bright and the upper (clavicular) and lower
+            // (abdominal) pec dim, where the 2026-10-17 model lit the whole
+            // chest dim as one group. So the one Pectoralis Major row, a
+            // secondary at 0.84, splits by head as on the library's other
+            // chest lifts: Middle Pectoralis is primary and keeps the 0.84,
+            // and Upper and Lower Pectoralis are new secondary rows. In a
+            // standard push-up the clavicular portion read higher than the
+            // sternocostal one, about 79% vs 65% MVIC in 15 men (Kang et al.
+            // 2014, J Phys Ther Sci 26(6):909-910, PMID 25013294); the
+            // abdominal head was not recorded. So the upper row sits above
+            // the lower, as on the Plyometric Push-Up, and the paint keeps
+            // both under the bright middle head. 0.57 and 0.50 are
+            // estimates, MODERATE: the Barbell Bench Press split (0.62 and
+            // 0.55 under its 0.92) scaled to 0.84, as on the Archer Push-Up,
+            // since a floor push-up presses at roughly right angles to the
+            // trunk as a flat bench does, with the larger value on the upper
+            // head.
+            MuscleActivation(name: "Middle Pectoralis", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.60),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.52),
-            MuscleActivation(name: "Pectoralis Major", rank: .secondary, fraction: 0.84)
+            MuscleActivation(name: "Upper Pectoralis", rank: .secondary, fraction: 0.57),
+            MuscleActivation(name: "Lower Pectoralis", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["serratus anterior", "rectus abdominis", "gluteus maximus"],
         setup: [
@@ -17584,15 +17702,14 @@ enum SampleData {
             )
         ],
         activation: [
-            // Follows the model's paint (re-painted for the 2026-10-17 swap):
-            // upper back, rear delts and rotator cuff bright; lats, biceps and
-            // forearms dim. The re-paint turned the abs, obliques and triceps
-            // off, so the Obliques and Rectus Abdominis rows are gone (the
-            // triceps, which only hold the supporting arm straight, stay with
-            // the stabilisers); the bright rotator cuff leaves the stabilisers
-            // for a primary row, and the dim biceps and forearms are new
-            // secondary rows. The rowing arm is ranked and sourced as the
-            // Dumbbell Bent-Over Row (neutral grip, elbow near the body).
+            // Follows the model's paint: upper back, rear delts and rotator
+            // cuff bright; lats, biceps, forearms and triceps dim. The
+            // re-paint for the 2026-10-17 swap turned the abs and obliques
+            // off, so the Obliques and Rectus Abdominis rows are gone; the
+            // bright rotator cuff left the stabilisers for a primary row, and
+            // the dim biceps and forearms became secondary rows. The rowing
+            // arm is ranked and sourced as the Dumbbell Bent-Over Row
+            // (neutral grip, elbow near the body).
             MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.72),
             MuscleActivation(name: "Middle Trapezius", rank: .primary, fraction: 0.65),
             MuscleActivation(name: "Rhomboids", rank: .primary, fraction: 0.65),
@@ -17610,9 +17727,17 @@ enum SampleData {
             // LOW, the app's dumbbell-grip value (the dumbbell curls and the
             // lunge, 0.30): both hands grip a dumbbell, the supporting one
             // under the body's weight. No normalised EMG found; estimate.
-            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Forearms", rank: .secondary, fraction: 0.30),
+            // 2026-11-08: the new model lights the triceps dim on both arms
+            // (the models in the app since the 2026-10-17 swap left them
+            // unlit), so Triceps Brachii leaves the stabilisers for a
+            // secondary row. LOW 0.30 is an estimate, the Plank Shoulder
+            // Tap's value for its dim triceps: here too the supporting arm
+            // holds the plank on a straight elbow. No renegade-row EMG of the
+            // triceps was found.
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["serratus anterior", "triceps brachii", "glutes"],
+        stabilisers: ["serratus anterior", "glutes"],
         setup: [
             "Set two dumbbells shoulder-width apart on the floor.",
             "Grip them and walk into a high plank, hands under your shoulders.",
@@ -26078,16 +26203,23 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the
-            // 2026-10-19 "From 316" swap): the glutes and quads are now both
-            // bright, so the gluteus maximus and the gluteus medius (part of
-            // the same Glutes paint) are primary beside the quadriceps, with
-            // their fractions kept. The hamstrings, unlit in both the old and
-            // the new paint, left the list; the adductors, dim before, are no
-            // longer lit and stay with the stabilisers.
+            // The list follows the model's paint (re-painted for the 2026-10-19
+            // "From 316" swap): the glutes and quads are now both bright, so
+            // the gluteus maximus and the gluteus medius (part of the same
+            // Glutes paint) are primary beside the quadriceps, with their
+            // fractions kept; the adductors, dim before, are no longer lit and
+            // stay with the stabilisers. The hamstrings, unlit in that paint
+            // and the one before it, left the list then. The 2026-11-08 model
+            // lights them dim on both legs (the lunge switches legs between
+            // reps; the owner's Leg list, 2026-11-07), so Hamstrings is back as
+            // a secondary row at 0.24, its value before it left: in the
+            // bodyweight forward lunge with the trunk upright the biceps
+            // femoris reached 11.9% MVIC against the vastus lateralis's 45.6%
+            // (Farrokhi et al. 2008, J Orthop Sports Phys Ther 38(7):403-409).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.46),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.24)
         ],
         stabilisers: ["adductors", "calves", "core"],
         setup: [
@@ -26193,11 +26325,20 @@ enum SampleData {
             // quadriceps; the gluteus medius, part of the same glute paint, is
             // listed primary too. Their fractions stay where they were. The
             // adductors, dim before, are no longer lit (they stay in the
-            // stabilisers), and the hamstrings, unlit in both the old and new
-            // models, left the list.
+            // stabilisers). The hamstrings, unlit on that model and the one
+            // before it, left the list then. The 2026-11-08 model lights them
+            // dim on both legs (the lunge switches legs between reps; the
+            // owner's Leg list, 2026-11-07), so Hamstrings is back as a
+            // secondary row at 0.30, its value before it left: the front leg's
+            // biceps femoris peaked at 17% MVIC in a bodyweight reverse lunge
+            // (Hoogenboom et al. 2024, Appl Sci 14(24):11480), and leaning the
+            // trunk forward, as this model does (about 20°), raised it in the
+            // forward lunge from 11.9% to 17.9% MVIC (Farrokhi et al. 2008, J
+            // Orthop Sports Phys Ther 38(7):403-409).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.50),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.42)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.42),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["adductors", "erector spinae", "core"],
         setup: [
@@ -26391,12 +26532,17 @@ enum SampleData {
             // before, so the Gluteus Maximus and Gluteus Medius rows, one Glutes
             // paint group, are now primary, their fractions kept where they
             // were. The adductors, dim before, are no longer lit; they never had
-            // a row and stay with the stabilisers. The hamstrings are unlit, as
-            // they were before the swap, so their row is gone, as on the
-            // Bulgarian split squat.
+            // a row and stay with the stabilisers. The 2026-11-08 models of the
+            // Barbell and Dumbbell stances, which share this list, light the
+            // front leg's hamstrings dim, unlit before, so Hamstrings is back
+            // as a secondary row at 0.40, its value until 2026-10-27: level
+            // with the gluteus medius, as the split squat EMG studies disagree
+            // on which of the two is higher (Mausehund et al. 2019 and Stastny
+            // et al. 2015, both J Strength Cond Res).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["adductors", "erector spinae", "calves", "core"],
         setup: [
@@ -26487,11 +26633,15 @@ enum SampleData {
             // before, are now bright, so the Gluteus Maximus and Gluteus
             // Medius rows are primary beside the quadriceps (fractions kept
             // where the EMG put them). The adductors, dim on the old model, are
-            // no longer lit and stay a stabiliser note; the hamstrings, unlit
-            // on both the old and new models, left the list.
+            // no longer lit and stay a stabiliser note. The hamstrings, unlit
+            // on both of those models, are dim on the front leg of the
+            // 2026-11-08 model, so Hamstrings is back as a secondary row at
+            // 0.40, its value until 2026-10-27: an estimate, the Split
+            // Squat's, as no front-foot-elevated split squat EMG was found.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.66),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["adductors", "calves", "forearms", "core"],
         setup: [
@@ -26578,16 +26728,21 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (swapped in 2026-10-19 with the
-            // paint unchanged): the front leg's quadriceps and glutes (maximus,
-            // medius and minimus meshes, one group) are bright; the hamstrings
-            // and adductors are unlit. Changes: the Gluteus Medius moves up to
-            // primary with the bright glute group, keeping its 0.44 (ranks follow
-            // the paint, fractions stay where the EMG put them), as on the
-            // Bulgarian Split Squat; the unlit hamstrings lose their row.
+            // The list follows the model's paint: the front leg's quadriceps
+            // and glutes (maximus, medius and minimus meshes, one group) are
+            // bright, so the Gluteus Medius is primary with the maximus,
+            // keeping its 0.44 (ranks follow the paint, fractions stay where
+            // the EMG put them), as on the Bulgarian Split Squat; the adductors
+            // are unlit and stay a stabiliser. The 2026-11-08 model lights the
+            // front leg's hamstrings dim, unlit on the model before it, so
+            // Hamstrings is back as a secondary row at 0.48, its value until
+            // 2026-10-27: the rear-foot-elevated split squat drew more biceps
+            // femoris activity than the split squat (Mausehund et al. 2019,
+            // J Strength Cond Res).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["adductors", "calves", "forearms", "core"],
         setup: [
@@ -26684,18 +26839,22 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint, swapped in 2026-10-19 with
-            // the paint unchanged: the front leg's quadriceps and the three
-            // glutes (maximus, medius and minimus meshes, one group) are
-            // bright and nothing else is lit. The hamstrings, unlit on this
-            // model, lose their row, and the Gluteus Medius row takes the
-            // bright glute group's primary rank (it was secondary under the
-            // older glute-group convention), as on the Bulgarian Split Squat;
+            // The list follows the model's paint: the front leg's quadriceps
+            // and the three glutes (maximus, medius and minimus meshes, one
+            // group) are bright, so the Gluteus Medius row takes the bright
+            // glute group's primary rank (it was secondary under the older
+            // glute-group convention), as on the Bulgarian Split Squat;
             // fractions stay where the EMG put them. The adductors, unlit
-            // since the 2026-10-12 model, stay a stabiliser.
+            // since the 2026-10-12 model, stay a stabiliser. The 2026-11-08
+            // model lights the front leg's hamstrings dim, unlit on the model
+            // before it, so Hamstrings is back as a secondary row at 0.48, its
+            // value until 2026-10-27: the high-bar rear-foot-elevated split
+            // squat drew more biceps femoris activity than the split squat
+            // (Mausehund et al. 2019, J Strength Cond Res).
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.64),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.44),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.48)
         ],
         stabilisers: ["erector spinae", "adductors", "calves", "core"],
         setup: [
@@ -26792,15 +26951,23 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint, re-painted for the 2026-10-19
-            // "From 316" swap: the front leg's quadriceps and glutes stay
-            // bright, but the hamstrings, dim before, are no longer lit, so
-            // their row is gone. The glutes are one paint group, so the
-            // Gluteus Medius row, lit with the maximus, is now primary too (it
-            // was secondary). Fractions left where the EMG put them.
+            // The list follows the model's paint: the front leg's quadriceps
+            // and glutes are bright. The glutes are one paint group, so the
+            // Gluteus Medius row, lit with the maximus, is primary too (it was
+            // secondary under the older glute-group convention, until
+            // 2026-10-27); fractions left where the EMG put them. The
+            // 2026-11-08 model lights the front leg's hamstrings dim again
+            // (dim before the 2026-10-19 "From 316" swap, unlit after it), so
+            // Hamstrings is back as a secondary row at 0.42, its value until
+            // 2026-10-27: an estimate, as no Smith Bulgarian EMG was found,
+            // the Barbell Bulgarian Split Squat's 0.48 lowered for the Smith
+            // machine (the Smith squat drew less biceps femoris activity than
+            // the free squat, Schwanbeck et al. 2009, J Strength Cond Res),
+            // partly offset by this model's steadier forward lean.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.34)
+            MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.34),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.42)
         ],
         stabilisers: ["adductors", "calves", "core"],
         setup: [
@@ -33234,12 +33401,26 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint. Since the 2026-10-29
+            // re-export (the 2026-11-08 model paints the same) the standing
+            // (left) leg's hamstrings and glutes are bright, the erector
+            // spinae dim, and the left adductors (longus, magnus, gracilis),
+            // unlit before, dim. 2026-11-08: Adductors joins as a LOW
+            // secondary row and leaves the stabilisers. No barbell EMG of the
+            // adductors was found, so 0.30 is an estimate, as on the Dumbbell
+            // Single-Leg Romanian Deadlift: with one dumbbell (about 27 kg)
+            // the standing leg's adductor longus reached 21-35 %MVIC
+            // concentric against the biceps femoris' 113-115 (Mo et al. 2023,
+            // Front Physiol 14:1264604), about 0.16-0.26 scaled to these
+            // hamstrings, put at 0.30 as the rig also paints the adductor
+            // magnus, a hip extensor Mo did not record.
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Gluteus Medius", rank: .primary, fraction: 0.74),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50)
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
+            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["adductors", "obliques", "forearms", "core"],
+        stabilisers: ["obliques", "forearms", "core"],
         setup: [
             "Take a light barbell from a rack at hip height, overhand, hands about shoulder-width.",
             "Step back and stand on your left foot, knee slightly bent, as the model does.",
@@ -39023,7 +39204,7 @@ enum SampleData {
             TechniqueCue(
                 id: "top",
                 title: "Point the Foot",
-                intro: "Push the balls of the feet into the bands until the toes point as far as they go, and pause.",
+                intro: "Push the balls of the feet into the band until the toes point as far as they go, and pause.",
                 why: "An elastic band pulls harder the further it is stretched, so the end of the push, toes fully pointed, is where it resists most. Here the ankles point about 40° from where they start. Stopping short leaves out the part of the range where the band pulls hardest.",
                 mistake: "Turning back with the toes only partway pointed.",
                 correct: "Press through the balls of your feet until your toes point as far as they go, hold for about a second, then let them come back."
@@ -39031,26 +39212,26 @@ enum SampleData {
             TechniqueCue(
                 id: "return",
                 title: "The Return",
-                intro: "Let the bands draw the feet back slowly until the toes point straight up.",
+                intro: "Let the band draw the feet back slowly until the toes point straight up.",
                 why: "Physiotherapy guides for this exercise point the foot slowly and return it slowly to the start, under control. The model comes all the way back to a right angle at the ankle each rep, so every push starts from the same place; cutting the return short leaves the feet half pointed.",
                 mistake: "Letting the feet stay half pointed between reps, so each push starts partway through.",
-                correct: "Resist the bands as they pull your toes back up, take a little longer than the push, and pause with the toes pointing at the ceiling."
+                correct: "Resist the band as it pulls your toes back up, take a little longer than the push, and pause with the toes pointing at the ceiling."
             ),
             TechniqueCue(
                 id: "knees",
                 title: "Straight Legs",
                 intro: "The legs stay straight, kneecaps facing the ceiling.",
-                why: "Guides set this exercise up with the leg straight and the kneecap facing up. With the knee straight the gastrocnemius, which crosses the back of the knee, stays long enough to help the soleus point the foot; ExRx notes that bending the knee makes the soleus more active. Bending the knees also lets the feet slide toward you, which slackens the bands.",
+                why: "Guides set this exercise up with the leg straight and the kneecap facing up. With the knee straight the gastrocnemius, which crosses the back of the knee, stays long enough to help the soleus point the foot; ExRx notes that bending the knee makes the soleus more active. Bending the knees also lets the feet slide toward you, which slackens the band.",
                 mistake: "Bending the knees so they lift off the mat and the feet slide toward you.",
                 correct: "Keep your legs long on the mat with a rolled towel under the lower calves, kneecaps up, and move only at the ankles."
             ),
             TechniqueCue(
                 id: "hands",
                 title: "Band Tension",
-                intro: "Hold the band ends still beside your hips so the bands stay taut.",
-                why: "A band only resists as far as it is stretched; in a study of exercise bands the pull rose steadily with how far they were pulled out. If the hands drift forward as the feet push, the bands slacken and the calves push against less. One guide even has you draw the band toward you as you push.",
-                mistake: "Letting the hands follow the feet forward, the bands going slack.",
-                correct: "Hold the two ends of each band in the hand on that side, elbows bent at your sides, and keep your hands still while the feet push."
+                intro: "Hold the band ends still beside your hips so the band stays taut.",
+                why: "A band only resists as far as it is stretched; in a study of exercise bands the pull rose steadily with how far they were pulled out. If the hands drift forward as the feet push, the band slackens and the calves push against less. One guide even has you draw the band toward you as you push.",
+                mistake: "Letting the hands follow the feet forward, the band going slack.",
+                correct: "Hold one end of the band in each hand, elbows bent at your sides, and keep your hands still while the feet push."
             ),
             TechniqueCue(
                 id: "back",
@@ -39069,16 +39250,16 @@ enum SampleData {
         setup: [
             "Sit on a mat with your legs straight out in front of you, feet hip-width apart.",
             "Put a rolled towel under your lower calves so your heels are just off the mat.",
-            "Loop a band round the ball of each foot and hold the ends beside your hips, elbows bent.",
-            "Sit tall and pull the bands taut with your toes pointing up."
+            "Loop a band round the balls of both feet and hold one end in each hand beside your hips, elbows bent.",
+            "Sit tall and pull the band taut with your toes pointing up."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "BAND GOING SLACK",
-            correctCue: "Hands still, bands taut",
+            correctCue: "Hands still, band taut",
             mistakeCue: "Hands drift forward with the feet",
-            correctNote: "With the hands held still the bands stretch further as the toes point, so the calves push against more toward the end.",
-            mistakeNote: "Letting the hands follow the feet slackens the bands, and the calves push against little at the point where the band should pull hardest."
+            correctNote: "With the hands held still the band stretches further as the toes point, so the calves push against more toward the end.",
+            mistakeNote: "Letting the hands follow the feet slackens the band, and the calves push against little at the point where the band should pull hardest."
         ),
         glows: [
             .init(DS.activation.opacity(0.55), rx: 0.08, ry: 0.03, cx: 0.44, cy: 0.65),
@@ -41495,8 +41676,8 @@ enum SampleData {
             // 401-500 swap): obliques bright; abs and hip flexors (the rig's
             // sartorius) faint, both bright before. Faint makes Rectus Abdominis
             // and Hip Flexors LOW secondary rows, 0.74 and 0.72 lowered to 0.36,
-            // the value the library's other faint rows take (the Front Squat's
-            // gluteus maximus). That is the paint's call, not the EMG's: no EMG
+            // the value the library's other faint rows take (the Romanian
+            // Deadlift's quadriceps). That is the paint's call, not the EMG's: no EMG
             // of this raise was found, and the hanging knee-up with straps was
             // among the highest for the rectus abdominis (Escamilla et al. 2006,
             // Phys Ther 86:656-671), so both 0.36 are estimates. Hip Flexors
@@ -43934,19 +44115,21 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): the quadriceps, glutes and front delts bright and
-            // now the side delts too; the triceps, adductors and upper back dim.
-            // Changed: Lateral Deltoid moves up to primary with its 0.56.
+            // The list follows the model's paint: the quadriceps, glutes, front
+            // delts and side delts bright, the triceps and upper back dim. The
+            // 2026-10-21 401-500 re-paint lit the side delts bright, so Lateral
+            // Deltoid moved up to primary with its 0.56. The 2026-11-08 model
+            // leaves the adductors unlit (dim before), so the Adductors row
+            // (0.38) is gone and they join the stabilisers, as on the Front
+            // Squat.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
             MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.56),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["core", "gluteus medius", "rhomboids", "serratus anterior"],
+        stabilisers: ["core", "gluteus medius", "adductors", "rhomboids", "serratus anterior"],
         setup: [
             "Take the bar from a rack with an overhand grip just outside your shoulders.",
             "Bring it to the front of your shoulders, by the collarbones, elbows pointing down and a little forward.",
@@ -44031,15 +44214,22 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint: the quadriceps, glutes, front
+            // delts and side delts bright, the triceps and upper back dim. The
+            // 2026-11-08 model lights the side delts bright (dim before), so
+            // Lateral Deltoid moves up to primary with its 0.60 (ranks follow
+            // the paint, fractions stay where they were), as on the Barbell
+            // Thruster, and leaves the adductors unlit (dim before), so the
+            // Adductors row (0.38) is gone and they join the stabilisers, as on
+            // the Front Squat.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.60),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.55),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["core", "gluteus medius", "rhomboids", "serratus anterior"],
+        stabilisers: ["core", "gluteus medius", "adductors", "rhomboids", "serratus anterior"],
         setup: [
             "Stand with your feet about shoulder-width apart, toes turned slightly out, a dumbbell in each hand.",
             "Bring the dumbbells to your shoulders, palms facing in, one end of each resting on the front of the shoulder.",
@@ -44124,15 +44314,22 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint: the quadriceps, glutes, front
+            // delts and side delts bright, the triceps and upper back dim. The
+            // 2026-11-08 model lights the side delts bright (dim before), so
+            // Lateral Deltoid moves up to primary with its 0.60 (ranks follow
+            // the paint, fractions stay where they were), as on the Barbell
+            // Thruster, and leaves the adductors unlit (dim before), so the
+            // Adductors row (0.38) is gone and they join the stabilisers, as on
+            // the Front Squat.
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.60),
             MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.55),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.38),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.36)
         ],
-        stabilisers: ["core", "gluteus medius", "rhomboids", "serratus anterior"],
+        stabilisers: ["core", "gluteus medius", "adductors", "rhomboids", "serratus anterior"],
         setup: [
             "Stand with your feet about shoulder-width apart, toes turned slightly out.",
             "Clean a kettlebell to each shoulder, the bells resting on the outsides of your forearms.",
@@ -45169,7 +45366,7 @@ enum SampleData {
                 intro: "The padded bar runs straight up and down its track and sits across the hip crease at the top.",
                 why: "A Smith bar runs in a fixed track and cannot roll along your body, so where it meets you is set by where you sit. Over the hip crease it loads hip extension directly and the thick pad spreads the pressure on the pelvis; the hands only steady it.",
                 mistake: "Setting the bench too close to the bar, so at the top the pad presses into the stomach instead of the hips.",
-                correct: "Sit so the pad starts on the tops of your thighs just below the hip crease and settles onto the crease as you rise; hold the bar just outside the pad."
+                correct: "Sit so the pad rests in the crease of your hips from the bottom of the rep to the top; hold the bar just outside the pad."
             )
         ],
         activation: [
@@ -45190,7 +45387,7 @@ enum SampleData {
         setup: [
             "Set a flat bench about 40 cm high lengthwise behind the Smith bar, far enough back that the bar will sit over your hips.",
             "Wrap the middle of the bar in a thick pad and set the safety stops just below the bar's lowest point.",
-            "Sit on the floor with your back to the bench and slide under the bar until the pad rests on the tops of your thighs, just below the hip crease.",
+            "Sit on the floor with your back to the bench and slide under the bar until the pad rests in the crease of your hips.",
             "Plant your feet flat about shoulder-width apart, toes turned out a little, and rest your upper back on the bench edge under your shoulder blades.",
             "Hold the bar just outside the pad and turn it off its hooks."
         ],
@@ -46055,27 +46252,30 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the
-            // 2026-10-19 "From 316" swap): the glutes, quadriceps and
-            // hamstrings stay bright, the erector spinae (dim before) are now
-            // bright too, the adductors (longus, magnus, gracilis) are newly
-            // dim, and the forearms, dim before, are unlit. Erector Spinae
-            // moves up to primary and keeps its 0.50 (ranks follow the paint,
-            // fractions stay where they were), the Forearms row is gone, and
-            // Adductors is a new secondary row, taken out of the stabilisers.
+            // The list follows the model's paint. The 2026-10-19 "From 316"
+            // re-paint lit the erector spinae bright (Erector Spinae moved up
+            // to primary, keeping its 0.50) and the adductors (longus, magnus,
+            // gracilis) dim, which made them a secondary row out of the
+            // stabilisers, and left the forearms unlit (their row went). The
+            // 2026-11-08 model lights the adductors bright and the hamstrings
+            // dim, so Adductors moves up to primary and Hamstrings down to
+            // secondary, each keeping its fraction (ranks follow the paint,
+            // fractions stay where they were); the glutes, quadriceps and
+            // erector spinae stay bright.
             // Adductors: no normalised EMG found for a kettlebell sumo
             // deadlift (Hanen et al. 2025, Front Bioeng Biotechnol
             // 13:1597209, recorded the adductor magnus in the barbell sumo
             // pull but normalised it to the lift's own peak, so it gives no
-            // fraction); 0.44, as on the dumbbell and barbell sumo squats, is
-            // an estimate, below the barbell Sumo Deadlift's bright 0.60. The
-            // other fractions stay judgement calls anchored on the library's
-            // deadlifts, as no kettlebell deadlift EMG exists.
+            // fraction); 0.44, the bright adductors' value on the dumbbell and
+            // barbell sumo squats, is an estimate, below the barbell Sumo
+            // Deadlift's 0.60. The other fractions stay judgement calls
+            // anchored on the library's deadlifts, as no kettlebell deadlift
+            // EMG exists.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.74),
-            MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.56),
             MuscleActivation(name: "Erector Spinae", rank: .primary, fraction: 0.50),
-            MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.44)
+            MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.44),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["lats", "trapezius", "core"],
         setup: [
@@ -47348,12 +47548,29 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint, unchanged since the model
+            // came in on 2026-10-21 (the 2026-11-08 model paints the same):
+            // the glutes and hamstrings bright; the quadriceps, erector
+            // spinae, upper back, front and side delts and biceps dim. The
+            // 2026-10-30 rows were written for the four cleans together, and
+            // only this model lights the side delts as well as the front
+            // ones, so they had no row. 2026-11-08: Lateral Deltoid joins as
+            // a LOW secondary row, and the primaries now come first. No EMG
+            // of the side delts in a clean was found, so 0.30 is an estimate,
+            // level with the front delts' 0.30 (also an estimate): they help
+            // lift the elbows high and out as you pull under the bar, but the
+            // bar stops on the shoulders, not overhead, so they sit under the
+            // snatches' 0.45. The other fractions are the Clean and Press's,
+            // so the dim Trapezius (0.70) and Quadriceps (0.62) sit above the
+            // bright Hamstrings (0.50): ranks follow the paint, fractions stay
+            // where they were.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.70),
-            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.70),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.70),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.30),
             MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["forearms", "core", "calves", "rhomboids"],
@@ -47534,14 +47751,21 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint: the glutes and hamstrings
+            // bright; the quadriceps, upper back, lower back, front delts and
+            // biceps dim. The 2026-11-08 model lights the biceps (unlit
+            // before), so Biceps Brachii leaves the stabilisers for a
+            // secondary row at 0.30, an estimate, the value the barbell Hang
+            // Clean and Power Clean give their dim biceps.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.70),
-            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.70),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.50),
-            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.70),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["forearms", "core", "calves", "rhomboids", "biceps brachii"],
+        stabilisers: ["forearms", "core", "calves", "rhomboids"],
         setup: [
             "Pick up a dumbbell in each hand and stand with your feet about hip-width apart.",
             "Let the bells hang beside your thighs with your arms long and your shoulders set back.",
@@ -47625,16 +47849,26 @@ enum SampleData {
             )
         ],
         activation: [
+            // The list follows the model's paint: the glutes and hamstrings
+            // bright; the quadriceps and lower back dim, and on one side the
+            // bell arm's front delt, biceps and upper back and the free side's
+            // obliques and rectus abdominis, all dim. The 2026-11-08 model
+            // turns the obliques from bright to dim, so Obliques moves down to
+            // secondary with its 0.60 (ranks follow the paint, fractions stay
+            // where they were). The biceps, lit dim before 2026-11-08 too,
+            // leave the stabilisers for a secondary row at 0.30, an estimate,
+            // the value the other cleans give their dim biceps.
             MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.70),
-            MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.60),
-            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Hamstrings", rank: .primary, fraction: 0.50),
+            MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.62),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.55),
             MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.44),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Biceps Brachii", rank: .secondary, fraction: 0.30),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
-        stabilisers: ["forearms", "biceps brachii", "calves", "rhomboids"],
+        stabilisers: ["forearms", "calves", "rhomboids"],
         setup: [
             "Stand a kettlebell on the floor just in front of you and set your feet about hip-width apart.",
             "Hinge at the hips with a flat back, take the handle in one hand and tilt the bell toward you.",

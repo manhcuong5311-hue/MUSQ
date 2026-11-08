@@ -227,7 +227,7 @@
 /* stancesByExercise · note */
 "Feet right under the hips, 20 cm apart, toes almost straight; the model lights the outer quads and glutes" = "Chân đặt ngay dưới hông, cách nhau 20 cm, mũi chân gần như thẳng; mô hình tô sáng phần ngoài cơ tứ đầu đùi và cơ mông";
 /* stancesByExercise · note */
-"Feet about shoulder width (40 cm apart), toes out about 10°; the model lights the quads and glutes" = "Chân rộng khoảng bằng vai (cách nhau 40 cm), mũi chân xoay ra khoảng 10°; mô hình tô sáng cơ tứ đầu đùi và cơ mông";
+"Feet about shoulder width (40 cm apart), toes out about 15°; the model lights the quads and glutes" = "Chân rộng khoảng bằng vai (cách nhau 40 cm), mũi chân xoay ra khoảng 15°; mô hình tô sáng cơ tứ đầu đùi và cơ mông";
 /* stancesByExercise · note */
 "Feet well wider than the shoulders, toes turned out more: knees bend a little less; the model lights the inner thighs, glutes and hip flexors" = "Chân rộng hơn vai nhiều, mũi chân xoay ra ngoài nhiều hơn: gối gập ít hơn một chút; mô hình tô sáng mặt trong đùi, cơ mông và nhóm cơ gấp hông";
 /* stancesByExercise · note */
@@ -304,6 +304,10 @@
 "Bar high on the upper back; the same step with the trunk upright" = "Thanh đặt cao trên lưng trên; bước như trên, thân thẳng";
 /* Bulgarian Split Squat · muscle */
 "Gluteus Medius" = "Cơ mông nhỡ";
+/* Weighted Frog Pump · label */
+"Dumbbell" = "Tạ đơn";
+/* stancesByExercise · note */
+"A dumbbell in each hand, arms hanging by the sides; the same step with the trunk upright" = "Mỗi tay một tạ đơn, tay buông hai bên; bước như trên, thân thẳng";
 /* stancesByExercise · note */
 "Sit tall against the pad; the side glutes lead" = "Ngồi thẳng tựa đệm; mông nhỡ và mông bé làm chính";
 /* stancesByExercise · note */
@@ -312,14 +316,30 @@
 "Gluteus Minimus" = "Cơ mông bé";
 /* stancesByExercise · note */
 "Bar high on the upper back, feet split front and back" = "Thanh đặt cao trên lưng trên, hai chân tách trước sau";
-/* Weighted Frog Pump · label */
-"Dumbbell" = "Tạ đơn";
 /* stancesByExercise · note */
 "A dumbbell in each hand, arms hanging by the sides" = "Mỗi tay một tạ đơn, tay buông hai bên";
 /* stancesByExercise · label */
 "Smith Machine" = "Máy Smith";
 /* stancesByExercise · note */
 "Bar on the upper back in the Smith rails; it runs straight up and down" = "Thanh trên lưng trên trong khung Smith; thanh chạy thẳng lên xuống";
+/* stancesByExercise · note */
+"Trunk upright over the hips, a dumbbell in each hand at your sides" = "Thân thẳng trên hông, mỗi tay một tạ đơn buông hai bên";
+/* stancesByExercise · label */
+"Leg Lift" = "Nâng gối";
+/* stancesByExercise · note */
+"Drive the back knee up to hip height as you stand and pause, balanced on the front leg" = "Khi đứng lên, nâng gối chân sau lên ngang hông và dừng lại, giữ thăng bằng trên chân trước";
+/* stancesByExercise · note */
+"No dumbbells, hands on the hips, which makes the lunge easier" = "Không cầm tạ, hai tay chống hông, nên động tác lunge dễ hơn";
+/* stancesByExercise · note */
+"Hands clasped at the chest; step back and across, then bring the foot back beside the other" = "Chắp hai tay trước ngực; bước ra sau và chéo sang, rồi đưa bàn chân về cạnh chân kia";
+/* stancesByExercise · note */
+"As you stand, drive the back knee up in front to hip height, knee bent 90°, balancing on one leg" = "Khi đứng lên, nâng gối chân sau ra trước, lên ngang hông, gối gập 90°, giữ thăng bằng trên một chân";
+/* stancesByExercise · note */
+"Feet wide on the floor, toes turned out; sink until the thighs are parallel" = "Hai chân đứng rộng trên sàn, mũi chân xoay ra ngoài; hạ xuống đến khi đùi song song sàn";
+/* stancesByExercise · label */
+"On Boxes" = "Trên bục";
+/* stancesByExercise · note */
+"Feet on two boxes about 20 cm high, so the dumbbell sinks between them; squat below parallel" = "Đứng trên hai bục cao khoảng 20 cm để tạ đơn hạ xuống giữa hai bục; squat sâu hơn mức song song";
 /* Barbell Bench Press · label */
 "Keep wrists stacked" = "Giữ cổ tay thẳng";
 /* Barbell Bench Press · label */
@@ -8178,8 +8198,6 @@
 "Feet together, which makes the body tip toward the rowing side." = "Hai chân khép sát, khiến người nghiêng về phía tay đang kéo.";
 /* Renegade Row · correct */
 "Set the feet about shoulder-width or wider, toes tucked." = "Đặt hai chân rộng khoảng bằng vai hoặc hơn, mũi chân chống sàn.";
-/* Renegade Row · stabilisers */
-"triceps brachii" = "cơ tam đầu cánh tay";
 /* Renegade Row · setup */
 "Set two dumbbells shoulder-width apart on the floor." = "Đặt hai tạ đơn trên sàn, cách nhau bằng vai.";
 /* Renegade Row · setup */
@@ -19169,7 +19187,7 @@
 /* Banded Plantar Flexion · title */
 "Point the Foot" = "Duỗi bàn chân";
 /* Banded Plantar Flexion · intro */
-"Push the balls of the feet into the bands until the toes point as far as they go, and pause." = "Đẩy phần trước bàn chân vào dây kháng lực đến khi mũi chân duỗi hết mức, và dừng.";
+"Push the balls of the feet into the band until the toes point as far as they go, and pause." = "Đẩy phần trước bàn chân vào dây kháng lực đến khi mũi chân duỗi hết mức, và dừng.";
 /* Banded Plantar Flexion · why */
 "An elastic band pulls harder the further it is stretched, so the end of the push, toes fully pointed, is where it resists most. Here the ankles point about 40° from where they start. Stopping short leaves out the part of the range where the band pulls hardest." = "Dây kháng lực kéo mạnh hơn khi bị kéo giãn xa hơn, nên cuối pha đẩy, lúc mũi chân duỗi hết mức, là nơi dây cản mạnh nhất. Ở đây cổ chân duỗi khoảng 40° so với vị trí bắt đầu. Dừng sớm sẽ bỏ mất phần biên độ mà dây kéo mạnh nhất.";
 /* Banded Plantar Flexion · mistake */
@@ -19179,17 +19197,17 @@
 /* Banded Plantar Flexion · title */
 "The Return" = "Pha trở về";
 /* Banded Plantar Flexion · intro */
-"Let the bands draw the feet back slowly until the toes point straight up." = "Để dây kéo bàn chân về từ từ cho đến khi mũi chân hướng thẳng lên.";
+"Let the band draw the feet back slowly until the toes point straight up." = "Để dây kéo bàn chân về từ từ cho đến khi mũi chân hướng thẳng lên.";
 /* Banded Plantar Flexion · why */
 "Physiotherapy guides for this exercise point the foot slowly and return it slowly to the start, under control. The model comes all the way back to a right angle at the ankle each rep, so every push starts from the same place; cutting the return short leaves the feet half pointed." = "Các hướng dẫn vật lý trị liệu cho bài này yêu cầu duỗi bàn chân chậm và đưa về vị trí bắt đầu cũng chậm, có kiểm soát. Mô hình trở về hết đến góc vuông ở cổ chân mỗi lần, nên mọi lần đẩy đều bắt đầu từ cùng một chỗ; cắt ngắn pha trở về khiến bàn chân còn duỗi dở.";
 /* Banded Plantar Flexion · mistake */
 "Letting the feet stay half pointed between reps, so each push starts partway through." = "Để bàn chân duỗi dở giữa các lần, nên mỗi lần đẩy bắt đầu từ giữa chừng.";
 /* Banded Plantar Flexion · correct */
-"Resist the bands as they pull your toes back up, take a little longer than the push, and pause with the toes pointing at the ceiling." = "Ghìm lại lực kéo của dây khi dây kéo mũi chân về, làm lâu hơn pha đẩy một chút, và dừng khi mũi chân hướng lên trần.";
+"Resist the band as it pulls your toes back up, take a little longer than the push, and pause with the toes pointing at the ceiling." = "Ghìm lại lực kéo của dây khi dây kéo mũi chân về, làm lâu hơn pha đẩy một chút, và dừng khi mũi chân hướng lên trần.";
 /* Banded Plantar Flexion · intro */
 "The legs stay straight, kneecaps facing the ceiling." = "Hai chân giữ thẳng, xương bánh chè hướng lên trần.";
 /* Banded Plantar Flexion · why */
-"Guides set this exercise up with the leg straight and the kneecap facing up. With the knee straight the gastrocnemius, which crosses the back of the knee, stays long enough to help the soleus point the foot; ExRx notes that bending the knee makes the soleus more active. Bending the knees also lets the feet slide toward you, which slackens the bands." = "Các hướng dẫn đặt tư thế cho bài này với chân thẳng và xương bánh chè hướng lên. Khi gối thẳng, cơ bụng chân, cơ bắc qua mặt sau gối, đủ dài để hỗ trợ cơ dép duỗi bàn chân; ExRx lưu ý gập gối làm cơ dép hoạt động nhiều hơn. Gập gối cũng khiến bàn chân trượt về phía bạn, làm dây chùng.";
+"Guides set this exercise up with the leg straight and the kneecap facing up. With the knee straight the gastrocnemius, which crosses the back of the knee, stays long enough to help the soleus point the foot; ExRx notes that bending the knee makes the soleus more active. Bending the knees also lets the feet slide toward you, which slackens the band." = "Các hướng dẫn đặt tư thế cho bài này với chân thẳng và xương bánh chè hướng lên. Khi gối thẳng, cơ bụng chân, cơ bắc qua mặt sau gối, đủ dài để hỗ trợ cơ dép duỗi bàn chân; ExRx lưu ý gập gối làm cơ dép hoạt động nhiều hơn. Gập gối cũng khiến bàn chân trượt về phía bạn, làm dây chùng.";
 /* Banded Plantar Flexion · mistake */
 "Bending the knees so they lift off the mat and the feet slide toward you." = "Gập gối khiến gối nhấc khỏi thảm và bàn chân trượt về phía bạn.";
 /* Banded Plantar Flexion · correct */
@@ -19197,13 +19215,13 @@
 /* Banded Plantar Flexion · title */
 "Band Tension" = "Độ căng dây";
 /* Banded Plantar Flexion · intro */
-"Hold the band ends still beside your hips so the bands stay taut." = "Giữ yên hai đầu dây bên cạnh hông để dây luôn căng.";
+"Hold the band ends still beside your hips so the band stays taut." = "Giữ yên hai đầu dây bên cạnh hông để dây luôn căng.";
 /* Banded Plantar Flexion · why */
-"A band only resists as far as it is stretched; in a study of exercise bands the pull rose steadily with how far they were pulled out. If the hands drift forward as the feet push, the bands slacken and the calves push against less. One guide even has you draw the band toward you as you push." = "Dây chỉ cản lại theo mức bị kéo giãn; trong một nghiên cứu về dây kháng lực, lực kéo tăng đều theo độ dài dây bị kéo ra. Nếu tay trôi ra trước khi bàn chân đẩy, dây sẽ chùng và cơ bắp chân đẩy với lực cản ít hơn. Một hướng dẫn thậm chí yêu cầu kéo dây về phía bạn khi đẩy.";
+"A band only resists as far as it is stretched; in a study of exercise bands the pull rose steadily with how far they were pulled out. If the hands drift forward as the feet push, the band slackens and the calves push against less. One guide even has you draw the band toward you as you push." = "Dây chỉ cản lại theo mức bị kéo giãn; trong một nghiên cứu về dây kháng lực, lực kéo tăng đều theo độ dài dây bị kéo ra. Nếu tay trôi ra phía trước trong lúc bàn chân đẩy, dây sẽ chùng và cơ bắp chân đẩy với lực cản ít hơn. Một hướng dẫn thậm chí yêu cầu kéo dây về phía bạn khi đẩy.";
 /* Banded Plantar Flexion · mistake */
-"Letting the hands follow the feet forward, the bands going slack." = "Để tay đi theo bàn chân ra trước, dây bị chùng.";
+"Letting the hands follow the feet forward, the band going slack." = "Để tay đi theo bàn chân ra trước, dây bị chùng.";
 /* Banded Plantar Flexion · correct */
-"Hold the two ends of each band in the hand on that side, elbows bent at your sides, and keep your hands still while the feet push." = "Cầm hai đầu của mỗi dây bằng tay cùng bên, khuỷu tay gập sát người, và giữ yên tay trong khi bàn chân đẩy.";
+"Hold one end of the band in each hand, elbows bent at your sides, and keep your hands still while the feet push." = "Mỗi tay cầm một đầu dây, khuỷu tay gập sát người, và giữ yên tay trong khi bàn chân đẩy.";
 /* Banded Plantar Flexion · title */
 "Sitting Posture" = "Tư thế ngồi";
 /* Banded Plantar Flexion · intro */
@@ -19219,19 +19237,17 @@
 /* Banded Plantar Flexion · setup */
 "Put a rolled towel under your lower calves so your heels are just off the mat." = "Đặt một chiếc khăn cuộn dưới phần dưới bắp chân để gót chân vừa nhấc khỏi thảm.";
 /* Banded Plantar Flexion · setup */
-"Loop a band round the ball of each foot and hold the ends beside your hips, elbows bent." = "Vòng một dây kháng lực quanh phần trước mỗi bàn chân và cầm hai đầu bên cạnh hông, khuỷu tay gập.";
+"Loop a band round the balls of both feet and hold one end in each hand beside your hips, elbows bent." = "Vòng một dây kháng lực quanh phần trước của cả hai bàn chân, mỗi tay cầm một đầu dây bên cạnh hông, khuỷu tay gập.";
 /* Banded Plantar Flexion · setup */
-"Sit tall and pull the bands taut with your toes pointing up." = "Ngồi thẳng và kéo căng dây với mũi chân hướng lên.";
+"Sit tall and pull the band taut with your toes pointing up." = "Ngồi thẳng và kéo căng dây với mũi chân hướng lên.";
 /* Banded Plantar Flexion · mistakeBadge */
 "BAND GOING SLACK" = "DÂY BỊ CHÙNG";
-/* Banded Plantar Flexion · correctCue */
-"Hands still, bands taut" = "Tay yên, dây căng";
 /* Banded Plantar Flexion · mistakeCue */
 "Hands drift forward with the feet" = "Tay trôi theo bàn chân ra trước";
 /* Banded Plantar Flexion · correctNote */
-"With the hands held still the bands stretch further as the toes point, so the calves push against more toward the end." = "Khi tay giữ yên, dây giãn dài hơn khi mũi chân duỗi, nên về cuối cơ bắp chân phải đẩy với lực cản lớn hơn.";
+"With the hands held still the band stretches further as the toes point, so the calves push against more toward the end." = "Khi tay giữ yên, dây giãn dài hơn khi mũi chân duỗi, nên về cuối cơ bắp chân phải đẩy với lực cản lớn hơn.";
 /* Banded Plantar Flexion · mistakeNote */
-"Letting the hands follow the feet slackens the bands, and the calves push against little at the point where the band should pull hardest." = "Để tay đi theo bàn chân làm dây chùng, và cơ bắp chân đẩy với rất ít lực cản đúng lúc dây lẽ ra phải kéo mạnh nhất.";
+"Letting the hands follow the feet slackens the band, and the calves push against little at the point where the band should pull hardest." = "Để tay đi theo bàn chân làm dây chùng, và cơ bắp chân đẩy với rất ít lực cản đúng lúc dây lẽ ra phải kéo mạnh nhất.";
 /* Tibialis Raise · label */
 "Hips stay tall" = "Hông giữ thẳng";
 /* Tibialis Raise · label */
@@ -21236,6 +21252,8 @@
 "Moving one leg after the other, or rushing until the hips bounce." = "Đổi từng chân một, hoặc làm vội đến mức hông nảy lên.";
 /* Mountain Climber · correct */
 "Swap both legs together, pull the front knee in a touch further, then swap again; go faster only while your hips keep about the same height." = "Đổi cả hai chân cùng lúc, kéo gối trước vào thêm một chút, rồi đổi lại; chỉ tăng tốc khi hông vẫn giữ được độ cao gần như cũ.";
+/* Mountain Climber · stabilisers */
+"triceps brachii" = "cơ tam đầu cánh tay";
 /* Mountain Climber · setup */
 "Start on a mat on your hands and toes, hands under your shoulders and about shoulder-width apart." = "Bắt đầu trên thảm, chống bằng bàn tay và mũi chân, tay dưới vai và rộng khoảng bằng vai.";
 /* Mountain Climber · setup */
@@ -23461,13 +23479,13 @@
 /* Smith Machine Hip Thrust · mistake */
 "Setting the bench too close to the bar, so at the top the pad presses into the stomach instead of the hips." = "Đặt ghế quá gần thanh, khiến ở đỉnh đệm ép vào bụng thay vì hông.";
 /* Smith Machine Hip Thrust · correct */
-"Sit so the pad starts on the tops of your thighs just below the hip crease and settles onto the crease as you rise; hold the bar just outside the pad." = "Ngồi sao cho đệm bắt đầu ở mặt trên đùi, ngay dưới nếp gấp hông, và dần nằm vào nếp gấp khi bạn nâng hông; cầm thanh ngay bên ngoài đệm.";
+"Sit so the pad rests in the crease of your hips from the bottom of the rep to the top; hold the bar just outside the pad." = "Ngồi sao cho đệm nằm ở nếp gấp hông từ điểm thấp nhất đến điểm cao nhất của mỗi lần; cầm thanh ngay bên ngoài đệm.";
 /* Smith Machine Hip Thrust · setup */
 "Set a flat bench about 40 cm high lengthwise behind the Smith bar, far enough back that the bar will sit over your hips." = "Đặt một ghế phẳng cao khoảng 40 cm theo chiều dọc phía sau thanh Smith, đủ xa để thanh sẽ nằm trên hông bạn.";
 /* Smith Machine Hip Thrust · setup */
 "Wrap the middle of the bar in a thick pad and set the safety stops just below the bar's lowest point." = "Quấn một tấm đệm dày quanh giữa thanh và đặt chốt an toàn ngay dưới điểm thấp nhất của thanh.";
 /* Smith Machine Hip Thrust · setup */
-"Sit on the floor with your back to the bench and slide under the bar until the pad rests on the tops of your thighs, just below the hip crease." = "Ngồi trên sàn, lưng quay vào ghế, và trượt vào dưới thanh đến khi đệm nằm trên mặt trên đùi, ngay dưới nếp gấp hông.";
+"Sit on the floor with your back to the bench and slide under the bar until the pad rests in the crease of your hips." = "Ngồi trên sàn, lưng quay vào ghế, và trượt vào dưới thanh đến khi đệm nằm ở nếp gấp hông.";
 /* Smith Machine Hip Thrust · setup */
 "Plant your feet flat about shoulder-width apart, toes turned out a little, and rest your upper back on the bench edge under your shoulder blades." = "Đặt hai bàn chân phẳng, rộng khoảng bằng vai, mũi chân hơi xoay ra ngoài, và tựa lưng trên lên mép ghế ngay dưới xương bả vai.";
 /* Smith Machine Hip Thrust · setup */

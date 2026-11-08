@@ -2055,8 +2055,8 @@ SETUP = {
     "Banded Plantar Flexion": [
         "Sit on a mat with your legs straight out in front of you, feet hip-width apart.",
         "Put a rolled towel under your lower calves so your heels are just off the mat.",
-        "Loop a band round the ball of each foot and hold the ends beside your hips, elbows bent.",
-        "Sit tall and pull the bands taut with your toes pointing up.",
+        "Loop a band round the balls of both feet and hold one end in each hand beside your hips, elbows bent.",
+        "Sit tall and pull the band taut with your toes pointing up.",
     ],
     "Tibialis Raise": [
         "Stand on a flat floor with your feet about hip-width apart, pointing straight ahead.",
@@ -2437,7 +2437,7 @@ SETUP = {
     "Smith Machine Hip Thrust": [
         "Set a flat bench about 40 cm high lengthwise behind the Smith bar, far enough back that the bar will sit over your hips.",
         "Wrap the middle of the bar in a thick pad and set the safety stops just below the bar's lowest point.",
-        "Sit on the floor with your back to the bench and slide under the bar until the pad rests on the tops of your thighs, just below the hip crease.",
+        "Sit on the floor with your back to the bench and slide under the bar until the pad rests in the crease of your hips.",
         "Plant your feet flat about shoulder-width apart, toes turned out a little, and rest your upper back on the bench edge under your shoulder blades.",
         "Hold the bar just outside the pad and turn it off its hooks.",
     ],

@@ -113,6 +113,6 @@ enum ChestPaint {
         "WeightedChestDipStraightLegs": .init(upper: .secondary, middle: .primary, lower: .primary),
         "WideGripChestPressMachine": .init(upper: .secondary, middle: .primary, lower: .secondary),
         "WideGripPushUp": .init(upper: .secondary, middle: .primary, lower: .secondary),
-        "pushup": .init(upper: .secondary, middle: .secondary, lower: .secondary),
+        "pushup": .init(upper: .secondary, middle: .primary, lower: .secondary),
     ]
 }

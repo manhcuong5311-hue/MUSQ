@@ -3196,20 +3196,20 @@
  },
  "Banded Plantar Flexion": {
   "yaw": -0.8,
-  "zoom": 0.846,
+  "zoom": 0.845,
   "off": [
    -0.029,
    0.236,
-   0.03
+   0.081
   ]
  },
  "Banded Dorsiflexion": {
   "yaw": -0.8,
-  "zoom": 0.846,
+  "zoom": 0.908,
   "off": [
    -0.029,
    0.268,
-   0.03
+   0.396
   ]
  },
  "Sit-Up": {

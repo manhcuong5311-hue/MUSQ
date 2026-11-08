@@ -1408,3 +1408,112 @@ exercise that now carries it (055B included). The Smith Machine Reverse Lunge
 and Cyclist Squat gained a `bar` cue ("Bar high on the traps") that opens the
 back-bar x-ray, with the Smith split squat's and heel-elevated squat's bar
 ghosts.
+
+Desktop "1-100" folder, 2026-11-08 (JOBS "1-100-1108"): 105 exports of
+2026-11-07 15:00 to 11-08 02:32. They carry the owner's re-paints and machine
+tweaks from after the week's Leg lists, plus six new variants. Cloned to
+`SourceExports/1-100-1108/` (`_names.tsv`, `textures/`). The models they
+replace are kept as APFS clones in `SourceExports/_app_before_1108/`
+(`<Group>/<Name>.usdc`), which the round's diffs read. The round's
+SampleData/Content.strings starting points and its row, stance and copy edits
+are kept there too, for splitting commits.
+
+104 went in: 98 replacements and the six variants as new models
+(`Legs/ReverseLungeLean`, `ReverseLungeLegLift`, `ReverseLungeBodyweight`,
+`ForwardLungeDumbbell`, `CurtsyLungeLegLift`, `DumbbellSumoSquatOnBoxes`).
+They were converted, put through `one_side_tiers.py` (32 one-sided lifts) and
+`shorts/rebase_shorts.py`, padded, and slimmed against `AnatomyBodyV2.usdc`,
+all attribute for attribute (136 MB for the 104).
+- `081 🟢_hip_abduction_machine` is the Lean model: it is 0.0 cm from it, and
+  only the handles moved 4.5 cm. So it replaced `HipAbductionMachineLean`,
+  not the upright model.
+- 145 Snatch-Grip Deadlift was left out. Its export samples the skeleton and
+  bar only over frames 1-115 of 1-192, so the second pull would freeze half
+  way. Frames 1-115 match the app's model to 0.0 cm, and the paint is the same.
+  Before converting, compare a raw export's last changing frame with the old
+  model's; the other exports that looked short were only unpadded.
+
+Against the models they replace, with both converted (all joints every 8
+frames, equipment mesh boxes, paint by group and side): 45 are unchanged, 21
+changed paint only, 17 equipment only, and 15 motion.
+
+Motion changes:
+- Front, Goblet and Smith Machine Squats: knees at 15 degrees (3.5 cm wider
+  at the bottom). The Front Squat's lats are also straightened (lat guide
+  joints 7.7 cm).
+- Calf raises: toes flat on the platform, with the platforms 3-4.5 cm under
+  the ball of the foot.
+- Hip thrusts: load on the hip crease (3.9 cm). The Smith Machine Hip Thrust's
+  arms are re-posed (forearms 19.8 cm).
+- Frog pumps: upper backs on the mat.
+- Seated Leg Curl: the lever is on one side only (the near side: its hub now
+  covers the left hip and knee in side views).
+- Trap Bar Deadlift: bar 2 cm toward the heels, arms straight.
+- Dumbbell Lateral Step-Up: toes.
+
+Equipment changes:
+- The lat pulldowns' thigh pads (3-8 cm).
+- Bench lift handles taken off.
+- The Seated Good Morning's bench (13 cm).
+- The 424/425 bands, now skinned meshes with their own bones (254/250 joints;
+  the slim kept them).
+
+At their stored framings every changed model's projected extent moved less
+than 0.05 of the view, so framings were kept, except for the bands. The
+viewport fits the rig's bounds with skinned meshes in their rest shape, and
+the Banded Dorsiflexion's band rests out to its kettlebell anchor, so the
+lifter was pushed to the right edge. The real bounds were fitted from harness
+stills (old, new, and one trial framing that the fit predicted to within
+3.5 px): 1.92 m long, centred 0.78 m toward the feet; plantar flexion 1.79 m,
+0.11 m. Zoom and offset changed by the same amounts:
+- Dorsiflexion trainer: zoom 0.761 -> 0.817, offset z 0.036 -> 0.365.
+- Plantar flexion trainer: zoom 0.833 -> 0.832, offset z 0.01 -> 0.06.
+- The tiles in `thumbs.json` likewise.
+
+Rows follow paint, done by a workflow with one author and one adversarial
+verifier per family. Paint review `paint_rows.py` gave 25 list changes:
+- Hamstrings back as secondary rows on the lunges, split squats, Bulgarians
+  and Step-Up. Values are the older ones where they existed, and
+  EMG-anchored where a study fits: 0.48 on the rear-foot-elevated lifts per
+  Mausehund 2019, 0.24-0.40 elsewhere.
+- Front Squat: Gluteus Maximus primary (0.40).
+- Sumo Kettlebell Deadlift: Adductors primary, Hamstrings secondary.
+- Thrusters: the Adductors row is gone (now in stabilisers). The Dumbbell and
+  Kettlebell Thrusters' Lateral Deltoid is primary.
+- Dumbbell Hang Clean and Kettlebell Clean: Biceps rows. The Kettlebell
+  Clean's Obliques are secondary.
+- Renegade Row: Triceps row.
+- Push-Up: chest rows by head (Middle primary; Upper 0.57 above Lower 0.50,
+  per Kang 2014). `chest_paint.py` re-run.
+- Pre-existing oversights: Barbell Single-Leg RDL Adductors and Barbell Power
+  Clean Lateral Deltoid.
+
+The remaining flags are documented decisions.
+
+Stances added, framed by the solver at the exercise's yaw, applied as a change
+to the exercise's own framing:
+- Reverse Lunge: Standard / Lean / Leg Lift / Bodyweight.
+- Forward Lunge: + Dumbbell.
+- Curtsy Lunge: Standard / Leg Lift. Leg Lift has its own list (+ Hamstrings
+  0.24, since the base Curtsy model is not re-painted yet).
+- Dumbbell Sumo Squat: Standard / On Boxes.
+Each has a measured one-line note and Vietnamese ("Leg Lift" = "Nâng gối",
+"On Boxes" = "Trên bục"). The Reverse Lunge's Lean stance is the exception
+to the shared yaw: from the front its 30 degree hinge did not show, and the
+owner picked the three-quarter view (yaw -0.8, zoom 0.875, offset [0.013,
+0.056, -0.013], the solver's fit) over front-on and side-on stills.
+
+Known stance trade-offs, left for the owner:
+- The Lean shares the "Torso stays tall" cue (as on the Lunge).
+- The Curtsy Leg Lift's ghosts and dots switch legs while the raised knee is
+  ahead (2.5-3.9 s), because `leadingSide` follows the forward foot.
+- The On Boxes depth ghost only rises to about parallel.
+
+Copy changed only where a model now contradicts it, again reviewed by a
+reviewer and a verifier:
+- Smith Machine Squat Standard note: toes out about 15 degrees.
+- Smith Machine Hip Thrust: the pad rests in the hip crease (cue and setup).
+- Banded Plantar Flexion: one band round both feet, one end in each hand (13
+  strings).
+`setup.py` follows. 47 library tiles were re-shot with their stored framings
+and pose times.
