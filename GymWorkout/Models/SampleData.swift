@@ -332,6 +332,11 @@ enum SampleData {
         Exercise(name: "Step-Up Jump", category: .legs,
                  primaryMuscle: "QUADS + GLUTES", equipment: "PLYO BOX",
                  difficulty: .intermediate),
+        // 497 Burpee (2026-11-09, Desktop "1-100" folder). The model lights the
+        // quadriceps and chest bright; glutes off (the owner's 11-08 edit).
+        Exercise(name: "Burpee", category: .legs,
+                 primaryMuscle: "QUADS + CHEST", equipment: "BODYWEIGHT",
+                 difficulty: .intermediate),
         Exercise(name: "Squat Jump", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "BODYWEIGHT",
                  difficulty: .beginner),
@@ -1920,6 +1925,7 @@ enum SampleData {
         "Push Jerk": pushJerkContent,
         "Box Jump": boxJumpContent,
         "Step-Up Jump": stepUpJumpContent,
+        "Burpee": burpeeContent,
         "Squat Jump": squatJumpContent,
         "Jump Rope": jumpRopeContent,
         "Sled Push": sledPushContent,
@@ -2967,6 +2973,11 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.664, offset: [0.054, -0.045, -0.194])),
         "Step-Up Jump":                       ExerciseModel(resource: "StepUpJump",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.743, offset: [0.062, -0.065, -0.225])),
+        // 2026-11-09: solved like the Squat Jump (body only, margins 0.86 / 0.80) but on all 384
+        // frames, as 12 samples miss the jump tops; three reps in 16 s, chest to the floor at the
+        // bottom of each.
+        "Burpee":                             ExerciseModel(resource: "Burpee",
+                                        framing: ModelFraming(yaw: -0.8, zoom: 0.651, offset: [-0.017, -0.074, 0.017])),
         "Squat Jump":                         ExerciseModel(resource: "SquatJump",
                                         framing: ModelFraming(yaw: -0.8, zoom: 0.67, offset: [0.02, -0.077, -0.021])),
         "Jump Rope":                          ExerciseModel(resource: "JumpRope",
@@ -39887,8 +39898,15 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09: the model lights the abs bright and the obliques dim.
+            // The owner turned the hip flexors (the rig's sartorius) off on the
+            // sit-ups: the paint shows what the lift trains, and here that is
+            // the abs. The Hip Flexors row is gone. They still lift the trunk
+            // past the curl (Juker et al. 1998 found the psoas working in every
+            // sit-up; the "top" cue), so they are a mover, not a stabiliser,
+            // and stay out of the stabilisers note, which counts its muscles
+            // under 20%.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.72),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.50)
         ],
         stabilisers: ["transverse abdominis", "neck flexors", "rectus femoris"],
@@ -39976,8 +39994,13 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09: as on the Sit-Up, the model lights the abs bright and
+            // the obliques dim, and the owner turned the hip flexors (the rig's
+            // sartorius) off on the sit-ups, as the abs are the goal. The Hip
+            // Flexors row is gone. The plate adds load, not another mover; the
+            // hip flexors still lift the trunk past the curl, a mover rather
+            // than a stabiliser, so they stay out of the stabilisers note.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.54)
         ],
         stabilisers: ["transverse abdominis", "neck flexors", "rectus femoris", "forearm flexors"],
@@ -40063,8 +40086,15 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09: the model lights the abs bright and the obliques dim.
+            // The hip flexors (the rig's sartorius) are off now, painted like
+            // the Sit-Up, where the owner turned them off because the abs are
+            // the goal. The owner kept them off at export, though with
+            // the ankles hooked they lift the trunk (ExRx files this lift
+            // under the hip flexors; the curl cue). The Hip Flexors row is
+            // gone; as a mover, not a stabiliser, they stay out of the
+            // stabilisers note, and the roller and curl cues cover them.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.52)
         ],
         stabilisers: ["transverse abdominis", "neck flexors", "tibialis anterior", "rectus femoris"],
@@ -40151,8 +40181,15 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09: as on the Decline Sit-Up, the model lights the abs
+            // bright and the obliques dim, and the hip flexors (the rig's
+            // sartorius) are off, painted like the sit-ups the owner turned
+            // them off on (the owner kept them off at export, as on the Decline
+            // Sit-Up). The Hip Flexors row is gone; with the ankles hooked
+            // they lift the trunk and plate, a mover rather than a stabiliser,
+            // so they stay out of the stabilisers note (the roller cue covers
+            // them).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.86),
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.86),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.56)
         ],
         stabilisers: ["transverse abdominis", "tibialis anterior", "rectus femoris", "forearm flexors"],
@@ -40239,13 +40276,16 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): abs bright; hip flexors (the rig's sartorius) and
-            // obliques dim. The hip flexors were bright before, so Hip Flexors
-            // moves down to secondary and keeps its 0.88, now above the primary
-            // abs' 0.84: the rank follows the paint, and the fraction stays
-            // where it was set (the straight legs lift from the hip as on the
-            // Hanging Leg Raise, whose hip flexors are 0.86).
+            // 2026-11-09 core round (the owner's direction): the paint is kept,
+            // abs bright, hip flexors (the rig's sartorius) and obliques dim;
+            // the round keeps the hip flexors dim, not bright, on the core
+            // lifts that lift the legs from the hip, and the abs are what the
+            // lift trains (lifting both legs needs the abdominals: Andersson et
+            // al. 1997, Eur J Appl Physiol 75(2):115-123). The rows are as
+            // before: Hip Flexors keeps its secondary rank and its 0.88, above
+            // the primary abs' 0.84; the rank follows the paint, and the
+            // fraction stays where it was set (the straight legs lift from the
+            // hip as on the Hanging Leg Raise, whose hip flexors are 0.86).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.84),
             MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.88),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.55)
@@ -40334,10 +40374,12 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): abs bright; hip flexors (the rig's sartorius) and
-            // obliques dim. The hip flexors were bright before, so Hip Flexors
-            // moves down to secondary with its 0.76.
+            // 2026-11-09 core round (the owner's direction): painted as the
+            // V-Up and kept, abs bright, hip flexors (the rig's sartorius) and
+            // obliques dim; the round keeps the hip flexors dim, not bright, on
+            // the core lifts that lift the legs from the hip. The rows are as
+            // before: Hip Flexors keeps its secondary rank and its 0.76 (the
+            // rank follows the paint, the fraction stays where it was set).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.76),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.50)
@@ -40604,15 +40646,17 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): abs bright; hip flexors (the rig's sartorius) and
-            // obliques dim. The hip flexors were bright before, so Hip Flexors
-            // moves down to secondary with its 0.42.
+            // 2026-11-09: the model lights the abs bright and the obliques dim.
+            // The hip flexors (the rig's sartorius) are off now: the legs stay
+            // still, about straight up over the hips, while only the trunk
+            // curls, so it is painted like the other crunches (the owner's
+            // direction: paint what the lift trains; the 2026-10-02 research
+            // table found no real hip-flexor load here). The Hip Flexors row is
+            // gone; they join the stabilisers, holding the legs up.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.80),
-            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.42),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.38)
         ],
-        stabilisers: ["transverse abdominis", "quadriceps", "neck flexors"],
+        stabilisers: ["transverse abdominis", "hip flexors", "quadriceps", "neck flexors"],
         setup: [
             "Lie on your back on a mat and press your lower back gently into it.",
             "Raise your legs until they point about straight up over your hips, knees nearly straight.",
@@ -41245,6 +41289,12 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09 core round: paint and rows kept. The model lights the
+            // abs bright and the obliques and hip flexors (the rig's sartorius)
+            // dim. The hip flexors hold the legs up from the hip, so they stay
+            // a dim helper, never bright, as on every core lift that lifts the
+            // legs; the abs hold the hollow (StrengthLog's hollow hold: abs
+            // primary, obliques and hip flexors secondary).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.52),
             MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.48)
@@ -41333,6 +41383,11 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09 core round: paint and rows kept, as on the Hollow Body
+            // Hold (the same shape, rocking). The model lights the abs bright
+            // and the obliques and hip flexors (the rig's sartorius) dim; the
+            // hip flexors hold the legs up from the hip, so they stay a dim
+            // helper, never bright, as on every core lift that lifts the legs.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.52),
             MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.48)
@@ -41421,21 +41476,19 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): hip flexors (the rig's sartorius) bright, abs dim.
-            // Hip Flexors moves up to primary with its 0.40. The owner turned
-            // off the obliques (and the posterior deltoid) the old export lit
-            // dim, so the Obliques row is gone; the obliques join the
-            // stabilisers (they hold the trunk square as opposite limbs reach).
-            // Rectus Abdominis (0.68) stays primary although dim, the one break
-            // of dim = secondary: Hip Flexors counts for no muscle group in the
-            // app, which needs a primary row it counts (the README's house rule
-            // since the 445-474 round, as on the Farmer Carry March), and the
-            // abs are the counted muscle that leads (the dying bug worked mostly
-            // the abdominals; Souza et al. 2001, Arch Phys Med Rehabil
-            // 82(11):1551-1557).
+            // 2026-11-09 core round (the owner's direction): the model now
+            // lights the abs bright and the hip flexors (the rig's sartorius)
+            // dim. On the core lifts that lift the legs from the hip the hip
+            // flexors are a dim helper, never bright, and the abs lead: the
+            // dying bug worked mostly the abdominal muscles (Souza et al. 2001,
+            // Arch Phys Med Rehabil 82(11):1551-1557). Rectus Abdominis keeps
+            // its 0.68 and is primary by the paint now, so the old
+            // counted-primary exception is gone; Hip Flexors moves down to
+            // secondary with its 0.40. The obliques stay unlit, as the owner
+            // set them for the 2026-10-21 swap, and stay with the stabilisers
+            // (they hold the trunk square as opposite limbs reach).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.68),
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40)
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["transverse abdominis", "obliques", "posterior deltoid", "quadriceps"],
         setup: [
@@ -41522,6 +41575,8 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09 core round: paint and rows kept (lower back and glutes
+            // bright, obliques and abs dim, no hip flexors: the leg goes back).
             // The list follows the model's paint (re-painted for the 2026-10-21
             // 401-500 swap): lower back and glutes bright; abs and obliques
             // dim. The owner turned off the front and side delts the old export
@@ -41624,15 +41679,19 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): abs bright; hip flexors (the rig's sartorius) and
-            // obliques dim. The hip flexors were bright before, so Hip Flexors
-            // moves down to secondary with its 0.86. The owner turned off the
-            // hang muscles the old export lit dim (forearms, lats, posterior
-            // deltoid, rotator cuff, upper back), so the Forearms and Latissimus
-            // Dorsi rows are gone, as on the library's hanging raises; the lats
-            // join the stabilisers (they press the bar down in the strict
-            // version; the hang cue).
+            // 2026-11-09 core round (the owner's direction): the paint is kept,
+            // abs bright, hip flexors (the rig's sartorius) and obliques dim;
+            // the hanging straight leg raise drew over 130% MVC from the rectus
+            // abdominis (McGill et al. 2015, J Sports Sci 33(4):419-426). The
+            // round keeps the hip flexors dim, not bright, on the core lifts
+            // that lift the legs from the hip. The rows are as before: Hip
+            // Flexors keeps its secondary rank and its 0.86 (the rank follows
+            // the paint, the fraction stays where it was set). The owner turned
+            // off the hang muscles for the 2026-10-21 swap (forearms, lats,
+            // posterior deltoid, rotator cuff, upper back), so there are no
+            // Forearms or Latissimus Dorsi rows, as on the library's hanging
+            // raises; the lats stay with the stabilisers (they press the bar
+            // down; the hang cue).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.88),
             MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.86),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.62)
@@ -41721,23 +41780,24 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): obliques bright; abs and hip flexors (the rig's
-            // sartorius) faint, both bright before. Faint makes Rectus Abdominis
-            // and Hip Flexors LOW secondary rows, 0.74 and 0.72 lowered to 0.36,
-            // the value the library's other faint rows take (the Romanian
-            // Deadlift's quadriceps). That is the paint's call, not the EMG's: no EMG
-            // of this raise was found, and the hanging knee-up with straps was
-            // among the highest for the rectus abdominis (Escamilla et al. 2006,
-            // Phys Ther 86:656-671), so both 0.36 are estimates. Hip Flexors
-            // follows the lit sartorius here (on the library's hanging raises it
-            // is unlit and the row legend-only). The owner turned off the faint
-            // hang muscles (forearms, lats, biceps, posterior deltoid, rotator
-            // cuff, upper back), so the Forearms and Latissimus Dorsi rows are
-            // gone, as on the library's hanging raises.
+            // 2026-11-09 core round (the owner's direction): the paint is kept,
+            // obliques bright, abs and hip flexors (the rig's sartorius) lit as
+            // secondaries, which this rig draws faint (its secondary level is
+            // 0.10, against 0.25 on the other core lifts). Faint makes Rectus
+            // Abdominis and Hip Flexors LOW rows, lowered from 0.36 to 0.30
+            // (this round keeps faint rows at or under 0.30). That is the
+            // paint's call, not the EMG's: no EMG of this raise was found, and
+            // the hanging knee-up with straps was among the highest for the
+            // rectus abdominis and both obliques (Escamilla et al. 2006, Phys
+            // Ther 86(5):656-671), so both 0.30 are estimates. The round keeps
+            // the hip flexors dim at most on the core lifts that lift the legs
+            // from the hip. The owner turned off the faint hang muscles
+            // (forearms, lats, biceps, posterior deltoid, rotator cuff, upper
+            // back), so there are no Forearms or Latissimus Dorsi rows, as on
+            // the library's hanging raises.
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.36),
-            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.36)
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["posterior deltoid", "rotator cuff", "trapezius", "rhomboids", "biceps"],
         setup: [
@@ -41783,10 +41843,10 @@ enum SampleData {
             TechniqueCue(
                 id: "back",
                 title: "Lower Back",
-                intro: "Keep your lower back on the floor the whole time; only the legs move.",
+                intro: "Keep your lower back on the mat the whole time; only the legs move.",
                 why: "Lifting the legs is the hip flexors' job, and their pull tends to tip the pelvis and arch the lower back. Your abs work by holding the pelvis still against that pull, so a back that stays flat means they are doing their part.",
-                mistake: "The lower back arching off the floor as the legs come down low.",
-                correct: "Brace before each rep, keep the lower back down on the floor and lower the legs only as far as you can keep it there."
+                mistake: "The lower back arching off the mat as the legs come down low.",
+                correct: "Brace before each rep, keep the lower back down on the mat and lower the legs only as far as you can keep it there."
             ),
             TechniqueCue(
                 id: "legs",
@@ -41807,45 +41867,48 @@ enum SampleData {
             TechniqueCue(
                 id: "head",
                 title: "Head and Shoulders",
-                intro: "Rest your head and shoulders on the floor for the whole set.",
+                intro: "Rest your head and shoulders on the mat for the whole set.",
                 why: "The legs rise at the hips, so lifting the head does not help them up; it only bends the neck and upper back. Here the head, shoulders and arms stay down from the first rep to the last.",
                 mistake: "Lifting the head and shoulders and straining the neck as the legs go up.",
-                correct: "Keep the back of your head on the floor, the chin slightly tucked and the arms resting beside you."
+                correct: "Keep the back of your head on the mat, the chin slightly tucked and the arms resting beside you."
             ),
             TechniqueCue(
                 id: "lower",
                 title: "Lowering",
-                intro: "Lower the legs a little slower than you raised them and stop with the heels just above the floor.",
-                why: "Hovering the heels just off the floor between reps keeps the abs and hip flexors under tension; touching down gives them a rest. Lowering a little slower than you lift also gives you time to stop the lower back arching as the legs get low.",
-                mistake: "Dropping the legs so the heels thump into the floor.",
-                correct: "Lower under control and hold the heels just off the floor before the next rep."
+                intro: "Lower the legs a little slower than you raised them and stop with the heels just above the mat.",
+                why: "Hovering the heels just off the mat between reps keeps the abs and hip flexors under tension; touching down gives them a rest. Lowering a little slower than you lift also gives you time to stop the lower back arching as the legs get low.",
+                mistake: "Dropping the legs so the heels thump into the mat.",
+                correct: "Lower under control and hold the heels just off the mat before the next rep."
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): hip flexors (the rig's sartorius) bright; abs and
-            // obliques dim. Rectus Abdominis (0.72) stays primary although the
-            // abs are dim now, the one break of dim = secondary: Hip Flexors
-            // counts for no muscle group in the app, which needs a primary row
-            // it counts (the README's house rule since the 445-474 round, as on
-            // the Farmer Carry March), and the abs are the counted muscle that
-            // leads. The rows are as before.
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.84),
+            // 2026-11-09 core round (the owner's direction): the model now
+            // lights the abs bright and the hip flexors (the rig's sartorius)
+            // dim, the obliques dim as before. On every core lift that lifts
+            // the legs from the hip the hip flexors are a dim helper, never
+            // bright, and the abs are what the lift trains (StrengthLog lists
+            // the abs, with the hip flexors, as this raise's primary muscles).
+            // Rectus Abdominis keeps its 0.72 and is primary by the paint now,
+            // so the old counted-primary exception is gone. Hip Flexors moves
+            // down to secondary; its 0.84 would read high on a dim row, so it
+            // is 0.65, an estimate (they still lift the legs: ExRx's target
+            // here is the iliopsoas).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.65),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["transverse abdominis", "quadriceps"],
         setup: [
-            "Lie on your back on the floor, legs straight and about hip-width apart.",
-            "Rest your arms beside you, palms down, and your head on the floor.",
-            "Brace your abs and lift your heels just off the floor."
+            "Lie on your back on a mat, legs straight and about hip-width apart.",
+            "Rest your arms beside you, palms down, and your head on the mat.",
+            "Brace your abs and lift your heels just off the mat."
         ],
         comparison: FormComparisonCopy(
             correctBadge: "CORRECT FORM",
             mistakeBadge: "BACK ARCHING",
             correctCue: "Lower back stays down",
             mistakeCue: "Back arches as legs lower",
-            correctNote: "With the lower back held on the floor, the abs keep the pelvis still while the hip flexors move the legs.",
+            correctNote: "With the lower back held on the mat, the abs keep the pelvis still while the hip flexors move the legs.",
             mistakeNote: "When the lower back arches, the abs have stopped holding the pelvis against the hip flexors' pull."
         ),
         glows: [
@@ -41918,16 +41981,17 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): hip flexors (the rig's sartorius) bright; abs and
-            // obliques dim. Rectus Abdominis (0.74) stays primary although the
-            // abs are dim now, the one break of dim = secondary: Hip Flexors
-            // counts for no muscle group in the app, which needs a primary row
-            // it counts (the README's house rule since the 445-474 round, as on
-            // the Farmer Carry March), and the abs are the counted muscle that
-            // leads. The rows are as before.
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.78),
+            // 2026-11-09 core round (the owner's direction): painted as the
+            // Lying Leg Raise now, abs bright, hip flexors (the rig's
+            // sartorius) and obliques dim; on every core lift that lifts the
+            // legs from the hip the hip flexors are a dim helper, never bright.
+            // Rectus Abdominis keeps its 0.74 and is primary by the paint now,
+            // so the old counted-primary exception is gone. Hip Flexors moves
+            // down to secondary; its 0.78 would read high on a dim row, so it
+            // is 0.60, an estimate, under the leg raise's 0.65 as the kicks are
+            // short.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.74),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.60),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["transverse abdominis", "quadriceps"],
@@ -42015,16 +42079,17 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): hip flexors (the rig's sartorius) bright; abs,
-            // obliques and adductors dim. Rectus Abdominis (0.72) stays primary
-            // although the abs are dim now, the one break of dim = secondary:
-            // Hip Flexors counts for no muscle group in the app, which needs a
-            // primary row it counts (the README's house rule since the 445-474
-            // round, as on the Farmer Carry March), and the abs are the counted
-            // muscle that leads. The rows are as before.
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.78),
+            // 2026-11-09 core round (the owner's direction): painted as the
+            // Flutter Kick now, abs bright, hip flexors (the rig's sartorius)
+            // dim, the obliques and adductors dim as before; on every core lift
+            // that lifts the legs from the hip the hip flexors are a dim
+            // helper, never bright. Rectus Abdominis keeps its 0.72 and is
+            // primary by the paint now, so the old counted-primary exception is
+            // gone. Hip Flexors moves down to secondary; its 0.78 would read
+            // high on a dim row, so it is 0.60, an estimate, as on the Flutter
+            // Kick.
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.72),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.60),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.45),
             MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.45)
         ],
@@ -42073,7 +42138,7 @@ enum SampleData {
                 id: "knee",
                 title: "Knee Drive",
                 intro: "Each knee drives in under your chest in turn, its foot just off the mat.",
-                why: "Drawing the knee in is hip flexion, the hip flexors' job. ExRx's suspended version of this drill names the iliopsoas as the target; as long as the waist does not bend, the abs only steady the pelvis and waist while the hip flexes. StrengthLog's guide pulls the knee into the chest as far as you can.",
+                why: "Drawing the knee in is hip flexion, the hip flexors' job. ExRx's suspended version of this drill names the iliopsoas as the target, but StrengthLog lists the abs as the primary muscle: they brace the pelvis and waist so the waist does not bend while the hip flexes. StrengthLog's guide pulls the knee into the chest as far as you can.",
                 mistake: "Short strokes that stop with the knee well short of the chest.",
                 correct: "Drive the knee forward until it is under your chest, keep the foot just off the mat, then swap."
             ),
@@ -42111,16 +42176,18 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): abs and hip flexors (the rig's sartorius) bright;
-            // front delts and obliques dim. The owner turned off the triceps the
-            // old export lit dim, so the Triceps Brachii row is gone; the
-            // triceps join the stabilisers (they hold the arms straight). The
-            // front delts, dim before the swap too and named with the
-            // stabilisers until now for legend width, get a LOW row: 0.36, an
-            // estimate, the Plank Shoulder Tap's dim anterior deltoid.
+            // 2026-11-09 core round, the owner's direction (bright = what the
+            // lift trains, dim = helpers; hip flexors at most dim where the
+            // knees drive from the hip): the model lights the abs bright and
+            // the hip flexors (the rig's sartorius), obliques and front delts
+            // dim. The hip flexors were bright, so Hip Flexors moves to
+            // secondary with its 0.66 kept; StrengthLog lists the abs as
+            // primary and the obliques as secondary. The triceps stay off, as
+            // the owner set them for the 2026-10-21 swap (a stabiliser: they
+            // hold the arms straight); the front delts keep their LOW row
+            // (0.36, an estimate).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.76),
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.66),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.66),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.48),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.36)
         ],
@@ -42208,6 +42275,11 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09 core round: paint kept under the owner's direction
+            // (bright = what the lift trains, dim = helpers). StrengthLog lists
+            // the abs as primary and the obliques as secondary; each tap leaves
+            // one straight arm holding the body, so the front delts and triceps
+            // stay dim.
             // The list follows the model's paint (re-exported for the
             // 2026-10-21 401-500 swap with the paint unchanged): abs bright;
             // front delts, obliques and triceps dim. The dim triceps, named with
@@ -42218,10 +42290,15 @@ enum SampleData {
             // plank variations, shoulder taps among them, the high planks on
             // the hands drew more triceps activity than the low ones on the
             // forearms; Can et al. 2024, J Strength Cond Res 38(2):245-252).
+            // 2026-11-09 export: the owner also lit the side delts dim on both
+            // sides, so they get a row like the triceps: LOW 0.30, an estimate
+            // (the supporting shoulder holds the body over one straight arm
+            // through each tap).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.60),
             MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.36),
-            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.30)
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["transverse abdominis", "serratus anterior", "gluteus maximus"],
         setup: [
@@ -42308,6 +42385,10 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09 core round: paint kept under the owner's direction
+            // (bright = what the lift trains, dim = helpers): turning the hips
+            // under a still rib cage is trunk rotation, the obliques' job, and
+            // the abs hold the forearm plank.
             // The list follows the model's paint (re-painted for the 2026-10-21
             // 401-500 swap): obliques bright, abs dim. Rectus Abdominis was
             // bright before and moves down to secondary with its 0.70.
@@ -42399,6 +42480,11 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09 core round: paint kept under the owner's direction
+            // (bright = what the lift trains, dim = helpers; hip flexors at
+            // most dim where a knee is drawn up from the hip): the side bend
+            // toward the knee and the three-point plank work the abs and
+            // obliques.
             // The list follows the model's paint (re-painted for the 2026-10-21
             // 401-500 swap): abs and obliques bright, hip flexors (the rig's
             // sartorius) dim. The owner turned off the triceps and front delts
@@ -42493,6 +42579,11 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09 core round: paint kept under the owner's direction
+            // (bright = what the lift trains, dim = helpers): StrengthLog's
+            // plank lists the abs as primary and the obliques as secondary, and
+            // the long-lever, tilted plank raises both (Schoenfeld et al. 2014,
+            // Sports Biomech). The glutes stay off, as the owner set them.
             // The list follows the model's paint (re-painted for the 2026-10-21
             // 401-500 swap): abs bright, obliques dim. The owner turned off the
             // glutes (and the front delts) the old export lit dim, so the
@@ -42587,6 +42678,10 @@ enum SampleData {
             )
         ],
         activation: [
+            // 2026-11-09 core round: paint kept under the owner's direction
+            // (bright = what the lift trains, dim = helpers): the plate adds
+            // load without changing the muscles, and StrengthLog's plank lists
+            // the abs as primary and the obliques as secondary.
             // The list follows the model's paint (re-painted for the 2026-10-21
             // 401-500 swap): abs bright, obliques dim, as on the library Plank.
             // The owner turned off the front delts the old export lit dim, so
@@ -42680,16 +42775,18 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): obliques bright, the side delt bright on the
-            // support (right) side; abs dim. The owner turned off the glutes he
-            // had lit bright, so the Gluteus Medius and Gluteus Maximus rows are
-            // gone; the gluteus medius joins the stabilisers (the bottom hip
-            // holds the pelvis up; the lift cue, after Ekstrom et al. 2007, J
-            // Orthop Sports Phys Ther 37(12):754-762). The other rows already
-            // matched.
+            // 2026-11-09 core round, the owner's direction (bright = what the
+            // lift trains, dim = helpers): the model lights the obliques bright
+            // and the abs dim, and the side delt, bright before, now dim on the
+            // support (right) side only. StrengthLog's side plank lists the
+            // obliques as primary and the abs as secondary; the side delt holds
+            // the support arm, so Lateral Deltoid moves to secondary with its
+            // 0.40 kept. The glutes stay off, as the owner set them for the
+            // 2026-10-21 swap; the gluteus medius stays a stabiliser (the
+            // bottom hip lifts the pelvis; Ekstrom et al. 2007, J Orthop
+            // Sports Phys Ther 37(12):754-762).
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.82),
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.40),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["gluteus medius", "gluteus minimus", "quadratus lumborum", "serratus anterior", "adductors"],
@@ -42777,17 +42874,22 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): adductors and obliques bright, the side delt and
-            // upper back bright on the support (right) side; abs dim. The
-            // obliques were dim before, so Obliques moves up to primary with
-            // its 0.52 kept, a judgement call under the Side Plank's 0.78
-            // because the adductors hold the hips up here (the obliques are
-            // ExRx's side bridge target).
+            // 2026-11-09 core round, the owner's direction (bright = what the
+            // lift trains, dim = helpers): the model lights the adductors
+            // bright on both legs (the bench leg holds the body up, and the
+            // hanging leg's adductors hold that leg off the mat), and the
+            // obliques bright; the side delt and upper back,
+            // bright before, are now dim on the support (right) side, and the
+            // abs dim. StrengthLog lists the adductors as primary and the abs
+            // and obliques as secondary; the obliques stay bright as the owner
+            // raised them for the 2026-10-21 swap (this is a side plank, and
+            // the hanging leg adds to the sideways load, an estimate). Lateral
+            // Deltoid and Trapezius move to secondary with their fractions
+            // kept.
             MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.90),
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.52),
-            MuscleActivation(name: "Lateral Deltoid", rank: .primary, fraction: 0.46),
-            MuscleActivation(name: "Trapezius", rank: .primary, fraction: 0.42),
+            MuscleActivation(name: "Lateral Deltoid", rank: .secondary, fraction: 0.46),
+            MuscleActivation(name: "Trapezius", rank: .secondary, fraction: 0.42),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["rhomboids", "gluteus medius", "quadratus lumborum", "serratus anterior"],
@@ -42875,17 +42977,18 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): the left obliques bright and the left abs dim, the
-            // right side unlit as exported (the handle is in the right hand, so
-            // the left side lifts it back up); the lower back dim. The owner
-            // turned off the trapezius and forearms the old export lit dim on
-            // the handle side, so the Trapezius and Forearms rows are gone; the
-            // trapezius joins the stabilisers (ExRx's upper and middle trapezius
-            // hold the shoulder girdle against the weight). The dim abs, a
-            // stabiliser until now, get a LOW row: 0.30, an estimate, the
-            // Suitcase Carry's dim rectus abdominis (ExRx does not list it for
-            // side bends).
+            // 2026-11-09 core round (the owner asked for the right primary and
+            // secondary groups): the left obliques bright; the left abs and the
+            // left lower back dim. The handle is in the right hand, so the left
+            // side bends the trunk back up against it (ExRx: obliques target;
+            // quadratus lumborum and iliocostalis synergists). The lower back
+            // is now lit on that side only, like the obliques and abs: in a
+            // one-hand suitcase carry the far side's rectus abdominis and
+            // longissimus worked about 2.5 and 4.3 times the near side's
+            // (Ellestad et al. 2024, Int J Exerc Sci 17(1):480-490). The owner
+            // turned off the trapezius and forearms in the 2026-10-21 export;
+            // the trapezius stays a stabiliser. Ranks and fractions unchanged;
+            // the abs' LOW 0.30 is an estimate.
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
@@ -42976,17 +43079,19 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): the left obliques bright and the left abs dim, the
-            // right obliques and abs unlit as exported (the dumbbell is in the
-            // right hand, so the left side lifts it back up); the lower back
-            // dim on both sides. The owner turned off the trapezius and
-            // forearms the old export lit dim on the dumbbell side, so the
-            // Trapezius and Forearms rows are gone; the trapezius joins the
-            // stabilisers (ExRx's upper and middle trapezius hold the shoulder
-            // girdle against the weight). The dim abs, a stabiliser until now,
-            // get a LOW row: 0.30, an estimate, the Suitcase Carry's dim rectus
-            // abdominis (ExRx does not list it for side bends).
+            // 2026-11-09 core round (the owner asked for the right primary and
+            // secondary groups), painted like the Cable Side Bend: the left
+            // obliques bright; the left abs and the left lower back dim. The
+            // dumbbell is in the right hand, so the left side bends the trunk
+            // back up (ExRx: obliques target; quadratus lumborum and
+            // iliocostalis synergists). The lower back is now lit on that side
+            // only: in a one-hand suitcase carry the far side's rectus
+            // abdominis and longissimus worked about 2.5 and 4.3 times the
+            // near side's (Ellestad et al. 2024, Int J Exerc Sci
+            // 17(1):480-490). The trapezius and forearms stay off as in the
+            // owner's 2026-10-21 export (his 2026-10-03 note had them dim on
+            // the dumbbell side); the trapezius stays a stabiliser. Ranks and
+            // fractions unchanged; the abs' LOW 0.30 is an estimate.
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.45),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
@@ -43076,16 +43181,17 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): obliques bright, abs dim. The owner turned off the
-            // glutes and front delts the old export lit dim, so the Gluteus
-            // Maximus and Anterior Deltoid rows are gone; both join the
-            // stabilisers, where ExRx lists them for the down-up twist. The dim
-            // abs, a stabiliser until now, get a LOW row: 0.30, an estimate, as
-            // the rectus abdominis was little activated in any rotation
-            // (Andersson et al. 2002, Spine 27(6):E152-E160) and measured 10%
-            // MVC in a standing torso twist (Vinstrup et al. 2015, Scientifica
-            // 2015:403068).
+            // 2026-11-09 core round, paint unchanged: obliques bright and abs
+            // dim on both sides. The rope rises from the right hip to above the
+            // left shoulder, a turn to the left, which uses the right external
+            // with the left internal oblique (ExRx), so both sides work.
+            // StrengthLog's low-to-high chop: obliques primary, abs secondary.
+            // The owner turned off the glutes and front delts the old export
+            // lit dim; they stay stabilisers, as ExRx lists them for the
+            // down-up twist. The abs' LOW 0.30 is an estimate: the rectus
+            // abdominis was little activated in any rotation (Andersson et al.
+            // 2002, Spine 27(6):E152-E160) and measured 10% MVC in a standing
+            // torso twist (Vinstrup et al. 2015, Scientifica 2015:403068).
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
@@ -43171,18 +43277,17 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): obliques bright, abs dim. The owner turned off the
-            // front and side delts the old export lit bright (one side each),
-            // so the Anterior and Lateral Deltoid rows are gone; both join the
-            // posterior deltoid in the stabilisers, as ExRx lists the deltoids
-            // for its standing cable twists (they hold the arms up in front;
-            // the hand-height cue). The dim abs, a stabiliser until now, get a
-            // LOW row: 0.30, an estimate, as the rectus abdominis measured 10%
-            // MVC in a standing torso twist against an elastic band, arms long
-            // (Vinstrup et al. 2015, Scientifica 2015:403068), and was little
-            // activated in any rotation (Andersson et al. 2002, Spine
-            // 27(6):E152-E160).
+            // 2026-11-09 core round, paint unchanged and as on the Reverse
+            // Cable Wood Chop: obliques bright and abs dim on both sides.
+            // Turning left against the right-hand pulley uses the right
+            // external with the left internal oblique (ExRx), so both sides
+            // work. The owner turned off the front and side delts the old
+            // export lit bright; with the posterior deltoid they stay
+            // stabilisers, as ExRx lists the deltoids for its standing cable
+            // twists (they hold the arms up in front). The abs' LOW 0.30 is an
+            // estimate: 10% MVC in a standing torso twist, arms long (Vinstrup
+            // et al. 2015, Scientifica 2015:403068); little activated in any
+            // rotation (Andersson et al. 2002, Spine 27(6):E152-E160).
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.76),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
@@ -43269,15 +43374,16 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): obliques bright, abs dim. Rectus Abdominis moves
-            // down to secondary with its 0.40 (little activated in any rotation;
-            // Andersson et al. 2002, Spine 27(6):E152-E160). The owner turned
-            // off the glutes and front and side delts the old export lit dim, so
-            // the Gluteus Medius and Anterior Deltoid rows are gone; both join
-            // the gluteus maximus, gluteus minimus and lateral deltoid in the
-            // stabilisers (the glutes steady the hips under the turning trunk,
-            // the delts hold the bar up on long arms).
+            // 2026-11-09 core round, paint unchanged (the Landmine 180 is
+            // painted alike): obliques bright and abs dim on both sides, as the
+            // bar sweeps to each side in turn. The owner's 2026-10-21 export
+            // dimmed the abs and turned off the glutes and the front and side
+            // delts; those stay stabilisers (the glutes steady the hips under
+            // the turn, the delts hold the bar up on long arms). Rectus
+            // Abdominis keeps its 0.40, an estimate: little activated in any
+            // rotation (Andersson et al. 2002, Spine 27(6):E152-E160) and
+            // 10-16% MVC in torso twists, against the external obliques'
+            // 47-54% standing (Vinstrup et al. 2015, Scientifica 2015:403068).
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.40)
         ],
@@ -43363,15 +43469,16 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): obliques bright, abs dim. Rectus Abdominis moves
-            // down to secondary with its 0.40 (little activated in any rotation;
-            // Andersson et al. 2002, Spine 27(6):E152-E160). The owner turned
-            // off the glutes and front and side delts the old export lit dim, so
-            // the Gluteus Medius and Anterior Deltoid rows are gone; both join
-            // the gluteus maximus, gluteus minimus and lateral deltoid in the
-            // stabilisers (the glutes steady the hips under the turning trunk,
-            // the delts hold the bar up on long arms).
+            // 2026-11-09 core round, paint unchanged and as on the Landmine
+            // Rotation: obliques bright and abs dim on both sides, as the bar
+            // sweeps to each side in turn. The owner's 2026-10-21 export dimmed
+            // the abs and turned off the glutes and the front and side delts;
+            // those stay stabilisers (the glutes steady the hips under the
+            // turn, the delts hold the bar up on long arms). Rectus Abdominis
+            // keeps its 0.40, an estimate: little activated in any rotation
+            // (Andersson et al. 2002, Spine 27(6):E152-E160) and 10-16% MVC in
+            // torso twists, against the external obliques' 47-54% standing
+            // (Vinstrup et al. 2015, Scientifica 2015:403068).
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.78),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.40)
         ],
@@ -43458,16 +43565,15 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): obliques bright, abs dim. Rectus Abdominis moves
-            // down to secondary with its 0.60. The owner turned off the hip
-            // flexors (the rig's sartorius, bright before) and the side delts
-            // (dim before), so the Hip Flexors and Lateral Deltoid rows are
-            // gone. The library Russian Twist keeps a legend-only Hip Flexors
-            // row because its sartorius was never lit; these were lit and then
-            // turned off, as on the Reverse Crunch. The hip flexors join the
-            // stabilisers, holding the lean-back while the obliques turn (ExRx:
-            // static hip flexion; the lean cue).
+            // 2026-11-09 core round, paint unchanged and as on the Weighted
+            // Russian Twist: obliques bright and abs dim on both sides, as the
+            // twists alternate. The hip flexors (the rig's sartorius) stay off,
+            // as the owner turned them off on 2026-10-21 and as his 2026-11-09
+            // sit-up edit turns them off where the trunk works on planted legs;
+            // they only hold the lean-back (ExRx: static hip flexion), so they
+            // stay stabilisers. The side delts the old export lit dim stay off.
+            // Rectus Abdominis keeps its 0.60: the trunk is held about 40
+            // degrees back while the obliques turn it (an estimate).
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.60)
         ],
@@ -43556,17 +43662,16 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): obliques bright, abs dim. Rectus Abdominis moves
-            // down to secondary with its 0.60. The owner turned off the hip
-            // flexors (the rig's sartorius, bright before) and the side delts
-            // (dim before), so the Hip Flexors and Lateral Deltoid rows are
-            // gone. Unlike the library Russian Twist's legend-only row (its
-            // sartorius was never lit), these hip flexors were lit and then
-            // turned off, as on the Single-Leg Hip Thrust. The hip flexors join
-            // the stabilisers: they hold the lean-back while the obliques turn
-            // (ExRx's medicine ball Russian twist lists the hip flexion as
-            // static, as the lean cue says).
+            // 2026-11-09 core round, paint unchanged and as on the Medicine
+            // Ball Russian Twist: obliques bright and abs dim on both sides, as
+            // the twists alternate. The hip flexors (the rig's sartorius) stay
+            // off, as the owner turned them off on 2026-10-21 and as his
+            // 2026-11-09 sit-up edit turns them off where the trunk works on
+            // planted legs; they only hold the lean-back (ExRx: static hip
+            // flexion), so they stay stabilisers. The side delts the old export
+            // lit dim stay off. Rectus Abdominis keeps its 0.60: the trunk is
+            // held about 40 degrees back while the obliques turn it (an
+            // estimate).
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.80),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.60)
         ],
@@ -43655,13 +43760,20 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): abs bright; hip flexors (the rig's sartorius),
-            // obliques and posterior deltoids dim. The hip flexors were bright
-            // before, so Hip Flexors moves down to secondary with its 0.40.
+            // 2026-11-09 core round: abs bright; obliques and posterior
+            // deltoids dim. The hip flexors (the rig's sartorius, dim since the
+            // 2026-10-21 export) are turned off, following the owner's
+            // 2026-11-09 sit-up edit (no hip flexors where the trunk works on
+            // planted legs): the knees stay down while the abs hold the trunk
+            // against extension, and the one hip flexor measured in a
+            // Swiss-ball roll-out, the rectus femoris, was among the lowest
+            // (6-10% MVIC; Escamilla et al. 2010, J Orthop Sports Phys Ther
+            // 40(5):265-276). The Hip Flexors row goes, and as an unlit mover
+            // they stay out of the stabilisers. The posterior deltoids stay dim
+            // as painted: a shoulder extensor that helps pull the ball back
+            // (not measured; 0.30 is an estimate).
             MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.82),
             MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.62),
-            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.40),
             MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["transverse abdominis", "latissimus dorsi", "gluteus maximus"],
@@ -43748,20 +43860,21 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): posterior deltoids bright; abs, obliques and
-            // serratus anterior dim. Rectus Abdominis moves down to secondary
-            // with its 0.85, the paint's call and not the EMG's (103% MVC at the
-            // peak of a strap body saw; McGill, Andersen & Cannon 2015, J Sports
-            // Sci 33(4):419-426). The posterior deltoid, dim before and named
-            // with the stabilisers for legend width, is bright now and gets a
-            // primary row: 0.45 is an estimate (it pulls the body forward over
-            // the elbows from the back of the slide; no deltoid EMG of a body
-            // saw was found).
-            MuscleActivation(name: "Posterior Deltoid", rank: .primary, fraction: 0.45),
-            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.85),
+            // 2026-11-09 core round: abs bright; serratus anterior, obliques
+            // and posterior deltoids dim, painted like the Stability Ball
+            // Rollout plus the serratus. The 2026-10-21 export had the
+            // posterior deltoids bright and the abs dim; this round swaps them,
+            // as the body saw trains the abs against extension: rectus
+            // abdominis about 103% MVC at the peak of a strap body saw,
+            // serratus anterior almost 140% (McGill, Andersen & Cannon 2015, J
+            // Sports Sci 33(4):419-426); no deltoid EMG was found. Rectus
+            // Abdominis moves up to primary with its 0.85; Posterior Deltoid
+            // moves down to secondary with its 0.45, an estimate (it pulls the
+            // body forward over the elbows from the back of the slide).
+            MuscleActivation(name: "Rectus Abdominis", rank: .primary, fraction: 0.85),
             MuscleActivation(name: "Serratus Anterior", rank: .secondary, fraction: 0.66),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.58)
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.58),
+            MuscleActivation(name: "Posterior Deltoid", rank: .secondary, fraction: 0.45)
         ],
         stabilisers: ["transverse abdominis", "quadriceps", "gluteus maximus"],
         setup: [
@@ -43847,22 +43960,23 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): front delts, quadriceps and triceps bright; abs,
-            // obliques and hip flexors (the rig's sartorius) dim. Quadriceps
-            // moves up to primary with its 0.50 (rectus femoris 52% MVC in the
-            // crawl; Pyka et al. 2017, Int J Kinesiol Sports Sci 5(4):26-32),
-            // and Rectus Abdominis down to secondary with its 0.58 (24% there).
-            // The triceps, dim before and named with the stabilisers for legend
-            // width, are bright now and leave them for a primary row. 0.45 is
-            // an estimate, as Pyka measured no triceps: the arms stay nearly
-            // straight, so it sits under the Push-Up's 0.60 and the Incline
-            // Push-Up's 0.54, where the elbows bend under load.
+            // 2026-11-09 core round: front delts, quadriceps and obliques
+            // bright; abs, triceps and hip flexors (the rig's sartorius) dim.
+            // Obliques moves up to primary with its 0.54: the external oblique
+            // was the most active of the four muscles measured in a bear crawl
+            // (140% of its own maximal effort, against rectus femoris 52%,
+            // rectus abdominis 24% and erector spinae 12%; Pyka et al. 2017,
+            // Int J Kinesiol Sports Sci 5(4):26-32), holding the trunk square
+            // as each diagonal pair lifts. Triceps Brachii moves down to
+            // secondary with its 0.45, an estimate: the arms stay nearly
+            // straight, so the triceps only hold the elbows (not measured). The
+            // hip flexors stay dim, the most the rig's sartorius is lit where a
+            // knee is driven forward.
             MuscleActivation(name: "Anterior Deltoid", rank: .primary, fraction: 0.58),
+            MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.54),
             MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.50),
-            MuscleActivation(name: "Triceps Brachii", rank: .primary, fraction: 0.45),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.58),
-            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.54),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.45),
             MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.40)
         ],
         stabilisers: ["serratus anterior", "transverse abdominis"],
@@ -43949,26 +44063,22 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): hip flexors (the rig's sartorius) bright; abs and
-            // obliques dim. The owner turned off the forearms, glutes and
-            // trapezius the old export lit dim (the forearms and glutes as on
-            // the library carries), so the Forearms, Gluteus Medius and
-            // Trapezius rows are gone; the gluteus medius joins the stabilisers
-            // (it holds the pelvis level on the standing leg; the hips cue),
-            // and so does the trapezius (it holds the shoulders under the
-            // dumbbells, as on the Suitcase Carry March). The forearms led as
-            // the counted primary because Hip Flexors counts for no muscle
-            // group in the app, which needs a primary row it counts (the
-            // README's house rule since the 445-474 round); with them unlit,
-            // the obliques take that place, primary although dim, with their
-            // 0.35 (the Farmer's Carry's value; external oblique 11-14% MVIC in
-            // a farmer's carry, above the rectus abdominis; Ellestad et al.
-            // 2024, Int J Exerc Sci 17(1):480-490). The dim abs, a stabiliser
-            // until now, get a LOW row: 0.30, the Farmer's Carry's estimate
-            // (Ellestad: 8-11% MVIC).
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.60),
-            MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.35),
+            // 2026-11-09 core round: obliques bright; abs and hip flexors (the
+            // rig's sartorius) dim. The sartorius is lit at most dim where a
+            // knee is driven up (the owner's 2026-10-03 note had the hip
+            // flexors primary here: his call), so the obliques become the
+            // bright, counted primary, as on the Suitcase Carry March: they
+            // hold the trunk level on one leg under the load. Obliques 0.40,
+            // the lowest moderate value, is an estimate (external oblique
+            // 11-14% MVIC in a farmer's carry, above the rectus abdominis's
+            // 8-11%; Ellestad et al. 2024, Int J Exerc Sci 17(1):480-490). Hip
+            // Flexors keeps its 0.60 as a secondary (the leg lift); Rectus
+            // Abdominis keeps its LOW 0.30. The forearms, glutes and trapezius
+            // stay off as the owner turned them off on 2026-10-21 (he confirmed
+            // unlit forearms on the carries on 2026-10-18); the gluteus medius
+            // and trapezius stay stabilisers.
+            MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.40),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.60),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
         stabilisers: ["gluteus medius", "erector spinae", "trapezius", "rhomboids", "quadratus lumborum"],
@@ -44057,25 +44167,22 @@ enum SampleData {
             )
         ],
         activation: [
-            // The list follows the model's paint (re-painted for the 2026-10-21
-            // 401-500 swap): hip flexors (the rig's sartorius) bright; abs,
-            // obliques and lower back dim. The owner turned off the forearms
-            // and glutes (unlit on the library carries too) and the upper back,
-            // all lit dim on the old export, so the Forearms and Glutes rows
-            // are gone; the gluteus medius joins the stabilisers (the standing
-            // hip holds the pelvis level; the hips cue). Obliques (0.62) stays
-            // primary although now dim, the one break of dim = secondary: Hip
-            // Flexors counts for no muscle group in the app, which needs a
-            // primary row it counts (the README's house rule since the 445-474
-            // round, as on the Farmer Carry March), and the obliques are the
-            // counted muscle that leads (the free side's external oblique 33%
-            // MVIC in a suitcase carry, about a plank's level; Ellestad et al.
-            // 2024, Int J Exerc Sci 17(1):480-490). The dim abs, a stabiliser
-            // until now, get a LOW row: 0.30, the Suitcase Carry's estimate
-            // (Ellestad: the free side's rectus abdominis 19% MVIC, under its
-            // external oblique's 33).
+            // 2026-11-09 core round: the left obliques bright; the left abs,
+            // the left lower back and both hip flexors (the rig's sartorius)
+            // dim. The dumbbell is in the right hand, so the free left side
+            // holds the trunk upright: in a walking suitcase carry with the
+            // weight in the right hand the left external oblique worked 33.0%
+            // MVIC against the right's 9.6, the left longissimus 29.1 against
+            // 6.8 and the left rectus abdominis 18.9 against 7.5 (Ellestad et
+            // al. 2024, Int J Exerc Sci 17(1):480-490; no march was measured).
+            // The hip flexors go from bright to dim, the most the sartorius is
+            // lit where a knee is driven up: Hip Flexors moves down to
+            // secondary with its 0.60, and Obliques, bright now, keeps its
+            // 0.62. The forearms, glutes and upper back stay off as the owner
+            // turned them off on 2026-10-21; the gluteus medius and trapezius
+            // stay stabilisers.
             MuscleActivation(name: "Obliques", rank: .primary, fraction: 0.62),
-            MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.60),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.60),
             MuscleActivation(name: "Erector Spinae", rank: .secondary, fraction: 0.50),
             MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.30)
         ],
@@ -48985,6 +49092,145 @@ enum SampleData {
             .init(DS.activationSoft.opacity(0.30), rx: 0.04, ry: 0.06, cx: 0.55, cy: 0.61),
             .init(DS.activationSoft.opacity(0.28), rx: 0.03, ry: 0.04, cx: 0.56, cy: 0.66),
             .init(DS.activationSoft.opacity(0.30), rx: 0.06, ry: 0.07, cx: 0.64, cy: 0.56)
+        ]
+    )
+
+    // MARK: Burpee (2026-11-09): the owner's 497 export; sources and model notes in
+    // Tools/trainer-content/notes_1109_burpee.md.
+    static let burpeeContent = ExerciseContent(
+        annotations: [
+            CueAnnotation(cueID: "down", label: "Hands to the floor",
+                          labelPoint: CGPoint(x: 0.353, y: 0.877),
+                          leaderLength: 40, joint: "hand_L"),
+            CueAnnotation(cueID: "back", label: "Body in one straight line",
+                          labelPoint: CGPoint(x: 0.524, y: 0.877),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "pelvis"),
+            CueAnnotation(cueID: "push", label: "Chest to the floor",
+                          labelPoint: CGPoint(x: 0.639, y: 0.571),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "chest"),
+            CueAnnotation(cueID: "in", label: "Knees out",
+                          labelPoint: CGPoint(x: 0.702, y: 0.712),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "patella_L"),
+            CueAnnotation(cueID: "jump", label: "Arms overhead",
+                          labelPoint: CGPoint(x: 0.618, y: 0.406),
+                          labelSide: .trailing,
+                          leaderLength: 40, joint: "hand_R")
+        ],
+        cues: [
+            TechniqueCue(
+                id: "down",
+                title: "Squat Down",
+                intro: "From standing, you bend your knees and hips into a squat and plant both hands flat on the floor in front of your feet.",
+                why: "Squatting down lets your legs lower you, so your hands meet the floor under control. Planted flat, a little wider than your shoulders and just in front of your feet, they are already where the plank needs them. NSCA's coaching of the burpee has you shift your weight onto your hands before you kick back.",
+                mistake: "Reaching for the floor with straight legs instead of squatting, or throwing your feet back before your hands are set.",
+                correct: "Bend your knees and hips to squat down with your heels on the floor, plant your hands flat just in front of your feet and a little wider than your shoulders, and let your weight come onto them before your feet leave the floor."
+            ),
+            TechniqueCue(
+                id: "back",
+                title: "Jump Back to a Plank",
+                intro: "With your hands planted, you jump both feet back together and land in a high plank on straight arms.",
+                why: "The plank is the base for the push-up, so land in it already straight, with your shoulders over your hands and your hips in line between your shoulders and heels. NASM lists sagging hips in the plank as a common burpee mistake, as it takes work off your core and leaves your spine less stable.",
+                mistake: "Landing with your hips sagging toward the floor or piked up high, or with your knees still bent.",
+                correct: "Jump both feet back together and land on the balls of your feet with your legs and arms straight and your shoulders over your hands, your body in one straight line from head to heels."
+            ),
+            TechniqueCue(
+                id: "push",
+                title: "Chest to the Floor",
+                intro: "From the plank you do one full push-up, lowering your chest to the floor and pressing back up to straight arms.",
+                why: "A push-up lifts roughly two-thirds to three-quarters of your body weight, so this is where your chest, shoulders and triceps do their work. NASM lists a sloppy or skipped push-up as a common burpee mistake; if your reps start coming up short, slow down rather than cut the depth.",
+                mistake: "Bending the elbows only partway, or letting the hips sag so they reach the floor before your chest does.",
+                correct: "Keep your body in one straight line and bend your elbows, angled back about 45° from your body, to lower your chest to the floor with your hips still in line, then press the floor away until your arms are straight."
+            ),
+            TechniqueCue(
+                id: "in",
+                title: "Jump the Feet In",
+                intro: "From straight arms you jump both feet forward together and land in a deep squat just behind your hands.",
+                why: "This squat is where you stand up and jump from, so land in it steady. CrossFit's coaching notes that on this landing the knees tend to cave in and the weight tips onto the toes; the whole foot down and the knees out over the toes keep both legs lined up.",
+                mistake: "Staying on your toes after you land, with your heels off the floor, or letting your knees fall in toward each other.",
+                correct: "Jump both feet forward together to land just behind your hands, about hip-width apart, with the whole foot on the floor and your knees pushed out over your toes, keeping your hands down until you have landed."
+            ),
+            TechniqueCue(
+                id: "jump",
+                title: "Jump and Land",
+                intro: "You lift your hands, bring your chest up and jump straight up with your arms reaching overhead, then land softly and stand tall.",
+                why: "Opening your hips and knees all the way, with your arms reaching overhead, finishes the rep tall, and studies show an arm swing adds height to a jump. One analysis of the burpee found the knees most loaded at the landing, and a soft landing, with the knees bending as you land, cuts peak force by about a third compared with a stiff one.",
+                mistake: "Jumping with your hips and knees still bent and your chest tipped forward, or landing stiff, with your knees staying straight instead of bending to take the landing.",
+                correct: "Lift your hands off the floor and bring your chest up, then drive the floor away until your hips and knees are straight and your arms reach overhead; land on the balls of your feet, let your heels settle and your knees bend, and stand all the way up before the next rep."
+            )
+        ],
+        activation: [
+            // 2026-11-09, new model (the owner's 10:12 export): the paint lights
+            // the chest (all heads) and quadriceps bright, and the abs,
+            // obliques, front delts, triceps, hip flexors (the rig's
+            // sartorius), hamstrings and calves dim; the glutes are off, as the
+            // owner set them on 2026-11-08. Rows follow the paint: bright
+            // primary, dim secondary. No EMG study of the burpee exists (Gist et
+            // al. 2014, J Strength Cond Res 28(11):3033-3040, had no muscle data
+            // either), so every fraction is carried from a library row or
+            // estimated:
+            // - Quadriceps 0.84, carried from the Squat Jump and Box Jump (the
+            //   Squat's value): the squat down, the deep squat the feet jump
+            //   into, the jump and the landing.
+            // - Pectoralis Major 0.84, carried from the Push-Up (its one chest
+            //   row before the 2026-11-08 split by head): one full push-up,
+            //   chest to the floor, every rep. Push-up EMG puts the pec at
+            //   95-105% MVIC (Youdas et al. 2010, J Strength Cond Res
+            //   24(12):3352-3362) or 61% MVC (Freeman et al. 2006, Med Sci
+            //   Sports Exerc 38(3):570-577).
+            // - Triceps Brachii 0.60 and Anterior Deltoid 0.52, carried from the
+            //   Push-Up (66% and 42% MVC in Freeman et al. 2006).
+            // - Hip Flexors 0.45, an estimate: both legs jump in from the plank
+            //   once a rep, the hip closing from straight (the rig reads 164°)
+            //   to 53°; under the Mountain Climber's 0.66 and the Plank Knee to
+            //   Elbow's 0.50, which drive a knee in every stroke, and over the
+            //   Box Jump's 0.24.
+            // - Rectus Abdominis 0.40 and Obliques 0.36, estimates: only about
+            //   20-27% MVC in a push-up (Freeman et al. 2006), but the trunk
+            //   also catches the jump back into the plank and holds the pelvis
+            //   as the legs jump in (in a clapping push-up the same muscles
+            //   drew 41-67% MVC; context only, not a burpee value); well under
+            //   the Plank's 0.78 and 0.56, where the abs are the target, with
+            //   the obliques kept under the abs as on the Plank.
+            // - Gastrocnemius 0.30 (the Box Jump's dim calves) and Hamstrings
+            //   0.25 (the jump family's value), carried, LOW.
+            // NASM and StrengthLog list the glutes as a primary mover; they get
+            // no row because the owner turned them off, and as a mover they stay
+            // out of the stabilisers. The stabilisers follow the Plank, Push-Up
+            // and jumps: transverse abdominis, serratus anterior, erector spinae
+            // and tibialis anterior.
+            MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Pectoralis Major", rank: .primary, fraction: 0.84),
+            MuscleActivation(name: "Triceps Brachii", rank: .secondary, fraction: 0.60),
+            MuscleActivation(name: "Anterior Deltoid", rank: .secondary, fraction: 0.52),
+            MuscleActivation(name: "Hip Flexors", rank: .secondary, fraction: 0.45),
+            MuscleActivation(name: "Rectus Abdominis", rank: .secondary, fraction: 0.40),
+            MuscleActivation(name: "Obliques", rank: .secondary, fraction: 0.36),
+            MuscleActivation(name: "Gastrocnemius", rank: .secondary, fraction: 0.30),
+            MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+        ],
+        stabilisers: ["transverse abdominis", "serratus anterior", "erector spinae", "tibialis anterior"],
+        setup: [
+            "Stand tall with your feet about hip-width apart and your arms at your sides.",
+            "Clear a flat, non-slip patch of floor about as long as you are tall, with room overhead to jump.",
+            "Brace your trunk before each rep and keep it braced through the plank and the push-up.",
+            "Keep a pace at which every rep stays clean, and stand all the way up, balanced, before the next one."
+        ],
+        comparison: FormComparisonCopy(
+            correctBadge: "CORRECT FORM",
+            mistakeBadge: "HIPS SAGGING",
+            correctCue: "Straight line head to heels",
+            mistakeCue: "Hips drop toward the floor",
+            correctNote: "Land the jump back with your hips in line between your shoulders and heels, and hold that line all the way down to the floor and back up, so your arms and chest move your body as one piece.",
+            mistakeNote: "When the hips sag, the lower back arches and your core does less of the work of holding you straight; NASM lists it as a common burpee mistake. It tends to creep in as you tire, so slow down or rest rather than let the line go."
+        ),
+        glows: [
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.06, cx: 0.43, cy: 0.57),
+            .init(DS.activation.opacity(0.55), rx: 0.10, ry: 0.07, cx: 0.53, cy: 0.67),
+            .init(DS.activationSoft.opacity(0.30), rx: 0.08, ry: 0.06, cx: 0.52, cy: 0.61),
+            .init(DS.activationSoft.opacity(0.26), rx: 0.07, ry: 0.05, cx: 0.57, cy: 0.75)
         ]
     )
 

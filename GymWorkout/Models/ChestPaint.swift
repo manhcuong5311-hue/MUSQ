@@ -57,6 +57,7 @@ enum ChestPaint {
         "BarbellFloorPress": .init(upper: .secondary, middle: .primary, lower: .secondary),
         "BarbellPullover": .init(upper: .primary, middle: .primary, lower: .primary),
         "BenchDip": .init(upper: .secondary, middle: .secondary, lower: .secondary),
+        "Burpee": .init(upper: .primary, middle: .primary, lower: .primary),
         "CableChestPress": .init(upper: .secondary, middle: .primary, lower: .secondary),
         "CableCrossover": .init(upper: .secondary, middle: .primary, lower: .secondary),
         "CableFly": .init(upper: .secondary, middle: .primary, lower: .secondary),

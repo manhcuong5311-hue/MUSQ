@@ -2680,6 +2680,12 @@ SETUP = {
         "Learn it as a step with no jump first, and if a jump comes up short, step down onto the floor rather than reaching for the edge of the box.",
         "Between reps lower the box foot under control and put the other foot back on the same spot on the floor, then reset before the next one.",
     ],
+    "Burpee": [
+        "Stand tall with your feet about hip-width apart and your arms at your sides.",
+        "Clear a flat, non-slip patch of floor about as long as you are tall, with room overhead to jump.",
+        "Brace your trunk before each rep and keep it braced through the plank and the push-up.",
+        "Keep a pace at which every rep stays clean, and stand all the way up, balanced, before the next one.",
+    ],
     "Squat Jump": [
         "Stand with your feet a little inside shoulder width, toes pointing forward or turned out slightly, weight over the whole foot.",
         "Let your arms hang at your sides with your elbows long, and brace your trunk.",

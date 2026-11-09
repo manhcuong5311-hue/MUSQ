@@ -185,7 +185,7 @@ ex(name=N, var="mountainClimber",
    cues={
        "knee": ("Knee Drive",
                 "Each knee drives in under your chest in turn, its foot just off the mat.",
-                "Drawing the knee in is hip flexion, the hip flexors' job. ExRx's suspended version of this drill names the iliopsoas as the target; as long as the waist does not bend, the abs only steady the pelvis and waist while the hip flexes. StrengthLog's guide pulls the knee into the chest as far as you can.",
+                "Drawing the knee in is hip flexion, the hip flexors' job. ExRx's suspended version of this drill names the iliopsoas as the target, but StrengthLog lists the abs as the primary muscle: they brace the pelvis and waist so the waist does not bend while the hip flexes. StrengthLog's guide pulls the knee into the chest as far as you can.",
                 "Short strokes that stop with the knee well short of the chest.",
                 "Drive the knee forward until it is under your chest, keep the foot just off the mat, then swap."),
        "hips": ("Hip Height",

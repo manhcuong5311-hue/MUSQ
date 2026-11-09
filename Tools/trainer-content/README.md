@@ -888,3 +888,20 @@ Dumbbell Fly's side delt, Farmer's Walk on Toes' shoulder blades) and the
 Inverted Row stance picker's comment. Legends over ~40 characters may
 truncate: Bear Crawl, Body Saw, Copenhagen Plank, Plank Shoulder Tap,
 Stability Ball Rollout.
+
+Burpee (2026-11-09): the owner's 497 export joined the library as a new
+exercise and got its coaching the same day, written with a lean workflow (one
+author, one combined review for facts, model fidelity and house style, a
+revision with the Vietnamese, one skeptic) from a model brief measured off the
+joints every frame (three identical 5.33 s reps: squat down, jump back to a
+straight plank, chest-to-floor push-up with the elbows about 45° from the body,
+jump in, jump with the arms overhead, soft landing). The sources are in
+`sources_1109_burpee.md` and the claim-to-source map and revision log in
+`notes_1109_burpee.md`; `setup.py` has its steps. No burpee EMG study exists,
+so its rows carry library values (Push-Up chest/triceps/front delt, Squat Jump
+quads) or are marked as estimates. Labels were placed off the face and hands
+over the whole rep with an occlusion mask of 22 label-free stills and the face
+and fist rules of `Tools/lab/label_space_1023/check_layout.py`, then checked on
+trainer shots at nine moments in English and Vietnamese. It has no
+common-mistake ghost yet (see `Tools/fault-review/README.md`).
+

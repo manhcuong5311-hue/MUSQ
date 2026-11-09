@@ -283,3 +283,12 @@ bar), and the Swiss Ball Leg Curl and Single-Leg Sliding Curl (lower tops);
 2.0 s. The Walking Lunge kept its framing: the re-solve (zoom 0.828) only
 shrank the figure, and at its pinned 2.04 s the new footwork still fits the
 old one (0.898).
+
+Core lifts, 2026-11-09: the 45 core exercises re-exported after the core
+round (navy shorts, re-set paint) were re-shot with `Tools/lab/shots.sh photo`
+at their stored framings and pose times. Lying Leg Raise went back to its
+pre-11-02 framing (yaw -1.35, zoom 0.656), since its mat is back and the
+11-02 framing cut the mat at three edges. The new Burpee got a pose time
+(`posetime.py`: 2.5 s, the chest-to-floor bottom) and a framing
+(`thumbsolve.py`), which wait on the owner's pick (a high plank at 2.0 s
+reads better at tile size).

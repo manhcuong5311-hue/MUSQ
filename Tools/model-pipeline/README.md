@@ -1607,3 +1607,68 @@ Left for the owner:
   mid-pull. This is pre-existing.
 - Lean model: a fleck of muscle shows through the front of the shorts'
   waistband.
+
+Desktop "1-100" folder, 2026-11-09 (JOBS "1-100-1109"): the owner exported
+the 45 core lifts 426-470 between 12:27 and 14:57, after the morning's core
+round on the HIKSEMI blends (`BLENDER/Fix_Core_20261109`: the navy refit
+shorts on all 45, primary/secondary paint re-set on 17), plus 497 Burpee
+(10:12), new to the app. Each export came a minute or two after its blend's
+last save, all flagged 🟢; 447-449 were exported after another session
+untwisted their elbows (13:24). Cloned to `SourceExports/1-100-1109/`
+(`_names.tsv`, `textures/`). The replaced models and tiles and the round's
+SampleData / Content.strings starting points are in
+`SourceExports/_app_before_core1109/`, taken in the morning and equal to HEAD
+(0fc4d65) when the swap began. Converted, `one_side_tiers.py`,
+`shorts/rebase_shorts.py`, padded, slimmed against `AnatomyBodyV2.usdc`.
+
+Against the models they replace (all joints every 8 frames, equipment boxes,
+paint by group and side):
+- Motion: identical (0.0 cm) on 42. On 447-449 only the shoulder attachment
+  joints move (up to 6.1 cm), from the elbow fix's upper-arm turn; shoulder,
+  elbow and wrist positions are unchanged.
+- Shorts: the clothing material is navy (0.012, 0.02, 0.04), no longer
+  near-black.
+- Equipment: Lying Leg Raise has its floor mat (`HG_Mat`) again. The owner
+  exported it from the original 401-500 blend, which always had it; the 11-02
+  model came from the rebuilt blend without it. Copenhagen Plank's bench lost
+  its lift handle.
+- Paint: as the core round set it, plus one owner change at export: Plank
+  Shoulder Tap's side delts are dim on both sides.
+
+Rows follow paint. The morning round's reviewed rows
+(`_app_before_core1109/core_rows_1109.json`) went in as they were, since the
+exported paint matched the round's; `paint_rows.py` then flagged only the
+owner's change, and Plank Shoulder Tap gained a Lateral Deltoid row (secondary,
+LOW 0.30, an estimate). Hanging Oblique Knee Raise keeps its faint abs and hip
+flexors at LOW 0.30 (its blend's `MH_Secondary` is 0.10).
+
+A review workflow (one reviewer per family and one for the Burpee, then an
+adversarial verifier per family; 12 findings confirmed, 6 refuted) led to:
+- Copy where the model now contradicts it. Lying Leg Raise lies on a mat
+  again (setup, cues and comparison: "floor" back to "mat", as before 11-02).
+  The Mountain Climber's knee-drive why no longer says the abs only steady
+  the pelvis (the abs are the only primary now).
+- Comments: the decline sit-ups' hip flexors were kept off at export (no
+  longer an open question); the landmine twists' Rectus Abdominis 0.40 is an
+  estimate; the Stability Ball Rollout's unlit hip flexors stay out of its
+  stabilisers.
+- Vietnamese re-keyed for the 14 changed strings (13244 of 13244).
+
+Burpee (497) is new: Legs, "QUADS + CHEST" (the quadriceps and chest bright;
+the abs, obliques, front delts, triceps, hip flexors, hamstrings and calves
+dim; the glutes off by the owner's 11-08 edit), bodyweight, intermediate. Its
+clip is 16 s, three reps with the chest to the floor at the bottom. The trainer
+framing was solved like the Squat Jump's (yaw -0.8, body only) over all 384
+frames, since `gather()`'s 12 samples miss the jump tops. It shipped with its
+coaching written the same evening (see `Tools/trainer-content/README.md`), so
+the model-only screen's phone layout (a list that does not scroll) is not
+reached. "QUADS + CHEST" still plans under Chest (`MusclePart(muscleName:)`
+tests chest first); its rows count both.
+
+Known issue, not changed here: `USDZViewport.isNearBlack` reads the navy
+shorts tint (exported since 10-28) as not near-black, so `ShortsGluteZone`
+does not tint the shorts red over lit glutes on those models. Bird Dog (glutes
+primary) shows plain navy shorts now, like the 10-28 leg lifts.
+
+Open for the owner: Ab Coaster Crunch keeps its hip flexors dim, while the
+same pelvic-curl Reverse Crunch has them off.

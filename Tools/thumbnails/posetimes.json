@@ -2308,5 +2308,10 @@
   "time": 1.33,
   "disp": 5.68,
   "length": 7.96
+ },
+ "Burpee": {
+  "time": 2.5,
+  "disp": 9.09,
+  "length": 15.96
  }
 }

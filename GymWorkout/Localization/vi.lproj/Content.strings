@@ -44,6 +44,8 @@
 "SLED" = "XE ĐẨY TẠ";
 /* Box Jump · equipment */
 "PLYO BOX" = "HỘP NHẢY";
+/* Burpee · primaryMuscle */
+"QUADS + CHEST" = "TỨ ĐẦU ĐÙI + CƠ NGỰC";
 /* Jump Rope · primaryMuscle */
 "GASTROCNEMIUS" = "CƠ BỤNG CHÂN";
 /* Jump Rope · equipment */
@@ -21031,13 +21033,13 @@
 /* Lying Leg Raise · label */
 "Head stays down" = "Đầu áp sàn";
 /* Lying Leg Raise · intro */
-"Keep your lower back on the floor the whole time; only the legs move." = "Giữ thắt lưng áp sàn suốt bài; chỉ có chân di chuyển.";
+"Keep your lower back on the mat the whole time; only the legs move." = "Giữ thắt lưng áp thảm suốt bài; chỉ có chân di chuyển.";
 /* Lying Leg Raise · why */
 "Lifting the legs is the hip flexors' job, and their pull tends to tip the pelvis and arch the lower back. Your abs work by holding the pelvis still against that pull, so a back that stays flat means they are doing their part." = "Nâng chân là việc của nhóm cơ gấp hông, và lực kéo của chúng có xu hướng làm nghiêng khung chậu và võng thắt lưng. Cơ bụng làm việc bằng cách giữ khung chậu đứng yên chống lại lực kéo đó, nên lưng giữ phẳng nghĩa là cơ bụng đang làm đúng phần việc của mình.";
 /* Lying Leg Raise · mistake */
-"The lower back arching off the floor as the legs come down low." = "Thắt lưng ưỡn khỏi sàn khi chân hạ xuống thấp.";
+"The lower back arching off the mat as the legs come down low." = "Thắt lưng ưỡn khỏi thảm khi chân hạ xuống thấp.";
 /* Lying Leg Raise · correct */
-"Brace before each rep, keep the lower back down on the floor and lower the legs only as far as you can keep it there." = "Gồng chặt trước mỗi lần, giữ thắt lưng áp sàn và chỉ hạ chân thấp đến mức vẫn giữ được lưng ở đó.";
+"Brace before each rep, keep the lower back down on the mat and lower the legs only as far as you can keep it there." = "Gồng chặt trước mỗi lần, giữ thắt lưng áp thảm và chỉ hạ chân thấp đến mức vẫn giữ được lưng ở đó.";
 /* Lying Leg Raise · intro */
 "The knees stay straight from the bottom to the top." = "Gối giữ thẳng từ dưới lên trên.";
 /* Lying Leg Raise · why */
@@ -21057,31 +21059,31 @@
 /* Lying Leg Raise · title */
 "Head and Shoulders" = "Đầu và vai";
 /* Lying Leg Raise · intro */
-"Rest your head and shoulders on the floor for the whole set." = "Để đầu và vai nằm trên sàn suốt hiệp.";
+"Rest your head and shoulders on the mat for the whole set." = "Để đầu và vai nằm trên thảm suốt hiệp.";
 /* Lying Leg Raise · why */
 "The legs rise at the hips, so lifting the head does not help them up; it only bends the neck and upper back. Here the head, shoulders and arms stay down from the first rep to the last." = "Chân nâng lên nhờ gập ở hông, nên nhấc đầu không giúp chân lên; nó chỉ làm gập cổ và lưng trên. Ở đây đầu, vai và tay giữ áp sàn từ lần đầu tiên đến lần cuối cùng.";
 /* Lying Leg Raise · mistake */
 "Lifting the head and shoulders and straining the neck as the legs go up." = "Nhấc đầu và vai lên, gồng căng cổ khi chân đi lên.";
 /* Lying Leg Raise · correct */
-"Keep the back of your head on the floor, the chin slightly tucked and the arms resting beside you." = "Giữ gáy áp sàn, cằm hơi thu vào và tay đặt cạnh người.";
+"Keep the back of your head on the mat, the chin slightly tucked and the arms resting beside you." = "Giữ gáy áp thảm, cằm hơi thu vào và tay đặt cạnh người.";
 /* Lying Leg Raise · intro */
-"Lower the legs a little slower than you raised them and stop with the heels just above the floor." = "Hạ chân chậm hơn lúc nâng một chút và dừng khi gót chân ở ngay trên sàn.";
+"Lower the legs a little slower than you raised them and stop with the heels just above the mat." = "Hạ chân chậm hơn lúc nâng một chút và dừng khi gót chân ở ngay trên thảm.";
 /* Lying Leg Raise · why */
-"Hovering the heels just off the floor between reps keeps the abs and hip flexors under tension; touching down gives them a rest. Lowering a little slower than you lift also gives you time to stop the lower back arching as the legs get low." = "Giữ gót chân lơ lửng ngay trên sàn giữa các lần giúp cơ bụng và nhóm cơ gấp hông luôn chịu tải; chạm gót xuống sàn sẽ cho chúng được nghỉ. Hạ chân chậm hơn lúc nâng một chút cũng cho bạn thời gian giữ thắt lưng không ưỡn lên khi chân xuống thấp.";
+"Hovering the heels just off the mat between reps keeps the abs and hip flexors under tension; touching down gives them a rest. Lowering a little slower than you lift also gives you time to stop the lower back arching as the legs get low." = "Giữ gót chân lơ lửng ngay trên thảm giữa các lần giúp cơ bụng và nhóm cơ gấp hông luôn chịu tải; chạm gót xuống thảm sẽ cho chúng được nghỉ. Hạ chân chậm hơn lúc nâng một chút cũng cho bạn thời gian giữ thắt lưng không ưỡn lên khi chân xuống thấp.";
 /* Lying Leg Raise · mistake */
-"Dropping the legs so the heels thump into the floor." = "Thả rơi chân khiến gót chân đập mạnh xuống sàn.";
+"Dropping the legs so the heels thump into the mat." = "Thả rơi chân khiến gót chân đập mạnh xuống thảm.";
 /* Lying Leg Raise · correct */
-"Lower under control and hold the heels just off the floor before the next rep." = "Hạ có kiểm soát và giữ gót chân ngay trên sàn trước lần tiếp theo.";
+"Lower under control and hold the heels just off the mat before the next rep." = "Hạ có kiểm soát và giữ gót chân ngay trên thảm trước lần tiếp theo.";
 /* Lying Leg Raise · setup */
-"Lie on your back on the floor, legs straight and about hip-width apart." = "Nằm ngửa trên sàn, chân thẳng và rộng khoảng bằng hông.";
+"Lie on your back on a mat, legs straight and about hip-width apart." = "Nằm ngửa trên thảm, chân thẳng và rộng khoảng bằng hông.";
 /* Lying Leg Raise · setup */
-"Rest your arms beside you, palms down, and your head on the floor." = "Đặt tay cạnh người, lòng bàn tay úp xuống, đầu áp sàn.";
+"Rest your arms beside you, palms down, and your head on the mat." = "Đặt tay cạnh người, lòng bàn tay úp xuống, đầu áp thảm.";
 /* Lying Leg Raise · setup */
-"Brace your abs and lift your heels just off the floor." = "Gồng chặt cơ bụng và nhấc gót chân vừa khỏi sàn.";
+"Brace your abs and lift your heels just off the mat." = "Gồng chặt cơ bụng và nhấc gót chân vừa khỏi thảm.";
 /* Lying Leg Raise · mistakeCue */
 "Back arches as legs lower" = "Lưng ưỡn khi hạ chân";
 /* Lying Leg Raise · correctNote */
-"With the lower back held on the floor, the abs keep the pelvis still while the hip flexors move the legs." = "Khi thắt lưng giữ áp sàn, cơ bụng giữ khung chậu yên trong khi nhóm cơ gấp hông di chuyển chân.";
+"With the lower back held on the mat, the abs keep the pelvis still while the hip flexors move the legs." = "Khi thắt lưng giữ áp thảm, cơ bụng giữ khung chậu yên trong khi nhóm cơ gấp hông di chuyển chân.";
 /* Lying Leg Raise · mistakeNote */
 "When the lower back arches, the abs have stopped holding the pelvis against the hip flexors' pull." = "Khi thắt lưng ưỡn, cơ bụng đã thôi giữ khung chậu chống lại lực kéo của nhóm cơ gấp hông.";
 /* Flutter Kick · label */
@@ -21223,7 +21225,7 @@
 /* Mountain Climber · intro */
 "Each knee drives in under your chest in turn, its foot just off the mat." = "Lần lượt từng gối đưa vào dưới ngực, bàn chân chỉ hơi nhấc khỏi thảm.";
 /* Mountain Climber · why */
-"Drawing the knee in is hip flexion, the hip flexors' job. ExRx's suspended version of this drill names the iliopsoas as the target; as long as the waist does not bend, the abs only steady the pelvis and waist while the hip flexes. StrengthLog's guide pulls the knee into the chest as far as you can." = "Kéo gối vào là động tác gập hông, việc của nhóm cơ gấp hông. Phiên bản treo của bài này trên ExRx xác định cơ thắt lưng chậu là cơ mục tiêu; miễn là eo không gập, cơ bụng chỉ giữ vững khung chậu và vùng eo trong khi hông gập. Hướng dẫn của StrengthLog kéo gối vào ngực xa nhất có thể.";
+"Drawing the knee in is hip flexion, the hip flexors' job. ExRx's suspended version of this drill names the iliopsoas as the target, but StrengthLog lists the abs as the primary muscle: they brace the pelvis and waist so the waist does not bend while the hip flexes. StrengthLog's guide pulls the knee into the chest as far as you can." = "Kéo gối vào là động tác gập hông, việc của nhóm cơ gấp hông. Phiên bản treo của bài này trên ExRx xác định cơ thắt lưng chậu là cơ mục tiêu, nhưng StrengthLog liệt kê cơ bụng là nhóm cơ chính: cơ bụng gồng chặt giữ khung chậu và vùng eo để eo không gập trong khi hông gập. Hướng dẫn của StrengthLog kéo gối vào ngực xa nhất có thể.";
 /* Mountain Climber · mistake */
 "Short strokes that stop with the knee well short of the chest." = "Bước ngắn, dừng khi gối còn cách ngực khá xa.";
 /* Mountain Climber · correct */
@@ -25742,6 +25744,74 @@
 "Landing softly, with the knee and ankle bending, takes much less force than landing stiff; studies show peak force drops by about a third. Take the drop at the knee and ankle rather than by folding your chest forward, and land quietly on the mid-foot with the knee pointing out over your toes." = "Tiếp đất mềm, với gối và cổ chân gập, chịu lực ít hơn nhiều so với tiếp đất cứng: các nghiên cứu cho thấy lực đỉnh giảm khoảng một phần ba. Đón cú rơi ở gối và cổ chân thay vì gập ngực ra trước, và tiếp đất nhẹ nhàng ở giữa bàn chân với gối hướng ra ngoài theo mũi chân.";
 /* Step-Up Jump · mistakeNote */
 "A locked knee stops the drop almost instantly, so the force goes into the joint instead of being absorbed by the muscles. On one leg there is no other leg to share it, which makes a stiff catch on the box harder on the knee and harder to balance." = "Gối khóa thẳng chặn cú rơi gần như tức thì, nên lực dồn vào khớp thay vì được cơ hấp thụ. Trên một chân không có chân nào khác chia lực, khiến cú đỡ cứng trên hộp nặng hơn cho gối và khó giữ thăng bằng hơn.";
+/* Burpee · label */
+"Hands to the floor" = "Chống tay xuống sàn";
+/* Burpee · label */
+"Chest to the floor" = "Ngực hạ xuống sàn";
+/* Burpee · label */
+"Arms overhead" = "Tay qua đầu";
+/* Burpee · title */
+"Squat Down" = "Squat xuống";
+/* Burpee · intro */
+"From standing, you bend your knees and hips into a squat and plant both hands flat on the floor in front of your feet." = "Từ tư thế đứng, bạn gập gối và hông để hạ xuống tư thế squat, rồi đặt phẳng hai bàn tay xuống sàn trước bàn chân.";
+/* Burpee · why */
+"Squatting down lets your legs lower you, so your hands meet the floor under control. Planted flat, a little wider than your shoulders and just in front of your feet, they are already where the plank needs them. NSCA's coaching of the burpee has you shift your weight onto your hands before you kick back." = "Squat xuống để đôi chân hạ thấp người bạn, nhờ vậy tay chạm sàn một cách có kiểm soát. Khi đặt phẳng, rộng hơn vai một chút và ngay trước bàn chân, hai tay đã nằm sẵn ở đúng vị trí mà tư thế plank cần. Hướng dẫn burpee của NSCA yêu cầu bạn dồn trọng lượng lên tay trước khi bật chân ra sau.";
+/* Burpee · mistake */
+"Reaching for the floor with straight legs instead of squatting, or throwing your feet back before your hands are set." = "Giữ chân thẳng mà với tay xuống sàn thay vì squat xuống, hoặc hất chân ra sau trước khi tay đã đặt chắc.";
+/* Burpee · correct */
+"Bend your knees and hips to squat down with your heels on the floor, plant your hands flat just in front of your feet and a little wider than your shoulders, and let your weight come onto them before your feet leave the floor." = "Gập gối và hông để squat xuống với gót chân bám sàn, đặt phẳng hai bàn tay ngay trước bàn chân và rộng hơn vai một chút, rồi để trọng lượng dồn lên hai tay trước khi bàn chân rời sàn.";
+/* Burpee · title */
+"Jump Back to a Plank" = "Bật ra sau thành plank";
+/* Burpee · intro */
+"With your hands planted, you jump both feet back together and land in a high plank on straight arms." = "Khi tay đã đặt chắc trên sàn, bạn bật cả hai chân ra sau cùng lúc và tiếp đất ở tư thế plank cao, hai tay duỗi thẳng.";
+/* Burpee · why */
+"The plank is the base for the push-up, so land in it already straight, with your shoulders over your hands and your hips in line between your shoulders and heels. NASM lists sagging hips in the plank as a common burpee mistake, as it takes work off your core and leaves your spine less stable." = "Plank là nền cho động tác push-up, nên hãy tiếp đất vào plank với người đã thẳng sẵn, vai nằm thẳng trên bàn tay và hông thẳng hàng giữa vai và gót chân. NASM liệt kê hông võng xuống khi plank là một lỗi thường gặp khi tập burpee, vì nó làm cơ lõi bớt việc và khiến cột sống kém vững hơn.";
+/* Burpee · mistake */
+"Landing with your hips sagging toward the floor or piked up high, or with your knees still bent." = "Tiếp đất với hông võng về phía sàn hoặc chổng lên cao, hoặc với gối vẫn còn gập.";
+/* Burpee · correct */
+"Jump both feet back together and land on the balls of your feet with your legs and arms straight and your shoulders over your hands, your body in one straight line from head to heels." = "Bật cả hai chân ra sau cùng lúc và tiếp đất trên phần trước bàn chân, chân và tay duỗi thẳng, vai nằm thẳng trên bàn tay, cơ thể thành một đường thẳng từ đầu đến gót chân.";
+/* Burpee · title */
+"Chest to the Floor" = "Ngực hạ xuống sàn";
+/* Burpee · intro */
+"From the plank you do one full push-up, lowering your chest to the floor and pressing back up to straight arms." = "Từ tư thế plank, bạn thực hiện một lần push-up trọn vẹn, hạ ngực xuống sàn rồi đẩy người lên lại đến khi tay duỗi thẳng.";
+/* Burpee · why */
+"A push-up lifts roughly two-thirds to three-quarters of your body weight, so this is where your chest, shoulders and triceps do their work. NASM lists a sloppy or skipped push-up as a common burpee mistake; if your reps start coming up short, slow down rather than cut the depth." = "Một lần push-up nâng khoảng từ hai phần ba đến ba phần tư trọng lượng cơ thể, nên đây là lúc cơ ngực, vai và cơ tam đầu làm việc. NASM liệt kê việc push-up cẩu thả hoặc bỏ qua push-up là một lỗi thường gặp khi tập burpee; nếu các lần tập bắt đầu hụt biên độ, hãy chậm lại thay vì giảm độ sâu.";
+/* Burpee · mistake */
+"Bending the elbows only partway, or letting the hips sag so they reach the floor before your chest does." = "Chỉ gập khuỷu tay được nửa chừng, hoặc để hông võng xuống đến mức chạm sàn trước cả ngực.";
+/* Burpee · correct */
+"Keep your body in one straight line and bend your elbows, angled back about 45° from your body, to lower your chest to the floor with your hips still in line, then press the floor away until your arms are straight." = "Giữ cơ thể thành một đường thẳng và gập khuỷu tay, hướng ra sau khoảng 45° so với thân, để hạ ngực xuống sàn trong khi hông vẫn thẳng hàng, rồi đẩy sàn ra xa đến khi tay duỗi thẳng.";
+/* Burpee · title */
+"Jump the Feet In" = "Bật chân về phía tay";
+/* Burpee · intro */
+"From straight arms you jump both feet forward together and land in a deep squat just behind your hands." = "Từ tư thế tay duỗi thẳng, bạn bật cả hai chân ra trước cùng lúc và tiếp đất ở tư thế squat sâu ngay sau hai bàn tay.";
+/* Burpee · why */
+"This squat is where you stand up and jump from, so land in it steady. CrossFit's coaching notes that on this landing the knees tend to cave in and the weight tips onto the toes; the whole foot down and the knees out over the toes keep both legs lined up." = "Từ tư thế squat này bạn sẽ đứng lên và bật nhảy, nên hãy tiếp đất vào đó thật vững. Hướng dẫn của CrossFit lưu ý rằng ở lần tiếp đất này, gối dễ đổ vào trong và trọng lượng dồn lên mũi chân; đặt cả bàn chân xuống sàn và đưa gối ra ngoài theo mũi chân giúp cả hai chân thẳng hàng.";
+/* Burpee · mistake */
+"Staying on your toes after you land, with your heels off the floor, or letting your knees fall in toward each other." = "Vẫn trụ trên mũi chân sau khi tiếp đất, gót không chạm sàn, hoặc để hai gối đổ vào trong về phía nhau.";
+/* Burpee · correct */
+"Jump both feet forward together to land just behind your hands, about hip-width apart, with the whole foot on the floor and your knees pushed out over your toes, keeping your hands down until you have landed." = "Bật cả hai chân ra trước cùng lúc để tiếp đất ngay sau hai bàn tay, hai chân rộng khoảng bằng hông, cả bàn chân đặt trên sàn và gối đẩy ra ngoài theo mũi chân, giữ tay trên sàn cho đến khi đã tiếp đất.";
+/* Burpee · title */
+"Jump and Land" = "Bật nhảy, tiếp đất";
+/* Burpee · intro */
+"You lift your hands, bring your chest up and jump straight up with your arms reaching overhead, then land softly and stand tall." = "Bạn nhấc tay khỏi sàn, nâng ngực lên rồi bật thẳng lên với hai tay vươn qua đầu, sau đó tiếp đất mềm và đứng thẳng người.";
+/* Burpee · why */
+"Opening your hips and knees all the way, with your arms reaching overhead, finishes the rep tall, and studies show an arm swing adds height to a jump. One analysis of the burpee found the knees most loaded at the landing, and a soft landing, with the knees bending as you land, cuts peak force by about a third compared with a stiff one." = "Duỗi hết hông và gối, với hai tay vươn qua đầu, giúp bạn kết thúc lần tập với cơ thể vươn cao hết cỡ, và các nghiên cứu cho thấy vung tay giúp tăng độ cao cú nhảy. Một phân tích về burpee cho thấy gối chịu tải lớn nhất ở pha tiếp đất, và tiếp đất mềm, với gối gập dần khi chạm đất, giảm lực đỉnh khoảng một phần ba so với tiếp đất cứng.";
+/* Burpee · mistake */
+"Jumping with your hips and knees still bent and your chest tipped forward, or landing stiff, with your knees staying straight instead of bending to take the landing." = "Bật nhảy khi hông và gối vẫn còn gập và ngực đổ về trước, hoặc tiếp đất cứng, gối giữ thẳng thay vì gập lại để đón lực tiếp đất.";
+/* Burpee · correct */
+"Lift your hands off the floor and bring your chest up, then drive the floor away until your hips and knees are straight and your arms reach overhead; land on the balls of your feet, let your heels settle and your knees bend, and stand all the way up before the next rep." = "Nhấc tay khỏi sàn và nâng ngực lên, rồi đạp sàn ra xa đến khi hông và gối duỗi thẳng và hai tay vươn qua đầu; tiếp đất trên phần trước bàn chân, để gót hạ xuống và gối gập lại, rồi đứng thẳng hẳn lên trước lần tiếp theo.";
+/* Burpee · setup */
+"Stand tall with your feet about hip-width apart and your arms at your sides." = "Đứng thẳng, hai chân rộng khoảng bằng hông, hai tay buông xuôi hai bên.";
+/* Burpee · setup */
+"Clear a flat, non-slip patch of floor about as long as you are tall, with room overhead to jump." = "Dọn một khoảng sàn phẳng, không trơn, dài khoảng bằng chiều cao của bạn, có đủ khoảng trống phía trên để bật nhảy.";
+/* Burpee · setup */
+"Brace your trunk before each rep and keep it braced through the plank and the push-up." = "Gồng chặt thân trước mỗi lần và giữ gồng suốt pha plank và push-up.";
+/* Burpee · setup */
+"Keep a pace at which every rep stays clean, and stand all the way up, balanced, before the next one." = "Giữ nhịp độ sao cho lần nào cũng đúng kỹ thuật, và đứng thẳng hẳn lên, giữ thăng bằng, trước lần tiếp theo.";
+/* Burpee · correctNote */
+"Land the jump back with your hips in line between your shoulders and heels, and hold that line all the way down to the floor and back up, so your arms and chest move your body as one piece." = "Khi bật chân ra sau, tiếp đất với hông thẳng hàng giữa vai và gót chân, và giữ đường thẳng đó suốt lúc hạ xuống sàn và đẩy lên lại, để tay và ngực di chuyển cơ thể như một khối.";
+/* Burpee · mistakeNote */
+"When the hips sag, the lower back arches and your core does less of the work of holding you straight; NASM lists it as a common burpee mistake. It tends to creep in as you tire, so slow down or rest rather than let the line go." = "Khi hông võng xuống, lưng dưới ưỡn cong và cơ lõi làm ít hơn phần việc giữ cho người bạn thẳng; NASM liệt kê đây là một lỗi thường gặp khi tập burpee. Lỗi này thường xuất hiện dần khi bạn mệt, nên hãy chậm lại hoặc nghỉ thay vì để mất đường thẳng.";
 /* Squat Jump · label */
 "Swing the arms" = "Vung tay";
 /* Squat Jump · label */
