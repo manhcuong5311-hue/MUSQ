@@ -1,0 +1,272 @@
+// MARK: PIECES
+    // MARK: Model-only lifts (2026-11-09): snatch pieces
+    //
+    // Sized on the 2026-11-08 exports of the Power, Dumbbell and Kettlebell
+    // Snatches (one body, torso 0.59 m), with a Python port of
+    // `FaultGhost.solve` run over every frame of each clip: bone lengths
+    // kept, no knee or elbow bent backward. The Dumbbell and Kettlebell
+    // Snatches work the left arm.
+
+    /// Power Snatch: the bar at the hips. Wrist to pelvis is 1.25 torso
+    /// lengths at the floor (the wide grip holds the hands out by the
+    /// plates), 1.10 at mid-thigh and 0.99-1.01 with the bar at the hips,
+    /// 1.82 overhead. So this is all of it through the second pull
+    /// (1.67-2.0 s) and none from the floor to mid-thigh or overhead. The bar
+    /// passes the hips again on the way down (4.8-6.2 s), so the ghost shows
+    /// there too.
+    private static let snatch1109BarAtHips = FaultStrength.between("hand_L", "pelvis", from: 1.15, to: 1.02)
+
+    /// Power Snatch: pulling with the arms before the legs have finished.
+    /// The hands and bar move `up` torso lengths higher up the trunk. The
+    /// elbows are nudged up and out before they are re-seated, so they bend
+    /// high and out as in an upright row; re-seated without the nudge, the
+    /// forearms folded out sideways below the elbows. The arms keep their
+    /// lengths. 0.3 takes the bar from the hips to the belly, ~18 cm, and the
+    /// elbows from 169° to ~106°, level with the shoulders.
+    private static func snatch1109ArmsBentEarly(_ up: Float) -> FaultPose {
+        FaultPose(chains: [armsToGrip, bar],
+                  moves: [.shift(["hand_*", "hand_*.tip"], up: up),
+                          .shift(["forearm_*"], up: 0.2, outward: 0.1),
+                          .resolve(["forearm_*"])],
+                  strength: snatch1109BarAtHips)
+    }
+
+    /// Power Snatch: in the catch, read off how far apart the knees are.
+    /// They are 0.80-0.83 torso lengths apart with the feet jumped out to
+    /// 0.30 m and the knees bent (2.33-2.79 s). Anywhere else in the clip
+    /// they are at most 0.62 apart (0.58 at the set-up, 0.43 standing). The
+    /// gap closes as the knees straighten, so a 0.25 lift scaled by this
+    /// straightens the ghost's legs at every frame of the catch without
+    /// stretching them (under 0.5%).
+    private static let snatch1109Caught = FaultStrength.between("shin_L", "shin_R", from: 0.66, to: 0.83)
+
+    /// Power Snatch: waiting for the bar with straight legs and pressing it
+    /// the last part of the way. Everything above the knees is lifted `rise`
+    /// torso lengths with the knees re-seated, which stands the ghost up
+    /// straight-legged. Then the hands and bar come `drop` back down, and the
+    /// elbows are nudged out and down before they are re-seated, so they bend
+    /// out to the sides under the bar. At the catch, 0.25 and 0.3 lift the
+    /// body ~15 cm and open the knees from 111° to ~172°. The bar ends ~3 cm
+    /// below the model's on forearms upright under it, the elbows ~103°: a
+    /// press-out. A drop of 0.4 put the elbows above the shoulder line.
+    private static func snatch1109PressedOut(rise: Float, drop: Float) -> FaultPose {
+        FaultPose(chains: [spine, legs, hips, armsToGrip, bar],
+                  moves: [.shift(carried, rise: rise), .resolve(["shin_*"]),
+                          .shift(["hand_*", "hand_*.tip"], rise: -drop),
+                          .shift(["forearm_*"], up: -0.1, outward: 0.1),
+                          .resolve(["forearm_*"])],
+                  strength: snatch1109Caught)
+    }
+
+    /// Dumbbell Snatch: the bell overhead. Wrist to the left ankle is 2.98
+    /// torso lengths in the catch (2.67-3.0 s), 3.21 locked out standing
+    /// (3.25-4.6 s) and 2.5 as it turns over (2.33 s). It is under 1.7 from
+    /// the floor to the hips.
+    private static let snatch1109BellOverhead = FaultStrength.between("hand_L", "foot_L", from: 2.6, to: 2.9)
+
+    /// Dumbbell Snatch: the bell caught in front of the shoulder on a bent
+    /// arm. The arm turns `degrees` forward and down about the shoulder, then
+    /// the forearm folds the same `degrees` back up, so it stays upright
+    /// under the bell. Turns keep every bone its length. Re-seating a lowered
+    /// hand instead left the elbow up by the head, an overhead triceps
+    /// extension. At 65° the elbow goes from 174° to ~113°, and the elbow and
+    /// hand go ~31 cm forward and down. The hand ends ~26 cm ahead of the
+    /// model's and ~16 cm lower, in front of the forehead.
+    private static func snatch1109CaughtInFront(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [arm("L")],
+                  moves: [.turn(pivot: "upper_arm_L", points: ["forearm_L", "hand_L", "hand_L.tip"], axis: .lateral, degrees: -degrees),
+                          .turn(pivot: "forearm_L", points: ["hand_L", "hand_L.tip"], axis: .lateral, degrees: degrees)],
+                  strength: snatch1109BellOverhead)
+    }
+
+    /// Dumbbell Snatch: leaning away from the bell to get under it. This is
+    /// `leftArmTrunkTipped`, faded in only with the bell overhead: the trunk
+    /// tips `degrees` to the lifter's right about the pelvis, carrying the
+    /// working arm. The free arm hangs and is left out of the ghost. 14° moves
+    /// the head ~17 cm and the bell hand ~27 cm across.
+    private static func snatch1109LeanedAway(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, arm("L")],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"] + arm("L").dropFirst(),
+                                axis: .forward, degrees: degrees)],
+                  strength: snatch1109BellOverhead)
+    }
+
+    /// One-arm snatches: the working elbow well bent. Shoulder to wrist is
+    /// 0.90-0.91 torso lengths with the arm straight. It drops to 0.41-0.65
+    /// as the Dumbbell Snatch turns over (2.0-2.5 s) and racks the bell on
+    /// the way down (4.9-5.7 s). It drops to 0.43-0.62 as the Kettlebell
+    /// Snatch's bell rises close to the body (1.33-1.67 s) and drops from
+    /// overhead (0.3-0.7 s). None with the elbow straight.
+    private static let snatch1109ElbowFolded = FaultStrength.between("upper_arm_L", "hand_L", from: 0.8, to: 0.6)
+
+    /// Dumbbell Snatch: throwing the free (right) arm to help the bell up.
+    /// The trunk, both shoulders and both arms twist `twist` degrees toward
+    /// the bell, the right shoulder coming forward. Then the free arm swings
+    /// `swing` degrees forward and up about its shoulder. Turns keep every
+    /// bone its length. 20° and 55° bring the right shoulder ~7 cm forward
+    /// and the left ~7 cm back, and the free hand ~57 cm forward and up. The
+    /// ghost shows while the working elbow is folded (the turnover).
+    private static func snatch1109FreeArmThrown(twist: Float, swing: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders, arms],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*", "forearm_*", "hand_*"], axis: .up, degrees: -twist),
+                          .turn(pivot: "upper_arm_R", points: ["forearm_R", "hand_R"], axis: .lateral, degrees: swing)],
+                  strength: snatch1109ElbowFolded)
+    }
+
+    /// Kettlebell Snatch: squatting the bell down instead of hinging. These
+    /// are `hingeSquatted`'s moves, faded in by the pelvis's height. The
+    /// shared piece's hip-bend gate reads 0.38 standing on this rig (the
+    /// spine-hip-knee angle is ~145° locked out), which drew a squat under
+    /// the overhead hold. Pelvis to the left ankle is 1.44 torso lengths
+    /// standing and 1.17 at the bottom of the backswing (0.83-1.0 s). The
+    /// hips come ~13 cm lower and ~6 cm forward, the trunk 22° more upright
+    /// and the knees from 107° to ~79°. The grip goes ~15 cm forward with
+    /// the trunk.
+    private static let snatch1109HingeSquatted = FaultPose(
+        chains: [spine, armsToGrip, legs, hips],
+        moves: [.turn(pivot: "pelvis", points: trunk, axis: .lateral, degrees: 22),
+                .shift(carried, ahead: 0.1, rise: -0.22), .resolve(["shin_*"])],
+        strength: .between("pelvis", "foot_L", from: 1.38, to: 1.2)
+    )
+
+    /// Kettlebell Snatch: swinging the bell out in front instead of up close.
+    /// The working hand moves `ahead` (level) and `rise` torso lengths and
+    /// the elbow is re-seated, the arm reaching out at shoulder height. It
+    /// shows while the elbow is folded, on the way up and on the drop. 0.3
+    /// and 0.1 at 1.42 s move the hand ~18 cm forward and ~6 cm up, and
+    /// open the elbow from 75° to ~124°. The hand stays within the arm's
+    /// reach at every frame (the shoulder-to-wrist gate keeps the move small
+    /// where the arm is already long).
+    private static func snatch1109BellLooped(ahead: Float, rise: Float) -> FaultPose {
+        FaultPose(chains: [arm("L")],
+                  moves: [.shift(["hand_L", "hand_L.tip"], ahead: ahead, rise: rise), .resolve(["forearm_L"])],
+                  strength: snatch1109ElbowFolded)
+    }
+
+    /// Kettlebell Snatch: coming up onto the toes. Both feet turn `degrees`
+    /// heel-up about the balls of the feet (`toe_*`). The shins and
+    /// everything above them move with the ankles, `ahead` and `rise` in the
+    /// room, then the knees are re-seated. Each foot is drawn as ankle, heel
+    /// and ball, so the heel shows lifting. Lifted straight up without the
+    /// `ahead`, the re-seat bent the near-straight knees backward (the ankles
+    /// go ~5 cm forward as the foot turns). 30° lifts the heels ~8.5 cm and
+    /// the body ~5 cm; the knees soften forward from 175° to ~169°. It shows
+    /// with the knees straight, so it fades to ~0.2 at the bottom of the
+    /// backswing.
+    private static func snatch1109OnToes(_ degrees: Float, ahead: Float, rise: Float) -> FaultPose {
+        FaultPose(chains: [["thigh_*", "shin_*", "foot_*", "foot_*.heel", "toe_*"], hips, spine],
+                  moves: [.turn(pivot: "toe_*", points: ["foot_*", "foot_*.heel"], axis: .lateral, degrees: -degrees),
+                          .shift(["shin_*"] + carried, ahead: ahead, rise: rise),
+                          .resolve(["shin_*"])],
+                  strength: .whenStraight("shin_L"))
+    }
+
+// MARK: TABLE
+        // MARK: Model-only lifts (2026-11-09): snatches
+        // The three snatches of the 2026-11-08 exports, one body (torso,
+        // neck to pelvis, 0.59 m; shifts in torso lengths), each framed from
+        // the front on the lifter's left (yaw -0.8). Sizes are measured with
+        // a Python port of FaultGhost.solve at each fault's still and over
+        // every frame of the clip, in points of the 382x655 trainer viewport
+        // with the mistake view's shrink (turned views included). The
+        // Dumbbell and Kettlebell Snatches work the left arm.
+        "Power Snatch": [
+            // The lower back rounded over the bar at the set-up: the RDLs'
+            // `rdl4BackRounded`, as on the Clean and Press. The lumbar and
+            // mid back are ~6 cm higher, 8 cm off the pelvis-to-neck line
+            // against the model's 2-3 cm, and the head ~9 cm lower (15 pt).
+            // Fully on in the start position, it fades out as the bar leaves
+            // the floor and is gone by ~20 cm up (1.1 s); it returns as the
+            // bar comes back down (6.9 s). Turned -0.5 (a total of -1.3,
+            // near side-on).
+            "setup": rdl4BackRounded(.between("pelvis", "foot_L", from: 1.1, to: 1.0)).seen(-0.5),
+            // The bar swinging out in front in the first pull: the arms swung
+            // 22° forward about the shoulders. The hands go ~15 cm and the
+            // bar ~19 cm (35 pt) ahead of the shins. Fully on while the bar
+            // is below mid-thigh (wrist to ankle 1.3 torso lengths) and gone
+            // by the hips (1.6). Turned -0.4 (a total of -1.2), like the
+            // Clean and Press.
+            "pull": armsSwungForward(22, withBar: true, strength: .between("hand_L", "foot_L", from: 1.6, to: 1.3)).seen(-0.4),
+            // Pulling with the arms before the legs have finished: with the
+            // bar at the hips and the knees still bent (~119° at 1.75 s), the
+            // bar is ~18 cm (31 pt) higher, at the belly. The elbows bend
+            // high and out, 169° to ~106°, level with the shoulders (37 pt).
+            "extend": snatch1109ArmsBentEarly(0.3),
+            // Waiting with straight legs and pressing the bar out: in the
+            // catch, the ghost stands ~15 cm (25 pt) taller on straight legs
+            // (knees 111° to ~172°). The bar stays about where the model's
+            // is, on bent arms, the elbows out at ~103° under it (36 pt at
+            // the knees). It shows only in the catch, read off the knees'
+            // spread (2.3-2.9 s).
+            "catch": snatch1109PressedOut(rise: 0.25, drop: 0.3),
+            // Finishing with the bar out in front of the head: the arms 18°
+            // forward about the shoulders, the hands ~13 cm and the bar ~16
+            // cm (30 pt) ahead. Shown with the bar overhead (wrist to ankle
+            // from 2.5 to 2.9 torso lengths: the catch and the hold). Turned
+            // -0.6 (a total of -1.4), like the Push Press's lockout.
+            "lockout": armsTurned(.lateral, -18, withBar: true, strength: .between("hand_L", "foot_L", from: 2.5, to: 2.9)).seen(-0.6)
+        ],
+        "Dumbbell Snatch": [
+            // The back rounded to reach the bell at the set-up: the RDLs'
+            // hump. The lumbar and mid back are ~6 cm higher and the head
+            // ~9 cm lower (19 pt). Fully on in the start position (pelvis
+            // 0.82 torso lengths from the left ankle) and gone by the time
+            // the bell is ~25 cm up (1.0). Turned -0.5 (a total of -1.3).
+            "setup": rdl4BackRounded(.between("pelvis", "foot_L", from: 1.0, to: 0.88)).seen(-0.5),
+            // Curling the bell up with the arm: the working forearm folded
+            // 80° up about the elbow, which goes from 174° to ~100°. The
+            // hand comes ~30 cm forward and up (61 pt), the palm ~45 cm
+            // (90 pt). Fully on with the bell below the knees and gone by
+            // mid-thigh (wrist to ankle 1.1 to 1.35 torso lengths, 1.4-1.7 s).
+            "pull": elbowsFolded(.lateral, 80, side: "L", strength: .between("hand_L", "foot_L", from: 1.35, to: 1.1)),
+            // The bell caught in front of the shoulder on a bent arm: the
+            // arm turned 65° forward and down, the forearm left upright under
+            // the bell. The elbow goes from 174° to ~113°, the hand ~26 cm
+            // forward and ~16 cm lower, in front of the forehead (66 pt).
+            // Shown with the bell overhead (the catch and the hold, 2.4-4.9
+            // s). Turned -0.6 (a total of -1.4), toward the bell's side.
+            "turnover": snatch1109CaughtInFront(65).seen(-0.6),
+            // Leaning away from the bell: the trunk tipped 14° to the right,
+            // carrying the working arm. The head moves ~17 cm (33 pt) and the
+            // bell hand ~27 cm (52 pt). Shown with the bell overhead. Turned
+            // 0.5 toward face-on (a total of -0.3), where the lean runs
+            // across the screen.
+            "lockout": snatch1109LeanedAway(14).seen(0.5),
+            // Throwing the free arm, the shoulders twisting with it: the
+            // shoulders turn 20° toward the bell (the right ~7 cm forward)
+            // and the free arm swings 55° forward and up. Its hand goes
+            // ~57 cm (98 pt). Shown while the working elbow is folded: the
+            // turnover (2.0-2.5 s) and the rack on the way down (4.8-5.8 s).
+            "level": snatch1109FreeArmThrown(twist: 20, swing: 55)
+        ],
+        "Kettlebell Snatch": [
+            // Squatting the bell down instead of hinging: at the bottom of
+            // the backswing the hips are ~13 cm lower and ~6 cm forward
+            // (29 pt) and the trunk 22° more upright. The knees go from 107°
+            // to ~79°, and the grip is carried ~15 cm (31 pt) forward. Gone
+            // standing. Turned -0.4 (a total of -1.2), like the Kettlebell
+            // Deadlift's.
+            "hinge": snatch1109HingeSquatted.seen(-0.4),
+            // The bell looping out in front: the working hand reaches ~18 cm
+            // further forward and ~6 cm higher (40 pt), the elbow opening
+            // from 75° to ~124° at shoulder height. It shows while the elbow
+            // is folded, on the way up and on the drop. Turned -0.4 (a total
+            // of -1.2), where the reach runs across the screen.
+            "swing": snatch1109BellLooped(ahead: 0.3, rise: 0.1).seen(-0.4),
+            // "insert" has no ghost: gripping hard is a matter of force, and
+            // the bell flipping over the hand onto the wrist is the load's
+            // own motion, not a joint the ghost can draw. It falls back to
+            // the red ring.
+            // Holding the bell out in front of the shoulder: the arm 18°
+            // forward about the shoulder, the hand ~17 cm and the palm ~20 cm
+            // (41 pt) ahead. Shown with the bell overhead (wrist to ankle 2.8
+            // to 3.1 torso lengths: the hold, 1.75-2.9 s of each rep). Turned
+            // -0.4 (a total of -1.2).
+            "lockout": armsTurned(.lateral, -18, side: "L", strength: .between("hand_L", "foot_L", from: 2.8, to: 3.1)).seen(-0.4),
+            // Up on the toes: both heels ~8.5 cm up (18 pt), the body ~5 cm
+            // up and forward with the ankles, the knees soft (175° to ~169°).
+            // Shown with the legs straight (the drive, the hold and the
+            // drop), fading at the bottom of the backswing. Turned -0.6 (a
+            // total of -1.4) so the heels lift in profile.
+            "base": snatch1109OnToes(30, ahead: 0.08, rise: 0.085).seen(-0.6)
+        ],

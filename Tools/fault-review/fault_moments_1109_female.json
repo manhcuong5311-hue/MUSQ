@@ -1,0 +1,5 @@
+{
+  "Vertical Hack Squat": {"pad": "2.0", "knees": "2.0", "feet": "2.0"},
+  "Standing Hinge Kickback": {"kick": "2.0", "knee": "2.0", "hips": "2.0", "torso": "2.0", "stance": "2.0"},
+  "Incline Bench Cable Kickback": {"finish": "2.0", "hips": "2.0", "trunk": "2.0", "support": "2.0"}
+}

@@ -6281,6 +6281,8 @@ enum FaultPoses {
                   moves: [.turn(pivot: "foot_R", points: ["foot_R.tip"], axis: .lateral, degrees: -degrees)])
     }
     // END Desktop 300-400 (2026-10-12) pieces
+    // BEGIN Model-only lifts (2026-11-09) pieces
+    // END Model-only lifts (2026-11-09) pieces
     // MARK: Exercises 1-50 redo pieces (2026-09-29)
     // MARK: Exercises 1-50 redo: Pendlay Row and Close-Grip Bench Press (2026-09-29)
 
@@ -13259,6 +13261,8 @@ enum FaultPoses {
             "dumbbell": barRolledUp(0.28, strength: thrustLockout),
         ],
         // END Desktop 300-400 (2026-10-12)
+        // BEGIN Model-only lifts (2026-11-09)
+        // END Model-only lifts (2026-11-09)
         // MARK: Exercises 1-50 redo (2026-09-29)
         // MARK: Exercises 1-50 redo: Pendlay Row and Close-Grip Bench Press (2026-09-29)
         // Pendlay Row is framed from behind on the lifter's left (yaw -2.0,

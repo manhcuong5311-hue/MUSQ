@@ -1,0 +1,240 @@
+// MARK: PIECES
+    // MARK: Model-only lifts, female pieces (2026-11-09)
+
+    /// Vertical Hack Squat: the shoulders coming forward and down off the
+    /// pads, the trunk folding forward out of the carriage. The trunk and the
+    /// shoulders tip `degrees` forward about the pelvis. Drawn without the
+    /// arms: the hands hold the carriage's handles beside the head, and swung
+    /// with the trunk, as `leanedForward` draws them, they crossed it in a
+    /// zigzag from the framing. At the bottom (2.0 s, knees 88°) 25° carries
+    /// the shoulders ~19 cm forward and ~4 cm down, the head ~26 cm forward.
+    /// Grows with the knees.
+    private static func female1109TrunkFolded(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [spine, shoulders],
+                  moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*"], axis: .lateral, degrees: -degrees)],
+                  strength: .withBend("shin_L"))
+    }
+
+    /// Vertical Hack Squat: both feet's toes turned `degrees` out about the
+    /// ankles, the heels left where they are (the model's feet point ~7°
+    /// out). A setup fault, the same all rep: 40° swings each toe tip ~13 cm
+    /// (~11.5 cm out to the side, ~6 cm back).
+    private static func female1109ToesOut(_ degrees: Float) -> FaultPose {
+        FaultPose(chains: [legs],
+                  moves: [.turn(pivot: "foot_*", points: ["foot_*.tip"], axis: .up, degrees: -degrees)])
+    }
+
+    /// Standing Hinge Kickback (the left leg working, the trunk held 67.5°
+    /// forward of vertical): the kick near its top, read off the ankles'
+    /// spread, 0.36 torso lengths with the left leg hanging (0 s) and 2.61 at
+    /// the top (2.0 s): none until ~1.25 s, two thirds at 1.5 s, all of it
+    /// through the top's hold (1.75-2.25 s).
+    private static let female1109HingeKickTop = FaultStrength.between("foot_L", "foot_R", from: 1.9, to: 2.5)
+
+    /// The same spread over most of the kick: none with the leg hanging
+    /// (to ~0.5 s), half by ~1.0 s, all of it from 1.75 s, so a fault that
+    /// rocks with each rep follows the leg up and down.
+    private static let female1109HingeKicking = FaultStrength.between("foot_L", "foot_R", from: 0.6, to: 2.5)
+
+    /// Standing Hinge Kickback: the leg swung as high as it goes, the lower
+    /// back arching to let it. The mid-spine sags 0.16 torso lengths (~8 cm)
+    /// toward the floor and the chest 0.07 (~3.5 cm), and the left leg swings
+    /// 25° further up about the hip: at the top (2.0 s) the thigh ~17° above
+    /// level instead of 8° below it, the ankle ~41 cm higher. Bones kept.
+    private static let female1109HingeKickArched = FaultPose(
+        chains: [spine, ["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.shift(["spine"], forward: 0.16), .shift(["chest"], forward: 0.07),
+                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: -25)],
+        strength: female1109HingeKickTop
+    )
+
+    /// Standing Hinge Kickback: the knee bending so the heel comes toward the
+    /// glutes instead of the leg going back. The left thigh swings 25° down
+    /// about the hip and the foot 80° up about the knee: at the top (2.0 s)
+    /// the knee 170° -> 90°, the thigh ~33° below level instead of 8°, the
+    /// knee ~19 cm lower, the ankle ~29 cm nearer the hips and ~20 cm
+    /// higher. (The other half of the cue's mistake, the knee locked at the
+    /// top, would move the knee only ~4 cm: the model already holds it at
+    /// 170° there, so a locked ghost lay on the model's own leg.) Bones kept.
+    private static let female1109HingeHeelCurled = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .lateral, degrees: 25),
+                .turn(pivot: "shin_L", points: ["foot_L", "foot_L.tip"], axis: .lateral, degrees: -80)],
+        strength: female1109HingeKickTop
+    )
+
+    /// Standing Hinge Kickback: the working hip rolling up and open at the
+    /// top. The hips and the left leg turn 22° about the trunk's long axis
+    /// (the left hip ~3 cm up toward the ceiling, the right one down), then
+    /// the leg swings 22° out about the hip: at the top (2.0 s) the ankle ~22
+    /// cm out to the left. Bones kept.
+    private static let female1109HingeHipOpened = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.turn(pivot: "pelvis", points: ["thigh_L", "thigh_R", "shin_L", "foot_L", "foot_L.tip"], axis: .up, degrees: -22),
+                .turn(pivot: "thigh_L", points: ["shin_L", "foot_L", "foot_L.tip"], axis: .forward, degrees: 22)],
+        strength: female1109HingeKickTop
+    )
+
+    /// Standing Hinge Kickback: the trunk folding further forward with each
+    /// kick instead of holding its hinge. The trunk, shoulders and elbows
+    /// turn 20° down about the pelvis and the elbows re-seat, so the hands
+    /// stay on the upright and the arms keep their lengths (turning the
+    /// elbows with the trunk first keeps them bending the right way; re-seated
+    /// from where they were, the right one flipped backward): at the top
+    /// (2.0 s) the back about level instead of 22° above it, the head ~20 cm
+    /// lower, the elbows 138°/151° -> ~119°/129°. Rocks with the kick, so the
+    /// ghost's trunk dips and rises with every rep. (The other way, more
+    /// upright, the arms run out of reach of the hands within ~8°.)
+    private static let female1109HingeTrunkDropped = FaultPose(
+        chains: [spine, arms],
+        moves: [.turn(pivot: "pelvis", points: torso + ["upper_arm_*", "forearm_*"], axis: .lateral, degrees: -20),
+                .resolve(["forearm_*"])],
+        strength: female1109HingeKicking
+    )
+
+    /// Standing Hinge Kickback: rising onto the standing (right) toe with
+    /// that knee locked, to help the kick finish. The right foot turns 30°
+    /// heel-up about the ball of the foot and the hip rises 0.16 torso
+    /// lengths (~8 cm), so the knee re-seats straight on the hip-to-ankle
+    /// line (160° -> 180°, not past it): at the top (2.0 s) the heel ~9 cm
+    /// higher, the knee ~9 cm further back and up. Only the standing leg is
+    /// drawn, the foot as ankle, heel and ball (a stick foot's corner sat at
+    /// the shoe's own heel). The leg's bones ~1% long at most (22° and ~6.6
+    /// cm read small at this framing's zoom).
+    private static let female1109HingeUpOnToe = FaultPose(
+        chains: [["thigh_R", "shin_R", "foot_R", "foot_R.heel", "toe_R"]],
+        moves: [.turn(pivot: "toe_R", points: ["foot_R", "foot_R.heel"], axis: .lateral, degrees: -30),
+                .shift(["thigh_R"], rise: 0.16), .resolve(["shin_R"])],
+        strength: female1109HingeKickTop
+    )
+
+    /// Incline Bench Cable Kickback (the right leg working, chest-down on a
+    /// pad ~45° from vertical): the kick near its top, read off the feet's
+    /// distance, since the right foot comes back up beside the resting left
+    /// one: 1.90 torso lengths at the bottom (0 s), 0.49 at the top (1.75-2.1
+    /// s): none until ~1.15 s, all of it from 1.5 s to 2.4 s.
+    private static let female1109InclineKickTop = FaultStrength.between("foot_R", "foot_L", from: 0.9, to: 0.55)
+
+    /// Incline Bench Cable Kickback: the leg snapped out past where the hip
+    /// stops, the pelvis rolling over into a lower-back arch to get it
+    /// higher. The mid-spine sinks 0.12 torso lengths (~6 cm) toward the pad
+    /// and the chest 0.05, and the right leg swings 36° further up about the
+    /// hip: at the top (2.0 s) the thigh ~10° above level instead of ~26°
+    /// below it, the ankle ~59 cm higher. Bones kept.
+    private static let female1109InclineLegFlung = FaultPose(
+        chains: [spine, ["thigh_L", "pelvis", "thigh_R"], leg("R")],
+        moves: [.shift(["spine"], forward: 0.12), .shift(["chest"], forward: 0.05),
+                .turn(pivot: "thigh_R", points: ["shin_R", "foot_R", "foot_R.tip"], axis: .lateral, degrees: -36)],
+        strength: female1109InclineKickTop
+    )
+
+    /// Incline Bench Cable Kickback: the working hip rolling up and over off
+    /// the pad. The hips and the right leg turn 22° about the trunk's long
+    /// axis (the right hip ~3.5 cm up off the pad, the left one into it),
+    /// then the leg swings 22° out about the hip: at the top (2.0 s) the
+    /// ankle ~19 cm out to the right. Bones kept.
+    private static let female1109InclineHipRolled = FaultPose(
+        chains: [["thigh_L", "pelvis", "thigh_R"], leg("R")],
+        moves: [.turn(pivot: "pelvis", points: ["thigh_L", "thigh_R", "shin_R", "foot_R", "foot_R.tip"], axis: .up, degrees: 22),
+                .turn(pivot: "thigh_R", points: ["shin_R", "foot_R", "foot_R.tip"], axis: .forward, degrees: 22)],
+        strength: female1109InclineKickTop
+    )
+
+    /// Incline Bench Cable Kickback: the chest pushed up off the pad to swing
+    /// the leg higher. The chest, head and shoulders turn 24° up about the
+    /// mid-spine: at the top (2.0 s) the head ~21 cm and the shoulders ~14
+    /// cm up off their place on the pad. Drawn without the arms: the right
+    /// one is near straight on the machine (166°), so re-seated under
+    /// shoulders lifted that far its bones would draw long.
+    private static let female1109InclineChestUp = FaultPose(
+        chains: [spine, shoulders],
+        moves: [.turn(pivot: "spine", points: ["chest", "neck", "head", "upper_arm_*"], axis: .lateral, degrees: 24)],
+        strength: female1109InclineKickTop
+    )
+
+    /// Incline Bench Cable Kickback: the resting (left) leg pushing as the
+    /// working one drives back, the hips shifting up the pad. The hips and
+    /// the whole left leg slide 0.07 torso lengths (~3.5 cm) up the pad, then
+    /// the left foot turns 30° down about the knee (117° -> ~147°): at the
+    /// top (2.0 s) the left ankle ~23 cm lower. Bones kept.
+    private static let female1109InclineRestingLegPushed = FaultPose(
+        chains: [["thigh_R", "pelvis", "thigh_L"], leg("L")],
+        moves: [.shift(["pelvis", "thigh_*", "shin_L", "foot_L", "foot_L.tip"], up: 0.07),
+                .turn(pivot: "shin_L", points: ["foot_L", "foot_L.tip"], axis: .lateral, degrees: 30)],
+        strength: female1109InclineKickTop
+    )
+
+// MARK: TABLE
+        // MARK: Model-only lifts, female (2026-11-09)
+        // The female rig (torso, neck to pelvis, 0.507 m; shifts in torso
+        // lengths). Sized with a Python port of FaultGhost.solve on the rigs
+        // at each fault's still and re-measured over the whole clip (and, for
+        // the hack squat, on all five stance models): bone lengths kept
+        // except where noted, no knee or elbow bent backward; each view
+        // checked on Blender renders of the model with the ghost drawn over
+        // it. Framings: Vertical Hack Squat -1.0 (a front three-quarter from
+        // the lifter's right, 33° off face-on; that rig faces +x), Standing
+        // Hinge Kickback -1.0 (front-left three-quarter, 33° off side-on;
+        // that rig faces +z), Incline Bench Cable Kickback -1.3 (side-on
+        // from the lifter's right, ~15° behind; that rig faces -z).
+        "Vertical Hack Squat": [
+            // The trunk folding 25° forward out of the carriage at the
+            // bottom, the shoulders ~19 cm forward of the pads. Turned 0.6
+            // toward the lifter's right side (a total of -0.4, 23° off
+            // side-on), so the fold runs across the screen instead of at the
+            // camera.
+            "pad": female1109TrunkFolded(25).seen(0.6),
+            // "grip" has no ghost: hauling on the handles is a matter of
+            // force, not position (the hands stay on the handles either way).
+            // "depth" has no ghost: dropping fast and bouncing out of the
+            // bottom is a matter of speed, not position.
+            // The knees caving in ~10 cm each at the bottom, the bones and
+            // knee angle kept; as framed, where the knees' side-to-side line
+            // is only 33° off the screen's.
+            "knees": thruster500KneesIn(0.2),
+            // The toes turned 40° out, the heels in place. Turned 0.3 toward
+            // face-on (a total of -1.3; face-on the machine's front column
+            // stands between the feet), so both feet splay.
+            "feet": female1109ToesOut(40).seen(-0.3)
+        ],
+        "Standing Hinge Kickback": [
+            // The leg swung 25° higher at the top, the thigh ~17° above level,
+            // the lower back sagging ~8 cm. Turned 0.57 toward the lifter's
+            // left (a total of -1.57, side-on).
+            "kick": female1109HingeKickArched.seen(-0.57),
+            // The heel curling toward the glutes at the top instead of the
+            // leg going back: the knee 170° -> 90°, the thigh 25° lower;
+            // side-on.
+            "knee": female1109HingeHeelCurled.seen(-0.57),
+            // The hip rolling up and open, the ankle ~22 cm out to the side.
+            // Turned 2.14 round to the lifter's back (a total of -3.14),
+            // where the sideways drift shows.
+            "hips": female1109HingeHipOpened.seen(-2.14),
+            // The trunk dipping with each kick, about level at the top, the
+            // hands staying on the upright; side-on.
+            "torso": female1109HingeTrunkDropped.seen(-0.57),
+            // Up on the standing toe with that knee locked at the top: the
+            // heel ~9 cm up, the knee 160° -> 180°; side-on.
+            "stance": female1109HingeUpOnToe.seen(-0.57)
+        ],
+        "Incline Bench Cable Kickback": [
+            // "cuff" has no ghost: where the cuff is strapped is the
+            // attachment's setting, not a body position.
+            // The leg flung 36° higher at the top, the thigh ~10° above level
+            // instead of ~26° below, the lower back arching ~6 cm toward the
+            // pad; as framed (side-on from the lifter's right).
+            "finish": female1109InclineLegFlung,
+            // The working hip rolling up off the pad, the ankle ~19 cm out to
+            // the side. Turned 1.3 round to the lifter's back (a total of 0),
+            // where the sideways drift shows.
+            "hips": female1109InclineHipRolled.seen(1.3),
+            // The chest pushed 24° up off the pad at the top, the head ~21 cm
+            // up; as framed.
+            "trunk": female1109InclineChestUp,
+            // The resting leg pushing at the top: its knee 117° -> ~147°, the
+            // foot ~23 cm lower, the hips ~3.5 cm up the pad. Turned 2.87
+            // round to the lifter's left (a total of 1.57, side-on from the
+            // left), where the resting leg is nearest the camera; from the
+            // framing it lies behind the working leg at the top.
+            "support": female1109InclineRestingLegPushed.seen(2.87)
+        ],

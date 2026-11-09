@@ -388,3 +388,15 @@ and did not change. Mistake-view pills on a face or fist, noted for later (outsi
 trainer-card check): Horizontal Leg Press Calf Raise "seat", Plank
 Shoulder Tap "tempo", Barbell Seated Calf Raise "tempo", Oblique Cable
 Crunch "rope", Cable Side Bend "plane" and "arm".
+
+Model-only lifts' ghosts (started 2026-11-09, unfinished): the 35 exercises
+that got coaching on 2026-10-29..31 (and the Burpee) still have no ghosts, so
+their mistake view shows the red ring. `check_faults_1109.py` compile-checks
+`faults_1109_<family>.swift.txt` files in the lab mirror (`--only <family>`)
+and `--integrate` writes them between the empty "Model-only lifts
+(2026-11-09)" markers in `FaultPoses.swift`. Done so far, not integrated: the
+female family (`faults_1109_female.swift.txt`, moments and notes; 12 ghosts,
+grip/depth/cuff ring-only) and a partial snatch file. The rest waits for the
+next round, family by family, then the usual shoot (`Tools/lab/shoot_ex.sh`)
+and review.
+
