@@ -33,8 +33,8 @@ APP_STORE = 'https://apps.apple.com/app/musq/id6816021196'
 APP_ID = '6816021196'
 MODEL_VIEWER = 'https://cdn.jsdelivr.net/npm/@google/model-viewer@4.1.0/dist/model-viewer.min.js'
 PUBLISHED = '2026-10-22'
-MODIFIED = '2026-10-30'
-GROUPS = {'chest': 'Chest', 'legs': 'Legs', 'back': 'Back'}
+MODIFIED = '2026-11-13'
+GROUPS = {'chest': 'Chest', 'legs': 'Legs', 'back': 'Back', 'shoulders': 'Shoulders', 'arms': 'Arms', 'core': 'Abs'}
 VERSION = '4'
 # Also pasted into the hand-written support/, privacy.html and terms.html.
 ICON_LINKS = ['<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">',
@@ -510,7 +510,7 @@ def library_page(sections, app_count):
     path = LIBRARY
     title = f'Gym Exercise List by Muscle Group: {app_count} Exercises | MUSQ'
     desc = (f'All {app_count} exercises in the MUSQ app by muscle and equipment: chest, back, shoulders, arms, '
-            'abs and legs, each on a 3D lifter. Free 3D guides for 20 lifts.')
+            'abs and legs, each on a 3D lifter. Free 3D guides for ' + str(sum(1 for items in sections.values() for it in items if it['slug'])) + ' lifts.')
     jsonld = [
         {'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'MUSQ exercise library',
          'description': desc, 'url': ORIGIN + path, 'publisher': {'@type': 'Organization', 'name': 'MUSQ'}},
@@ -567,8 +567,8 @@ def library_page(sections, app_count):
 def hub_page(rows, app_count, sections):
     path = HUB
     feat = rows[0]
-    title = '3D Exercise Guide: Proper Form for Chest, Leg and Back Lifts | MUSQ'
-    desc = ('Free 3D form guides for 20 key chest, leg and back exercises: watch each lift from any angle, '
+    title = '3D Exercise Guide: Proper Form for Every Muscle Group | MUSQ'
+    desc = (f'Free 3D form guides for {len(rows)} key gym exercises for chest, back, legs, shoulders, arms and abs: watch each lift from any angle, '
             'see the muscles it works and avoid the common mistakes. From MUSQ, '
             + ('free on iPhone.' if APP_STORE else 'coming soon to iPhone.'))
     jsonld = [
@@ -607,7 +607,7 @@ def hub_page(rows, app_count, sections):
     <div>
       <p class="eyebrow"><span class="dot">●</span> MUSQ · 3D exercise guide</p>
       <h1 style="margin-top:14px">Learn every lift <em>in 3D.</em></h1>
-      <p class="lead">Turn the lifter, slow the rep down and see exactly which muscles do the work. Free 3D form guides for {len(rows)} key chest, leg and back exercises, from the MUSQ app.</p>
+      <p class="lead">Turn the lifter, slow the rep down and see exactly which muscles do the work. Free 3D form guides for {len(rows)} key exercises for chest, back, legs, shoulders, arms and abs, from the MUSQ app.</p>
       {hero_cta} <a class="btn ghost" href="#chest">Browse exercises</a>
       <div class="stats"><a href="{LIBRARY}" style="text-decoration:none"><strong>{app_count}</strong><span>exercises in the app →</span></a><div><strong>3D</strong><span>every rep, any angle</span></div><div><strong>X-ray</strong><span>set-up demos</span></div></div>
     </div>

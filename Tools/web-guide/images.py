@@ -15,7 +15,7 @@ SITE = Path(sys.argv[sys.argv.index('--site') + 1]) if '--site' in sys.argv else
 SHOTS = HERE / 'capture/shots'
 OUT = SITE / 'exercises'
 WORD = json.loads((HERE / 'wordmark.json').read_text())
-GROUPS = {'chest': 'CHEST', 'legs': 'LEGS', 'back': 'BACK'}
+GROUPS = {'chest': 'CHEST', 'legs': 'LEGS', 'back': 'BACK', 'shoulders': 'SHOULDERS', 'arms': 'ARMS', 'core': 'ABS'}
 
 
 def font(bold, size):
@@ -147,7 +147,7 @@ def main():
     mark = wordmark(150)
     img.paste(mark, (44, 50), mark)
     d.text((42, 110), '3D Exercise Guide', font=font(True, 72), fill=(245, 246, 247))
-    d.text((44, 196), 'Proper form for 20 chest, leg and back lifts, in 3D', font=font(False, 26), fill=(201, 205, 210))
+    d.text((44, 196), 'Proper form for 30 key gym lifts, in 3D', font=font(False, 26), fill=(201, 205, 210))
     img.save(OUT / 'assets/og-guide.jpg', quality=86, optimize=True, progressive=True)
     print('pictures og-guide')
 

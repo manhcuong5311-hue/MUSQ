@@ -18,3 +18,13 @@ lat-pulldown	Lat Pulldown	Back/LatPulldown	AnatomyBodyV2	0.5
 barbell-bent-over-row	Barbell Bent-Over Row	Back/BarbellBentOverRow	AnatomyBodyV2	-2
 dumbbell-row	Dumbbell Row	Back/DumbbellRow	AnatomyBodyV2	-2
 seated-cable-row	Seated Cable Row	Back/SeatedCableRow	AnatomyBodyV2	-2.2
+overhead-press	Barbell Overhead Press	Shoulder/BarbellOverheadPress	AnatomyBodyV2	-0.5
+lateral-raise	Dumbbell Lateral Raise	Shoulder/DumbbellLateralRaise	AnatomyBodyV2	-0.25
+face-pull	Face Pull	Shoulder/FacePull	AnatomyBodyV2	-2.7
+dumbbell-curl	Dumbbell Curl	Biceps/DumbbellCurl	AnatomyBodyV2	-0.4
+hammer-curl	Alternating Hammer Curl	Biceps/AlternatingHammerCurl	AnatomyBodyV2	-0.4
+rope-pushdown	Rope Pushdown	Triceps/RopePushdown	AnatomyBodyV2	-0.6
+skull-crusher	Skull Crusher	Triceps/SkullCrusher	AnatomyBodyV2	-1.0
+overhead-triceps-extension	Dumbbell Overhead Triceps Extension	Triceps/DumbbellOverheadTricepsExtension	AnatomyBodyV2	-0.6
+plank	Plank	Abs/Plank	AnatomyBodyV2	-1.35
+hanging-leg-raise	Hanging Leg Raise	Abs/HangingLegRaise	AnatomyBodyV2	-1.3

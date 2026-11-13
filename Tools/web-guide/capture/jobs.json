@@ -98,5 +98,55 @@
   "slug": "seated-cable-row",
   "orbit": "126deg 75deg auto",
   "pose": 1.33
+ },
+ {
+  "slug": "overhead-press",
+  "orbit": "29deg 75deg auto",
+  "pose": 1.5
+ },
+ {
+  "slug": "lateral-raise",
+  "orbit": "14deg 75deg auto",
+  "pose": 1.5
+ },
+ {
+  "slug": "face-pull",
+  "orbit": "155deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "dumbbell-curl",
+  "orbit": "23deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "hammer-curl",
+  "orbit": "23deg 75deg auto",
+  "pose": 1.67
+ },
+ {
+  "slug": "rope-pushdown",
+  "orbit": "34deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "skull-crusher",
+  "orbit": "57deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "overhead-triceps-extension",
+  "orbit": "34deg 75deg auto",
+  "pose": 1.33
+ },
+ {
+  "slug": "plank",
+  "orbit": "77deg 75deg auto",
+  "pose": 0.0
+ },
+ {
+  "slug": "hanging-leg-raise",
+  "orbit": "74deg 75deg auto",
+  "pose": 1.33
  }
 ]
