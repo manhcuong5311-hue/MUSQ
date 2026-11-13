@@ -62,7 +62,7 @@
  {
   "slug": "walking-lunge",
   "orbit": "0deg 75deg auto",
-  "pose": 7.83
+  "pose": 2.04
  },
  {
   "slug": "leg-extension",
@@ -82,12 +82,12 @@
  {
   "slug": "lat-pulldown",
   "orbit": "-29deg 75deg auto",
-  "pose": 1.33
+  "pose": 1.5
  },
  {
   "slug": "barbell-bent-over-row",
   "orbit": "115deg 75deg auto",
-  "pose": 1.33
+  "pose": 1.0
  },
  {
   "slug": "dumbbell-row",

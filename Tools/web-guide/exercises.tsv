@@ -4,17 +4,17 @@ dumbbell-bench-press	Dumbbell Bench Press	Chest/DumbbellBenchPress	AnatomyBodyV2
 push-up	Push-Up	Chest/pushup	AnatomyBodyV2	-1.2
 cable-fly	Cable Fly	Chest/CableFly	AnatomyBodyV2	0
 back-squat	Back Squat	Legs/BackSquat	AnatomyBodyV2	-1.0
-deadlift	Deadlift	Back/ConventionalDeadlift	AnatomyBody	-2
+deadlift	Deadlift	Back/ConventionalDeadlift	AnatomyBodyV2	-2
 romanian-deadlift	Romanian Deadlift	Legs/RomanianDeadlift	AnatomyBodyV2	0
-leg-press	Leg Press	Legs/LegPress	AnatomyBody	-2.0
+leg-press	Leg Press	Legs/LegPress	AnatomyBodyV2	-2.0
 barbell-hip-thrust	Barbell Hip Thrust	Legs/BarbellHipThrust	AnatomyBodyV2	-0.7
 bulgarian-split-squat	Bulgarian Split Squat	Legs/BulgarianSplitSquatUpright	AnatomyBodyV2	0
 goblet-squat	Goblet Squat	Legs/GobletSquat	AnatomyBodyV2	0
-walking-lunge	Walking Lunge	Legs/WalkingLunge	AnatomyBody	0
+walking-lunge	Walking Lunge	Legs/WalkingLunge	AnatomyBodyV2	0
 leg-extension	Leg Extension	Legs/LegExtension	AnatomyBodyV2	-0.5
 lying-leg-curl	Lying Leg Curl	Legs/LyingLegCurl	AnatomyBodyV2	-1.35
-pull-up	Pull-Up	Back/PullUp	AnatomyBody	-2.6
-lat-pulldown	Lat Pulldown	Back/LatPulldown	AnatomyBody	0.5
-barbell-bent-over-row	Barbell Bent-Over Row	Back/BarbellBentOverRow	AnatomyBody	-2
-dumbbell-row	Dumbbell Row	Back/DumbbellRow	AnatomyBody	-2
-seated-cable-row	Seated Cable Row	Back/SeatedCableRow	AnatomyBody	-2.2
+pull-up	Pull-Up	Back/PullUp	AnatomyBodyV2	-2.6
+lat-pulldown	Lat Pulldown	Back/LatPulldown	AnatomyBodyV2	0.5
+barbell-bent-over-row	Barbell Bent-Over Row	Back/BarbellBentOverRow	AnatomyBodyV2	-2
+dumbbell-row	Dumbbell Row	Back/DumbbellRow	AnatomyBodyV2	-2
+seated-cable-row	Seated Cable Row	Back/SeatedCableRow	AnatomyBodyV2	-2.2

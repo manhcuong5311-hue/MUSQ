@@ -53,7 +53,7 @@ SECTIONS = [
     ('forearms', 'Forearm exercises', 'arms', {'FOREARM FLEXORS', 'FOREARM EXTENSORS'}),
     ('abs', 'Ab exercises', 'core', {'RECTUS ABDOMINIS', 'SHOULDERS + CORE', 'GRIP + CORE', 'ERECTOR SPINAE', 'ADDUCTORS'}),
     ('obliques', 'Oblique exercises', 'core', {'OBLIQUES'}),
-    ('quads', 'Quad exercises', 'legs', {'QUADRICEPS', 'QUADS + GLUTES', 'GLUTES + QUADS', 'QUADS + SHOULDERS'}),
+    ('quads', 'Quad exercises', 'legs', {'QUADRICEPS', 'QUADS + GLUTES', 'GLUTES + QUADS', 'QUADS + SHOULDERS', 'QUADS + CHEST'}),
     ('glutes', 'Glute and hip exercises', 'legs', {'GLUTEUS MAXIMUS', 'GLUTEUS MEDIUS', 'ADDUCTORS'}),
     ('hamstrings', 'Hamstring exercises', 'legs', {'HAMSTRINGS', 'GLUTES + HAMSTRINGS', 'POSTERIOR CHAIN'}),
     ('calves', 'Calf and shin exercises', 'legs', {'GASTROCNEMIUS', 'SOLEUS', 'TIBIALIS ANTERIOR'}),
@@ -252,13 +252,32 @@ def header():
            else '<a class="btn small" href="#waitlist">Join waitlist</a>')
     return f'''<header class="site-head"><div class="wrap">
   <a class="brand" href="{HUB}" aria-label="MUSQ exercise guide home"><img src="{GUIDE}assets/icon-64.png" alt="" width="30" height="30"><span class="wordmark" aria-hidden="true"></span></a>
-  <nav class="site-nav" aria-label="Main"><a class="hide-sm" href="{HUB}">3D guides</a><a href="{LIBRARY}">All exercises</a><a class="hide-sm" href="{HUB}#demos">App demos</a>{cta}</nav>
+  <nav class="site-nav" aria-label="Main"><a class="hide-sm" href="{HUB}">3D guides</a><a class="hide-xs" href="{LIBRARY}">All exercises</a><a class="hide-sm" href="{HUB}#demos">App demos</a><span class="social head-social">{social_links()}</span>{cta}</nav>
 </div></header>'''
+
+
+# MUSQ's social accounts: footer icons, and sameAs in the home page's Organization data.
+SOCIAL = [
+    ('YouTube', 'https://www.youtube.com/@musq-3dgymapp',
+     '<path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z"/>'),
+    ('TikTok', 'https://www.tiktok.com/@musclexs',
+     '<path d="M16.6 2h-3.4v13.4c0 1.6-1.3 2.8-2.8 2.8a2.8 2.8 0 0 1-.8-5.5V9.2a6.3 6.3 0 1 0 7 6.2V8.6a8 8 0 0 0 4.4 1.4V6.6a4.5 4.5 0 0 1-4.4-4.6z"/>'),
+    ('Instagram', 'https://www.instagram.com/musq3dgymapp/',
+     '<path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm4.9-8.9a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zM21.9 8c-.1-1.6-.4-3-1.6-4.2C19.1 2.6 17.6 2.2 16 2.1 14.4 2 9.6 2 8 2.1c-1.6.1-3 .4-4.2 1.6C2.6 4.9 2.2 6.4 2.1 8 2 9.6 2 14.4 2.1 16c.1 1.6.4 3 1.6 4.2 1.2 1.2 2.6 1.6 4.2 1.6 1.6.1 6.4.1 8 0 1.6-.1 3-.4 4.2-1.6 1.2-1.2 1.6-2.6 1.6-4.2.1-1.6.1-6.4 0-8zm-2.1 9.7a3.3 3.3 0 0 1-1.8 1.8c-1.3.5-4.3.4-5.7.4s-4.4.1-5.7-.4a3.3 3.3 0 0 1-1.8-1.8c-.5-1.3-.4-4.3-.4-5.7s-.1-4.4.4-5.7A3.3 3.3 0 0 1 6.3 4.5c1.3-.5 4.3-.4 5.7-.4s4.4-.1 5.7.4a3.3 3.3 0 0 1 1.8 1.8c.5 1.3.4 4.3.4 5.7s.1 4.4-.4 5.7z"/>'),
+    ('Facebook', 'https://www.facebook.com/share/1JfEB2CoaX/',
+     '<path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/>'),
+]
+
+
+def social_links():
+    return ''.join(f'<a class="s-{name.lower()}" href="{e(url)}" target="_blank" rel="noopener me" aria-label="MUSQ on {name}" title="{name}">'
+                   f'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{svg}</svg></a>'
+                   for name, url, svg in SOCIAL)
 
 
 def footer():
     return f'''<footer class="site-foot"><div class="wrap">
-  <span class="wordmark" aria-hidden="true"></span>
+  <div class="foot-top"><span class="wordmark" aria-hidden="true"></span><div class="social" aria-label="Follow MUSQ"><span>Follow MUSQ</span>{social_links()}</div></div>
   <nav aria-label="Footer"><a href="{HUB}">3D exercise guide</a><a href="{LIBRARY}">All exercises</a><a href="/support/">Support</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav>
   <p>© 2026 MUSQ by Cuong Sam Manh. 3D models, animations and form content are the property of MUSQ and may not be reused or redistributed.</p>
 </div></footer>
@@ -558,6 +577,8 @@ def hub_page(rows, app_count, sections):
          'mainEntity': {'@type': 'ItemList', 'itemListElement': [
              {'@type': 'ListItem', 'position': i + 1, 'url': ORIGIN + GUIDE + r['slug'] + '/', 'name': r['name']}
              for i, r in enumerate(rows)]}},
+        {'@context': 'https://schema.org', '@type': 'Organization', 'name': 'MUSQ', 'url': ORIGIN + HUB,
+         'logo': ORIGIN + GUIDE + 'assets/icon-512.png', 'sameAs': [url for _, url, _ in SOCIAL] + [APP_STORE]},
     ] + [{'@context': 'https://schema.org', '@type': 'VideoObject', 'name': f'MUSQ app: {title}',
           'description': f'Screen recording of the MUSQ app: {shows}.',
           'thumbnailUrl': [ORIGIN + GUIDE + f'assets/{stem}.webp'],
