@@ -1,0 +1,13 @@
+{
+ "Standing Hinge Kickback": {
+  "Drive the foot back": {"x": 0.61, "y": 0.71, "side": "trailing"}
+ },
+ "Incline Bench Cable Kickback": {
+  "Back until the hip stops": {"x": 0.979, "y": 0.8, "side": "leading"},
+  "Other knee stays put": {"x": 0.021, "y": 0.32, "side": "trailing", "joint": "shin_L"}
+ },
+ "Ab Wheel Rollout": {
+  "Ribs down, back rounded": {"x": 0.513, "y": 0.174, "side": "trailing"},
+  "Hips don't sag": {"x": 0.979, "y": 0.284, "side": "leading"}
+ }
+}

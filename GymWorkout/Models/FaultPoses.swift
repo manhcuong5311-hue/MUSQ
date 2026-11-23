@@ -8314,7 +8314,10 @@ enum FaultPoses {
             // Sized on the 2026-10-10 female model, stilled at full reach
             // (2.21 s). Her hips stay ~6 cm above the knee-to-shoulder line;
             // this drops them ~7 cm below it, ~17° past straight. Fades in with
-            // the reach, none at the start.
+            // the reach, none at the start. On the male model (2026-11-21) the
+            // hand-to-knee reach peaks at 2.41 torso lengths (2.71 on the
+            // female), still past the 2.3 that gives full strength, from
+            // about 1.4 s to 2.6 s.
             "hips": FaultPose(chains: [spine, legs, hips],
                               moves: [.shift(["pelvis", "thigh_*"], forward: 0.3), .shift(["spine"], forward: 0.2)],
                               strength: .between("hand_L", "shin_L", from: 1.9, to: 2.3)),
@@ -12840,11 +12843,17 @@ enum FaultPoses {
         // END 401-500 (2026-10-04)
         // BEGIN Desktop 1-100 (2026-10-10)
         // MARK: Desktop 1-100 female (2026-10-10)
-        // The female rigs (torso, neck to pelvis, 0.50 m; shifts in torso
-        // lengths). Sizes measured with a Python port of FaultGhost.solve on
+        // First sized on the female rigs (torso, neck to pelvis, 0.50 m;
+        // shifts in torso lengths) with a Python port of FaultGhost.solve on
         // the Standard models at each fault's still (femwork/ghost.py in
         // the session scratchpad): bone lengths kept (the locked knees ~3%
         // short, as the shared straighten draws them), no knee bent backward.
+        // Since 2026-11-21 the models are male (torso 0.59 m, legs ~12 cm
+        // shorter, the same joint angles and timing), re-checked with the same
+        // port on all five male stances: shifts grow with the torso, so the
+        // hack depth went 0.3 -> 0.25 (the same ~15 cm as on the female), the
+        // knees 0.2 -> 0.17 (at 0.2 the Narrow ghosts' knees met), and the
+        // pendulum depth was redrawn as the male's own 1.0 s arc pose.
         // The stance sets' ghosts read the live joints, so they follow
         // whichever stance the picker shows. Framings: Hack Squat (Stances)
         // 0.6 (the hack rig faces -x, so 0 is side-on from the lifter's left
@@ -12860,12 +12869,13 @@ enum FaultPoses {
             // bottom, the upper back left on it; side-on.
             "pad": machineHipsOffPad.seen(-0.6),
             // The knees caving in ~10 cm each at the bottom, the bones and
-            // knee angle kept. Turned 0.9 toward face-on (a total of 1.5).
-            "knees": thruster500KneesIn(0.2).seen(0.9),
+            // knee angle kept (a 5.8 cm gap left on Narrow). Turned 0.9
+            // toward face-on (a total of 1.5).
+            "knees": thruster500KneesIn(0.17).seen(0.9),
             // Stopping high: the hips and trunk ~15 cm higher up the sled's
-            // nearly vertical path (2 cm forward), the knees 73° -> ~91°;
-            // side-on.
-            "depth": shallow(0.3, ahead: 0.04).seen(-0.6),
+            // nearly vertical path (2 cm forward), the knees 73° -> ~92°
+            // (90-97° across the stances); side-on.
+            "depth": shallow(0.25, ahead: 0.04).seen(-0.6),
             // Snapping the knees straight at the top: 150° -> ~174° at the
             // top hold (strength 0.67), each knee ~10 cm back; side-on.
             "top": kneesSnapped.seen(-0.6)
@@ -12877,13 +12887,14 @@ enum FaultPoses {
             // The hips and lower back peeling ~6 cm off the pad at the
             // bottom; side-on as framed.
             "pad": machineHipsOffPad,
-            // The knees caving in ~10 cm each at the bottom. Turned 1.2
-            // toward face-on.
-            "knees": thruster500KneesIn(0.2).seen(1.2),
-            // Stopping partway down the arc: the hips ~14 cm higher and
-            // ~15 cm further from the plate, near where the arc passes at
-            // 1.0 s on the way down; the knees 67° -> ~100°.
-            "depth": shallow(0.27, ahead: -0.3)
+            // The knees caving in ~10 cm each at the bottom (a 5.6 cm gap
+            // left on Narrow). Turned 1.2 toward face-on.
+            "knees": thruster500KneesIn(0.17).seen(1.2),
+            // Stopping partway down the arc: the hips ~17 cm up and back
+            // along it, where the male's arc passes at 1.0 s on the way down;
+            // the knees 68° -> ~99° (96-126° across the stances). The female
+            // values (0.27, ahead: -0.3) opened the male's knees to 110-152°.
+            "depth": shallow(0.18, ahead: -0.23)
             // "tempo" has no ghost: bouncing out of the bottom is a matter of
             // speed, not position.
         ],

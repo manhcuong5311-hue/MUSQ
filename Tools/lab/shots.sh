@@ -1,6 +1,7 @@
 #!/bin/zsh
 # Viewport stills from the installed harness app (holds the lab lock).
 #   shots.sh view  <out dir> <still> "<Exercise>[|yaw,zoom,x,y,z]" ...   one 382x655 crop per exercise
+#     (HARNESS_RESOURCE=<model> for one stance, HARNESS_HEIGHT=<pt> for a shorter viewport)
 #   shots.sh stills <out dir> "<Exercise>" ...                           crops at 0/1/2/3/5 s as <slug>_t<T>.png
 #   shots.sh photo <out dir> "<Exercise>" ...                            400px thumbnails as lib-<slug>.png
 #     (framing and pose time from Tools/thumbnails/thumbs.json and posetimes.json)
@@ -28,6 +29,7 @@ view)
     tag=$(slug "$n")$([[ -n $fr ]] && echo "_${fr//,/_}")
     envs=(SIMCTL_CHILD_HARNESS_VIEW="$n" SIMCTL_CHILD_HARNESS_STILL="$still")
     [[ -n $HARNESS_RESOURCE ]] && envs+=(SIMCTL_CHILD_HARNESS_RESOURCE="$HARNESS_RESOURCE")
+    [[ -n $HARNESS_HEIGHT ]] && envs+=(SIMCTL_CHILD_HARNESS_HEIGHT="$HARNESS_HEIGHT")
     [[ -n $fr ]] && envs+=(SIMCTL_CHILD_HARNESS_FRAMING="$fr")
     shoot $envs "$out/$tag.png"; crop "$out/$tag.png"
   done;;

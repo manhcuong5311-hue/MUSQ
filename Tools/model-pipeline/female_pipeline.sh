@@ -3,6 +3,10 @@
 # texture paths to bare names (retex.py), pad, rename the hack-squat rig
 # (rename_rig.py), slim against the female body each set was built from.
 #   female_pipeline.sh            all twelve
+# RETIRED 2026-11-21: these lifts are male models now (JOBS "nam-1121" in
+# convert_all.py); running this would overwrite AbWheelRollout and
+# CableStepDown with the female conversions and bring back unused Female* files.
+echo "female_pipeline.sh is retired (2026-11-21): use convert_all.py nam-1121/" >&2; exit 1
 set -e
 PY=/Applications/Blender.app/Contents/Resources/5.1/python/bin/python3.13; HERE=${0:A:h}
 M=/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Resources/Models

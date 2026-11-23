@@ -2574,7 +2574,7 @@ SETUP = {
     ],
     "Vertical Hack Squat": [
         "Load the machine and set the shoulder pads so you can stand under them with your knees almost straight.",
-        "Step onto the plate and set both feet flat and centred, about hip-width apart with the toes forward.",
+        "Step onto the plate and set both feet flat toward its front, about hip-width apart with the toes forward.",
         "Settle the pads across the top of your shoulders, take the handles beside them and stand the carriage up off its rests.",
         "Release the stops, brace your trunk, and take the first rep from a standing start rather than dropping into it.",
     ],

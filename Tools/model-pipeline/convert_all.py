@@ -665,6 +665,8 @@ JOBS = {
     "1-100-1010/068_smith_machine_squat": "Legs/SmithMachineSquat",
     "1-100-1010/071_romanian_deadlift": "Legs/RomanianDeadlift",
     "1-100-1010/072_dumbbell_romanian_deadlift": "Legs/DumbbellRomanianDeadlift",
+    # SUPERSEDED 2026-11-21 by the male "nam-1121" jobs below (same resources for
+    # the ab wheel and the cable step-down): never re-run "female-1010/".
     # The folder's female-model exports (2026-10-10; a 235-joint rig with its
     # own textures, slimmed against Shared/AnatomyBodyFemale.usdc): the
     # pendulum and hack squat in five stances each (pend_04, hack_01 and
@@ -898,6 +900,7 @@ JOBS = {
     "1-100-1017/Plank": "Abs/Plank",
     "1-100-1017/Push-Up": "Chest/pushup",
     "1-100-1017/Squat": "Legs/Squat",
+    # (The next line made the female ab wheel; superseded by "nam-1121/ab_wheel_rollout".)
     "1-100-1017/097_Ab_Wheel_Rollout": "Abs/AbWheelRollout",
     # The same folder's new ones: stance variants of the Belt Squat, 45-degree
     # Leg Press and Smith Machine Squat, 055B and 100 Pallof Press.
@@ -1108,6 +1111,8 @@ JOBS = {
     "191-280-1018/215B_cable_rope_front_raise": "Shoulder/CableFrontRaiseRope",
     "191-280-1018/259_lying_cable_curl": "Biceps/LyingCableCurl",
     "191-280-1018/261_cable_reverse_curl": "Biceps/CableReverseCurl",
+    # SUPERSEDED 2026-11-21 by the male "nam-1121" jobs below (same resources for
+    # the two kickbacks): never re-run "women-1018/".
     # Desktop "Women exsercise" folder (2026-10-18): the female model's
     # vertical hack squat in five stances (exported 2026-10-12 from
     # `Blender Model WOmen/Vertical Hack Squat`) and two glute kickbacks
@@ -1848,6 +1853,18 @@ JOBS = {
     "1-100-1109/469_farmer_carry_march":                              "Abs/FarmerCarryMarch",
     "1-100-1109/470_suitcase_carry_march":                            "Abs/SuitcaseCarryMarch",
     "1-100-1109/497_burpee":                                          "Legs/Burpee",
+    # Desktop "New" folder, 2026-11-21 (`_names.tsv`): male versions of the seven female gym lifts, built by
+    # retargeting on the male master (HIKSEMI `BLENDER/Nam_thay_Nu_20261114`, every folder 🟢), exported
+    # 11-20 17:16-18:15 and 11-21 10:25-11:25, each a minute or two after its blend's last save. They replace
+    # the female models (the owner's 2026-11-14 decision: gym lifts on the male model, the female model for
+    # stretches only), so the squat stances drop the "Female" prefix.
+    **{f"nam-1121/{m}_{s.lower()}": f"Legs/{r}{s}"
+       for m, r in (("hack", "HackSquat"), ("pend", "PendulumSquat"), ("vhs", "VerticalHackSquat"))
+       for s in ("Standard", "High", "Low", "Wide", "Narrow")},
+    "nam-1121/standing_hinge_kickback":                               "Legs/StandingHingeKickback",
+    "nam-1121/incline_bench_cable_kickback":                          "Legs/InclineBenchCableKickback",
+    "nam-1121/cable_knee_drive_kickback":                             "Legs/CableStepDown",
+    "nam-1121/ab_wheel_rollout":                                      "Abs/AbWheelRollout",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs

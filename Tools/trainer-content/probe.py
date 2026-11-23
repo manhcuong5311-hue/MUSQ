@@ -450,18 +450,20 @@ JOBS = {
  "Kettlebell Swing": ("Legs/KettlebellSwing", -1.3, 0.85, (0.013,0.051,-0.046)),
  "Sumo Kettlebell Deadlift": ("Legs/SumoKettlebellDeadlift", -0.5, 0.859, (0.01,0.052,-0.005)),
  "Kettlebell Deadlift": ("Legs/KettlebellDeadlift", -0.8, 0.848, (0.008,0.045,-0.008)),
- # The female model's lifts (2026-10-10); the stance sets probe their
- # standard stance, the Ab Wheel Rollout its female re-export.
- "Hack Squat (Stances)": ("Legs/FemaleHackSquatStandard", 0.6, 0.87, (0.048,-0.08,0.033)),
- "Pendulum Squat (Stances)": ("Legs/FemalePendulumSquatStandard", 0, 0.75, (-0.008,-0.122,0)),
- "Cable Knee-Drive Kickback": ("Legs/CableStepDown", -1.0, 0.773, (-0.046,0.012,0.072)),
- "Ab Wheel Rollout": ("Abs/AbWheelRollout", -1.35, 0.487, (0.018,0.151,-0.081)),
+ # The lifts first built on the female model (2026-10-10), male since
+ # 2026-11-21 (framings rescaled for the male rig's bind box so the picture
+ # stays the same); the stance sets probe their standard stance.
+ "Hack Squat (Stances)": ("Legs/HackSquatStandard", 0.6, 0.825, (0.048,-0.102,0.032)),
+ "Pendulum Squat (Stances)": ("Legs/PendulumSquatStandard", 0, 0.711, (-0.008,-0.141,-0.001)),
+ "Cable Knee-Drive Kickback": ("Legs/CableStepDown", -1.0, 0.733, (-0.046,-0.008,0.071)),
+ "Ab Wheel Rollout": ("Abs/AbWheelRollout", -1.35, 0.462, (0.018,0.138,-0.081)),
  # The 36 model-only exercises getting content (2026-10-29): the Olympic
  # lifts and carries of the 401-500 swap, the conditioning set, the cable
  # arms, glute machines and core work, and the three female lifts.
- "Vertical Hack Squat": ("Legs/FemaleVerticalHackSquatStandard", -1.0, 1.021, (0.066,-0.177,-0.103)),
- "Standing Hinge Kickback": ("Legs/StandingHingeKickback", -1.0, 0.556, (-0.042,0.049,0.066)),
- "Incline Bench Cable Kickback": ("Legs/InclineBenchCableKickback", -1.3, 0.518, (-0.023,0.044,0.081)),
+ # (The three lifts below were on the female model until 2026-11-21.)
+ "Vertical Hack Squat": ("Legs/VerticalHackSquatStandard", -1.0, 0.968, (0.066,-0.203,-0.104)),
+ "Standing Hinge Kickback": ("Legs/StandingHingeKickback", -1.0, 0.527, (-0.042,0.035,0.066)),
+ "Incline Bench Cable Kickback": ("Legs/InclineBenchCableKickback", -1.3, 0.491, (-0.023,0.031,0.081)),
  "Barbell Power Clean": ("Legs/BarbellPowerClean", -0.8, 0.639, (-0.006,0.023,0.006)),
  "Hang Clean": ("Legs/HangClean", -0.8, 0.629, (0.001,0.024,-0.001)),
  "Dumbbell Hang Clean": ("Legs/DumbbellHangClean", -0.8, 0.862, (0.018,0.032,-0.019)),

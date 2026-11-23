@@ -39,9 +39,13 @@ struct ContentView: View {
                              still: still, inner: .white, outer: .white, cornerRadius: 0) { EmptyView() }
                         .frame(width: 380, height: 380)
                 } else {
+                    // HARNESS_HEIGHT (2026-11-21): the viewport's height in
+                    // points, for the stance sets' shorter trainer card (581
+                    // with a stance note, about 617 without).
+                    let height = env["HARNESS_HEIGHT"].flatMap { Double($0) }.map { CGFloat($0) } ?? 655
                     Viewport(slot: "", model: resource, framing: framing, speed: m.speed,
                              still: still) { EmptyView() }
-                        .frame(width: 382, height: 655)
+                        .frame(width: 382, height: height)
                 }
             }
         } else if let name = env["HARNESS_FAULT"],

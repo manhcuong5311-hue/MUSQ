@@ -712,10 +712,10 @@
  },
  "Ab Wheel Rollout": {
   "yaw": -1.35,
-  "zoom": 0.582,
+  "zoom": 0.552,
   "off": [
    0.009,
-   0.212,
+   0.197,
    -0.041
   ]
  },
@@ -3700,29 +3700,29 @@
  },
  "Hack Squat (Stances)": {
   "yaw": 0.6,
-  "zoom": 0.882,
+  "zoom": 0.836,
   "off": [
    0.005,
-   0.104,
-   0.003
+   0.081,
+   0.002
   ]
  },
  "Pendulum Squat (Stances)": {
   "yaw": 0.0,
-  "zoom": 1.43,
+  "zoom": 1.356,
   "off": [
    0.029,
-   -0.059,
-   0.0
+   -0.096,
+   -0.001
   ]
  },
  "Cable Knee-Drive Kickback": {
   "yaw": -1.0,
-  "zoom": 0.761,
+  "zoom": 0.721,
   "off": [
    0.029,
-   -0.096,
-   -0.045
+   -0.116,
+   -0.046
   ]
  },
  "Concentration Curl": {
@@ -3907,29 +3907,29 @@
  },
  "Vertical Hack Squat": {
   "yaw": -1.0,
-  "zoom": 0.886,
+  "zoom": 0.84,
   "off": [
    0.004,
-   -0.023,
-   -0.006
+   -0.046,
+   -0.007
   ]
  },
  "Standing Hinge Kickback": {
   "yaw": -1.0,
-  "zoom": 0.711,
+  "zoom": 0.674,
   "off": [
    0.02,
-   -0.113,
-   -0.032
+   -0.131,
+   -0.033
   ]
  },
  "Incline Bench Cable Kickback": {
   "yaw": -1.3,
-  "zoom": 0.712,
+  "zoom": 0.675,
   "off": [
    -0.064,
-   -0.097,
-   0.232
+   -0.115,
+   0.231
   ]
  },
  "Barbell Standing Calf Raise": {

@@ -226,3 +226,37 @@ plate at lockout, Donkey Calf Raise's "Forearms rest" over the pad bracket.
 Inverted Row's High Bar stance shows the Low Bar's pills and is not
 projected. The machine restarted mid-round and wiped the scratchpad; the
 layout agents' notes came back from the workflow journal.
+
+Male models for the female lifts (2026-11-21): the seven lifts that moved to
+male models (Hack, Pendulum and Vertical Hack Squat stance sets, the three
+kickbacks, Ab Wheel Rollout; `lifts7` in the round). Their framings were
+rescaled for the male rig's bind box to keep the old picture, which also
+removed the old 11-17 pt projection offsets: `dots_check.py` now finds every
+lift within 2.4 pt of `proj_at`. Offline and on real shots (t=0 and each
+lift's still, `masks.py` with the occlusion stills), four checked clean and
+three did not; laid out one author and one adversarial verifier each, all
+confirmed (`moves_nam_1121.json`, five pills):
+- Standing Hinge Kickback: "Drive the foot back" crossed "Keep the knee
+  bent" and ran through its dot (at 14 samples on the male, 6 on the
+  female); moved to the lower right, under the kick.
+- Incline Bench Cable Kickback: "Back until the hip stops" and "Other knee
+  stays put" leaders crossed and ran through each other's knee dots, new on
+  the male (his support knee sits further along the seat); the first moved to
+  the right margin low, the second to the left margin with its dot on
+  `shin_L` (3.6 pt from `patella_L`, so the leader reaches the support knee
+  from its own side).
+- Ab Wheel Rollout: crossings already there on the female ("Pull back with
+  the abs" against "Ribs down, back rounded", and "Kneel on a pad" under
+  "Hips don't sag"); "Ribs down, back rounded" moved up to y 0.174 and "Hips
+  don't sag" to the right margin.
+- Vertical Hack Squat: clean, no move. The deeper male squat puts the left
+  forearm and a plate rim under "Hands just hold on" at the bottom (about a
+  fifth of the pill), the fist stays visible; no cleaner spot exists.
+Tool note from the verifiers: `masks.py`'s `card_trainer()` reads the card's
+top in a column inside its rounded corner, 16 px (5.3 pt) low; the trainer
+`ui` masks sit that much low (check_layout and preview_moves do not use them).
+Checked again in Vietnamese on real shots (`-AppleLanguages "(vi)"`): the
+Vertical Hack Squat's feet label first translated as "Chân phía trước,
+phẳng" (~165 pt) would have been clamped ~34 pt right onto the shoe; it is
+"Chân ra trước, phẳng" (~150 pt) now, clear of it. The five moved pills read
+cleanly in Vietnamese too.

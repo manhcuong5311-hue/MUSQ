@@ -292,3 +292,16 @@ pre-11-02 framing (yaw -1.35, zoom 0.656), since its mat is back and the
 (`posetime.py`: 2.5 s, the chest-to-floor bottom) and a framing
 (`thumbsolve.py`), which wait on the owner's pick (a high plank at 2.0 s
 reads better at tile size).
+
+Male models for the female lifts (2026-11-21): Hack Squat (Stances),
+Pendulum Squat (Stances), Vertical Hack Squat, Standing Hinge Kickback,
+Incline Bench Cable Kickback, Cable Knee-Drive Kickback and Ab Wheel Rollout
+moved to male models retargeted from the female ones (see the 2026-11-21
+section of `Tools/model-pipeline/README.md`). The timing is unchanged, so the
+pose times were kept. The viewport scales a model by its rig's bind box (1.79
+m male, 1.89 m female), so the seven square framings were rescaled to keep
+the old picture, as the owner picked for the trainer: zoom x 0.948 and the
+offset moved by the boxes' centres (y by -0.04859 x zoom / 1.89065). The seven
+tiles were re-shot with `Tools/lab/shots.sh photo`; the old ones are in
+`SourceExports/_app_before_nam1121/tiles/`. The shorts are plain navy over the
+lit glutes, as on the other navy-shorts models (the known `isNearBlack` case).

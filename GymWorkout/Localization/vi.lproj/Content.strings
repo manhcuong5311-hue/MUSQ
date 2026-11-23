@@ -151,11 +151,11 @@
 /* stancesByExercise · label */
 "Wide" = "Rộng";
 /* stancesByExercise · note */
-"Feet wider than the shoulders, toes out more; the model lights the inner quad brightest" = "Chân rộng hơn vai, mũi chân xoay ra ngoài nhiều hơn; mô hình tô sáng nhất phần trong cơ tứ đầu đùi";
-/* Hanging Knee Raise · muscle */
-"Hip Flexors" = "Nhóm cơ gấp hông";
+"Feet wider than the shoulders, toes out more; the model lights the inner thighs brightest" = "Chân rộng hơn vai, mũi chân xoay ra ngoài nhiều hơn; mô hình tô sáng nhất mặt trong đùi";
 /* Sumo Deadlift · muscle */
 "Adductors" = "Nhóm cơ khép đùi";
+/* Hanging Knee Raise · muscle */
+"Hip Flexors" = "Nhóm cơ gấp hông";
 /* stancesByExercise · label */
 "Narrow" = "Hẹp";
 /* stancesByExercise · note */
@@ -166,8 +166,6 @@
 "Feet 10 cm higher up the plate: hips sink deeper, bend more; the model lights the glutes" = "Chân đặt cao hơn 10 cm trên bàn đạp: hông hạ sâu hơn, gập nhiều hơn; mô hình tô sáng cơ mông";
 /* stancesByExercise · note */
 "Feet 12 cm lower on the plate: the rep stops above parallel; the model lights the quads" = "Chân đặt thấp hơn 12 cm trên bàn đạp: mỗi lần dừng cao hơn mức đùi song song sàn; mô hình tô sáng cơ tứ đầu đùi";
-/* stancesByExercise · note */
-"Feet wider than the shoulders, toes out more; the model lights the inner thighs brightest" = "Chân rộng hơn vai, mũi chân xoay ra ngoài nhiều hơn; mô hình tô sáng nhất mặt trong đùi";
 /* stancesByExercise · label */
 "Upright" = "Thẳng người";
 /* stancesByExercise · note */
@@ -23303,7 +23301,7 @@
 /* Pendulum Squat (Stances) · intro */
 "Ride the pad down until the thighs are level with the floor or lower." = "Hạ theo đệm đến khi đùi song song với sàn hoặc thấp hơn.";
 /* Pendulum Squat (Stances) · why */
-"The deep part of the arc is where the quadriceps work hardest, so aim for thighs parallel to the floor or a little lower. Most stances let you go below level; with the feet low on the plate, you may only reach level before your back starts to leave the pad." = "Phần sâu của cung chuyển động là nơi cơ tứ đầu đùi làm việc nặng nhất, nên hãy nhắm đến đùi song song với sàn hoặc thấp hơn một chút. Hầu hết các thế chân cho phép bạn xuống thấp hơn mức song song; khi đặt chân thấp trên bàn đạp, bạn có thể chỉ xuống được đến mức song song trước khi lưng bắt đầu rời đệm.";
+"The deep part of the arc is where the quadriceps work hardest, so aim for thighs parallel to the floor or a little lower. Most stances let you go below level; with the feet low on the plate, you may stop a little above level before your back starts to leave the pad." = "Phần sâu của cung chuyển động là nơi cơ tứ đầu đùi làm việc nặng nhất, nên hãy nhắm đến đùi song song với sàn hoặc thấp hơn một chút. Hầu hết các thế chân cho phép bạn xuống thấp hơn mức song song; khi đặt chân thấp trên bàn đạp, bạn có thể dừng cao hơn mức song song một chút trước khi lưng bắt đầu rời đệm.";
 /* Pendulum Squat (Stances) · mistake */
 "Stopping partway down the arc, the hips still high and the knees bent only to about a right angle." = "Dừng giữa chừng trên cung chuyển động, hông còn cao và gối chỉ gập khoảng một góc vuông.";
 /* Pendulum Squat (Stances) · correct */
@@ -24631,9 +24629,7 @@
 /* Vertical Hack Squat · label */
 "Hands just hold on" = "Tay chỉ để giữ";
 /* Vertical Hack Squat · label */
-"Lower to 90 deg" = "Hạ xuống 90 độ";
-/* Vertical Hack Squat · label */
-"Feet flat, centred" = "Chân phẳng, ở giữa";
+"Feet forward, flat" = "Chân ra trước, phẳng";
 /* Vertical Hack Squat · title */
 "Pads and Shoulders" = "Đệm và vai";
 /* Vertical Hack Squat · intro */
@@ -24655,13 +24651,13 @@
 /* Vertical Hack Squat · correct */
 "Take a light hold of the handles beside the pads, keep your arms set where they start, and let your legs move the weight." = "Nắm nhẹ tay cầm bên cạnh đệm, giữ tay ở nguyên vị trí ban đầu, và để chân di chuyển mức tạ.";
 /* Vertical Hack Squat · intro */
-"Every rep bends the knees from almost straight down to about a right angle." = "Mỗi lần, gối gập từ gần thẳng xuống khoảng một góc vuông.";
+"Every rep takes you from almost straight legs down until your thighs are about parallel to the floor." = "Mỗi lần, bạn hạ từ chân gần thẳng xuống đến khi đùi gần song song với sàn.";
 /* Vertical Hack Squat · why */
 "Training through a long range builds more front-thigh size and strength than stopping short. The bottom is also where your knees carry the most load, so build up to that depth over your warm-up sets rather than dropping straight into it." = "Tập ở biên độ dài giúp tăng kích thước và sức mạnh đùi trước nhiều hơn so với dừng sớm. Điểm thấp nhất cũng là nơi gối chịu tải nặng nhất, nên hãy tăng dần đến độ sâu đó qua các hiệp khởi động thay vì thả người xuống ngay.";
 /* Vertical Hack Squat · mistake */
 "Dropping fast into the bottom and bouncing straight back out of it." = "Thả người nhanh xuống đáy rồi nảy bật lên ngay.";
 /* Vertical Hack Squat · correct */
-"Lower under control until your knees are bent to about a right angle, hold for a beat, then drive back up." = "Hạ xuống có kiểm soát đến khi gối gập khoảng một góc vuông, giữ một nhịp, rồi đạp lên lại.";
+"Lower under control until your thighs are about parallel to the floor, hold for a beat, then drive back up." = "Hạ xuống có kiểm soát đến khi đùi gần song song với sàn, giữ một nhịp, rồi đạp lên lại.";
 /* Vertical Hack Squat · intro */
 "The knees travel out over the feet as you come down, never in." = "Gối đi ra ngoài theo hướng bàn chân khi bạn hạ xuống, không bao giờ đổ vào trong.";
 /* Vertical Hack Squat · why */
@@ -24671,17 +24667,17 @@
 /* Vertical Hack Squat · correct */
 "Push your knees out over the middle of each foot on the way down, and keep them there on the way back up." = "Đẩy gối ra ngoài theo hướng giữa mỗi bàn chân khi hạ xuống, và giữ nguyên như vậy khi đứng lên.";
 /* Vertical Hack Squat · intro */
-"Both feet sit flat and centred on the plate, about hip-width apart, toes pointing forward." = "Hai bàn chân đặt phẳng ở giữa bàn đạp, rộng khoảng bằng hông, mũi chân hướng thẳng ra trước.";
+"Both feet sit flat toward the front of the plate, about hip-width apart, toes pointing forward." = "Hai bàn chân đặt phẳng về phía trước bàn đạp, rộng khoảng bằng hông, mũi chân hướng thẳng ra trước.";
 /* Vertical Hack Squat · why */
-"Where your feet sit changes how the work is shared between your thighs and hips, so set them in the same spot every time to keep your sets comparable. Turning the toes out does not shift work onto the inner thigh; studies of squats and leg presses found no difference." = "Vị trí đặt chân thay đổi cách chia công việc giữa đùi và hông, nên hãy đặt chân ở cùng một chỗ mỗi lần để các hiệp có thể so sánh với nhau. Xoay mũi chân ra ngoài không dồn thêm việc cho đùi trong; các nghiên cứu về squat và leg press không thấy khác biệt nào.";
+"Feet toward the front of the plate keep your shins more upright, so you can sit down until your thighs are parallel with your heels still flat. Where your feet sit also changes how the work is shared between your thighs and hips, so use the same spot every time to keep your sets comparable. Turning the toes out does not shift work onto the inner thigh; studies of squats and leg presses found no difference." = "Đặt chân về phía trước bàn đạp giúp cẳng chân đứng thẳng hơn, nên bạn có thể ngồi xuống đến khi đùi song song mà gót chân vẫn áp phẳng. Vị trí đặt chân cũng thay đổi cách chia công việc giữa đùi và hông, nên hãy dùng cùng một chỗ mỗi lần để các hiệp có thể so sánh với nhau. Xoay mũi chân ra ngoài không dồn thêm việc cho đùi trong; các nghiên cứu về squat và leg press không thấy khác biệt nào.";
 /* Vertical Hack Squat · mistake */
 "Turning the toes out to feel the inner thigh, or moving the feet between sets." = "Xoay mũi chân ra ngoài để cảm nhận đùi trong, hoặc dời chân giữa các hiệp.";
 /* Vertical Hack Squat · correct */
-"Set both feet flat and centred on the plate about hip-width apart with the toes forward, and use the same spot every set." = "Đặt hai bàn chân phẳng ở giữa bàn đạp, rộng khoảng bằng hông, mũi chân hướng trước, và dùng đúng vị trí đó ở mọi hiệp.";
+"Set both feet flat toward the front of the plate about hip-width apart with the toes forward, and use the same spot every set." = "Đặt hai bàn chân phẳng về phía trước bàn đạp, rộng khoảng bằng hông, mũi chân hướng trước, và dùng đúng vị trí đó ở mọi hiệp.";
 /* Vertical Hack Squat · setup */
 "Load the machine and set the shoulder pads so you can stand under them with your knees almost straight." = "Lắp tạ vào máy và chỉnh đệm vai sao cho bạn đứng được bên dưới với gối gần thẳng.";
 /* Vertical Hack Squat · setup */
-"Step onto the plate and set both feet flat and centred, about hip-width apart with the toes forward." = "Bước lên bàn đạp và đặt hai bàn chân phẳng ở giữa, rộng khoảng bằng hông, mũi chân hướng trước.";
+"Step onto the plate and set both feet flat toward its front, about hip-width apart with the toes forward." = "Bước lên bàn đạp và đặt hai bàn chân phẳng về phía trước bàn đạp, rộng khoảng bằng hông, mũi chân hướng trước.";
 /* Vertical Hack Squat · setup */
 "Settle the pads across the top of your shoulders, take the handles beside them and stand the carriage up off its rests." = "Đặt đệm ngang phía trên vai, nắm tay cầm bên cạnh và đứng thẳng lên để nhấc khung trượt khỏi điểm tựa.";
 /* Vertical Hack Squat · setup */

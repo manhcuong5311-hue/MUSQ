@@ -1672,3 +1672,62 @@ primary) shows plain navy shorts now, like the 10-28 leg lifts.
 
 Open for the owner: Ab Coaster Crunch keeps its hip flexors dim, while the
 same pelvic-curl Reverse Crunch has them off.
+
+Desktop "New" folder, 2026-11-21 (JOBS "nam-1121"): male models for the
+seven gym lifts that were on the female model. The owner decided on
+2026-11-14 that gym lifts use the male model and the female model is kept for
+stretches; the male versions were built by retargeting the female motion onto
+the male master (HIKSEMI `BLENDER/Nam_thay_Nu_20261114`, `tools/retarget_f2m.py`),
+reviewed, fixed (Pendulum pad to the hips, Vertical Hack feet forward) and
+flagged 🟢 in all seven folders. `~/Desktop/New` held the 19 exports
+(2026-11-20 17:16-18:15 and 2026-11-21 10:25-11:25), each a minute or two
+after its blend's last save. Cloned to `SourceExports/nam-1121/` (`_names.tsv`,
+`textures/`). The models, bodies, tiles and the SampleData, FaultPoses,
+Content.strings, thumbs.json and posetimes.json they replace are kept in
+`SourceExports/_app_before_nam1121/`.
+
+- Converted (no studio floor to switch off), `one_side_tiers.py` (Standing
+  Hinge and Cable Knee-Drive work the left leg, the right glutes and
+  hamstrings unlit; Incline Bench the right leg), `shorts/rebase_shorts.py`,
+  padded and slimmed against `AnatomyBodyV2.usdc`, all attribute for
+  attribute (1.6-4.0 MB each).
+- The stance sets drop the "Female" prefix: `Legs/HackSquat*`,
+  `Legs/PendulumSquat*`, `Legs/VerticalHackSquat*` (Standard, High, Low, Wide,
+  Narrow). `StandingHingeKickback`, `InclineBenchCableKickback`,
+  `CableStepDown` and `Abs/AbWheelRollout` keep their names. The 15
+  `Legs/Female*.usdc`, `Shared/AnatomyBodyFemale.usdc`,
+  `Shared/AnatomyBodyFemaleHack.usdc` and `Shared/Female{Bra,Head,Shorts}_basecolor.jpg`
+  left the app (owner's OK, about 133 MB); no model references them any more.
+  A female stretch model would bring a body back.
+- Never re-run `female_pipeline.sh` (now exits) or the `female-1010/`,
+  `women-1018/` and `1-100-1017/097` jobs: they write the same resources.
+
+Against the female models (both read as the app does):
+- Timing: the same frame ranges (hack 1-144, the rest 1-192) and rep phases
+  (bottoms within 0.1 s), so pose times, ghost stills and the pendulum's tempo
+  copy hold. Loop seams clean (joints 0.2 cm, equipment 0.13 cm).
+- Hack and Pendulum: the feet on the same spots of the plates (0.0 cm), knee
+  angles within ~2 degrees; the pendulum's hips ~13 degrees more open (its pad
+  lengthened to the hips and the trunk tilted 6 degrees). Vertical Hack: the
+  feet 15 cm further forward (8.5 cm on High), the knees bottom at 70-77
+  degrees (78-99 on the female) with the thighs at parallel (Low stops 7
+  degrees above), the hips travelling 37 cm against 30. The standing
+  kickbacks' hips sit 12 cm lower (the male's shorter legs).
+- Paint on the male rig's official groups: the outer thigh (vastus lateralis)
+  is a group of its own; Hack Wide and Vertical Hack Wide light the adductors
+  bright with the quadriceps dim (the female lit the vastus medialis); the
+  Narrow stances light the outer thigh.
+
+Framing. The viewport scales a model by its rig's bind-pose box: 1.7923 m on
+the male rig (centre y 0.897), 1.8907 m on the female (0.946), so the same
+numbers draw the male scene 5.5% larger. The tools (framer, proj_at, probe)
+always used the male box, which is why the female lifts' dots projected 11-17
+pt off. On stills of three options (the old numbers, the old picture kept,
+the solver's fit to the male body) the owner picked keeping the old picture:
+zoom x 0.948 and offset + (0.00014, -0.04859, -0.00151) x zoom / 1.89065, for
+the 22 trainer framings (stances included), `probe.py` and the seven tile
+framings in `thumbs.json`. The harness gained `HARNESS_HEIGHT` (and
+`shots.sh` passes it) to shoot a stance set's shorter card (581 pt with
+notes, ~617 without). The seven tiles were re-shot at their stored pose
+times. The old harness simulator (B69AA4C4) was gone; `env.sh` now defaults to
+a new "Claude Harness 17 Pro" (70FBC593).

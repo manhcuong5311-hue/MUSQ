@@ -1,5 +1,13 @@
 // MARK: PIECES
     // MARK: Model-only lifts, female pieces (2026-11-09)
+    // Written on the female models; on 2026-11-21 the three lifts moved to
+    // male models (torso 0.59 m against 0.50, legs ~12 cm shorter, the same
+    // joint angles and timing). Re-checked with the Python port of
+    // FaultGhost.solve on the male clips: the hinge gates re-set (the male's
+    // ankle spread, in torso lengths, is ~21% smaller), the incline gate
+    // scaled the same way (~22%), the hinge stance rise 0.16 -> 0.12 and
+    // the vertical hack knees 0.2 -> 0.17. The cm and degrees in the notes
+    // below are still the female's; re-measure on the shots when integrating.
 
     /// Vertical Hack Squat: the shoulders coming forward and down off the
     /// pads, the trunk folding forward out of the carriage. The trunk and the
@@ -28,13 +36,15 @@
     /// forward of vertical): the kick near its top, read off the ankles'
     /// spread, 0.36 torso lengths with the left leg hanging (0 s) and 2.61 at
     /// the top (2.0 s): none until ~1.25 s, two thirds at 1.5 s, all of it
-    /// through the top's hold (1.75-2.25 s).
-    private static let female1109HingeKickTop = FaultStrength.between("foot_L", "foot_R", from: 1.9, to: 2.5)
+    /// through the top's hold (1.75-2.25 s). On the male model the spread runs
+    /// 0.34 -> 2.06, so the gate is 1.55 -> 2.0 (full at 2.0 s; above half
+    /// from 1.46 to 2.54 s, as the female's was).
+    private static let female1109HingeKickTop = FaultStrength.between("foot_L", "foot_R", from: 1.55, to: 2.0)
 
     /// The same spread over most of the kick: none with the leg hanging
     /// (to ~0.5 s), half by ~1.0 s, all of it from 1.75 s, so a fault that
     /// rocks with each rep follows the leg up and down.
-    private static let female1109HingeKicking = FaultStrength.between("foot_L", "foot_R", from: 0.6, to: 2.5)
+    private static let female1109HingeKicking = FaultStrength.between("foot_L", "foot_R", from: 0.55, to: 2.0)
 
     /// Standing Hinge Kickback: the leg swung as high as it goes, the lower
     /// back arching to let it. The mid-spine sags 0.16 torso lengths (~8 cm)
@@ -104,7 +114,7 @@
     private static let female1109HingeUpOnToe = FaultPose(
         chains: [["thigh_R", "shin_R", "foot_R", "foot_R.heel", "toe_R"]],
         moves: [.turn(pivot: "toe_R", points: ["foot_R", "foot_R.heel"], axis: .lateral, degrees: -30),
-                .shift(["thigh_R"], rise: 0.16), .resolve(["shin_R"])],
+                .shift(["thigh_R"], rise: 0.12), .resolve(["shin_R"])],
         strength: female1109HingeKickTop
     )
 
@@ -112,8 +122,10 @@
     /// pad ~45° from vertical): the kick near its top, read off the feet's
     /// distance, since the right foot comes back up beside the resting left
     /// one: 1.90 torso lengths at the bottom (0 s), 0.49 at the top (1.75-2.1
-    /// s): none until ~1.15 s, all of it from 1.5 s to 2.4 s.
-    private static let female1109InclineKickTop = FaultStrength.between("foot_R", "foot_L", from: 0.9, to: 0.55)
+    /// s): none until ~1.15 s, all of it from 1.5 s to 2.4 s. The male's
+    /// distances are ~22% shorter in torso lengths, so 0.75 -> 0.46 keeps that
+    /// timing.
+    private static let female1109InclineKickTop = FaultStrength.between("foot_R", "foot_L", from: 0.75, to: 0.46)
 
     /// Incline Bench Cable Kickback: the leg snapped out past where the hip
     /// stops, the pelvis rolling over into a lower-back arch to get it
@@ -191,7 +203,7 @@
             // The knees caving in ~10 cm each at the bottom, the bones and
             // knee angle kept; as framed, where the knees' side-to-side line
             // is only 33° off the screen's.
-            "knees": thruster500KneesIn(0.2),
+            "knees": thruster500KneesIn(0.17),
             // The toes turned 40° out, the heels in place. Turned 0.3 toward
             // face-on (a total of -1.3; face-on the machine's front column
             // stands between the feet), so both feet splay.

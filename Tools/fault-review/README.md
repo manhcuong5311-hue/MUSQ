@@ -400,3 +400,27 @@ grip/depth/cuff ring-only) and a partial snatch file. The rest waits for the
 next round, family by family, then the usual shoot (`Tools/lab/shoot_ex.sh`)
 and review.
 
+
+Male models for the female lifts (2026-11-21): the Hack, Pendulum, Vertical
+Hack Squat and the three kickbacks and the Ab Wheel Rollout are male models
+now (torso 0.59 m against 0.50, legs ~12 cm shorter; the same joint angles,
+rep timing and facing). The integrated ghosts key on exercise names and the
+joint names are the same, so they kept working; a Python port of
+`FaultGhost.solve` run on both rigs found where they drift. Shifts are in torso
+lengths and so grew ~17% in cm; angle gates (`withBend`, `whenStraight`) are
+unchanged; `between` gates on distances shrank with the legs. Changed at the
+call sites only (the shared pieces have many users): the pendulum depth to
+`shallow(0.18, ahead: -0.23)`, the male's own 1.0 s arc pose (the female
+values opened his knees to 110-152 degrees), the hack depth 0.3 -> 0.25 (the
+same ~15 cm as before) and the hack and pendulum knees 0.2 -> 0.17 (at 0.2 the
+Narrow ghosts' knees met). The Ab Wheel's hand-to-knee gate still reaches full
+strength (2.41 torso lengths at full reach, past 2.3). The not-yet-integrated
+female family (`faults_1109_female.swift.txt`) was re-gated for the male clips:
+the hinge kick 1.55 -> 2.0 and 0.55 -> 2.0 (its ankle spread peaks at 2.06,
+under the old 2.5), the incline 0.75 -> 0.46, the hinge stance rise 0.16 ->
+0.12, the vertical hack knees 0.17; its notes' cm are still the female's.
+`fault_times.py` on `fault_moments_1010_female.json` and
+`fault_moments_1109_female.json` set the stills on the male clips: Cable
+Knee-Drive's base still is 2.0 s now (it was a stray 0.0 from `bottoms.py`,
+which has no rule for these lifts; do not run it for them) and the three
+draft lifts have 2.0 s entries.

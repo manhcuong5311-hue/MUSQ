@@ -98,7 +98,7 @@ struct MuscleActivationContent: View {
             }
             .padding(.top, 20)
 
-            if !stabilisers.isEmpty {
+            if !notedStabilisers.isEmpty {
                 Hairline(opacity: 0.07).padding(.top, 22)
 
                 Text(stabiliserNote)
@@ -111,10 +111,19 @@ struct MuscleActivationContent: View {
         }
     }
 
+    /// The stabilisers the note names. A stance's own rows can promote one of
+    /// the exercise's stabilisers (the Wide stances light the adductors), and
+    /// the note must not then call that muscle hidden (2026-11-21).
+    private var notedStabilisers: [String] {
+        stabilisers.filter { name in
+            !muscles.contains { $0.name.caseInsensitiveCompare(name) == .orderedSame }
+        }
+    }
+
     /// Names this lift's own stabilisers — the muscles under the 20% cut.
     private var stabiliserNote: String {
-        let names = stabilisers.map { L10n.content($0) }.joined(separator: ", ")
-        return stabilisers.count == 1
+        let names = notedStabilisers.map { L10n.content($0) }.joined(separator: ", ")
+        return notedStabilisers.count == 1
             ? String(localized: "Stabiliser — \(names) — contributes below 20% and is hidden.")
             : String(localized: "Stabilisers — \(names) — contribute below 20% and are hidden.")
     }
@@ -199,7 +208,7 @@ struct MuscleActivationContent: View {
             }
             .padding(.top, 22)
 
-            if !stabilisers.isEmpty {
+            if !notedStabilisers.isEmpty {
                 Hairline(opacity: 0.07).padding(.top, 22)
 
                 Text(stabiliserNote)

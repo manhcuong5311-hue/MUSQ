@@ -905,3 +905,32 @@ and fist rules of `Tools/lab/label_space_1023/check_layout.py`, then checked on
 trainer shots at nine moments in English and Vietnamese. It has no
 common-mistake ghost yet (see `Tools/fault-review/README.md`).
 
+
+Male models for the female lifts (2026-11-21). The seven lifts first built on
+the female model now play male models retargeted from them (see
+`Tools/model-pipeline/README.md`). Their measured copy was re-checked on the
+male clips: angles, distances and timings hold for the hack, pendulum, the
+three kickbacks and the ab wheel, except what the owner's fixes changed.
+- Vertical Hack Squat: the male squats until the thighs are parallel (knees
+  ~71 degrees) with the feet 15 cm further forward, the owner's pick. The depth
+  label is "Thighs parallel" (was "Lower to 90 deg") and the cue says thighs
+  about parallel to the floor; on the owner's word the feet copy says toward
+  the front of the plate ("Feet forward, flat"; intro, why, correct, setup),
+  with a mechanical why: feet forward keep the shins more upright, so the
+  thighs reach parallel with the heels flat.
+- Pendulum Squat depth why: with the feet low on the plate the male stops a
+  little above level (his Low stance stops with the thighs ~13 degrees short
+  of level, the female's ~5).
+- Rows follow the male paint: Hack Squat Wide lights the adductors, not the
+  vastus medialis (the male rig has no such group), so its list follows the
+  pendulum's Wide (Adductors and Hip Flexors primary 0.40, Quadriceps
+  secondary 0.89, Gluteus Maximus secondary 0.50) and its note is the
+  pendulum's ("lights the inner thighs brightest"). The Vertical Hack Squat
+  stances got lists of their own (they had none), the hack squat's fractions
+  for the same placement; no notes, so the card keeps the height its labels
+  were laid out for.
+- The Muscles Worked note no longer names a stabiliser that the stance's own
+  rows list (Sheets.swift `notedStabilisers`): Hack and Vertical Hack Wide list
+  the adductors and Vertical Hack High the hamstrings, which their exercises
+  keep as stabilisers.
+`setup.py` and `spec_1029_female.py` follow; Vietnamese merged (13276 of 13276).

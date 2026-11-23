@@ -258,8 +258,10 @@ enum SampleData {
         Exercise(name: "Hip Adduction Machine", category: .legs,
                  primaryMuscle: "ADDUCTORS", equipment: "MACHINE",
                  difficulty: .beginner),
-        // The female model's lifts from the same folder (2026-10-10): two
-        // stance sets, picked in the trainer, and a cable knee-drive kickback
+        // Lifts from the same folder (2026-10-10), first built on the female
+        // model and on male models retargeted from her motion since 2026-11-21
+        // (the owner's call: gym lifts on the male model only): two stance
+        // sets, picked in the trainer, and a cable knee-drive kickback
         // (exported as Cable_Step_Downs; renamed for what the model does).
         Exercise(name: "Hack Squat (Stances)", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
@@ -270,9 +272,9 @@ enum SampleData {
         Exercise(name: "Cable Knee-Drive Kickback", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
                  difficulty: .intermediate),
-        // Desktop "Women exsercise" folder (2026-10-18): the female model's
-        // vertical hack squat in five stances and two glute kickbacks; models
-        // only for now (no trainer content yet).
+        // Desktop "Women exsercise" folder (2026-10-18): the vertical hack
+        // squat in five stances and two glute kickbacks, on the female model
+        // until 2026-11-21 and the male one since; coached since 2026-10-29.
         Exercise(name: "Vertical Hack Squat", category: .legs,
                  primaryMuscle: "QUADRICEPS", equipment: "MACHINE",
                  difficulty: .intermediate),
@@ -1164,7 +1166,7 @@ enum SampleData {
                  difficulty: .beginner),
         // From the Desktop "300-400" folder (2026-10-12): the builder's 383-392
         // (387, the Standing Cable Hip Extension, dropped on 2026-10-19: the
-        // female model's kickbacks cover it).
+        // Standing Hinge and Incline Bench Cable Kickbacks cover it).
         Exercise(name: "Cable Pull-Through", category: .legs,
                  primaryMuscle: "GLUTEUS MAXIMUS", equipment: "CABLE",
                  difficulty: .beginner),
@@ -2269,7 +2271,7 @@ enum SampleData {
         "Captain's Chair Leg Raise":           ExerciseModel(resource: "CaptainsChairLegRaise",
                                         framing: ModelFraming(yaw: -1.0, zoom: 0.670, offset: [0.030, 0.010, -0.047])),
         "Ab Wheel Rollout":                    ExerciseModel(resource: "AbWheelRollout",
-                                        framing: ModelFraming(yaw: -1.35, zoom: 0.487, offset: [0.018, 0.151, -0.081])),
+                                        framing: ModelFraming(yaw: -1.35, zoom: 0.462, offset: [0.018, 0.138, -0.081])),
         "Side Plank":                          ExerciseModel(resource: "SidePlank",
                                         framing: ModelFraming(yaw: 1.5, zoom: 0.448, offset: [0.003, 0.113, 0.046])),
         "Russian Twist":                       ExerciseModel(resource: "RussianTwist",
@@ -2738,26 +2740,32 @@ enum SampleData {
                                         framing: ModelFraming(yaw: -0.9, zoom: 0.682, offset: [0.033, -0.056, -0.042])),
         "Hip Adduction Machine":              ExerciseModel(resource: "HipAdductionMachine",
                                         framing: ModelFraming(yaw: -0.3, zoom: 0.848, offset: [0.035, 0.096, -0.011])),
-        // The female model's lifts (2026-10-10). The stance sets hold their
+        // Lifts first built on the female model (2026-10-10), on male models
+        // retargeted from hers since 2026-11-21. The stance sets hold their
         // standard stance here; `stancesByExercise` has all five.
         // The hack squat from the front-left three-quarter, so the stance
         // width reads; the pendulum side-on, the one side its pad and pivot
         // column leave open; the kickback from the left, the working leg
         // toward the camera.
-        "Hack Squat (Stances)":               ExerciseModel(resource: "FemaleHackSquatStandard",
-                                        framing: ModelFraming(yaw: 0.6, zoom: 0.87, offset: [0.048, -0.08, 0.033])),
-        "Pendulum Squat (Stances)":           ExerciseModel(resource: "FemalePendulumSquatStandard",
-                                        framing: ModelFraming(yaw: 0, zoom: 0.75, offset: [-0.008, -0.122, 0])),
+        // The viewport scales a model by its rig's bind-pose box, 1.79 m on
+        // the male rig against 1.89 m on the female, so the seven framings
+        // below were rescaled on the swap (zoom x 0.948, the offset moved by
+        // the boxes' centres) to keep the picture the owner approved; the
+        // owner picked that over the solver's fit to the male body (2026-11-21).
+        "Hack Squat (Stances)":               ExerciseModel(resource: "HackSquatStandard",
+                                        framing: ModelFraming(yaw: 0.6, zoom: 0.825, offset: [0.048, -0.102, 0.032])),
+        "Pendulum Squat (Stances)":           ExerciseModel(resource: "PendulumSquatStandard",
+                                        framing: ModelFraming(yaw: 0, zoom: 0.711, offset: [-0.008, -0.141, -0.001])),
         "Cable Knee-Drive Kickback":                    ExerciseModel(resource: "CableStepDown",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.773, offset: [-0.046, 0.012, 0.072])),
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.733, offset: [-0.046, -0.008, 0.071])),
         // Desktop "Women exsercise" folder (2026-10-18), new: solved, yaws
-        // picked on viewport stills.
-        "Vertical Hack Squat":                ExerciseModel(resource: "FemaleVerticalHackSquatStandard",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103])),
+        // picked on viewport stills; rescaled for the male rig as above.
+        "Vertical Hack Squat":                ExerciseModel(resource: "VerticalHackSquatStandard",
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.968, offset: [0.066, -0.203, -0.104])),
         "Standing Hinge Kickback":            ExerciseModel(resource: "StandingHingeKickback",
-                                        framing: ModelFraming(yaw: -1.0, zoom: 0.556, offset: [-0.042, 0.049, 0.066])),
+                                        framing: ModelFraming(yaw: -1.0, zoom: 0.527, offset: [-0.042, 0.035, 0.066])),
         "Incline Bench Cable Kickback":       ExerciseModel(resource: "InclineBenchCableKickback",
-                                        framing: ModelFraming(yaw: -1.3, zoom: 0.518, offset: [-0.023, 0.044, 0.081])),
+                                        framing: ModelFraming(yaw: -1.3, zoom: 0.491, offset: [-0.023, 0.031, 0.081])),
         "Standing Calf Raise":                ExerciseModel(resource: "StandingCalfRaise",
                                         framing: ModelFraming(yaw: -1.3, zoom: 0.76, offset: [-0.003, -0.038, 0.01])),
         "Seated Calf Raise":                  ExerciseModel(resource: "SeatedCalfRaise",
@@ -3079,105 +3087,147 @@ enum SampleData {
         stancesByExercise[exercise.name] ?? []
     }
 
-    // The female model's stance sets (Desktop "1-100" folder, 2026-10-10):
-    // the hack squat and pendulum squat, each in five foot placements. Each
-    // stance's muscle list follows its own model's paint (bright primary, dim
-    // secondary), so on High (and the pendulum's Wide) the quadriceps are a
-    // secondary row with a larger fraction than the primary: they still do
-    // most of the work at every placement (ExRx; Escamilla 2001, McCaw 1999),
-    // the paint only marks what the placement adds. A high placement brings
-    // in more glute (Da Silva 2008, leg press); stance width did not isolate
-    // parts of the quadriceps (McCaw 1999, Paoli 2009), so the wide and narrow
-    // notes only say what the model lights. Measurements in
-    // Tools/trainer-content/notes_1010_female.md.
+    // The stance sets (Desktop "1-100" folder, 2026-10-10; the vertical hack
+    // squat from 2026-10-18): the hack, pendulum and vertical hack squats,
+    // each in five foot placements. Built on the female model; since
+    // 2026-11-21 male models retargeted from hers, the hack and pendulum feet
+    // on the same spots of the plates (0.0 cm) and at the same timing, the
+    // vertical hack feet 15 cm further forward (8.5 cm on High) so the thighs
+    // reach parallel (the owner's pick). Each stance's muscle list follows
+    // its own model's paint (bright primary, dim secondary), so on High and
+    // Wide the quadriceps are a secondary row with a larger fraction than the
+    // primary: they still do most of the work at every placement (ExRx;
+    // Escamilla 2001, McCaw 1999), the paint only marks what the placement
+    // adds. A high placement brings in more glute (Da Silva 2008, leg press);
+    // stance width did not isolate parts of the quadriceps (McCaw 1999, Paoli
+    // 2009), so the wide and narrow notes only say what the model lights. On
+    // the male rig the Narrow stances light its outer-thigh group (vastus
+    // lateralis) and leave the rest of the quadriceps dim, which keeps the one
+    // Quadriceps row primary; the Wide stances light the adductors. Measurements
+    // in Tools/trainer-content/notes_1010_female.md (female) and the 2026-11-21
+    // section of Tools/model-pipeline/README.md (male).
     private static let stancesByExercise: [String: [ExerciseStance]] = [
         "Hack Squat (Stances)": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "FemaleHackSquatStandard", framing: ModelFraming(yaw: 0.6, zoom: 0.87, offset: [0.048, -0.08, 0.033])),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "HackSquatStandard", framing: ModelFraming(yaw: 0.6, zoom: 0.825, offset: [0.048, -0.102, 0.032])),
                            note: "Feet mid-platform, a little wider than the hips; the model lights the quads and glutes",
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.89),
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.44),
                 MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
                            ]),
-            ExerciseStance(label: "High", model: ExerciseModel(resource: "FemaleHackSquatHigh", framing: ModelFraming(yaw: 0.6, zoom: 0.87, offset: [0.048, -0.08, 0.033])),
+            ExerciseStance(label: "High", model: ExerciseModel(resource: "HackSquatHigh", framing: ModelFraming(yaw: 0.6, zoom: 0.825, offset: [0.048, -0.102, 0.032])),
                            note: "Feet 10 cm higher up the platform: hips bend more, knees less; the model lights the glutes",
                            activation: [
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.52),
                 MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.85),
                 MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
                            ]),
-            ExerciseStance(label: "Low", model: ExerciseModel(resource: "FemaleHackSquatLow", framing: ModelFraming(yaw: 0.6, zoom: 0.87, offset: [0.048, -0.08, 0.033])),
+            ExerciseStance(label: "Low", model: ExerciseModel(resource: "HackSquatLow", framing: ModelFraming(yaw: 0.6, zoom: 0.825, offset: [0.048, -0.102, 0.032])),
                            note: "Feet 8 cm lower on the platform: knees travel further forward; the model lights the quads",
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.91),
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.40)
                            ]),
-            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "FemaleHackSquatWide", framing: ModelFraming(yaw: 0.6, zoom: 0.87, offset: [0.048, -0.08, 0.033])),
-                           note: "Feet wider than the shoulders, toes out more; the model lights the inner quad brightest",
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "HackSquatWide", framing: ModelFraming(yaw: 0.6, zoom: 0.825, offset: [0.048, -0.102, 0.032])),
+                           note: "Feet wider than the shoulders, toes out more; the model lights the inner thighs brightest",
                            activation: [
-                // Follows the FemaleHackSquatWide model's own paint, unchanged
-                // since it went in (2026-10-10; garments re-baked 2026-10-12):
-                // the vastus medialis (its own material) and the sartorius, the
-                // rig's hip flexors, bright; the other quadriceps heads, the
-                // glutes and the adductors dim. The bright vastus medialis
-                // keeps the one Quadriceps row primary. The old list missed the
-                // rule that a lit group gets a row: the bright sartorius had
-                // none, so it gets a Hip Flexors primary row, as on the Belt
+                // Follows the male HackSquatWide model's paint (2026-11-21):
+                // the adductors and the sartorius, the rig's hip flexors,
+                // bright; the quadriceps, outer thigh and glutes dim. The
+                // female model it replaced lit the vastus medialis bright
+                // instead (its own material, which kept a primary Quadriceps
+                // row); the male rig has no vastus medialis group and lights
+                // the inner thigh as Adductors, so the ranks now follow the
+                // pendulum's Wide stance: Adductors primary, the quadriceps
+                // secondary at their 0.89. Fractions unchanged. The adductors'
+                // and hip flexors' 0.40 are estimates (no normalised squat EMG
+                // found; 0.40 is the lowest moderate value), as on the Belt
                 // Squat, Smith Machine Squat and 45-Degree Leg Press wide
-                // stances; no normalised EMG found for the hip flexors in a
-                // squat, so 0.40, the lowest moderate value, is an estimate, as
-                // there. The other rows keep their ranks and fractions.
-                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.89),
+                // stances.
+                MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.40),
                 MuscleActivation(name: "Hip Flexors", rank: .primary, fraction: 0.40),
-                MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50),
-                MuscleActivation(name: "Adductors", rank: .secondary, fraction: 0.40)
+                MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.89),
+                MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50)
                            ]),
-            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "FemaleHackSquatNarrow", framing: ModelFraming(yaw: 0.6, zoom: 0.87, offset: [0.048, -0.08, 0.033])),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "HackSquatNarrow", framing: ModelFraming(yaw: 0.6, zoom: 0.825, offset: [0.048, -0.102, 0.032])),
                            note: "Feet right under the hips, toes almost straight; the model lights the outer quad brightest",
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.89),
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.44)
                            ]),
         ],
-        // Desktop "Women exsercise" folder (2026-10-18): the female model's
-        // vertical hack squat stances. Models only for now: no notes, and
-        // each stance keeps the exercise's muscle list.
+        // Desktop "Women exsercise" folder (2026-10-18): the vertical hack
+        // squat stances, male since 2026-11-21. No notes: the 10-29 label
+        // layout was planned for the taller card a stance set without notes
+        // gets. Since the swap each stance has its own muscle list, following
+        // its male model's paint as the hack squat's stances do, with the
+        // hack squat's fractions for the same placement (the same sources):
+        // Standard lights the quads and glutes bright (the exercise's list),
+        // High the glutes bright and the quads and hamstrings dim, Low the
+        // quads bright and the glutes dim, Wide the adductors bright and the
+        // quads and glutes dim (no hip flexors lit here, unlike the hack and
+        // pendulum Wide), Narrow the outer thigh bright and the rest of the
+        // quads and the glutes dim. The Adductors 0.40 is an estimate, as on
+        // the other wide stances.
         "Vertical Hack Squat": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "FemaleVerticalHackSquatStandard", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
-            ExerciseStance(label: "High", model: ExerciseModel(resource: "FemaleVerticalHackSquatHigh", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
-            ExerciseStance(label: "Low", model: ExerciseModel(resource: "FemaleVerticalHackSquatLow", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
-            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "FemaleVerticalHackSquatWide", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
-            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "FemaleVerticalHackSquatNarrow", framing: ModelFraming(yaw: -1.0, zoom: 1.021, offset: [0.066, -0.177, -0.103]))),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "VerticalHackSquatStandard", framing: ModelFraming(yaw: -1.0, zoom: 0.968, offset: [0.066, -0.203, -0.104])),
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.89),
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.44)
+                           ]),
+            ExerciseStance(label: "High", model: ExerciseModel(resource: "VerticalHackSquatHigh", framing: ModelFraming(yaw: -1.0, zoom: 0.968, offset: [0.066, -0.203, -0.104])),
+                           activation: [
+                MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.52),
+                MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.85),
+                MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
+                           ]),
+            ExerciseStance(label: "Low", model: ExerciseModel(resource: "VerticalHackSquatLow", framing: ModelFraming(yaw: -1.0, zoom: 0.968, offset: [0.066, -0.203, -0.104])),
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.91),
+                MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.40)
+                           ]),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "VerticalHackSquatWide", framing: ModelFraming(yaw: -1.0, zoom: 0.968, offset: [0.066, -0.203, -0.104])),
+                           activation: [
+                MuscleActivation(name: "Adductors", rank: .primary, fraction: 0.40),
+                MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.89),
+                MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.50)
+                           ]),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "VerticalHackSquatNarrow", framing: ModelFraming(yaw: -1.0, zoom: 0.968, offset: [0.066, -0.203, -0.104])),
+                           activation: [
+                MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.89),
+                MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.44)
+                           ]),
         ],
         "Pendulum Squat (Stances)": [
-            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "FemalePendulumSquatStandard", framing: ModelFraming(yaw: 0, zoom: 0.75, offset: [-0.008, -0.122, 0])),
+            ExerciseStance(label: "Standard", model: ExerciseModel(resource: "PendulumSquatStandard", framing: ModelFraming(yaw: 0, zoom: 0.711, offset: [-0.008, -0.141, -0.001])),
                            note: "Feet mid-plate, a little wider than the hips; the model lights the quads brightest",
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.48),
                 MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
                            ]),
-            ExerciseStance(label: "High", model: ExerciseModel(resource: "FemalePendulumSquatHigh", framing: ModelFraming(yaw: 0, zoom: 0.75, offset: [-0.008, -0.122, 0])),
+            ExerciseStance(label: "High", model: ExerciseModel(resource: "PendulumSquatHigh", framing: ModelFraming(yaw: 0, zoom: 0.711, offset: [-0.008, -0.141, -0.001])),
                            note: "Feet 10 cm higher up the plate: hips sink deeper, bend more; the model lights the glutes",
                            activation: [
                 MuscleActivation(name: "Gluteus Maximus", rank: .primary, fraction: 0.56),
                 MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.84),
                 MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
                            ]),
-            ExerciseStance(label: "Low", model: ExerciseModel(resource: "FemalePendulumSquatLow", framing: ModelFraming(yaw: 0, zoom: 0.75, offset: [-0.008, -0.122, 0])),
+            ExerciseStance(label: "Low", model: ExerciseModel(resource: "PendulumSquatLow", framing: ModelFraming(yaw: 0, zoom: 0.711, offset: [-0.008, -0.141, -0.001])),
                            note: "Feet 12 cm lower on the plate: the rep stops above parallel; the model lights the quads",
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.44),
                 MuscleActivation(name: "Hamstrings", rank: .secondary, fraction: 0.25)
                            ]),
-            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "FemalePendulumSquatWide", framing: ModelFraming(yaw: 0, zoom: 0.75, offset: [-0.008, -0.122, 0])),
+            ExerciseStance(label: "Wide", model: ExerciseModel(resource: "PendulumSquatWide", framing: ModelFraming(yaw: 0, zoom: 0.711, offset: [-0.008, -0.141, -0.001])),
                            note: "Feet wider than the shoulders, toes out more; the model lights the inner thighs brightest",
                            activation: [
-                // Follows the FemalePendulumSquatWide model's own paint,
-                // unchanged since it went in (2026-10-10): the adductors
-                // (longus, magnus, gracilis) and the sartorius, the rig's hip
-                // flexors, bright; the quadriceps and glutes dim. The old list
+                // Follows the PendulumSquatWide model's own paint, the same
+                // on the female model (2026-10-10) and the male one that
+                // replaced it (2026-11-21): the adductors (longus, magnus,
+                // gracilis) and the sartorius, the rig's hip flexors, bright;
+                // the quadriceps and glutes dim. The old list
                 // missed the rule that a lit group gets a row: the bright
                 // sartorius had none, so it gets a Hip Flexors primary row, as
                 // on the Belt Squat, Smith Machine Squat and 45-Degree Leg Press
@@ -3189,7 +3239,7 @@ enum SampleData {
                 MuscleActivation(name: "Quadriceps", rank: .secondary, fraction: 0.88),
                 MuscleActivation(name: "Gluteus Maximus", rank: .secondary, fraction: 0.54)
                            ]),
-            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "FemalePendulumSquatNarrow", framing: ModelFraming(yaw: 0, zoom: 0.75, offset: [-0.008, -0.122, 0])),
+            ExerciseStance(label: "Narrow", model: ExerciseModel(resource: "PendulumSquatNarrow", framing: ModelFraming(yaw: 0, zoom: 0.711, offset: [-0.008, -0.141, -0.001])),
                            note: "Feet right under the hips, toes almost straight; the model lights the outer quad brightest",
                            activation: [
                 MuscleActivation(name: "Quadriceps", rank: .primary, fraction: 0.88),
@@ -11499,16 +11549,14 @@ enum SampleData {
     static let abWheelRolloutContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "hips", label: "Hips don't sag",
-                          labelPoint: CGPoint(x: 0.697, y: 0.63),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.979, y: 0.284),
                           leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "reach", label: "Stop before the back arches",
                           labelPoint: CGPoint(x: 0.494, y: 0.75),
                           leaderLength: 40, joint: "hand_L"),
             CueAnnotation(cueID: "ribs", label: "Ribs down, back rounded",
-                          labelPoint: CGPoint(x: 0.433, y: 0.28),
-                          labelSide: .trailing,
-                          leaderLength: 40, joint: "chest"),
+                          labelPoint: CGPoint(x: 0.513, y: 0.174),
+                          labelSide: .trailing, leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "knees", label: "Kneel on a pad",
                           labelPoint: CGPoint(x: 0.697, y: 0.87),
                           labelSide: .trailing,
@@ -45228,7 +45276,7 @@ enum SampleData {
                 id: "depth",
                 title: "Depth",
                 intro: "Ride the pad down until the thighs are level with the floor or lower.",
-                why: "The deep part of the arc is where the quadriceps work hardest, so aim for thighs parallel to the floor or a little lower. Most stances let you go below level; with the feet low on the plate, you may only reach level before your back starts to leave the pad.",
+                why: "The deep part of the arc is where the quadriceps work hardest, so aim for thighs parallel to the floor or a little lower. Most stances let you go below level; with the feet low on the plate, you may stop a little above level before your back starts to leave the pad.",
                 mistake: "Stopping partway down the arc, the hips still high and the knees bent only to about a right angle.",
                 correct: "Ride the pad down until your thighs are at least level with the floor, as far as your back stays on the pad."
             ),
@@ -47388,14 +47436,14 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.638, y: 0.48),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "hand_L"),
-            CueAnnotation(cueID: "depth", label: "Lower to 90 deg",
+            CueAnnotation(cueID: "depth", label: "Thighs parallel",
                           labelPoint: CGPoint(x: 0.318, y: 0.64),
                           leaderLength: 40, joint: "pelvis"),
             CueAnnotation(cueID: "knees", label: "Knees out",
                           labelPoint: CGPoint(x: 0.770, y: 0.64),
                           labelSide: .trailing,
                           leaderLength: 40, joint: "patella_L"),
-            CueAnnotation(cueID: "feet", label: "Feet flat, centred",
+            CueAnnotation(cueID: "feet", label: "Feet forward, flat",
                           labelPoint: CGPoint(x: 0.362, y: 0.80),
                           leaderLength: 40, joint: "foot_R")
         ],
@@ -47419,10 +47467,10 @@ enum SampleData {
             TechniqueCue(
                 id: "depth",
                 title: "Depth",
-                intro: "Every rep bends the knees from almost straight down to about a right angle.",
+                intro: "Every rep takes you from almost straight legs down until your thighs are about parallel to the floor.",
                 why: "Training through a long range builds more front-thigh size and strength than stopping short. The bottom is also where your knees carry the most load, so build up to that depth over your warm-up sets rather than dropping straight into it.",
                 mistake: "Dropping fast into the bottom and bouncing straight back out of it.",
-                correct: "Lower under control until your knees are bent to about a right angle, hold for a beat, then drive back up."
+                correct: "Lower under control until your thighs are about parallel to the floor, hold for a beat, then drive back up."
             ),
             TechniqueCue(
                 id: "knees",
@@ -47435,10 +47483,10 @@ enum SampleData {
             TechniqueCue(
                 id: "feet",
                 title: "Foot Placement",
-                intro: "Both feet sit flat and centred on the plate, about hip-width apart, toes pointing forward.",
-                why: "Where your feet sit changes how the work is shared between your thighs and hips, so set them in the same spot every time to keep your sets comparable. Turning the toes out does not shift work onto the inner thigh; studies of squats and leg presses found no difference.",
+                intro: "Both feet sit flat toward the front of the plate, about hip-width apart, toes pointing forward.",
+                why: "Feet toward the front of the plate keep your shins more upright, so you can sit down until your thighs are parallel with your heels still flat. Where your feet sit also changes how the work is shared between your thighs and hips, so use the same spot every time to keep your sets comparable. Turning the toes out does not shift work onto the inner thigh; studies of squats and leg presses found no difference.",
                 mistake: "Turning the toes out to feel the inner thigh, or moving the feet between sets.",
-                correct: "Set both feet flat and centred on the plate about hip-width apart with the toes forward, and use the same spot every set."
+                correct: "Set both feet flat toward the front of the plate about hip-width apart with the toes forward, and use the same spot every set."
             )
         ],
         activation: [
@@ -47448,7 +47496,7 @@ enum SampleData {
         stabilisers: ["hamstrings", "adductors", "gluteus medius", "calves"],
         setup: [
             "Load the machine and set the shoulder pads so you can stand under them with your knees almost straight.",
-            "Step onto the plate and set both feet flat and centred, about hip-width apart with the toes forward.",
+            "Step onto the plate and set both feet flat toward its front, about hip-width apart with the toes forward.",
             "Settle the pads across the top of your shoulders, take the handles beside them and stand the carriage up off its rests.",
             "Release the stops, brace your trunk, and take the first rep from a standing start rather than dropping into it."
         ],
@@ -47469,8 +47517,8 @@ enum SampleData {
     static let standingHingeKickbackContent = ExerciseContent(
         annotations: [
             CueAnnotation(cueID: "kick", label: "Drive the foot back",
-                          labelPoint: CGPoint(x: 0.376, y: 0.48),
-                          leaderLength: 40, joint: "foot_L"),
+                          labelPoint: CGPoint(x: 0.610, y: 0.710),
+                          labelSide: .trailing, leaderLength: 40, joint: "foot_L"),
             CueAnnotation(cueID: "knee", label: "Keep the knee bent",
                           labelPoint: CGPoint(x: 0.638, y: 0.32),
                           labelSide: .trailing,
@@ -47559,8 +47607,7 @@ enum SampleData {
                           labelPoint: CGPoint(x: 0.376, y: 0.80),
                           leaderLength: 40, joint: "foot_R"),
             CueAnnotation(cueID: "finish", label: "Back until the hip stops",
-                          labelPoint: CGPoint(x: 0.550, y: 0.80),
-                          labelSide: .trailing,
+                          labelPoint: CGPoint(x: 0.979, y: 0.800),
                           leaderLength: 40, joint: "patella_R"),
             CueAnnotation(cueID: "hips", label: "Hips square to the pad",
                           labelPoint: CGPoint(x: 0.420, y: 0.16),
@@ -47570,8 +47617,8 @@ enum SampleData {
                           labelSide: .trailing,
                           leaderLength: 40, joint: "chest"),
             CueAnnotation(cueID: "support", label: "Other knee stays put",
-                          labelPoint: CGPoint(x: 0.391, y: 0.32),
-                          leaderLength: 40, joint: "patella_L")
+                          labelPoint: CGPoint(x: 0.021, y: 0.320),
+                          labelSide: .trailing, leaderLength: 40, joint: "shin_L")
         ],
         cues: [
             TechniqueCue(
