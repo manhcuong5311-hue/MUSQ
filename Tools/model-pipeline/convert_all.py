@@ -1865,6 +1865,11 @@ JOBS = {
     "nam-1121/incline_bench_cable_kickback":                          "Legs/InclineBenchCableKickback",
     "nam-1121/cable_knee_drive_kickback":                             "Legs/CableStepDown",
     "nam-1121/ab_wheel_rollout":                                      "Abs/AbWheelRollout",
+    # Desktop "New" folder, 2026-11-23 (`_names.tsv`): the Dumbbell Lateral Raise's lowering fix (HIKSEMI
+    # `BLENDER/Fix_LateralRaise_20261123`, round 4, the owner's option B: at the bottom the elbows point 27
+    # degrees back and out instead of 82, and the upper arm turns about 16 degrees on the way down instead
+    # of 70). Exported 16:29:22, a minute after the blend's last save (16:28:30).
+    "dlr-1123/dumbbell_lateral_raise":                                "Shoulder/DumbbellLateralRaise",
 }
 
 # Parts a job switches off by hand. 225 Cable Upright Row (2026-09-30) runs

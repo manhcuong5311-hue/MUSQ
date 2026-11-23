@@ -1731,3 +1731,37 @@ framings in `thumbs.json`. The harness gained `HARNESS_HEIGHT` (and
 notes, ~617 without). The seven tiles were re-shot at their stored pose
 times. The old harness simulator (B69AA4C4) was gone; `env.sh` now defaults to
 a new "Claude Harness 17 Pro" (70FBC593).
+
+Desktop "New" folder, 2026-11-23 (JOBS "dlr-1123"): the Dumbbell Lateral
+Raise ("bay vai") after its fourth round, HIKSEMI
+`BLENDER/Fix_LateralRaise_20261123` (README_VI.md). The owner had flagged the
+third round's lowering phase ("lúc tạ xuống xoay vào trong quá"): the upper
+arm turned in about 70 degrees on the way down and the elbows pointed straight
+out at the bottom. Round 4 is the owner's option B: at the bottom the elbows
+point 27 degrees back and out (82 before) and the palms turn about 45 degrees
+toward the thighs; on the way down the upper arm turns about 16 degrees and
+the forearm twists one way only. The top, the rep timing and the fixed
+160-degree elbow are kept. The round published its blend at 16:14; the owner
+saved it at 16:28 (only the lats and lower trapezius meshes nudged, 2.6 and
+4.5 mm; no fcurve or bone changed) and exported `dumbbell_lateral_raise.usdc`
+to `~/Desktop/New` at 16:29. Cloned to `SourceExports/dlr-1123/`
+(`_names.tsv`, `textures/`). The replaced model and tile, SampleData,
+FaultPoses, both Content.strings, thumbs.json and posetimes.json are in
+`SourceExports/_app_before_dlr1123/`. Converted, `one_side_tiers.py` (nothing
+unlit), `shorts/rebase_shorts.py`, padded and slimmed against
+`AnatomyBodyV2.usdc` (attribute for attribute, 1.15 MB).
+
+Against the model it replaces (every frame, all 223 joints):
+- Only the raise and the lowering change. The hands travel up to 7-8 cm
+  closer to the body in the lower half of the arc (0.2-0.8 s and 2.5-3.8 s of
+  each rep), the dumbbells turn end-on to the camera near the bottom instead
+  of crosswise, and at the bottom the elbows sit 2.6 cm closer to the body.
+  The top (1.33-1.67 s) is unchanged (0.0 cm), as are the rep timing (bottoms
+  at 0, 4 and 8 s), the projected extents and the loop seam (0.24 cm).
+- Same meshes and materials: the paint is unchanged (side delts bright; front
+  delts, rear delts and upper back dim), so `paint_rows.py` flags nothing.
+- Framing kept (the top pose sets the extents). Pills: `check_layout.py`
+  clean offline, and the leaders read cleanly on real trainer shots at 0,
+  0.33 and 3.17 s. The ghosts hold at 1.35 s and match the old shots. The
+  library tile (pose time 1.5 s) shot pixel-equal to the old one (mean
+  difference 0.02), so it was kept. No copy changed.
