@@ -5,10 +5,12 @@ table), what still looks like unlocalized English, and the String Catalog.
   ui.py keys [--dd DERIVED] [--out FILE]   every extracted key with its locations
   ui.py audit [--dd DERIVED]               string literals in the app's Swift files
                                            that are not extracted and look shown
-  ui.py catalog FILE.json [--dd DERIVED] [--lang vi]
-                                           write GymWorkout/Localization/Localizable.xcstrings:
-                                           every extracted key, FILE's translations
-                                           (key -> text) and the ones already there
+  ui.py catalog FILE.json [--dd DERIVED] [--lang vi] [--keep-stale]
+                                           write GymWorkout/Localization/Localizable.xcstrings
+                                           the way Xcode does (its key order and JSON
+                                           layout): every extracted key, FILE's
+                                           translations (key -> text) and the ones
+                                           already there
 
 DERIVED is the DerivedData folder of a build of the app (the lab build's
 `$LAB/dd` by default); keys come from its .stringsdata files, so build first.
@@ -30,16 +32,23 @@ def stringsdata(dd):
 
 
 def keys(dd, table='Localizable'):
-    """key -> {'value', 'comment', 'locations': [file:line]}"""
-    out = {}
+    """key -> {'value', 'comment', 'locations': [file:line]}. A key used in
+    several places carries every distinct comment, sorted and joined with a
+    newline, the way Xcode merges them into the catalog."""
+    out, comments = {}, {}
     for f in stringsdata(dd):
         d = json.load(open(f))
         src = os.path.basename(d.get('source', f))
         for e in d['tables'].get(table, []):
-            k = out.setdefault(e['key'], {'value': e.get('value'), 'comment': e.get('comment', ''), 'locations': []})
-            if e.get('comment') and not k['comment']: k['comment'] = e['comment']
+            k = out.setdefault(e['key'], {'value': e.get('value'), 'comment': '', 'locations': []})
+            if e.get('value') is not None and k['value'] is None: k['value'] = e['value']
+            if e.get('comment'): comments.setdefault(e['key'], set()).add(e['comment'])
             loc = f"{src}:{e['location']['startingLine']}"
             if loc not in k['locations']: k['locations'].append(loc)
+    for key, cs in comments.items():
+        out[key]['comment'] = '\n'.join(sorted(cs))
+    for k in out.values():
+        k['locations'].sort()
     return out
 
 
@@ -77,6 +86,9 @@ def swift_literals(src):
                             while j < n and src[j] != '"': j += 2 if src[j] == '\\' else 1
                         j += 1
                     buf.append('§'); continue
+                if src[j] == '\\' and src[j + 1] == 'u' and src[j + 2:j + 3] == '{':
+                    end = src.find('}', j)
+                    buf.append(chr(int(src[j + 3:end], 16))); j = end + 1; continue
                 if src[j] == '\\':
                     buf.append(src[j + 1]); j += 2; continue
                 buf.append(src[j]); j += 1
@@ -89,7 +101,7 @@ def swift_literals(src):
 IGNORE_BEFORE = re.compile(
     r'(systemName|systemImage|named|forResource|withExtension|forKey|storageKey|key|id|identifier|'
     r'accessibilityIdentifier|rawValue|resource|joint|cueID|subsystem|category|fileName|ofType|'
-    r'productID|ProductID|url|URL|string|format|dateFormat|locale|identifier|scheme|path|comment)\s*[:(]\s*$|'
+    r'productID|ProductID|url|URL|string|format|dateFormat|locale|identifier|scheme|path|comment|defaultValue)\s*[:(]\s*$|'
     r'(print|debugPrint|fatalError|assert|assertionFailure|precondition|preconditionFailure|Logger\(\)?\.\w+|'
     r'os_log|NSLog|#Preview|Image|UIImage|Color|URL|AppStorage|SceneStorage|Notification\.Name|'
     r'UserDefaults\.\w+\.\w+|hasPrefix|hasSuffix|contains|replacingOccurrences|components|split|'
@@ -122,31 +134,74 @@ def audit(dd):
     return rows
 
 
-def catalog(dd, new_file, lang):
+SORTER = r'''
+import Foundation
+let url = URL(fileURLWithPath: CommandLine.arguments[1])
+let keys = try! JSONSerialization.jsonObject(with: Data(contentsOf: url)) as! [String]
+let sorted = keys.sorted { $0.localizedStandardCompare($1) == .orderedAscending }
+FileHandle.standardOutput.write(try! JSONSerialization.data(withJSONObject: sorted))
+'''
+
+
+def xcode_sorted(keys):
+    """Xcode's key order in a String Catalog: Foundation's
+    localizedStandardCompare (checked on the file Xcode wrote: 0 pairs out of
+    order), run through `xcrun swift`."""
+    import subprocess, tempfile
+    with tempfile.TemporaryDirectory() as d:
+        kp, sp = os.path.join(d, 'k.json'), os.path.join(d, 's.swift')
+        json.dump(keys, open(kp, 'w', encoding='utf-8'), ensure_ascii=False)
+        open(sp, 'w').write(SORTER)
+        return json.loads(subprocess.run(['xcrun', 'swift', sp, kp], capture_output=True, check=True).stdout)
+
+
+def xcode_json(obj):
+    """JSON the way Xcode writes a catalog: `"key" : value`, two-space indent,
+    an empty object as `{` blank line `}`."""
+    text = json.dumps(obj, indent=2, ensure_ascii=False, separators=(',', ' : '))
+    return re.sub(r'^( *)(.*?)\{\}(,?)$', lambda m: f'{m.group(1)}{m.group(2)}{{\n\n{m.group(1)}}}{m.group(3)}',
+                  text, flags=re.M)
+
+
+def catalog(dd, new_file, lang, keep_stale=False):
+    """Rewrite the catalog as Xcode would after a build, plus FILE's
+    translations: entries already there keep their fields, explicit keys
+    (`String(localized: "a.b", defaultValue: "X")`) carry
+    `extracted_with_value` and their English, keys no longer in the code are
+    dropped (or kept as stale)."""
+    from collections import OrderedDict as OD
     ks = keys(dd)
-    old = json.load(open(CATALOG, encoding='utf-8')) if os.path.exists(CATALOG) else {'sourceLanguage': 'en', 'strings': {}, 'version': '1.0'}
+    raw = open(CATALOG, encoding='utf-8').read() if os.path.exists(CATALOG) else ''
+    old = json.loads(raw, object_pairs_hook=OD) if raw else {'sourceLanguage': 'en', 'strings': {}, 'version': '1.0'}
     new = json.load(open(new_file, encoding='utf-8')) if new_file else {}
-    strings = {}
-    missing = []
-    for k in sorted(ks, key=str.lower):
-        if not k.strip(): continue          # TextField("", …) and empty hints
-        info = ks[k]
-        entry = {}
+    strings, missing = {}, []
+    for k, info in ks.items():
+        entry = OD(old['strings'].get(k, {}))
         if info['comment']: entry['comment'] = info['comment']
-        locs = dict(old['strings'].get(k, {}).get('localizations', {}))
-        if info['value'] is not None:
-            locs['en'] = {'stringUnit': {'state': 'translated', 'value': info['value']}}
+        locs = OD(entry.get('localizations', {}))
+        if info['value'] is not None and info['value'] != k:
+            entry['extractionState'] = 'extracted_with_value'
+            en = locs.get('en', {}).get('stringUnit', {})
+            locs['en'] = {'stringUnit': OD([('state', en.get('state', 'new')), ('value', info['value'])])}
+        elif entry.get('extractionState') in ('stale', 'extracted_with_value'):
+            entry.pop('extractionState')
         t = new.get(k)
         if isinstance(t, str) and t.strip():
-            locs[lang] = {'stringUnit': {'state': 'translated', 'value': t}}
-        if lang not in locs: missing.append(k)
-        if locs: entry['localizations'] = dict(sorted(locs.items()))
-        strings[k] = entry
+            locs[lang] = {'stringUnit': OD([('state', 'translated'), ('value', t)])}
+        if k.strip() and lang not in locs: missing.append(k)
+        if locs: entry['localizations'] = OD(sorted(locs.items()))
+        else: entry.pop('localizations', None)
+        strings[k] = OD(sorted(entry.items()))
     stale = [k for k in old['strings'] if k not in ks]
-    data = {'sourceLanguage': 'en', 'strings': strings, 'version': '1.0'}
-    open(CATALOG, 'w', encoding='utf-8').write(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=False) + '\n')
+    if keep_stale:
+        for k in stale:
+            e = OD(old['strings'][k]); e['extractionState'] = 'stale'
+            strings[k] = OD(sorted(e.items()))
+    data = OD([('sourceLanguage', 'en'), ('strings', OD((k, strings[k]) for k in xcode_sorted(list(strings)))),
+               ('version', old.get('version', '1.0'))])
+    open(CATALOG, 'w', encoding='utf-8').write(xcode_json(data) + ('\n' if raw.endswith('\n') else ''))
     print(f'{len(strings)} keys, {len(strings) - len(missing)} with {lang}, {len(missing)} missing; '
-          f'dropped {len(stale)} keys no longer in the code')
+          f'{len(stale)} keys no longer in the code {"kept as stale" if keep_stale else "dropped"}')
     return missing
 
 
@@ -156,7 +211,7 @@ def main():
     k = sub.add_parser('keys'); k.add_argument('--dd', default=DEFAULT_DD); k.add_argument('--out')
     a = sub.add_parser('audit'); a.add_argument('--dd', default=DEFAULT_DD)
     c = sub.add_parser('catalog'); c.add_argument('file', nargs='?'); c.add_argument('--dd', default=DEFAULT_DD)
-    c.add_argument('--lang', default='vi')
+    c.add_argument('--lang', default='vi'); c.add_argument('--keep-stale', action='store_true')
     args = ap.parse_args()
     if not args.dd: sys.exit('pass --dd or set LAB')
     if args.cmd == 'keys':
@@ -167,7 +222,7 @@ def main():
         rows = audit(args.dd)
         print('\n'.join(rows)); print(f'{len(rows)} literals look shown but are not localizable', file=sys.stderr)
     elif args.cmd == 'catalog':
-        catalog(args.dd, args.file, args.lang)
+        catalog(args.dd, args.file, args.lang, args.keep_stale)
 
 
 if __name__ == '__main__':

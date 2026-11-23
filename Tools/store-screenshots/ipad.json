@@ -1,0 +1,236 @@
+[
+ {
+  "shot": "raw/ipad_en_1.png",
+  "device": "ipadp",
+  "line1": "Your Whole Day",
+  "line2": "in One App",
+  "sub": [
+   "Water, weight, steps, sleep and workouts,",
+   "all on one screen."
+  ],
+  "out": "en/iPad-EN-01-All-In-One",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_en_2.png",
+  "device": "ipadp",
+  "line1": "Snap a Meal.",
+  "line2": "Get the Macros.",
+  "sub": [
+   "AI reads calories, protein, fat and carbs",
+   "from one photo. With MUSQ Pro."
+  ],
+  "out": "en/iPad-EN-02-Meal-Scan",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_en_3.png",
+  "device": "ipadp",
+  "line1": "Ask Your",
+  "line2": "AI Coach",
+  "sub": [
+   "Answers built on your own workouts",
+   "and plan. With Premium or Pro."
+  ],
+  "out": "en/iPad-EN-03-AI-Coach",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_en_4.png",
+  "device": "ipadp",
+  "line1": "A Plan Built",
+  "line2": "for Your Body",
+  "sub": [
+   "Daily calories and macros set by",
+   "your goal, body and activity."
+  ],
+  "out": "en/iPad-EN-04-Calorie-Plan",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_en_5.png",
+  "device": "ipadp",
+  "line1": "Learn Every Lift",
+  "line2": "in 3D",
+  "sub": [
+   "458 exercises with key tips",
+   "and the muscles they work."
+  ],
+  "out": "en/iPad-EN-05-3D-Lifts",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_en_6.png",
+  "device": "ipadp",
+  "line1": "Watch Your",
+  "line2": "Strength Grow",
+  "sub": [
+   "Estimated 1RM, personal records",
+   "and your weight trend."
+  ],
+  "out": "en/iPad-EN-06-Progress",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_vi_1.png",
+  "device": "ipadp",
+  "upper": true,
+  "line1": "Cả ngày của bạn",
+  "line2": "trong một app",
+  "sub": [
+   "Nước, cân nặng, bước chân, giấc ngủ, buổi tập:",
+   "tất cả trên một màn hình."
+  ],
+  "out": "vi/iPad-VI-01-Tat-Ca-Trong-Mot",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_vi_2.png",
+  "device": "ipadp",
+  "upper": true,
+  "line1": "Chụp bữa ăn",
+  "line2": "biết ngay macro",
+  "sub": [
+   "AI đọc calo, đạm, chất béo, tinh bột",
+   "từ một tấm ảnh. Có trong MUSQ Pro."
+  ],
+  "out": "vi/iPad-VI-02-Quet-Bua-An",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_vi_3.png",
+  "device": "ipadp",
+  "upper": true,
+  "line1": "Huấn luyện viên AI",
+  "line2": "của riêng bạn",
+  "sub": [
+   "Trả lời dựa trên buổi tập và kế hoạch",
+   "của chính bạn. Có trong Premium và Pro."
+  ],
+  "out": "vi/iPad-VI-03-HLV-AI",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_vi_4.png",
+  "device": "ipadp",
+  "upper": true,
+  "line1": "Kế hoạch riêng",
+  "line2": "cho cơ thể bạn",
+  "sub": [
+   "Calo và macro mỗi ngày theo mục tiêu,",
+   "cơ thể và mức vận động của bạn."
+  ],
+  "out": "vi/iPad-VI-04-Ke-Hoach-Calo",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_vi_5.png",
+  "device": "ipadp",
+  "upper": true,
+  "line1": "Học động tác",
+  "line2": "qua 3D",
+  "sub": [
+   "458 bài tập với lưu ý quan trọng",
+   "và nhóm cơ được tập."
+  ],
+  "out": "vi/iPad-VI-05-Bai-Tap-3D",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ },
+ {
+  "shot": "raw/ipad_vi_6.png",
+  "device": "ipadp",
+  "upper": true,
+  "line1": "Sức mạnh",
+  "line2": "tăng từng tuần",
+  "sub": [
+   "1RM ước tính, kỷ lục cá nhân",
+   "và xu hướng cân nặng."
+  ],
+  "out": "vi/iPad-VI-06-Tien-Do",
+  "erase": [
+   [
+    140,
+    14,
+    420,
+    52
+   ]
+  ]
+ }
+]

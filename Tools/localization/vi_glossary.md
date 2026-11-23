@@ -5,6 +5,10 @@ Rules every Vietnamese string in MUSQ follows: the coaching copy in
 The owner picked: everything Vietnamese except **exercise names, which stay
 English everywhere**, and muscle names in **Vietnamese anatomical** form.
 
+The features added 2026-11-21 → 11-23 (Today, the plan onboarding, Apple
+Health, Balance, quick logs, meal scan, Progress, Premium/Pro, Ask MUSQ, the
+goal photo and Goal page) have their own terms in `vi_glossary_features.md`.
+
 ## Rules
 
 1. **Exercise names stay English, character for character** — every name in
