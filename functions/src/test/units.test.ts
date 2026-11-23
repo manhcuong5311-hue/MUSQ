@@ -513,6 +513,9 @@ test("prompts carry the safety rules", () => {
   assert.match(chat, /Never give doses/);
   assert.match(chat, /Reply in Vietnamese/);
   assert.match(chat, /No headings, tables, code blocks/);
+  // The plan sent is the onboarding one; Today's step-adjusted target wins.
+  assert.match(chat, /comes from their onboarding answers/);
+  assert.match(chat, /the daily target on Today wins if it differs/);
   assert.match(mealInstructions(null), /isFood to false/);
   const goal = goalPrompt({ sex: "female", ...legacyLook("buildMuscle") });
   assert.match(goal, /No nudity/);
