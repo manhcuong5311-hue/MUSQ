@@ -128,13 +128,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "MUSQ turns what you say into a water, walk or meal log on your device. Nothing you say is saved or sent."
+            "value" : "MUSQ turns what you say into text on your device, for a water, walk or meal log or a meal scan's note. The audio is never saved or sent; a meal scan's note goes with the scan when you tap Read this meal."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MUSQ chuyển lời bạn nói thành bản ghi nước, đi bộ hoặc bữa ăn ngay trên thiết bị. Những gì bạn nói không được lưu hay gửi đi."
+            "value" : "MUSQ chuyển lời bạn nói thành chữ ngay trên thiết bị, để ghi nước, đi bộ, bữa ăn hoặc ghi chú khi quét bữa ăn. Âm thanh không bao giờ được lưu hay gửi đi; ghi chú chỉ được gửi kèm lượt quét khi bạn chạm Nhận diện bữa ăn này."
           }
         }
       }

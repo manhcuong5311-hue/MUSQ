@@ -301,7 +301,7 @@
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds only: adds sample steps and sleep to the Simulator's Health data for testing.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MUSQ listens only while the mic is on, to log water, a walk or a meal by voice. The words are recognised on your device and the audio is never saved or sent.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "MUSQ saves your goal photo to your library when you ask it to.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "MUSQ turns what you say into a water, walk or meal log on your device. Nothing you say is saved or sent.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "MUSQ turns what you say into text on your device, for a water, walk or meal log or a meal scan's note. The audio is never saved or sent; a meal scan's note goes with the scan when you tap Read this meal.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = NO;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -344,7 +344,7 @@
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "MUSQ only reads from Apple Health (steps, sleep, active energy and workouts) and never saves anything to it.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MUSQ listens only while the mic is on, to log water, a walk or a meal by voice. The words are recognised on your device and the audio is never saved or sent.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "MUSQ saves your goal photo to your library when you ask it to.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "MUSQ turns what you say into a water, walk or meal log on your device. Nothing you say is saved or sent.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "MUSQ turns what you say into text on your device, for a water, walk or meal log or a meal scan's note. The audio is never saved or sent; a meal scan's note goes with the scan when you tap Read this meal.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = NO;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
