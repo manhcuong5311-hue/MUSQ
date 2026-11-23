@@ -1,0 +1,25 @@
+Short answer, from OpenAI's own docs as of 2026-11-22 (pages accessed today; dates come from the changelog and deprecation notices): there is no way to train or fine-tune gpt-6.1-terra, and OpenAI's fine-tuning platform is closing. The workable route is to give the model the knowledge with each request: a fixed Vietnamese dish, portion, oil and sauce reference table in the prompt, made cheap by prompt caching, plus optional lookup tools.
+
+(1) Fine-tuning. The Terra model page lists fine-tuning as unsupported. Self-serve fine-tuning has been closed since 2026-05-07 to organizations that never used it, and all job creation ends 2027-01-06.
+- Vision fine-tuning (training with images) is only documented for gpt-4o-2024-08-06, which shuts down 2027-01-14. Training costs $25 per 1M tokens, and the fine-tuned model costs $3.75 input / $15 output per 1M, against Terra's $1 / $5.
+- Training images that contain people or faces are dropped.
+- Text fine-tuning (SFT) and preference fine-tuning (DPO, text only) are listed for gpt-4.1 and gpt-4.1-mini, which also shut down 2027-01-14.
+- Reinforcement fine-tuning is no longer listed as a supported method, and its only base model (o4-mini) shut down 2026-10-23.
+
+(2) Prompt caching. It is on by default and, for Terra, runs in implicit mode. That mode writes the cache through the end of the last user message, photo included, so the next call with a different photo reuses nothing.
+- Fix: put the reference table in a developer message, mark the end of the table with `prompt_cache_breakpoint`, and set `prompt_cache_options.mode` to `explicit`.
+- The table is then read from cache at $0.05 per 1M tokens (5% of the input price). The photo is charged at the normal $1 per 1M, with no cache-write charge.
+- The minimum cacheable prefix is 1,024 tokens. `prompt_cache_options.ttl` is `30m` (default; writes cost $1.25 per 1M) or `12h` (Responses API only, since 2026-10-20; writes cost $2.50 per 1M).
+- My inference: today's ~$0.003 per scan matches every scan paying the 1.25x cache-write rate on the whole prompt. Check `usage.input_tokens_details.cache_write_tokens` in a real response to confirm.
+
+(3) Lookup tools.
+- Function calling needs a second model request after your lookup runs, so it adds time; the docs give no latency figures.
+- The docs never say outright that function tools and a strict JSON schema output can go in one request. OpenAI's official Agents SDK does send both in one request, which suggests it works.
+- A remote MCP server lets OpenAI call your lookup service inside the same request, with no per-call fee beyond tokens.
+- `file_search` (OpenAI-hosted search over uploaded files) costs $2.50 per 1,000 calls, plus the retrieved text billed as input and storage at $0.10/GB/day after 1 GB free. My inference: that alone roughly doubles to triples the cost of a scan, so a cached table is cheaper unless the data is very large.
+
+(4) Reasoning effort. Terra supports none, low, medium (the default), high, xhigh and max. OpenAI's launch chart on a visual-reasoning benchmark (MMMU-Pro) shows low 83.7%, medium 84.6%, high 85.0%, max 85.5%; cost per task rises from about $0.0038 (low) to $0.012 (max). Its factual error rate falls from 16.7% (low) to 10.1% (medium) to 4.3% (max). There are no official latency figures by effort level.
+
+(5) Image tokens. `detail` can be low, high, original or auto (auto is the default). Images are billed by 32-pixel patches times a per-model multiplier. Terra's own limits and multiplier are not published anywhere in the docs, so measure them with POST /v1/responses/input_tokens. If Terra follows GPT-6 Astra's rules, `auto` sends the full image size: about 14k tokens for a 12 MP photo against about 2.9k at `high`.
+
+For measuring progress: OpenAI's Evals tools become read-only on 2026-11-30 and OpenAI recommends Promptfoo instead. Batch runs and the new 2-hour and 8-hour background windows (30-40% cheaper) suit offline test runs.

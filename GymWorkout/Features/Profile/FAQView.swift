@@ -3,8 +3,9 @@
 //  GymWorkout
 //
 //  Help & FAQ, pushed from Profile: the questions people ask about Premium,
-//  billing, recovery, the card colours, their data and ads, each opening in
-//  place, and a way to write to support. Prices and trial length are read
+//  billing, recovery, the card colours, Balance and the quick logs, their
+//  data, Apple Health and ads, each opening in place, and a way to write to
+//  support. Prices and trial length are read
 //  from the App Store products, so the answers can't drift from them.
 //
 //  On a wide iPad the sections get a rail of their own beside the answers:
@@ -12,6 +13,7 @@
 //  contact card held at the foot.
 //
 
+import HealthKit
 import SwiftUI
 
 struct FAQView: View {
@@ -299,18 +301,87 @@ struct FAQView: View {
     /// The plans answer's first sentence while there's a trial to offer. A
     /// whole sentence of its own for translation; the space after it isn't.
     private var trial: String {
-        purchases.yearlyOffersFreeTrial
+        // Builds with Pro have two yearly plans, each with its own trial
+        // (read from App Store Connect), and one trial per Apple Account
+        // across the group.
+        if AIService.isLive {
+            let premium = purchases.yearly.flatMap(Purchases.freeTrialLength(of:))
+            let pro = purchases.proYearly.flatMap(Purchases.freeTrialLength(of:))
+            switch (premium, pro) {
+            case let (premium?, pro?):
+                return String(localized: "Premium Yearly starts with a \(premium) free trial and Pro Yearly with a \(pro) one. Each Apple Account can have one of them.") + " "
+            case let (premium?, nil):
+                return String(localized: "Premium Yearly starts with a \(premium) free trial for Apple Accounts that haven't had one.") + " "
+            case let (nil, pro?):
+                return String(localized: "Pro Yearly starts with a \(pro) free trial for Apple Accounts that haven't had one.") + " "
+            case (nil, nil):
+                return ""
+            }
+        }
+        return purchases.yearlyOffersFreeTrial
             ? String(localized: "The yearly plan starts with a \(purchases.trialLength) free trial for Apple Accounts that haven't had one.") + " "
             : ""
     }
 
+    /// What's free and what Premium adds, in builds without the AI features.
+    private var freeAndPremium: String {
+        String(localized: "Every exercise, its 3D model, setup and key tips, the workout log, history, recovery and Preset 1 are free. MUSQ Premium adds the common mistakes drawn over the lifter, Preset 2 and 3 for every muscle group, and removes ads.")
+    }
+
+    /// What's free, Premium and Pro, in builds with the AI features: the
+    /// allowances come from `Purchases.Tier.ai`, which mirrors the server,
+    /// and Free's one goal photo is `AILimits.freeGoalPhotos`. Without the
+    /// allowances it falls back to the answer above rather than none.
+    private var aiTiers: String {
+        guard let premium = Purchases.Tier.premium.ai, let pro = Purchases.Tier.pro.ai,
+              let premiumPhotos = premium.goalPhotosPerYear, let proPhotos = pro.goalPhotosPerYear else { return freeAndPremium }
+        return String(localized: "Every exercise, its 3D model, setup and key tips, the workout log, history, recovery and Preset 1 are free, and so is your first goal photo (for adults). MUSQ Premium adds the common mistakes drawn over the lifter, Preset 2 and 3 for every muscle group and no ads, plus Ask MUSQ, the AI coach (up to \(premium.chatPerDay) questions a day), and \(premiumPhotos) goal photos a year. MUSQ Pro has everything in Premium, with up to \(pro.chatPerDay) questions a day, meal scans that log a meal's calories from a photo (up to \(pro.mealScansPerDay) a day) and \(proPhotos) goal photos a year.",
+                      comment: "Help & FAQ, what's free: Premium's questions a day and goal photos a year, then Pro's questions a day, meal scans a day and goal photos a year")
+    }
+
+    /// Apple Health (phase 2, 2026-11-22): what's read, how it moves the
+    /// calories, and how to stop it. Left out where there's no Health, like
+    /// Profile's row; the numbers come from `MeasuredActivity`.
+    private var appleHealthItems: [FAQItem] {
+        guard HKHealthStore.isHealthDataAvailable() else { return [] }
+        let window = MeasuredActivity.windowDays.formatted()
+        let days = MeasuredActivity.minimumDays.formatted()
+        return [
+            FAQItem(question: String(localized: "What does MUSQ read from Apple Health, and how do I turn it off?"),
+                    // The AI coach is named only in builds that have it,
+                    // with the one way sleep reaches it (a Balance question
+                    // the user includes it in, kept in the chat until
+                    // cleared). What's saved follows `AppleHealth`: the goals
+                    // and the switch always, the step band only while the
+                    // switch is on.
+                    answer: AIService.isLive
+                        ? String(localized: "Once you connect it in Profile › Settings › Apple Health, MUSQ reads your steps, walking distance, active energy, sleep and workouts, and never writes to Health. Steps and last night's sleep show on Today, with their trends in Progress. Your average steps over the last \(window) full days (at least \(days) needed) set how active your days are in the calorie plan, in place of your answer to the daily-activity question; steps during your logged MUSQ workouts don't count, since your training days already do. You can stop steps setting the plan on the same screen. Active energy is shown beside your calorie target but never added to it. What MUSQ reads stays on your \(DS.deviceNoun): the readings are never saved, and never sent to MUSQ or advertisers. The one exception is yours to make: sleep is never sent to the AI coach unless you choose to include it in a question about your Balance; it then goes, through MUSQ's server and OpenAI, with that question and the next ones in the chat, and stays in the chat on your \(DS.deviceNoun), never in backups, until you clear it. Only your step and sleep goals and the calorie-plan switch are kept with your settings, plus, while your steps set the plan, the activity level they last set. To stop MUSQ reading Apple Health, go to Settings › Privacy & Security › Health › MUSQ (or in the Health app, tap your picture › Apps › MUSQ).")
+                        : String(localized: "Once you connect it in Profile › Settings › Apple Health, MUSQ reads your steps, walking distance, active energy, sleep and workouts, and never writes to Health. Steps and last night's sleep show on Today, with their trends in Progress. Your average steps over the last \(window) full days (at least \(days) needed) set how active your days are in the calorie plan, in place of your answer to the daily-activity question; steps during your logged MUSQ workouts don't count, since your training days already do. You can stop steps setting the plan on the same screen. Active energy is shown beside your calorie target but never added to it. What MUSQ reads stays on your \(DS.deviceNoun): the readings are never saved, and never sent to MUSQ or advertisers. Only your step and sleep goals and the calorie-plan switch are kept with your settings, plus, while your steps set the plan, the activity level they last set. To stop MUSQ reading Apple Health, go to Settings › Privacy & Security › Health › MUSQ (or in the Health app, tap your picture › Apps › MUSQ).")),
+        ]
+    }
+
     private var sections: [FAQSection] {
-        [
+        // Apple Health's answer joins the data section where there's Health.
+        let data: [FAQItem] = [
+            FAQItem(question: String(localized: "Where is my workout data kept?"),
+                    // The AI features send what they need, with consent,
+                    // so the answer changes in builds where they're live.
+                    answer: AIService.isLive
+                        ? String(localized: "On your \(DS.deviceNoun). MUSQ doesn't upload your workouts or keep them on a server. The optional AI features (the goal photo, and Premium's coach and meal scans) are the exception: when you use one, what it needs goes to MUSQ's server and OpenAI, and you're asked first. Signing in with Apple is needed only for them. Deleting the app deletes your workouts, so keep it installed (or back up your \(DS.deviceNoun)) to keep your history.")
+                        : String(localized: "On your \(DS.deviceNoun) only. MUSQ has no account and doesn't upload your workouts. Deleting the app deletes them, so keep it installed (or back up your \(DS.deviceNoun)) to keep your history.")),
+        ] + appleHealthItems + [
+            FAQItem(question: String(localized: "Why do I see ads, and how do I change my ad choices?"),
+                    answer: String(localized: "Ads keep the free version free; no full-screen ad appears mid-workout. Premium removes them. Where the law requires a choice, you can change it any time from Profile › Privacy Choices, and tracking follows your answer to Apple's tracking prompt (Settings › Privacy & Security › Tracking).")),
+        ]
+        return [
             FAQSection(title: String(localized: "PREMIUM & BILLING"), items: [
                 FAQItem(question: String(localized: "What's free, and what does Premium add?"),
-                        answer: String(localized: "Every exercise, its 3D model, setup and key tips, the workout log, history, recovery and Preset 1 are free. MUSQ Premium adds the common mistakes drawn over the lifter, Preset 2 and 3 for every muscle group, and removes ads.")),
+                        // Builds with the AI features name them, with what Premium includes.
+                        answer: AIService.isLive ? aiTiers : freeAndPremium),
                 FAQItem(question: String(localized: "What plans are there?"),
-                        answer: trial + String(localized: "Premium comes as a yearly subscription or a one-time lifetime purchase. Prices are shown in your local currency on the Premium screen before you pay.")),
+                        answer: trial + (AIService.isLive
+                            ? String(localized: "Premium comes as a yearly subscription or a one-time lifetime purchase. Pro, with more of the AI features, comes as a monthly or yearly subscription. Prices are shown in your local currency on the Premium screen before you pay.")
+                            : String(localized: "Premium comes as a yearly subscription or a one-time lifetime purchase. Prices are shown in your local currency on the Premium screen before you pay."))),
                 FAQItem(question: String(localized: "How do I cancel my subscription?"),
                         answer: String(localized: "Open the Settings app on your \(DS.deviceNoun), tap your name, then Subscriptions, choose MUSQ and tap Cancel Subscription. Cancel at least 24 hours before the renewal date to avoid being charged; Premium stays on until the end of the period you've paid for. Cancelling during a free trial ends it without charge.")),
                 FAQItem(question: String(localized: "How do I get a refund?"),
@@ -328,12 +399,24 @@ struct FAQView: View {
                 FAQItem(question: String(localized: "Can I change my split or goal?"),
                         answer: String(localized: "Yes. Tap Edit next to About You in Profile to change your goal, days a week and split. Your workout history stays as it is.")),
             ]),
-            FAQSection(title: String(localized: "DATA, ADS & PRIVACY"), items: [
-                FAQItem(question: String(localized: "Where is my workout data kept?"),
-                        answer: String(localized: "On your \(DS.deviceNoun) only. MUSQ has no account and doesn't upload your workouts. Deleting the app deletes them, so keep it installed (or back up your \(DS.deviceNoun)) to keep your history.")),
-                FAQItem(question: String(localized: "Why do I see ads, and how do I change my ad choices?"),
-                        answer: String(localized: "Ads keep the free version free; no full-screen ad appears mid-workout. Premium removes them. Where the law requires a choice, you can change it any time from Profile › Privacy Choices, and tracking follows your answer to Apple's tracking prompt (Settings › Privacy & Security › Tracking).")),
-            ]),
+            FAQSection(title: String(localized: "BALANCE & LOGGING", comment: "Help & FAQ section"), items: balanceItems),
+            FAQSection(title: String(localized: "DATA, ADS & PRIVACY"), items: data),
+        ]
+    }
+
+    /// Balance and the quick logs (2026-11-22): what the score is, voice
+    /// logging, and walks added by hand. The coach is named only in builds
+    /// that have it.
+    private var balanceItems: [FAQItem] {
+        let balance = String(localized: "One picture of your last 7 days in three parts. Train: showing up on your training days, and enough weekly sets for each muscle in your split. Eat: protein, eating against your plan and water, from your meal log or a two-tap evening check-in. Sleep: time asleep against your goal and how regular it is, from Apple Health or your own “Slept about…”. Balance is half the average of the parts it can score plus half the weakest, so lifting the weakest moves it most. It shows once two parts are scored, and a part with no data shows as not tracked, never as zero. The weakest part is your lever, with one thing to do today. It rates what you do, not your results: your weight or key lifts sit beside it. In Profile › Settings › Balance you can pick its look, stop scoring eating or sleep, hide calorie numbers, turn on its reminders, and pause a week of illness, travel or a deload. The score is worked out on your \(DS.deviceNoun) and never saved.")
+        let askCoach = String(localized: "If you ask MUSQ's coach how to improve it, the question and your numbers are put in the chat box for you to read and edit before you send. Your sleep numbers go only if you choose to include them, and then stay in the chat on your \(DS.deviceNoun), never in backups, until you clear it.")
+        return [
+            FAQItem(question: String(localized: "What is Balance?"),
+                    answer: AIService.isLive ? balance + " " + askCoach : balance),
+            FAQItem(question: String(localized: "How does logging by voice work?"),
+                    answer: String(localized: "In a quick log on Today (water, a walk or food), say what you had, like “500 ml water”, “walked 30 minutes” or “chicken rice 650 kcal”. On iOS 26 and later, tap the microphone: your \(DS.deviceNoun) turns your words into text on the device. On earlier versions, use the microphone on the keyboard to dictate, or type. You see what MUSQ read before anything is logged. MUSQ never records, keeps or sends the audio; keyboard dictation is Apple's own and follows your dictation settings.")),
+            FAQItem(question: String(localized: "Can I add a walk by hand?"),
+                    answer: String(localized: "Yes, for a walk without your phone or Watch: in a quick log on Today, add it under Walk, in minutes or steps (a minute counts as about 100 steps). It's kept in MUSQ with your other logs and never written to Apple Health. It counts with your steps on Today and in Progress, and in the step average for your calorie plan when your steps set it.")),
         ]
     }
 }

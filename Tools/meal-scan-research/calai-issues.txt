@@ -1,0 +1,68 @@
+[partly] (Inferred) The blog's 'model trained on food images' conflicts with the founder. The most consistent reading is off-the-shelf multimodal LLM APIs with prompts and retrieval over open datasets. No fine-tuning has been published.
+  src: https://getlatka.com/companies/calai.app/interviews/cal-ai-zach-yadegari-2025
+  corrected: The founder said Cal AI started as a wrapper over ChatGPT and other APIs (MFM, 2025-03-17) and did not train its own model (Latka, 2025-05-15). TechCrunch (2025-03-16) says it uses Anthropic and OpenAI models plus RAG. So API models with prompting and retrieval is the best-supported reading. But 'did not train our own model' does not rule out fine-tuning a model hosted by the provider; OpenAI offered GPT-4o vision fine-tuning from 2024-10-01 (https://openai.com/index/introducing-vision-to-the-fine-tuning-api/). 'No fine-tuning' is therefore unknown, not established.
+  notes: The quote is in the transcript. No public evidence was found either for or against fine-tuning.
+
+[partly] NowSecure's analysis of Cal AI iOS v3.0.0 found camera, microphone, photo library and speech-recognition permission requests, traffic to amazon, apple, cloudflare, google and rendermusic.io, and no AI component on the device.
+  src: https://www.nowsecure.com/marc-app/cal-ai-calorie-tracker-ios/
+  corrected: NowSecure's page for Cal AI iOS v3.0.0 (published 2025-08-06, updated 2025-10-15) lists permission requests for the camera, microphone, photo library, Apple speech recognition, HealthKit read/write and ad tracking. It lists the domains amazon.com, apple.com, cloudflare.com, google.com and rendermusic.io, and reports 'AI: none detected' with 'further analysis recommended'. It does not limit that finding to components on the device.
+  notes: Everything else in the claim matches the page.
+
+[partly] (Inferred) Because no AI was detected on the device, model calls most likely run on Cal AI's servers, so client-side analysis cannot show which provider is used.
+  src: https://www.nowsecure.com/marc-app/cal-ai-calorie-tracker-ios/
+  corrected: Server-side model calls are plausible but not shown. NowSecure itself says its 'none detected' result needs further analysis. It lists only broad domains (google.com, amazon.com), which cannot rule out calls to cloud AI endpoints. Client-side analysis would reveal the provider only if the app calls the provider directly.
+  notes: The inference goes further than the evidence supports.
+
+[unreachable] The CEO told Forbes the app is 90% accurate when photos are taken in natural light at an unskewed angle (seen only via a search excerpt).
+  src: https://www.forbes.com/sites/josipamajic/2024/11/02/meet-the-17-year-old-ceo-behind-a-12m-ai-powered-nutrition-app/
+  corrected: 
+  notes: The Forbes page could not be fetched, and the quoted wording was not found in any copy I could reach. Other coverage confirms Yadegari's 90% figure but not the lighting or angle condition. For example, Long Island Press (2025-04-07) quotes him as saying over 90% 'if you scan the right foods'.
+
+[partly] NIH test at NUTRITION 2026: 102 meals weighed to 0.1 g run through MFP, Lose It!, Cal AI and Appediet; all ~one-third too low, 250–345 kcal and ~30 g fat missed per meal; keto meals did worst; preliminary, not peer-reviewed.
+  src: https://www.sciencedaily.com/releases/2026/07/260726015237.htm
+  corrected: The NIH/NIDDK test was presented at NUTRITION 2026 on 2026-07-25. Standardized photos of 102 meals were submitted to MyFitnessPal, Lose It!, Cal AI and Appediet; ingredients were weighed to 0.1 g, and the reference values come from national food composition tables. Overall the apps underestimated energy by about 33%, i.e. 252–345 kcal per meal on meals averaging 918 kcal, and fat by about 30 g. The keto finding comes from a separate follow-up on 200+ more meals. It is preliminary: the apps 'may have greater difficulty' with low-carb ketogenic meals. It is not a result of the 102-meal test. This is a conference abstract, not yet peer-reviewed.
+  notes: The primary abstract, linked from the release, confirms the numbers.
+
+[partly] (Inferred) A large food database does not recover fat the camera cannot see: MFP still underestimated by 327 kcal and every app missed ~30 g fat.
+  src: https://www.healio.com/news/primary-care/20260804/ai-photobased-calorietracking-tools-underestimate-them-by-33
+  corrected: All four apps underestimated fat by about 30 g per meal, including MyFitnessPal (−327 kcal). Meals averaged 61 g fat, so roughly half the fat was missed (my arithmetic from the abstract). The study did not test whether the missed fat was visible, or whether any app matched photo results to its database. So 'a large database does not recover hidden fat' is a plausible reading, not a study finding.
+  notes: The numbers are correct; the explanation is the researcher's own.
+
+[partly] Sydney study (7 AI apps, not Cal AI): MFP 97% components, Lose It! 46%; eggs-on-toast butter −35% (MFP), Foodvisor −73%; beef pho and pearl milk tea components missed, energy underestimated up to 76%.
+  src: https://pmc.ncbi.nlm.nih.gov/articles/PMC11314244/
+  corrected: Li et al., Nutrients 2024 (peer-reviewed, 2024-08-05) tested seven AI photo apps; Cal AI was not one of them. MyFitnessPal identified 97% of food components; Lose It! and FatSecret each identified 46%. On eggs on toast with butter, MyFitnessPal was −35% because it left out the butter, and Foodvisor was −73%. For beef pho and pearl milk tea, the apps did not identify the separate components. But Table 10 shows beef pho was overestimated by all four apps that gave energy values (+3% to +49%). Only pearl milk tea was underestimated (−49% to −76%), and the 'up to 76%' figure is HealthifyMe on milk tea.
+  notes: The paper's text groups pho with the 76% underestimate, but its own table shows pho was overestimated. This matters for Vietnamese dishes.
+
+[partly] MyFitnessPal's Meal Scan uses Passio's Nutrition AI SDK for recognition; users adjust before saving; barcodes supported.
+  src: https://www.passio.ai/case-studies/myfitnesspal
+  corrected: Passio's undated case study is headed 'Earlier deployment'. It says Passio's Nutrition AI SDK supplied Meal Scan's food recognition inside the MyFitnessPal app, with the user adjusting results before saving and barcodes for packaged foods. It does not show that MyFitnessPal's Meal Scan still runs on Passio in 2026.
+  notes: Coverage dates the MFP–Passio Meal Scan to 2020. I found no 2026 confirmation of the vendor.
+
+=== MISSING ===
+- OpenAI has restricted self-serve fine-tuning, including GPT-4o vision fine-tuning. Since 2026-05-07, organizations that never ran fine-tuning cannot create jobs. Since 2026-07-02, neither can organizations that have not run inference on a fine-tuned model in the past 60 days. From 2027-01-06, no new fine-tuning jobs for anyone. Existing fine-tuned models keep working until their base model is deprecated. The vision fine-tuning page carries the same notice, dated 2026-05-08. This affects how to read Cal AI's 'trained on' wording. My inference: a team new to fine-tuning cannot fine-tune a hosted OpenAI model, which leaves prompting plus retrieval.
+  src: https://developers.openai.com/api/docs/deprecations (2026-05-07)
+
+- The primary NIH abstract (Charles, Hengist et al., NIDDK) adds detail the researcher took from press coverage. The 102 meals averaged 918 kcal and 61 g fat. Cal AI's limits of agreement were −821 to +132 kcal per meal. The ~30 g fat miss is about half the fat (my arithmetic). Consistency (ICC) was poor (<0.40) for energy, fat and protein; carbs were the most consistent (≥0.69). Reference values came from national food composition tables. The abstract gives no app versions or photo-capture method.
+  src: https://www.dropbox.com/scl/fi/z9wntfnzru6hxn3ggy1z1/Hengist_Charles-AI-calorie-tracking-abstract.pdf?rlkey=f6k2de1owz94jfvtjrhwsbe8x&dl=0 (2026-07-25)
+
+- Cal AI's own blog claims more than 'helps us improve': 'our AI learns from your feedback, continuously improving its accuracy over time'. It gives no mechanism. The researcher's gap list says only the weaker wording was found.
+  src: https://www.calai.app/blog/best-free-calorie-and-macro-tracker (2025-02-16)
+
+- The founder himself flagged mixed dishes. He said scanning is over 90% accurate only for the right foods, that foods with many or layered ingredients, like salads, come out less accurate, and that entering each ingredient by hand is more accurate.
+  src: https://longislandpress.com/2025/04/07/roslyn-teen-cal-ai (2025-04-07)
+
+- Accuracy work was done by people, not only by model choice. In May 2025 Yadegari said a hiring priority was a specialist whose only job is making the food scanner more accurate. This shows in-house tuning work but not model training.
+  src: https://getlatka.com/companies/calai.app/interviews/cal-ai-zach-yadegari-2025 (2025-05-15)
+
+- The App Store listing changed after the acquisition. Version numbers jumped from 3.3.9 (Jun 2, 2026) to 26.23.0 (Jun 9, 2026), matching MyFitnessPal's year-based numbering. Weekly releases continue through 26.46.1 (Nov 2026), and the seller is still Viral Development LLC. The listing names no AI provider and does not mention a depth sensor. It lists English plus 14 languages, with no Vietnamese.
+  src: https://apps.apple.com/us/app/id6480417616 (accessed 2026-11-22)
+
+- Reuters reported that Francisco Partners, which owns MyFitnessPal (Cal AI's parent), is exploring a sale with JPMorgan that could value it at over $1B. My searches found no buyer announced by Nov 2026. Cal AI's ownership could change again.
+  src: https://www.tradingview.com/news/reuters.com,2026:newsml_L6N40Q0TD:0-fitness-and-health-app-myfitnesspal-explores-sale-sources-say/ (2026-04-09)
+
+- Wikipedia's MyFitnessPal page cites The Nutrition Magazine for two claims: the deal included Cal AI's food database, and the standalone app would be wound down into MFP Premium. TechCrunch (app stays independent), the app's weekly releases through Nov 2026, and MFP's Cal AI team job posts from Sep–Oct 2026 contradict this. Treat that source as unreliable.
+  src: https://thenutritionmagazine.com/articles/myfitnesspal-acquires-cal-ai/ (2026-03-13)
+
+- Lose It!'s photo logging has moved on from the 2016 description. In April 2025 it said a newer Snap It model identifies every food in one photo and maps each to foods the member logs often. Its Say It voice logging matches descriptions against a database of over 63 million foods. These are company figures.
+  src: https://www.newswire.com/news/lose-it-finds-ai-powered-logging-boosts-weight-loss-success-and-22557702 (2025-04-22)
+

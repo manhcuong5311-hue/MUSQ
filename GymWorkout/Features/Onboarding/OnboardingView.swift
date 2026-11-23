@@ -2,10 +2,15 @@
 //  OnboardingView.swift
 //  GymWorkout
 //
-//  First launch: six questions — experience, sex, goal, days a week, how to
-//  split them, height and weight — then the plan they add up to. The same
-//  screens edit the answers later from Profile. Answers only shape
-//  suggestions (see `ProgramAdvisor`).
+//  First launch, rebuilt as a plan (2026-11-21): about you (sex, pregnancy
+//  or a recent birth, age, height and weight), your week (daily activity,
+//  experience, days, which days, split), your goal (goal, target weight,
+//  pace), your health (pain, conditions, a safety screen) and optional body
+//  fat; then a short "building your plan" pause and four result pages —
+//  body, calories, macros and the week — each showing its formulas with the
+//  user's own numbers (see `NutritionPlan`, `ExerciseSafety`). The same
+//  pages edit the answers later from Profile. One question per page, with a
+//  progress bar; pages appear only when the answers call for them.
 //
 //  On iPad the questions sit in one centred column, or, on a wide window, in
 //  a form pane beside a studio stage whose body map stays put and lights up
@@ -22,29 +27,47 @@ struct OnboardingView: View {
 
     @Environment(WorkoutStore.self) private var store
     @Environment(Purchases.self) private var purchases
+    /// Editing a saved plan: its steps set the daily activity, as on Today.
+    @Environment(AppleHealth.self) private var health
     /// The window on first run, or the edit sheet's own measured size.
     @Environment(\.dsLayout) private var layout
 
+    @State private var draft = OnboardingDraft()
     @State private var step: Step = .welcome
     @State private var movingForward = true
-    @State private var experience: TrainingExperience?
-    @State private var sex: Sex?
-    @State private var goal: FitnessGoal?
-    @State private var daysPerWeek: Int?
-    @State private var split: TrainingSplit?
-    @State private var unit: WeightUnit = .kg
-    @State private var heightCm: Double = 170
-    @State private var weightKg: Double = 70
-    /// Height and weight were set by hand, so picking a sex no longer
-    /// changes their starting values.
-    @State private var bodyTouched = false
     @State private var didLoad = false
     @State private var showsPremium = false
 
-    enum Step: Int, CaseIterable {
-        case welcome, experience, sex, goal, days, split, body, plan
+    enum Step: Hashable {
+        case welcome
+        case sex, maternity, trimester, postpartum, age, body
+        case activity, experience, days, weekdays, split
+        case goal, target, pace
+        case joints, conditions, bloodPressure, screening, bodyFat
+        case calculating
+        case resultBody, resultEnergy, resultMacros, resultWeek
 
-        static let questions: [Step] = [.experience, .sex, .goal, .days, .split, .body]
+        static let results: [Step] = [.resultBody, .resultEnergy, .resultMacros, .resultWeek]
+
+        var isResult: Bool { Self.results.contains(self) }
+        var isQuestion: Bool { self != .welcome && self != .calculating && !isResult }
+    }
+
+    /// The pages the answers so far call for, in order.
+    private var flow: [Step] {
+        var steps: [Step] = isEditing ? [] : [.welcome]
+        steps.append(.sex)
+        if draft.asksMaternity { steps.append(.maternity) }
+        if draft.isPregnant { steps.append(.trimester) }
+        if draft.isPostpartum { steps.append(.postpartum) }
+        steps += [.age, .body, .activity, .experience, .days, .weekdays, .split]
+        if !draft.isPregnant { steps.append(.goal) }
+        if draft.effectiveGoal?.hasTarget == true { steps += [.target, .pace] }
+        steps += [.joints, .conditions]
+        if !draft.conditionsNone && draft.conditions.contains(.highBloodPressure) { steps.append(.bloodPressure) }
+        steps += [.screening, .bodyFat, .calculating]
+        steps += Step.results
+        return steps
     }
 
     var body: some View {
@@ -62,12 +85,17 @@ struct OnboardingView: View {
             }
         }
         .onAppear(perform: load)
+        // A Health read that lands while the editor is open moves its
+        // numbers with Today's.
+        .onChange(of: health.measuredActivity) { _, measured in
+            if usesMeasuredActivity { draft.measured = measured }
+        }
         // ⌘[ and Esc step back, or close the editor from its first question.
         .dsBackShortcuts(back)
         // Presented here rather than through `Paywall`: closing it, bought or
         // not, is what finishes onboarding.
         .sheet(isPresented: $showsPremium, onDismiss: finish) {
-            PremiumView(reason: .onboarding)
+            PremiumView(reason: .onboarding, profile: draft.profile)
                 .environment(purchases)
         }
     }
@@ -76,7 +104,7 @@ struct OnboardingView: View {
     /// column on iPad, or the form pane beside the stage.
     private var form: some View {
         VStack(spacing: 0) {
-            if step != .welcome {
+            if step != .welcome && step != .calculating {
                 topBar
             }
             ZStack {
@@ -87,9 +115,11 @@ struct OnboardingView: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .clipped()
 
-            footer
-                .modifier(FormColumn(compactPadding: DS.Metric.gutter))
-                .padding(.bottom, layout.value(12, 20, wide: 24))
+            if step != .calculating {
+                footer
+                    .modifier(OnboardingColumn(compactPadding: DS.Metric.gutter))
+                    .padding(.bottom, layout.value(12, 20, wide: 24))
+            }
         }
     }
 
@@ -110,33 +140,60 @@ struct OnboardingView: View {
 
     // MARK: - Chrome
 
+    private var isFirstPage: Bool { flow.first == step }
+
     private var topBar: some View {
         HStack(spacing: 14) {
             CircleIconButton(action: back) {
-                Image(systemName: isEditing && step == .experience ? "xmark" : "chevron.left")
+                Image(systemName: isEditing && isFirstPage ? "xmark" : "chevron.left")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(DS.silver)
             }
-            .accessibilityLabel(isEditing && step == .experience ? "Close" : "Back")
+            .accessibilityLabel(isEditing && isFirstPage ? "Close" : "Back")
 
-            HStack(spacing: 5) {
-                ForEach(Step.questions, id: \.self) { question in
-                    Capsule()
-                        .fill(DS.silver.opacity(question.rawValue <= step.rawValue ? 0.85 : 0.12))
-                        .frame(height: layout.value(4, 5))
+            if step.isResult {
+                // The result pages as dots: where you are among the four.
+                HStack(spacing: 5) {
+                    ForEach(Step.results, id: \.self) { page in
+                        Capsule()
+                            .fill(DS.silver.opacity(page == step ? 0.85 : 0.15))
+                            .frame(height: layout.value(4, 5))
+                    }
                 }
+                .accessibilityElement()
+                .accessibilityLabel(resultNumber.map { "Your plan, page \($0) of \(Step.results.count)" } ?? "Your plan")
+            } else {
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(DS.silver.opacity(0.12))
+                        Capsule().fill(DS.silver.opacity(0.85))
+                            .frame(width: geo.size.width * progress)
+                    }
+                }
+                .frame(height: layout.value(4, 5))
+                .accessibilityElement()
+                .accessibilityLabel(questionNumber.map { "Question \($0.0) of \($0.1)" } ?? "")
             }
-            .accessibilityElement()
-            .accessibilityLabel(questionNumber.map { "Question \($0) of \(Step.questions.count)" } ?? "Your plan")
         }
-        .modifier(FormColumn(compactPadding: 16))
+        .modifier(OnboardingColumn(compactPadding: 16))
         .padding(.top, layout.value(11, 14))
         .padding(.bottom, layout.value(6, 10))
         .animation(.easeOut(duration: 0.25), value: step)
     }
 
-    private var questionNumber: Int? {
-        Step.questions.firstIndex(of: step).map { $0 + 1 }
+    /// (number, of how many) among the questions the answers call for.
+    private var questionNumber: (Int, Int)? {
+        let questions = flow.filter(\.isQuestion)
+        return questions.firstIndex(of: step).map { ($0 + 1, questions.count) }
+    }
+
+    private var resultNumber: Int? {
+        Step.results.firstIndex(of: step).map { $0 + 1 }
+    }
+
+    private var progress: CGFloat {
+        guard let number = questionNumber, number.1 > 0 else { return 0 }
+        return CGFloat(number.0) / CGFloat(number.1)
     }
 
     @ViewBuilder
@@ -145,30 +202,43 @@ struct OnboardingView: View {
         case .welcome:
             VStack(spacing: 10) {
                 WideButton(title: "Get Started", prominent: true, fontSize: 15, verticalPadding: 15) { advance() }
-                    .modifier(ReturnKey())
-                Text("Six quick questions · about a minute")
+                    .modifier(OnboardingReturnKey())
+                Text("Quick questions · about two minutes")
                     .font(.ui(layout.value(12, 13)))
                     .foregroundStyle(DS.silver.opacity(0.45))
             }
-        case .plan:
+        case .resultWeek:
             WideButton(title: isEditing ? "Save Changes" : "Start Training", prominent: true,
                        fontSize: 15, verticalPadding: 15, action: complete)
-                .modifier(ReturnKey())
+                .modifier(OnboardingReturnKey())
         default:
             WideButton(title: "Continue", prominent: canContinue, fontSize: 15, verticalPadding: 15) { advance() }
                 .disabled(!canContinue)
                 .opacity(canContinue ? 1 : 0.5)
-                .modifier(ReturnKey())
+                .modifier(OnboardingReturnKey())
         }
     }
 
     private var canContinue: Bool {
         switch step {
-        case .experience: return experience != nil
-        case .sex: return sex != nil
-        case .goal: return goal != nil
-        case .days: return daysPerWeek != nil
-        case .split: return split != nil
+        case .sex: return draft.sex != nil
+        case .maternity: return draft.maternity != nil
+        case .trimester: return draft.trimester != nil
+        case .postpartum:
+            return draft.postpartumStage != nil && draft.postpartumCleared != nil && draft.breastfeeding != nil
+        case .activity: return draft.activity != nil
+        case .experience: return draft.experience != nil
+        case .days: return draft.daysPerWeek != nil
+        case .weekdays: return draft.weekdays.count == draft.daysPerWeek
+        case .split: return draft.split != nil
+        case .goal: return draft.effectiveGoal != nil
+        case .target: return draft.currentTarget != nil
+        case .pace: return draft.currentPace != nil
+        case .joints: return draft.jointsNone || !draft.joints.isEmpty
+        case .conditions: return draft.conditionsNone || !draft.conditions.isEmpty
+        case .bloodPressure: return draft.bloodPressureControlled != nil
+        case .screening: return draft.screeningNone || !draft.screening.isEmpty
+        case .resultBody, .resultEnergy, .resultMacros: return draft.plan != nil
         default: return true
         }
     }
@@ -209,17 +279,17 @@ struct OnboardingView: View {
 
     /// The stage follows the answers: lower body once Female is picked, and
     /// the first day of the split from the split question on.
-    private var stageLight: StageLight {
-        if step == .split || step == .plan, let day = firstSplitDay {
+    private var stageLight: OnboardingStageLight {
+        if step == .split || step.isResult, let day = firstSplitDay {
             return .day(name: day.name, groups: day.groups)
         }
-        return sex == .female ? .lowerBody : .sampler
+        return draft.sex == .female ? .lowerBody : .sampler
     }
 
     /// Day one of the rotation the plan page shows.
     private var firstSplitDay: ProgramAdvisor.SplitDay? {
-        let days = draftProfile.map { ProgramAdvisor.days(for: $0) }
-            ?? ProgramAdvisor.days(of: split ?? .pushPullLegs, lowerFocus: sex == .female)
+        let days = draft.profile.map { ProgramAdvisor.days(for: $0) }
+            ?? ProgramAdvisor.days(of: draft.split ?? .pushPullLegs, lowerFocus: draft.sex == .female)
         return days
             .map { ProgramAdvisor.SplitDay(name: $0.name, groups: $0.groups.filter(PresetProvider.trainableGroups.contains)) }
             .first { !$0.groups.isEmpty }
@@ -230,19 +300,89 @@ struct OnboardingView: View {
     @ViewBuilder
     private var page: some View {
         switch step {
-        case .welcome: welcome
-        case .experience: experiencePage
-        case .sex: sexPage
-        case .goal: goalPage
-        case .days: daysPage
-        case .split: splitPage
-        case .body: bodyPage
-        case .plan: planPage
+        case .welcome:
+            OnboardingWelcome()
+        case .calculating:
+            OnboardingCalculating(safetyChecked: !draft.health.joints.isEmpty || !draft.health.conditions.isEmpty) {
+                // Ignored once the user has stepped back off the pause.
+                if step == .calculating { advance() }
+            }
+        case .resultBody, .resultEnergy, .resultMacros, .resultWeek:
+            if let plan = draft.plan, let profile = draft.profile {
+                OnboardingResult(step: step, plan: plan, profile: profile, draft: draft, isEditing: isEditing,
+                                 builtInPresetGroups: PresetProvider.trainableGroups.filter { store.savedLevels(for: $0).isEmpty })
+            }
+        default:
+            OnboardingQuestion(step: step, draft: draft)
         }
     }
 
-    @ViewBuilder
-    private var welcome: some View {
+    // MARK: - Actions
+
+    /// Editing a saved profile: the numbers follow Apple Health's steps,
+    /// as Today's do, so Save shows nothing new there. A new user's own
+    /// answer sets the first plan.
+    private var usesMeasuredActivity: Bool { isEditing && store.profile != nil }
+
+    private func load() {
+        guard !didLoad else { return }
+        didLoad = true
+        draft.unit = store.unit
+        if let profile = store.profile {
+            draft.load(profile, experience: store.experience, unit: store.unit)
+        }
+        if usesMeasuredActivity { draft.measured = health.measuredActivity }
+        if isEditing { step = .sex }
+    }
+
+    private func advance() {
+        guard canContinue else { return }
+        let steps = flow
+        guard let index = steps.firstIndex(of: step), index + 1 < steps.count else { return }
+        if step == .sex { draft.applySexDefaults() }
+        movingForward = true
+        withAnimation(.easeInOut(duration: 0.3)) { step = steps[index + 1] }
+    }
+
+    private func back() {
+        if isEditing && isFirstPage { onClose(); return }
+        let steps = flow
+        guard let index = steps.firstIndex(of: step), index > 0 else { return }
+        // The "building your plan" pause is only ever passed going forward.
+        var previous = index - 1
+        if steps[previous] == .calculating && previous > 0 { previous -= 1 }
+        movingForward = false
+        withAnimation(.easeInOut(duration: 0.3)) { step = steps[previous] }
+    }
+
+    /// A new user sees Premium once, on the way in. Saving edits from
+    /// Profile, or already being premium, skips it.
+    private func complete() {
+        if isEditing || purchases.isPremium {
+            finish()
+        } else {
+            showsPremium = true
+        }
+    }
+
+    private func finish() {
+        guard let experience = draft.experience, var profile = draft.profile else { return }
+        // A name typed in Profile is saved there when the editor opens over
+        // it: keep the one the store has now.
+        profile.name = store.profile?.name
+        store.experience = experience
+        store.unit = draft.unit
+        store.profile = profile
+        onClose()
+    }
+}
+
+// MARK: - Welcome
+
+private struct OnboardingWelcome: View {
+    @Environment(\.dsLayout) private var layout
+
+    var body: some View {
         if layout.isWide {
             // The stage already shows the body; the pane is all words,
             // centred in the height above the button.
@@ -254,7 +394,7 @@ struct OnboardingView: View {
                     .foregroundStyle(DS.silver)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, 10)
-                Text(Self.welcomeCaption)
+                Text(Self.caption)
                     .font(.ui(17))
                     .cssLineHeight(17, 1.5)
                     .foregroundStyle(DS.silver.opacity(0.6))
@@ -263,11 +403,11 @@ struct OnboardingView: View {
                     .padding(.top, 14)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            .modifier(FormColumn(compactPadding: DS.Metric.gutter))
+            .modifier(OnboardingColumn(compactPadding: DS.Metric.gutter))
         } else {
             VStack(alignment: .leading, spacing: 0) {
                 BodyMapCanvas(side: .front, fills: Self.heroFills)
-                    .frame(height: welcomeFigureHeight)
+                    .frame(height: figureHeight)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, layout.value(18, 24))
                     .background(
@@ -284,23 +424,23 @@ struct OnboardingView: View {
                     .tracking(layout.value(-0.8, -1))
                     .foregroundStyle(DS.silver)
                     .padding(.top, 8)
-                Text(Self.welcomeCaption)
+                Text(Self.caption)
                     .font(.ui(layout.value(15, 16)))
                     .cssLineHeight(layout.value(15, 16), 1.45)
                     .foregroundStyle(DS.silver.opacity(0.6))
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, 10)
             }
-            .modifier(FormColumn(compactPadding: DS.Metric.gutter))
+            .modifier(OnboardingColumn(compactPadding: DS.Metric.gutter))
             .padding(.top, layout.value(16, 24))
         }
     }
 
-    private static let welcomeCaption = String(localized: "Tell us about your experience, goal, week and body, and we'll shape your split, presets and recovery estimates around you.")
+    private static let caption = String(localized: "Answer a few questions about you, your week, your goal and your health. We'll work out your calories, macros and training week, and explain every number.")
 
     /// 330 on iPhone; up to 440 on iPad, less in a short window, where the
     /// welcome page doesn't scroll.
-    private var welcomeFigureHeight: CGFloat {
+    private var figureHeight: CGFloat {
         guard layout.isRegular, layout.containerHeight > 0 else { return 330 }
         return min(440, max(260, layout.containerHeight * 0.42))
     }
@@ -315,418 +455,74 @@ struct OnboardingView: View {
         }
         return fills
     }
-
-    private var experiencePage: some View {
-        QuestionPage(
-            eyebrow: String(localized: "EXPERIENCE", comment: "Training experience"),
-            title: String(localized: "How long have you been training?"),
-            caption: String(localized: "Sets how long recovery estimates run and which presets you start on.")
-        ) {
-            option(.beginner, in: $experience, symbol: "leaf",
-                   title: "Just starting", detail: "New to the gym, or back after a long break.")
-            option(.intermediate, in: $experience, symbol: "figure.walk",
-                   title: "Less than a year", detail: "I know the basics and train now and then.")
-            option(.advanced, in: $experience, symbol: "flame",
-                   title: "A year or more", detail: "I train regularly and know the main lifts.")
-        }
-    }
-
-    private var sexPage: some View {
-        QuestionPage(
-            eyebrow: String(localized: "ABOUT YOU"),
-            title: String(localized: "What's your sex?"),
-            caption: String(localized: "Female plans bring more lower-body work — glutes, hamstrings and quads — into your split. Any muscle can still be trained any day.")
-        ) {
-            option(.female, in: $sex, symbol: "figure.stand.dress", title: "Female",
-                   detail: "Lower-body focus: legs and glutes twice in each rotation.")
-            option(.male, in: $sex, symbol: "figure.stand", title: "Male",
-                   detail: "An even split of upper and lower body.")
-            option(.unspecified, in: $sex, symbol: "person.fill.questionmark", title: "Prefer not to say",
-                   detail: "An even split of upper and lower body.")
-        }
-    }
-
-    private var goalPage: some View {
-        QuestionPage(
-            eyebrow: String(localized: "GOAL", comment: "The fitness goal"),
-            title: String(localized: "What's your main goal?"),
-            caption: String(localized: "Shapes which preset each muscle group opens on. You can switch at any time.")
-        ) {
-            option(.loseWeight, in: $goal, symbol: "figure.walk.motion", title: "Lose weight",
-                   detail: "Easier presets, plus a walking target after each workout.")
-            option(.buildMuscle, in: $goal, symbol: "dumbbell", title: "Build muscle",
-                   detail: "Harder free-weight presets once you have some experience.")
-            option(.getFit, in: $goal, symbol: "heart", title: "Get fit",
-                   detail: "A balanced mix to feel stronger day to day.")
-        }
-    }
-
-    private var daysPage: some View {
-        QuestionPage(
-            eyebrow: String(localized: "SCHEDULE", comment: "Training days a week"),
-            title: String(localized: "How many days a week can you train?"),
-            caption: String(localized: "Sets how your week is split. Train suggests the most recovered day each time, so a missed day never breaks the plan.",
-                            comment: "Train is the tab")
-        ) {
-            ForEach(ProgramAdvisor.daysPerWeekOptions, id: \.self) { days in
-                let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
-                OptionCard(symbol: "calendar", title: String(localized: "\(days) days a week", comment: "Training days a week, 2 to 6"),
-                           detail: String(localized: "\(suggested.title) · every muscle \(frequency(suggested, days)).",
-                                          comment: "The split that suits the days (Front / Back), then how often each muscle comes round: about 2× a week"),
-                           isSelected: daysPerWeek == days) {
-                    withAnimation(.easeOut(duration: 0.15)) {
-                        // A new schedule brings its own split; the next
-                        // question can still change it.
-                        if daysPerWeek != days { split = suggested }
-                        daysPerWeek = days
-                    }
-                }
-            }
-        }
-    }
-
-    private var splitPage: some View {
-        let days = daysPerWeek ?? 3
-        let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
-        return QuestionPage(
-            eyebrow: String(localized: "SPLIT", comment: "The training split: how the week's sessions divide the body"),
-            title: String(localized: "How do you want to split your week?"),
-            caption: String(localized: "\(suggested.title) suits \(days) days a week best: \(ProgramAdvisor.recommendationReason(daysPerWeek: days))",
-                            comment: "The split (Front / Back), the days a week, then why it fits")
-        ) {
-            ForEach(TrainingSplit.allCases) { option in
-                OptionCard(symbol: Self.symbol(option), title: option.title,
-                           detail: String(localized: "\(Self.summary(option)) Every muscle \(frequency(option, days)).",
-                                          comment: "The split's days in a sentence, then how often each muscle comes round: about 2× a week"),
-                           badge: option == suggested ? String(localized: "BEST FIT", comment: "Tag on the split that suits the days a week best") : nil,
-                           isSelected: split == option) {
-                    withAnimation(.easeOut(duration: 0.15)) { split = option }
-                }
-            }
-        }
-    }
-
-    private static func symbol(_ split: TrainingSplit) -> String {
-        switch split {
-        case .upperLower: return "arrow.up.arrow.down"
-        case .frontBack: return "arrow.left.arrow.right"
-        case .pushPullLegs: return "arrow.triangle.2.circlepath"
-        }
-    }
-
-    private static func summary(_ split: TrainingSplit) -> String {
-        switch split {
-        case .upperLower: return String(localized: "Upper body one day, lower body the next.")
-        case .frontBack: return String(localized: "Chest, shoulders, quads and biceps one day; back, hamstrings, glutes and triceps the next.")
-        case .pushPullLegs: return String(localized: "Chest, shoulders and triceps; then back and biceps; then legs.")
-        }
-    }
-
-    private func frequency(_ split: TrainingSplit, _ days: Int) -> String {
-        ProgramAdvisor.frequencyText(ProgramAdvisor.timesPerWeek(split, lowerFocus: sex == .female, daysPerWeek: days))
-    }
-
-    private var bodyPage: some View {
-        QuestionPage(
-            eyebrow: String(localized: "BODY", comment: "Height and weight"),
-            title: String(localized: "Your height and weight"),
-            caption: DS.isPad
-                ? String(localized: "Used for estimates such as the distance and calories of a walk. Kept only on this iPad.")
-                : String(localized: "Used for estimates such as the distance and calories of a walk. Kept only on this phone.")
-        ) {
-            MonoSegmentedControl(
-                options: [(WeightUnit.kg, "KG · CM"), (.lb, "LB · FT")],
-                selection: $unit,
-                fontSize: 10,
-                itemPaddingV: 8,
-                fillsWidth: true
-            )
-
-            HStack(spacing: 10) {
-                wheel("HEIGHT") {
-                    if unit == .kg {
-                        Picker("Height", selection: heightInCentimetres) {
-                            ForEach(130...220, id: \.self) { Text("\($0) cm").tag($0) }
-                        }
-                    } else {
-                        Picker("Height", selection: heightInInches) {
-                            ForEach(51...87, id: \.self) { Text("\($0 / 12)′ \($0 % 12)″").tag($0) }
-                        }
-                    }
-                }
-                wheel("WEIGHT") {
-                    Picker("Weight", selection: weightInUnit) {
-                        ForEach(unit == .kg ? Array(30...200) : Array(66...440), id: \.self) {
-                            Text("\($0) \(unit.symbol)").tag($0)
-                        }
-                    }
-                }
-            }
-            // Two wheels a column wide would be long low strips; on iPad they
-            // match the unit control's width above them. Nil on iPhone.
-            .frame(maxWidth: layout.isRegular ? 440 : nil)
-            .padding(.top, 6)
-        }
-    }
-
-    private var planPage: some View {
-        let profile = draftProfile
-        let rotation = ProgramAdvisor.days(for: profile)
-            .map { ProgramAdvisor.SplitDay(name: $0.name, groups: $0.groups.filter(PresetProvider.trainableGroups.contains)) }
-            .filter { !$0.groups.isEmpty }
-        let chosen = ProgramAdvisor.split(for: profile)
-        let days = daysPerWeek ?? 3
-        let level = ProgramAdvisor.suggestedLevel(for: profile, experience: experience ?? .beginner)
-        // The single iPad column has room for the smaller cards in pairs; the
-        // narrower wide-window pane keeps them stacked.
-        let pairs = layout.tier == .regular
-        let dayLabelSize: CGFloat = layout.value(9, 10)
-
-        let rotationCard = PlanCard(symbol: Self.symbol(chosen),
-                                    title: String(localized: "\(chosen.title), \(days) days a week",
-                                                  comment: "Plan summary: the split, e.g. Front / Back, 3 days a week"),
-                                    detail: ProgramAdvisor.isLowerFocused(profile)
-                                        ? String(localized: "Lower-body focus. Every muscle \(frequency(chosen, days)). Train suggests the most recovered day.",
-                                                 comment: "How often each muscle comes round: about 2× a week. Train is the tab")
-                                        : String(localized: "Every muscle \(frequency(chosen, days)). Train suggests the most recovered day.",
-                                                 comment: "How often each muscle comes round: about 2× a week. Train is the tab")) {
-            VStack(alignment: .leading, spacing: layout.value(7, 9)) {
-                ForEach(Array(rotation.enumerated()), id: \.offset) { index, day in
-                    HStack(alignment: .firstTextBaseline, spacing: 10) {
-                        Text(day.name.uppercased())
-                            .font(.mono(dayLabelSize, .semibold))
-                            .trackingEm(0.08, size: dayLabelSize)
-                            .foregroundStyle(DS.silver.opacity(0.4))
-                            .frame(width: layout.value(52, 64), alignment: .leading)
-                        Text(day.groups.map(\.title).joined(separator: " · "))
-                            .font(.ui(layout.value(13.5, 15), .semibold))
-                            .foregroundStyle(DS.silver)
-                    }
-                }
-            }
-            .padding(.top, 4)
-        }
-        let presetsCard = PlanCard(symbol: "slider.horizontal.3",
-                                   title: String(localized: "\(level.name) presets", comment: "Plan summary, e.g. Basic presets"),
-                                   detail: level == .basic
-                                    ? String(localized: "Machines and supported positions to start. Switch to Advanced on any muscle group.",
-                                             comment: "Advanced is the preset level")
-                                    : String(localized: "Free-weight compounds to start. Switch to Basic on any muscle group.",
-                                             comment: "Basic is the preset level"),
-                                   fillsHeight: pairs)
-        let walkCard = profile.flatMap { profile -> PlanCard<EmptyView>? in
-            guard profile.goal == .loseWeight else { return nil }
-            let walk = ProgramAdvisor.walk(for: profile, experience: experience ?? .beginner)
-            return PlanCard(symbol: "figure.walk",
-                            title: String(localized: "Walk \(walk.steps.formatted()) steps after each workout",
-                                          comment: "The steps: 3,000"),
-                            detail: String(localized: "\(walk.detail). Aim for \(WalkSuggestion.dailySteps.formatted())+ steps across the day.",
-                                           comment: "The walk's estimate (≈ 2.8 km · 30 min · 100 kcal), then a day's steps: 8,000"),
-                            fillsHeight: pairs)
-        }
-        let recoveryCard = PlanCard(symbol: "clock.arrow.circlepath",
-                                    title: String(localized: "Recovery", comment: "Plan card: the recovery estimates"),
-                                    detail: String(localized: "Estimates tuned for \((experience ?? .beginner).title.lowercased()) lifters.",
-                                                   comment: "The training experience in lower case: beginner, intermediate or advanced"),
-                                    fillsHeight: pairs)
-
-        return ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 0) {
-                SectionEyebrow(text: "YOUR PLAN")
-                Text(isEditing ? "Your updated plan" : "Here's where you start")
-                    .font(.ui(layout.pt(26, 32, wide: 34), .semibold))
-                    .tracking(layout.value(-0.6, -0.85))
-                    .foregroundStyle(DS.silver)
-                    .padding(.top, layout.value(8, 10))
-
-                VStack(spacing: layout.value(10, 12)) {
-                    rotationCard
-
-                    if pairs {
-                        // With a walk, three cards: a pair and one across.
-                        if let walkCard {
-                            pairRow(presetsCard, walkCard)
-                            recoveryCard
-                        } else {
-                            pairRow(presetsCard, recoveryCard)
-                        }
-                    } else {
-                        presetsCard
-                        if let walkCard {
-                            walkCard
-                        }
-                        recoveryCard
-                    }
-                }
-                .padding(.top, layout.value(20, 26))
-
-                Text("Change any of this later in Profile.")
-                    .font(.ui(layout.value(12, 13)))
-                    .foregroundStyle(DS.silver.opacity(0.4))
-                    .padding(.top, 14)
-            }
-            .modifier(FormColumn(compactPadding: DS.Metric.gutter))
-            .padding(.top, layout.value(16, 24))
-            .padding(.bottom, 16)
-        }
-    }
-
-    /// Two cards side by side at the taller one's height.
-    private func pairRow<A: View, B: View>(_ leading: A, _ trailing: B) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            leading
-            trailing
-        }
-        .fixedSize(horizontal: false, vertical: true)
-    }
-
-    // MARK: - Pieces
-
-    private func option<Value: Hashable>(_ value: Value, in selection: Binding<Value?>, symbol: String,
-                                         title: String.LocalizationValue, detail: String.LocalizationValue) -> some View {
-        OptionCard(symbol: symbol, title: String(localized: title), detail: String(localized: detail),
-                   isSelected: selection.wrappedValue == value) {
-            withAnimation(.easeOut(duration: 0.15)) { selection.wrappedValue = value }
-        }
-    }
-
-    private func wheel<Content: View>(_ label: String.LocalizationValue, @ViewBuilder content: () -> Content) -> some View {
-        VStack(spacing: 4) {
-            SectionEyebrow(text: label, size: layout.value(9.5, 10.5))
-            content()
-                .pickerStyle(.wheel)
-                .frame(height: layout.value(170, 200))
-                .clipped()
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, layout.value(12, 14))
-        .background(RoundedRectangle(cornerRadius: layout.value(16, 18), style: .continuous).fill(DS.surfaceAlt))
-    }
-
-    // MARK: - Bindings
-
-    private var heightInCentimetres: Binding<Int> {
-        Binding(get: { Int(heightCm.rounded()) },
-                set: { heightCm = Double($0); bodyTouched = true })
-    }
-
-    private var heightInInches: Binding<Int> {
-        Binding(get: { Int((heightCm / 2.54).rounded()) },
-                set: { heightCm = Double($0) * 2.54; bodyTouched = true })
-    }
-
-    private var weightInUnit: Binding<Int> {
-        Binding(get: { Int(unit.fromKilograms(weightKg).rounded()) },
-                set: { weightKg = unit.toKilograms(Double($0)); bodyTouched = true })
-    }
-
-    private var draftProfile: UserProfile? {
-        guard let sex, let goal else { return nil }
-        // Onboarding doesn't ask for a name; editing keeps the one from Profile.
-        return UserProfile(sex: sex, goal: goal, heightCm: heightCm, weightKg: weightKg,
-                           daysPerWeek: daysPerWeek, split: split, name: store.profile?.name)
-    }
-
-    // MARK: - Actions
-
-    private func load() {
-        guard !didLoad else { return }
-        didLoad = true
-        unit = store.unit
-        if let profile = store.profile {
-            experience = store.experience
-            sex = profile.sex
-            goal = profile.goal
-            // Nil for profiles from before the schedule question, which then
-            // have to answer it; picking the days suggests the split.
-            daysPerWeek = profile.daysPerWeek
-            split = profile.split
-            heightCm = profile.heightCm
-            weightKg = profile.weightKg
-            bodyTouched = true
-        }
-        if isEditing { step = .experience }
-    }
-
-    private func advance() {
-        guard canContinue, let next = Step(rawValue: step.rawValue + 1) else { return }
-        if step == .sex && !bodyTouched {
-            // A closer starting point for the wheels; still just a start.
-            heightCm = sex == .female ? 162 : sex == .male ? 176 : 170
-            weightKg = sex == .female ? 60 : sex == .male ? 75 : 68
-        }
-        movingForward = true
-        withAnimation(.easeInOut(duration: 0.3)) { step = next }
-    }
-
-    private func back() {
-        if isEditing && step == .experience { onClose(); return }
-        guard let previous = Step(rawValue: step.rawValue - 1) else { return }
-        movingForward = false
-        withAnimation(.easeInOut(duration: 0.3)) { step = previous }
-    }
-
-    /// A new user sees Premium once, on the way in. Saving edits from
-    /// Profile, or already being premium, skips it.
-    private func complete() {
-        if isEditing || purchases.isPremium {
-            finish()
-        } else {
-            showsPremium = true
-        }
-    }
-
-    private func finish() {
-        guard let experience, let profile = draftProfile else { return }
-        store.experience = experience
-        store.unit = unit
-        store.profile = profile
-        onClose()
-    }
 }
 
-// MARK: - Layout
+// MARK: - Building the plan
 
-/// Where onboarding's content sits across the width: the phone's gutter; one
-/// centred 600pt column in regular; a 540pt column in the wide form pane,
-/// 56pt clear of the stage and the edge.
-private struct FormColumn: ViewModifier {
-    var compactPadding: CGFloat
+/// A short pause that ticks off what the plan works out, then moves on.
+private struct OnboardingCalculating: View {
+    var safetyChecked: Bool
+    var onDone: () -> Void
 
     @Environment(\.dsLayout) private var layout
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var done = 0
 
-    func body(content: Content) -> some View {
-        switch layout.tier {
-        case .compact:
-            content
-                .padding(.horizontal, compactPadding)
-        case .regular:
-            content
-                .frame(maxWidth: 600, alignment: .leading)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, layout.gutter)
-        case .wide:
-            content
-                .frame(maxWidth: 540, alignment: .leading)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 56)
+    private var items: [String] {
+        var items = [String(localized: "Working out your metabolism (BMR)"),
+                     String(localized: "Adding your daily activity (TDEE)"),
+                     String(localized: "Setting your calorie target"),
+                     String(localized: "Splitting protein, fat and carbs"),
+                     String(localized: "Laying out your week")]
+        if safetyChecked { items.append(String(localized: "Checking exercises against your health answers")) }
+        return items
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ProgressView()
+                .controlSize(.large)
+                .tint(DS.silver)
+                .padding(.bottom, 24)
+            SectionEyebrow(text: "YOUR PLAN")
+            Text("Building your plan")
+                .font(.ui(layout.pt(26, 32, wide: 34), .semibold))
+                .tracking(layout.value(-0.6, -0.85))
+                .foregroundStyle(DS.silver)
+                .padding(.top, layout.value(8, 10))
+            VStack(alignment: .leading, spacing: 14) {
+                ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                    HStack(spacing: 12) {
+                        Image(systemName: index < done ? "checkmark.circle.fill" : "circle")
+                            .font(.system(size: 18))
+                            .foregroundStyle(DS.silver.opacity(index < done ? 1 : 0.25))
+                        Text(item)
+                            .font(.ui(layout.value(15, 16)))
+                            .foregroundStyle(DS.silver.opacity(index < done ? 0.9 : 0.4))
+                    }
+                }
+            }
+            .padding(.top, 26)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .modifier(OnboardingColumn(compactPadding: DS.Metric.gutter))
+        .task {
+            let tick: UInt64 = reduceMotion ? 150_000_000 : 420_000_000
+            for index in items.indices {
+                try? await Task.sleep(nanoseconds: tick)
+                withAnimation(.easeOut(duration: 0.2)) { done = index + 1 }
+            }
+            try? await Task.sleep(nanoseconds: tick)
+            guard !Task.isCancelled else { return }
+            onDone()
         }
     }
 }
 
-/// Return confirms the step on an iPad's hardware keyboard.
-private struct ReturnKey: ViewModifier {
-    func body(content: Content) -> some View {
-        if DS.isPad {
-            content.keyboardShortcut(.defaultAction)
-        } else {
-            content
-        }
-    }
-}
+// MARK: - Stage light
 
 /// What the wide stage's figure shows.
-private enum StageLight: Hashable {
+enum OnboardingStageLight: Hashable {
     /// The welcome's sampler: chest and quads, with the muscles around them.
     case sampler
     /// Glutes, hamstrings and quads, once Female is picked.
@@ -771,174 +567,11 @@ private enum StageLight: Hashable {
     }
 }
 
-// MARK: - Components
-
-/// A question: its eyebrow, title and why it's asked, then the answers.
-private struct QuestionPage<Content: View>: View {
-    var eyebrow: String
-    var title: String
-    var caption: String
-    @ViewBuilder var content: () -> Content
-
-    @Environment(\.dsLayout) private var layout
-
-    var body: some View {
-        let captionSize: CGFloat = layout.value(14, 16)
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 0) {
-                SectionEyebrow(text: eyebrow)
-                Text(title)
-                    .font(.ui(layout.pt(26, 32, wide: 34), .semibold))
-                    .tracking(layout.value(-0.6, -0.85))
-                    .foregroundStyle(DS.silver)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, layout.value(8, 10))
-                Text(caption)
-                    .font(.ui(captionSize))
-                    .cssLineHeight(captionSize, layout.value(1.45, 1.5))
-                    .foregroundStyle(DS.silver.opacity(0.55))
-                    .fixedSize(horizontal: false, vertical: true)
-                    // A reading measure under the title; nil on iPhone.
-                    .frame(maxWidth: layout.isRegular ? 480 : nil, alignment: .leading)
-                    .padding(.top, layout.value(8, 12))
-
-                VStack(spacing: layout.value(10, 12)) {
-                    content()
-                }
-                .padding(.top, layout.value(22, 28))
-            }
-            .modifier(FormColumn(compactPadding: DS.Metric.gutter))
-            .padding(.top, layout.value(16, 24))
-            .padding(.bottom, 16)
-        }
-    }
-}
-
-/// One answer: icon, title and what choosing it does.
-struct OptionCard: View {
-    var symbol: String
-    var title: String
-    var detail: String
-    /// A short tag beside the title, e.g. "BEST FIT".
-    var badge: String? = nil
-    var isSelected: Bool
-    var action: () -> Void
-
-    @Environment(\.dsLayout) private var layout
-
-    var body: some View {
-        let well: CGFloat = layout.value(44, 52)
-        let radius: CGFloat = layout.value(18, 20)
-        let detailSize: CGFloat = layout.value(12.5, 13.5)
-        let badgeSize: CGFloat = layout.value(8.5, 9.5)
-        Button(action: action) {
-            HStack(spacing: layout.value(14, 16)) {
-                Image(systemName: symbol)
-                    .font(.system(size: layout.value(18, 21), weight: .medium))
-                    .foregroundStyle(isSelected ? DS.ink : DS.silver)
-                    .frame(width: well, height: well)
-                    .background(
-                        RoundedRectangle(cornerRadius: layout.value(12, 14), style: .continuous)
-                            .fill(isSelected ? DS.silver : DS.silver.opacity(0.07))
-                    )
-                VStack(alignment: .leading, spacing: layout.value(3, 4)) {
-                    HStack(spacing: 7) {
-                        Text(title)
-                            .font(.ui(layout.value(15.5, 17), .semibold))
-                            .foregroundStyle(DS.silver)
-                        if let badge {
-                            Text(badge)
-                                .font(.mono(badgeSize, .semibold))
-                                .trackingEm(0.08, size: badgeSize)
-                                .foregroundStyle(DS.silver.opacity(0.75))
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 3)
-                                .background(Capsule().fill(DS.silver.opacity(0.08)))
-                        }
-                    }
-                    Text(detail)
-                        .font(.ui(detailSize))
-                        .cssLineHeight(detailSize, 1.4)
-                        .foregroundStyle(DS.silver.opacity(0.55))
-                        .fixedSize(horizontal: false, vertical: true)
-                        .multilineTextAlignment(.leading)
-                }
-                Spacer(minLength: 4)
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: layout.value(20, 22)))
-                    .foregroundStyle(DS.silver.opacity(isSelected ? 1 : 0.25))
-            }
-            .padding(layout.value(14, 16))
-            .background(
-                RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .fill(DS.surfaceAlt)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(DS.silver.opacity(isSelected ? 0.9 : 0.08), lineWidth: isSelected ? 1.5 : 1)
-            )
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .dsHover(.highlight, radius: radius)
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
-}
-
-/// One line of the plan, with optional detail below.
-private struct PlanCard<Extra: View>: View {
-    var symbol: String
-    var title: String
-    var detail: String
-    /// Grows to the row's height when it sits beside another card.
-    var fillsHeight: Bool
-    @ViewBuilder var extra: () -> Extra
-
-    @Environment(\.dsLayout) private var layout
-
-    init(symbol: String, title: String, detail: String, fillsHeight: Bool = false,
-         @ViewBuilder extra: @escaping () -> Extra = { EmptyView() }) {
-        self.symbol = symbol
-        self.title = title
-        self.detail = detail
-        self.fillsHeight = fillsHeight
-        self.extra = extra
-    }
-
-    var body: some View {
-        let detailSize: CGFloat = layout.value(12.5, 13.5)
-        HStack(alignment: .top, spacing: layout.value(14, 16)) {
-            Image(systemName: symbol)
-                .font(.system(size: layout.value(15, 18), weight: .medium))
-                .foregroundStyle(DS.silver)
-                .frame(width: layout.value(36, 44), height: layout.value(36, 44))
-                .background(RoundedRectangle(cornerRadius: layout.value(10, 12), style: .continuous).fill(DS.silver.opacity(0.07)))
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.ui(layout.value(15, 17), .semibold))
-                    .foregroundStyle(DS.silver)
-                Text(detail)
-                    .font(.ui(detailSize))
-                    .cssLineHeight(detailSize, 1.4)
-                    .foregroundStyle(DS.silver.opacity(0.55))
-                    .fixedSize(horizontal: false, vertical: true)
-                extra()
-            }
-            Spacer(minLength: 0)
-        }
-        .padding(layout.value(14, 18))
-        // Nil bounds unless paired, which leaves the stacked card as it was.
-        .frame(maxHeight: fillsHeight ? .infinity : nil, alignment: .top)
-        .background(RoundedRectangle(cornerRadius: layout.value(18, 20), style: .continuous).fill(DS.surfaceAlt))
-        .accessibilityElement(children: .combine)
-    }
-}
-
 #Preview("Onboarding · 11-inch portrait") {
     OnboardingView()
         .environment(WorkoutStore())
         .environment(Purchases())
+        .environment(AppleHealth())
         .dsPreview(.pad11Portrait750)
 }
 
@@ -946,5 +579,6 @@ private struct PlanCard<Extra: View>: View {
     OnboardingView()
         .environment(WorkoutStore())
         .environment(Purchases())
+        .environment(AppleHealth())
         .dsPreview(.pad13Landscape1292)
 }

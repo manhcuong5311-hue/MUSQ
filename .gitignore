@@ -14,3 +14,8 @@ SourceExports/
 # Python
 __pycache__/
 *.pyc
+
+# Firebase: the app's client config stays on this Mac (the repo is
+# public), and the emulators' debug logs.
+GoogleService-Info.plist
+*-debug.log

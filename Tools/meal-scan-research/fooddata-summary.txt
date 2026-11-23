@@ -1,0 +1,28 @@
+Status on 2026-11-22: the reliable way to give the model knowledge of dishes ahead of time is to ground it with a table the server controls. Legal data exists for this, but the strongest Vietnamese dish data (from the National Institute of Nutrition, NIN) is copyrighted and needs permission before a paid app can use it.
+
+(1) USDA FoodData Central (FDC) is the safe free base. Its data is CC0 / public domain. It needs a data.gov key (1,000 requests per hour per IP; keys found online are deactivated, so the key stays on the server). Full CSV and JSON downloads are available. Releases: Foundation Foods Oct 2026, Branded Oct 2026, FNDDS 2021-2023 (Oct 2024; 5,432 foods, 22,046 portion weights), SR Legacy final in 2018. FDC barely covers Vietnamese dishes. Pho exists only as 77 kcal/100 g with a 245 g 'cup' portion, plus one rice-paper-roll item. The first test's egg (143 kcal/100 g) and apple (52 kcal/100 g) match USDA SR Legacy exactly. So the model already recalls USDA values for single foods; mixed dishes are the weak point.
+
+(2) NIN's own online tools are the best Vietnamese source:
+- A 1,024-dish database (Hanoi 193, Hai Phong 173, North 226, nationwide 432; records dated Mar 2025 to Jun 2026). Each dish has kcal, protein, fat and carbs per serving.
+- Many Hanoi, Hai Phong and North records show a photo card with every ingredient's grams and kcal. Examples: 5 g cooking oil = 45 kcal in xôi xéo; 163 g grilled patties = 654 kcal in bún chả. This is exactly the hidden oil and sauce information that is needed.
+- An 853-food table per 100 g edible portion, which includes 78 traditional cooked dishes.
+- Caveats: no cơm tấm and no gỏi cuốn, a large spread between samples (bún chả 518 to 1,231 kcal), and some clear errors.
+- Rights: the site states copyright of NIN and has no open licence. Vietnamese IP law does not protect bare figures, but it does protect the compilation and the photos. The 2026 AI data-mining exception (Law 131/2025; Decree 134/2026, Art. 37a) covers non-commercial use only, and commercial use owes royalties. A paid app should therefore get a written licence from NIN before copying this data in bulk into prompts or servers (my inference). The 2007 NIN food composition table (526 foods, PDF hosted by FAO/INFOODS) is in the same position.
+
+(3) Other sources:
+- ASEAN Food Composition Database (2014, 616 items): commercial use needs permission, and it has little Vietnamese data.
+- Open Food Facts suits packaged foods (ODbL: attribution and share-alike). 1,726 products are tagged as sold in Vietnam, 1,299 of them with nutrition facts.
+- IFPRI's CC BY 4.0 photo atlas from Thai Nguyen has 360 Vietnamese meals, each in 4 weighed portion sizes. It is the only openly licensed Vietnamese dish dataset found.
+
+(4) Paid APIs:
+- FatSecret is the only one with a Vietnam dataset (Premier tier, priced by market; data may only be stored for 24 h).
+- Edamam: $14 to $299 per month; Vietnamese is not among its listed languages.
+- Nutritionix: $499 to $1,850+ per month, capped by monthly active users.
+- Passio: $99 to $2,999 per month in tokens.
+- SnapCalorie: $499 per month for 10,000 calls.
+
+(5) NIN gives per-serving values for 13 of the 15 dishes; the claims list them by dish. For cơm tấm and gỏi cuốn, only hospital or clinic figures were found, with kcal but no portion grams.
+
+(6) Cal AI, per TechCrunch (Mar 2025): it uses OpenAI and Anthropic models plus retrieval-augmented generation (RAG) over open-source food calorie and image databases.
+
+Suggested approach (my inference): build your own dish table. Each dish gets typical grams, kcal, protein, fat and carbs, with explicit oil, sauce and broth lines. Price your own recipes with USDA ingredient values, and add licensed NIN figures. The model returns the dish and its component grams, and the server computes the calories, or a compact cached table is put in the prompt.

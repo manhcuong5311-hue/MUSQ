@@ -145,8 +145,10 @@ enum PerformanceHistory {
     }
 
     /// Sessions with completed sets whose day falls in `interval`.
+    /// Half-open: `DateInterval.contains` includes `end`, which for a week is
+    /// the next week's first day at 00:00 — exactly a session's `day`.
     static func sessions(in interval: DateInterval, from sessions: [WorkoutSession]) -> [WorkoutSession] {
-        sessions.filter { $0.hasCompletedSets && interval.contains($0.day) }
+        sessions.filter { $0.hasCompletedSets && $0.day >= interval.start && $0.day < interval.end }
     }
 
     // MARK: - Helpers

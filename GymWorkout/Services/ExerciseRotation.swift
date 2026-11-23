@@ -117,6 +117,9 @@ enum ExerciseRotation {
         /// the user saved in it, so swaps don't climb a level at a time.
         var ceiling: Difficulty = .intermediate
         var now = Date()
+        /// The user's health answers: picks that aren't advised are never
+        /// offered, and the kinder ones score higher (2026-11-21).
+        var safety: ExerciseSafety = .none
     }
 
     /// The part of `group` an exercise works hardest as a primary mover, by
@@ -158,6 +161,7 @@ enum ExerciseRotation {
             exercise.name != name
                 && ExerciseCatalog.measure(forExerciseNamed: exercise.name) == measure
                 && ExerciseCatalog.role(of: context.group, in: exercise) == .primary
+                && context.safety.isAdvised(exercise.name)
         }
         let samePattern = candidates.filter { MovementPattern(exerciseNamed: $0.name) == pattern }
         let samePart = pattern.isOwnKind ? [] : candidates.filter { exercise in
@@ -235,6 +239,7 @@ enum ExerciseRotation {
         }
         if context.saved.contains(exercise.name) { score += 10 }
         if context.level == .advanced && exercise.difficulty != .beginner { score += 8 }
+        if context.safety.isPreferred(exercise.name) { score += 12 }
         let others = ExerciseCatalog.partContributions(for: exercise)
             .filter { $0.role == .primary && $0.part != slot }.map(\.part)
         if others.contains(where: context.tired.contains) { score -= 30 }

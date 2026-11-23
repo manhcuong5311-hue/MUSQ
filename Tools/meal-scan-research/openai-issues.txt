@@ -1,0 +1,66 @@
+[partly] Training is not practical:
+- Terra cannot be fine-tuned.
+- The only vision-fine-tunable base costs 3.75x Terra's input price and shuts down 2027-01-14.
+- Organizations that never fine-tuned are locked out.
+- Meal photos showing hands or people would be dropped.
+Improvement has to come from context, tools and evals.
+  src: https://developers.openai.com/api/docs/guides/model-optimization
+  corrected: Same conclusion, except: the vision fine-tuning guide excludes images containing people, faces, children or CAPTCHAs. It does not mention hands, so whether meal photos that show only a hand get dropped is unknown.
+  notes: $3.75 vs $1 input (3.75x) and $15 vs $5 output (3x) are correct, as are the 2027-01-14 shutdown and the lock-out rule. The overall conclusion is a fair inference from the docs.
+
+[partly] Applied to this app:
+- Put the table in a developer input_text block ending with prompt_cache_breakpoint, and use explicit mode.
+- Keep model, tools, schema and effort identical.
+Later scans then read the table at $0.05/M and pay $1/M for the photo. Under implicit mode each scan writes the whole prompt at $1.25/M. The measured ~$0.003 fits: $0.0030 with writes vs $0.0026 without.
+  src: https://developers.openai.com/api/docs/guides/prompt-caching#choose-a-caching-mode
+  corrected: The mechanics and arithmetic are right ($0.003035 with a 1.25x write on all 1,900 input tokens, $0.00256 without). However, both figures round to the reported ~$0.003, so the measured cost cannot tell whether writes happen. Only usage.input_tokens_details.cache_write_tokens can. Also, in explicit mode the cached prefix (the table plus anything before it) must itself reach 1,024 visible tokens, or nothing is cached.
+  notes: 'Top-level instructions cannot contain an explicit breakpoint' is quoted correctly. The explicit-mode and gotcha sections support the recommended setup.
+
+[partly] Same announcement, factuality benchmark: Terra's error rate is 16.7% at low, 10.1% medium, 7.7% high, 5.0% xhigh and 4.3% max, vs 53.6% for GPT-5.6 Terra at low. Cost per task is ~$0.024 to $0.12. This is a text benchmark, not food images.
+  src: https://openai.com/index/introducing-gpt-6-1-terra/
+  corrected: The numbers are right (chart 'Factual error rate on difficult prompts'). However, the post only calls it 'our internal benchmark of error-inducing prompts' and does not say whether it is text-only. It is certainly not a food or portion benchmark.
+  notes: Chart data for Terra: 0.167, 0.101, 0.077, 0.05, 0.043 (usd $0.024 to $0.12). GPT-5.6 Terra low is 0.536. The text adds that max effort fell 18 points to 4.3%.
+
+[contradicted] OpenAI's Evals dashboard, API and graders become read-only on 2026-11-30 (notice 2026-06-03), and Promptfoo is the recommended replacement. OpenAI's optimization loop starts with evals.
+  src: https://developers.openai.com/api/docs/deprecations#feature-and-endpoint-deprecations
+  corrected: Evals became read-only for existing users on 2026-10-31, and the platform shuts down on 2026-11-30. The Evals, Datasets and Prompt optimizer guides all say this (https://developers.openai.com/api/docs/guides/evals). In the deprecations table, Nov 30, 2026 is the 'Shutdown date' and 'Read-only' is the current status. Notice 2026-06-03 and the Promptfoo recommendation are correct.
+  notes: The model-optimization guide does start its loop with writing evals. Promptfoo is now part of OpenAI. Do not plan new evals on OpenAI Evals.
+
+=== MISSING ===
+- Evals timeline correction: OpenAI Evals became read-only for existing users on 2026-10-31 and shuts down entirely on 2026-11-30, eight days from today. The dataset-backed prompt optimizer and Datasets go with it. Build the food-scan test set in Promptfoo or in your own scripts, not in OpenAI Evals.
+  src: https://developers.openai.com/api/docs/guides/evals (Undated guide, accessed 2026-11-22 (deprecation announced 2026-06-03 per changelog))
+
+- Promptfoo, the recommended replacement for Evals, is now part of OpenAI (acquisition announced 2026-03-09). OpenAI's docs have a 'Get started with Promptfoo' guide covering the CLI (Node.js 22.22+) and a pip wrapper.
+  src: https://developers.openai.com/api/docs/guides/promptfoo-codex (Guide undated, accessed 2026-11-22; acquisition post 2026-03-09 (https://openai.com/index/openai-to-acquire-promptfoo/))
+
+- The prompt-caching guide has an official single-turn example matching this app's design:
+- A fixed rubric plus labeled few-shot examples kept just above the 1,024-token minimum.
+- Explicit-only mode with one breakpoint after them.
+- The varying input after the breakpoint, so it is not written to cache.
+OpenAI reports a ~70% token cache-hit rate for a deployment using it.
+  src: https://developers.openai.com/api/docs/guides/prompt-caching#single-turn-llm-as-a-judge (Undated guide, accessed 2026-11-22)
+
+- Cache reuse depends on routing. Cached states live on individual machines, traffic above about 15 requests per minute can be overflow-routed, and a request reuses a prefix only if it reaches a machine holding the entry. One write per 30-minute window is a best case; check cache_write_tokens in production.
+  src: https://developers.openai.com/api/docs/guides/prompt-caching#cache-location (Undated guide, accessed 2026-11-22)
+
+- On supported GPT-6+ models, a configuration_update input item can change reasoning effort (and text.format) while the request-level reasoning.effort and the cached prefix stay unchanged. Example: raise effort only for complex mixed dishes without losing the cached table. Changing request-level reasoning.effort instead can rewrite hidden instructions and break the cache. The docs describe this for conversations, so test it in single-turn scans.
+  src: https://developers.openai.com/api/docs/guides/reasoning#change-reasoning-mid-conversation (Undated guide, accessed 2026-11-22)
+
+- Alternative to explicit mode: implicit-mode lookups also check the end of the initial developer-message block. A prewarm request with only the fixed table (billed at the write rate) therefore lets later default-mode scans read the table from cache. Each scan would still write through the photo at 1.25x, so explicit mode stays cheaper.
+  src: https://developers.openai.com/api/docs/guides/prompt-caching#how-prefix-matching-works (Undated guide, accessed 2026-11-22)
+
+- GPT-6.2 Astra and GPT-6.2 Sol were released 2026-11-17. From GPT-6.2 on, top-level instructions are appended after input and billed uncached on every request. A reference table must sit in the first developer message to stay cacheable if the app later moves off Terra. GPT-6.2 Sol costs $2 in / $10 out per 1M ($0.10 cached), twice Terra's price.
+  src: https://developers.openai.com/api/docs/changelog (2026-11-17)
+
+- The vision guide's limitations bear directly on portion estimates: the model may give approximate object counts, struggles with precise spatial localization, and images may be resized before analysis.
+  src: https://developers.openai.com/api/docs/guides/images-vision#limitations (Undated guide, accessed 2026-11-22)
+
+- The Decisions API (GA 2026-10-22) works only with gpt-6-luna and does not apply to Terra. It returns a probability, a choice from a fixed set, or a rubric score over text, images and JSON. It is about 10x faster than the Responses API, supports prompt caching, and takes up to 400 questions per request. It could cheaply pre-classify a dish from a fixed Vietnamese list, or flag frying and sauce cues, before Terra estimates nutrition.
+  src: https://developers.openai.com/api/docs/guides/decisions (GA 2026-10-22 (changelog); guide accessed 2026-11-22)
+
+- The GPT-6 guide says GPT-6 models keep GPT-5.6's pro reasoning mode. reasoning.mode 'pro' does more model work for hard tasks at higher latency and token cost. Terra's model page does not list it, so test availability before relying on it.
+  src: https://developers.openai.com/api/docs/guides/reasoning#reasoning-mode (Undated guides, accessed 2026-11-22)
+
+- The fine-tuning price table also lists gpt-4o-mini-2024-07-18: training $3 per 1M; fine-tuned model $0.30 in / $1.20 out / $0.15 cached. It also shuts down 2027-01-14 and is not listed for vision fine-tuning.
+  src: https://developers.openai.com/api/docs/pricing (Undated page, accessed 2026-11-22 (deprecation notice 2026-10-14))
+

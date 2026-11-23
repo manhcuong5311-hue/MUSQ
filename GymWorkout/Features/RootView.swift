@@ -16,16 +16,26 @@
 import SwiftUI
 
 struct RootView: View {
-    @State private var tab: AppTab = .train
+    /// The app opens on Today, the first tab (2026-11-21).
+    @State private var tab: AppTab = .today
     /// Workout history, shared by Train, Muscles and Profile and saved on
     /// every change.
     @State private var store: WorkoutStore
+    /// Water, weigh-ins and their reminders (the Today tab), in a file of
+    /// their own.
+    @State private var daily: DailyStore
     /// One rest timer for the app, so a rest keeps running across tabs.
     @State private var restTimer: RestTimer
     /// Premium, and the ads it removes.
     @State private var purchases: Purchases
     @State private var ads: Ads
     @State private var paywall = Paywall()
+    /// Steps, sleep and active energy from Apple Health (phase 2), read again
+    /// whenever the app opens or the day changes.
+    @State private var health: AppleHealth
+    /// Where Progress opens scrolled to when another tab sends the user
+    /// there (Today's steps and sleep). One-shot, in memory only.
+    @State private var progressFocus = ProgressFocus()
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var sizeClass
     /// The window, safe areas included; iPad only, nil until measured.
@@ -53,6 +63,21 @@ struct RootView: View {
             }
         }
         _store = State(initialValue: store)
+        // Steps inside logged sessions are left out of the plan's activity.
+        let health = AppleHealth()
+        health.sessionWindows = {
+            store.sessions.compactMap { session in
+                let times = session.exercises.flatMap(\.completedSets).compactMap(\.completedAt)
+                guard let first = times.min(), let last = times.max() else { return nil }
+                return DateInterval(start: first.addingTimeInterval(-120), end: last)
+            }
+        }
+        let daily = DailyStore()
+        daily.profileWaterTarget = DailyStore.waterTarget(for: store.profile)
+        _daily = State(initialValue: daily)
+        // Walks added by hand count with Health's steps.
+        health.manualSteps = { daily.manualStepsByDay }
+        _health = State(initialValue: health)
         _restTimer = State(initialValue: restTimer)
         _purchases = State(initialValue: purchases)
         _ads = State(initialValue: ads)
@@ -60,6 +85,22 @@ struct RootView: View {
 
     /// Onboarding saves the profile only once its Premium sheet has closed,
     /// so the consent form and the tracking prompt never stack on it.
+    /// What the goal's estimate and Sunday check-in depend on.
+    private var goalInputs: GoalInputs {
+        GoalInputs(trained: store.trainedDays.count, weightKg: store.profile?.weightKg,
+                   bodyFat: store.profile?.measurements?.bodyFatPercent, weekdays: store.profile?.weekdays,
+                   daysPerWeek: store.profile?.daysPerWeek, hasGoal: GoalStore.shared.hasGoal)
+    }
+
+    /// Moves the goal's anchor to a newly entered body-fat %, then re-lays the
+    /// Sunday check-ins (or clears them when there's nothing to check in on).
+    private func relayGoal() {
+        GoalStore.shared.refresh(profile: store.profile, experience: store.experience, trainedDays: store.trainedDays)
+        Task {
+            await GoalReminder.relay(profile: store.profile, experience: store.experience, trainedDays: store.trainedDays)
+        }
+    }
+
     private var adsMayStart: Bool {
         store.profile != nil && !purchases.isPremium
     }
@@ -106,6 +147,9 @@ struct RootView: View {
         .environment(\.dsLayout, layout)
         .environment(\.dsChrome, chrome)
         .environment(store)
+        .environment(daily)
+        .environment(health)
+        .environment(progressFocus)
         .environment(restTimer)
         .environment(purchases)
         .environment(ads)
@@ -114,7 +158,7 @@ struct RootView: View {
         // doesn't inherit them; it gets the window's layout too, so it sizes
         // itself for the window it opens over (always compact on iPhone).
         .sheet(item: $paywall.reason) { reason in
-            PremiumView(reason: reason)
+            PremiumView(reason: reason, profile: store.profile)
                 .environment(purchases)
                 .environment(\.dsLayout, layout)
                 .environment(\.dsChrome, chrome)
@@ -128,7 +172,38 @@ struct RootView: View {
             await purchases.loadProducts()
         }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { Task { await purchases.refreshEntitlements() } }
+            if phase == .active {
+                Task { await purchases.refreshEntitlements() }
+                // Water reminders run a day ahead: lay the next ones.
+                daily.refreshRemindersSoon()
+                relayGoal()
+                Task {
+                    await health.syncAccess()
+                    await health.refresh()
+                }
+            }
+        }
+        .onChange(of: daily.stepEntries) { _, _ in health.manualStepsChanged() }
+        // The goal's estimate and its Sunday check-in follow a session logged
+        // on any tab, a new weight, a body-fat % entered, a schedule change, or
+        // the goal made or deleted (reviews: check-in not re-laid, GOAL-9).
+        .onChange(of: goalInputs) { _, _ in relayGoal() }
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+            Task { await health.refresh() }
+        }
+        #if DEBUG
+        // `-health.seed`: fills the Simulator's Health with 30 days of
+        // sample steps, sleep and a workout for screenshots and checks.
+        .task {
+            if ProcessInfo.processInfo.arguments.contains("-health.seed") {
+                await HealthSeed.run()
+                await health.connect()
+            }
+        }
+        #endif
+        // The water target follows sex, pregnancy and breastfeeding.
+        .onChange(of: store.profile) { _, profile in
+            daily.profileWaterTarget = DailyStore.waterTarget(for: profile)
         }
         // Ads start as soon as onboarding is done, and again if a
         // subscription lapses.
@@ -141,6 +216,8 @@ struct RootView: View {
     @ViewBuilder
     private var tabSwitch: some View {
         switch tab {
+        case .today:
+            TodayView(tab: $tab)
         case .train:
             TrainView(tab: $tab)
         case .exercises:
@@ -194,4 +271,14 @@ struct RootView: View {
 
 #Preview {
     RootView()
+}
+
+/// The goal's inputs RootView watches (see `RootView.relayGoal`).
+private struct GoalInputs: Equatable {
+    var trained: Int
+    var weightKg: Double?
+    var bodyFat: Double?
+    var weekdays: [Int]?
+    var daysPerWeek: Int?
+    var hasGoal: Bool
 }

@@ -388,18 +388,24 @@ enum Sex: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+/// `loseWeight` is "Lose fat" and `getFit` "Stay fit" on screen since the
+/// plan onboarding (2026-11-21); the raw values stay what profiles saved.
 enum FitnessGoal: String, Codable, CaseIterable, Identifiable {
-    case loseWeight, buildMuscle, getFit
+    case loseWeight, buildMuscle, recomp, getFit
 
     var id: String { rawValue }
 
     var title: String {
         switch self {
-        case .loseWeight: return String(localized: "Lose weight", comment: "Fitness goal")
+        case .loseWeight: return String(localized: "Lose fat", comment: "Fitness goal")
         case .buildMuscle: return String(localized: "Build muscle", comment: "Fitness goal")
-        case .getFit: return String(localized: "Get fit", comment: "Fitness goal")
+        case .recomp: return String(localized: "Recomp", comment: "Fitness goal: lose fat and build muscle at the same time")
+        case .getFit: return String(localized: "Stay fit", comment: "Fitness goal: keep the weight, train for health")
         }
     }
+
+    /// Losing or gaining toward a target weight.
+    var hasTarget: Bool { self == .loseWeight || self == .buildMuscle }
 }
 
 /// The onboarding answers. Experience lives on the store next to it, since
@@ -432,6 +438,22 @@ struct UserProfile: Codable, Hashable {
     var split: TrainingSplit? = nil
     /// What the app calls the lifter, set in Profile; nil until they give one.
     var name: String? = nil
+
+    // The plan onboarding's answers (2026-11-21, see `HealthModels.swift`
+    // and `NutritionPlan`). Nil in profiles saved before those questions.
+    var birthYear: Int? = nil
+    var activity: DailyActivity? = nil
+    var targetWeightKg: Double? = nil
+    var pace: GoalPace? = nil
+    /// Training days, as `Calendar` weekday numbers (1 = Sunday).
+    var weekdays: [Int]? = nil
+    var health: HealthAnswers? = nil
+    var measurements: BodyMeasurements? = nil
+
+    /// Age this year, from the birth year.
+    func age(at date: Date = Date(), calendar: Calendar = .current) -> Int? {
+        birthYear.map { calendar.component(.year, from: date) - $0 }
+    }
 
     var bmi: Double {
         let metres = heightCm / 100

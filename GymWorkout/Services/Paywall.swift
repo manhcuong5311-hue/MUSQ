@@ -15,6 +15,12 @@ final class Paywall {
     /// What the person tapped, which the sheet's headline speaks to.
     enum Reason: String, Identifiable {
         case onboarding, mistake, preset, profile
+        /// The Ask MUSQ coach bar on Today.
+        case coach
+        /// Logging a meal from a photo.
+        case mealScan
+        /// Raised from the goal photo on Today and Progress.
+        case goalPhoto
         var id: String { rawValue }
     }
 

@@ -5,8 +5,8 @@
 //  Tab 4. The Premium offer up top for anyone without it, the name the app
 //  greets you by, the onboarding answers and the plan they add up to, the
 //  settings that shape every other tab (units, experience for recovery
-//  estimates, rest timer, card colours), Premium and ad privacy, and Help &
-//  FAQ. The totals, personal records and history live on the Muscles tab.
+//  estimates, rest timer, Apple Health, Today layout, Balance, card colours), Premium and ad
+//  privacy, and Help & FAQ. The totals, personal records and history live on the Muscles tab.
 //
 //  On iPad the same sections sit under a header that carries the name, goal
 //  and plan, in two columns once the content column reaches 700pt.
@@ -21,10 +21,12 @@ struct ProfileView: View {
     @Environment(Purchases.self) private var purchases
     @Environment(Ads.self) private var ads
     @Environment(Paywall.self) private var paywall
+    @Environment(AppleHealth.self) private var health
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
     @Environment(\.dsLayout) private var layout
     @AppStorage(ModelLook.storageKey) private var modelLook: ModelLook = .charcoal
+    @AppStorage(TodayDesign.storageKey) private var todayDesign: TodayDesign = .coach
     @State private var editsProfile = false
     /// The name as it's typed; saved when the field is left.
     @State private var nameDraft = ""
@@ -60,6 +62,10 @@ struct ProfileView: View {
                                 .padding(.top, 28)
                             cardColorSettings
                                 .padding(.top, 28)
+                            if AIService.isLive {
+                                AccountSection()
+                                    .padding(.top, 28)
+                            }
                             premiumAndPrivacy
                                 .padding(.top, 28)
                         }
@@ -84,6 +90,7 @@ struct ProfileView: View {
             OnboardingView(isEditing: true, onClose: { editsProfile = false })
                 .environment(store)
                 .environment(purchases)
+                .environment(health)
                 .dsLayoutRoot()
         }
     }
@@ -115,6 +122,10 @@ struct ProfileView: View {
                     .dsColumn(0)
                 cardColorSettings
                     .dsColumn(1)
+                if AIService.isLive {
+                    AccountSection()
+                        .dsColumn(1)
+                }
                 premiumSection
                     .dsColumn(1)
                 supportSection
@@ -173,8 +184,9 @@ struct ProfileView: View {
         var parts: [String] = []
         if let name = store.profile?.name, !name.isEmpty { parts.append(name.uppercased()) }
         if let goal = store.profile?.goal { parts.append(goal.title.uppercased()) }
-        parts.append(purchases.isPremium ? String(localized: "PREMIUM", comment: "Plan: MUSQ Premium")
-                                         : String(localized: "FREE", comment: "Plan: the free version"))
+        parts.append(purchases.isPro ? String(localized: "PRO", comment: "Plan: MUSQ Pro")
+                     : purchases.isPremium ? String(localized: "PREMIUM", comment: "Plan: MUSQ Premium")
+                     : String(localized: "FREE", comment: "Plan: the free version"))
         return parts.joined(separator: " · ")
     }
 
@@ -388,12 +400,131 @@ struct ProfileView: View {
                            : "Starts when a set is marked done.") {
                     menu(selection: $store.rest, options: RestSetting.allCases, title: \.title)
                 }
+                // Nothing at all where there's no Health (some iPads).
+                if health.access != .unavailable {
+                    Hairline(opacity: 0.06)
+                    healthSetting
+                }
+                Hairline(opacity: 0.06)
+                todayLayoutSetting
+                Hairline(opacity: 0.06)
+                balanceSetting
                 Hairline(opacity: 0.06)
                 modelColorSetting
             }
             .padding(.horizontal, cardPadding)
             .background(card)
         }
+    }
+
+    // MARK: - Apple Health
+
+    /// Apple Health (phase 2, 2026-11-22): connecting, the goals and the
+    /// plan's steps switch, pushed like Help & FAQ. "Connected" means the
+    /// Health sheet was shown; HealthKit never says what was allowed.
+    private var healthSetting: some View {
+        NavigationLink {
+            HealthSettingsView()
+        } label: {
+            pushRowLabel(String(localized: "Apple Health"),
+                         detail: health.access == .asked
+                             ? String(localized: "Connected", comment: "Apple Health status")
+                             : String(localized: "Not connected", comment: "Apple Health status"))
+        }
+        .buttonStyle(.plain)
+        .dsHover(.highlight, radius: 12)
+        .padding(.horizontal, -cardPadding)
+    }
+
+    // MARK: - Balance
+
+    /// Balance (2026-11-22): the card's look, whether it's on Today, what
+    /// counts, its reminders and pausing a week, pushed like Apple Health.
+    /// "Bars · On Today".
+    private var balanceSetting: some View {
+        let balance = BalanceSettings.shared
+        return NavigationLink {
+            BalanceSettingsView()
+        } label: {
+            pushRowLabel(String(localized: "Balance"),
+                         detail: "\(balance.style.title) · \(BalanceSettingsView.placement(balance.showsOnToday))")
+        }
+        .buttonStyle(.plain)
+        .dsHover(.highlight, radius: 12)
+        .padding(.horizontal, -cardPadding)
+    }
+
+    /// A row that pushes a settings screen: its name, where it stands, and a
+    /// chevron. Spans the card, so the whole row hovers and takes the tap.
+    private func pushRowLabel(_ title: String, detail: String) -> some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.ui(layout.value(14.5, 16), .semibold))
+                    .foregroundStyle(DS.silver)
+                Text(detail)
+                    .font(.ui(layout.value(12, 13.5)))
+                    .foregroundStyle(DS.silver.opacity(0.5))
+            }
+            Spacer(minLength: 8)
+            Image(systemName: "chevron.right")
+                .font(.system(size: layout.value(11, 12), weight: .semibold))
+                .foregroundStyle(DS.silver.opacity(0.28))
+                .accessibilityHidden(true)
+        }
+        .padding(.horizontal, cardPadding)
+        .padding(.vertical, layout.value(13, 16))
+        .contentShape(Rectangle())
+    }
+
+    // MARK: - Today layout
+
+    /// The Today tab's layouts side by side; a tap picks one (2026-11-21:
+    /// the owner let each user choose).
+    private var todayLayoutSetting: some View {
+        VStack(alignment: .leading, spacing: layout.value(12, 14)) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Today layout")
+                    .font(.ui(layout.value(14.5, 16), .semibold))
+                    .foregroundStyle(DS.silver)
+                Text(todayDesign.detail)
+                    .font(.ui(layout.value(12, 13.5)))
+                    .cssLineHeight(layout.value(12, 13.5), 1.4)
+                    .foregroundStyle(DS.silver.opacity(0.5))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            HStack(spacing: 6) {
+                ForEach(TodayDesign.choices) { design in
+                    let selected = todayDesign == design
+                    Button {
+                        withAnimation(.easeOut(duration: 0.2)) { todayDesign = design }
+                    } label: {
+                        VStack(spacing: 7) {
+                            TodayDesignGlyph(design: design)
+                                .frame(height: 40)
+                            Text(design.title)
+                                .font(.ui(layout.value(11, 12), .semibold))
+                                .foregroundStyle(DS.silver.opacity(selected ? 1 : 0.55))
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(DS.silver.opacity(selected ? 0.07 : 0)))
+                        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .strokeBorder(DS.silver.opacity(selected ? 0.5 : 0.10), lineWidth: selected ? 1.5 : 1))
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .dsHover()
+                    .accessibilityLabel(design.title)
+                    .accessibilityHint(design.detail)
+                    .accessibilityAddTraits(selected ? .isSelected : [])
+                }
+            }
+        }
+        .padding(.vertical, layout.value(13, 16))
     }
 
     // MARK: - Model color
@@ -533,7 +664,7 @@ struct ProfileView: View {
 
     private var premiumRows: some View {
         VStack(spacing: 0) {
-            settingRow(String(localized: "MUSQ Premium"), detail: premiumDetail) {
+            settingRow(purchases.isPro ? String(localized: "MUSQ Pro") : String(localized: "MUSQ Premium"), detail: premiumDetail) {
                 pillButton(purchases.isPremium ? "ACTIVE" : "UPGRADE", prominent: !purchases.isPremium) {
                     paywall.show(.profile)
                 }
@@ -590,12 +721,14 @@ struct ProfileView: View {
 
     private var premiumDetail: String {
         switch purchases.activePlan {
+        case Purchases.ProductID.proYearly: return String(localized: "Your Pro yearly plan is active.")
+        case Purchases.ProductID.proMonthly: return String(localized: "Your Pro monthly plan is active.")
         case Purchases.ProductID.yearly: return String(localized: "Your yearly plan is active.")
         case Purchases.ProductID.monthly: return String(localized: "Your monthly plan is active.")
         case Purchases.ProductID.lifetime: return String(localized: "Lifetime. Premium is yours for good.")
         default:
-            return purchases.isPremium
-                ? String(localized: "Premium is on.")
+            return purchases.isPro ? String(localized: "Pro is on.")
+                : purchases.isPremium ? String(localized: "Premium is on.")
                 : String(localized: "Common mistakes, Preset 2 and 3, no ads.")
         }
     }
@@ -712,6 +845,7 @@ struct ProfileView: View {
         .environment(purchases)
         .environment(Ads(purchases: purchases))
         .environment(Paywall())
+        .environment(AppleHealth())
         .dsPreview(.mini660)
 }
 
@@ -723,5 +857,6 @@ struct ProfileView: View {
         .environment(purchases)
         .environment(Ads(purchases: purchases))
         .environment(Paywall())
+        .environment(AppleHealth())
         .dsPreview(.pad13Landscape1110)
 }

@@ -1,0 +1,39 @@
+Evidence from 2023 to Nov 2026 agrees on the main points. Given one meal photo, frontier multimodal models miss meal energy by roughly 20–35% (MAPE) and macronutrients by 40–60%.
+- GPT-4o and Claude 3.5: about 36% on weighed Swedish plates (Sep 2025).
+- ChatGPT-5: 30.5% (123 kcal MAE) on 195 dishes (Nov 2025).
+- Eight Oct-2026 models, including GPT-6.1 sol: 24–33% (152–205 kcal) on 802 Australian feeding-trial meals.
+- Mostly Chinese DiningBench: calorie MAPE of 20–42% (Apr 2026).
+
+For energy this is close to self-report error, and sometimes close to dietitians (people misjudge portion weight by 41–53%). Dietitians stay better on fat and protein. The only independent weighed test of consumer apps (NIH, Jul–Aug 2026, preliminary) found Cal AI, Lose It!, MyFitnessPal and Appediet low by 252–345 kcal per meal (about 33%) and by about 30 g of fat.
+
+Where the errors come from: mostly the grams, not the per-gram composition (Nutrition5k: 9.5% error per gram vs 26.1% absolute).
+- Models fall back on typical servings, so large or dense portions such as rice are under-read.
+- Protein-dense meals are under-read.
+- Fat/oil is the most biased nutrient: too low for high-fat meals, too high for lean ones.
+- Bowls, soups, occluded mixed dishes and unfamiliar regional dishes are the hardest.
+- Chinese dishes were under-read by 50–130 kcal of invisible cooking oil.
+
+What measurably helps:
+1. Information the camera cannot see gives the biggest gains:
+   - user-entered amounts or weights (GPT-4o 51%→29%; carbs 56.6%→20.2% when given the true weight);
+   - ingredient lists (ChatGPT-5 30.5%→13.9%);
+   - oil and meat descriptors (30.5%→24.4%; fat MAE 8.7→5.9 g);
+   - food names (custom GPT-4o daily bias −183/−139 → −53/−24 kcal).
+2. Instructions written for the local cuisine: local few-shot dishes, portion conventions, splitting fried food into meat plus absorbed oil, and rules for hidden sauces. This raised food recognition from 59% to 74–75% for Taiwanese food.
+3. Recipe priors switched on by cuisine (adding the typical hidden oil for a recognised dish) recovered hidden oil: Chinese energy MAE 155→139 kcal, fat error 60.5%→39.6%. They made errors worse where no oil was hidden.
+4. A second photo helps by 3–7 points; three or more views add little or hurt.
+5. Trained portion heads and fine-tuning give large gains on the data they were trained on (−33–41% portion error; macro error 26.8%→14.2%). They only carry over to a new setting when it has labelled photos of its own. Calibrating each food from one weighed photo cut error from 42.6 to 28.3 g (a best case).
+
+Weak or no gain:
+- Food-database lookup (RAG) with 2026 models: a direct estimate matches or beats it on energy. Lookup still helps portions and gives a traceable per-item record, and US-centric databases bias non-US food.
+- Higher reasoning effort: under 1 point, except for the smallest model.
+- Repeated calls or self-consistency voting.
+- Step-by-step (CoT) reasoning on images: often harmful.
+
+Follow-up questions give mixed results. They help when the eater confirms the meat type or cooking method, and models that ask their own clarifying questions beat fixed question lists by up to about 8 points. Noisy answers hurt. Letting users correct the record by talking to the model cut energy MAE by about 30% compared with manual search.
+
+No published LLM evaluation on Vietnamese dishes was found. Vietnamese resources found:
+- recognition-only image datasets (VinaFood21, 30VNFoods);
+- IFPRI's 360-meal Thai Nguyen photo atlas, with weights and recipes;
+- the National Institute of Nutrition's food composition tables;
+- a 2022 validation of a pre-LLM app that used a reference disc in the photo (within 10% at group level).

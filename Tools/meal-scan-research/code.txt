@@ -1,0 +1,169 @@
+## pipeline
+Sources: repo files dated 2026-11-21/22. The compiled functions/lib/meal.js (2026-11-22 13:55) matches the source. The scan is Debug-only for now: AIService.isLive is true only in DEBUG until the privacy go-live.
+
+APP TO SERVER: MealScanSheet.read() (/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Features/Food/MealScan.swift:550) calls AIService.scanMeal(photo, note:) (/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Services/AI/AIService.swift:253). That function:
+- checks the meal consent (UserDefaults "ai.consent.meal.v1");
+- redraws the photo at no more than 1280 px on the long side as JPEG quality 0.8 in base64, which drops EXIF and location;
+- calls the Firebase callable scanMeal (asia-southeast1, 100 s client timeout) with MealRequest {image, note? (optional free text), locale "en"/"vi" (the app's language), timeZone}.
+premiumCall retries once after an entitlement sync if the server says "not premium" or reports an out-of-date Premium limit.
+
+SERVER: scanMeal is in /Users/sammanhcuong/Developer/GymWorkout/functions/src/meal.ts:105.
+1. requireMember checks Auth, App Check (only if enforced), config/ai.mealEnabled, and a verified plan or a tester entry. Pro gets 20 scans a day, Premium 0.
+2. image() accepts a JPEG/PNG up to 4 MB, and the note is cut to 200 chars.
+3. take() reserves one unit in usage/{purchase}/meal/{member's local day}.
+4. One OpenAI Responses call:
+   - Model: config/ai.mealModel (default gpt-6.1-terra).
+   - Developer message: mealInstructions(locale), 8 lines, about 1,400 chars (about 350 tokens). It asks for up to 12 foods, each with a name, an everyday portion, edible grams and kcal/P/F/C. It says to judge size from plates, cutlery, hands and packaging; to include oil, butter and sauces that are visible or standard for the dish; to use USDA FoodData Central and typical Vietnamese home or street-food versions; and to keep kcal within about 10% of 4/4/9 (alcohol 7). It also asks for a title, a confidence and a one-sentence note, sets isFood false when there is no food, lets the member's note override the photo but never act as instructions, and puts the language line last.
+   - User message: input_text "Member's note: ..." or "Estimate this meal.", plus input_image as a data URL with detail "high".
+   - Settings: strict json_schema "meal"; max_output_tokens 4000 (reasoning included); store:false; safety_identifier is the hashed uid; reasoning.effort is config mealReasoning (default "low"); 70 s timeout; no retries.
+   - Not used: tools, few-shot examples, reference data, prompt_cache_key.
+   - Nothing is cached today: the roughly 350-token developer prefix is below OpenAI's 1,024-token caching minimum (OpenAI docs, 2024-25; check whether terra differs).
+
+WHAT COMES BACK:
+- A refusal or content_filter becomes isFood:false, and the scan still counts.
+- A cut-off or unreadable answer becomes an error. settle() gives the unit back when OpenAI billed nothing; otherwise at most 3 refunds a day.
+- Otherwise shapeMeal() returns {isFood, title (max 80 chars), items (max 12) [{name (80), portion (60), grams (≤3000), kcal (≤5000), proteinG and fatG (≤400 each), carbsG (≤800)}], total, confidence (high/medium/low, default medium), note (200), remainingToday}. All numbers are rounded integers, and items without a name are dropped.
+- The server does not check that kcal matches the macros.
+- Cloud Logging keeps only the uid, model, status and token usage.
+- The app decodes MealScan/MealScanItem (AIService.swift:115-144) and maps errors to AIServiceError.
+
+TODAY'S TEST: The model's per-100 g values match USDA (values from memory, not looked up): the egg at 100 g / 143 kcal is USDA's raw whole egg, and the apple at 180 g / 94 kcal is 52 kcal per 100 g. So looking up nutrients for single foods already works. The errors come from the grams and the cooking method: a hard-boiled egg is about 155 kcal per 100 g and a fried egg about 196.
+
+## editing
+The review step is in /Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Features/Food/MealScan.swift: `review` at line 411, MealItemRow at 625-666.
+
+What the member can do:
+- Edit the meal name (a text field).
+- Read a confidence line ("AI estimate · low confidence, check the portions"), the model's note, and "Estimates from a photo can be off by 20% or more".
+- Each item row shows the name (read-only) and "portion ×scale · grams · kcal".
+- A stepper goes from ×0.25 to ×3 in steps of 0.25. It scales grams, kcal, protein, fat and carbs together, in proportion, so kcal and macros do rescale. The total line (kcal and P/F/C) is recomputed on the phone; the server's total is not used.
+- A minus button removes an item.
+- Per-item macros are not shown, only the meal's total.
+
+What the member cannot do:
+- type exact grams;
+- rename or swap a food;
+- change the cooking method (fried to boiled);
+- add a missed item, such as oil or a sauce;
+- edit macros;
+- scale outside ×0.25 to ×3, or in finer steps.
+
+Notes:
+- The note can only be added before reading. Once a photo is picked, an optional field shows "Add a note (optional), e.g. “fried in butter”" (line 398). The server cuts it to 200 chars, and the prompt says it overrides the photo.
+- There is no re-scan from the review. The only way is Cancel and a new scan, which costs another unit.
+- After a failed read, "Try again" goes back to the photo screen with the photo and note kept, so the note can be edited and the meal read again. "No food found" clears the photo.
+
+After logging, a meal cannot be edited, only deleted: context menu on Today, or swipe in the quick log.
+
+The scan sheet and meal consent strings have no Vietnamese translation yet. Food names still come back in Vietnamese when the app runs in Vietnamese.
+
+## saved
+WHAT IS SAVED: "Log meal" runs MealScanSheet.log() (MealScan.swift:593), which builds MealEntry (/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Models/DailyModels.swift:52):
+- date: Date(), which is the time of logging, not of the photo;
+- the trimmed title;
+- items [{name, grams, kcal, proteinG, fatG, carbsG}], each the AI value × the scale, rounded;
+- source .photo.
+DailyStore.addMeal() (/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Services/DailyStore.swift:334) writes it to Application Support/Daily/daily.json on the device only. Nothing goes to Apple Health or the server. Meals feed Today's totals and Balance's Eat score (BalanceScore.swift:478).
+
+WHAT IS DROPPED: the portion text ("1 bowl"), the original unscaled estimate, the chosen scale, removed items, the confidence, the model's note, the member's note, the photo and the model id. So corrections are kept nowhere, and a saved meal does not show which numbers the AI gave and which the member changed.
+
+ON THE SERVER: only the usage counter usage/{usageKey}/meal/{day} {count, refunds, updatedAt, expireAt (TTL about 2 days)} and a log line with token counts. Firestore rules refuse all client access, and there is no meal collection. The OpenAI call uses store:false; the consent copy says OpenAI may keep inputs up to 30 days for abuse checks.
+
+RISK WHEN ADDING SAVED FIELDS: MealEntry uses Swift's synthesized Codable, which ignores default values. I confirmed this with a 3-line Swift test: a missing key that has a default still throws keyNotFound. If the key is missing, DailyStore.load() (line 485) fails and moves daily.json aside as daily.corrupt-<time>.json, so water, weights and meals then show as empty. Any new field must be Optional.
+The existing non-optional MealEntry.source seems to have been added with typed meals on 2026-11-22. It already carries this risk for any daily.json holding a meal saved by an earlier build. That can only affect Debug builds, since the scan is Debug-only.
+
+## existing
+- **The prompt already does a weak (a):** it names USDA FDC and "typical Vietnamese home or street-food versions", asks to include visible or standard oil, butter and sauces, gives the 4/4/9 kcal rule (alcohol 7), and lists portion cues (plates, cutlery, hands). It has no actual numbers or examples (meal.ts:46-57).
+- **Member's note before scanning** (e.g. "fried in butter"), up to 200 chars, which the prompt says overrides the photo. This is a manual form of (h) and (d) (MealScan.swift:398, meal.ts:127).
+- **Confidence and note** are in the schema and shown on the review ("low confidence, check the portions"). They are a ready trigger for (e) or (h).
+- **Correction screen:** a ×0.25-×3 stepper per item, item removal, and an editable meal name. The corrections are not saved.
+- **Model and effort can change without a deploy:** Firestore config/ai.mealModel and mealReasoning (config.ts:75/80, re-read every 5 min), plus the mealEnabled switch.
+- **A pattern for sending member data, usable for (d):** input.ts chatContext() plus CoachChatModels. Ask MUSQ sends the profile, plan and recent workouts; health answers only with the "ai.chat.includeHealth" toggle. Meals are not included.
+- **Typed meals** (QuickLogSheet.swift:875, QuickLogParser.food) are free. The member gives the kcal and macros; grams are 0 and the source is .manual. There is no dish table there either.
+- **Test setup:** functions/src/test/units.test.ts (shapeMeal bounds, prompt assertions), MOCK_MEAL, and functions/scripts/smoke.mjs (emulator run that expects 3 items / 565 kcal).
+- **Nothing exists for:** tools or function calling, food or dish tables, barcode or label reading, LiDAR or depth, fine-tuning, saved corrections, or a meal store on the server (repo-wide search).
+- **Vietnamese:** the scan screen and meal consent have no Vietnamese translation yet.
+
+## a: reference table of common Vietnamese dishes at the start of the developer prompt [S]
+fit: Good fit for the stated problem and cheap to try. The prompt names USDA and "typical Vietnamese versions" but gives no numbers, so for dishes like cơm tấm, bún bò, bánh xèo, xôi or mì xào the model has to guess the recipe. A table of about 100-200 dishes, each with a standard portion in grams, kcal, P/F/C and the oil or sauce assumed (e.g. "cơm tấm sườn bì chả, 1 đĩa ~450 g, mỡ hành + nước mắm included"), gives it a basis for hidden fat. It does not fix the gram estimates. Optional extra: 2-3 fixed example turns (a photo of a known-size Vietnamese bowl or plate plus its correct answer) placed before the member's photo, as portion anchors that are part of the cacheable prefix. Measure on a fixed set of weighed meals before and after.
+where: /Users/sammanhcuong/Developer/GymWorkout/functions/src/meal.ts mealInstructions() (line 46): add the table block before the `Write names, portions, title and note in ${language}` line (line 56), so EN and VI share one cacheable prefix (or move that line into the user message). The table can live in a new functions/src/foods.ts. In scanMeal, at responses.create (line 120), add prompt_cache_key (e.g. "meal-v1"). Test: /Users/sammanhcuong/Developer/GymWorkout/functions/src/test/units.test.ts "prompts carry the safety rules". No app change.
+risks: Code is S; building a good table is ongoing data work (M). Cost: a table of about 4k tokens adds roughly $0.004-0.005 per scan when not cached, at the price implied by today's test (about $1-1.25 per million input tokens); cached it costs a fraction of that. Cache entries last minutes (newer OpenAI models offer longer retention; check for terra), and with few scans an hour most calls will miss the cache. The model may force a dish onto the nearest table row. Per-portion numbers vary by vendor, so record each row's source and date (e.g. the Vietnam National Institute of Nutrition food composition table, 2007 edition from memory, check for a newer one; USDA FDC for ingredients).
+
+## b: two-step grounding (model gives food + grams + table id, server computes kcal and macros) [M]
+fit: Best fit for accuracy and consistency. The model only identifies each food, picks a table id (or none) and estimates edible grams. The server computes kcal and macros from bundled per-100 g values, so the numbers are repeatable, consistent with the macros and checkable. The prompt needs only a compact list of id, name and typical portion (about 10 tokens a row), about half of (a)'s tokens. Today's test shows single foods already match USDA per 100 g, so the gain is mostly for mixed Vietnamese dishes, where a dish row can include typical oil and sauce; grams remain the main error. Ids also make "my usual" matching in (d) reliable.
+where: meal.ts:
+- MEAL_SCHEMA (line 17): add foodId to items. Strict mode needs it in required; use "" for none, or an enum of ids.
+- mealInstructions(): add the id list.
+- shapeMeal() (line 68): if foodId is in the table, kcal/P/F/C = grams × per100 / 100; otherwise keep the model's numbers. Add a per-item basis: "table" or "estimate".
+New functions/src/foods.ts plus a JSON data file deployed with the function.
+Update units.test.ts, MOCK_MEAL and /Users/sammanhcuong/Developer/GymWorkout/functions/scripts/smoke.mjs (it expects 565 kcal).
+App: AIService.swift MealScanItem (line 115) has explicit CodingKeys, so add optional foodId/basis there. MealItemRow could badge table-based items. The ×0.25-×3 stepper still works because it is proportional.
+risks: A wrong id (bún bò matched as phở) gives confident wrong numbers. Keep the model's own estimate when the two disagree strongly, or show both. Per-100 g for a mixed plate depends on its mix of rice, meat and oil; better to split plates into components and give soups per-bowl sizes. OpenAI's strict-schema limits (2025 docs: at most 1,000 enum values in total) cap an enum at a few hundred ids; beyond that use a free string and check it on the server. Same data upkeep as (a).
+
+## c: function calling to a lookup tool during the response [M]
+fit: Weaker than (b) here. The model would call lookup_food(name) mid-answer and get per-100 g values back, but (b) gets the same grounding after one call with no round trip. Only worth it for a database too big to list in the prompt (thousands of packaged products), or when the model must see the values to choose between variants.
+where: meal.ts scanMeal(): add tools [{type:"function", name:"lookup_food", strict:true, parameters}] and a loop that answers each function_call with function_call_output. The call uses store:false, so previous_response_id cannot be used: each round must resend the developer and user input (image included) plus the returned items, with include ["reasoning.encrypted_content"]. The lookup would share foods.ts with (b). The timeouts (callOptions(70_000), the function's 90 s) and the `answered` flag in settle() (/Users/sammanhcuong/Developer/GymWorkout/functions/src/settle.ts:56) all assume a single call.
+risks: 2-3 calls per scan; the image tokens are resent each round (cached only if the prefix repeats). Latency goes from about 7 s to 15-20 s. More points of failure for the refund logic. Care is needed so the final message is still the strict JSON.
+
+## d: member's own history (corrected meals / "my usual" foods as hints) [M]
+fit: Useful for repeat meals (the same breakfast, the same bowl size), but blocked today: corrections are not saved (see j), and the consent promises less than this would send.
+Variant 1, on the phone only: after the scan, match items against the member's past logged items (by name, or by foodId once b exists) and pre-set or suggest the usual scale ("Your usual: ×1.5"). Nothing new leaves the phone and the consent does not change.
+Variant 2: send a short list of usual foods (name, typical grams, kcal) with the photo as hints.
+where: Variant 1: MealScan.swift read() (line 550) sets scales[item.id] from DailyStore.meals; no server change.
+Variant 2:
+- App: AIService.swift MealRequest (line 488) and scanMeal() get a hints field.
+- Server: a new sanitizer in /Users/sammanhcuong/Developer/GymWorkout/functions/src/input.ts modelled on chatContext() (line 66), which whitelists fields and caps sizes. meal.ts puts the hints in the user message as data, not in the developer message, so the cacheable prefix stays the same.
+- Consent: bump the key "ai.consent.meal.v1" (AIService.swift:169) to v2 so everyone is asked again, and add a line to AIConsentSheet.Feature.meal.lines (/Users/sammanhcuong/Developer/GymWorkout/GymWorkout/Features/AI/AIAccessViews.swift:121-123). Optionally an opt-in toggle like the chat's "ai.chat.includeHealth" (CoachChatModels.swift:144).
+risks: Current meal consent text (English only, no Vietnamese yet):
+1. "The meal photo you take or pick, and your note if you add one, go to OpenAI through MUSQ's server to estimate the foods, grams and calories."
+2. "Only an anonymous ID goes with it, so OpenAI can spot abuse: not your name, workouts, body measurements or health answers."
+3. "MUSQ doesn't keep the photo. The meal you save stays on this [device]."
+4. Footer: "OpenAI may keep what it receives for up to 30 days to check for abuse, and doesn't use it to train its models."
+Variant 2 breaks "the photo and your note" and "stays on this device". It needs consent v2, a privacy policy update and new App Store privacy answers. Timing is good: the AI features are Debug-only until the privacy go-live, so the wording can still change. Typed meal names are free text, so they are a prompt-injection risk (treat as data, cap the length). Hints can also pull the model toward the usual when today's plate is different.
+
+## e: higher reasoning effort only for hard photos (second pass) [S]
+fit: Moderate. More reasoning helps with counting, many items and portion arithmetic, but it cannot see oil that is not in the photo; (a)/(b) or (h) cover that. A no-code test is possible now: set Firestore config/ai.mealReasoning to "medium" (re-read every 5 min) and compare on a fixed photo set before building a selective second pass.
+where: /Users/sammanhcuong/Developer/GymWorkout/functions/src/config.ts: add AIConfig/DEFAULTS fields, e.g. mealHardEffort: Effort|null and mealHardMinItems. coerce() only treats chatReasoning and mealReasoning as efforts (line 104); the new key must be added there, or a null default is always ignored.
+meal.ts scanMeal(): after shapeMeal(), if confidence is "low" or there are at least N items, call again at the higher effort (optionally with the first answer as a draft to check). If the second call fails, return the first answer.
+Raise max_output_tokens (line 134; the 4000 includes reasoning). Raise the three timeouts together: function timeoutSeconds 90, callOptions(70_000), and the app's callable timeout of 100 s (AIService.swift:259).
+App: MealScan.swift could show "Taking a closer look…" or offer a "Look again" button when confidence is low.
+risks: The model's own confidence is poorly calibrated, so the trigger can miss bad answers or fire on good ones. A second call roughly doubles cost and wait for those photos. At "high", 4000 output tokens may cut off, which counts as a failed read; even the no-code "medium" test should watch status and cutOff in the scanMeal usage logs.
+
+## f: barcode or nutrition-label scanning for packaged food [M]
+fit: Good for packaged food and drinks (milk, yoghurt, instant noodles, protein bars, bottled tea), where exact numbers exist. Does nothing for home or street dishes, which is the stated pain point. The cheapest version is a label photo: the same pipeline with a "label" mode that reads per-100 g or per-serving values, and the server multiplies by the servings eaten. Barcodes need a product database (e.g. Open Food Facts, free community data; Vietnamese coverage is probably thin, check).
+where: - MealScan.swift chooser (line 360): a "Scan barcode" / "Read label" entry.
+- A new view wrapping VisionKit DataScannerViewController (iOS 16+, A12 chip or later; check isSupported).
+- AIService.scanMeal/MealRequest get a mode, and meal.ts a label prompt and schema (or a new callable).
+- DailyModels.swift MealEntry.Source gets a new case, plus MealSourceBadge in QuickLogParts.swift.
+Nothing for this exists today.
+risks: Database coverage and quality. The third-party lookup must be mentioned in the privacy policy. Quota decision: a label read also costs a model call. Confusion between per-100 g and per-pack servings.
+
+## g: LiDAR depth for volume [L]
+fit: Low priority. Only Pro iPhones (12 Pro and later Pro models) and iPad Pro have LiDAR; other phones would rely on weaker dual-camera depth. Volume needs each food outlined and a density table. Bowls of soup, heaped rice and sauces under food defeat it, and it cannot see oil, the main error for Vietnamese dishes. Whether Cal AI uses depth is for the research step to confirm.
+where: MealScan.swift CameraPicker (line 701) uses UIImagePickerController, which gives no depth. It would be replaced by an AVCaptureSession with depth data, or ARKit sceneDepth. Grams per item would be computed on the phone and sent as hints in MealRequest, with prompt changes in meal.ts.
+risks: Research-level accuracy work, many device differences, a new camera screen and permissions, battery and speed costs. The gains are mostly for single solid items, which are already the easy case.
+
+## h: clarifying question when unsure [M]
+fit: Strong fit for hidden oil and cooking method. The photo cannot show "fried or boiled", "how many eggs", "with mỡ hành / nước béo" or "small or large bowl". Best done without a second call: the model returns at most 1-2 questions, only when the answer changes kcal by more than about 15%, and each option carries replacement numbers for the item it affects (with b, the server can compute them from the table). Tapping a chip swaps the numbers on the phone. A cheaper version now: quick chips on the photo screen (chiên / luộc / xào / ít dầu / nhiều dầu / tô nhỏ / tô lớn) that fill the existing note before the scan: no schema change, no extra call.
+where: - meal.ts MEAL_SCHEMA: add questions [{text, itemIndex, options[{label, grams, kcal, proteinG, fatG, carbsG}]}]. Strict mode needs every field required; return an empty array when sure.
+- meal.ts mealInstructions(): add the rules. shapeMeal(): bound the questions like the items.
+- AIService.swift MealScan (line 128): an optional questions field.
+- MealScan.swift review (line 411): chips above the items; log() stays the same.
+- Chips-only version: just the note field on the photo screen (MealScan.swift line 398).
+risks: About 100-300 more output tokens and a heavier schema. The model may ask too often, so cap it and require a kcal impact. Option numbers need the same bounds as items. Re-reading with the answer instead would cost a second call and a unit through take(), unless a free follow-up is tracked on the server (store:false keeps no state).
+
+## i: fine-tuning a model [L]
+fit: Last, not now. No training data exists: the app keeps no photos or corrections, the server stores no meals, and the consent says OpenAI "doesn't use it to train its models". Using members' meals would need a new opt-in, storage and a deletion path. A useful set needs thousands of photos with weighed true values, mostly Vietnamese dishes. Whether gpt-6.1-terra can be fine-tuned (with images, or with reinforcement fine-tuning) must be checked on OpenAI's model page; image fine-tuning existed for GPT-4o from late 2024 (from memory). A fine-tuned model is tied to its base model version, which OpenAI retires (config.ts notes this), so it has to be retrained each time.
+where: Mostly outside the repo (dataset, training job). Switching models is config only: Firestore config/ai.mealModel. But /Users/sammanhcuong/Developer/GymWorkout/functions/src/openai.ts isReasoningModel() (line 36) tests /^(gpt-5|gpt-6|o\d)/, and fine-tuned ids start with "ft:". reasoning.effort would then silently stop being sent, and the model's default applies (medium on terra, per config.ts). Collecting data would need a new Firestore collection, cleanup in deleteAccount (account.ts) and new consent.
+risks: Training cost, and fine-tuned models are usually priced higher per token. Retraining at every model retirement. Overfitting a small set. Privacy and consent. (a)+(b)+(h) likely get most of the gain far more cheaply.
+
+## j (extra, prerequisite): keep the AI estimate and the member's corrections [S]
+fit: Needed before (d), any accuracy measurement or (i): today nothing records what the AI said versus what the member logged. Keep both on the phone.
+where: DailyModels.swift MealEntry.Item (line 53): add Optional portion, aiGrams, aiKcal (and foodId once b exists). MealEntry: Optional confidence, aiNote, memberNote and removed item names. MealScan.swift log() (line 593) fills them.
+risks: The fields must be Optional: synthesized Codable ignores defaults, and a missing key makes DailyStore.load() move daily.json aside as corrupt. Keeping the note on the phone is fine; sending it anywhere is (d)'s consent question.
+
+## k (extra): oil and sauces as their own rows + server kcal check [S]
+fit: Small, direct help for hidden fat. Ask the model to list cooking oil, mỡ hành, nước béo and nước chấm or other sauces as their own items with grams. The assumption becomes visible, and the member can adjust or remove it with the existing stepper. Add a server check that each item's kcal is about 4P+4C+9F (within 15%, except alcohol) and recompute or flag it; today that 10% rule is only in the prompt.
+where: meal.ts mealInstructions() (the oil and sauces line, 51) and shapeMeal() (line 68). No app change.
+risks: Double counting if the model also includes the oil in the dish's own numbers. More rows to review.
+

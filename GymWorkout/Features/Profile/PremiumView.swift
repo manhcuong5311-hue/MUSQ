@@ -17,6 +17,9 @@ import UIKit
 
 struct PremiumView: View {
     var reason: Paywall.Reason
+    /// The member's profile, when known: the goal photo is offered only to
+    /// those who can make one (see `GoalPhotoCard.canCreate`).
+    var profile: UserProfile? = nil
 
     @Environment(Purchases.self) private var purchases
     @Environment(\.dismiss) private var dismiss
@@ -26,8 +29,16 @@ struct PremiumView: View {
     @Environment(\.dsLayout) private var presenterLayout
     /// The plan tapped; until then Yearly, or the first plan that loaded.
     @State private var selection = Purchases.ProductID.yearly
+    /// Set once a plan is tapped, so products landing later don't move it.
+    @State private var hasChosen = false
     @State private var hasLoaded = false
     @State private var isEligibleForTrial = false
+    /// Subscriptions whose free trial this Apple Account can still take
+    /// (one per subscription group, so Premium's trial uses up Pro's).
+    @State private var trialEligible: Set<String> = []
+    /// A plan was bought or restored in this sheet: it says so ("Premium is
+    /// on") rather than turning straight into the Pro offer.
+    @State private var gotPlanHere = false
     @State private var isWorking = false
     @State private var alert: String?
     @State private var managesSubscription = false
@@ -40,8 +51,10 @@ struct PremiumView: View {
     var body: some View {
         sheet
             .task { await load() }
-            .task(id: purchases.products.map(\.id)) { await productsArrived() }
-            .alert("MUSQ Premium", isPresented: Binding(get: { alert != nil }, set: { if !$0 { alert = nil } })) {
+            // Again after a purchase or restore: the plans on offer and the
+            // free trials this Apple Account can take change with the tier.
+            .task(id: purchases.products.map(\.id) + ["\(purchases.tier)"]) { await productsArrived() }
+            .alert(showsPro ? "MUSQ" : "MUSQ Premium", isPresented: Binding(get: { alert != nil }, set: { if !$0 { alert = nil } })) {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(alert ?? "")
@@ -50,7 +63,29 @@ struct PremiumView: View {
                 // A cancellation or plan change made in the sheet shows up here.
                 Task { await purchases.refreshEntitlements() }
             })
-            .modifier(PremiumSheetSizing(fitted: purchases.isPremium, width: Self.activeWidth))
+            .modifier(PremiumSheetSizing(fitted: showsActive, width: Self.activeWidth))
+    }
+
+    // MARK: - Tiers
+
+    /// Pro is sold with the AI, so builds where the AI is live show both
+    /// tiers (the comparison layout the owner picked, 2026-11-22); the
+    /// others keep the Premium-only sheet as it shipped.
+    private var showsPro: Bool { AIService.isLive && !proUnavailable }
+
+    /// The App Store answered without Pro's plans (not in App Store Connect
+    /// yet, or off sale): the sheet offers Premium alone rather than a tier
+    /// nobody can buy. No answer yet, or a failed one, keeps the tiers, with
+    /// Try Again where the plans go.
+    private var proUnavailable: Bool { !purchases.sellsPro }
+
+    /// A Premium member, shown Pro.
+    private var upgrading: Bool { showsPro && purchases.tier == .premium }
+
+    /// "Is on" rather than an offer: Pro; Premium where there's no Pro; or
+    /// Premium just bought or restored here.
+    private var showsActive: Bool {
+        purchases.isPro || (purchases.isPremium && (!showsPro || gotPlanHere))
     }
 
     /// On iPad the sheet measures itself and lays out for that size; the
@@ -59,7 +94,7 @@ struct PremiumView: View {
     private var sheet: some View {
         if DS.isPad {
             ZStack {
-                if sheetSize != nil || purchases.isPremium {
+                if sheetSize != nil || showsActive {
                     page
                         .environment(\.dsLayout, layout)
                 } else {
@@ -92,7 +127,7 @@ struct PremiumView: View {
                         .modifier(PadShortcut(shortcut: .cancelAction))
                     }
 
-                    if purchases.isPremium {
+                    if showsActive {
                         active
                             .dsReadable(480)
                     } else {
@@ -108,7 +143,7 @@ struct PremiumView: View {
         // The buy button and the way out stay on screen however far the
         // plans and terms scroll.
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if !purchases.isPremium { footer }
+            if !showsActive { footer }
         }
     }
 
@@ -118,7 +153,7 @@ struct PremiumView: View {
     /// compact), the measured sheet's on iPad.
     private var layout: DSLayout {
         guard DS.isPad else { return presenterLayout }
-        if purchases.isPremium {
+        if showsActive {
             // Fitted to its content at a fixed width, so its width says
             // little about the window: keep the window's tier when known.
             if presenterLayout.isRegular { return presenterLayout.with(containerWidth: Self.activeWidth) }
@@ -140,7 +175,7 @@ struct PremiumView: View {
     /// and the small fitted sheet's tier gutter, otherwise.
     private var gutter: CGFloat {
         guard layout.isRegular else { return DS.Metric.gutter }
-        return purchases.isPremium ? layout.gutter : 32
+        return showsActive ? layout.gutter : 32
     }
 
     /// Three plans in a row once the column can give each about 190pt.
@@ -151,7 +186,13 @@ struct PremiumView: View {
 
     // MARK: - Offer
 
+    @ViewBuilder
     private var offer: some View {
+        if showsPro { tierOffer } else { premiumOffer }
+    }
+
+    /// The Premium-only sheet, as it shipped before Pro.
+    private var premiumOffer: some View {
         let titleSize: CGFloat = layout.value(28, 34)
         let messageSize: CGFloat = layout.value(14, 16)
         return VStack(alignment: .leading, spacing: 0) {
@@ -206,6 +247,18 @@ struct PremiumView: View {
         case .preset:
             return (String(localized: "Three presets for every muscle"),
                     String(localized: "Preset 1 is free. Premium adds Preset 2 and 3 for every muscle group, so a different session for each one is a tap away."))
+        // Only builds with the AI open the sheet for these, and they show
+        // the tiers; this is for when Pro isn't on sale.
+        case .coach:
+            return (String(localized: "Ask MUSQ about your training"),
+                    String(localized: "Premium adds the Ask MUSQ coach for your training questions, up to \(Purchases.Tier.premium.ai?.chatPerDay ?? 0) a day, plus the common mistakes, more presets and no ads."))
+        case .mealScan:
+            return (String(localized: "Log a meal with a photo"),
+                    String(localized: "Meal scans come with MUSQ Pro, which isn't on sale right now. Premium adds the coach, the common mistakes, more presets and no ads."))
+        case .goalPhoto:
+            return (String(localized: "See your goal"),
+                    String(localized: "Premium includes \(Purchases.Tier.premium.ai?.goalPhotosPerYear ?? 0) goal photos a year, plus the coach, the common mistakes, more presets and no ads.",
+                           comment: "Premium sheet, opened from the goal photo: Premium's goal photos a year"))
         case .onboarding, .profile:
             return (String(localized: "Train with MUSQ Premium"),
                     String(localized: "Everything in MUSQ stays free to train with. Premium adds the common mistakes, more presets and no ads."))
@@ -215,7 +268,7 @@ struct PremiumView: View {
     /// Free and Premium side by side: what everyone has, then what Premium
     /// adds, so it's plain that training itself is never behind the paywall.
     private var features: [FeatureTable.Row] {
-        [
+        var rows: [FeatureTable.Row] = [
             .init(symbol: "cube", title: "\(SampleData.exercises.count) exercises in 3D", free: true),
             .init(symbol: "lightbulb", title: "Every key tip and setup step", free: true),
             .init(symbol: "list.bullet.clipboard", title: "Workout log, history and recovery", free: true),
@@ -224,24 +277,50 @@ struct PremiumView: View {
             .init(symbol: "square.stack.3d.up", title: "Preset 2 and 3 for every group", free: false),
             .init(symbol: "nosign", title: "No ads", free: false),
         ]
+        // Builds with the AI show the tier table (`tierRows`), unless Pro
+        // isn't on sale: then Premium's own allowance goes here (App Store
+        // 3.1.2: say how much a plan includes).
+        if AIService.isLive, let ai = Purchases.Tier.premium.ai {
+            rows.insert(.init(symbol: "sparkles", title: "Ask MUSQ: \(ai.chatPerDay) questions a day", free: false), at: 4)
+            if GoalPhotoCard.canCreate(for: profile), let photos = ai.goalPhotosPerYear {
+                rows.insert(.init(symbol: "figure.strengthtraining.traditional", title: "Goal photos: \(photos) a year", free: false), at: 5)
+            }
+        }
+        return rows
     }
 
-    /// What Premium itself unlocks, for the active state.
+    /// What the member's plan unlocks, for the active state: the AI at their
+    /// tier's allowance, in builds where it's live.
     private var benefits: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        let ai = purchases.tier.ai
+        return VStack(alignment: .leading, spacing: 14) {
             BenefitRow(symbol: "exclamationmark.triangle", title: "The common mistakes",
                        detail: "Drawn over the lifter for every key tip.")
             BenefitRow(symbol: "square.stack.3d.up", title: "Preset 2 and 3",
                        detail: "For every muscle group.")
             BenefitRow(symbol: "nosign", title: "No ads",
                        detail: "No banner, no full-screen ads.")
+            if AIService.isLive, let ai {
+                BenefitRow(symbol: "sparkles", title: "Ask MUSQ",
+                           detail: "Your training questions, answered with your plan in mind. Up to \(ai.chatPerDay) a day.")
+                if ai.mealScansPerDay > 0 {
+                    BenefitRow(symbol: "camera.viewfinder", title: "Meal scans",
+                               detail: "Calories and macros from a photo, for you to check. Up to \(ai.mealScansPerDay) a day.")
+                }
+                if GoalPhotoCard.canCreate(for: profile), let photos = ai.goalPhotosPerYear {
+                    BenefitRow(symbol: "figure.strengthtraining.traditional", title: "Your goal photo",
+                               detail: "A photo of you at the goal you pick, with your own face. \(photos) a year.")
+                }
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surfaceAlt))
     }
 
-    /// The same three on iPad, as tiles in a row: icon over title.
+    /// The same three on iPad, as tiles in a row: icon over title. Builds
+    /// with the AI show the list instead (`benefits`), which has room for
+    /// each tier's allowance.
     private var benefitTiles: some View {
         HStack(alignment: .top, spacing: 10) {
             BenefitTile(symbol: "exclamationmark.triangle", title: "The common mistakes",
@@ -330,18 +409,20 @@ struct PremiumView: View {
     }
 
     private var footer: some View {
-        VStack(spacing: 8) {
-            WideButton(title: buttonTitle, prominent: true, fontSize: 15, verticalPadding: 15) {
+        let nothingChosen = showsPro ? selectedOption == nil : selectedProduct == nil
+        let caption = showsPro ? tierButtonCaption : buttonCaption
+        return VStack(spacing: 8) {
+            WideButton(title: showsPro ? tierButtonTitle : buttonTitle, prominent: true, fontSize: 15, verticalPadding: 15) {
                 buy()
             }
-            .disabled(selectedProduct == nil || isWorking)
-            .opacity(selectedProduct == nil || isWorking ? 0.5 : 1)
+            .disabled(nothingChosen || isWorking)
+            .opacity(nothingChosen || isWorking ? 0.5 : 1)
             .overlay { if isWorking { ProgressView().tint(DS.ink) } }
             .modifier(PadShortcut(shortcut: .defaultAction))
             .dsCTA(420)
 
-            if let buttonCaption {
-                Text(buttonCaption)
+            if let caption {
+                Text(caption)
                     .font(.ui(layout.value(11.5, 12.5)))
                     .foregroundStyle(DS.silver.opacity(0.5))
                     .multilineTextAlignment(.center)
@@ -349,7 +430,7 @@ struct PremiumView: View {
                     .frame(maxWidth: layout.isRegular ? 460 : nil)
             }
 
-            Button(reason == .onboarding ? "Continue Free" : "Not Now") { dismiss() }
+            Button(reason == .onboarding && !purchases.isPremium ? "Continue Free" : "Not Now") { dismiss() }
                 .font(.ui(layout.value(14, 15), .semibold))
                 .foregroundStyle(DS.silver.opacity(0.8))
                 .frame(maxWidth: .infinity)
@@ -368,10 +449,11 @@ struct PremiumView: View {
 
     private var terms: some View {
         let size: CGFloat = layout.value(11.5, 12)
+        let text = showsPro ? tierTermsText : termsText
         return VStack(alignment: .leading, spacing: 10) {
             // Empty until the App Store returns a plan to describe.
-            if !termsText.isEmpty {
-                Text(termsText)
+            if !text.isEmpty {
+                Text(text)
                     .font(.ui(size))
                     .cssLineHeight(size, 1.45)
                     .foregroundStyle(DS.silver.opacity(0.42))
@@ -415,6 +497,351 @@ struct PremiumView: View {
         return parts.joined(separator: " ")
     }
 
+    // MARK: - Premium and Pro
+
+    /// Both tiers in one table, then the plans grouped by tier, Pro first.
+    /// A Premium member sees their plan marked and Pro's plans only.
+    private var tierOffer: some View {
+        let titleSize: CGFloat = layout.value(28, 34)
+        let messageSize: CGFloat = layout.value(14, 16)
+        let copy = tierHeadline
+        return VStack(alignment: .leading, spacing: 0) {
+            SectionEyebrow(text: upgrading ? "MUSQ PRO" : "MUSQ PREMIUM · PRO")
+            Text(copy.title)
+                .font(.ui(titleSize, .semibold))
+                .tracking(layout.value(-0.7, -0.9))
+                .foregroundStyle(DS.silver)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: layout.isRegular ? 520 : nil, alignment: .leading)
+                .padding(.top, layout.value(6, 8))
+            Text(copy.message)
+                .font(.ui(messageSize))
+                .cssLineHeight(messageSize, 1.5)
+                .foregroundStyle(DS.silver.opacity(0.6))
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: layout.isRegular ? 520 : nil, alignment: .leading)
+                .padding(.top, layout.value(10, 12))
+
+            TierTable(rows: tierRows, yourPlan: upgrading)
+                .padding(.top, layout.value(22, 28))
+
+            tierPlans
+                .padding(.top, layout.value(24, 28))
+
+            // A Premium subscriber can still manage the plan they have.
+            if upgrading && isSubscription {
+                Button("Manage Subscription") { manageSubscription() }
+                    .font(.ui(layout.value(13.5, 14.5), .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.75))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .buttonStyle(.plain)
+                    .dsCTA(240)
+                    .dsHover(.highlight, radius: 12)
+                    .padding(.top, 8)
+            }
+            Button("Restore Purchases") { restore() }
+                .font(.ui(layout.value(13.5, 14.5), .semibold))
+                .foregroundStyle(DS.silver.opacity(0.75))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .buttonStyle(.plain)
+                .disabled(isWorking)
+                .dsCTA(240)
+                .dsHover(.highlight, radius: 12)
+                .padding(.top, upgrading && isSubscription ? 0 : 8)
+
+            terms
+                .padding(.top, 6)
+        }
+    }
+
+    /// The headline for what was tapped, with each tier's allowances from
+    /// `Purchases.Tier.ai` (which mirrors the server).
+    private var tierHeadline: (title: String, message: String) {
+        let premiumChats = Purchases.Tier.premium.ai?.chatPerDay ?? 0
+        let premiumPhotos = Purchases.Tier.premium.ai?.goalPhotosPerYear ?? 0
+        let pro = Purchases.Tier.pro.ai
+        let proChats = pro?.chatPerDay ?? 0
+        let proScans = pro?.mealScansPerDay ?? 0
+        let proPhotos = pro?.goalPhotosPerYear ?? 0
+        // Goal photos are named only to members who can make one (the
+        // table leaves that row out for the others too).
+        let photos = GoalPhotoCard.canCreate(for: profile)
+        if upgrading {
+            switch reason {
+            case .coach:
+                return (String(localized: "Keep asking with Pro"),
+                        String(localized: "That's today's \(premiumChats) questions on Premium. Pro keeps everything in your plan and gives you \(proChats) questions a day."))
+            case .mealScan:
+                return (String(localized: "Log meals with Pro"),
+                        String(localized: "Meal scans are part of Pro: snap a meal and MUSQ logs its foods, calories and macros for you to check, up to \(proScans) a day."))
+            case .goalPhoto:
+                return (String(localized: "More goal photos with Pro"),
+                        String(localized: "Premium includes \(premiumPhotos) goal photos a year. Pro keeps everything in your plan and makes up to \(proPhotos) a year.",
+                               comment: "Pro upgrade, opened from the goal photo: Premium's goal photos a year, then Pro's"))
+            case .onboarding, .profile, .mistake, .preset:
+                return (String(localized: "Get more with Pro"),
+                        photos
+                        ? String(localized: "Pro keeps everything in your plan and gives you \(proChats) questions a day, meal scans and \(proPhotos) goal photos a year.",
+                                 comment: "Pro upgrade: Pro's questions a day, then its goal photos a year")
+                        : String(localized: "Pro keeps everything in your plan and gives you \(proChats) questions a day and meal scans."))
+            }
+        }
+        switch reason {
+        case .mistake, .preset:
+            // The Premium feature they tapped; the table shows Pro beside it.
+            return headline
+        case .coach:
+            return (String(localized: "Ask MUSQ about your training"),
+                    photos
+                    ? String(localized: "Premium includes the Ask MUSQ coach, \(premiumChats) questions a day. Pro gives you \(proChats) a day, plus meal scans and \(proPhotos) goal photos a year.",
+                             comment: "Paywall, opened from Ask MUSQ: Premium's questions a day, Pro's questions a day, then Pro's goal photos a year")
+                    : String(localized: "Premium includes the Ask MUSQ coach, \(premiumChats) questions a day. Pro gives you \(proChats) a day, plus meal scans."))
+        case .mealScan:
+            return (String(localized: "Log a meal with a photo"),
+                    String(localized: "Meal scans are part of Pro: snap a meal and MUSQ logs its foods, calories and macros for you to check, up to \(proScans) a day."))
+        case .goalPhoto:
+            // A member without a plan: the goal photo opens the paywall once
+            // their one free photo (`AILimits.freeGoalPhotos`) is used, as the
+            // server said (`AIService.freeGoalPhotoUsed`).
+            return (String(localized: "See your goal"),
+                    AIService.shared.freeGoalPhotoUsed == true
+                    ? String(localized: "Your free goal photo is used. Premium makes \(premiumPhotos) a year; Pro up to \(proPhotos) a year.",
+                             comment: "Paywall, opened from the goal photo once the free one is used: Premium's goal photos a year, then Pro's")
+                    : String(localized: "Your first goal photo is free. Premium makes \(premiumPhotos) a year; Pro up to \(proPhotos) a year.",
+                             comment: "Paywall, opened from the goal photo without a plan: Premium's goal photos a year, then Pro's"))
+        case .onboarding, .profile:
+            return (String(localized: "Train with Premium or Pro"),
+                    String(localized: "Everything in MUSQ stays free to train with. Premium adds the common mistakes, more presets, no ads and the Ask MUSQ coach. Pro adds meal scans and more of the AI."))
+        }
+    }
+
+    /// Free, Premium and Pro: the rows Free has, what Premium adds, then the
+    /// AI at each tier's allowance (App Store 3.1.2: say how much a plan
+    /// includes).
+    private var tierRows: [TierTable.Row] {
+        let premium = Purchases.Tier.premium.ai
+        let pro = Purchases.Tier.pro.ai
+        var rows: [TierTable.Row] = [
+            .init(symbol: "cube", title: "\(SampleData.exercises.count) exercises in 3D", free: .check, premium: .check, pro: .check),
+            .init(symbol: "lightbulb", title: "Every key tip and setup step", free: .check, premium: .check, pro: .check),
+            .init(symbol: "list.bullet.clipboard", title: "Workout log, history and recovery", free: .check, premium: .check, pro: .check),
+            .init(symbol: "square.stack", title: "Basic, Advanced and Preset 1", free: .check, premium: .check, pro: .check),
+            .init(symbol: "exclamationmark.triangle", title: "Common mistakes over the lifter", free: .none, premium: .check, pro: .check),
+            .init(symbol: "square.stack.3d.up", title: "Preset 2 and 3 for every group", free: .none, premium: .check, pro: .check),
+            .init(symbol: "nosign", title: "No ads", free: .none, premium: .check, pro: .check),
+            .init(symbol: "sparkles", title: "Ask MUSQ coach", detail: "Your training questions",
+                  free: .none, premium: .perDay(premium?.chatPerDay), pro: .perDay(pro?.chatPerDay)),
+            .init(symbol: "camera.viewfinder", title: "Meal scans", detail: "Calories from a photo",
+                  free: .none, premium: .perDay(premium?.mealScansPerDay), pro: .perDay(pro?.mealScansPerDay)),
+        ]
+        // Only for members who can make one (see `GoalPhotoCard.canCreate`).
+        // Free has one, ever; the plans renew theirs each year.
+        if GoalPhotoCard.canCreate(for: profile) {
+            rows.append(.init(symbol: "figure.strengthtraining.traditional", title: "Goal photo", detail: "For adults",
+                              free: .oneTime(Purchases.AILimits.freeGoalPhotos),
+                              premium: .photos(premium?.goalPhotos), pro: .photos(pro?.goalPhotos)))
+        }
+        return rows
+    }
+
+    @ViewBuilder
+    private var tierPlans: some View {
+        let options = planOptions
+        if options.isEmpty {
+            storeState
+        } else {
+            VStack(alignment: .leading, spacing: 10) {
+                let pro = options.filter { $0.tier == .pro }
+                let premium = options.filter { $0.tier != .pro }
+                if !pro.isEmpty {
+                    PlanGroupHeader(title: "PRO", note: upgrading ? "UPGRADE FROM PREMIUM" : "FULL AI ALLOWANCE")
+                    planRow(pro)
+                }
+                if !premium.isEmpty {
+                    PlanGroupHeader(title: "PREMIUM", note: "STARTER AI ALLOWANCE")
+                        .padding(.top, pro.isEmpty ? 0 : 10)
+                    planRow(premium)
+                }
+            }
+        }
+    }
+
+    /// One tier's plans: tiles side by side on a wide sheet, cards otherwise.
+    @ViewBuilder
+    private func planRow(_ options: [PlanOption]) -> some View {
+        if layout.isRegular && sheetWidth >= 600 {
+            HStack(alignment: .top, spacing: 12) {
+                ForEach(options) { option in
+                    PlanTile(title: option.title, price: option.price, period: option.period,
+                             detail: planDetail(option), badge: savings(for: option),
+                             isSelected: selection == option.id) { choose(option) }
+                }
+            }
+            .fixedSize(horizontal: false, vertical: true)
+        } else {
+            ForEach(options) { option in
+                PlanCard(title: option.title, price: option.price, period: option.period,
+                         detail: planDetail(option), badge: savings(for: option),
+                         isSelected: selection == option.id) { choose(option) }
+            }
+        }
+    }
+
+    private func choose(_ option: PlanOption) {
+        selection = option.id
+        hasChosen = true
+    }
+
+    /// The line under a plan's name: the trial, or what a yearly price comes
+    /// to a month.
+    private func planDetail(_ option: PlanOption) -> String {
+        switch option.kind {
+        case .yearly:
+            if let trial = option.trial { return String(localized: "\(trial) free, then \(option.price)/year") }
+            return option.perMonth.map { String(localized: "\($0) a month, billed yearly") } ?? ""
+        case .monthly:
+            if let trial = option.trial { return String(localized: "\(trial) free, then \(option.price)/month") }
+            return String(localized: "Billed monthly, cancel anytime")
+        case .lifetime:
+            return String(localized: "One payment, Premium for good")
+        }
+    }
+
+    /// "SAVE 78%": a tier's yearly plan against twelve of its monthly ones,
+    /// when the App Store returned both (so both prices are real and in the
+    /// same currency).
+    private func savings(for option: PlanOption) -> String? {
+        guard option.kind == .yearly,
+              let monthly = planOptions.first(where: { $0.tier == option.tier && $0.kind == .monthly }),
+              monthly.priceValue > 0 else { return nil }
+        // Through Double: NSDecimalNumber's intValue gives 0 for a decimal with
+        // this many digits (77.768…), which hid the badge.
+        let percent = Int(NSDecimalNumber(decimal: (1 - option.priceValue / (monthly.priceValue * 12)) * 100).doubleValue)
+        return percent >= 10 ? String(localized: "SAVE \(percent.formatted(.percent))") : nil
+    }
+
+    /// Prices didn't load, or are still loading: the same as the Premium sheet.
+    @ViewBuilder
+    private var storeState: some View {
+        if storeUnavailable {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Prices couldn't be loaded from the App Store. Check your connection and try again.")
+                    .font(.ui(layout.value(13, 14)))
+                    .foregroundStyle(DS.silver.opacity(0.55))
+                    .fixedSize(horizontal: false, vertical: true)
+                WideButton(title: "Try Again", prominent: false) {
+                    Task { await load() }
+                }
+                .dsCTA(300, alignment: .leading)
+            }
+            .frame(maxWidth: .infinity, minHeight: 150, alignment: .leading)
+        } else {
+            ProgressView()
+                .tint(DS.silver.opacity(0.4))
+                .frame(maxWidth: .infinity, minHeight: 150)
+                .accessibilityLabel("Loading plans")
+        }
+    }
+
+    /// The plans on offer, as the App Store priced them: Pro's then
+    /// Premium's, or Pro's alone for a Premium member.
+    private var planOptions: [PlanOption] {
+        typealias ID = Purchases.ProductID
+        let ids = upgrading ? [ID.proYearly, ID.proMonthly] : [ID.proYearly, ID.proMonthly, ID.yearly, ID.lifetime]
+        return ids.compactMap { id -> PlanOption? in
+            if let product = purchases.products.first(where: { $0.id == id }) {
+                return PlanOption(product, trial: trialEligible.contains(id))
+            }
+            #if DEBUG
+            // A sample stands in for each plan the store didn't return.
+            if PlanOption.usesSamples { return PlanOption.samples(trials: !upgrading).first { $0.id == id } }
+            #endif
+            return nil
+        }
+    }
+
+    private var selectedOption: PlanOption? {
+        planOptions.first { $0.id == selection }
+    }
+
+    private var tierButtonTitle: String {
+        guard let option = selectedOption else {
+            return upgrading ? String(localized: "Upgrade to Pro") : String(localized: "Get Pro")
+        }
+        if option.trial != nil { return String(localized: "Start Free Trial") }
+        switch (upgrading, option.tier, option.kind) {
+        case (true, _, .yearly): return String(localized: "Upgrade to Pro · \(option.price) a year")
+        case (true, _, _): return String(localized: "Upgrade to Pro · \(option.price) a month")
+        case (false, .pro, .yearly): return String(localized: "Get Pro · \(option.price) a year")
+        case (false, .pro, _): return String(localized: "Get Pro · \(option.price) a month")
+        case (false, _, .yearly): return String(localized: "Get Premium · \(option.price) a year")
+        case (false, _, .monthly): return String(localized: "Get Premium · \(option.price) a month")
+        case (false, _, .lifetime): return String(localized: "Get Lifetime · \(option.price)")
+        }
+    }
+
+    private var tierButtonCaption: String? {
+        guard let option = selectedOption else { return nil }
+        let renews: String
+        switch option.kind {
+        case .lifetime:
+            return String(localized: "One payment. No subscription.")
+        case .yearly:
+            renews = option.trial.map { String(localized: "\($0) free, then \(option.price) a year until cancelled. Cancel anytime in Settings.") }
+                ?? String(localized: "Renews at \(option.price) a year until cancelled. Cancel anytime in Settings.")
+        case .monthly:
+            renews = option.trial.map { String(localized: "\($0) free, then \(option.price) a month until cancelled. Cancel anytime in Settings.") }
+                ?? String(localized: "Renews at \(option.price) a month until cancelled. Cancel anytime in Settings.")
+        }
+        guard upgrading else { return renews }
+        // An upgrade in the same subscription group replaces the plan at
+        // once and Apple refunds the rest; lifetime is a separate purchase.
+        let now = isSubscription
+            ? String(localized: "Pro starts now, and Apple refunds the unused part of your Premium plan.")
+            : String(localized: "Pro starts now. Your lifetime Premium stays yours.")
+        return now + " " + renews
+    }
+
+    /// Names only the plans on offer, at the prices they show, as the
+    /// Premium sheet's terms do.
+    private var tierTermsText: String {
+        let options = planOptions
+        let plans: [String] = options.compactMap { option in
+            switch (option.tier, option.kind) {
+            case (.pro, .monthly):
+                return String(localized: "Pro Monthly (\(option.price) a month)", comment: "Subscription terms: a plan and its price")
+            case (.pro, .yearly):
+                return String(localized: "Pro Yearly (\(option.price) a year)", comment: "Subscription terms: a plan and its price")
+            case (_, .yearly):
+                return String(localized: "Premium Yearly (\(option.price) a year)", comment: "Subscription terms: a plan and its price")
+            case (_, .monthly):
+                return String(localized: "Premium Monthly (\(option.price) a month)", comment: "Subscription terms: a plan and its price")
+            case (_, .lifetime):
+                return nil
+            }
+        }
+        var parts: [String] = []
+        if !plans.isEmpty {
+            let names = plans.formatted(.list(type: .and))
+            parts.append(plans.count == 1
+                         ? String(localized: "\(names) is an auto-renewing subscription.",
+                                  comment: "Subscription terms: one plan and its price, e.g. Yearly ($29.99 a year)")
+                         : String(localized: "\(names) are auto-renewing subscriptions.",
+                                  comment: "Subscription terms: two plans and their prices, e.g. Monthly ($4.99 a month) and Yearly ($29.99 a year)"))
+            parts.append(options.contains { $0.trial != nil }
+                         ? String(localized: "Payment is charged to your Apple Account when you confirm, or, with a free trial, when the trial ends unless you cancel at least 24 hours before.")
+                         : String(localized: "Payment is charged to your Apple Account when you confirm."))
+            if upgrading && isSubscription {
+                parts.append(String(localized: "Upgrading replaces your Premium subscription right away, and Apple refunds its unused part."))
+            }
+            parts.append(String(localized: "A subscription renews automatically until cancelled: cancel at least 24 hours before the end of the current period to stop the next renewal, which is charged within 24 hours before that. Manage or cancel it in Settings › Apple Account › Subscriptions."))
+        }
+        if options.contains(where: { $0.kind == .lifetime }) { parts.append(String(localized: "Lifetime is a one-time purchase.")) }
+        return parts.joined(separator: " ")
+    }
+
     // MARK: - Active
 
     private var active: some View {
@@ -424,9 +851,9 @@ struct PremiumView: View {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: layout.value(34, 40)))
                 .foregroundStyle(DS.silver)
-            SectionEyebrow(text: activePlanName.map { "MUSQ PREMIUM · \($0.uppercased())" } ?? "MUSQ PREMIUM")
+            SectionEyebrow(text: activePlanName.map { "\(activeTierName) · \($0.uppercased())" } ?? activeTierName)
                 .padding(.top, 14)
-            Text("Premium is on")
+            (purchases.isPro ? Text("Pro is on") : Text("Premium is on"))
                 .font(.ui(titleSize, .semibold))
                 .tracking(layout.value(-0.7, -0.9))
                 .foregroundStyle(DS.silver)
@@ -439,8 +866,10 @@ struct PremiumView: View {
                 .padding(.top, 10)
 
             if layout.isRegular {
-                benefitTiles
-                    .padding(.top, 24)
+                Group {
+                    if AIService.isLive { benefits } else { benefitTiles }
+                }
+                .padding(.top, 24)
                 // Side by side under the tiles; Done alone when there's no
                 // subscription to manage.
                 HStack(spacing: 10) {
@@ -466,10 +895,12 @@ struct PremiumView: View {
         .padding(.top, 12)
     }
 
+    private var activeTierName: String { purchases.isPro ? "MUSQ PRO" : "MUSQ PREMIUM" }
+
     private var activePlanName: String? {
         switch purchases.activePlan {
-        case Purchases.ProductID.yearly: return String(localized: "Yearly")
-        case Purchases.ProductID.monthly: return String(localized: "Monthly")
+        case Purchases.ProductID.yearly, Purchases.ProductID.proYearly: return String(localized: "Yearly")
+        case Purchases.ProductID.monthly, Purchases.ProductID.proMonthly: return String(localized: "Monthly")
         case Purchases.ProductID.lifetime: return String(localized: "Lifetime")
         default: return nil
         }
@@ -477,9 +908,9 @@ struct PremiumView: View {
 
     private var activeMessage: String {
         switch purchases.activePlan {
-        case Purchases.ProductID.yearly:
+        case Purchases.ProductID.yearly, Purchases.ProductID.proYearly:
             return String(localized: "Thank you for supporting MUSQ. Everything below stays unlocked while your yearly plan renews.")
-        case Purchases.ProductID.monthly:
+        case Purchases.ProductID.monthly, Purchases.ProductID.proMonthly:
             return String(localized: "Thank you for supporting MUSQ. Everything below stays unlocked while your monthly plan renews.")
         case Purchases.ProductID.lifetime:
             return String(localized: "Thank you for supporting MUSQ. Everything below is yours for good.")
@@ -488,8 +919,10 @@ struct PremiumView: View {
         }
     }
 
+    /// A plan that renews (and so can be managed or replaced), not lifetime.
     private var isSubscription: Bool {
-        purchases.activePlan == Purchases.ProductID.yearly || purchases.activePlan == Purchases.ProductID.monthly
+        [Purchases.ProductID.yearly, Purchases.ProductID.monthly,
+         Purchases.ProductID.proYearly, Purchases.ProductID.proMonthly].contains(purchases.activePlan ?? "")
     }
 
     // MARK: - Prices
@@ -523,7 +956,7 @@ struct PremiumView: View {
     private var savingsBadge: String? {
         guard let yearly = purchases.yearly, let monthly = purchases.monthly,
               monthly.price > 0 else { return nil }
-        let percent = NSDecimalNumber(decimal: (1 - yearly.price / (monthly.price * 12)) * 100).intValue
+        let percent = Int(NSDecimalNumber(decimal: (1 - yearly.price / (monthly.price * 12)) * 100).doubleValue)
         // An Int's percent style shows 66 as "66%", in the language's own form.
         return percent >= 10 ? String(localized: "SAVE \(percent.formatted(.percent))") : nil
     }
@@ -572,21 +1005,52 @@ struct PremiumView: View {
     /// Runs again whenever the products change: they can land after load()
     /// returns, when another sheet's request was still running.
     private func productsArrived() async {
-        // Yearly may not have come back; select a plan that did.
-        if selectedProduct == nil, let first = purchases.products.first {
+        if showsPro {
+            // No trial is claimed until this account's eligibility is known
+            // again (a purchase here can have used the group's one trial).
+            trialEligible = []
+            // Pro yearly first, unless a plan was tapped that's still offered.
+            let options = planOptions
+            if !hasChosen || !options.contains(where: { $0.id == selection }), let first = options.first {
+                selection = first.id
+            }
+            var eligible: Set<String> = []
+            for product in purchases.products where product.subscription?.introductoryOffer != nil {
+                if await purchases.isEligibleForTrial(product) { eligible.insert(product.id) }
+            }
+            trialEligible = eligible
+            return
+        }
+        // Yearly may not have come back; select a Premium plan that did (the
+        // store also returns Pro's, which this sheet doesn't sell).
+        if selectedProduct == nil || Purchases.ProductID.tier(of: selection) != .premium,
+           let first = purchases.products.first(where: { Purchases.ProductID.tier(of: $0.id) == .premium }) {
             selection = first.id
         }
         isEligibleForTrial = await purchases.isEligibleForTrial()
     }
 
     private func buy() {
-        guard let product = selectedProduct else { return }
+        #if DEBUG
+        if showsPro, let option = selectedOption, option.product == nil {
+            alert = "Sample plans (-paywall.samplePlans): nothing to buy in this build."
+            return
+        }
+        #endif
+        guard let product = showsPro ? selectedOption?.product : selectedProduct else { return }
         isWorking = true
         Task {
             defer { isWorking = false }
             do {
-                if try await purchases.purchase(product) == .pending {
-                    alert = String(localized: "Your purchase is waiting for approval. Premium turns on as soon as it goes through.")
+                switch try await purchases.purchase(product) {
+                case .purchased:
+                    gotPlanHere = true
+                case .pending:
+                    alert = Purchases.ProductID.tier(of: product.id) == .pro
+                        ? String(localized: "Your purchase is waiting for approval. Pro turns on as soon as it goes through.")
+                        : String(localized: "Your purchase is waiting for approval. Premium turns on as soon as it goes through.")
+                case .cancelled:
+                    break
                 }
             } catch {
                 alert = error.localizedDescription
@@ -599,9 +1063,12 @@ struct PremiumView: View {
         Task {
             defer { isWorking = false }
             do {
+                let before = purchases.tier
                 try await purchases.restore()
                 if !purchases.isPremium {
                     alert = String(localized: "No MUSQ Premium purchase was found for this Apple Account.")
+                } else if purchases.tier > before {
+                    gotPlanHere = true
                 }
             } catch {
                 alert = error.localizedDescription
@@ -813,6 +1280,301 @@ private struct FeatureTable: View {
                 .font(.system(size: layout.value(12, 13.5), weight: .semibold))
                 .foregroundStyle(DS.silver.opacity(0.22))
         }
+    }
+}
+
+/// A plan as the tier sheet shows it: a returned Product at its App Store
+/// price, or, in Debug builds launched with `-paywall.samplePlans YES`, a
+/// sample (the simulator can't load the StoreKit configuration file).
+private struct PlanOption: Identifiable {
+    enum Kind { case monthly, yearly, lifetime }
+
+    let id: String
+    let tier: Purchases.Tier
+    let kind: Kind
+    /// The price as the App Store wrote it.
+    let price: String
+    let priceValue: Decimal
+    /// What a yearly price comes to a month, in the store's format.
+    let perMonth: String?
+    /// The free trial's length, when this Apple Account can take it.
+    let trial: String?
+    /// Nil for a sample.
+    let product: Product?
+
+    var title: String.LocalizationValue {
+        switch kind {
+        case .monthly: "Monthly"
+        case .yearly: "Yearly"
+        case .lifetime: "Lifetime"
+        }
+    }
+
+    var period: String.LocalizationValue {
+        switch kind {
+        case .monthly: "per month"
+        case .yearly: "per year"
+        case .lifetime: "once"
+        }
+    }
+
+    init(_ product: Product, trial eligible: Bool) {
+        typealias ID = Purchases.ProductID
+        id = product.id
+        tier = ID.tier(of: product.id)
+        kind = [ID.proYearly, ID.yearly].contains(product.id) ? .yearly
+            : [ID.proMonthly, ID.monthly].contains(product.id) ? .monthly : .lifetime
+        price = product.displayPrice
+        priceValue = product.price
+        perMonth = kind == .yearly ? (product.price / 12).formatted(product.priceFormatStyle) : nil
+        trial = eligible ? Purchases.freeTrialLength(of: product) : nil
+        self.product = product
+    }
+
+    #if DEBUG
+    static var usesSamples: Bool { Purchases.usesSamplePlans }
+
+    /// The StoreKit configuration's plans and prices. A Premium member has
+    /// had the group's trial, so upgrades show none.
+    static func samples(trials: Bool) -> [PlanOption] {
+        typealias ID = Purchases.ProductID
+        return [
+            PlanOption(sample: ID.proYearly, tier: .pro, kind: .yearly, price: "$39.99", value: 39.99, perMonth: "$3.33",
+                       trial: trials ? "3 days" : nil),
+            PlanOption(sample: ID.proMonthly, tier: .pro, kind: .monthly, price: "$14.99", value: 14.99, perMonth: nil, trial: nil),
+            PlanOption(sample: ID.yearly, tier: .premium, kind: .yearly, price: "$19.99", value: 19.99, perMonth: "$1.67",
+                       trial: trials ? "7 days" : nil),
+            PlanOption(sample: ID.lifetime, tier: .premium, kind: .lifetime, price: "$59.99", value: 59.99, perMonth: nil, trial: nil),
+        ]
+    }
+
+    private init(sample id: String, tier: Purchases.Tier, kind: Kind, price: String, value: Decimal,
+                 perMonth: String?, trial: String?) {
+        self.id = id
+        self.tier = tier
+        self.kind = kind
+        self.price = price
+        self.priceValue = value
+        self.perMonth = perMonth
+        self.trial = trial
+        self.product = nil
+    }
+    #endif
+}
+
+/// A tier's eyebrow over its plans, with a note on the right.
+private struct PlanGroupHeader: View {
+    var title: String
+    var note: String
+
+    @Environment(\.dsLayout) private var layout
+
+    var body: some View {
+        HStack(spacing: 8) {
+            MetaLine(text: title, size: layout.value(9.5, 10.5))
+            Spacer(minLength: 8)
+            MetaLine(text: note, size: layout.value(8.5, 9.5))
+        }
+        .padding(.horizontal, 2)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
+    }
+}
+
+/// Free, Premium and Pro side by side: ticks and dashes for the features,
+/// the allowance for the AI. Pro's column is outlined; a Premium member's
+/// own column is shaded and marked YOUR PLAN.
+private struct TierTable: View {
+    enum Cell: Equatable {
+        case check
+        case none
+        case amount(Int, unit: String)
+
+        static func perDay(_ count: Int?) -> Cell {
+            guard let count, count > 0 else { return .none }
+            return .amount(count, unit: String(localized: "A DAY", comment: "Paywall table: an allowance per day, under its number"))
+        }
+
+        static func photos(_ photos: Purchases.AILimits.GoalPhotos?) -> Cell {
+            switch photos {
+            case .perYear(let count)? where count > 0:
+                return .amount(count, unit: String(localized: "A YEAR", comment: "Paywall table: an allowance per year, under its number"))
+            default:
+                return .none
+            }
+        }
+
+        /// An allowance that never renews: Free's goal photo.
+        static func oneTime(_ count: Int) -> Cell {
+            guard count > 0 else { return .none }
+            return .amount(count, unit: String(localized: "TO TRY", comment: "Paywall table: a one-time allowance, under its number"))
+        }
+    }
+
+    struct Row: Identifiable {
+        let symbol: String
+        let title: String
+        let detail: String?
+        let free: Cell
+        let premium: Cell
+        let pro: Cell
+        var id: String { title }
+
+        /// Everyone's rows read quieter. A row Free has only a taste of
+        /// (one goal photo) stays lit with the plans' rows.
+        var isFree: Bool { free == .check }
+
+        /// The title and detail are literal copy, localized here.
+        init(symbol: String, title: String.LocalizationValue, detail: String.LocalizationValue? = nil,
+             free: Cell, premium: Cell, pro: Cell) {
+            self.symbol = symbol
+            self.title = String(localized: title)
+            self.detail = detail.map { String(localized: $0) }
+            self.free = free
+            self.premium = premium
+            self.pro = pro
+        }
+    }
+
+    var rows: [Row]
+    /// Marks Premium as the member's plan.
+    var yourPlan: Bool
+
+    @Environment(\.dsLayout) private var layout
+
+    // Free's column holds only ticks and dashes; Premium's header is the
+    // widest word.
+    private var freeColumn: CGFloat { layout.value(38, 64) }
+    private var premiumColumn: CGFloat { layout.value(56, 76) }
+    private var proColumn: CGFloat { layout.value(56, 82) }
+    private var inset: CGFloat { layout.value(14, 18) }
+
+    var body: some View {
+        let headerSize: CGFloat = layout.value(9, 10)
+        let rowSize: CGFloat = layout.value(13.5, 15)
+        VStack(spacing: 0) {
+            // On the labels' baselines: PRO's capsule pads its text, and
+            // YOUR PLAN sits over PREMIUM.
+            HStack(alignment: .lastTextBaseline, spacing: 0) {
+                Spacer(minLength: 0)
+                MetaLine(text: "FREE", size: headerSize)
+                    .frame(width: freeColumn)
+                VStack(spacing: 3) {
+                    if yourPlan {
+                        MetaLine(text: "YOUR PLAN", size: headerSize - 1.5)
+                    }
+                    MetaLine(text: "PREMIUM", size: headerSize)
+                }
+                .frame(width: premiumColumn)
+                Text("PRO")
+                    .font(.mono(headerSize, .semibold))
+                    .trackingEm(0.08, size: headerSize)
+                    .foregroundStyle(DS.ink)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Capsule().fill(DS.silver))
+                    .frame(width: proColumn)
+            }
+            .padding(.top, 4)
+            .padding(.bottom, 8)
+            .accessibilityHidden(true)
+
+            ForEach(Array(rows.enumerated()), id: \.element.id) { index, row in
+                if index > 0 { Hairline(opacity: 0.06) }
+                HStack(spacing: layout.value(8, 12)) {
+                    Image(systemName: row.symbol)
+                        .font(.system(size: layout.value(13, 14.5), weight: .semibold))
+                        .foregroundStyle(DS.silver.opacity(row.isFree ? 0.55 : 1))
+                        .frame(width: layout.value(20, 26))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(row.title)
+                            .font(.ui(rowSize, row.isFree ? .regular : .semibold))
+                            .foregroundStyle(DS.silver.opacity(row.isFree ? 0.75 : 1))
+                            .fixedSize(horizontal: false, vertical: true)
+                        if let detail = row.detail {
+                            Text(detail)
+                                .font(.ui(layout.value(11, 12)))
+                                .foregroundStyle(DS.silver.opacity(0.5))
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    Spacer(minLength: 4)
+                    // Flush, so the columns line up with the header and the
+                    // outline behind Pro's.
+                    HStack(spacing: 0) {
+                        cell(row.free, lit: false)
+                            .frame(width: freeColumn)
+                        cell(row.premium, lit: false)
+                            .frame(width: premiumColumn)
+                        cell(row.pro, lit: true)
+                            .frame(width: proColumn)
+                    }
+                }
+                .padding(.vertical, layout.value(11, 13))
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(label(for: row))
+            }
+        }
+        .padding(.horizontal, inset)
+        .padding(.vertical, layout.value(12, 14))
+        // Pro's column, outlined from its header to the last row. Each
+        // background sits behind the ones before it.
+        .background(alignment: .trailing) {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(DS.silver.opacity(0.55), lineWidth: 1.5)
+                .frame(width: proColumn + 6)
+                .padding(.trailing, inset - 3)
+                .padding(.vertical, 6)
+        }
+        .background(alignment: .trailing) {
+            if yourPlan {
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(DS.silver.opacity(0.06))
+                    .frame(width: premiumColumn + 4)
+                    .padding(.trailing, inset + proColumn - 2)
+                    .padding(.vertical, 6)
+            }
+        }
+        .background(RoundedRectangle(cornerRadius: layout.cardRadius, style: .continuous).fill(DS.surfaceAlt))
+    }
+
+    @ViewBuilder
+    private func cell(_ cell: Cell, lit: Bool) -> some View {
+        switch cell {
+        case .check:
+            Image(systemName: lit ? "checkmark.circle.fill" : "checkmark")
+                .font(.system(size: lit ? layout.value(15, 17) : layout.value(12, 13.5), weight: .semibold))
+                .foregroundStyle(DS.silver.opacity(lit ? 1 : 0.5))
+        case .none:
+            Image(systemName: "minus")
+                .font(.system(size: layout.value(12, 13.5), weight: .semibold))
+                .foregroundStyle(DS.silver.opacity(0.22))
+        case .amount(let count, let unit):
+            VStack(spacing: 1) {
+                Text(count.formatted())
+                    .font(.ui(lit ? layout.value(17, 19) : layout.value(15, 17), .semibold))
+                    .foregroundStyle(DS.silver.opacity(lit ? 1 : 0.75))
+                Text(unit)
+                    .font(.mono(layout.value(7, 8), .semibold))
+                    .trackingEm(0.06, size: layout.value(7, 8))
+                    .foregroundStyle(DS.silver.opacity(0.45))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+        }
+    }
+
+    private func label(for row: Row) -> String {
+        func say(_ cell: Cell) -> String {
+            switch cell {
+            case .check: return String(localized: "included", comment: "VoiceOver, paywall table: a feature a plan has")
+            case .none: return String(localized: "not included", comment: "VoiceOver, paywall table: a feature a plan lacks")
+            case .amount(let count, let unit): return "\(count) \(unit.lowercased())"
+            }
+        }
+        let title = row.detail.map { "\(row.title), \($0)" } ?? row.title
+        return String(localized: "\(title). Free: \(say(row.free)). Premium: \(say(row.premium)). Pro: \(say(row.pro)).",
+                      comment: "VoiceOver, paywall table row")
     }
 }
 

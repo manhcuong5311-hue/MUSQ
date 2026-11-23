@@ -1,0 +1,101 @@
+[partly] GPT-4V estimated consumed food weight in a real-world Ghana/Kenya intake dataset with 54.6 g error versus 43.6 g for trained dietitians (a later citation of this work gives 46.3 vs 48.5 g, suggesting a revised version).
+  src: https://arxiv.org/abs/2312.08592
+  corrected: In arXiv v1, GPT-4V's consumed-portion MAE was 54.6 g vs 43.6 g for dietitians, on 10 eating episodes recorded by wearable cameras from adults of Ghanaian and Kenyan origin living in London, UK; Fridolfsson et al. 2025 cite the published IEEE JBHI 2024 version as 46.3 g vs 48.5 g.
+  notes: Data were not collected in Ghana/Kenya. Small sample (10 episodes, 4 trials per estimate). The 46.3/48.5 g figures are in PMC12513282's citation of Lo et al.; the IEEE version itself could not be opened.
+
+[partly] A follow-up on 200+ more meals suggested the apps struggled most with high-fat ketogenic meals, while carbohydrate estimates were the most consistent; results are preliminary (conference abstract, not yet peer reviewed).
+  src: https://sciencedaily.com/releases/2026/07/260726015237.htm
+  corrected: In the main 102-meal test all four apps estimated carbohydrate more consistently than other nutrients; a follow-up on 200+ more meals preliminarily suggested more trouble with high-fat ketogenic meals (fat under-estimated). Conference abstract, not peer reviewed.
+  notes: The carbohydrate-consistency finding belongs to the first analysis, not the follow-up. ASN release dated 26 Jul 2026.
+
+[partly] With 2026-era models, a single direct image-to-nutrients call matched or beat retrieval-grounded pipelines on energy; a faithful DietAI24 reimplementation on modern models was worse than direct prompting (Nutrition5k 164.9 vs 121.9 kcal; Chinese OmniFood8K 224.6 vs 155.2 kcal MAE).
+  src: https://arxiv.org/abs/2607.12911
+  corrected: On locally run open-weight Gemma/Qwen models, the faithful DietAI24 reimplementation was worse than direct prompting (Nutrition5k 164.9 vs 121.9; OmniFood8K 224.6 vs 155.2 kcal) and retrieval hurt energy on Chinese and Australian meals, but on US Nutrition5k the same-FNDDS retrieve-and-pick comparator (111.2 kcal) and the grounded agent (109.7) beat direct prompting (121.9).
+  notes: The abstract says direct 'matches or surpasses' retrieval, but Table 1 shows grounding helped when the cuisine matched the database. Frontier closed models were used only for direct estimates. DietAI24 run used its own n.
+
+[partly] On Chinese dishes every model under-estimated energy by 50-130 kcal because cooking oil is invisible; a recipe-prior step that adds the typical hidden ingredients of a recognized dish cut energy MAE 155.2 -> 139.1 kcal and fat error (pMAE) 60.5% -> 39.6%. Applied to US/Australian meals it raised energy MAE (121.9 -> 209.7; 163.5 -> 309.4 kcal), so it must be gated by cuisine.
+  src: https://arxiv.org/abs/2607.12911
+  corrected: On OmniFood8K the five open models' direct estimates were 56–132 kcal low; adding the recipe prior to the grounded decomposition lowered its energy MAE from 168.6 to 139.1 kcal (below direct 155.2), and the full system's fat pMAE was 39.6% vs 60.5% for direct. On Nutrition5k and ACETADA the prior raised the agent's MAE (109.7→209.7; 198.5→309.4 kcal), so it is gated by cuisine.
+  notes: The claim compares against the direct baseline rather than the agent without the prior. 'Every model' means five open-weight Gemma/Qwen backbones (Table 9); oil as the cause is the authors' interpretation.
+
+[partly] Across four datasets, a reference object or a labeled photo only turned single-image scale error into a constant that still had to be learned in each capture setting.
+  src: https://arxiv.org/abs/2610.29025
+  corrected: For the Nutrition5k-trained (fine-tuned DINOv2) mass model, rescaling photos with a reference object (ECUSTFD's 25 mm coin) only turned its scale error into another constant that had to be learned from labeled photos, and per-food calibration also needed labeled photos from the setting; the zero-shot VLM's estimates did not shift with framing.
+  notes: The finding concerns the supervised model, and the reference-object test used one dataset (ECUSTFD), not four. Single-author preprint (21 Oct 2026).
+
+[partly] Bhatambarekar & Sarkar (CVPR 2026 MetaFood workshop): an agentic VLM pipeline that asks clarifying questions significantly reduced calorie errors across VLMs by resolving ingredient and portion uncertainty (abstract only; numbers not accessed).
+  src: https://openaccess.thecvf.com/content/CVPR2026W/MTF/html/Bhatambarekar_An_Agentic_Vision-Language_Pipeline_for_Interactive_Nutritional_Estimation_from_Food_CVPRW_2026_paper.html
+  corrected: In the full paper (CVPRW 2026, pp. 9492–9500) the 'agentic' condition has the model ask and answer its own questions (no user answers); on three 7B open models Nutrition5k calorie MAPE was 53.7–62.1% (agentic) vs 57.1–69.7% (fixed CoT); Qwen2.5-7B was only marginally better than image-only, and DeepSeek-7B's calorie MAE was higher under agentic (198.4 vs 130.0 kcal).
+  notes: Full PDF read from CVF open access. The abstract's 'significantly reduces' is not well supported by its own tables.
+
+[partly] DiningBench: going from 1 to 2 photos gave the biggest gain; with 3 or more views performance plateaued or declined because models treated extra views as noise.
+  src: https://arxiv.org/abs/2604.10425
+  corrected: The largest gain came from 1→2 views and gains diminished beyond 2; large models (GPT-4o, Qwen-3-VL-30B-A3B) kept improving consistently, while smaller models fluctuated or degraded as images were added.
+  notes: The failure-mode section says performance plateaus or declines at N≥3, but the results section attributes the decline to smaller models.
+
+[partly] A Thai team found two-step prompting (first list ingredients, portions and cooking details, then compute nutrients) more accurate than one-step queries on a Nutrition5k subset and real Thai app photos (Gindee121).
+  src: https://openaccess.thecvf.com/content/CVPR2025W/MTF/html/Khlaisamniang_Decomposing_Food_Images_for_Better_Nutrition_Analysis_A_Nutritionist-Inspired_Two-Step_CVPRW_2025_paper.html
+  corrected: Two-step prompting beat one-step for GPT-4o (calorie MAE 89.3→78.5 kcal on Nutrition320; 97.6→85.5 on Gindee121) but not for every model: Gemini-2.0-Flash got worse on Gindee121 (116.7→139.7 kcal) and Qwen2.5-VL was slightly worse on full Nutrition5k.
+  notes: From the full PDF tables. Gindee121 labels are user-edited app entries checked by a nutritionist, not weighed; authors from a Thai company.
+
+[partly] Averaged over eight models on ACETADA, reasoning-modifier prompts had energy MAE of 239-285 kcal (CoT 255, few-shot 240, scale hint 239, multimodal CoT 274, expert persona 285) vs ~271 kcal for the simple prompt (my average of the per-model baselines), i.e., small or no gains and persona prompts were worse.
+  src: https://arxiv.org/abs/2507.07048
+  corrected: Averaged over eight models, modifier baselines were CoT 255.0, few-shot 240.4, scale hint 238.8, multimodal CoT 274.4 and persona 284.6 kcal vs ~270.8 kcal for the plain prompt (mean of Table II): few-shot and scale hint ~11% lower, CoT ~6% lower, multimodal CoT and persona slightly higher. The averages are dominated by two weak open models (Janus-Pro 478, LLaMA 496 kcal).
+  notes: The ~271 arithmetic is correct; per-model modifier results for closed models appear only in radar charts, so this says little about frontier models.
+
+[partly] The Nutrition5k-trained mass model's gram scale was food-specific: it predicted about a third of the true mass for white rice and 0.37x for tomato soup but 3.8x for saltine crackers (dense foods under-read, light bulky foods over-read); the zero-shot VLM's scale was more uniform (0.69-1.10).
+  src: https://arxiv.org/abs/2610.29025
+  corrected: On ASA24 the Nutrition5k-only model's scale ratio was 0.36 for white rice, 0.37 for cream of tomato soup and 3.80 for saltine crackers (dense foods under-read, light bulky foods over-read); Qwen3-VL's scale ratio ranged 0.69–1.10 across datasets (a per-food spread for Qwen was not reported).
+  notes: The 0.69–1.10 range is across datasets, not across foods. ASA24 labels are FNDDS standard weights, not weighings.
+
+[partly] Known-food calibration: measuring the model's error on one weighed photo of a food and correcting its other photos of that food cut ASA24 MAE from 42.6 to 28.3 g (2-3 photos: 27.3-26.7 g); the authors call this an upper bound because the photos shared plate, angle and lighting.
+  src: https://arxiv.org/abs/2610.29025
+  corrected: With one labeled ASA24 photo per food (label = FNDDS standard-portion weight, not a weighing), correcting a DINOv2 model already trained on Nutrition5k + ASA24 photos cut ASA24 MAE from 42.6 to 28.3 g (27.3/26.7 g with 2/3 photos); the author calls it a likely upper bound because the photos share plate, angle and lighting.
+  notes: Not tested with an LLM; the photos were not weighed.
+
+[partly] Only Nutrition5k (US), ACETADA (Australian, dietitian-verified) and OmniFood8K (Chinese) combine real plated meals with measured nutrients, mass and per-ingredient ground truth; Food-101, Food2K, UEC-Food256, VireoFood-172, FoodSeg103 and Recipe1M+ lack measured portions/nutrients, and SNAPMe is user-annotated.
+  src: https://arxiv.org/abs/2607.12911
+  corrected: Open-KNEAD's table lists only those three, but other public sets also have weighed per-ingredient ground truth on real dishes, e.g., NutritionVerse-Real (889 phone photos of 251 dishes, every ingredient weighed, nutrients computed; https://arxiv.org/abs/2401.08598) and the Central Asian Food Portion Benchmark (lab-measured component weights).
+  notes: The descriptions of Food-101 etc. and SNAPMe match the source's Table 5.
+
+[partly] Ranked by measured effect, the biggest accuracy gains come from information the camera cannot see (user-entered amounts or weights, ingredient lists, oil/meat descriptors, food names), not from more reasoning, more calls or database retrieval.
+  src: https://vtechworks.lib.vt.edu/items/b67c2a61-f283-41ba-9602-9798306b9529
+  corrected: In controlled studies the largest gains came from ground-truth information the camera cannot see (true total or per-ingredient weights, reference ingredient lists with amounts, true food names); with real users the gains were smaller or mixed (staff-answered follow-ups added noise; conversational correction cut MAE ~30% with food identity supplied), and true ingredient names alone did not improve gram estimates. More reasoning, repeated calls and generic database retrieval gave small or no energy gains, though retrieval helped when the database matched the cuisine.
+  notes: Gains come from different datasets and setups, so the ranking is not a like-for-like comparison.
+
+[partly] For Vietnamese mixed dishes, the closest evidence (Chinese OmniFood8K) implies image-only estimates run low by tens to over 100 kcal when oil is hidden, and US-only composition data can add density bias. A Vietnamese composition table plus recipe priors switched on by cuisine is the approach consistent with the evidence, but it has not been tested on Vietnamese food.
+  src: https://arxiv.org/abs/2607.12911
+  corrected: The under-estimation evidence (direct estimates 56–132 kcal low on Chinese OmniFood8K) comes from five open-weight models; frontier models' signed bias on Asian mixed dishes is unmeasured, and in the Australian trial their bias sign varied by model. A cuisine-matched composition database and cuisine-gated recipe priors are consistent with Open-KNEAD (retrieval helped energy only when the database matched the cuisine) but are untested on Vietnamese food.
+  notes: A 26-model preprint (Oct 2026) also recommends calibrating by a ratio measured on reference meals with the deployed model.
+
+=== MISSING ===
+- Nakagawa & Yamamoto tested 26 VLMs (11 commercial, 15 open) on 887 Japanese single-dish photos and 1,134 SNAPMe photos. Giving the dish name alone was about as accurate as the full photo (MedAPE 31.7% vs 33.8%), so estimates seem anchored on an amount typical for the identified dish. Persona and cuisine prompts shifted estimates by amounts that depended on model and cuisine, not on the correction needed. A 'smaller portion' instruction raised MedAPE from 30.0% to 50.2% in a low-bias model. Their advice: show the identified dish to the user to correct, calibrate with a ratio measured on reference meals using the deployed model, and keep amount statements out of the prompt. This bears directly on giving the model dish rules in advance.
+  src: https://europepmc.org/article/PPR/PPR1342591 (2026-10-13)
+
+- Sterling et al. benchmarked 10 approaches on 3,229 Nutrition5k images. Gemini 3.0 Flash had the best calorie estimates (CCC 0.767, MAE 80.7 kcal). Gemini 3.1 Flash Lite was nearly as good (CCC 0.754) at $0.59 per 1,000 images, and Gemini 2.0 Flash cost $0.10 per 1,000. Human review of 440 images found systematic ingredient omissions in Nutrition5k's own labels, a caveat for all Nutrition5k-based results.
+  src: https://europepmc.org/article/PPR/PPR1288821 (2026-07-29)
+
+- Open-KNEAD's Table 1 qualifies 'retrieval no longer helps'. On US Nutrition5k, matching items to the US database (FNDDS) beat direct prompting on energy (111.2 and 109.7 vs 121.9 kcal). Listing items and grams without any database also did (111.6). On Chinese and Australian meals, retrieval made energy worse. Grounding therefore seems to help when the database matches the cuisine, which argues for a Vietnamese composition table rather than USDA data (untested).
+  src: https://arxiv.org/abs/2607.12911 (2026-07-14)
+
+- The full CVPRW 2026 'agentic' paper is readable on CVF open access. In its experiments the model asks and answers its own clarifying questions; no user answers them. Only three 7B open models were tested, with Nutrition5k calorie MAPE of 53.7–62.1%. Results were mixed: DeepSeek-7B's MAE was worse under the agentic setup. It is not evidence that asking the user a follow-up question improves accuracy.
+  src: https://openaccess.thecvf.com/content/CVPR2026W/MTF/papers/Bhatambarekar_An_Agentic_Vision-Language_Pipeline_for_Interactive_Nutritional_Estimation_from_Food_CVPRW_2026_paper.pdf (2026-06)
+
+- In the Taiwanese Diabot study, local instructions improved food recognition but not the mean energy bias. Without food names, the custom bot was further off than plain GPT-4o (−183 vs −139 kcal/day) and under-read rice dishes more. With food names, plain GPT-4o had the smaller bias (−24 vs −53). The paper also reports that ChatGPT often defaulted rice to 150/200 g, fat to 5/10 g and vegetables to 50 g regardless of the image.
+  src: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12799367/ (2025-10-21)
+
+- DietDelta trained a vision-language model on ACETADA before/after photo pairs and reached 14.2% gram error. A closed general model given both photos and the true food list had 38.9%. This is in-domain evidence that fine-tuning on labelled photos from the same setting beats general models.
+  src: https://arxiv.org/abs/2604.06352 (2026-04-07)
+
+- Dataset licenses matter for a commercial app. ACETADA is CC BY-NC 4.0 (no commercial use) and DiningBench is CC BY-NC-ND 4.0. Nutrition5k and the January Food Benchmark are CC BY 4.0. The non-commercial sets can serve research, but not calibration or few-shot examples inside a commercial product.
+  src: https://skynet.ecn.purdue.edu/~coburn6/ACETADA/ (2025 (dataset page, accessed 2026-11-22))
+
+- January Food Benchmark labels were first generated by GPT-4o inside the vendor's app, then accepted or corrected by users and checked by one annotator. This may favour GPT-4o-like estimates, a caveat the researcher did not list. Similarly, DiningBench labels came partly from Gemini.
+  src: https://arxiv.org/abs/2508.09966 (2025-08-13)
+
+- Papers using 'ACETADA' define the target differently. The 2025 benchmark scores before-meal photos against consumed amounts, so its errors include leftovers (mean ~103 kcal/meal per the Oct 2026 trial paper). Open-KNEAD uses served totals. Cross-paper comparisons on ACETADA are therefore not like-for-like.
+  src: https://arxiv.org/abs/2507.07048 (2025-10-03)
+
+- NutritionVerse-Real: 889 freehand smartphone photos of 251 real dishes, with every ingredient weighed and nutrients computed. It contradicts Open-KNEAD's 'only three datasets' claim and is a public phone-photo test set closer to app conditions than Nutrition5k's fixed overhead rig.
+  src: https://arxiv.org/abs/2401.08598 (2023-11-20)
+

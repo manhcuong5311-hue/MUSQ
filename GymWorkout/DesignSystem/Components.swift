@@ -315,6 +315,8 @@ struct MonoSegmentedControl<Value: Hashable>: View {
                 }
                 .buttonStyle(.plain)
                 .dsHover(.highlight, radius: itemRadius)
+                // VoiceOver says which option is on, not just "button".
+                .accessibilityAddTraits(isOn ? .isSelected : [])
             }
         }
         .padding(trackPadding)

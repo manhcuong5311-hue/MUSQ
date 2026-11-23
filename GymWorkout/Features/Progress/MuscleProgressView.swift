@@ -13,14 +13,35 @@
 //  hero. iPhone keeps its own tree, untouched.
 //
 
+import Observation
 import SwiftUI
+
+/// Where Progress should open scrolled to, asked for by another tab: Today's
+/// steps and sleep land on the Apple Health cards. One-shot and in memory
+/// only (the root view owns it): Progress clears it on arrival, and a
+/// relaunch opens at the top as usual.
+@MainActor
+@Observable
+final class ProgressFocus {
+    enum Target: Hashable {
+        /// Overview's Apple Health cards (`HealthTrendSection`).
+        case health
+    }
+
+    var target: Target?
+}
 
 struct MuscleProgressView: View {
     @Binding var tab: AppTab
 
     @Environment(WorkoutStore.self) private var store
     @Environment(\.dsLayout) private var layout
+    /// Set by Today's steps and sleep; nil in previews.
+    @Environment(ProgressFocus.self) private var progressFocus: ProgressFocus?
     @State private var router = TrainRouter()
+    /// The goal's sheets live here, above the iPhone/iPad layouts, so a
+    /// rotation that rebuilds the cards doesn't close them (review).
+    @State private var goalLauncher = GoalLauncher()
     @State private var period: ActivityPeriod = .week
     @State private var side: BodySide = .front
     @State private var showsAllRecords = false
@@ -31,6 +52,9 @@ struct MuscleProgressView: View {
     /// alone on the hero. Selection, so it is silver on the row, never
     /// activation.
     @State private var highlighted: MuscleGroup?
+    /// Overview · Body · Strength (layout B, 2026-11-22); the last one picked
+    /// is kept for the next launch.
+    @AppStorage("progress.section") private var section: ProgressSection = .overview
 
     private var recordPreview: Int { layout.value(5, 6) }
     private var historyPage: Int { layout.value(8, 10) }
@@ -60,51 +84,34 @@ struct MuscleProgressView: View {
                 } else if layout.isRegular {
                     column(activity)
                 } else {
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 0) {
-                            Text("Muscle Progress")
-                                .font(.ui(28, .semibold))
-                                .tracking(-0.7)
-                                .foregroundStyle(DS.silver)
+                    ScrollViewReader { proxy in
+                        ScrollView(showsIndicators: false) {
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text("Progress", comment: "Tab 3's large title (was Muscle Progress)")
+                                    .font(.ui(28, .semibold))
+                                    .tracking(-0.7)
+                                    .foregroundStyle(DS.silver)
 
-                            stats
-                                .padding(.top, 18)
+                                sectionPicker
+                                    .padding(.top, 16)
 
-                            MonoSegmentedControl(
-                                options: [(ActivityPeriod.week, "THIS WEEK"), (.month, "THIS MONTH")],
-                                selection: $period,
-                                fontSize: 10,
-                                itemPaddingV: 8,
-                                fillsWidth: true
-                            )
-                            .padding(.top, 16)
-
-                            bodyMap(activity)
-                                .padding(.top, 16)
-
-                            if activity.allSatisfy({ $0.level == .notTrained }) {
-                                emptyNote.padding(.top, 18)
+                                switch section {
+                                case .overview: overviewSection().padding(.top, 18)
+                                case .body: bodySection(activity)
+                                case .strength: strengthSection
+                                }
                             }
-
-                            needsAttention(activity)
-                                .padding(.top, 26)
-
-                            activityList(activity)
-                                .padding(.top, 28)
-
-                            records
-                                .padding(.top, 30)
-                            history
-                                .padding(.top, 30)
+                            .padding(.horizontal, DS.Metric.gutter)
+                            .padding(.top, 22)
+                            .padding(.bottom, 24)
                         }
-                        .padding(.horizontal, DS.Metric.gutter)
-                        .padding(.top, 22)
-                        .padding(.bottom, 24)
+                        .modifier(ProgressFocusScroll(focus: progressFocus, section: section, proxy: proxy))
                     }
                 }
             }
             .background {
-                if DS.isPad { periodShortcuts }
+                // ⌥⌘1/2 only where the period shows: the wide hero pane, or Body.
+                if DS.isPad && (layout.isWide || section == .body) { periodShortcuts }
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 TabBarView(selection: $tab)
@@ -115,32 +122,135 @@ struct MuscleProgressView: View {
         }
         .environment(router)
         .tint(DS.silver)
+        .goalLauncher(goalLauncher)
     }
 
     private var loggedSessions: [WorkoutSession] {
         store.sessions.filter(\.hasCompletedSets).sorted { $0.day > $1.day }
     }
 
-    // MARK: - Totals
+    // MARK: - Sections (layout B)
 
-    private var stats: some View {
-        let week = weekTotals
-        return HStack(spacing: 8) {
-            StatTile(label: String(localized: "Workouts"), value: loggedSessions.count.formatted())
-            StatTile(label: String(localized: "This week", comment: "Stat tile: workouts logged this week"),
-                     value: week.count.formatted())
-            StatTile(label: String(localized: "Volume this week"),
-                     value: StatTile.compact(store.unit.fromKilograms(week.volume)),
-                     unit: store.unit.symbol)
+    private var insights: ProgressInsights {
+        ProgressInsights(sessions: store.sessions, profile: store.profile)
+    }
+
+    private var sectionPicker: some View {
+        MonoSegmentedControl(
+            options: ProgressSection.allCases.map { ($0, $0.title) },
+            selection: $section,
+            fontSize: 10.5,
+            itemPaddingV: 9,
+            fillsWidth: true
+        )
+    }
+
+    /// The week recap, Balance & results, the volume chart and the
+    /// consistency grid, Apple Health's steps and sleep, then the totals. Always this week, whatever
+    /// the Body section's period is set to (the health cards keep their own
+    /// 7 / 30 days). `width` is the iPad column: the chart and the grid, and
+    /// the steps and sleep cards, sit side by side once it holds both, and
+    /// the totals become the four-tile grid.
+    private func overviewSection(width: CGFloat? = nil) -> some View {
+        let insights = insights
+        let week = calculator.activity(from: store.sessions, period: .week)
+        let attention = calculator.needsAttention(week, period: .week,
+                                                  candidates: PresetProvider.trainableGroups)
+            .map(\.activity.muscle)
+        let weeks = insights.weeks(12)
+        let spacing: CGFloat = width == nil ? 14 : 16
+        let paired = (width ?? 0) >= 680
+        // A wider iPad grid shows more weeks rather than larger squares.
+        let gridWeeks = width.map { insights.weeks(ConsistencyGrid.weekCount(forWidth: $0)) } ?? weeks
+        return VStack(alignment: .leading, spacing: spacing) {
+            WeekRecapCard(insights: insights, attention: attention, unit: store.unit)
+            // Balance & results (2026-11-22): twelve weeks of Balance over
+            // the weight trend. One place for all three layouts: the phone,
+            // the iPad column and the wide right pane share this section.
+            BalanceProgressSection()
+            if paired {
+                HStack(alignment: .top, spacing: spacing) {
+                    WeeklyVolumeChart(weeks: weeks, unit: store.unit, fillsHeight: true)
+                    ConsistencyGrid(insights: insights, weeks: weeks, fillsHeight: true)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+            } else {
+                WeeklyVolumeChart(weeks: weeks, unit: store.unit)
+                ConsistencyGrid(insights: insights, weeks: gridWeeks)
+            }
+            // Nothing at all where Health isn't on the device. Today's steps
+            // and sleep scroll here (`ProgressFocus`).
+            HealthTrendSection(paired: paired, spacing: spacing)
+                .id(HealthTrendSection.scrollID)
+            totals(week)
+                .padding(.top, width == nil ? 4 : 0)
         }
     }
 
-    /// Workouts logged this calendar week, and their volume in kilograms.
-    private var weekTotals: (count: Int, volume: Double) {
-        let week = Calendar.current.dateInterval(of: .weekOfYear, for: Date())
-            ?? DateInterval(start: Date(), duration: 0)
-        let thisWeek = PerformanceHistory.sessions(in: week, from: store.sessions)
-        return (thisWeek.count, thisWeek.reduce(0) { $0 + $1.volume })
+    private func keyLifts() -> some View {
+        KeyLiftsCard(lifts: insights.keyLifts(), unit: store.unit) { name in
+            router.push(.exerciseHistory(name))
+        }
+    }
+
+    @ViewBuilder
+    private func bodySection(_ activity: [MuscleActivity]) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            BodyWeightSection()
+                .padding(.top, 22)
+
+            if GoalPhotoCard.isAvailable(for: store.profile) {
+                GoalPhotoCard(launcher: goalLauncher)
+                    .padding(.top, 14)
+            }
+
+            MonoSegmentedControl(
+                options: [(ActivityPeriod.week, "THIS WEEK"), (.month, "THIS MONTH")],
+                selection: $period,
+                fontSize: 10,
+                itemPaddingV: 8,
+                fillsWidth: true
+            )
+            .padding(.top, 26)
+
+            bodyMap(activity)
+                .padding(.top, 16)
+
+            if activity.allSatisfy({ $0.level == .notTrained }) {
+                emptyNote.padding(.top, 18)
+            }
+
+            needsAttention(activity)
+                .padding(.top, 26)
+
+            activityList(activity)
+                .padding(.top, 28)
+        }
+    }
+
+    private var strengthSection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            keyLifts()
+                .padding(.top, 22)
+            records
+                .padding(.top, 30)
+            history
+                .padding(.top, 30)
+        }
+    }
+
+    // MARK: - Totals
+
+    /// Under the recap, only what it doesn't already show: every workout
+    /// logged, and how many groups this week reached.
+    private func totals(_ week: [MuscleActivity]) -> some View {
+        let trained = week.filter { $0.level != .notTrained }.count
+        return HStack(spacing: layout.isRegular ? 12 : 8) {
+            StatTile(label: String(localized: "All workouts", comment: "Stat tile: workouts logged since the start"),
+                     value: loggedSessions.count.formatted())
+            StatTile(label: String(localized: "Groups this week", comment: "Stat tile: muscle groups trained this week, shown as 5/12"),
+                     value: trained.formatted(), unit: "/\(week.count)")
+        }
     }
 
     // MARK: - Body map
@@ -500,24 +610,39 @@ extension MuscleProgressView {
     private func column(_ activity: [MuscleActivity]) -> some View {
         let width = columnWidth
         let figure = min(440, ((width - 2 * Self.heroPadding) / Self.pairAspect).rounded(.down))
-        return ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: layout.sectionSpacing) {
-                header
-                statGrid(activity, width: width)
-                VStack(alignment: .leading, spacing: 16) {
-                    heroCard(activity, figure: .fixed(figure))
-                    if activity.allSatisfy({ $0.level == .notTrained }) {
-                        emptyNote.dsReadable(560, alignment: .leading)
+        return ScrollViewReader { proxy in
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: layout.sectionSpacing) {
+                    columnHeader
+                    switch section {
+                    case .overview:
+                        overviewSection(width: width)
+                    case .body:
+                        BodyWeightSection()
+                        if GoalPhotoCard.isAvailable(for: store.profile) {
+                            GoalPhotoCard(launcher: goalLauncher)
+                        }
+                        VStack(alignment: .leading, spacing: 16) {
+                            periodControl
+                                .frame(maxWidth: 360, alignment: .leading)
+                            heroCard(activity, figure: .fixed(figure))
+                            if activity.allSatisfy({ $0.level == .notTrained }) {
+                                emptyNote.dsReadable(560, alignment: .leading)
+                            }
+                        }
+                        attentionGrid(activity, width: width)
+                        activitySection(activity, width: width)
+                    case .strength:
+                        keyLifts()
+                        recordsAndHistory(width: width)
                     }
                 }
-                attentionGrid(activity, width: width)
-                activitySection(activity, width: width)
-                recordsAndHistory(width: width)
+                .dsReadable(Self.columnMax)
+                .dsGutter()
+                .padding(.top, 24)
+                .padding(.bottom, 40)
             }
-            .dsReadable(Self.columnMax)
-            .dsGutter()
-            .padding(.top, 24)
-            .padding(.bottom, 40)
+            .modifier(ProgressFocusScroll(focus: progressFocus, section: section, proxy: proxy))
         }
     }
 
@@ -533,23 +658,40 @@ extension MuscleProgressView {
             heroPane(activity, width: pane)
                 .frame(width: pane)
 
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: layout.sectionSpacing) {
-                    statGrid(activity, width: right)
-                    if activity.allSatisfy({ $0.level == .notTrained }) {
-                        emptyNote.dsReadable(560, alignment: .leading)
+            ScrollViewReader { proxy in
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: layout.sectionSpacing) {
+                        // The body map stays pinned in the hero pane whichever
+                        // section is open; Body here holds its lists.
+                        sectionPicker
+                            .frame(maxWidth: 420, alignment: .leading)
+                        switch section {
+                        case .overview:
+                            overviewSection(width: right)
+                        case .body:
+                            BodyWeightSection()
+                            if GoalPhotoCard.isAvailable(for: store.profile) {
+                                GoalPhotoCard(launcher: goalLauncher)
+                            }
+                            if activity.allSatisfy({ $0.level == .notTrained }) {
+                                emptyNote.dsReadable(560, alignment: .leading)
+                            }
+                            attentionGrid(activity, width: right)
+                            activitySection(activity, width: right)
+                        case .strength:
+                            keyLifts()
+                            recordsAndHistory(width: right)
+                        }
                     }
-                    attentionGrid(activity, width: right)
-                    activitySection(activity, width: right)
-                    recordsAndHistory(width: right)
+                    .padding(.top, 24)
+                    .padding(.bottom, 40)
                 }
-                .padding(.top, 24)
-                .padding(.bottom, 40)
+                // Lets a lifted card's shadow spill into the pane gap instead of
+                // being cut at the scroll view's edge.
+                .scrollClipDisabled()
+                .modifier(ProgressFocusScroll(focus: progressFocus, section: section, proxy: proxy))
+                .frame(maxWidth: Self.rightPaneMax)
             }
-            // Lets a lifted card's shadow spill into the pane gap instead of
-            // being cut at the scroll view's edge.
-            .scrollClipDisabled()
-            .frame(maxWidth: Self.rightPaneMax)
         }
         .dsReadable(DS.Layout.dashboardMaxWidth)
         .dsGutter()
@@ -597,8 +739,26 @@ extension MuscleProgressView {
         }
     }
 
+    /// Regular: the title with the section picker beside it, or under it
+    /// where the two don't fit. The period sits with the body map instead.
+    private var columnHeader: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .center, spacing: 0) {
+                largeTitle
+                Spacer(minLength: 24)
+                sectionPicker
+                    .frame(width: 380)
+            }
+            VStack(alignment: .leading, spacing: 16) {
+                largeTitle
+                sectionPicker
+                    .frame(maxWidth: 420, alignment: .leading)
+            }
+        }
+    }
+
     private var largeTitle: some View {
-        Text("Muscle Progress")
+        Text("Progress", comment: "Tab 3's large title (was Muscle Progress)")
             .font(.ui(layout.text(.largeTitle), .semibold))
             .tracking(layout.largeTitleTracking)
             .foregroundStyle(DS.silver)
@@ -629,26 +789,6 @@ extension MuscleProgressView {
         .opacity(0)
         .accessibilityHidden(true)
         .allowsHitTesting(false)
-    }
-
-    // MARK: Totals
-
-    /// Four tiles: the phone's three plus how many groups the period reached.
-    /// One row once each tile can hold "Volume this week" unshrunk, else 2×2.
-    private func statGrid(_ activity: [MuscleActivity], width: CGFloat) -> some View {
-        let week = weekTotals
-        let trained = activity.filter { $0.level != .notTrained }.count
-        let columns = width >= 560 ? 4 : 2
-        return LazyVGrid(columns: DS.flexibleColumns(columns, spacing: 12), spacing: 12) {
-            StatTile(label: String(localized: "Workouts"), value: loggedSessions.count.formatted())
-            StatTile(label: String(localized: "This week", comment: "Stat tile: workouts logged this week"),
-                     value: week.count.formatted())
-            StatTile(label: String(localized: "Volume this week"),
-                     value: StatTile.compact(store.unit.fromKilograms(week.volume)),
-                     unit: store.unit.symbol)
-            StatTile(label: String(localized: "Groups trained", comment: "Stat tile: muscle groups trained in the period, shown as 5/12"),
-                     value: trained.formatted(), unit: "/\(activity.count)")
-        }
     }
 
     // MARK: Hero
@@ -1012,6 +1152,35 @@ extension MuscleProgressView {
     }
 }
 
+/// Arriving from Today's steps or sleep: Overview opens at the Apple Health
+/// cards, once, and the request is cleared, so the next visit opens as
+/// usual. On whichever scroll view the layout shows (phone, iPad column, or
+/// the wide dashboard's right pane).
+private struct ProgressFocusScroll: ViewModifier {
+    var focus: ProgressFocus?
+    var section: ProgressSection
+    var proxy: ScrollViewProxy
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear(perform: scroll)
+            // Asked for while Progress is already on screen.
+            .onChange(of: focus?.target) { _, _ in scroll() }
+    }
+
+    private func scroll() {
+        guard let focus, focus.target == .health else { return }
+        focus.target = nil
+        guard section == .overview else { return }
+        // After the update that builds the page, so the cards are laid out
+        // before they are scrolled to.
+        let proxy = proxy, id = HealthTrendSection.scrollID
+        DispatchQueue.main.async {
+            proxy.scrollTo(id, anchor: .top)
+        }
+    }
+}
+
 extension ActivityLevel {
     /// On the activation ramp, lighter to stronger. `nil` draws as untrained.
     var color: Color? {
@@ -1027,6 +1196,8 @@ extension ActivityLevel {
 #Preview("Muscles · 11-inch portrait") {
     MuscleProgressView(tab: .constant(.muscles))
         .environment(WorkoutStore())
+        .environment(DailyStore(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("preview-daily.json")))
+        .environment(AppleHealth())
         .environment(RestTimer())
         .environment(Ads(purchases: Purchases()))
         .dsPreview(.pad11Portrait750)
@@ -1035,6 +1206,8 @@ extension ActivityLevel {
 #Preview("Muscles · 13-inch landscape") {
     MuscleProgressView(tab: .constant(.muscles))
         .environment(WorkoutStore())
+        .environment(DailyStore(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("preview-daily.json")))
+        .environment(AppleHealth())
         .environment(RestTimer())
         .environment(Ads(purchases: Purchases()))
         .dsPreview(.pad13Landscape1110)

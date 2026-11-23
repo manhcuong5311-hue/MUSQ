@@ -11,7 +11,10 @@
 
 import SwiftUI
 
+/// Today leads since the all-in-one plan (2026-11-21, layout A); the third
+/// tab, still `muscles` underneath, is shown as Progress.
 enum AppTab: String, CaseIterable, Identifiable {
+    case today = "Today"
     case train = "Train"
     case exercises = "Exercises"
     case muscles = "Muscles"
@@ -23,9 +26,11 @@ enum AppTab: String, CaseIterable, Identifiable {
     /// ("Train" the button), since the bar has room for less.
     var title: String {
         switch self {
+        case .today: return String(localized: "tab.today", defaultValue: "Today", comment: "Tab name")
         case .train: return String(localized: "tab.train", defaultValue: "Train", comment: "Tab name")
         case .exercises: return String(localized: "tab.exercises", defaultValue: "Exercises", comment: "Tab name")
-        case .muscles: return String(localized: "tab.muscles", defaultValue: "Muscles", comment: "Tab name")
+        case .muscles: return String(localized: "tab.progress", defaultValue: "Progress",
+                                     comment: "Tab name: training and body progress (was Muscles)")
         case .profile: return String(localized: "tab.profile", defaultValue: "Profile", comment: "Tab name")
         }
     }
@@ -34,6 +39,7 @@ enum AppTab: String, CaseIterable, Identifiable {
     /// bar reads by shape and the selection by weight.
     func symbol(selected: Bool) -> String {
         switch self {
+        case .today: return selected ? "sun.max.fill" : "sun.max"
         case .train: return selected ? "dumbbell.fill" : "dumbbell"
         case .exercises: return selected ? "list.bullet.rectangle.portrait.fill" : "list.bullet.rectangle.portrait"
         case .muscles: return "figure.arms.open"

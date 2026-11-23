@@ -276,7 +276,8 @@ struct ExerciseLibraryView: View {
                     Button {
                         path.append(exercise)
                     } label: {
-                        ExerciseRow(exercise: exercise, isSaved: store.isSaved(exercise.name))
+                        ExerciseRow(exercise: exercise, isSaved: store.isSaved(exercise.name),
+                                    caution: store.safety.tag(for: exercise.name))
                     }
                     .buttonStyle(.plain)
                 }
@@ -608,7 +609,7 @@ struct ExerciseLibraryView: View {
         return Button {
             path.append(exercise)
         } label: {
-            ExerciseCard(exercise: exercise, isSaved: isSaved)
+            ExerciseCard(exercise: exercise, isSaved: isSaved, caution: store.safety.tag(for: exercise.name))
         }
         .buttonStyle(CardPressStyle())
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -657,6 +658,8 @@ struct ExerciseLibraryView: View {
 struct ExerciseCard: View {
     var exercise: Exercise
     var isSaved = false
+    /// "NOT ADVISED · KNEE" when the health answers rule it out.
+    var caution: String? = nil
 
     private var hasModel: Bool { SampleData.model(for: exercise) != nil }
 
@@ -705,6 +708,16 @@ struct ExerciseCard: View {
             }
             .overlay(alignment: .bottomLeading) {
                 difficulty.padding(10)
+            }
+            .overlay(alignment: .bottomTrailing) {
+                if let caution {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(DS.silver.opacity(0.75))
+                        .glassPill()
+                        .padding(10)
+                        .accessibilityLabel(caution)
+                }
             }
             .dsHover(.lift, radius: 20)
     }
@@ -802,6 +815,8 @@ private struct GroupGlyph: View {
 struct ExerciseRow: View {
     var exercise: Exercise
     var isSaved = false
+    /// "NOT ADVISED · KNEE" when the health answers rule it out.
+    var caution: String? = nil
 
     var body: some View {
         HStack(spacing: 13) {
@@ -855,6 +870,18 @@ struct ExerciseRow: View {
                     }
                 }
                 .padding(.top, 8)
+
+                if let caution {
+                    HStack(spacing: 4) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.system(size: 8, weight: .semibold))
+                        Text(caution)
+                            .font(.mono(8.5, .semibold))
+                            .trackingEm(0.06, size: 8.5)
+                    }
+                    .foregroundStyle(DS.silver.opacity(0.5))
+                    .padding(.top, 6)
+                }
             }
 
             Spacer(minLength: 8)

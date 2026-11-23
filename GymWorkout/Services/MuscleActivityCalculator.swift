@@ -110,6 +110,25 @@ struct MuscleActivityCalculator {
         }
     }
 
+    /// Effective completed sets per group in `start ..< end` (Balance's
+    /// rolling 7 days and its past weeks). Half-open, so a set at the very
+    /// end belongs to the next window.
+    func effectiveSets(from sessions: [WorkoutSession], start: Date, end: Date) -> [MuscleGroup: Double] {
+        var totals: [MuscleGroup: Double] = [:]
+        for session in sessions {
+            for exercise in session.exercises {
+                for set in exercise.sets where set.isCompleted {
+                    let at = set.completedAt ?? session.day
+                    guard at >= start, at < end else { continue }
+                    for contribution in exercise.contributions {
+                        totals[contribution.muscle, default: 0] += contribution.weight
+                    }
+                }
+            }
+        }
+        return totals
+    }
+
     /// Effective completed sets per chest head inside `period`, levelled on
     /// the period's group cut-offs. The heads come from the logged snapshot,
     /// else the exercise's model, else its chest rows (`ChestPaint`); a lift

@@ -47,7 +47,7 @@
           "codeOffers": [],
           "displayPrice": "19.99",
           "familyShareable": false,
-          "groupNumber": 1,
+          "groupNumber": 2,
           "internalID": "6A1B2C02",
           "introductoryOffer": {
             "internalID": "6A1B2C04",
@@ -65,6 +65,55 @@
           "productID": "com.SamCorp.GymWorkout.removeads.yearly",
           "recurringSubscriptionPeriod": "P1Y",
           "referenceName": "MUSQ Premium Yearly",
+          "subscriptionGroupID": "5B1C2D01",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "39.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "6A1B2C10",
+          "introductoryOffer": {
+            "internalID": "6A1B2C12",
+            "numberOfPeriods": 1,
+            "paymentMode": "free",
+            "subscriptionPeriod": "P3D"
+          },
+          "localizations": [
+            {
+              "description": "Everything in Premium, with the full AI allowance.",
+              "displayName": "MUSQ Pro Yearly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "com.SamCorp.GymWorkout.pro.yearly",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "MUSQ Pro Yearly",
+          "subscriptionGroupID": "5B1C2D01",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "14.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "6A1B2C11",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "Everything in Premium, with the full AI allowance.",
+              "displayName": "MUSQ Pro Monthly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "com.SamCorp.GymWorkout.pro.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "MUSQ Pro Monthly",
           "subscriptionGroupID": "5B1C2D01",
           "type": "RecurringSubscription",
           "winbackOffers": []

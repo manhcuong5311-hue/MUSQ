@@ -638,7 +638,10 @@ struct MusclePresetView: View {
             Button {
                 open(exercise)
             } label: {
-                PresetExerciseRow(exercise: exercise, caution: caution(for: exercise))
+                let safetyNote = safetyCaution(for: exercise)
+                PresetExerciseRow(exercise: exercise, caution: safetyNote ?? caution(for: exercise),
+                                  cautionSymbol: safetyNote == nil ? MuscleCardState.recovering.symbol
+                                                                   : "exclamationmark.triangle")
                     .dsSelected(selectedID == exercise.id, radius: 16)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -911,6 +914,13 @@ struct MusclePresetView: View {
         return hit.isEmpty ? nil : RecoveryText.recovering(hit).uppercased()
     }
 
+    /// "NOT ADVISED WITH KNEE PAIN" for an exercise the health answers rule
+    /// out (one added by hand, or from an older plan). Not on past days.
+    private func safetyCaution(for exercise: WorkoutExercise) -> String? {
+        guard !isPast else { return nil }
+        return store.safety.concerns(for: exercise.exerciseName).first?.notAdvised.uppercased()
+    }
+
     // MARK: - Actions
 
     private func load() {
@@ -959,7 +969,8 @@ struct MusclePresetView: View {
             .compactMap { ExerciseCatalog.exercise(named: $0.exerciseName)?.difficulty }
             .max { ExerciseRotation.rank($0) < ExerciseRotation.rank($1) } ?? .intermediate
         return ExerciseRotation.Context(group: group, level: level, lastDone: store.lastDoneDates,
-                                        tired: Set(tired), saved: store.saved, ceiling: ceiling, now: when)
+                                        tired: Set(tired), saved: store.saved, ceiling: ceiling, now: when,
+                                        safety: store.safety)
     }
 
     /// The day's exercises in other groups, which a swap here mustn't repeat.
@@ -1152,8 +1163,10 @@ struct MusclePresetView: View {
 
 struct PresetExerciseRow: View {
     var exercise: WorkoutExercise
-    /// A recovery heads-up for this exercise, e.g. "FRONT DELTS RECOVERING".
+    /// A recovery heads-up for this exercise, e.g. "FRONT DELTS RECOVERING",
+    /// or a health one, "NOT ADVISED WITH KNEE PAIN".
     var caution: String? = nil
+    var cautionSymbol: String = MuscleCardState.recovering.symbol
 
     @Environment(\.dsLayout) private var layout
 
@@ -1201,7 +1214,7 @@ struct PresetExerciseRow: View {
                 }
                 if let caution {
                     HStack(spacing: 4) {
-                        Image(systemName: MuscleCardState.recovering.symbol)
+                        Image(systemName: cautionSymbol)
                             .font(.system(size: regular ? 8 : 7, weight: .semibold))
                         Text(caution)
                             .font(.mono(regular ? 9.5 : 8.5, .semibold))

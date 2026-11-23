@@ -26,8 +26,15 @@ final class WorkoutStore {
     }
     /// The onboarding answers; nil until onboarding is finished.
     var profile: UserProfile? {
-        didSet { if profile != oldValue && !isLoading { save() } }
+        didSet {
+            if profile?.health != oldValue?.health { adaptedPresets = [:] }
+            if profile != oldValue && !isLoading { save() }
+        }
     }
+    /// Built-in presets adapted to the health answers, by `presetKey`. The
+    /// adaptation scans the library for each ruled-out exercise, and Train
+    /// asks for every group's list on each render.
+    @ObservationIgnored private var adaptedPresets: [String: [PresetItem]] = [:]
     /// Exercises saved with the heart, by name.
     private(set) var saved: Set<String> = []
     /// The user's own presets, keyed by `presetKey`: `MuscleGroup.rawValue`
@@ -94,6 +101,9 @@ final class WorkoutStore {
 
     var recoverySettings: RecoverySettings { RecoverySettings(experience: experience) }
 
+    /// Which exercises suit the profile's health answers.
+    var safety: ExerciseSafety { ExerciseSafety(profile: profile) }
+
     /// The preset level a group opens on when the day doesn't have one yet.
     var suggestedLevel: PresetLevel {
         ProgramAdvisor.suggestedLevel(for: profile, experience: experience)
@@ -144,12 +154,24 @@ final class WorkoutStore {
     /// The exercises a preset would add, not yet saved. Pass these back to a
     /// mutation to save them with the same ids.
     func preview(_ group: MuscleGroup, level: PresetLevel) -> [WorkoutExercise] {
+        // The user's own lists stay as they saved them; the built-in ones
+        // follow the health answers (see `ExerciseSafety`).
         let items = level.isSaved
             ? customPresets[Self.presetKey(group, level)] ?? []
-            : PresetProvider.preset(for: group, level: level)?.items ?? []
+            : adaptedPreset(group, level: level)
         return items.compactMap { item in
             makeExercise(item.exerciseName, group: group, sets: item.sets, reps: item.reps)
         }
+    }
+
+    private func adaptedPreset(_ group: MuscleGroup, level: PresetLevel) -> [PresetItem] {
+        // Not presetKey: that is the saved presets' key, the same for Basic
+        // and Advanced, so one level would answer for both.
+        let key = "\(group.rawValue)|\(level.rawValue)"
+        if let cached = adaptedPresets[key] { return cached }
+        let items = safety.adapted(PresetProvider.preset(for: group, level: level)?.items ?? [], group: group, level: level)
+        adaptedPresets[key] = items
+        return items
     }
 
     /// Saves `planned` (usually a preview) as the group's plan for the day if
@@ -233,7 +255,8 @@ final class WorkoutStore {
     func swapped(_ exercise: WorkoutExercise, to name: String) -> WorkoutExercise? {
         let measure = ExerciseCatalog.measure(forExerciseNamed: name)
         let samePattern = MovementPattern(exerciseNamed: name) == MovementPattern(exerciseNamed: exercise.exerciseName)
-        let target = measure == exercise.setMeasure && samePattern ? exercise.repRange : ExerciseRotation.target(for: name)
+        let kept = measure == exercise.setMeasure && samePattern ? exercise.repRange : ExerciseRotation.target(for: name)
+        let target = safety.adjusted(kept, measure: measure)
         guard var replacement = makeExercise(name, group: exercise.group,
                                              sets: exercise.sets.count, reps: target) else { return nil }
         replacement.id = exercise.id
@@ -578,6 +601,10 @@ final class WorkoutStore {
         /// Nil in files saved before the user's own presets existed.
         var customPresets: [String: [PresetItem]]?
         var sessions: [WorkoutSession]
+        /// The profile's goal is Recomp, written as Stay fit (2026-11-21):
+        /// builds before the plan onboarding don't know Recomp and would set
+        /// the whole file aside.
+        var recompGoal: Bool?
     }
 
     static var defaultFileURL: URL {
@@ -600,6 +627,7 @@ final class WorkoutStore {
         unit = snapshot.unit ?? .kg
         rest = snapshot.rest ?? .auto
         profile = snapshot.profile
+        if snapshot.recompGoal == true { profile?.goal = .recomp }
         saved = Set(snapshot.saved ?? [])
         customPresets = snapshot.customPresets ?? [:]
         isLoading = false
@@ -619,8 +647,12 @@ final class WorkoutStore {
     }
 
     private func save() {
-        let snapshot = Snapshot(experience: experience, unit: unit, rest: rest, profile: profile,
-                                saved: saved.sorted(), customPresets: customPresets, sessions: sessions)
+        var stored = profile
+        let recomp = stored?.goal == .recomp
+        if recomp { stored?.goal = .getFit }
+        let snapshot = Snapshot(experience: experience, unit: unit, rest: rest, profile: stored,
+                                saved: saved.sorted(), customPresets: customPresets, sessions: sessions,
+                                recompGoal: recomp ? true : nil)
         do {
             try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(),
                                                     withIntermediateDirectories: true)

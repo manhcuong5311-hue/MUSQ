@@ -1,0 +1,22 @@
+Public sources say Cal AI never trained its own vision model. It sends meal photos to commercial multimodal AI models (LLMs that read images) and adds a retrieval layer and food databases.
+
+1) Models and providers. TechCrunch (2025-03-16) reported that Cal AI uses Anthropic and OpenAI models plus RAG. The CEO said different models work better for different foods. On My First Million (2025-03-17) he said the app started as an AI wrapper over ChatGPT and other tools. In a Latka interview (2025-05-15) he said it relied on APIs like ChatGPT and that the team did not train its own model. No source names the model in use now or says whether it changed after the acquisition.
+
+2) Training. TechCrunch says the app is "trained on" open-source food calorie and image datasets from GitHub. Cal AI's blog (2025-02) claims a model "trained on thousands of food images". Both conflict with the founder's statements. My reading is that this means prompting plus retrieval over those datasets, not fine-tuning; that is inference. The Terms (2025-11-28) reserve the right to train AI models on user content, but nothing shows they do.
+
+3) Grounding. In 2025 this was RAG over open datasets. Since the MyFitnessPal deal closed in Dec 2025, TechCrunch (2026-03-02) reports Cal AI is connected to MyFitnessPal's database: 20M foods, 68,500 brands and 380+ restaurant chains. It is not stated whether photo results are matched to that database.
+
+4) Portion size. The homepage (checked 2026-11-22) and the blog claim the phone's depth sensor measures food volume. No independent check of this exists, and Hacker News commenters doubt it. The app runs on Android 10+ and any iPhone on iOS 18, and it can read photos from the photo library, so depth can only be optional (inference). A Lifehacker reviewer (2025-06-03) said the app's photo tips include a reference object such as a coin or hand.
+
+5) Other inputs. The app also offers barcode scanning, nutrition-label scanning, a typed "describe" option for soups and smoothies, and voice logging. A "fix results" box lets the user type what was wrong. The company says this feedback "helps us improve" but does not say how.
+
+6) Accuracy. The company claimed 90% in 2024–25, later "90% on visible foods". Its FAQ (Nov 2026) now says "about 80% accurate". Neither claim defines the measure. The only controlled independent test is an NIH study presented at NUTRITION 2026 (Jul 2026; preliminary, not yet peer-reviewed). It used photos of 102 meals weighed to 0.1 g. Cal AI underestimated calories by 345 kcal per meal on average, the worst of four apps (MyFitnessPal −327, Lose It! −333, Appediet −252). All four apps missed about 30 g of fat per meal, and high-fat meals did worst. Lifehacker found Cal AI largely missed the oil in a dressed salad (450 kcal vs about 800–900). How competitors work:
+- SnapCalorie trained its own model on 5,000 meals with every ingredient weighed. It uses depth sensors or LiDAR on supported iPhones, human reviewers, and voice notes such as "pan-fried in olive oil".
+- MyFitnessPal Meal Scan uses Passio's food-recognition SDK plus MyFitnessPal's database, and the user confirms before saving.
+- Lose It! Snap It (2016) and Foodvisor (2019) use their own deep-learning models with user correction. Foodvisor estimates plate distance from camera autofocus.
+- Asian mixed dishes: a University of Sydney study (2024) found AI apps overestimated beef pho by 49% and underestimated pearl milk tea by up to 76%.
+- FRANI, an AI diet app tested in Vietnam (2022), came within 10% of weighed food for energy (group level, 36 girls). It used a standard-size reference object, user-confirmed portions and Vietnamese food lists.
+
+7) Company news. MyFitnessPal bought Cal AI (closed Dec 2025, announced 2026-03-02) and runs it as a separate app. MyFitnessPal's CEO said Cal AI is for people who prefer speed over accuracy. Founder Zach Yadegari left in June 2026 to start Persona, and MyFitnessPal then hired a "Head of Cal AI". Apple briefly removed the app in April 2026 over billing practices, not the AI.
+
+Inference: Cal AI's advantage came from choosing among existing models plus database grounding, not from training. Grounding did not fix hidden fat or oil, since even MyFitnessPal, with its large database, underestimated badly. The documented ways to reduce that error are the user's own text or voice note about cooking method, reference objects or depth sensing, and a local dish database.

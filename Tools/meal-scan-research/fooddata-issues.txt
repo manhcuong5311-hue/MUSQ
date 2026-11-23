@@ -1,0 +1,60 @@
+[partly] NIN's online dish lookup has 1,024 dishes (VPF 432, SFF 226, HAN 193, HAP 173). Each dish has energy per serving plus protein, fat, carbohydrate, vitamin A, minerals, sodium and cholesterol. Records were created 2025-03-26 to 2026-01-09 and updated to 2026-06-23.
+  src: https://viendinhduong.vn/vi/cong-cu-va-tien-ich/gia-tri-dinh-duong-mon-an
+  corrected: The counts and dates are confirmed from the page's JSON (/api/fe/tool/getPageFoodData, 1,024 records). But not every record has every nutrient. Fat is missing in 44 to 52 records and carbohydrate in 30 to 43, depending on whether alternate keys are counted. Vitamin A is present in 910 records and cholesterol in 832. Energy is given for the card's own unit (bowl, plate, piece, even half a cake), not a standard serving.
+  notes: All 1,024 records do have total_energy.
+
+[partly] NIN dish data quality: 52 of 1,024 records lack fat, 43 lack carbohydrate, and 14 have energy more than 25% off a 4/4/9 calculation. HAP-211084 cháo sườn lists 255 g fat in a 574.7 kcal bowl.
+  src: https://viendinhduong.vn/vi/cong-cu-va-tien-ich/gia-tri-dinh-duong-mon-an
+  corrected: In the same JSON (fetched 2026-11-22), 52 records lack the standard fat field and 43 the standard carbohydrate field. However, 8 records store fat as 'lipid' and 13 store carbohydrate as 'carbohydrate', leaving 44 and 30 truly missing. I count 16 records, not 14, more than 25% off 4/4/9. The cháo sườn record (255 g fat, 574.7 kcal) is confirmed.
+  notes: Other outliers: VPF-000141 xá xíu has 503 g protein, VPF-000047 and VPF-000019 have protein equal to kcal, and VPF-000341 chocolate candy is listed at 27 kcal. The conclusion that the data needs validation stands.
+
+[partly] The ASEAN e-database has 616 items, drawn from about 1,740 in the 2000 tables. For Vietnam's food codes it notes 'no information available', so it adds little Vietnamese dish data.
+  src: https://inmu.mahidol.ac.th/aseanfoods/doc/OnlineASEAN_FCD_V1_2014.pdf
+  corrected: The 616 items (aggregated ASEAN data plus unique Thai foods) and the ~1,740 figure are confirmed. But 'no information available' in Table 3 only describes how Vietnam's food codes are numbered; it does not mean data is missing. The PDF has about 123 VN-coded records, mostly raw foods with Vietnamese names. The conclusion still holds for another reason: the mixed-dish group (T) lists only Thai dishes.
+  notes: The record count is mine, from text extracted from the PDF.
+
+[partly] NIN's 1,024 dish names include no 'cơm tấm' or 'gỏi cuốn', so these two dishes need other sources.
+  src: https://viendinhduong.vn/vi/cong-cu-va-tien-ich/gia-tri-dinh-duong-mon-an
+  corrected: No record is named cơm tấm or gỏi cuốn. However, VPF-000195 'Bánh đa cuốn thập cẩm' (mixed rice-paper rolls, 615 kcal per plate; the photo shows about 5 fresh rolls) is a close gỏi cuốn analogue. VPF-000006 carries the English name 'Broken rice with pork and shrimp paste', but its card shows a bowl of plain rice at 258 kcal: a translation error, not cơm tấm.
+  notes: The rice-roll card is at /storage/app/uploads/public/2025/12/17/screenshot_17.webp.
+
+[partly] The closest NIN record to cơm tấm sườn is VPF-000013 Cơm sườn: 616 kcal, P 24.5, F 16.2, C 93 g. No weight is shown.
+  src: https://viendinhduong.vn/storage/app/uploads/public/2025/12/11/screenshot_127.webp
+  corrected: The values are confirmed, but the card does list ingredient weights: pork ribs with bone 85 g, raw rice 120 g, cucumber 40 g, tomato 8 g. There is no total dish weight and no oil line.
+  notes: Many other nationwide cards also list grams (see missing).
+
+[partly] Decree 134/2026 (6 Apr 2026, in force 9 Apr 2026) adds Art. 37a-37c: 37a non-commercial research, testing or training only, and outputs must not substitute for the market; 37b rights holders may opt out; 37c(2) commercial exploitation triggers royalties.
+  src: https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/9/6154-vbhn-bvhttdl.signed.pdf
+  corrected: The dates, 37a and 37c(2) are confirmed. Under 37b, rights holders may reserve rights through machine-readable metadata or a collective-management website. But 37b(3) says the reservation does not apply to uses meeting all of 37a's conditions, so the opt-out only affects uses outside the exception. 37a also requires lawful publication, lawful access and no circumvention of technical protection measures.
+  notes: Consolidated text from the Ministry of Culture, Sports and Tourism (2026).
+
+[partly] Licensing synthesis: FDC and the IFPRI atlas can be embedded freely, with attribution for the atlas; OFF needs attribution and share-alike; FatSecret limits storage to 24 h; Edamam limits caching by plan; for NIN data, get a written licence or build your own table.
+  src: https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/9/6154-vbhn-bvhttdl.signed.pdf
+  corrected: Mostly supported, with four fixes. (1) FatSecret's 24 h limit is only the default; Premier Free and Premier include 'Custom Caching and Data Storage Permissions'. (2) Edamam caching is limited to IDs and labels (Basic) or IDs plus four macros (Core/Plus) and never allows building a copy. (3) Nutritionix allows caching only on MVP/Unicorn, and only for users' log history. (4) The IFPRI atlas gives grams but no nutrient values. Whether NIN's dish data counts as a protected compilation depends on creative selection and arrangement (Art. 22(2)), which is unresolved.
+  notes: This is the researcher's legal inference, not legal advice.
+
+=== MISSING ===
+- MyFitnessPal acquired Cal AI; the deal closed in December 2025 and was announced on 2026-03-02. Cal AI stays a separate app but now uses MyFitnessPal's nutrition database (about 20 million foods, 68,500 brands, 380+ restaurant chains). Cal AI then had over 15M downloads and over $30M in annual revenue. This updates the 2025 picture of Cal AI using open-source databases.
+  src: https://techcrunch.com/2026/03/02/myfitnesspal-has-acquired-cal-ai-the-viral-calorie-app-built-by-teens/ (2026-03-02)
+
+- An NIDDK study presented at NUTRITION 2026 tested four photo apps (MyFitnessPal, LoseIt!, Cal AI, Appediet) on 102 meals weighed to 0.1 g. The apps underestimated calories by about 250-345 kcal per meal and fat by about 30 g. They did worse on high-fat (keto) meals and best on carbohydrates. This is a preliminary conference abstract, not yet peer-reviewed. It directly supports the hidden-fat concern.
+  src: https://www.sciencedaily.com/releases/2026/07/260726015237.htm (2026-07-26)
+
+- Many nationwide (VPF) NIN dish cards also list ingredient grams, contrary to the summary's claim that they show kcal only. In my OCR of a 1-in-6 sample, 42 of 72 VPF cards list ingredient weights, often including vegetable oil, lard or butter (15 of the 42). Example: VPF-000127 khoai lang chiên lists 180 g sweet potato, 40 g flour, 20 g oil and 5 g butter, 574 kcal. Most VPF noodle-soup, bánh mì and snack cards (about VPF-000181 to 000349) show kcal only.
+  src: https://viendinhduong.vn/storage/app/uploads/public/2025/12/12/screenshot_241.webp (2025-12-12)
+
+- There is a Vietnam-specific precedent for an AI photo app grounded in NIN data. The IFPRI/NIN FRANI app was validated against weighed records in 36 adolescent girls in Thai Nguyen and came within 10% equivalence for energy, protein and fat. Nutrients came from the 2007 Vietnamese food composition table with cooking-retention factors. Gaps were filled from the 2019-2020 General Nutrition Survey composition database, plus Thai, ASEAN and USDA tables.
+  src: https://pmc.ncbi.nlm.nih.gov/articles/PMC9535545/ (2022-08-09)
+
+- Nutritionix allows caching only on the MVP and Unicorn plans, and even then only for users' food-log history. New lookups must still hit the API. This fills the researcher's gap. The page footer now reads © 2026 Syndigo LLC.
+  src: https://www.nutritionix.com/api (accessed 2026-11-22)
+
+- Edamam offers a free 'Food MCP' server on all Food Database plans. That is a direct way to let an LLM look up foods as a tool instead of relying on memory. Caching terms still apply.
+  src: https://developer.edamam.com/food-database-api (accessed 2026-11-22)
+
+- FatSecret lists MCP access and 'Custom Caching and Data Storage Permissions' on the Premier Free and Premier tiers, so the 24 h storage rule in its terms is only the default. Start-ups on Premier Free can get non-US datasets at a discount and image/NLP add-ons at 50% off.
+  src: https://platform.fatsecret.com/api-editions (accessed 2026-11-22)
+
+- Vietnam's Ministry of Health issued Circular 30/2026/TT-BYT (in force 2026-07-10), replacing Circular 29/2023. Prepackaged foods must label energy, protein, carbohydrate, fat and sodium, plus total sugars for sweetened drinks and saturated fat for fried foods. This should increase the label nutrition data available for packaged-food sources such as Open Food Facts.
+  src: https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/7/30-byt.signed.pdf (2026-07)
+

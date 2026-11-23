@@ -167,9 +167,41 @@ enum ProgramAdvisor {
     /// machines and supported positions, easier to recover from next to
     /// daily walking; experienced lifters building muscle or fitness start
     /// on Advanced.
+    /// Basic too while a doctor's OK is pending, in pregnancy and in the
+    /// year after a birth (2026-11-21).
     static func suggestedLevel(for profile: UserProfile?, experience: TrainingExperience) -> PresetLevel {
         guard let profile, profile.goal != .loseWeight, experience != .beginner else { return .basic }
+        if let health = profile.health,
+           !health.clearanceReasons.isEmpty || health.isPregnant || health.isPostpartum {
+            return .basic
+        }
         return .advanced
+    }
+
+    // MARK: - Week
+
+    /// Training days spread across the week, as `Calendar` weekday numbers
+    /// (1 = Sunday): Mon/Thu, Mon/Wed/Fri, Mon/Tue/Thu/Fri, Mon-Fri, Mon-Sat.
+    static func suggestedWeekdays(daysPerWeek: Int) -> [Int] {
+        switch daysPerWeek {
+        case ...2: return [2, 5]
+        case 3: return [2, 4, 6]
+        case 4: return [2, 3, 5, 6]
+        case 5: return [2, 3, 4, 5, 6]
+        default: return [2, 3, 4, 5, 6, 7]
+        }
+    }
+
+    /// The split's days laid on the training weekdays in the order of the
+    /// week, the rotation running on from one to the next.
+    static func week(weekdays: [Int], days: [SplitDay], calendar: Calendar = .current) -> [(weekday: Int, day: SplitDay?)] {
+        let order = (0..<7).map { (calendar.firstWeekday - 1 + $0) % 7 + 1 }
+        var next = 0
+        return order.map { weekday in
+            guard weekdays.contains(weekday), !days.isEmpty else { return (weekday, nil) }
+            defer { next += 1 }
+            return (weekday, days[next % days.count])
+        }
     }
 
     // MARK: - Walking
@@ -199,6 +231,13 @@ struct WalkSuggestion: Hashable {
 
     /// A day's total to aim for alongside the walk.
     static let dailySteps = 8_000
+
+    /// The energy of a day's steps the same way (2026-11-22), for people
+    /// without a Watch's active energy: an estimate shown beside the plan,
+    /// never added to it — the plan's activity already counts the walking.
+    static func walkingKcal(steps: Int, heightCm: Double, weightKg: Double) -> Int {
+        WalkSuggestion(steps: steps, heightCm: heightCm, weightKg: weightKg).kilocalories
+    }
 
     var kilometres: Double { Double(steps) * heightCm * 0.415 / 100_000 }
     var minutes: Int { Int((Double(steps) / 100).rounded()) }
