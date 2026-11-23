@@ -360,9 +360,9 @@ struct GoalPhotoCard: View {
         let goals = GoalStore.shared
         if goals.hasGoal, let progress = goals.progress(profile: store.profile, experience: store.experience,
                                                          trainedDays: store.trainedDays) {
-            let percent = Int((progress.fraction * 100).rounded())
-            return String(localized: "\(progress.look.summary): \(percent)% of the way. Tap for your goal page.",
-                          comment: "Progress tab goal card; the look picked, then the share reached")
+            // The share in the locale's percent format, as on the Goal page.
+            return String(localized: "\(progress.look.summary): \(GoalWords.percent(progress.fraction)) of the way. Tap for your goal page.",
+                          comment: "Progress tab goal card; the look picked, then the share reached, e.g. Muscular · Athletic: 34% of the way")
         }
         if Self.needsPlanForNew(purchases: purchases) {
             return purchases.isPremium
@@ -390,6 +390,7 @@ struct GoalPhotoSheet: View {
     var onOpenGoal: () -> Void = {}
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(WorkoutStore.self) private var store
     @Environment(Purchases.self) private var purchases
 
@@ -424,6 +425,8 @@ struct GoalPhotoSheet: View {
     @State private var confirmsDelete = false
     @State private var savedToPhotos = false
     @State private var photoAlert: GoalPhotoSaveResult?
+    /// "Report this image" couldn't open a mail app: show the address instead.
+    @State private var showsReportAddress = false
     /// A result that couldn't be written to the device yet.
     @State private var unsaved: (record: GoalRecord, photo: Data, before: Data)?
     @State private var showsPaywall = false
@@ -600,8 +603,9 @@ struct GoalPhotoSheet: View {
     private var lookPickers: some View {
         VStack(alignment: .leading, spacing: 16) {
             if GoalSex(profile.sex) == nil {
-                pickerBlock(title: String(localized: "Body")) {
-                    Picker(String(localized: "Body"), selection: $sex) {
+                pickerBlock(title: String(localized: "Body", comment: "Goal photo setup: heads the Male / Female picker, the build the photo shows")) {
+                    Picker(String(localized: "Body", comment: "Goal photo setup: heads the Male / Female picker, the build the photo shows"),
+                           selection: $sex) {
                         ForEach(GoalSex.allCases) { Text($0.title).tag(Optional($0)) }
                     }
                     .pickerStyle(.segmented)
@@ -735,8 +739,13 @@ struct GoalPhotoSheet: View {
             }
             HStack(spacing: 18) {
                 // App Store 1.2: AI-made content can be reported, and the
-                // member can remove it.
-                Link(String(localized: "Report this image"), destination: Self.reportURL)
+                // member can remove it. Without a mail app, the address shows.
+                Button(String(localized: "Report this image")) {
+                    openURL(Self.reportURL) { accepted in
+                        if !accepted { showsReportAddress = true }
+                    }
+                }
+                .reportByEmailFallback(isPresented: $showsReportAddress)
                 Button(String(localized: "Delete it")) { confirmsDelete = true }
             }
             .font(.ui(13, .semibold))
@@ -761,7 +770,8 @@ struct GoalPhotoSheet: View {
                     phase = .choose
                 }
             } else if !purchases.isPro {
-                WideButton(title: purchases.isPremium ? String(localized: "See Pro") : String(localized: "See plans"),
+                WideButton(title: purchases.isPremium ? String(localized: "See Pro")
+                                                      : String(localized: "See plans", comment: "Button: opens MUSQ's subscription plans (Premium, Pro)"),
                            prominent: true, fontSize: 15, verticalPadding: 13) {
                     openPaywall()
                 }
@@ -872,7 +882,8 @@ struct GoalPhotoSheet: View {
 
     private var limitMessage: String {
         if serverBehindPlan {
-            return String(localized: "Your plan is on, but MUSQ's server hasn't caught up yet. Try again in a moment.")
+            return String(localized: "Your plan is on, but MUSQ's server hasn't caught up yet. Try again in a moment.",
+                          comment: "Goal photo: the member's subscription (Premium or Pro) is active but the server hasn't recorded it yet")
         }
         if purchases.isPro { return String(localized: "That's this year's goal photos. More next year.") }
         if purchases.isPremium {
@@ -1044,7 +1055,9 @@ struct GoalPhotoSheet: View {
         case .limitReached: return String(localized: "That's all the goal photos for now.")
         case .photoNotAllowed: return String(localized: "This photo can't be edited. Use a clear photo of yourself, with only you in it.")
         case .adultsOnly: return String(localized: "Goal photos are for adults only.")
-        case .notPremium: return String(localized: "Goal photos need a plan. If you've just bought one, try again in a moment.")
+        case .notPremium:
+            return String(localized: "Goal photos need a plan. If you've just bought one, try again in a moment.",
+                          comment: "Goal photo error: the plan is a MUSQ subscription (Premium or Pro)")
         case .notSignedIn: return String(localized: "Sign in with Apple to make a goal photo.")
         case .consentNeeded: return String(localized: "Goal photos need your OK first.")
         case .featureOff: return String(localized: "Goal photos are paused for now. Try again later.")

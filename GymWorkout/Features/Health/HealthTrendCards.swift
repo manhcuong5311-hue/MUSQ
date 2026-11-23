@@ -100,7 +100,8 @@ struct HealthTrendSection: View {
     private var cards: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .center, spacing: 12) {
-                SectionEyebrow(text: "APPLE HEALTH")
+                SectionEyebrow(text: String(localized: "APPLE HEALTH",
+                                            comment: "Progress, Overview: title over the steps and sleep cards"))
                 Spacer(minLength: 8)
                 MonoSegmentedControl(
                     options: HealthTrendRange.allCases.map { ($0, $0.title) },
@@ -173,7 +174,7 @@ struct StepsTrendCard: View {
         let shown = days.filter { $0.day >= window.start && $0.day < window.end }
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "STEPS")
+                SectionEyebrow(text: String(localized: "STEPS", comment: "Progress, steps card title"))
                 Spacer()
                 MetaLine(text: range.title, em: 0.08)
             }
@@ -307,7 +308,7 @@ struct SleepTrendCard: View {
         let shown = nights.filter { $0.day >= window.start && $0.day < window.end }
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "SLEEP")
+                SectionEyebrow(text: String(localized: "SLEEP", comment: "Progress, sleep card title"))
                 Spacer()
                 MetaLine(text: range.title, em: 0.08)
             }
@@ -400,7 +401,9 @@ struct SleepTrendCard: View {
         let parts: [TrendSleepStage] = [
             TrendSleepStage(title: String(localized: "Deep", comment: "Sleep stage"),
                             minutes: night.deepMinutes, color: HealthTone.sleep),
-            TrendSleepStage(title: String(localized: "Core", comment: "Sleep stage"),
+            // Its own key: "Core" alone is the muscle group.
+            TrendSleepStage(title: String(localized: "health.sleepStage.core", defaultValue: "Core",
+                                          comment: "Sleep stage, Apple Health's Core sleep (not the core muscles)"),
                             minutes: night.coreMinutes, color: HealthTone.sleep.opacity(0.55)),
             TrendSleepStage(title: String(localized: "REM", comment: "Sleep stage"),
                             minutes: night.remMinutes, color: HealthTone.sleep.opacity(0.28)),
@@ -620,7 +623,8 @@ private struct HealthTrendConnect: View {
 private struct HealthTrendNoData: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionEyebrow(text: "APPLE HEALTH")
+            SectionEyebrow(text: String(localized: "APPLE HEALTH",
+                                        comment: "Progress, Overview: title over the steps and sleep cards"))
             HealthTrendEmpty(text: HealthCopy.noData, opensHealth: true)
         }
         .padding(16)

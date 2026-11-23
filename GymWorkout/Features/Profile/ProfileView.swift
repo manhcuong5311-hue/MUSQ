@@ -195,7 +195,7 @@ struct ProfileView: View {
         if let profile = store.profile {
             let factColumns = aboutWidth >= 500 ? 4 : 2
             VStack(alignment: .leading, spacing: 10) {
-                SectionEyebrow(text: "ABOUT YOU")
+                SectionEyebrow(text: String(localized: "ABOUT YOU"))
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(spacing: 14) {
                         avatar
@@ -248,14 +248,14 @@ struct ProfileView: View {
     /// their own places in the columns.
     private var premiumSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "PREMIUM & PRIVACY")
+            SectionEyebrow(text: String(localized: "PREMIUM & PRIVACY"))
             premiumRows
         }
     }
 
     private var supportSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "SUPPORT")
+            SectionEyebrow(text: String(localized: "SUPPORT"))
             faqLink
         }
     }
@@ -267,7 +267,7 @@ struct ProfileView: View {
         if let profile = store.profile {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .firstTextBaseline) {
-                    SectionEyebrow(text: "ABOUT YOU")
+                    SectionEyebrow(text: String(localized: "ABOUT YOU"))
                     Spacer()
                     Button("Edit") { editsProfile = true }
                         .font(.ui(13, .semibold))
@@ -302,7 +302,7 @@ struct ProfileView: View {
     /// left or Return is pressed; cleared, it takes the name away.
     private var nameField: some View {
         VStack(alignment: .leading, spacing: 3) {
-            MetaLine(text: "NAME", size: layout.value(8.5, 10))
+            MetaLine(text: String(localized: "NAME"), size: layout.value(8.5, 10))
                 .accessibilityHidden(true)
             TextField("Add your name", text: $nameDraft)
                 .accessibilityLabel("Name")
@@ -369,7 +369,7 @@ struct ProfileView: View {
     private var settings: some View {
         @Bindable var store = store
         return VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "SETTINGS")
+            SectionEyebrow(text: String(localized: "SETTINGS"))
             VStack(spacing: 0) {
                 // MUSQ follows the iPhone's language (2026-11-02); iOS keeps a
                 // per-app Language choice on the app's page in Settings, which
@@ -598,7 +598,7 @@ struct ProfileView: View {
     private var cardColorSettings: some View {
         let reset = cardColors.reset
         return VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "TRAIN CARD COLORS")
+            SectionEyebrow(text: String(localized: "TRAIN CARD COLORS"))
             VStack(spacing: 0) {
                 settingRow(String(localized: "Card colors"), detail: cardColorDetail) {
                     menu(selection: cardColors.$mode, options: CardColorMode.allCases, title: \.title)
@@ -655,7 +655,7 @@ struct ProfileView: View {
 
     private var premiumAndPrivacy: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "PREMIUM & PRIVACY")
+            SectionEyebrow(text: String(localized: "PREMIUM & PRIVACY"))
             premiumRows
             faqLink
             legalLinks
@@ -751,9 +751,12 @@ struct ProfileView: View {
         pillButton(String(localized: title), prominent: prominent, action: action)
     }
 
+    /// Generic like `Text`'s StringProtocol init: with a plain `String`
+    /// parameter, a lone literal (`pillButton("OPEN") { … }`) picked this
+    /// overload over the one above and was never translated.
     @_disfavoredOverload
-    private func pillButton(_ title: String, prominent: Bool = false,
-                            action: @escaping () -> Void) -> some View {
+    private func pillButton<Title: StringProtocol>(_ title: Title, prominent: Bool = false,
+                                                   action: @escaping () -> Void) -> some View {
         let size: CGFloat = layout.value(10, 11)
         return Button(action: action) {
             Text(title)

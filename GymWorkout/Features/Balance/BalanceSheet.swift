@@ -319,9 +319,11 @@ struct BalanceSheet: View {
             // Eat still on in Settings but with nothing it may score: its
             // Note part says why; this says how to get it back.
             if score.pillar == .eat && BalanceSettings.shared.scoresEat {
-                return String(localized: "Show calorie numbers again in Settings › Balance to score eating.")
+                return String(localized: "Show calorie numbers again in Settings › Balance to score eating.",
+                              comment: "Balance sheet, Eat card. Settings › Balance names MUSQ's own screens")
             }
-            return String(localized: "You turned this off in Settings › Balance, so it doesn't count.")
+            return String(localized: "You turned this off in Settings › Balance, so it doesn't count.",
+                          comment: "Balance sheet: a pillar turned off. Settings › Balance names MUSQ's own screens")
         case .needsMore(let have, let need):
             switch score.pillar {
             case .sleep:
@@ -525,7 +527,8 @@ struct BalanceSheet: View {
                               ? String(localized: "Protein against 90% of your plan's, and water, from your meal log or the evening check-in. Calories are hidden in your settings, so they don't count. Scores from 4 days.")
                               : String(localized: "Protein (45%) against 90% of your plan's, eating against your plan's calories (40%) and water (15%), from your meal log or the evening check-in. Scores from 4 days."))
                     explainer(.sleep, String(localized: "Nights long enough (80%), full from 7 h or an hour under your goal, and a steady sleep time (20%). From Apple Health, or your own estimates, which count a little less. Scores from 4 nights."))
-                    explainer(nil, String(localized: "Strong 80+ · On track 65–79 · Building 45–64 · Getting going under 45. The weights and cut-offs are MUSQ's own, set from the research below; this is not a medical score."))
+                    explainer(nil, String(localized: "Strong 80+ · On track 65–79 · Building 45–64 · Getting going under 45. The weights and cut-offs are MUSQ's own, set from the research below; this is not a medical score.",
+                                          comment: "How Balance works. Strong, On track, Building and Getting going are the Balance words: use the score's translations"))
                     explainer(nil, String(localized: "Sources: Schoenfeld, Ogborn & Krieger 2017; Baz-Valle et al. 2022; Pelland et al. 2024; Bickel 2011 (training volume). Helms 2014 (protein in a cut). Nedeltcheva 2010; Lamon 2021; Spiegel 2004; Lauderdale 2008 (sleep)."))
                     // The Ask MUSQ clause only where that section is shown.
                     explainer(nil, onAskAI != nil
@@ -723,9 +726,13 @@ struct BalanceHabitGrid: View {
 
     static func word(_ mark: BalanceMark) -> String {
         switch mark {
-        case .full: return String(localized: "Done", comment: "Balance habit grid: a day the habit was done")
+        // Own keys for Done and Not done: alone they are the Done button and
+        // a workout not done, which read wrong on the Eat and Sleep rows.
+        case .full: return String(localized: "balance.grid.done", defaultValue: "Done",
+                                  comment: "Balance habit grid: a day the habit was done (Train, Eat or Sleep)")
         case .half: return String(localized: "Partly", comment: "Balance habit grid: a day part-way")
-        case .empty: return String(localized: "Not done", comment: "Balance habit grid")
+        case .empty: return String(localized: "balance.grid.notDone", defaultValue: "Not done",
+                                   comment: "Balance habit grid: a day the habit wasn't done (Train, Eat or Sleep)")
         case .rest: return String(localized: "Rest day", comment: "Balance habit grid: a planned rest day")
         case .noData: return String(localized: "No data", comment: "Balance habit grid")
         }

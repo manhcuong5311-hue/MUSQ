@@ -10,6 +10,12 @@
             "state" : "new",
             "value" : "MUSQ"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MUSQ"
+          }
         }
       }
     },
@@ -34,6 +40,12 @@
             "state" : "new",
             "value" : "MUSQ uses the camera when you photograph a meal to log it, or take a photo of yourself for your goal photo."
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MUSQ dùng camera khi bạn chụp ảnh bữa ăn để ghi lại, hoặc chụp ảnh chính bạn để làm ảnh mục tiêu."
+          }
         }
       }
     },
@@ -44,7 +56,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "MUSQ reads your steps, walking distance, active energy, sleep and workouts from Apple Health to show your day and fit your calorie plan to how much you move. It stays on this device: never sent to MUSQ or advertisers."
+            "value" : "MUSQ reads your steps, walking distance, active energy, sleep and workouts from Apple Health to show your day and fit your calorie plan to how much you move. It stays on this device and is never sent to advertisers; your sleep goes to the AI coach (through MUSQ's server to OpenAI) only if you include it in a question."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MUSQ đọc số bước, quãng đường đi bộ, năng lượng hoạt động, giấc ngủ và các buổi tập từ Apple Health để hiện tổng quan trong ngày và điều chỉnh kế hoạch calo theo mức vận động của bạn. Dữ liệu chỉ ở trên thiết bị này và không bao giờ được gửi cho nhà quảng cáo; dữ liệu giấc ngủ chỉ được gửi đến huấn luyện viên AI (qua máy chủ của MUSQ đến OpenAI) nếu bạn đưa nó vào một câu hỏi."
           }
         }
       }
@@ -58,6 +76,12 @@
             "state" : "new",
             "value" : "MUSQ only reads from Apple Health (steps, sleep, active energy and workouts) and never saves anything to it."
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MUSQ chỉ đọc từ Apple Health (số bước, giấc ngủ, năng lượng hoạt động và các buổi tập) và không bao giờ ghi gì vào đó."
+          }
         }
       }
     },
@@ -69,6 +93,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "MUSQ listens only while the mic is on, to log water, a walk or a meal by voice. The words are recognised on your device and the audio is never saved or sent."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MUSQ chỉ nghe khi micrô đang bật, để ghi nước, đi bộ hoặc bữa ăn bằng giọng nói. Lời nói được nhận dạng ngay trên thiết bị của bạn, âm thanh không bao giờ được lưu hay gửi đi."
           }
         }
       }
@@ -82,6 +112,12 @@
             "state" : "new",
             "value" : "MUSQ saves your goal photo to your library when you ask it to."
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MUSQ lưu ảnh mục tiêu vào Ảnh khi bạn yêu cầu."
+          }
         }
       }
     },
@@ -93,6 +129,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "MUSQ turns what you say into a water, walk or meal log on your device. Nothing you say is saved or sent."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MUSQ chuyển lời bạn nói thành bản ghi nước, đi bộ hoặc bữa ăn ngay trên thiết bị. Những gì bạn nói không được lưu hay gửi đi."
           }
         }
       }

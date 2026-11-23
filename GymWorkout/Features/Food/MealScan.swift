@@ -217,9 +217,9 @@ struct TodayMealsSection: View {
     }
 
     /// "Log food" for everyone: said or typed, found in the food table on
-    /// the device. The scan needs the AI service, live only in Debug until
-    /// the privacy go-live: a Pro member's comes first, beside "Log food";
-    /// anyone else's comes after it and opens the paywall.
+    /// the device. The scan needs the AI service, live in every build since
+    /// 1.4 (the privacy go-live): a Pro member's comes first, beside "Log
+    /// food"; anyone else's comes after it and opens the paywall.
     @ViewBuilder
     private var mealChips: some View {
         if AIService.isLive && canScan { scanChip }
@@ -230,7 +230,8 @@ struct TodayMealsSection: View {
     }
 
     private var scanChip: some View {
-        QuickChip(title: String(localized: "Scan a meal"), symbol: "camera.viewfinder") { start() }
+        QuickChip(title: String(localized: "Scan a meal", comment: "Today: a short chip that opens the meal scan (Pro); also the scan sheet's title"),
+                  symbol: "camera.viewfinder") { start() }
     }
 
     private func resume() {
@@ -279,7 +280,8 @@ private struct MealRow: View {
                     .foregroundStyle(DS.silver.opacity(0.6))
             }
             Spacer(minLength: 8)
-            BigValue(value: meal.kcal.formatted(), unit: "kcal", size: 18)
+            BigValue(value: meal.kcal.formatted(), unit: String(localized: "kcal", comment: "Unit: kilocalories, beside a meal's energy"),
+                     size: 18)
         }
         .padding(.vertical, 12)
         .accessibilityElement(children: .combine)
@@ -425,7 +427,7 @@ struct MealScanSheet: View {
                                     }
                                 }
                             }
-                            .accessibilityLabel(String(localized: "Meal photo"))
+                            .accessibilityLabel(String(localized: "Meal photo", comment: "VoiceOver: the photo of the meal being scanned"))
                     }
                     switch phase {
                     case .choose: chooser
@@ -440,7 +442,7 @@ struct MealScanSheet: View {
                 .padding(.bottom, 24)
             }
             .background(DS.ink.ignoresSafeArea())
-            .navigationTitle(String(localized: "Scan a meal"))
+            .navigationTitle(String(localized: "Scan a meal", comment: "Today: a short chip that opens the meal scan (Pro); also the scan sheet's title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -513,7 +515,8 @@ struct MealScanSheet: View {
             }
             HStack(spacing: 10) {
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    WideButton(title: String(localized: "Take photo"), prominent: photo == nil, fontSize: 15, verticalPadding: 13) {
+                    WideButton(title: String(localized: "Take photo", comment: "Button that opens the camera; half the screen's width, beside Choose photo"),
+                               prominent: photo == nil, fontSize: 15, verticalPadding: 13) {
                         // The camera never opens over a live mic: what was
                         // heard goes in the note first.
                         Task {
@@ -523,7 +526,10 @@ struct MealScanSheet: View {
                     }
                 }
                 PhotosPicker(selection: $pickerItem, matching: .images) {
-                    Text(photo == nil ? String(localized: "Choose photo") : String(localized: "Another photo"))
+                    Text(photo == nil
+                         ? String(localized: "Choose photo", comment: "Button that picks a photo from the library; half the screen's width, beside Take photo")
+                         : String(localized: "Another photo",
+                                  comment: "Button that picks a different photo from the library once one is in; half the screen's width, beside Take photo"))
                         .font(.ui(15, .semibold))
                         .foregroundStyle(DS.silver)
                         .frame(maxWidth: .infinity)
@@ -550,8 +556,8 @@ struct MealScanSheet: View {
                 noteVoiceStatus
                 cookingChips
                 let canRead = loadID == nil && pendingRead == nil
-                WideButton(title: String(localized: "Read this meal"), prominent: true, fontSize: 16, verticalPadding: 14,
-                           cornerRadius: 14) { read() }
+                WideButton(title: String(localized: "Read this meal", comment: "Meal scan: sends the photo and the note for the AI to read the foods"),
+                           prominent: true, fontSize: 16, verticalPadding: 14, cornerRadius: 14) { read() }
                     .disabled(!canRead)
                     .opacity(canRead ? 1 : 0.5)
             }
@@ -560,7 +566,7 @@ struct MealScanSheet: View {
 
     private var review: some View {
         VStack(alignment: .leading, spacing: 14) {
-            TextField(String(localized: "Meal name"), text: $title)
+            TextField(String(localized: "Meal name", comment: "A meal's name: the placeholder of its name field"), text: $title)
                 .font(.ui(22, .bold))
                 .foregroundStyle(DS.silver)
             HStack(spacing: 6) {
@@ -581,7 +587,8 @@ struct MealScanSheet: View {
                 .font(.ui(12.5))
                 .foregroundStyle(DS.silver.opacity(0.55))
                 .fixedSize(horizontal: false, vertical: true)
-            WideButton(title: String(localized: "Log meal"), prominent: true, fontSize: 16, verticalPadding: 14, cornerRadius: 14) {
+            WideButton(title: String(localized: "Log meal", comment: "Button that saves the meal to today's log"),
+                       prominent: true, fontSize: 16, verticalPadding: 14, cornerRadius: 14) {
                 log()
             }
             .disabled(foods.isEmpty)
@@ -620,7 +627,8 @@ struct MealScanSheet: View {
                     phase = .choose
                 }
             } else if !purchases.isPro {
-                WideButton(title: String(localized: "See Pro"), prominent: true, fontSize: 15, verticalPadding: 13) {
+                WideButton(title: String(localized: "See Pro", comment: "Button that opens MUSQ Pro's paywall"),
+                           prominent: true, fontSize: 15, verticalPadding: 13) {
                     showsPro = true
                 }
             }
@@ -835,7 +843,8 @@ struct MealScanSheet: View {
             switch voice.state {
             case .denied:
                 VStack(alignment: .leading, spacing: 2) {
-                    micStatus(String(localized: "Microphone access is off for MUSQ. Turn it on in Settings › MUSQ, or use the mic on your keyboard."),
+                    micStatus(String(localized: "Microphone access is off for MUSQ. Turn it on in Settings › MUSQ, or use the mic on your keyboard.",
+                                     comment: "A mic MUSQ isn't allowed to use. Settings › MUSQ is the path in the iOS Settings app"),
                               symbol: "mic.slash")
                     Button {
                         if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
@@ -900,9 +909,15 @@ struct MealScanSheet: View {
     /// or "low"; the meal editor says the same of a scanned meal.
     static func confidenceText(_ confidence: String) -> String {
         switch confidence {
-        case "high": return String(localized: "AI estimate · high confidence")
-        case "low": return String(localized: "AI estimate · low confidence, check the portions")
-        default: return String(localized: "AI estimate · medium confidence")
+        case "high":
+            return String(localized: "AI estimate · high confidence",
+                          comment: "Under a scanned meal's name: the numbers are the AI's estimate, and how sure it is")
+        case "low":
+            return String(localized: "AI estimate · low confidence, check the portions",
+                          comment: "Under a scanned meal's name: the numbers are the AI's estimate, and how sure it is")
+        default:
+            return String(localized: "AI estimate · medium confidence",
+                          comment: "Under a scanned meal's name: the numbers are the AI's estimate, and how sure it is")
         }
     }
 
@@ -925,7 +940,7 @@ struct MealScanSheet: View {
         guard phase == .choose, photo == nil, foods.isEmpty, let preview = MealScanPreview.takePending() else { return }
         switch preview {
         case .photo, .listening:
-            photo = MealScanPreview.standInPhoto()
+            photo = MealScanPreview.pickedPhoto() ?? MealScanPreview.standInPhoto()
             toggle(.stirFried)
             toggle(.littleOil)
             // The mic as it shows while it hears, with no microphone.
@@ -935,7 +950,10 @@ struct MealScanSheet: View {
             }
         case .edit, .editChanged, .editAdd, .editManual:
             break
-        case .review, .slider, .stepper, .search, .pizza, .pizzaStep:
+        case .review, .slider, .stepper, .search, .pizza, .pizzaStep, .phoBowl:
+            // The read meal under its photo, as a real scan shows it, when
+            // `-mealscan.photo` names one.
+            photo = MealScanPreview.pickedPhoto()
             show(MealScanPreview.scan(preview, locale: locale))
             if preview == .slider, let index = foods.firstIndex(where: { $0.control == .amount }) {
                 foods[index].setGrams(fromSlider: 450)
@@ -1009,7 +1027,8 @@ private struct MealNoteMicButton: View {
                             : String(localized: "Say the note", comment: "Meal scan: the mic beside the note, VoiceOver"))
         .accessibilityHint(isOn
                            ? String(localized: "Adds what you said to the note", comment: "Meal scan: the note's mic while it listens, VoiceOver")
-                           : String(localized: "Listens until you double-tap again."))
+                           : String(localized: "Listens until you double-tap again.",
+                                    comment: "VoiceOver hint on a mic button that isn't listening yet"))
     }
 }
 
@@ -1197,11 +1216,15 @@ enum MealNote {
 /// typed in by hand), not in the day's log; `editChanged` the same after
 /// changes (`MealEditSheet`); `editAdd` with its food search open on the
 /// `-mealscan.query` words; `editManual` straight on adding them by hand.
+/// `phoBowl` (2026-11-23, App Store shots) a bowl of phở bò tái with its
+/// plate of herbs, bean sprouts and lime. `-mealscan.photo FILE` puts a
+/// photo over any scan preview (a file in the app's Documents, or a full
+/// path), as a real scan shows the photo it read.
 /// The table foods are what the server sends for the bundled entries
 /// (functions/src/meal.ts), with this app's table version. Compiled out of
 /// Release.
 enum MealScanPreview: String {
-    case review, slider, stepper, pizza, pizzaStep, search, photo, listening, edit, editChanged, editAdd, editManual
+    case review, slider, stepper, pizza, pizzaStep, search, photo, listening, edit, editChanged, editAdd, editManual, phoBowl
 
     /// Opens the editor of a logged meal, not the scan.
     var opensEditor: Bool {
@@ -1271,7 +1294,42 @@ enum MealScanPreview: String {
     }
 
     static func scan(_ preview: MealScanPreview, locale: String) -> MealScan {
-        preview == .pizza || preview == .pizzaStep ? pizzaLunch(locale: locale) : phoBreakfast(locale: locale)
+        switch preview {
+        case .pizza, .pizzaStep: return pizzaLunch(locale: locale)
+        case .phoBowl: return phoBowl(locale: locale)
+        default: return phoBreakfast(locale: locale)
+        }
+    }
+
+    /// The photo `-mealscan.photo` names: a file in the app's Documents, or
+    /// a full path.
+    static func pickedPhoto() -> UIImage? {
+        let arguments = ProcessInfo.processInfo.arguments
+        guard let index = arguments.firstIndex(of: "-mealscan.photo"), index + 1 < arguments.count else { return nil }
+        let name = arguments[index + 1]
+        let path = name.hasPrefix("/") ? name
+            : FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(name).path
+        return UIImage(contentsOfFile: path)
+    }
+
+    /// A bowl of phở bò tái at its serving (from the table, by amount) and
+    /// the plate of bean sprouts, herbs and lime beside it (the AI's own
+    /// estimate). Two foods, so the total shows on one screen.
+    private static func phoBowl(locale: String) -> MealScan {
+        let table = FoodTable.shared
+        let vi = locale == "vi"
+        var items: [MealScanItem] = []
+        if let pho = table.entry(id: "vn.pho_bo_tai") {
+            items.append(tableItem(pho, grams: pho.size.g, count: nil, portion: vi ? "1 tô" : "1 bowl",
+                                   modelKcal: 480, locale: locale))
+        }
+        items.append(MealScanItem(name: vi ? "Giá, rau thơm và chanh" : "Bean sprouts, herbs and lime",
+                                  portion: vi ? "1 đĩa" : "1 plate",
+                                  grams: 90, kcal: 27, proteinG: 2, fatG: 0, carbsG: 4, basis: "estimate", unit: "g"))
+        return MealScan(isFood: true, title: vi ? "Phở bò tái" : "Beef pho", items: items, total: nil,
+                        confidence: "high",
+                        note: vi ? "Giả định một tô cỡ thường, có cả nước dùng." : "Assumed a standard bowl, broth included.",
+                        remainingToday: 19, tableVersion: table.version)
     }
 
     /// A breakfast as the scan logs one and the editor saves it, at 8:30

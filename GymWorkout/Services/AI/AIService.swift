@@ -227,31 +227,16 @@ nonisolated extension MealScan {
 final class AIService {
     static let shared = AIService()
 
-    /// Whether the AI features show in this build. Release builds keep them
-    /// hidden until the privacy go-live ships with them: the FAQ and
-    /// onboarding wording, PrivacyInfo.xcprivacy, musq.app/privacy.html and
-    /// the App Store privacy answers all say nothing leaves the phone today.
-    static var isLive: Bool {
-        #if DEBUG
-        true
-        #elseif AI_TESTFLIGHT
-        isTestFlight
-        #else
-        false
-        #endif
-    }
-
-    #if AI_TESTFLIGHT
-    /// TestFlight test builds (2026-11-22, the owner testing the meal scan
-    /// before the privacy go-live) are archived with
-    /// SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) AI_TESTFLIGHT' on the
-    /// xcodebuild command line and exported for internal testing only. Even
-    /// then the AI shows only when the app was installed from TestFlight (a
-    /// sandbox receipt), never from the App Store; the server still decides
-    /// who may use it (testers/{uid}). Plain archives from Xcode don't have
-    /// the flag, so Release stays as above.
-    static let isTestFlight: Bool = Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
-    #endif
+    /// Whether the AI features show in this build: every build since 1.4,
+    /// the privacy go-live (2026-11-23), which ships with the wording that
+    /// names MUSQ's server and OpenAI (the FAQ, onboarding, Health and
+    /// consent copy, PrivacyInfo.xcprivacy, musq.app/privacy.html and the
+    /// App Store privacy answers). Each feature can still be paused on the
+    /// server (config/ai chatEnabled, mealEnabled, goalPhotoEnabled), which
+    /// the app shows as "paused for now". The TestFlight-only compile flag
+    /// (2026-11-22) is gone: it unlocked Pro for any sandbox receipt, App
+    /// Review's included, and hid the AI from App Store installs.
+    static var isLive: Bool { true }
 
     /// One consent per feature, each naming what it sends to OpenAI. The
     /// chat's key is the one the Ask MUSQ sheet already writes.
@@ -594,7 +579,10 @@ final class AIService {
         let message = ns.localizedDescription
         switch code {
         case .unauthenticated: return message == "app-check-required" ? .deviceNotVerified : .notSignedIn
-        case .permissionDenied: return .notPremium
+        // Only the server's own "no plan" answer (Reason.premium in
+        // functions/src/reasons.ts, the one permission-denied it sends); a
+        // bare 403 from the platform (billing, IAM) isn't the member's plan.
+        case .permissionDenied: return message == "premium-required" ? .notPremium : .unavailable
         // Only the server's own limit; a bare 429 (every instance busy)
         // is a moment's wait, not the day's allowance.
         case .resourceExhausted: return message == "limit-reached" ? .limitReached : .unavailable

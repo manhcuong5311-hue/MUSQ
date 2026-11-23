@@ -15,6 +15,7 @@
 //  every layout, hand-added steps and a walking estimate from steps.
 //
 
+import Combine
 import SwiftUI
 
 struct TodayView: View {
@@ -207,7 +208,9 @@ struct TodayView: View {
         } message: {
             Text("Turn on notifications for MUSQ in iOS Settings to get reminders.")
         }
-        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+        // Posted on whatever thread noticed the new day: the state change and
+        // the store's save run on the main thread.
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged).receive(on: RunLoop.main)) { _ in
             clock += 1
             syncPlanWeight()
         }
@@ -571,7 +574,8 @@ struct TodayView: View {
                             color: TodayPalette.water)
                 HStack(spacing: 8) {
                     ForEach(Array(metrics.waterPresets.prefix(2).enumerated()), id: \.offset) { index, ml in
-                        PillButton(title: "+\(ml) ml", prominent: index == 0) { addWater(ml) }
+                        PillButton(title: String(localized: "+\(ml) ml", comment: "Adds a glass of water: +250 ml"),
+                                   prominent: index == 0) { addWater(ml) }
                     }
                     if metrics.waterMl > 0 {
                         PillButton(title: String(localized: "Undo")) { actions.undoWater() }
@@ -603,7 +607,7 @@ struct TodayView: View {
 
     /// The schedule, "Off", or that iOS has notifications off for MUSQ.
     private func reminderDetail(isOn: Bool, schedule: String) -> String {
-        guard isOn else { return String(localized: "Off") }
+        guard isOn else { return String(localized: "Off", comment: "A reminder row's detail: the reminder is off") }
         return daily.notificationsDenied
             ? String(localized: "Notifications are off in iOS Settings", comment: "A reminder that is on but can't fire")
             : schedule
@@ -801,7 +805,9 @@ struct TodayView: View {
         guard amount > 0 else {
             return String(localized: "Almost at your target · around \(day)", comment: "Plan goal within one unit of the target")
         }
-        let change = "\(amount)\u{00A0}\(unit.symbol)"
+        // "4 kg", the unit inside its localized string (a whole amount reads
+        // without decimals).
+        let change = unit.bodyWeight(unit.toKilograms(Double(amount)))
         return plan.effectiveGoal == .loseWeight
             ? String(localized: "Lose \(change) · around \(day)", comment: "Plan goal: Lose 4 kg · around 16 Jan 2027")
             : String(localized: "Gain \(change) · around \(day)", comment: "Plan goal: Gain 4 kg · around 16 Jan 2027")

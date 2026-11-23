@@ -226,6 +226,10 @@ final class VoiceInput {
             isActive = true
             let node = engine.inputNode
             let micFormat = node.outputFormat(forBus: 0)
+            // No usable mic input (0 Hz or no channels): `installTap` would
+            // crash and the tap divides by the rate. Fail here instead, and
+            // the catch below lets go of the analyzer and audio session.
+            guard micFormat.sampleRate > 0, micFormat.channelCount > 0 else { throw VoiceError.noFormat }
             node.installTap(onBus: 0, bufferSize: 4_096, format: micFormat,
                             block: Self.tap(from: micFormat, to: format, into: continuation))
             isTapped = true

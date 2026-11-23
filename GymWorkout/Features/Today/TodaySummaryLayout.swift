@@ -129,7 +129,8 @@ private struct SummaryRings: View {
             }
             HStack(spacing: 8) {
                 ForEach(Array(m.waterPresets.prefix(2).enumerated()), id: \.offset) { index, ml in
-                    QuickChip(title: "+\(ml) ml", symbol: index == 0 ? "drop.fill" : nil) { actions.addWater(ml) }
+                    QuickChip(title: String(localized: "+\(ml) ml", comment: "Adds a glass of water: +250 ml"),
+                              symbol: index == 0 ? "drop.fill" : nil) { actions.addWater(ml) }
                 }
                 Spacer(minLength: 0)
                 QuickChip(title: m.weighedIn ? String(localized: "Edit weight") : String(localized: "Log weight"),
@@ -151,12 +152,12 @@ private struct SummaryRings: View {
 
     /// Opens the water log: a custom amount, the presets, today's glasses.
     private var waterLegend: some View {
-        let litres = Double(metrics.waterMl) / 1_000, target = Double(metrics.waterTarget) / 1_000
+        let litres = Double(metrics.waterMl) / 1_000
         return Button { actions.quickLog(.water) } label: {
             legend(symbol: "drop.fill", label: String(localized: "Water", comment: "Today ring"), tone: TodayTone.water) {
                 // With the amount left to the doctor, no target beside it.
                 BigValue(value: litres.formatted(.number.precision(.fractionLength(0...2))),
-                         unit: metrics.waterCounts ? "/ \(target.formatted(.number.precision(.fractionLength(0...2)))) L" : "L",
+                         unit: TodayWaterText.litresUnit(target: metrics.waterCounts ? metrics.waterTarget : nil),
                          size: 26, color: TodayTone.water)
             }
             .contentShape(Rectangle())
@@ -180,7 +181,8 @@ private struct SummaryRings: View {
             case .rest:
                 BigValue(value: String(localized: "Rest day"), size: 22, color: TodayTone.workoutText)
             case .recovering:
-                BigValue(value: String(localized: "Recovering"), size: 22, color: TodayTone.workoutText)
+                BigValue(value: String(localized: "Recovering", comment: "Workout ring legend: nothing recovered to train today; large text in a narrow column"),
+                         size: 22, color: TodayTone.workoutText)
             }
         }
     }
@@ -262,7 +264,7 @@ private struct WaterWeekTile: View {
             Button { actions.quickLog(.water) } label: {
                 VStack(alignment: .leading, spacing: 0) {
                     BigValue(value: (Double(average) / 1_000).formatted(.number.precision(.fractionLength(0...2))),
-                             unit: "L", size: 24)
+                             unit: TodayWaterText.litresUnit(), size: 24)
                         .padding(.top, 4)
                     Text(metrics.limitsFluids ? String(localized: "Ask your doctor how much to drink.")
                                               : String(localized: "a day, last 7 days", comment: "Water tile: the week's average"))
@@ -360,7 +362,8 @@ private struct NutritionTile: View {
                 }
                 .frame(height: 30)
                 if let plan {
-                    BigValue(value: Int(plan.calories).formatted(), unit: "kcal", size: 24)
+                    BigValue(value: Int(plan.calories).formatted(),
+                             unit: String(localized: "kcal", comment: "Unit after the day's calorie target: 2,020 kcal"), size: 24)
                         .padding(.top, 4)
                     Text("Daily target", comment: "Nutrition tile")
                         .font(.ui(12.5))
@@ -557,7 +560,7 @@ struct TodayReminderList: View {
     }
 
     private func detail(isOn: Bool, schedule: String) -> String {
-        guard isOn else { return String(localized: "Off") }
+        guard isOn else { return String(localized: "Off", comment: "A reminder row's detail: the reminder is off") }
         return daily.notificationsDenied
             ? String(localized: "Notifications are off in iOS Settings", comment: "A reminder that is on but can't fire")
             : schedule

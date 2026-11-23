@@ -262,10 +262,26 @@ struct MacroLine: View {
     @Environment(\.dsLayout) private var layout
 
     var body: some View {
+        // The full names when the row fits, else the short ones of the
+        // one-line meal summary: Vietnamese "Tinh bột 229 g" wrapped onto a
+        // second line beside the other two (2026-11-23). English always fits.
+        ViewThatFits(in: .horizontal) {
+            row(short: false)
+            row(short: true)
+        }
+    }
+
+    private func row(short: Bool) -> some View {
         HStack(spacing: 14) {
-            item(String(localized: "Protein", comment: "Macro"), protein, DS.activation)
-            item(String(localized: "Fat", comment: "Macro"), fat, DS.activationSoft)
-            item(String(localized: "Carbs", comment: "Macro"), carbs, DS.silver.opacity(0.4))
+            item(short ? String(localized: "macro.short.protein", defaultValue: "Protein",
+                                comment: "Macro in a row too tight for the full names; as short as the meal summary's")
+                       : String(localized: "Protein", comment: "Macro"), protein, DS.activation)
+            item(short ? String(localized: "macro.short.fat", defaultValue: "Fat",
+                                comment: "Macro in a row too tight for the full names; as short as the meal summary's")
+                       : String(localized: "Fat", comment: "Macro"), fat, DS.activationSoft)
+            item(short ? String(localized: "macro.short.carbs", defaultValue: "Carbs",
+                                comment: "Macro in a row too tight for the full names; as short as the meal summary's")
+                       : String(localized: "Carbs", comment: "Macro"), carbs, DS.silver.opacity(0.4))
             Spacer(minLength: 0)
         }
     }
@@ -277,6 +293,7 @@ struct MacroLine: View {
                 .font(.ui(layout.value(12.5, 13.5), .semibold))
                 .foregroundStyle(DS.silver.opacity(0.8))
                 .monospacedDigit()
+                .lineLimit(1)
         }
         .accessibilityElement(children: .combine)
     }

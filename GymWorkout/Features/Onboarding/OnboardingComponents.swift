@@ -416,7 +416,9 @@ struct FormulaCard: View {
     var body: some View {
         let mathSize: CGFloat = layout.value(11.5, 12.5)
         VStack(alignment: .leading, spacing: 0) {
-            SectionEyebrow(text: "HOW IT'S CALCULATED", size: layout.value(9.5, 10.5))
+            SectionEyebrow(text: String(localized: "HOW IT'S CALCULATED",
+                                        comment: "Eyebrow over the card that shows each formula with the user's own numbers"),
+                           size: layout.value(9.5, 10.5))
             VStack(alignment: .leading, spacing: layout.value(10, 12)) {
                 ForEach(lines, id: \.self) { line in
                     VStack(alignment: .leading, spacing: 3) {

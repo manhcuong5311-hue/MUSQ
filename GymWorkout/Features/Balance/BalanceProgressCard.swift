@@ -56,7 +56,7 @@ struct BalanceProgressCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "BALANCE & RESULTS")
+                SectionEyebrow(text: String(localized: "BALANCE & RESULTS", comment: "Progress, Overview: section title"))
                 Spacer()
                 MetaLine(text: "\(weeks.count) WEEKS", em: 0.08)
             }
@@ -153,7 +153,7 @@ struct BalanceProgressCard: View {
                             VStack(spacing: 0) {
                                 Text(score.formatted())
                                 if week.isCurrent {
-                                    Text("so far", comment: "Balance & results: this week's bar")
+                                    Text("so far", comment: "Balance & results: under this week's number, over a narrow bar; keep it short")
                                 }
                             }
                             .font(.mono(8.5, .semibold))
@@ -374,7 +374,8 @@ struct BalanceProgressCard: View {
     @ViewBuilder
     private var yourWeeks: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "YOUR WEEKS")
+            SectionEyebrow(text: String(localized: "YOUR WEEKS",
+                                        comment: "Progress, Balance & results: better-balanced weeks set against the rest"))
             if let comparison {
                 HStack(alignment: .top, spacing: 12) {
                     figure(String(localized: "Better-balanced weeks"), perWeek(comparison.betterResult))

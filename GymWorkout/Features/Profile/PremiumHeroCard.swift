@@ -8,7 +8,7 @@
 //  Apple Account can still take one — instead of opening the Premium sheet.
 //  Since the card is a purchase screen of its own, it carries what Apple asks
 //  of one: the billed price, what happens when the trial ends, the terms and
-//  a way to restore. Lifetime stays in the Premium sheet.
+//  a way to restore.
 //
 //  Dark in both appearances: the photo is shot on charcoal, and the card is
 //  drawn as the photo's own ground.
@@ -465,7 +465,7 @@ struct PremiumHeroCard: View {
             do {
                 try await purchases.restore()
                 if !purchases.isPremium {
-                    alert = String(localized: "No MUSQ Premium purchase was found for this Apple Account.")
+                    alert = String(localized: "No MUSQ Premium or Pro purchase was found for this Apple Account.")
                 }
             } catch {
                 alert = error.localizedDescription

@@ -119,14 +119,18 @@ struct AIConsentSheet: View {
             case .meal:
                 return [
                     ("photo", String(localized: "The meal photo you take or pick, and your note if you add one, go to OpenAI through MUSQ's server to estimate the foods, grams and calories.")),
-                    ("hand.raised", String(localized: "Only an anonymous ID goes with it, so OpenAI can spot abuse: not your name, workouts, body measurements or health answers.")),
+                    // The ID is OpenAI's safety_identifier: a hash of the account's
+                    // uid (functions/src/openai.ts), which MUSQ could work out again,
+                    // so it's called coded, not anonymous.
+                    ("hand.raised", String(localized: "Only a coded ID made from your account goes with it, so OpenAI can spot abuse: not your name, email, workouts, body measurements or health answers.")),
                     ("trash", String(localized: "MUSQ doesn't keep the photo. The meal you save stays on this \(DS.deviceNoun).")),
                 ]
             case .goalPhoto:
                 return [
-                    ("person.crop.square", String(localized: "The photo you pick, with the look you choose (sex, muscle and body fat) and an anonymous ID, goes to OpenAI through MUSQ's server, which edits it to show you at that goal. MUSQ's server checks your birth year and doesn't pass it on.")),
+                    ("person.crop.square", String(localized: "The photo you pick, with the look you choose (sex, muscle and body fat) and a coded ID made from your account (not your name or email), goes to OpenAI through MUSQ's server, which edits it to show you at that goal. MUSQ's server checks your birth year and doesn't pass it on.")),
                     ("checkmark.shield", String(localized: "Use only a photo of yourself. The edit keeps your clothes, and MUSQ puts your own face back on this \(DS.deviceNoun); it's an illustration, not a prediction.")),
-                    ("trash", String(localized: "MUSQ doesn't keep your photo or the result. Both stay on this \(DS.deviceNoun) only, for your Goal page.")),
+                    // The server keeps neither; OpenAI's 30 days are said under the list.
+                    ("trash", String(localized: "MUSQ's server doesn't keep your photo or the result. MUSQ keeps both only on this \(DS.deviceNoun), for your Goal page.")),
                 ]
             }
         }
@@ -214,33 +218,37 @@ struct AccountSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "ACCOUNT")
+            SectionEyebrow(text: String(localized: "ACCOUNT", comment: "Profile: header over the MUSQ account section (Sign in with Apple)"))
             VStack(spacing: 0) {
                 if let member = account.member {
                     row(title: String(localized: "Signed in with Apple"),
                         detail: member.email ?? String(localized: "Your email is hidden.")) {
-                        pill(String(localized: "SIGN OUT")) { account.signOut() }
+                        pill(String(localized: "SIGN OUT", comment: "Profile › Account: small pill button that signs out; upper case, keep short")) { account.signOut() }
                     }
                     if hasConsent {
                         Hairline(opacity: 0.06)
                         row(title: String(localized: "AI data sharing"),
                             detail: String(localized: "You agreed to share what the AI features need with OpenAI. Withdraw it, and each feature asks again before it sends anything.")) {
-                            pill(String(localized: "WITHDRAW")) { withdrawConsent() }
+                            pill(String(localized: "WITHDRAW", comment: "Profile › Account: small pill button that withdraws the consent to share data with OpenAI for the AI features; upper case, keep short")) { withdrawConsent() }
                         }
                     }
                     Hairline(opacity: 0.06)
                     row(title: String(localized: "Delete account"),
-                        detail: String(localized: "Removes your MUSQ account and your plan's record from the server; its service logs are deleted within 30 days. Usage counts belong to your purchase, not the account, and hold nothing about you. Workouts on this \(DS.deviceNoun) and your purchase stay.")) {
+                        // What deleteAccount keeps (functions/src/account.ts): the
+                        // purchase's usage counters and the free goal photo's counter,
+                        // keyed by a salted hash of the Apple user ID (access.ts).
+                        detail: String(localized: "Removes your MUSQ account and your plan's record from the server; its service logs are deleted within 30 days. Workouts on this \(DS.deviceNoun) and your purchase stay, and so do your purchase's usage counts and the free goal photo's count, kept under a scrambled form of your Apple Account so a new account can't get another free one. Neither names you.",
+                                       comment: "Profile › Account › Delete account. The scrambled form is a one-way code made from the Apple Account, not the Apple Account itself")) {
                         if isDeleting {
                             ProgressView()
                         } else {
-                            pill(String(localized: "DELETE")) { confirmsDelete = true }
+                            pill(String(localized: "DELETE", comment: "Profile › Account: small pill button that deletes the MUSQ account (a confirmation follows); upper case, keep short")) { confirmsDelete = true }
                         }
                     }
                 } else {
                     row(title: String(localized: "Sign in with Apple"),
                         detail: String(localized: "Needed only for the AI features: Ask MUSQ, meal scans and your goal photo.")) {
-                        pill(String(localized: "SIGN IN"), prominent: true) { showsSignIn = true }
+                        pill(String(localized: "SIGN IN", comment: "Profile › Account: small pill button that opens Sign in with Apple; upper case, keep short"), prominent: true) { showsSignIn = true }
                     }
                 }
             }
@@ -314,5 +322,26 @@ struct AccountSection: View {
                 .background(Capsule().fill(prominent ? DS.silver : DS.silver.opacity(0.07)))
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Reporting
+
+extension View {
+    /// What "Report this image" and "Report this answer" fall back to when
+    /// their mail link can't open (no mail app on the device): the address
+    /// to write to, and a button that copies it. App Store 1.2: AI-made
+    /// content can be reported.
+    func reportByEmailFallback(isPresented: Binding<Bool>) -> some View {
+        alert(String(localized: "Report by email", comment: "Alert title: the mail app couldn't open for a report"),
+              isPresented: isPresented) {
+            Button(String(localized: "Copy email address", comment: "Alert button: copies MUSQ's support email address")) {
+                UIPasteboard.general.string = AppLinks.supportEmail
+            }
+            Button(String(localized: "OK"), role: .cancel) {}
+        } message: {
+            Text("MUSQ couldn't open a mail app. Write to \(AppLinks.supportEmail) and tell us what's wrong.",
+                 comment: "Report fallback alert; the argument is MUSQ's support email address")
+        }
     }
 }

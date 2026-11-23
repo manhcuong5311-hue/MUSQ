@@ -16,6 +16,12 @@ import SwiftUI
 /// through. The same holds for MetaLine, WideButton, FilterChip,
 /// MonoSegmentedControl, CueSection's label and MistakeBanner below; the
 /// callouts always show their text as given.
+///
+/// The as-given init is generic over `StringProtocol`, the shape SwiftUI's
+/// `Text` uses (2026-11-23). With a plain `String` parameter, Swift 6.4
+/// picked that disfavored init for many literal calls (a lone literal, a
+/// trailing closure, a non-literal size), so the text was never extracted
+/// and showed in English in Vietnamese.
 struct SectionEyebrow: View {
     var text: String
     var size: CGFloat
@@ -25,8 +31,8 @@ struct SectionEyebrow: View {
     @Environment(\.dsLayout) private var layout
 
     @_disfavoredOverload
-    init(text: String, size: CGFloat = 11, em: CGFloat = 0.10, color: Color = DS.silver.opacity(0.45)) {
-        self.text = text
+    init<S: StringProtocol>(text: S, size: CGFloat = 11, em: CGFloat = 0.10, color: Color = DS.silver.opacity(0.45)) {
+        self.text = String(text)
         self.size = size
         self.em = em
         self.color = color
@@ -61,8 +67,8 @@ struct MetaLine: View {
     @Environment(\.dsLayout) private var layout
 
     @_disfavoredOverload
-    init(text: String, size: CGFloat = 9.5, em: CGFloat = 0.08, color: Color = DS.silver.opacity(0.4)) {
-        self.text = text
+    init<S: StringProtocol>(text: S, size: CGFloat = 9.5, em: CGFloat = 0.08, color: Color = DS.silver.opacity(0.4)) {
+        self.text = String(text)
         self.size = size
         self.em = em
         self.color = color
@@ -158,9 +164,9 @@ struct WideButton: View {
     @Environment(\.dsLayout) private var layout
 
     @_disfavoredOverload
-    init(title: String, prominent: Bool, fontSize: CGFloat = 13.5, verticalPadding: CGFloat = 13,
-         cornerRadius: CGFloat = 13, border: Color? = nil, action: @escaping () -> Void) {
-        self.title = title
+    init<S: StringProtocol>(title: S, prominent: Bool, fontSize: CGFloat = 13.5, verticalPadding: CGFloat = 13,
+                            cornerRadius: CGFloat = 13, border: Color? = nil, action: @escaping () -> Void) {
+        self.title = String(title)
         self.prominent = prominent
         self.fontSize = fontSize
         self.verticalPadding = verticalPadding
@@ -209,8 +215,8 @@ struct FilterChip: View {
     @Environment(\.dsLayout) private var layout
 
     @_disfavoredOverload
-    init(title: String, selected: Bool, action: @escaping () -> Void) {
-        self.title = title
+    init<S: StringProtocol>(title: S, selected: Bool, action: @escaping () -> Void) {
+        self.title = String(title)
         self.selected = selected
         self.action = action
     }
@@ -261,12 +267,12 @@ struct MonoSegmentedControl<Value: Hashable>: View {
 
     /// Titles shown as given: built from data or already localized.
     @_disfavoredOverload
-    init(options: [(value: Value, title: String)], selection: Binding<Value>,
-         fontSize: CGFloat = 9.5, em: CGFloat = 0.08, itemPaddingH: CGFloat = 11, itemPaddingV: CGFloat = 6,
-         itemRadius: CGFloat = 8, trackRadius: CGFloat = 10, trackPadding: CGFloat = 3,
-         trackColor: Color = DS.silver.opacity(0.06), inactiveBackground: Color = .clear,
-         fillsWidth: Bool = false) {
-        self.options = options
+    init<S: StringProtocol>(options: [(value: Value, title: S)], selection: Binding<Value>,
+                            fontSize: CGFloat = 9.5, em: CGFloat = 0.08, itemPaddingH: CGFloat = 11,
+                            itemPaddingV: CGFloat = 6, itemRadius: CGFloat = 8, trackRadius: CGFloat = 10,
+                            trackPadding: CGFloat = 3, trackColor: Color = DS.silver.opacity(0.06),
+                            inactiveBackground: Color = .clear, fillsWidth: Bool = false) {
+        self.options = options.map { (value: $0.value, title: String($0.title)) }
         self._selection = selection
         self.fontSize = fontSize
         self.em = em
@@ -656,8 +662,8 @@ struct CueSection: View {
     var labelColor: Color
 
     @_disfavoredOverload
-    init(label: String, text: String, labelColor: Color = DS.silver.opacity(0.4)) {
-        self.label = label
+    init<S: StringProtocol>(label: S, text: String, labelColor: Color = DS.silver.opacity(0.4)) {
+        self.label = String(label)
         self.text = text
         self.labelColor = labelColor
     }
@@ -689,8 +695,8 @@ struct MistakeBanner: View {
     var text: String
 
     @_disfavoredOverload
-    init(text: String) {
-        self.text = text
+    init<S: StringProtocol>(text: S) {
+        self.text = String(text)
     }
 
     init(text: String.LocalizationValue) {

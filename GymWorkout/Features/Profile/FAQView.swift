@@ -269,7 +269,7 @@ struct FAQView: View {
     private var contact: some View {
         let textSize: CGFloat = layout.value(13, 14.5)
         return VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "STILL STUCK?")
+            SectionEyebrow(text: String(localized: "STILL STUCK?"))
             VStack(alignment: .leading, spacing: 12) {
                 Text("Write to us and we'll get back to you, usually within two working days.")
                     .font(.ui(textSize))
@@ -367,7 +367,7 @@ struct FAQView: View {
                     // The AI features send what they need, with consent,
                     // so the answer changes in builds where they're live.
                     answer: AIService.isLive
-                        ? String(localized: "On your \(DS.deviceNoun). MUSQ doesn't upload your workouts or keep them on a server. The optional AI features (the goal photo, and Premium's coach and meal scans) are the exception: when you use one, what it needs goes to MUSQ's server and OpenAI, and you're asked first. Signing in with Apple is needed only for them. Deleting the app deletes your workouts, so keep it installed (or back up your \(DS.deviceNoun)) to keep your history.")
+                        ? String(localized: "On your \(DS.deviceNoun). MUSQ doesn't upload your workouts or keep them on a server. The optional AI features (the goal photo, the coach and meal scans) are the exception: when you use one, what it needs goes to MUSQ's server and OpenAI, and you're asked first. Signing in with Apple is needed only for them. Deleting the app deletes your workouts, so keep it installed (or back up your \(DS.deviceNoun)) to keep your history.")
                         : String(localized: "On your \(DS.deviceNoun) only. MUSQ has no account and doesn't upload your workouts. Deleting the app deletes them, so keep it installed (or back up your \(DS.deviceNoun)) to keep your history.")),
         ] + appleHealthItems + [
             FAQItem(question: String(localized: "Why do I see ads, and how do I change my ad choices?"),
@@ -380,14 +380,14 @@ struct FAQView: View {
                         answer: AIService.isLive ? aiTiers : freeAndPremium),
                 FAQItem(question: String(localized: "What plans are there?"),
                         answer: trial + (AIService.isLive
-                            ? String(localized: "Premium comes as a yearly subscription or a one-time lifetime purchase. Pro, with more of the AI features, comes as a monthly or yearly subscription. Prices are shown in your local currency on the Premium screen before you pay.")
-                            : String(localized: "Premium comes as a yearly subscription or a one-time lifetime purchase. Prices are shown in your local currency on the Premium screen before you pay."))),
+                            ? String(localized: "Premium comes as a yearly subscription. Pro, with more of the AI features, comes as a monthly or yearly subscription. Prices are shown in your local currency on the Premium screen before you pay.")
+                            : String(localized: "Premium comes as a yearly subscription. Prices are shown in your local currency on the Premium screen before you pay."))),
                 FAQItem(question: String(localized: "How do I cancel my subscription?"),
-                        answer: String(localized: "Open the Settings app on your \(DS.deviceNoun), tap your name, then Subscriptions, choose MUSQ and tap Cancel Subscription. Cancel at least 24 hours before the renewal date to avoid being charged; Premium stays on until the end of the period you've paid for. Cancelling during a free trial ends it without charge.")),
+                        answer: String(localized: "Open the Settings app on your \(DS.deviceNoun), tap your name, then Subscriptions, choose MUSQ and tap Cancel Subscription. Cancel at least 24 hours before the renewal date to avoid being charged; your plan stays on until the end of the period you've paid for. Cancelling during a free trial ends it without charge.")),
                 FAQItem(question: String(localized: "How do I get a refund?"),
                         answer: String(localized: "Payments are handled by Apple. Request a refund at reportaproblem.apple.com, signed in with the Apple Account you paid with.")),
-                FAQItem(question: String(localized: "I paid, but Premium isn't on. What do I do?"),
-                        answer: String(localized: "Open the Premium screen from Profile and tap Restore Purchases, signed in with the Apple Account you paid with. This also brings Premium to a new iPhone or iPad. If it still doesn't show, write to us below.")),
+                FAQItem(question: String(localized: "I paid, but my plan isn't on. What do I do?"),
+                        answer: String(localized: "Open the Premium screen from Profile and tap Restore Purchases, signed in with the Apple Account you paid with. This also brings your plan to a new iPhone or iPad. If it still doesn't show, write to us below.")),
             ]),
             FAQSection(title: String(localized: "TRAINING", comment: "Help & FAQ section"), items: [
                 FAQItem(question: String(localized: "How is recovery estimated?"),

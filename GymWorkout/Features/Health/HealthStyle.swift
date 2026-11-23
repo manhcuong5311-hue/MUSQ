@@ -131,14 +131,14 @@ enum HealthFormat {
 enum HealthCopy {
     static var connectTitle: String { String(localized: "Connect Apple Health", comment: "Button and card title") }
     static var connectDetail: String {
-        String(localized: "See your steps and sleep here, and let your steps set how active your calorie plan assumes you are. Read only; it stays on this device.",
+        String(localized: "See your steps and sleep here, and let your steps set how active your calorie plan assumes you are. Read only; it stays on this device unless you include your sleep in a question to the AI coach.",
                comment: "Why connect Apple Health")
     }
     /// HealthKit never says whether reading was turned off, so an empty
     /// card says where to look instead of "denied".
     static var noData: String {
         String(localized: "No data from Apple Health yet. If you turned access off, turn it back on in the Health app (tap your picture › Apps › MUSQ) or in Settings › Privacy & Security › Health › MUSQ.",
-               comment: "Apple Health connected but nothing to show")
+               comment: "Apple Health connected but nothing to show. The › paths are iOS menus: use iOS's own Vietnamese names")
     }
 
     /// Opens the Health app (its Sharing settings are where read access is changed).

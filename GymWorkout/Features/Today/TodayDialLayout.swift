@@ -230,7 +230,8 @@ private struct DayDial: View {
                         .font(.ui(20, .semibold))
                         .foregroundStyle(DS.silver.opacity(0.42))
                 }
-                TodayEyebrow(text: String(localized: "Goals"), size: 9.5)
+                TodayEyebrow(text: String(localized: "Goals", comment: "Inside the daily goals dial, small capitals under the count 2/3; about 8 characters"),
+                             size: 9.5)
             }
         }
         .frame(width: size, height: size)
@@ -265,7 +266,8 @@ private struct DayDial: View {
     private func verdict(closed: Int, counted: Int) -> Verdict {
         let m = metrics
         let glass = m.waterPresets.first ?? DailyStore.defaultWaterPresets[0]
-        let waterFix: (title: String, symbol: String?, action: () -> Void) = ("+\(glass) ml", "drop.fill", { actions.addWater(glass) })
+        let waterFix: (title: String, symbol: String?, action: () -> Void) =
+            (String(localized: "+\(glass) ml", comment: "Adds a glass of water: +250 ml"), "drop.fill", { actions.addWater(glass) })
         if m.state == .inProgress {
             if m.allSetsIn {
                 return Verdict(headline: String(localized: "Every exercise is done."),
@@ -360,18 +362,20 @@ private struct DialWaterTile: View {
     var actions: TodayActions
 
     var body: some View {
-        let litres = Double(metrics.waterMl) / 1_000, target = Double(metrics.waterTarget) / 1_000
+        let litres = Double(metrics.waterMl) / 1_000
         let presets = metrics.waterPresets
         let first = presets.first ?? DailyStore.defaultWaterPresets[0]
         DialTile(symbol: "drop.fill", label: String(localized: "Water", comment: "Today tile"), tone: TodayTone.water,
-                 state: metrics.waterCounts && metrics.waterReached ? String(localized: "✓ Done") : nil) {
+                 state: metrics.waterCounts && metrics.waterReached
+                     ? String(localized: "✓ Done", comment: "Water tile badge, top right: today's target is reached; short, shown in capitals")
+                     : nil) {
             // The amount, its level and caption open the water log (a custom
             // amount, the presets, today's glasses).
             Button { actions.quickLog(.water) } label: {
                 VStack(alignment: .leading, spacing: 0) {
                     // With the amount left to the doctor, the tile logs without a target.
                     BigValue(value: litres.formatted(.number.precision(.fractionLength(0...2))),
-                             unit: metrics.waterCounts ? "/ \(target.formatted(.number.precision(.fractionLength(0...2)))) L" : "L",
+                             unit: TodayWaterText.litresUnit(target: metrics.waterCounts ? metrics.waterTarget : nil),
                              size: 28)
                         .padding(.top, 12)
                     if metrics.waterCounts {
@@ -391,7 +395,9 @@ private struct DialWaterTile: View {
             .accessibilityHint(TodayWaterText.opensLog)
             Spacer(minLength: 12)
             HStack(spacing: 4) {
-                QuickChip(title: "+\(first) ml") { actions.addWater(first) }
+                QuickChip(title: String(localized: "+\(first) ml", comment: "Adds a glass of water: +250 ml")) {
+                    actions.addWater(first)
+                }
                 Menu {
                     ForEach(Array(presets.dropFirst().enumerated()), id: \.offset) { _, ml in
                         Button(String(localized: "Add \(ml) ml", comment: "Adds water: Add 250 ml"), systemImage: "plus") {
@@ -458,7 +464,9 @@ private struct DialWeightTile: View {
         let unit = store.unit
         let shown = metrics.trend ?? daily.latestWeight?.kg
         DialTile(symbol: "scalemass.fill", label: String(localized: "Weight", comment: "Today tile"), tone: TodayTone.violet,
-                 state: metrics.weighedIn ? String(localized: "✓ Today") : nil) {
+                 state: metrics.weighedIn
+                     ? String(localized: "✓ Today", comment: "Weight tile badge, top right: weighed in today; short, shown in capitals")
+                     : nil) {
             if let shown {
                 let value = (unit.fromKilograms(shown) * 10).rounded() / 10
                 BigValue(value: value.formatted(.number.precision(.fractionLength(1))), unit: unit.symbol, size: 28)
@@ -496,7 +504,8 @@ private struct DialWeightTile: View {
                     .padding(.top, 4)
             }
             Spacer(minLength: 12)
-            QuickChip(title: metrics.weighedIn ? String(localized: "Edit today's") : String(localized: "Log weight"),
+            QuickChip(title: metrics.weighedIn ? String(localized: "Edit today's", comment: "Weight tile chip: changes today's weigh-in")
+                                               : String(localized: "Log weight"),
                       action: actions.logWeight)
         }
     }
@@ -671,7 +680,9 @@ private struct GoalCard: View {
         guard let target = plan.targetWeightKg, plan.effectiveGoal.hasTarget else { return plan.effectiveGoal.title }
         let amount = Int(abs(unit.fromKilograms(target) - unit.fromKilograms(plan.weightKg)).rounded())
         guard amount > 0 else { return String(localized: "Almost there") }
-        let change = "\(amount)\u{00A0}\(unit.symbol)"
+        // "3 kg", the unit inside its localized string (a whole amount reads
+        // without decimals).
+        let change = unit.bodyWeight(unit.toKilograms(Double(amount)))
         return plan.effectiveGoal == .loseWeight ? String(localized: "Lose \(change)", comment: "Goal card: Lose 3 kg")
             : String(localized: "Gain \(change)", comment: "Goal card: Gain 3 kg")
     }

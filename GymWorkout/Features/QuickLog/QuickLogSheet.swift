@@ -270,9 +270,9 @@ private struct QuickLogContent: View {
 
     private var kindPicker: some View {
         let options: [(value: QuickLogKind, title: String)] = [
-            (.water, String(localized: "WATER", comment: "Quick log tab")),
-            (.steps, String(localized: "WALK", comment: "Quick log tab")),
-            (.food, String(localized: "FOOD", comment: "Quick log tab")),
+            (.water, String(localized: "WATER", comment: "Quick log tab: one of three segments side by side, keep it short")),
+            (.steps, String(localized: "WALK", comment: "Quick log tab: one of three segments side by side, keep it short")),
+            (.food, String(localized: "FOOD", comment: "Quick log tab: one of three segments side by side, keep it short")),
         ]
         return Section {
             MonoSegmentedControl(options: options,
@@ -418,8 +418,10 @@ private struct QuickLogContent: View {
 
     private var examplePrompt: String {
         switch kind {
-        case .water: return String(localized: "Say or type “2 glasses”", comment: "Quick log field example, water")
-        case .steps: return String(localized: "Say or type “walked 30 minutes”", comment: "Quick log field example, walk")
+        case .water: return String(localized: "Say or type “2 glasses”",
+                                   comment: "Quick log field example, water. The quoted words are an example to say or type; the app reads them in Vietnamese too")
+        case .steps: return String(localized: "Say or type “walked 30 minutes”",
+                                   comment: "Quick log field example, walk. The quoted words are an example to say or type; the app reads them in Vietnamese too")
         case .food: return String(localized: "What did you eat?", comment: "Quick log Food tab: the field for what was eaten")
         }
     }
@@ -495,7 +497,7 @@ private struct QuickLogContent: View {
             } else if settledWords == words {
                 // Only once these words are read in full, never mid-word.
                 statusLine(String(localized: "No food found in that yet. Name one, like “phở bò” or “2 eggs”, or give its calories: “phở 450 kcal”.",
-                                  comment: "Quick log Food tab: the words typed read as no food"),
+                                  comment: "Quick log Food tab: the words typed read as no food. The quoted words are examples to say or type; the app reads them in Vietnamese too"),
                            symbol: "questionmark.circle")
             }
         }
@@ -512,11 +514,11 @@ private struct QuickLogContent: View {
                            symbol: showsMic ? "mic" : "keyboard")
             } else if showsMic {
                 statusLine(String(localized: "Hold the mic and say what you ate, or type it, like “2 eggs and a bowl of rice”. MUSQ finds each food and works out its calories and macros. It's heard on your \(DS.deviceNoun), never recorded or sent.",
-                                  comment: "Quick log Food tab: under the empty field, with the in-app mic"),
+                                  comment: "Quick log Food tab: under the empty field, with the in-app mic. The quoted words are an example to say or type; the app reads them in Vietnamese too"),
                            symbol: "mic")
             } else {
                 statusLine(String(localized: "Type what you ate, or tap the mic on your keyboard to say it, like “2 eggs and a bowl of rice”. MUSQ finds each food and works out its calories and macros.",
-                                  comment: "Quick log Food tab: under the empty field, without the in-app mic"),
+                                  comment: "Quick log Food tab: under the empty field, without the in-app mic. The quoted words are an example to say or type; the app reads them in Vietnamese too"),
                            symbol: "keyboard")
             }
         }
@@ -751,12 +753,15 @@ private struct QuickLogContent: View {
     private func filledText(_ log: QuickLog) -> String {
         switch log {
         case .water(let ml):
-            return String(localized: "Read as \(DailyStore.litres(ml)) of water. Check it, then tap Add.")
+            return String(localized: "Read as \(DailyStore.litres(ml)) of water. Check it, then tap Add.",
+                          comment: "Quick log: the words said or typed filled in the water amount; “Add” is the button under it (Add 750 ml)")
         case .steps(let count, let minutes):
             if let minutes, count == minutes * QuickLogReading.stepsPerMinute {
-                return String(localized: "Read as a \(minutes)-minute walk. Check it, then tap Add walk.")
+                return String(localized: "Read as a \(minutes)-minute walk. Check it, then tap Add walk.",
+                              comment: "Quick log: the words filled in a walk in minutes; “Add walk” is the button under it")
             }
-            return String(localized: "Read as \(count.formatted()) steps. Check it, then tap Add walk.")
+            return String(localized: "Read as \(count.formatted()) steps. Check it, then tap Add walk.",
+                          comment: "Quick log: the words filled in a walk in steps; “Add walk” is the button under it")
         case .food:
             return readAsFood
         }
@@ -765,8 +770,12 @@ private struct QuickLogContent: View {
     /// Water and a walk only: the Food tab shows what its words read as.
     private var notUnderstood: String {
         switch kind {
-        case .water: return String(localized: "MUSQ couldn't find an amount in that. Try “500 ml” or “2 glasses”.")
-        case .steps, .food: return String(localized: "MUSQ couldn't find a walk in that. Try “30 minutes” or “4,000 steps”.")
+        case .water:
+            return String(localized: "MUSQ couldn't find an amount in that. Try “500 ml” or “2 glasses”.",
+                          comment: "Quick log Water tab: the words held no amount. The quoted words are examples to say or type; the app reads them in Vietnamese too")
+        case .steps, .food:
+            return String(localized: "MUSQ couldn't find a walk in that. Try “30 minutes” or “4,000 steps”.",
+                          comment: "Quick log Walk tab: the words held no walk. The quoted words are examples to say or type; the app reads them in Vietnamese too")
         }
     }
 
@@ -903,8 +912,11 @@ private struct QuickLogContent: View {
 
     /// "750" "ml", "1.25" "L".
     private static func waterParts(_ ml: Int) -> (value: String, unit: String) {
-        if ml < 1_000 { return ("\(ml)", "ml") }
-        return ((Double(ml) / 1_000).formatted(.number.precision(.fractionLength(0...2))), "L")
+        if ml < 1_000 {
+            return (ml.formatted(), String(localized: "ml", comment: "Unit: millilitres, beside a water amount (750 ml)"))
+        }
+        return ((Double(ml) / 1_000).formatted(.number.precision(.fractionLength(0...2))),
+                String(localized: "L", comment: "Unit: litres, beside a water amount (1.25 L)"))
     }
 
     private func addWater(_ ml: Int, clearsPhrase: Bool = true) {
@@ -981,8 +993,8 @@ private struct QuickLogContent: View {
     }
 
     private var walkOptions: [(value: WalkMode, title: String)] {
-        [(.minutes, String(localized: "MINUTES", comment: "Quick log walk: entered in minutes")),
-         (.steps, String(localized: "STEPS", comment: "Quick log walk: entered in steps"))]
+        [(.minutes, String(localized: "MINUTES", comment: "Quick log walk: entered in minutes; one of two segments, keep it short")),
+         (.steps, String(localized: "STEPS", comment: "Quick log walk: entered in steps; one of two segments, keep it short"))]
     }
 
     @ViewBuilder
@@ -1378,12 +1390,15 @@ private struct QuickLogContent: View {
                 .font(.ui(12))
                 .foregroundStyle(DS.silver.opacity(0.45))
                 .fixedSize(horizontal: false, vertical: true)
-            QuickNumberRow(title: String(localized: "Calories"), value: draft.kcal, unit: "kcal", maxDigits: 5, required: true,
+            QuickNumberRow(title: String(localized: "Calories"), value: draft.kcal,
+                           unit: String(localized: "kcal", comment: "Unit: kilocalories, beside a number field"),
+                           maxDigits: 5, required: true,
                            focus: $focus, field: .draftKcal(value.id),
                            accessibilityTitle: String(localized: "Calories of \(name)",
                                                       comment: "Meal editor: a food's calories, typed; the food's name"))
             QuickNumberRow(title: String(localized: "Grams", comment: "Adding a food by hand: its weight in grams, optional"),
-                           value: draft.grams, unit: "g", maxDigits: 4, maxValue: Int(MealReviewFood.gramLimits.upperBound),
+                           value: draft.grams, unit: String(localized: "g", comment: "Unit: grams, beside a number field"),
+                           maxDigits: 4, maxValue: Int(MealReviewFood.gramLimits.upperBound),
                            focus: $focus, field: .draftGrams(value.id),
                            accessibilityTitle: String(localized: "Grams of \(name)",
                                                       comment: "Meal scan: a food's exact grams, typed; the food's name"))

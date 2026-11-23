@@ -484,7 +484,7 @@ private struct OnboardingCalculating: View {
                 .controlSize(.large)
                 .tint(DS.silver)
                 .padding(.bottom, 24)
-            SectionEyebrow(text: "YOUR PLAN")
+            SectionEyebrow(text: String(localized: "YOUR PLAN"))
             Text("Building your plan")
                 .font(.ui(layout.pt(26, 32, wide: 34), .semibold))
                 .tracking(layout.value(-0.6, -0.85))

@@ -289,7 +289,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GymWorkout/GymWorkout.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 553U32259K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -297,7 +297,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = MUSQ;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "MUSQ uses the camera when you photograph a meal to log it, or take a photo of yourself for your goal photo.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "MUSQ reads your steps, walking distance, active energy, sleep and workouts from Apple Health to show your day and fit your calorie plan to how much you move. It stays on this device: never sent to MUSQ or advertisers, and to the AI coach only if you include it in a question.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "MUSQ reads your steps, walking distance, active energy, sleep and workouts from Apple Health to show your day and fit your calorie plan to how much you move. It stays on this device and is never sent to advertisers; your sleep goes to the AI coach (through MUSQ's server to OpenAI) only if you include it in a question.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds only: adds sample steps and sleep to the Simulator's Health data for testing.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MUSQ listens only while the mic is on, to log water, a walk or a meal by voice. The words are recognised on your device and the audio is never saved or sent.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "MUSQ saves your goal photo to your library when you ask it to.";
@@ -332,7 +332,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GymWorkout/GymWorkout.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 553U32259K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -340,7 +340,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = MUSQ;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "MUSQ uses the camera when you photograph a meal to log it, or take a photo of yourself for your goal photo.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "MUSQ reads your steps, walking distance, active energy, sleep and workouts from Apple Health to show your day and fit your calorie plan to how much you move. It stays on this device: never sent to MUSQ or advertisers.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "MUSQ reads your steps, walking distance, active energy, sleep and workouts from Apple Health to show your day and fit your calorie plan to how much you move. It stays on this device and is never sent to advertisers; your sleep goes to the AI coach (through MUSQ's server to OpenAI) only if you include it in a question.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "MUSQ only reads from Apple Health (steps, sleep, active energy and workouts) and never saves anything to it.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MUSQ listens only while the mic is on, to log water, a walk or a meal by voice. The words are recognised on your device and the audio is never saved or sent.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "MUSQ saves your goal photo to your library when you ask it to.";

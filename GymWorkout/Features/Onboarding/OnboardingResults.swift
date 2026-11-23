@@ -175,14 +175,18 @@ struct OnboardingResult: View {
         let metres = plan.heightCm / 100
         let m = metres.formatted(.number.precision(.fractionLength(2)))
         let w = number(plan.weightKg, 1)
+        // Formula lines with a unit in them are localized like any text;
+        // the pure arithmetic ones stay as they are.
         var lines = [
             FormulaCard.Line(label: String(localized: "BMI"),
-                             math: "\(w) kg ÷ (\(m) m)² = \(number(plan.bmi, 1))"),
+                             math: String(localized: "\(w) kg ÷ (\(m) m)² = \(number(plan.bmi, 1))",
+                                          comment: "BMI formula with the user's numbers: 70 kg ÷ (1.75 m)² = 22.9")),
         ]
         // Adult BMI bands don't apply under 18.
         if plan.bmiClass != nil {
             lines.append(FormulaCard.Line(label: String(localized: "Healthy range (BMI 18.5–24.9)"),
-                             math: "\(number(18.5, 1)) × \(m)² = \(number(plan.healthyRange.lowerBound, 1)) kg · \(number(24.9, 1)) × \(m)² = \(number(plan.healthyRange.upperBound, 1)) kg"))
+                             math: String(localized: "\(number(18.5, 1)) × \(m)² = \(number(plan.healthyRange.lowerBound, 1)) kg · \(number(24.9, 1)) × \(m)² = \(number(plan.healthyRange.upperBound, 1)) kg",
+                                          comment: "Healthy weight range formula: 18.5 × 1.75² = 56.7 kg · 24.9 × 1.75² = 76.3 kg")))
         }
         if let bodyFat = plan.bodyFat {
             let p = number(bodyFat.percent, 1)
@@ -207,7 +211,8 @@ struct OnboardingResult: View {
         }
         if let ratio = plan.waistToHeight {
             lines.append(FormulaCard.Line(label: String(localized: "Waist-to-height"),
-                                          math: "\(number(draft.waistCm, 0)) cm ÷ \(number(plan.heightCm, 0)) cm = \(number(ratio, 2))"))
+                                          math: String(localized: "\(number(draft.waistCm, 0)) cm ÷ \(number(plan.heightCm, 0)) cm = \(number(ratio, 2))",
+                                                       comment: "Waist-to-height formula: 84 cm ÷ 175 cm = 0.48")))
         }
         return lines
     }
@@ -219,7 +224,9 @@ struct OnboardingResult: View {
             eyebrow: String(localized: "YOUR PLAN · CALORIES"),
             title: String(localized: "Your daily calories")
         ) {
-            ResultStat(value: Int(plan.calories).formatted(), unit: "kcal", label: dailyChangeText)
+            ResultStat(value: Int(plan.calories).formatted(),
+                       unit: String(localized: "kcal", comment: "Unit beside the day's calorie target in large type: 2,050 kcal"),
+                       label: dailyChangeText)
                 .padding(.bottom, 6)
 
             ResultCard(symbol: "flame", title: String(localized: "From rest to your target")) {
@@ -234,7 +241,8 @@ struct OnboardingResult: View {
                         energyRow(adjustmentLabel, (plan.adjustment < 0 ? "−" : "+") + kcal(abs(plan.adjustment)))
                     }
                     Hairline(opacity: 0.08)
-                    energyRow(String(localized: "Your target"), kcal(plan.calories), bold: true)
+                    energyRow(String(localized: "Your target", comment: "Last row of the calories card: the day's calorie target"),
+                              kcal(plan.calories), bold: true)
                 }
                 .padding(.top, 8)
             }
@@ -445,7 +453,8 @@ struct OnboardingResult: View {
                 let raw = rate * plan.weightKg * NutritionPlan.kcalPerKg / 7
                 lines.append(FormulaCard.Line(
                     label: plan.effectiveGoal == .loseWeight ? String(localized: "Deficit") : String(localized: "Surplus"),
-                    math: "\(percent(rate)) × \(w) kg × \(kcal(NutritionPlan.kcalPerKg)) ÷ 7 = \(kcal(raw))"))
+                    math: String(localized: "\(percent(rate)) × \(w) kg × \(kcal(NutritionPlan.kcalPerKg)) ÷ 7 = \(kcal(raw))",
+                                 comment: "Deficit or surplus formula: 0.75% × 80 kg × 7,700 kcal ÷ 7 = 660 kcal")))
                 if let cap = capLine {
                     lines.append(cap)
                 }
@@ -463,7 +472,8 @@ struct OnboardingResult: View {
         let sign = plan.adjustment < 0 ? "−" : "+"
         let unrounded = maintenance + plan.adjustment
         lines.append(FormulaCard.Line(
-            label: String(localized: "Target, rounded to 10"),
+            label: String(localized: "Target, rounded to 10",
+                          comment: "Formula row label: the day's calorie target, rounded to the nearest 10 kcal"),
             math: abs(plan.adjustment) >= 1
                 ? "\(kcal(maintenance)) \(sign) \(kcal(abs(plan.adjustment))) = \(kcal(unrounded)) → \(kcal(plan.calories))"
                 : "\(kcal(maintenance)) → \(kcal(plan.calories))"))
@@ -481,7 +491,7 @@ struct OnboardingResult: View {
 
     /// What a cap or the floor did to the raw deficit or surplus.
     private var capLine: FormulaCard.Line? {
-        let label = String(localized: "Capped")
+        let label = String(localized: "Capped", comment: "Formula row label: the deficit or surplus a cap held back")
         for limit in plan.limits.reversed() {
             switch limit {
             case .floor(let floor):
@@ -489,10 +499,12 @@ struct OnboardingResult: View {
                                         math: "\(kcal(plan.tdee + plan.extraCalories)) − \(kcal(floor)) = \(kcal(abs(plan.adjustment)))")
             case .belowFloor(let floor):
                 return FormulaCard.Line(label: String(localized: "Already under the floor"),
-                                        math: "\(kcal(plan.tdee + plan.extraCalories)) < \(kcal(floor)) → 0 kcal")
+                                        math: String(localized: "\(kcal(plan.tdee + plan.extraCalories)) < \(kcal(floor)) → 0 kcal",
+                                                     comment: "What the user burns is under the calorie floor, so no deficit: 1,150 kcal < 1,200 kcal → 0 kcal"))
             case .breastfeedingCap:
                 return FormulaCard.Line(label: label,
-                                        math: "\(number(0.5, 1)) kg × \(kcal(NutritionPlan.kcalPerKg)) ÷ 7 = \(kcal(abs(plan.adjustment)))")
+                                        math: String(localized: "\(number(0.5, 1)) kg × \(kcal(NutritionPlan.kcalPerKg)) ÷ 7 = \(kcal(abs(plan.adjustment)))",
+                                                     comment: "The breastfeeding cap's formula: 0.5 kg × 7,700 kcal ÷ 7 = 550 kcal"))
             case .deficitCap:
                 return FormulaCard.Line(label: label, math: "25% × \(kcal(plan.tdee)) = \(kcal(abs(plan.adjustment)))")
             case .surplusCap:
@@ -559,7 +571,8 @@ struct OnboardingResult: View {
     private func proteinDetail(share: Double) -> String {
         let perKg = plan.proteinPerKg.formatted(.number.precision(.fractionLength(1)))
         let basis = unit == .kg ? kg(plan.proteinBasisKg)
-                                : "\(Int(plan.proteinBasisKg.rounded()))\u{00A0}kg (\(kg(plan.proteinBasisKg)))"
+                                : String(localized: "\(Int(plan.proteinBasisKg.rounded()))\u{00A0}kg (\(kg(plan.proteinBasisKg)))",
+                                         comment: "The weight protein is counted on, in kilograms then in pounds: 72 kg (159 lb)")
         switch plan.proteinRule {
         case .kidney:
             return String(localized: "\(perKg) g per kg, the general amount, because of kidney disease: ask your doctor or dietitian what suits your kidneys.",
@@ -581,18 +594,23 @@ struct OnboardingResult: View {
         let calories = kcal(plan.calories)
         let fatLine: String
         if plan.fat > 0.25 * plan.calories / 9 + 0.5 {
-            fatLine = "\(number(0.6, 1)) g × \(number(plan.proteinBasisKg, 1)) kg = \(Int(plan.fat)) g"
+            fatLine = String(localized: "\(number(0.6, 1)) g × \(number(plan.proteinBasisKg, 1)) kg = \(Int(plan.fat)) g",
+                             comment: "Fat at its floor of 0.6 g per kg: 0.6 g × 72 kg = 43 g")
         } else {
-            fatLine = "25% × \(calories) ÷ 9 = \(Int(plan.fat)) g"
+            fatLine = String(localized: "25% × \(calories) ÷ 9 = \(Int(plan.fat)) g",
+                             comment: "Fat as a quarter of the calories: 25% × 2,050 kcal ÷ 9 = 57 g")
         }
         return [
             FormulaCard.Line(label: String(localized: "Protein"),
-                             math: "\(plan.proteinPerKg.formatted(.number.precision(.fractionLength(1)))) g × \(number(plan.proteinBasisKg, 1)) kg = \(Int(plan.protein)) g · × 4 = \(kcal(proteinKcal))"),
+                             math: String(localized: "\(plan.proteinPerKg.formatted(.number.precision(.fractionLength(1)))) g × \(number(plan.proteinBasisKg, 1)) kg = \(Int(plan.protein)) g · × 4 = \(kcal(proteinKcal))",
+                                          comment: "Protein formula: 2.0 g × 80 kg = 160 g · × 4 = 640 kcal")),
             FormulaCard.Line(label: String(localized: "Fat"), math: fatLine + " · × 9 = \(kcal(fatKcal))"),
             FormulaCard.Line(label: String(localized: "Carbs"),
-                             math: "(\(calories) − \(kcal(proteinKcal)) − \(kcal(fatKcal))) ÷ 4 = \(Int(plan.carbs)) g"),
+                             math: String(localized: "(\(calories) − \(kcal(proteinKcal)) − \(kcal(fatKcal))) ÷ 4 = \(Int(plan.carbs)) g",
+                                          comment: "Carbs formula: (2,050 kcal − 640 kcal − 513 kcal) ÷ 4 = 224 g")),
             FormulaCard.Line(label: String(localized: "Fibre"),
-                             math: "14 g × \(Int(plan.calories).formatted()) ÷ \(1_000.formatted()) = \(Int(plan.fiber)) g"),
+                             math: String(localized: "14 g × \(Int(plan.calories).formatted()) ÷ \(1_000.formatted()) = \(Int(plan.fiber)) g",
+                                          comment: "Fibre formula, 14 g per 1,000 kcal: 14 g × 2,050 ÷ 1,000 = 29 g")),
         ]
     }
 
@@ -723,7 +741,8 @@ struct OnboardingResult: View {
                             Image(systemName: "arrow.right")
                                 .font(.system(size: 10, weight: .semibold))
                                 .foregroundStyle(DS.silver.opacity(0.4))
-                            Text(swap.added ?? String(localized: "left out"))
+                            Text(swap.added ?? String(localized: "left out",
+                                                      comment: "After an exercise's arrow in the swaps list: dropped, with nothing in its place"))
                                 .foregroundStyle(DS.silver)
                         }
                         .font(.ui(layout.value(13, 14), .semibold))
@@ -866,8 +885,10 @@ struct OnboardingResult: View {
         return "\(low)–\(high)\u{00A0}\(unit.symbol)"
     }
 
+    /// "2,050 kcal", the space unbreakable.
     private func kcal(_ value: Double) -> String {
-        "\(Int(value.rounded()).formatted())\u{00A0}kcal"
+        String(localized: "\(Int(value.rounded()).formatted())\u{00A0}kcal",
+               comment: "Calories in the plan's rows and formulas: 2,050 kcal")
     }
 
     private func number(_ value: Double, _ digits: Int) -> String {

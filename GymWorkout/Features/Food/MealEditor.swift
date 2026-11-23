@@ -129,10 +129,12 @@ struct MealTotalsRow: View {
     var body: some View {
         let total = MealReviewFood.totals(foods)
         HStack(alignment: .firstTextBaseline) {
-            BigValue(value: total.kcal.formatted(), unit: "kcal", size: 28)
+            BigValue(value: total.kcal.formatted(),
+                     unit: String(localized: "kcal", comment: "Unit: kilocalories, beside a meal's energy"), size: 28)
             Spacer()
             if MealReviewFood.showsMacros(foods) {
-                Text("P \(total.proteinG) g · F \(total.fatG) g · C \(total.carbsG) g", comment: "A meal's macros: P 38 g · F 15 g · C 57 g")
+                Text("P \(total.proteinG) g · F \(total.fatG) g · C \(total.carbsG) g",
+                     comment: "A meal's macros, one letter each: P protein, F fat, C carbs (P 38 g · F 15 g · C 57 g)")
                     .font(.ui(13.5, .semibold))
                     .monospacedDigit()
                     .foregroundStyle(DS.silver.opacity(0.7))
@@ -189,7 +191,8 @@ private struct MealItemRow: View {
                         .frame(width: 32, height: 44)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(String(localized: "Remove \(food.name)"))
+                .accessibilityLabel(String(localized: "Remove \(food.name)",
+                                           comment: "VoiceOver: the button that takes a food out of the meal; the food's name"))
                 .accessibilitySortPriority(1)
             }
             if food.control == .amount { gramControl(logged, caption: caption) }
@@ -367,7 +370,8 @@ private struct MealItemRow: View {
                 startTyping(.grams)
             } label: {
                 HStack(spacing: 4) {
-                    Text(verbatim: "\(logged.grams.formatted()) g")
+                    Text("\(logged.grams.formatted()) g",
+                         comment: "A food's grams on the small button beside its slider, a tap types them: 674 g")
                         .font(.ui(13.5, .semibold))
                         .monospacedDigit()
                         .foregroundStyle(DS.silver)
@@ -1246,10 +1250,14 @@ private struct MealManualFoodForm: View {
     }
 
     var body: some View {
+        // The units beside the numbers.
+        let kcalUnit = String(localized: "kcal", comment: "Unit: kilocalories, beside a number field")
+        let gramUnit = String(localized: "g", comment: "Unit: grams, beside a number field")
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 VStack(alignment: .leading, spacing: 12) {
-                    TextField(String(localized: "What you ate"), text: $name)
+                    TextField(String(localized: "What you ate", comment: "Adding a food by hand: placeholder of the food's name"),
+                              text: $name)
                         .font(.ui(20, .bold))
                         .foregroundStyle(DS.silver)
                         .textInputAutocapitalization(.sentences)
@@ -1258,15 +1266,15 @@ private struct MealManualFoodForm: View {
                         .onSubmit { focus = .kcal }
                         .frame(minHeight: 44)
                     Hairline(opacity: 0.07)
-                    numberRow(String(localized: "Calories"), value: $kcal, unit: "kcal", maxDigits: 5, field: .kcal,
-                              required: true)
+                    numberRow(String(localized: "Calories", comment: "Adding a food by hand: its calories, the one number it needs"),
+                              value: $kcal, unit: kcalUnit, maxDigits: 5, field: .kcal, required: true)
                     numberRow(String(localized: "Grams", comment: "Adding a food by hand: its weight in grams, optional"),
-                              value: $grams, unit: "g", maxDigits: 4, maxValue: Int(MealReviewFood.gramLimits.upperBound),
+                              value: $grams, unit: gramUnit, maxDigits: 4, maxValue: Int(MealReviewFood.gramLimits.upperBound),
                               field: .grams)
-                    numberRow(String(localized: "Protein", comment: "Macro"), value: $protein, unit: "g", maxDigits: 4,
+                    numberRow(String(localized: "Protein", comment: "Macro"), value: $protein, unit: gramUnit, maxDigits: 4,
                               field: .protein)
-                    numberRow(String(localized: "Fat", comment: "Macro"), value: $fat, unit: "g", maxDigits: 4, field: .fat)
-                    numberRow(String(localized: "Carbs", comment: "Macro"), value: $carbs, unit: "g", maxDigits: 4,
+                    numberRow(String(localized: "Fat", comment: "Macro"), value: $fat, unit: gramUnit, maxDigits: 4, field: .fat)
+                    numberRow(String(localized: "Carbs", comment: "Macro"), value: $carbs, unit: gramUnit, maxDigits: 4,
                               field: .carbs)
                 }
                 .padding(14)
@@ -1332,7 +1340,7 @@ private struct MealManualFoodForm: View {
                     .font(.ui(15, .semibold))
                     .foregroundStyle(DS.silver)
                 if !required {
-                    Text("Optional")
+                    Text("Optional", comment: "Adding a food by hand: small, under a number's name; it can be left empty")
                         .font(.ui(11.5))
                         .foregroundStyle(DS.silver.opacity(0.5))
                 }
@@ -1341,7 +1349,10 @@ private struct MealManualFoodForm: View {
             Spacer(minLength: 8)
             MealNumberField(placeholder: required ? "0" : "–", value: value, unit: unit, maxDigits: maxDigits,
                             maxValue: maxValue, focus: $focus, field: field,
-                            accessibilityTitle: required ? title : String(localized: "\(title), optional"))
+                            accessibilityTitle: required
+                                ? title
+                                : String(localized: "\(title), optional",
+                                         comment: "VoiceOver: a number field that can be left empty; its title (Grams, optional)"))
         }
     }
 }
@@ -1376,7 +1387,10 @@ private struct MealNumberField<Field: Hashable>: View {
                 .focused(focus, equals: field)
                 .frame(width: 68)
                 .accessibilityLabel(accessibilityTitle)
-                .accessibilityValue(value.map { "\($0) \(unit)" } ?? "")
+                .accessibilityValue(value.map {
+                    String(localized: "\($0) \(unit)",
+                           comment: "VoiceOver value of a number field: the number typed and its unit (450 kcal, 250 g)")
+                } ?? "")
             Text(unit)
                 .font(.ui(13, .semibold))
                 .foregroundStyle(DS.silver.opacity(0.55))
@@ -1430,7 +1444,7 @@ struct MealEditSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    TextField(String(localized: "Meal name"), text: $title)
+                    TextField(String(localized: "Meal name", comment: "A meal's name: the placeholder of its name field"), text: $title)
                         .font(.ui(22, .bold))
                         .foregroundStyle(DS.silver)
                         .submitLabel(.done)

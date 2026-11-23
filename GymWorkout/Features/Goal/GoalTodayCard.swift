@@ -710,13 +710,27 @@ enum GoalWords {
     /// The course as a short tag: "On course" (shown in capitals).
     static func tag(_ course: GoalProgress.Course) -> String {
         switch course {
-        case .starting: return String(localized: "First week", comment: "Goal course tag: the goal's first week")
-        case .onTrack: return String(localized: "On course", comment: "Goal course tag")
-        case .behind: return String(localized: "Behind", comment: "Goal course tag")
-        case .offTrack: return String(localized: "Off course", comment: "Goal course tag")
-        case .noSchedule: return String(localized: "No training days", comment: "Goal course tag")
-        case .reached: return String(localized: "Reached", comment: "Goal course tag")
-        case .paused: return String(localized: "Paused", comment: "Goal course tag: the plan is on hold")
+        case .starting:
+            return String(localized: "First week",
+                          comment: "Goal course tag: the goal's first week. A small tag in capitals beside a section title: keep it short")
+        case .onTrack:
+            return String(localized: "On course",
+                          comment: "Goal course tag. A small tag in capitals beside a section title: keep it short")
+        case .behind:
+            return String(localized: "Behind",
+                          comment: "Goal course tag: fewer sessions than planned. A small tag in capitals beside a section title: keep it short")
+        case .offTrack:
+            return String(localized: "Off course",
+                          comment: "Goal course tag: so few sessions the goal is hard to reach. A small tag in capitals beside a section title: keep it short")
+        case .noSchedule:
+            return String(localized: "No training days",
+                          comment: "Goal course tag. A small tag in capitals beside a section title: keep it short")
+        case .reached:
+            return String(localized: "Reached",
+                          comment: "Goal course tag: the goal is reached. A small tag in capitals beside a section title: keep it short")
+        case .paused:
+            return String(localized: "Paused",
+                          comment: "Goal course tag: the plan is on hold. A small tag in capitals beside a section title: keep it short")
         }
     }
 

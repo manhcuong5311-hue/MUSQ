@@ -159,7 +159,10 @@ struct QuickNumberField: View {
                 .focused(focus, equals: field)
                 .frame(width: fieldWidth)
                 .accessibilityLabel(accessibilityTitle)
-                .accessibilityValue(value.map { "\($0) \(unit)" } ?? "")
+                .accessibilityValue(value.map {
+                    String(localized: "\($0) \(unit)",
+                           comment: "VoiceOver value of a quick log number field: the number typed and its unit (30 min, 3,000 steps, 450 kcal)")
+                } ?? "")
             Text(unit)
                 .font(.ui(13, .semibold))
                 .foregroundStyle(DS.silver.opacity(0.55))
@@ -207,7 +210,8 @@ struct QuickNumberRow: View {
             Spacer(minLength: 8)
             QuickNumberField(placeholder: required ? "0" : "–", value: $value, unit: unit, maxDigits: maxDigits,
                              maxValue: maxValue, fieldWidth: 68, focus: focus, field: field,
-                             accessibilityTitle: required ? spoken : String(localized: "\(spoken), optional"))
+                             accessibilityTitle: required ? spoken : String(localized: "\(spoken), optional",
+                                                                            comment: "VoiceOver: a number field that can be left empty; its title (Grams of Phở, optional)"))
         }
     }
 }
@@ -267,17 +271,20 @@ extension MealEntry {
         let time = date.formatted(date: .omitted, time: .shortened)
         guard carriesMacros else { return time }
         return time + " · " + String(localized: "P \(proteinG) g · F \(fatG) g · C \(carbsG) g",
-                                     comment: "A meal's macros: P 38 g · F 15 g · C 57 g")
+                                     comment: "A meal's macros, one letter each: P protein, F fat, C carbs (P 38 g · F 15 g · C 57 g)")
     }
 }
 
 /// "TYPED" beside a meal the user typed in; a scanned meal has no badge.
+/// Shown only where meals can be scanned (`AIService.isLive`): without the
+/// scan every meal is `.manual`, spoken ones too, so the badge would tell
+/// nothing apart.
 struct MealSourceBadge: View {
     var source: MealEntry.Source
 
     var body: some View {
-        if source == .manual {
-            Text(String(localized: "TYPED", comment: "Badge on a meal the user typed in rather than scanned"))
+        if source == .manual, AIService.isLive {
+            Text(String(localized: "TYPED", comment: "Badge on a meal the user typed in rather than scanned; a small capsule beside its name, keep it short"))
                 .font(.mono(9, .semibold))
                 .trackingEm(0.08, size: 9)
                 .foregroundStyle(DS.silver.opacity(0.65))
@@ -311,7 +318,8 @@ struct QuickLogMealRow: View {
                     .foregroundStyle(DS.silver.opacity(0.6))
             }
             Spacer(minLength: 8)
-            BigValue(value: meal.kcal.formatted(), unit: "kcal", size: 18)
+            BigValue(value: meal.kcal.formatted(), unit: String(localized: "kcal", comment: "Unit: kilocalories, beside a meal's energy"),
+                     size: 18)
         }
         .padding(.vertical, 4)
         .accessibilityElement(children: .combine)

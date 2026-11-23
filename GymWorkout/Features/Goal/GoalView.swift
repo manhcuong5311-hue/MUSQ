@@ -40,6 +40,8 @@ struct GoalView: View {
     @State private var isSaving = false
     @State private var savedToPhotos = false
     @State private var photoAlert: GoalPhotoSaveResult?
+    /// "Report this image" couldn't open a mail app: show the address instead.
+    @State private var showsReportAddress = false
 
     private var progress: GoalProgress? {
         GoalStore.shared.progress(profile: store.profile, experience: store.experience, trainedDays: store.trainedDays)
@@ -73,7 +75,7 @@ struct GoalView: View {
                         } else {
                             GoalSectionCard {
                                 Text(String(localized: "Finish your plan, and MUSQ shows how far along you are and how long is left.",
-                                            comment: "Goal page without a plan"))
+                                            comment: "Goal page without a plan: the calorie and training plan from the first questions, not a subscription"))
                                     .goalFont(14)
                                     .foregroundStyle(DS.silver.opacity(0.7))
                                     .fixedSize(horizontal: false, vertical: true)
@@ -149,11 +151,15 @@ struct GoalView: View {
             }
             HStack(spacing: 22) {
                 Button {
-                    if let url = Self.reportURL { openURL(url) }
+                    guard let url = Self.reportURL else { showsReportAddress = true; return }
+                    openURL(url) { accepted in
+                        if !accepted { showsReportAddress = true }
+                    }
                 } label: {
                     quietLink(String(localized: "Report this image"), symbol: "flag")
                 }
                 .buttonStyle(.plain)
+                .reportByEmailFallback(isPresented: $showsReportAddress)
                 Button { confirmsDelete = true } label: {
                     quietLink(String(localized: "Delete goal", comment: "Goal page: removes the goal and its photos"),
                               symbol: "trash")
@@ -327,7 +333,9 @@ private struct GoalHero: View {
 }
 
 private enum GoalHeroText {
-    static var goal: String { String(localized: "Goal", comment: "Goal page: label on the goal photo") }
+    static var goal: String {
+        String(localized: "Goal", comment: "Goal page: label on the goal photo, a short badge shown in capitals")
+    }
     static var goalSpoken: String { String(localized: "Your goal photo") }
 }
 
@@ -342,14 +350,15 @@ private struct GoalStartLabel {
         let age = calendar.dateComponents([.day], from: calendar.startOfDay(for: since),
                                           to: calendar.startOfDay(for: now)).day ?? 0
         if age < 7 {
-            text = String(localized: "Now", comment: "Goal page: label on the photo the goal was made from, in its first week")
+            text = String(localized: "Now",
+                          comment: "Goal page: label on the photo the goal was made from, in its first week; a short badge shown in capitals")
             spoken = String(localized: "Your photo now")
         } else {
             let sameYear = calendar.isDate(since, equalTo: now, toGranularity: .year)
             let day = since.formatted(sameYear ? .dateTime.day().month(.abbreviated)
                                                : .dateTime.day().month(.abbreviated).year())
             text = String(localized: "Start · \(day)",
-                          comment: "Goal page: label on the photo the goal was made from, with its date, e.g. Start · 23 Nov")
+                          comment: "Goal page: label on the photo the goal was made from, with its date, e.g. Start · 23 Nov; a short badge shown in capitals")
             spoken = String(localized: "Your photo at the start, \(since.formatted(.dateTime.day().month(.wide).year()))",
                             comment: "VoiceOver: the photo the goal was made from, with its date")
         }
@@ -686,9 +695,11 @@ private struct GoalProgressSection: View {
         String(localized: "goal", comment: "Goal page: before the goal value, goal 13%")
     }
 
-    /// "Start 20.5%".
+    /// "Start 20.5%". A key of its own: "Start %@" is also Today's session
+    /// button (Start Push day), a verb.
     private func startText(_ start: String) -> Text {
-        Text(String(localized: "Start \(start)", comment: "Goal page, under a progress bar: the value when the goal was set, e.g. Start 20.5%"))
+        Text(String(localized: "goal.progress.start", defaultValue: "Start \(start)",
+                    comment: "Goal page, under a progress bar: the value when the goal was set, e.g. Start 20.5% (not the Start button)"))
     }
 
     /// "33% there": this part's share of the way, so it never reads as a value.
@@ -887,9 +898,7 @@ private struct GoalConsistencySection: View {
                             BigValue(value: "–", size: 30 * scale, color: DS.silver.opacity(0.35))
                         }
                     } else {
-                        figure(caption: windowCaption,
-                               spoken: String(localized: "\(GoalWords.percent(progress.consistency)) \(windowCaption)",
-                                              comment: "VoiceOver: consistency, e.g. 75% of planned sessions, last 4 weeks")) {
+                        figure(caption: windowCaption, spoken: windowSpoken(GoalWords.percent(progress.consistency))) {
                             GoalPercentFigure(percent: GoalWords.wholePercent(progress.consistency), size: 30 * scale)
                         }
                     }
@@ -920,11 +929,15 @@ private struct GoalConsistencySection: View {
     /// The same window GoalProgress counts over: the last 7 days in the
     /// goal's first week, the days since the goal until it's 4 weeks old,
     /// then the last 4 weeks.
-    private var windowCaption: String {
+    private var windowDays: Int {
         let calendar = Calendar.current
         let age = calendar.dateComponents([.day], from: calendar.startOfDay(for: since),
                                           to: calendar.startOfDay(for: Date())).day ?? 0
-        let days = min(28, max(7, age + 1))
+        return min(28, max(7, age + 1))
+    }
+
+    private var windowCaption: String {
+        let days = windowDays
         if days >= 28 {
             return String(localized: "of planned sessions, last 4 weeks", comment: "Goal page: under the consistency %")
         }
@@ -932,6 +945,22 @@ private struct GoalConsistencySection: View {
             return String(localized: "of planned sessions, last 7 days", comment: "Goal page: under the consistency %")
         }
         return String(localized: "of planned sessions since you set your goal", comment: "Goal page: under the consistency %")
+    }
+
+    /// The share and its window as VoiceOver reads them: one sentence each,
+    /// so the words can go in any order.
+    private func windowSpoken(_ share: String) -> String {
+        let days = windowDays
+        if days >= 28 {
+            return String(localized: "\(share) of planned sessions, last 4 weeks",
+                          comment: "VoiceOver: consistency, the share of planned sessions done, e.g. 75% of planned sessions, last 4 weeks")
+        }
+        if days <= 7 {
+            return String(localized: "\(share) of planned sessions, last 7 days",
+                          comment: "VoiceOver: consistency, the share of planned sessions done, e.g. 75% of planned sessions, last 7 days")
+        }
+        return String(localized: "\(share) of planned sessions since you set your goal",
+                      comment: "VoiceOver: consistency, the share of planned sessions done since the goal was set, e.g. 75% of planned sessions since you set your goal")
     }
 
     private func figure<Number: View>(caption: String, spoken: String, @ViewBuilder number: () -> Number) -> some View {
@@ -1043,7 +1072,7 @@ private struct GoalPausedSection: View {
                     .foregroundStyle(DS.silver.opacity(0.7))
                     .accessibilityHidden(true)
                 Text(String(localized: "Your goal is paused: your plan is set to stay fit for now, so MUSQ doesn't count down to a leaner or bigger body. It picks up again when your plan does.",
-                            comment: "Goal page while the plan is on hold"))
+                            comment: "Goal page while the plan is on hold: the calorie and training plan, not a subscription"))
                     .goalFont(14)
                     .foregroundStyle(DS.silver.opacity(0.75))
                     .fixedSize(horizontal: false, vertical: true)

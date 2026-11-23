@@ -7,7 +7,9 @@
 //  stages), plus a strength workout over this morning's MUSQ session, so the
 //  phase 2 screens can be checked and shot. Release builds don't contain it
 //  and never ask to write to Health. Runs once per install
-//  (`health.seeded`); `-health.reseed` adds another copy anyway.
+//  (`health.seeded`); `-health.reseed` adds another copy anyway, and
+//  `-health.seedDays N` (2026-11-23) seeds only the last N days (today
+//  first), to top up a seeded Simulator without doubling older days.
 //
 
 #if DEBUG
@@ -35,7 +37,11 @@ enum HealthSeed {
         var generator = HealthSeedGenerator(seed: 7)
         var samples: [HKSample] = []
 
-        for offset in (0...29).reversed() {
+        let arguments = ProcessInfo.processInfo.arguments
+        let days = arguments.firstIndex(of: "-health.seedDays").flatMap { index in
+            index + 1 < arguments.count ? Int(arguments[index + 1]) : nil
+        }.map { min(30, max(1, $0)) } ?? 30
+        for offset in (0..<days).reversed() {
             guard let day = calendar.date(byAdding: .day, value: -offset, to: today) else { continue }
             // A desk worker who walks more on some days: 5-12k steps, in
             // hourly chunks from 7 am to 9 pm, up to now today.

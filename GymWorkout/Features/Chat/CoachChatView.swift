@@ -75,9 +75,12 @@ struct CoachChatView: View {
     @Environment(WorkoutStore.self) private var store
     @Environment(Purchases.self) private var purchases
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @AppStorage(CoachChat.consentKey) private var consented = false
     @AppStorage(CoachChat.includeHealthKey) private var includeHealth = false
 
+    /// "Report this answer" couldn't open a mail app: show the address instead.
+    @State private var showsReportAddress = false
     /// One store for the app: a reply that lands after the sheet closes is
     /// still there when it opens again.
     @State private var chat = CoachChatStore.shared
@@ -214,6 +217,7 @@ struct CoachChatView: View {
                     }
                 }
             }
+            .reportByEmailFallback(isPresented: $showsReportAddress)
         }
         .tint(DS.silver)
     }
@@ -259,7 +263,7 @@ struct CoachChatView: View {
 
     private var suggestions: [String] {
         [String(localized: "How many sets a week should I do for chest?"),
-         String(localized: "My knees hurt on squats. What can I swap?"),
+         String(localized: "How should I warm up before squats?", comment: "A suggestion for the coach chat"),
          String(localized: "What should I eat before training?"),
          String(localized: "Am I recovering enough between sessions?")]
     }
@@ -290,9 +294,31 @@ struct CoachChatView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(DS.surface))
                 .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(DS.silver.opacity(0.07), lineWidth: 1))
-                .textSelection(.enabled)
+                // A long press opens Copy and Report this answer (App Store
+                // 1.2: AI-made content can be reported), in place of text
+                // selection, whose own long press would take the same touch.
+                .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .contextMenu {
+                    Button(String(localized: "Copy", comment: "Menu on a coach answer: copies its text"), systemImage: "doc.on.doc") {
+                        UIPasteboard.general.string = String(text.characters)
+                    }
+                    Button(String(localized: "Report this answer"), systemImage: "flag") { report(message) }
+                }
                 .padding(.trailing, 24)
                 .accessibilityLabel(String(localized: "MUSQ: \(String(text.characters))", comment: "VoiceOver: the coach's answer"))
+                .accessibilityAction(named: String(localized: "Report this answer")) { report(message) }
+        }
+    }
+
+    /// Reports an answer by email to MUSQ, with its text below room for the
+    /// member's own words; without a mail app, an alert gives the address.
+    private func report(_ message: CoachChatMessage) {
+        guard let url = AppLinks.mail(subject: "MUSQ coach answer report", body: "\n\n" + message.content) else {
+            showsReportAddress = true
+            return
+        }
+        openURL(url) { accepted in
+            if !accepted { showsReportAddress = true }
         }
     }
 
@@ -553,7 +579,8 @@ struct CoachChatView: View {
 
 /// Asks once, naming OpenAI and listing what goes, before the first
 /// question; from the chat's menu it shows the same and lets the user
-/// change it. The flag is shared with the food scan and the goal photo.
+/// change it. The meal scan and the goal photo ask for their own consent
+/// (`AIService.Consent`).
 struct CoachConsentSheet: View {
     enum Mode: String, Identifiable {
         /// Before the first question.
@@ -599,8 +626,14 @@ struct CoachConsentSheet: View {
                         item(DS.isPad
                              ? String(localized: "Your plan's calories and macros, worked out from your answers. Apple Health steps stay on this iPad, so the target on Today can differ.")
                              : String(localized: "Your plan's calories and macros, worked out from your answers. Apple Health steps stay on this iPhone, so the target on Today can differ."))
-                        item(String(localized: "Your workouts from the last two weeks: exercises, sets, reps and weights"))
-                        item(String(localized: "An anonymous ID, so OpenAI can spot abuse: not your name or email"))
+                        // Every field of `CoachChatContext.Workout`, timed sets' seconds included.
+                        item(String(localized: "Your workouts from the last two weeks: dates, muscle groups, exercises, sets, reps, weights and hold times"))
+                        // `CoachChatStore.ask` sends the conversation, not just the new question.
+                        item(String(localized: "Earlier messages in this chat and the coach's replies, up to the last \(CoachChat.historyLimit) messages",
+                                    comment: "Ask MUSQ consent: what's sent with each question; the number is how many messages at most"))
+                        // OpenAI's safety_identifier: a hash of the account's uid
+                        // (functions/src/openai.ts), which MUSQ could work out again.
+                        item(String(localized: "A coded ID made from your account, so OpenAI can spot abuse: not your name or email"))
                     }
                     .padding(.top, 2)
                     Toggle(isOn: mode == .ask ? $healthChoice : $includeHealth) {

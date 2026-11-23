@@ -138,7 +138,7 @@ struct BalanceAction: Hashable {
         switch kind {
         case .startWorkout: return String(localized: "Start", comment: "Balance action button")
         case .checkIn: return String(localized: "Check in", comment: "Balance action button")
-        case .addWater(let ml): return "+\(ml) ml"
+        case .addWater(let ml): return String(localized: "+\(ml) ml", comment: "Balance action button: adds water, e.g. +250 ml")
         case .bedtime: return String(localized: "Set reminder", comment: "Balance action button")
         case .sleepEstimate: return String(localized: "Log sleep", comment: "Balance action button")
         case .connectHealth: return String(localized: "Connect", comment: "Balance action button")
@@ -180,10 +180,15 @@ struct Balance: Hashable {
 
     static func word(for score: Int) -> String {
         switch score {
-        case 80...: return String(localized: "Strong", comment: "Balance word")
-        case 65..<80: return String(localized: "On track", comment: "Balance word")
-        case 45..<65: return String(localized: "Building", comment: "Balance word")
-        default: return String(localized: "Getting going", comment: "Balance word")
+        // Its own key: "Strong" alone is a goal-photo muscle level.
+        case 80...: return String(localized: "balance.word.strong", defaultValue: "Strong",
+                                  comment: "Balance word for a score of 80 and up; also inside a small ring, keep it short")
+        case 65..<80: return String(localized: "On track",
+                                    comment: "Balance word for a score of 65 to 79; also inside a small ring, keep it short")
+        case 45..<65: return String(localized: "Building",
+                                    comment: "Balance word for a score of 45 to 64; also inside a small ring, keep it short")
+        default: return String(localized: "Getting going",
+                               comment: "Balance word for a score under 45; also inside a small ring, keep it short")
         }
     }
 

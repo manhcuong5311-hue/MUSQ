@@ -342,7 +342,7 @@ struct MuscleProgressView: View {
                                               candidates: PresetProvider.trainableGroups)
         if !items.isEmpty {
             VStack(alignment: .leading, spacing: 10) {
-                SectionEyebrow(text: "NEEDS ATTENTION")
+                SectionEyebrow(text: String(localized: "NEEDS ATTENTION"))
                 ForEach(items) { item in
                     attentionCard(item)
                 }
@@ -395,7 +395,7 @@ struct MuscleProgressView: View {
         let trainable = Set(PresetProvider.trainableGroups)
         return VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "MUSCLE ACTIVITY")
+                SectionEyebrow(text: String(localized: "MUSCLE ACTIVITY"))
                 Spacer()
                 MetaLine(text: "EFFECTIVE SETS", em: 0.08)
             }
@@ -456,7 +456,7 @@ extension MuscleProgressView {
         let shown = showsAllRecords ? all : Array(all.prefix(recordPreview))
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "PERSONAL RECORDS")
+                SectionEyebrow(text: String(localized: "PERSONAL RECORDS"))
                 Spacer()
                 if !all.isEmpty {
                     MetaLine(text: all.count == 1 ? "1 EXERCISE" : "\(all.count) EXERCISES", em: 0.08)
@@ -509,7 +509,7 @@ extension MuscleProgressView {
     private var history: some View {
         let sessions = loggedSessions
         VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: "HISTORY")
+            SectionEyebrow(text: String(localized: "HISTORY"))
             if sessions.isEmpty {
                 logNote("Every workout with a set marked done is listed here, newest first.")
             } else {
@@ -961,7 +961,7 @@ extension MuscleProgressView {
             let columns = width >= 560 && items.count > 1 ? 2 : 1
             let cardWidth = (width - CGFloat(columns - 1) * 12) / CGFloat(columns)
             VStack(alignment: .leading, spacing: 12) {
-                SectionEyebrow(text: "NEEDS ATTENTION")
+                SectionEyebrow(text: String(localized: "NEEDS ATTENTION"))
                 ProgressCardGrid(items: items, columns: columns, width: width) { item in
                     regularAttentionCard(item, stacksActions: cardWidth - 32 < 292)
                 }
@@ -1042,7 +1042,7 @@ extension MuscleProgressView {
         let lower = activity.filter { $0.muscle.area != .upper }.sorted(by: bySets)
         return VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "MUSCLE ACTIVITY")
+                SectionEyebrow(text: String(localized: "MUSCLE ACTIVITY"))
                 Spacer()
                 MetaLine(text: "EFFECTIVE SETS", em: 0.08)
             }

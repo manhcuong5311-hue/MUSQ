@@ -10,8 +10,8 @@
 //  checking the member's tier and its daily limit) and its Swift client
 //  `AIService` belong to the Firebase work. The chat talks to
 //  `CoachChatClient`; `AIServiceCoachClient` connects it, mapping the
-//  agreed contract 1:1. Release builds hide the chat until
-//  `AIService.isLive` (the privacy go-live).
+//  agreed contract 1:1. The chat shows in every build since 1.4, the
+//  privacy go-live (`AIService.isLive`).
 //
 
 import Foundation
@@ -133,12 +133,13 @@ struct AIServiceCoachClient: CoachChatClient {
 enum CoachChat {
     static let client: any CoachChatClient = AIServiceCoachClient()
 
-    /// The Today bar shows while the AI features are live: Debug builds, and
-    /// Release only from the privacy go-live (see `AIService.isLive`), which
-    /// also changes the app's "nothing leaves your phone" wording.
+    /// The Today bar shows while the AI features are live: every build since
+    /// 1.4, the privacy go-live (see `AIService.isLive`), which also changed
+    /// the app's "nothing leaves your phone" wording.
     static var isAvailable: Bool { AIService.isLive }
 
-    /// Shared with the food scan and the goal photo, so the user is asked once.
+    /// The chat's own consent (`AIService.Consent.chat`); the meal scan and
+    /// the goal photo each ask for theirs.
     static let consentKey = "ai.consent.v1"
     /// Whether the health answers (joints, conditions) go with the context.
     static let includeHealthKey = "ai.chat.includeHealth"

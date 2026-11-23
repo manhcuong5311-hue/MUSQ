@@ -207,7 +207,7 @@ struct WeekRecapCard: View {
         let behind = now.workouts > 0 ? attention : []
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "THIS WEEK")
+                SectionEyebrow(text: String(localized: "THIS WEEK"))
                 Spacer(minLength: 8)
                 MetaLine(text: "VS LAST WEEK, SAME DAYS", em: 0.08)
                     .lineLimit(1)
@@ -244,15 +244,18 @@ struct WeekRecapCard: View {
                         let shown = records.prefix(3).formatted(.list(type: .and, width: .narrow))
                         line(icon: "trophy.fill", color: DS.activation,
                              title: records.count == 1
-                                ? String(localized: "1 new record")
-                                : String(localized: "\(records.count) new records"),
+                                ? String(localized: "1 new record",
+                                         comment: "Week recap: personal records set this week; the exercise names follow below")
+                                : String(localized: "\(records.count) new records",
+                                         comment: "Week recap: personal records set this week; the exercise names follow below"),
                              detail: records.count > 3
                                 ? String(localized: "\(shown) and \(records.count - 3) more", comment: "Week recap: new records list, cut after three")
                                 : shown)
                     }
                     if !behind.isEmpty {
                         line(icon: "exclamationmark.circle", color: DS.rhythmRecent,
-                             title: String(localized: "Behind this week"),
+                             title: String(localized: "Behind this week",
+                                           comment: "Week recap: muscle groups that need attention this week; their names follow below"),
                              detail: behind.prefix(4).map(\.title).formatted(.list(type: .and, width: .narrow)))
                     }
                 }
@@ -336,8 +339,10 @@ struct WeekRecapCard: View {
         guard let delta else { return String(localized: "Nothing last week to compare") }
         if abs(delta) < 0.005 { return String(localized: "Same as last week") }
         let percent = abs(delta).formatted(.percent.precision(.fractionLength(0)))
-        return delta > 0 ? String(localized: "Up \(percent) on last week")
-                         : String(localized: "Down \(percent) on last week")
+        return delta > 0 ? String(localized: "Up \(percent) on last week",
+                                  comment: "Week recap, VoiceOver: a rise against the same days last week, e.g. Up 12% on last week")
+                         : String(localized: "Down \(percent) on last week",
+                                  comment: "Week recap, VoiceOver: a fall against the same days last week, e.g. Down 12% on last week")
     }
 
     private func line(icon: String, color: Color, title: String, detail: String) -> some View {
@@ -374,9 +379,12 @@ struct WeeklyVolumeChart: View {
         let avg = earlier.isEmpty ? 0 : earlier.reduce(0, +) / Double(earlier.count)
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "WEEKLY VOLUME")
+                SectionEyebrow(text: String(localized: "WEEKLY VOLUME",
+                                            comment: "Progress › Overview: header of the chart of weight × reps lifted each week"))
                 Spacer()
-                MetaLine(text: "\(weeks.count) WEEKS · \(unit.symbol.uppercased())", em: 0.08)
+                MetaLine(text: String(localized: "\(weeks.count) WEEKS · \(unit.symbol.uppercased())",
+                                      comment: "Weekly volume chart, top right: the weeks shown and the weight unit (KG or LB)"),
+                         em: 0.08)
             }
             Chart {
                 ForEach(weeks) { week in
@@ -458,10 +466,13 @@ struct ConsistencyGrid: View {
         let target = insights.weeklyTarget
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "CONSISTENCY")
+                SectionEyebrow(text: String(localized: "CONSISTENCY",
+                                            comment: "Progress › Overview: header of the grid of trained days and the weekly-goal streak"))
                 Spacer()
                 if let goal = insights.goal {
-                    MetaLine(text: "GOAL \(goal)× / WEEK", em: 0.08)
+                    MetaLine(text: String(localized: "GOAL \(goal)× / WEEK",
+                                          comment: "Consistency card, top right: the plan's workouts a week, e.g. GOAL 3× / WEEK"),
+                             em: 0.08)
                 }
             }
             HStack(alignment: .firstTextBaseline, spacing: 6) {
@@ -519,7 +530,8 @@ struct ConsistencyGrid: View {
             .accessibilityLabel(gridSummary(days: days, today: today))
             HStack(spacing: 14) {
                 legend(DS.activation, insights.goal == nil ? String(localized: "Trained")
-                                                           : String(localized: "Trained, goal met"))
+                                                           : String(localized: "Trained, goal met",
+                                                                    comment: "Consistency grid legend: a day trained in a week that met the weekly goal"))
                 if insights.goal != nil {
                     legend(DS.activation.opacity(0.45), String(localized: "Trained"))
                 }
@@ -533,12 +545,19 @@ struct ConsistencyGrid: View {
     }
 
     private func streakCaption(_ streak: Int) -> String {
+        // Captions beside the streak's large number: "3 | weeks in a row on goal".
         if insights.goal == nil {
-            return streak == 1 ? String(localized: "week in a row with a workout")
-                               : String(localized: "weeks in a row with a workout")
+            return streak == 1
+                ? String(localized: "week in a row with a workout",
+                         comment: "Consistency card: caption after the streak number, e.g. 1 | week in a row with a workout")
+                : String(localized: "weeks in a row with a workout",
+                         comment: "Consistency card: caption after the streak number, e.g. 3 | weeks in a row with a workout")
         }
-        return streak == 1 ? String(localized: "week in a row on goal")
-                           : String(localized: "weeks in a row on goal")
+        return streak == 1
+            ? String(localized: "week in a row on goal",
+                     comment: "Consistency card: caption after the streak number, e.g. 1 | week in a row on goal (the weekly workout goal)")
+            : String(localized: "weeks in a row on goal",
+                     comment: "Consistency card: caption after the streak number, e.g. 3 | weeks in a row on goal (the weekly workout goal)")
     }
 
     /// One letter per row, from the locale's first weekday (M…S or S…S).
@@ -590,9 +609,12 @@ struct KeyLiftsCard: View {
         let regular = layout.isRegular
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline) {
-                SectionEyebrow(text: "KEY LIFTS")
+                SectionEyebrow(text: String(localized: "KEY LIFTS",
+                                            comment: "Progress › Strength: header of the most-trained lifts and their estimated one-rep max"))
                 Spacer()
-                MetaLine(text: "EST. 1RM · \(ProgressInsights.liftWindowWeeks) WEEKS", em: 0.08)
+                MetaLine(text: String(localized: "EST. 1RM · \(ProgressInsights.liftWindowWeeks) WEEKS",
+                                      comment: "Key lifts card, top right: estimated one-rep max (EST. = estimated) over the last N weeks"),
+                         em: 0.08)
             }
             if lifts.isEmpty {
                 Text("Lifts you log with a weight on two or more days in the last \(ProgressInsights.liftWindowWeeks) weeks show their estimated max here.")
@@ -726,10 +748,15 @@ struct KeyLiftsCard: View {
         if let change = shownChange(lift) {
             let amount = unit.total(abs(change))
             parts.append(change > 0
-                ? String(localized: "up \(amount) in \(ProgressInsights.liftWindowWeeks) weeks")
-                : String(localized: "down \(amount) in \(ProgressInsights.liftWindowWeeks) weeks"))
+                ? String(localized: "up \(amount) in \(ProgressInsights.liftWindowWeeks) weeks",
+                         comment: "Key lifts, VoiceOver: the estimated max rose by this much, e.g. up 5 kg in 8 weeks")
+                : String(localized: "down \(amount) in \(ProgressInsights.liftWindowWeeks) weeks",
+                         comment: "Key lifts, VoiceOver: the estimated max fell by this much, e.g. down 5 kg in 8 weeks"))
         }
-        if lift.newRecord { parts.append(String(localized: "new record this week")) }
+        if lift.newRecord {
+            parts.append(String(localized: "new record this week",
+                                comment: "Key lifts, VoiceOver: this lift set a personal record this week"))
+        }
         return parts.joined(separator: ", ")
     }
 }

@@ -370,10 +370,15 @@ extension MealEntry {
 
 extension WeightUnit {
     /// A body weight to a tenth of the unit shown — rounded after converting,
-    /// so 150.0 lb logged reads 150.0 lb, not 149.9.
+    /// so 150.0 lb logged reads 150.0 lb, not 149.9. The unit is in the
+    /// localized string, joined to the number by a no-break space.
     func bodyWeight(_ kg: Double) -> String {
         let value = (fromKilograms(kg) * 10).rounded() / 10
-        return "\(value.formatted(.number.precision(.fractionLength(0...1))))\u{00A0}\(symbol)"
+        let number = value.formatted(.number.precision(.fractionLength(0...1)))
+        switch self {
+        case .kg: return String(localized: "\(number)\u{00A0}kg", comment: "A body weight: 74.2 kg (keep the no-break space)")
+        case .lb: return String(localized: "\(number)\u{00A0}lb", comment: "A body weight: 163.6 lb (keep the no-break space)")
+        }
     }
 }
 

@@ -347,7 +347,8 @@ private struct DayPanel: View {
             if counted.isEmpty {
                 EmptyView()
             } else if done == counted.count {
-                Label(String(localized: "All done"), systemImage: "checkmark")
+                Label(String(localized: "All done", comment: "Beside “Your day”: every habit that counts today is done"),
+                      systemImage: "checkmark")
             } else {
                 Text("\(done) of \(counted.count) done", comment: "Today's habits: 1 of 3 done")
             }
@@ -378,14 +379,13 @@ private struct DayPanel: View {
     /// Each add's Undo is the tab's toast, the same on every layout.
     private var waterRow: some View {
         let litres = Double(metrics.waterMl) / 1_000
-        let target = Double(metrics.waterTarget) / 1_000
         return row(ring: RingGlyph(progress: Double(metrics.waterMl) / Double(max(metrics.waterTarget, 1)),
                                    color: TodayTone.water, symbol: "drop.fill",
                                    done: metrics.waterCounts && metrics.waterReached, dashed: !metrics.waterCounts),
                    title: String(localized: "Water", comment: "Today row"), isNext: nextHabit == .water,
                    open: { actions.quickLog(.water) }, openHint: TodayWaterText.opensLog) {
             BigValue(value: litres.formatted(.number.precision(.fractionLength(0...2))),
-                     unit: metrics.waterCounts ? "/ \(target.formatted(.number.precision(.fractionLength(0...2)))) L" : "L",
+                     unit: TodayWaterText.litresUnit(target: metrics.waterCounts ? metrics.waterTarget : nil),
                      size: 20)
             if metrics.limitsFluids {
                 Text("Ask your doctor how much to drink.")
@@ -416,15 +416,25 @@ private struct DayPanel: View {
             if metrics.weighedIn, let latest {
                 let value = (unit.fromKilograms(latest.kg) * 10).rounded() / 10
                 BigValue(value: value.formatted(.number.precision(.fractionLength(1))),
-                         unit: "\(unit.symbol) · \(latest.date.formatted(date: .omitted, time: .shortened))", size: 20)
+                         unit: Self.unitAndTime(unit, latest.date), size: 20)
             } else {
                 Text(weighInDetail)
                     .font(.ui(14, .medium))
                     .foregroundStyle(DS.silver.opacity(0.65))
             }
         } trailing: {
-            QuickChip(title: metrics.weighedIn ? String(localized: "Edit") : String(localized: "Log"),
+            QuickChip(title: metrics.weighedIn ? String(localized: "Edit", comment: "Weigh-in row chip: changes today's weigh-in")
+                                               : String(localized: "Log", comment: "Weigh-in row chip: logs today's weight"),
                       filled: fills(.weighIn), action: actions.logWeight)
+        }
+    }
+
+    /// "kg · 7:05 AM" after today's weigh-in: its unit, and when it was logged.
+    private static func unitAndTime(_ unit: WeightUnit, _ date: Date) -> String {
+        let time = date.formatted(date: .omitted, time: .shortened)
+        switch unit {
+        case .kg: return String(localized: "kg · \(time)", comment: "After today's weigh-in, 74.2: its unit and the time it was logged")
+        case .lb: return String(localized: "lb · \(time)", comment: "After today's weigh-in, 163.6: its unit and the time it was logged")
         }
     }
 
@@ -694,7 +704,9 @@ struct PlanOpenSection: View {
             TodayEyebrow(text: String(localized: "Daily target"), size: 11)
                 .padding(.top, 6)
             HStack(alignment: .firstTextBaseline) {
-                BigValue(value: Int(plan.calories).formatted(), unit: "kcal", size: 28, weight: .semibold)
+                BigValue(value: Int(plan.calories).formatted(),
+                         unit: String(localized: "kcal", comment: "Unit after the day's calorie target: 2,020 kcal"),
+                         size: 28, weight: .semibold)
                 Spacer(minLength: 8)
                 Text(plan.effectiveGoal.title)
                     .font(.mono(10, .semibold))
@@ -739,7 +751,8 @@ struct PlanOpenSection: View {
                 RoundedRectangle(cornerRadius: 2, style: .continuous).fill(color).frame(width: 8, height: 8)
                 TodayEyebrow(text: name, size: 10.5)
             }
-            BigValue(value: "\(grams)", unit: "g", size: 20, weight: .semibold)
+            BigValue(value: "\(grams)", unit: String(localized: "g", comment: "Grams, after a macro's daily amount: 148 g"),
+                     size: 20, weight: .semibold)
             Text("\(share)% of kcal", comment: "A macro's share of calories: 29% of kcal")
                 .font(.ui(12, .medium))
                 .foregroundStyle(DS.silver.opacity(0.6))

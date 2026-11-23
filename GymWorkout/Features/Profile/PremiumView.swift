@@ -68,9 +68,10 @@ struct PremiumView: View {
 
     // MARK: - Tiers
 
-    /// Pro is sold with the AI, so builds where the AI is live show both
-    /// tiers (the comparison layout the owner picked, 2026-11-22); the
-    /// others keep the Premium-only sheet as it shipped.
+    /// Pro is sold with the AI, live in every build since 1.4, so the sheet
+    /// shows both tiers (the comparison layout the owner picked,
+    /// 2026-11-22); the Premium-only sheet is left for when the App Store
+    /// has no Pro to sell (`proUnavailable`).
     private var showsPro: Bool { AIService.isLive && !proUnavailable }
 
     /// The App Store answered without Pro's plans (not in App Store Connect
@@ -178,10 +179,10 @@ struct PremiumView: View {
         return showsActive ? layout.gutter : 32
     }
 
-    /// Three plans in a row once the column can give each about 190pt.
+    /// Two plans side by side once the column can give each about 190pt.
     private var usesPlanTiles: Bool {
-        let count = [purchases.yearly, purchases.monthly, purchases.lifetime].compactMap { $0 }.count
-        return layout.isRegular && sheetWidth >= 600 && (2...3).contains(count)
+        let count = [purchases.yearly, purchases.monthly].compactMap { $0 }.count
+        return layout.isRegular && sheetWidth >= 600 && count == 2
     }
 
     // MARK: - Offer
@@ -215,7 +216,7 @@ struct PremiumView: View {
             PremiumHero()
                 .padding(.top, layout.value(20, 26))
 
-            SectionEyebrow(text: "WHAT YOU GET")
+            SectionEyebrow(text: String(localized: "WHAT YOU GET"))
                 .padding(.top, layout.value(26, 32))
             FeatureTable(rows: features)
                 .padding(.top, layout.value(10, 12))
@@ -247,8 +248,8 @@ struct PremiumView: View {
         case .preset:
             return (String(localized: "Three presets for every muscle"),
                     String(localized: "Preset 1 is free. Premium adds Preset 2 and 3 for every muscle group, so a different session for each one is a tap away."))
-        // Only builds with the AI open the sheet for these, and they show
-        // the tiers; this is for when Pro isn't on sale.
+        // The AI features open the sheet for these, and it shows the tiers;
+        // this headline is for when Pro isn't on sale.
         case .coach:
             return (String(localized: "Ask MUSQ about your training"),
                     String(localized: "Premium adds the Ask MUSQ coach for your training questions, up to \(Purchases.Tier.premium.ai?.chatPerDay ?? 0) a day, plus the common mistakes, more presets and no ads."))
@@ -342,7 +343,7 @@ struct PremiumView: View {
                     .font(.ui(layout.value(13, 14)))
                     .foregroundStyle(DS.silver.opacity(0.55))
                     .fixedSize(horizontal: false, vertical: true)
-                WideButton(title: "Try Again", prominent: false) {
+                WideButton(title: String(localized: "Try Again"), prominent: false) {
                     Task { await load() }
                 }
                 .dsCTA(300, alignment: .leading)
@@ -371,13 +372,6 @@ struct PremiumView: View {
                         selection = Purchases.ProductID.monthly
                     }
                 }
-                if let lifetime = purchases.lifetime {
-                    PlanTile(title: "Lifetime", price: lifetime.displayPrice, period: "once",
-                             detail: String(localized: "One payment, Premium for good"), badge: nil,
-                             isSelected: selection == Purchases.ProductID.lifetime) {
-                        selection = Purchases.ProductID.lifetime
-                    }
-                }
             }
             .fixedSize(horizontal: false, vertical: true)
         } else {
@@ -395,13 +389,6 @@ struct PremiumView: View {
                              detail: String(localized: "Billed monthly, cancel anytime"), badge: nil,
                              isSelected: selection == Purchases.ProductID.monthly) {
                         selection = Purchases.ProductID.monthly
-                    }
-                }
-                if let lifetime = purchases.lifetime {
-                    PlanCard(title: "Lifetime", price: lifetime.displayPrice, period: "once",
-                             detail: String(localized: "One payment, Premium for good"), badge: nil,
-                             isSelected: selection == Purchases.ProductID.lifetime) {
-                        selection = Purchases.ProductID.lifetime
                     }
                 }
             }
@@ -493,7 +480,6 @@ struct PremiumView: View {
                          : String(localized: "Payment is charged to your Apple Account when you confirm."))
             parts.append(String(localized: "A subscription renews automatically until cancelled: cancel at least 24 hours before the end of the current period to stop the next renewal, which is charged within 24 hours before that. Manage or cancel it in Settings › Apple Account › Subscriptions."))
         }
-        if purchases.lifetime != nil { parts.append(String(localized: "Lifetime is a one-time purchase.")) }
         return parts.joined(separator: " ")
     }
 
@@ -655,12 +641,16 @@ struct PremiumView: View {
             VStack(alignment: .leading, spacing: 10) {
                 let pro = options.filter { $0.tier == .pro }
                 let premium = options.filter { $0.tier != .pro }
+                // The tier names stay as they are in every language; the
+                // notes are localized.
                 if !pro.isEmpty {
-                    PlanGroupHeader(title: "PRO", note: upgrading ? "UPGRADE FROM PREMIUM" : "FULL AI ALLOWANCE")
+                    PlanGroupHeader(title: "PRO", note: upgrading
+                                    ? String(localized: "UPGRADE FROM PREMIUM", comment: "Paywall: small upper-case note at the right of the PRO plans' header, for a Premium member; keep short")
+                                    : String(localized: "FULL AI ALLOWANCE", comment: "Paywall: small upper-case note at the right of the PRO plans' header (Pro has the most AI uses); keep short"))
                     planRow(pro)
                 }
                 if !premium.isEmpty {
-                    PlanGroupHeader(title: "PREMIUM", note: "STARTER AI ALLOWANCE")
+                    PlanGroupHeader(title: "PREMIUM", note: String(localized: "STARTER AI ALLOWANCE", comment: "Paywall: small upper-case note at the right of the PREMIUM plans' header (Premium has fewer AI uses than Pro); keep short"))
                         .padding(.top, pro.isEmpty ? 0 : 10)
                     planRow(premium)
                 }
@@ -704,8 +694,6 @@ struct PremiumView: View {
         case .monthly:
             if let trial = option.trial { return String(localized: "\(trial) free, then \(option.price)/month") }
             return String(localized: "Billed monthly, cancel anytime")
-        case .lifetime:
-            return String(localized: "One payment, Premium for good")
         }
     }
 
@@ -731,7 +719,7 @@ struct PremiumView: View {
                     .font(.ui(layout.value(13, 14)))
                     .foregroundStyle(DS.silver.opacity(0.55))
                     .fixedSize(horizontal: false, vertical: true)
-                WideButton(title: "Try Again", prominent: false) {
+                WideButton(title: String(localized: "Try Again"), prominent: false) {
                     Task { await load() }
                 }
                 .dsCTA(300, alignment: .leading)
@@ -749,7 +737,7 @@ struct PremiumView: View {
     /// Premium's, or Pro's alone for a Premium member.
     private var planOptions: [PlanOption] {
         typealias ID = Purchases.ProductID
-        let ids = upgrading ? [ID.proYearly, ID.proMonthly] : [ID.proYearly, ID.proMonthly, ID.yearly, ID.lifetime]
+        let ids = upgrading ? [ID.proYearly, ID.proMonthly] : [ID.proYearly, ID.proMonthly, ID.yearly]
         return ids.compactMap { id -> PlanOption? in
             if let product = purchases.products.first(where: { $0.id == id }) {
                 return PlanOption(product, trial: trialEligible.contains(id))
@@ -778,7 +766,6 @@ struct PremiumView: View {
         case (false, .pro, _): return String(localized: "Get Pro · \(option.price) a month")
         case (false, _, .yearly): return String(localized: "Get Premium · \(option.price) a year")
         case (false, _, .monthly): return String(localized: "Get Premium · \(option.price) a month")
-        case (false, _, .lifetime): return String(localized: "Get Lifetime · \(option.price)")
         }
     }
 
@@ -786,8 +773,6 @@ struct PremiumView: View {
         guard let option = selectedOption else { return nil }
         let renews: String
         switch option.kind {
-        case .lifetime:
-            return String(localized: "One payment. No subscription.")
         case .yearly:
             renews = option.trial.map { String(localized: "\($0) free, then \(option.price) a year until cancelled. Cancel anytime in Settings.") }
                 ?? String(localized: "Renews at \(option.price) a year until cancelled. Cancel anytime in Settings.")
@@ -818,8 +803,6 @@ struct PremiumView: View {
                 return String(localized: "Premium Yearly (\(option.price) a year)", comment: "Subscription terms: a plan and its price")
             case (_, .monthly):
                 return String(localized: "Premium Monthly (\(option.price) a month)", comment: "Subscription terms: a plan and its price")
-            case (_, .lifetime):
-                return nil
             }
         }
         var parts: [String] = []
@@ -838,7 +821,6 @@ struct PremiumView: View {
             }
             parts.append(String(localized: "A subscription renews automatically until cancelled: cancel at least 24 hours before the end of the current period to stop the next renewal, which is charged within 24 hours before that. Manage or cancel it in Settings › Apple Account › Subscriptions."))
         }
-        if options.contains(where: { $0.kind == .lifetime }) { parts.append(String(localized: "Lifetime is a one-time purchase.")) }
         return parts.joined(separator: " ")
     }
 
@@ -874,9 +856,9 @@ struct PremiumView: View {
                 // subscription to manage.
                 HStack(spacing: 10) {
                     if isSubscription {
-                        WideButton(title: "Manage Subscription", prominent: false) { manageSubscription() }
+                        WideButton(title: String(localized: "Manage Subscription"), prominent: false) { manageSubscription() }
                     }
-                    WideButton(title: "Done", prominent: true) { dismiss() }
+                    WideButton(title: String(localized: "Done"), prominent: true) { dismiss() }
                         .modifier(PadShortcut(shortcut: .defaultAction))
                 }
                 .padding(.top, 26)
@@ -885,10 +867,10 @@ struct PremiumView: View {
                     .padding(.top, 22)
 
                 if isSubscription {
-                    WideButton(title: "Manage Subscription", prominent: false) { manageSubscription() }
+                    WideButton(title: String(localized: "Manage Subscription"), prominent: false) { manageSubscription() }
                         .padding(.top, 24)
                 }
-                WideButton(title: "Done", prominent: true) { dismiss() }
+                WideButton(title: String(localized: "Done"), prominent: true) { dismiss() }
                     .padding(.top, isSubscription ? 10 : 24)
             }
         }
@@ -976,10 +958,8 @@ struct PremiumView: View {
             return showsTrial
                 ? String(localized: "Start Free Trial")
                 : String(localized: "Subscribe · \(product.displayPrice) a year")
-        case Purchases.ProductID.monthly:
-            return String(localized: "Subscribe · \(product.displayPrice) a month")
         default:
-            return String(localized: "Get Lifetime · \(product.displayPrice)")
+            return String(localized: "Subscribe · \(product.displayPrice) a month")
         }
     }
 
@@ -990,10 +970,8 @@ struct PremiumView: View {
             return showsTrial
                 ? String(localized: "\(trialLength) free, then \(product.displayPrice) a year until cancelled. Cancel anytime in Settings.")
                 : String(localized: "Renews at \(product.displayPrice) a year until cancelled. Cancel anytime in Settings.")
-        case Purchases.ProductID.monthly:
-            return String(localized: "Renews at \(product.displayPrice) a month until cancelled. Cancel anytime in Settings.")
         default:
-            return String(localized: "One payment. No subscription.")
+            return String(localized: "Renews at \(product.displayPrice) a month until cancelled. Cancel anytime in Settings.")
         }
     }
 
@@ -1066,7 +1044,7 @@ struct PremiumView: View {
                 let before = purchases.tier
                 try await purchases.restore()
                 if !purchases.isPremium {
-                    alert = String(localized: "No MUSQ Premium purchase was found for this Apple Account.")
+                    alert = String(localized: "No MUSQ Premium or Pro purchase was found for this Apple Account.")
                 } else if purchases.tier > before {
                     gotPlanHere = true
                 }
@@ -1188,7 +1166,8 @@ private struct PremiumHero: View {
                 .accessibilityHidden(true)
             // The Back Squat's own cue title, so the banner reads as the
             // trainer's does in every language.
-            MistakeBanner(text: "COMMON MISTAKE · \(L10n.content("Knee Tracking").uppercased())")
+            MistakeBanner(text: String(localized: "COMMON MISTAKE · \(L10n.content("Knee Tracking").uppercased())",
+                                       comment: "Banner over the lifter: a common mistake's cue title, in upper case"))
                 .padding(layout.value(12, 14))
         }
         .frame(height: layout.value(210, 220))
@@ -1287,7 +1266,9 @@ private struct FeatureTable: View {
 /// price, or, in Debug builds launched with `-paywall.samplePlans YES`, a
 /// sample (the simulator can't load the StoreKit configuration file).
 private struct PlanOption: Identifiable {
-    enum Kind { case monthly, yearly, lifetime }
+    /// Only plans on sale: Lifetime went off sale on 2026-11-23 (its buyers
+    /// keep Premium, see `Purchases.ProductID.lifetime`).
+    enum Kind { case monthly, yearly }
 
     let id: String
     let tier: Purchases.Tier
@@ -1306,7 +1287,6 @@ private struct PlanOption: Identifiable {
         switch kind {
         case .monthly: "Monthly"
         case .yearly: "Yearly"
-        case .lifetime: "Lifetime"
         }
     }
 
@@ -1314,7 +1294,6 @@ private struct PlanOption: Identifiable {
         switch kind {
         case .monthly: "per month"
         case .yearly: "per year"
-        case .lifetime: "once"
         }
     }
 
@@ -1322,8 +1301,7 @@ private struct PlanOption: Identifiable {
         typealias ID = Purchases.ProductID
         id = product.id
         tier = ID.tier(of: product.id)
-        kind = [ID.proYearly, ID.yearly].contains(product.id) ? .yearly
-            : [ID.proMonthly, ID.monthly].contains(product.id) ? .monthly : .lifetime
+        kind = [ID.proYearly, ID.yearly].contains(product.id) ? .yearly : .monthly
         price = product.displayPrice
         priceValue = product.price
         perMonth = kind == .yearly ? (product.price / 12).formatted(product.priceFormatStyle) : nil
@@ -1335,16 +1313,16 @@ private struct PlanOption: Identifiable {
     static var usesSamples: Bool { Purchases.usesSamplePlans }
 
     /// The StoreKit configuration's plans and prices. A Premium member has
-    /// had the group's trial, so upgrades show none.
+    /// had the group's trial, so upgrades show none. Trial lengths use the
+    /// same key as a real one ("%lld days"), so screenshots are translated.
     static func samples(trials: Bool) -> [PlanOption] {
         typealias ID = Purchases.ProductID
         return [
             PlanOption(sample: ID.proYearly, tier: .pro, kind: .yearly, price: "$39.99", value: 39.99, perMonth: "$3.33",
-                       trial: trials ? "3 days" : nil),
+                       trial: trials ? String(localized: "\(3) days") : nil),
             PlanOption(sample: ID.proMonthly, tier: .pro, kind: .monthly, price: "$14.99", value: 14.99, perMonth: nil, trial: nil),
             PlanOption(sample: ID.yearly, tier: .premium, kind: .yearly, price: "$19.99", value: 19.99, perMonth: "$1.67",
-                       trial: trials ? "7 days" : nil),
-            PlanOption(sample: ID.lifetime, tier: .premium, kind: .lifetime, price: "$59.99", value: 59.99, perMonth: nil, trial: nil),
+                       trial: trials ? String(localized: "\(7) days") : nil),
         ]
     }
 
@@ -1388,17 +1366,21 @@ private struct TierTable: View {
     enum Cell: Equatable {
         case check
         case none
-        case amount(Int, unit: String)
+        /// The number, the word under it, and the two as VoiceOver says
+        /// them: one phrase, so a language can order it its own way.
+        case amount(Int, unit: String, spoken: String)
 
         static func perDay(_ count: Int?) -> Cell {
             guard let count, count > 0 else { return .none }
-            return .amount(count, unit: String(localized: "A DAY", comment: "Paywall table: an allowance per day, under its number"))
+            return .amount(count, unit: String(localized: "A DAY", comment: "Paywall table: an allowance per day, under its number"),
+                           spoken: String(localized: "\(count) a day", comment: "VoiceOver, paywall table: an AI allowance per day, e.g. 10 a day"))
         }
 
         static func photos(_ photos: Purchases.AILimits.GoalPhotos?) -> Cell {
             switch photos {
             case .perYear(let count)? where count > 0:
-                return .amount(count, unit: String(localized: "A YEAR", comment: "Paywall table: an allowance per year, under its number"))
+                return .amount(count, unit: String(localized: "A YEAR", comment: "Paywall table: an allowance per year, under its number"),
+                               spoken: String(localized: "\(count) a year", comment: "VoiceOver, paywall table: goal photos per year, e.g. 2 a year"))
             default:
                 return .none
             }
@@ -1407,7 +1389,8 @@ private struct TierTable: View {
         /// An allowance that never renews: Free's goal photo.
         static func oneTime(_ count: Int) -> Cell {
             guard count > 0 else { return .none }
-            return .amount(count, unit: String(localized: "TO TRY", comment: "Paywall table: a one-time allowance, under its number"))
+            return .amount(count, unit: String(localized: "TO TRY", comment: "Paywall table: a one-time allowance, under its number"),
+                           spoken: String(localized: "\(count) to try", comment: "VoiceOver, paywall table: a one-time allowance to try the feature, e.g. 1 to try"))
         }
     }
 
@@ -1461,7 +1444,11 @@ private struct TierTable: View {
                     .frame(width: freeColumn)
                 VStack(spacing: 3) {
                     if yourPlan {
-                        MetaLine(text: "YOUR PLAN", size: headerSize - 1.5)
+                        // The subscription the member has, so a key of its
+                        // own: Onboarding's "YOUR PLAN" is the training plan.
+                        MetaLine(text: String(localized: "paywall.yourPlan", defaultValue: "YOUR PLAN",
+                                              comment: "Paywall table: over the PREMIUM column when Premium is the member's current subscription; upper case, narrow column"),
+                                 size: headerSize - 1.5)
                     }
                     MetaLine(text: "PREMIUM", size: headerSize)
                 }
@@ -1549,7 +1536,7 @@ private struct TierTable: View {
             Image(systemName: "minus")
                 .font(.system(size: layout.value(12, 13.5), weight: .semibold))
                 .foregroundStyle(DS.silver.opacity(0.22))
-        case .amount(let count, let unit):
+        case .amount(let count, let unit, _):
             VStack(spacing: 1) {
                 Text(count.formatted())
                     .font(.ui(lit ? layout.value(17, 19) : layout.value(15, 17), .semibold))
@@ -1569,7 +1556,7 @@ private struct TierTable: View {
             switch cell {
             case .check: return String(localized: "included", comment: "VoiceOver, paywall table: a feature a plan has")
             case .none: return String(localized: "not included", comment: "VoiceOver, paywall table: a feature a plan lacks")
-            case .amount(let count, let unit): return "\(count) \(unit.lowercased())"
+            case .amount(_, _, let spoken): return spoken
             }
         }
         let title = row.detail.map { "\(row.title), \($0)" } ?? row.title

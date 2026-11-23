@@ -487,20 +487,23 @@ enum WeightUnit: String, Codable, CaseIterable, Identifiable {
         fromKilograms(kg).formatted(.number.precision(.fractionLength(0...(self == .kg ? 2 : 1))).grouping(.never))
     }
 
-    /// "62.5 kg".
-    func format(_ kg: Double) -> String { "\(number(kg)) \(symbol)" }
+    /// "62.5 kg", with a no-break space so the unit never wraps away from
+    /// its number (it did in Vietnamese record lines, 2026-11-23).
+    func format(_ kg: Double) -> String { "\(number(kg))\u{00A0}\(symbol)" }
 
     /// A total, rounded to a whole number and grouped: "3,240 kg".
     func total(_ kg: Double) -> String {
-        "\(Int(fromKilograms(kg).rounded()).formatted()) \(symbol)"
+        "\(Int(fromKilograms(kg).rounded()).formatted())\u{00A0}\(symbol)"
     }
 
     /// Height in the system that goes with the unit: "172 cm", or "5′ 8″"
     /// alongside pounds.
     func height(_ cm: Double) -> String {
-        guard self == .lb else { return "\(Int(cm.rounded())) cm" }
+        guard self == .lb else {
+            return String(localized: "\(Int(cm.rounded())) cm", comment: "A height in centimetres: 172 cm")
+        }
         let inches = Int((cm / 2.54).rounded())
-        return "\(inches / 12)′ \(inches % 12)″"
+        return String(localized: "\(inches / 12)′ \(inches % 12)″", comment: "A height in feet and inches: 5′ 8″")
     }
 
     /// Reads what the user typed, accepting either decimal separator.

@@ -322,11 +322,16 @@ final class DailyStore {
     private static let checkInID = "balance.checkin"
     private static let bedtimeID = "balance.bedtime"
 
-    /// "2.5 L", "750 ml".
+    /// "2.5 L", "750 ml". The units are in the localized strings, joined to
+    /// the number by a no-break space.
     static func litres(_ ml: Int) -> String {
-        if ml < 1_000 { return "\(ml)\u{00A0}ml" }
+        if ml < 1_000 {
+            return String(localized: "\(ml)\u{00A0}ml",
+                          comment: "An amount of water under a litre: 750 ml (keep the no-break space)")
+        }
         let litres = (Double(ml) / 1_000).formatted(.number.precision(.fractionLength(0...2)))
-        return "\(litres)\u{00A0}L"
+        return String(localized: "\(litres)\u{00A0}L",
+                      comment: "An amount of water in litres: 2.5 L (keep the no-break space)")
     }
 
     // MARK: - Meals

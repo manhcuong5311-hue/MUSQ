@@ -382,6 +382,16 @@ enum TodayWaterText {
     static var custom: String {
         String(localized: "Custom amount…", comment: "Opens the water log for an amount of one's own")
     }
+
+    /// What follows a water amount in litres: "/ 2.5 L" against the day's
+    /// target, or "L" alone (no target beside it).
+    static func litresUnit(target ml: Int? = nil) -> String {
+        guard let ml else {
+            return String(localized: "L", comment: "Unit: litres, beside a water amount (1.25 L)")
+        }
+        let target = (Double(ml) / 1_000).formatted(.number.precision(.fractionLength(0...2)))
+        return String(localized: "/ \(target) L", comment: "After today's water in litres, the day's target: 1.25 / 2.5 L")
+    }
 }
 
 /// For a few seconds after a glass is added, on every layout: what went in,
@@ -1031,7 +1041,8 @@ struct TodayWeekStrip: View {
                     .font(.ui(15, .bold))
                     .monospacedDigit()
                     .foregroundStyle(DS.silver)
-                TodayEyebrow(text: String(localized: "This week"), size: 9.5)
+                TodayEyebrow(text: String(localized: "This week", comment: "Week strip: small capitals under this week's workouts, 2/4"),
+                             size: 9.5)
             }
         }
         .accessibilityElement(children: .ignore)
@@ -1223,7 +1234,8 @@ struct WeightTrendChart: View {
                           y: .value("Weight", (first.value + end.value) / 2))
                     .foregroundStyle(.clear)
                     .annotation(position: .bottom, alignment: .center, spacing: 6) {
-                        chartLabel(String(localized: "Plan pace"))
+                        chartLabel(String(localized: "Plan pace",
+                                          comment: "Weight chart: label on the dashed line where the plan expects the weight to go over the next two weeks; short, shown in capitals"))
                     }
             }
             if let last = trend.average.last {

@@ -17,7 +17,8 @@ struct BodyWeightSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionEyebrow(text: "BODY WEIGHT")
+            SectionEyebrow(text: String(localized: "BODY WEIGHT",
+                                        comment: "Progress › Body: header of the weigh-in chart, the 7-day average and the week's water"))
             VStack(alignment: .leading, spacing: 12) {
                 if daily.weights.isEmpty {
                     Text("No weigh-ins yet. Log one on Today and your trend shows here.")

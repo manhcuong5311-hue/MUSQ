@@ -199,7 +199,9 @@ struct EatCheckInSheet: View {
     static func title(_ option: EatCheckIn.Protein) -> String {
         switch option {
         case .hit: return String(localized: "Hit it", comment: "Eating check-in: protein target reached")
-        case .close: return String(localized: "Close", comment: "Eating check-in: protein nearly reached")
+        // Its own key: "Close" alone is the Close button.
+        case .close: return String(localized: "balance.checkIn.protein.close", defaultValue: "Close",
+                                   comment: "Eating check-in: protein nearly reached (close to the target)")
         case .missed: return String(localized: "Missed", comment: "Eating check-in: protein well short")
         }
     }

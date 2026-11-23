@@ -49,12 +49,22 @@ enum MuscleTarget: String, Codable, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
+    /// A segment of the setup's picker, so the words stay short. `strong`
+    /// has a key of its own: "Strong" is also a Balance word.
     var title: String {
         switch self {
-        case .same: return String(localized: "Same", comment: "Goal photo muscle level: keep the muscle you have")
-        case .toned: return String(localized: "Toned", comment: "Goal photo muscle level: a little more muscle")
-        case .muscular: return String(localized: "Muscular", comment: "Goal photo muscle level: noticeably more muscle")
-        case .strong: return String(localized: "Strong", comment: "Goal photo muscle level: a lot more muscle")
+        case .same:
+            return String(localized: "Same",
+                          comment: "Goal photo muscle level: keep the muscle you have. A segment of a picker of 4: keep it short")
+        case .toned:
+            return String(localized: "Toned",
+                          comment: "Goal photo muscle level: a little more muscle. A segment of a picker of 4: keep it short")
+        case .muscular:
+            return String(localized: "Muscular",
+                          comment: "Goal photo muscle level: noticeably more muscle. A segment of a picker of 4: keep it short")
+        case .strong:
+            return String(localized: "goal.muscle.strong", defaultValue: "Strong",
+                          comment: "Goal photo muscle level: a lot more muscle (not the Balance word Strong). A segment of a picker of 4: keep it short")
         }
     }
 
@@ -98,12 +108,21 @@ enum FatTarget: String, Codable, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
+    /// A segment of the setup's picker, like MuscleTarget's.
     var title: String {
         switch self {
-        case .same: return String(localized: "Same", comment: "Goal photo body-fat level: keep it as it is")
-        case .fit: return String(localized: "Fit", comment: "Goal photo body-fat level: a flatter stomach")
-        case .athletic: return String(localized: "Athletic", comment: "Goal photo body-fat level: abs faintly showing")
-        case .lean: return String(localized: "Lean", comment: "Goal photo body-fat level: abs clearly showing")
+        case .same:
+            return String(localized: "Same",
+                          comment: "Goal photo body-fat level: keep it as it is. A segment of a picker of up to 4: keep it short")
+        case .fit:
+            return String(localized: "Fit",
+                          comment: "Goal photo body-fat level: a flatter stomach. A segment of a picker of up to 4: keep it short")
+        case .athletic:
+            return String(localized: "Athletic",
+                          comment: "Goal photo body-fat level: abs faintly showing. A segment of a picker of up to 4: keep it short")
+        case .lean:
+            return String(localized: "Lean",
+                          comment: "Goal photo body-fat level: abs clearly showing. A segment of a picker of up to 4: keep it short")
         }
     }
 
@@ -125,17 +144,30 @@ enum FatTarget: String, Codable, CaseIterable, Identifiable, Sendable {
         range(for: sex).map { ($0.lowerBound + $0.upperBound) / 2 }
     }
 
+    /// The band and what it shows, as one sentence each so the words can go
+    /// in any order: "About 12–14% body fat: upper abs faintly showing, …".
     func detail(for sex: GoalSex) -> String {
         guard let range = range(for: sex) else { return String(localized: "The body fat you have now.") }
-        let band = String(localized: "About \(Int(range.lowerBound))–\(Int(range.upperBound))% body fat",
-                          comment: "Goal photo body-fat band, e.g. About 12–14% body fat")
+        let low = Int(range.lowerBound), high = Int(range.upperBound)
         switch (self, sex) {
-        case (.fit, _): return band + String(localized: ": a flatter stomach, a trimmer waist.")
-        case (.athletic, .male): return band + String(localized: ": upper abs faintly showing, a narrower waist.")
-        case (.athletic, .female): return band + String(localized: ": a firm stomach, a faint line down the abs.")
-        case (.lean, .male): return band + String(localized: ": a clear six-pack, a narrow waist.")
-        case (.lean, .female): return band + String(localized: ": visible ab lines, toned arms and legs.")
-        default: return band + "."
+        case (.fit, _):
+            return String(localized: "About \(low)–\(high)% body fat: a flatter stomach, a trimmer waist.",
+                          comment: "Goal photo body-fat level Fit and its band, e.g. About 15–17% body fat: …")
+        case (.athletic, .male):
+            return String(localized: "About \(low)–\(high)% body fat: upper abs faintly showing, a narrower waist.",
+                          comment: "Goal photo body-fat level Athletic (men) and its band, e.g. About 12–14% body fat: …")
+        case (.athletic, .female):
+            return String(localized: "About \(low)–\(high)% body fat: a firm stomach, a faint line down the abs.",
+                          comment: "Goal photo body-fat level Athletic (women) and its band, e.g. About 19–21% body fat: …")
+        case (.lean, .male):
+            return String(localized: "About \(low)–\(high)% body fat: a clear six-pack, a narrow waist.",
+                          comment: "Goal photo body-fat level Lean (men) and its band, e.g. About 9–11% body fat: …")
+        case (.lean, .female):
+            return String(localized: "About \(low)–\(high)% body fat: visible ab lines, toned arms and legs.",
+                          comment: "Goal photo body-fat level Lean (women) and its band, e.g. About 16–18% body fat: …")
+        default:
+            return String(localized: "About \(low)–\(high)% body fat.",
+                          comment: "Goal photo body-fat band, e.g. About 12–14% body fat.")
         }
     }
 }
@@ -531,13 +563,24 @@ struct GoalProgress: Hashable, Sendable {
 // MARK: - Time words
 
 extension GoalProgress {
-    /// "about 6 weeks", "about 5 months", "over 2 years"
+    /// "about 6 weeks", "about 5 months", "over 2 years": put inside other
+    /// sentences ("… to go", the Sunday check-in), so lower case.
     static func timeLeft(weeks: Int) -> String {
-        if weeks <= 1 { return String(localized: "about a week") }
-        if weeks < 10 { return String(localized: "about \(weeks) weeks") }
+        if weeks <= 1 {
+            return String(localized: "about a week",
+                          comment: "Time left to the goal, put inside a sentence such as “… to go”: keep it lower case")
+        }
+        if weeks < 10 {
+            return String(localized: "about \(weeks) weeks",
+                          comment: "Time left to the goal, put inside a sentence such as “… to go”: keep it lower case")
+        }
         let months = Int((Double(weeks) / 4.345).rounded())
-        if months < 24 { return String(localized: "about \(months) months") }
-        return String(localized: "over 2 years")
+        if months < 24 {
+            return String(localized: "about \(months) months",
+                          comment: "Time left to the goal, put inside a sentence such as “… to go”: keep it lower case")
+        }
+        return String(localized: "over 2 years",
+                      comment: "Time left to the goal, put inside a sentence such as “… to go”: keep it lower case")
     }
 }
 
@@ -686,8 +729,10 @@ enum GoalReminder {
                                                        now: first, calendar: mondayFirst),
               progress.course != .paused else { return }
         let secondContent = UNMutableNotificationContent()
-        secondContent.title = String(localized: "Your goal is waiting")
-        secondContent.body = String(localized: "No sessions logged lately. Plan your next workout to get back on course.")
+        secondContent.title = String(localized: "Your goal is waiting",
+                                     comment: "Notification title: the Sunday goal check-in for a member who hasn't opened MUSQ for a week")
+        secondContent.body = String(localized: "No sessions logged lately. Plan your next workout to get back on course.",
+                                    comment: "Notification body: the Sunday goal check-in for a member who hasn't opened MUSQ for a week")
         secondContent.sound = .default
         for (id, (date, content)) in zip(ids, [(first, content(for: progress)), (second, secondContent)]) {
             let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
@@ -703,21 +748,26 @@ enum GoalReminder {
     static func content(for progress: GoalProgress) -> UNMutableNotificationContent {
         let content = UNMutableNotificationContent()
         content.sound = .default
-        content.title = String(localized: "Goal check-in")
+        content.title = String(localized: "Goal check-in", comment: "Notification title: the weekly goal check-in, Sunday evening")
         let done = progress.thisWeek?.done ?? 0
         let goal = progress.thisWeek?.goal ?? 0
         switch progress.course {
         case .reached:
-            content.title = String(localized: "You've reached your goal")
-            content.body = String(localized: "By the estimate, you're there. Take a new photo to see how far you've come.")
+            content.title = String(localized: "You've reached your goal",
+                                   comment: "Notification title, and the Goal page's heading, once the estimate reaches the goal")
+            content.body = String(localized: "By the estimate, you're there. Take a new photo to see how far you've come.",
+                                  comment: "Notification body: the Sunday goal check-in once the estimate reaches the goal")
         case .noSchedule:
-            content.title = String(localized: "Your goal needs a plan")
-            content.body = String(localized: "Set your training days, and MUSQ keeps you on course to your goal.")
+            content.title = String(localized: "Your goal needs a plan",
+                                   comment: "Notification title when no training days are set: the plan is the training days, not a subscription")
+            content.body = String(localized: "Set your training days, and MUSQ keeps you on course to your goal.",
+                                  comment: "Notification body when no training days are set")
         case .paused:
             content.body = ""
         case .starting:
             content.body = done == 0
-                ? String(localized: "Your goal's first week: no sessions logged yet. Plan your next workout to get going.")
+                ? String(localized: "Your goal's first week: no sessions logged yet. Plan your next workout to get going.",
+                         comment: "Weekly goal reminder in the first week, before any session")
                 : String(localized: "\(done) of \(goal) sessions in your goal's first week. Keep it going.",
                          comment: "Weekly goal reminder in the first week; sessions done of planned")
         case .offTrack:
@@ -728,14 +778,16 @@ enum GoalReminder {
                 content.body = String(localized: "\(done) of \(goal) sessions this week: \(GoalProgress.timeLeft(weeks: weeks)) to your goal at this pace. Every session brings it closer.",
                                       comment: "Weekly goal reminder; sessions done of planned, then time left, e.g. about 5 months")
             } else {
-                content.body = String(localized: "\(done) of \(goal) sessions this week. Every session brings your goal closer.")
+                content.body = String(localized: "\(done) of \(goal) sessions this week. Every session brings your goal closer.",
+                                      comment: "Weekly goal reminder when behind and no date can be said; sessions done of planned")
             }
         case .onTrack:
             if let weeks = progress.weeksLeft {
                 content.body = String(localized: "\(done) of \(goal) sessions this week. You're on course: \(GoalProgress.timeLeft(weeks: weeks)) to your goal.",
                                       comment: "Weekly goal reminder; sessions done of planned, then time left, e.g. about 14 weeks")
             } else {
-                content.body = String(localized: "\(done) of \(goal) sessions this week. You're on course to your goal.")
+                content.body = String(localized: "\(done) of \(goal) sessions this week. You're on course to your goal.",
+                                      comment: "Weekly goal reminder when on course and no date can be said; sessions done of planned")
             }
         }
         return content

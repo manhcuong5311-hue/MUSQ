@@ -197,24 +197,28 @@ struct HealthSettingsView: View {
     private var todayFacts: [Fact] {
         var facts: [Fact] = []
         if let steps = health.stepsTodayTotal {
-            facts.append(Fact(label: String(localized: "STEPS TODAY"), value: HealthFormat.steps(steps),
+            facts.append(Fact(label: String(localized: "STEPS TODAY", comment: "Apple Health settings: small label over today's figure, two to a row"),
+                              value: HealthFormat.steps(steps),
                               spoken: String(localized: "\(HealthFormat.steps(steps)) steps today", comment: "VoiceOver"),
                               tone: HealthTone.steps))
         }
         if let km = health.distanceTodayKm, km > 0 {
-            facts.append(Fact(label: String(localized: "DISTANCE"), value: HealthFormat.distance(km: km),
+            facts.append(Fact(label: String(localized: "DISTANCE", comment: "Apple Health settings: small label over today's figure, two to a row"),
+                              value: HealthFormat.distance(km: km),
                               spoken: String(localized: "Walked \(HealthFormat.distance(km: km)) today", comment: "VoiceOver"),
                               tone: HealthTone.steps))
         }
         if let night = health.lastNight {
-            facts.append(Fact(label: String(localized: "LAST NIGHT"), value: HealthFormat.sleep(minutes: night.asleepMinutes),
+            facts.append(Fact(label: String(localized: "LAST NIGHT", comment: "Apple Health settings: small label over last night's sleep, two to a row"),
+                              value: HealthFormat.sleep(minutes: night.asleepMinutes),
                               spoken: String(localized: "Slept \(HealthFormat.sleepSpoken(minutes: night.asleepMinutes)) last night",
                                              comment: "VoiceOver: Slept 7 hours 12 minutes last night"),
                               tone: HealthTone.sleep))
         }
         if let kcal = health.activeKcalToday, kcal > 0 {
             let value = String(localized: "\(Int(kcal.rounded()).formatted()) kcal", comment: "Active energy: 320 kcal")
-            facts.append(Fact(label: String(localized: "ACTIVE ENERGY"), value: value,
+            facts.append(Fact(label: String(localized: "ACTIVE ENERGY", comment: "Apple Health settings: small label over today's figure, two to a row"),
+                              value: value,
                               spoken: String(localized: "\(value) of active energy today", comment: "VoiceOver"),
                               tone: nil))
         }
@@ -283,7 +287,9 @@ struct HealthSettingsView: View {
                         .foregroundStyle(DS.silver.opacity(0.55))
                         .fixedSize(horizontal: false, vertical: true)
                     if health.access == .asked {
-                        WideButton(title: "Open the Health app", prominent: false) {
+                        WideButton(title: String(localized: "Open the Health app",
+                                                 comment: "Button: opens the Health app, where MUSQ's access is changed"),
+                                   prominent: false) {
                             HealthCopy.openHealthApp()
                         }
                         .dsCTA(alignment: .leading)
@@ -298,7 +304,8 @@ struct HealthSettingsView: View {
 
     private var accessNote: String {
         health.access == .asked
-            ? String(localized: "HealthKit doesn't tell apps when reading is turned off, so MUSQ just sees no data. To change what MUSQ can read, go to Settings › Privacy & Security › Health › MUSQ (or in the Health app, tap your picture › Apps › MUSQ).")
+            ? String(localized: "Apple Health doesn't tell apps when reading is turned off, so MUSQ just sees no data. To change what MUSQ can read, go to Settings › Privacy & Security › Health › MUSQ (or in the Health app, tap your picture › Apps › MUSQ).",
+                     comment: "Apple Health settings, under what MUSQ reads. The › paths are iOS menus: use iOS's own Vietnamese names")
             : String(localized: "You choose each one on Apple's sheet when you connect, and can change it later in the Health app.")
     }
 

@@ -544,7 +544,7 @@ struct MusclePresetView: View {
     private func recovery(_ record: MuscleTrainingRecord?, now: Date) -> some View {
         let detail: CGFloat = layout.isRegular ? 13 : 12
         return VStack(alignment: .leading, spacing: layout.isRegular ? 6 : 5) {
-            SectionEyebrow(text: "RECOVERY", size: layout.isRegular ? 10.5 : 9.5)
+            SectionEyebrow(text: String(localized: "RECOVERY"), size: layout.isRegular ? 10.5 : 9.5)
             MuscleStateLabel(state: MuscleCardState(record?.status))
             if let record, record.status == .partlyReady {
                 Text("\(RecoveryText.recovering(record.tiredParts.map(\.part))) · \(RecoveryText.ready(record.readyParts).lowercased())")
@@ -598,7 +598,7 @@ struct MusclePresetView: View {
     private var listHeader: some View {
         let regular = layout.isRegular
         return HStack {
-            SectionEyebrow(text: "EXERCISES", size: regular ? 10.5 : 9.5)
+            SectionEyebrow(text: String(localized: "EXERCISES"), size: regular ? 10.5 : 9.5)
             Spacer()
             if canSwapAll {
                 Button(action: shuffleAll) {
@@ -1342,7 +1342,7 @@ struct TargetEditorSheet: View {
                 .foregroundStyle(DS.silver.opacity(0.5))
                 .padding(.top, 12)
 
-            WideButton(title: "Save", prominent: true) {
+            WideButton(title: String(localized: "Save"), prominent: true) {
                 onSave(sets, RepRange(lower, upper))
                 dismiss()
             }

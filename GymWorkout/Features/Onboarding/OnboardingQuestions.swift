@@ -101,8 +101,12 @@ struct OnboardingQuestion: View {
                 ChoiceRow(label: String(localized: "HOW LONG AGO?"),
                           options: PostpartumStage.allCases.map { ($0, $0.title) },
                           selection: $draft.postpartumStage)
+                // Keyed: Today's "Not yet" is the weigh-in status, which a
+                // language may word differently.
                 ChoiceRow(label: String(localized: "HAS A DOCTOR OR MIDWIFE CLEARED YOU TO EXERCISE?"),
-                          options: [(true, String(localized: "Yes")), (false, String(localized: "Not yet"))],
+                          options: [(true, String(localized: "Yes")),
+                                    (false, String(localized: "onboarding.cleared.notYet", defaultValue: "Not yet",
+                                                   comment: "Answer to “Has a doctor or midwife cleared you to exercise?” after a birth"))],
                           selection: $draft.postpartumCleared)
                 ChoiceRow(label: String(localized: "ARE YOU BREASTFEEDING?"),
                           options: [(true, String(localized: "Yes")), (false, String(localized: "No"))],
@@ -118,7 +122,7 @@ struct OnboardingQuestion: View {
             title: String(localized: "What year were you born?"),
             caption: String(localized: "Metabolism slows a little with each decade, so age goes into your calorie estimate.")
         ) {
-            WheelBox(label: String(localized: "YEAR")) {
+            WheelBox(label: String(localized: "YEAR", comment: "Label over the birth-year wheel")) {
                 Picker("Year", selection: $draft.birthYear) {
                     ForEach(years, id: \.self) { Text(verbatim: "\($0)").tag($0) }
                 }
@@ -409,7 +413,7 @@ struct OnboardingQuestion: View {
                     ? String(localized: "We suggest the top of the healthy range for your height, or 10% less than now if that's closer: a good first milestone.")
                     : String(localized: "We suggest about 5% less than now. The target can't go under a BMI of 18.5.")
         ) {
-            WheelBox(label: String(localized: "TARGET")) {
+            WheelBox(label: String(localized: "TARGET", comment: "Label over the target-weight wheel")) {
                 Picker("Target weight", selection: targetInUnit(clampedTo: bounds)) {
                     ForEach(bounds, id: \.self) { Text("\($0) \(unit.symbol)").tag($0) }
                 }
@@ -678,7 +682,10 @@ struct OnboardingQuestion: View {
             set: { value.wrappedValue = inches ? Double($0) * 2.54 : Double($0) }
         )
         return Picker(label, selection: binding) {
-            ForEach(range, id: \.self) { Text(verbatim: inches ? "\($0) in" : "\($0) cm").tag($0) }
+            ForEach(range, id: \.self) {
+                (inches ? Text("\($0) in", comment: "Inches on the waist, neck or hips wheel: 32 in")
+                        : Text("\($0) cm")).tag($0)
+            }
         }
     }
 

@@ -551,7 +551,8 @@ struct BalanceSettingsView: View {
                                             comment: "How Balance scores sleep. The interpolation is the full-credit length, e.g. 7 h"))
                     explainRow("sum", tone: DS.silver.opacity(0.8),
                                title: String(localized: "Balance"),
-                               text: String(localized: "Half the average of the scored parts plus half the weakest, so lifting the weakest moves it most. It shows once two parts are scored: 80 and up is Strong, 65 On track, 45 Building, and under that Getting going. It rates what you do, never your results: your weight or key lifts sit beside it. Worked out on your \(DS.deviceNoun) each time and never saved. The weights and cut-offs are MUSQ's own."))
+                               text: String(localized: "Half the average of the scored parts plus half the weakest, so lifting the weakest moves it most. It shows once two parts are scored: 80 and up is Strong, 65 On track, 45 Building, and under that Getting going. It rates what you do, never your results: your weight or key lifts sit beside it. Worked out on your \(DS.deviceNoun) each time and never saved. The weights and cut-offs are MUSQ's own.",
+                                            comment: "How Balance is worked out. Strong, On track, Building and Getting going are the Balance words (use the score's translations); the interpolation is iPhone or iPad"))
                 }
                 .padding(.vertical, layout.value(14, 18))
                 .settingsCard(layout)

@@ -6,9 +6,9 @@
 //  priced "như cal ai"):
 //  - Premium: the common mistakes in the trainer, Preset 2 and 3 for every
 //    group, no ads, and the AI features at a starter allowance. Yearly in
-//    the MUSQ Premium subscription group, or a one-time lifetime unlock,
-//    sold for about a year to win users and then taken off sale (buyers
-//    keep it).
+//    the MUSQ Premium subscription group. The one-time lifetime unlock was
+//    taken off sale on 2026-11-23 (owner: "bỏ gói lifetime"); everyone who
+//    bought it keeps Premium.
 //  - Pro: everything in Premium with the full AI allowance. Monthly or
 //    yearly, in the same group at a higher level, so a yearly Premium
 //    member upgrades in place (Apple prorates) and nobody pays for both.
@@ -85,14 +85,16 @@ final class Purchases {
         /// the server doesn't count it: not in `premium`, so it's never a
         /// tier here either.
         static let monthly = "com.SamCorp.GymWorkout.premium.monthly"
+        /// Off sale since 2026-11-23: no longer loaded or offered, but a
+        /// purchase made before still counts (`premium`, `rank`), so its
+        /// buyers keep Premium for good.
         static let lifetime = "com.SamCorp.GymWorkout.removeads.lifetime"
         /// Pro, priced like Cal AI: 14.99 a month, 39.99 a year.
         static let proMonthly = "com.SamCorp.GymWorkout.pro.monthly"
         static let proYearly = "com.SamCorp.GymWorkout.pro.yearly"
-        /// What the app asks the App Store for. A product that isn't on sale
-        /// (yet, or any more, like lifetime later) doesn't come back, so it
-        /// isn't offered.
-        static let all = [proYearly, proMonthly, yearly, lifetime]
+        /// What the app asks the App Store for, so the only plans it can
+        /// offer. A product that isn't on sale yet doesn't come back either.
+        static let all = [proYearly, proMonthly, yearly]
         static let pro: Set<String> = [proMonthly, proYearly]
         /// Every paid product, Pro included: what counts as an entitlement,
         /// and what the server's check of the AI features is sent (see
@@ -134,11 +136,6 @@ final class Purchases {
         let environment = ProcessInfo.processInfo.environment
         if environment["DEBUG_PRO"] == "1" { return .pro }
         if environment["DEBUG_PREMIUM"] == "1" { return .premium }
-        #elseif AI_TESTFLIGHT
-        // TestFlight AI test builds (see AIService.isTestFlight): Pro isn't on
-        // sale in App Store Connect yet, so the app's own gates open in
-        // TestFlight installs; the server only serves testers/{uid}.
-        if AIService.isTestFlight { return .pro }
         #endif
         return activePlan.map(ProductID.tier(of:)) ?? .free
     }
@@ -189,7 +186,6 @@ final class Purchases {
 
     var yearly: Product? { products.first { $0.id == ProductID.yearly } }
     var monthly: Product? { products.first { $0.id == ProductID.monthly } }
-    var lifetime: Product? { products.first { $0.id == ProductID.lifetime } }
     var proYearly: Product? { products.first { $0.id == ProductID.proYearly } }
     var proMonthly: Product? { products.first { $0.id == ProductID.proMonthly } }
 
@@ -334,4 +330,17 @@ enum AppLinks {
     static let support = URL(string: "https://musq.app/support/")!
     static let supportEmail = "manhcuong531@gmail.com"
     static let supportMail = URL(string: "mailto:\(supportEmail)?subject=MUSQ%20Support")!
+
+    /// A mail to `supportEmail` with this subject and body, encoded for a
+    /// mailto link (RFC 6068: only unreserved ASCII as it is, line breaks as
+    /// CRLF). The body is cut to `limit` characters, so the link stays a
+    /// length any mail app opens: a Vietnamese letter takes up to nine
+    /// characters once encoded.
+    static func mail(subject: String, body: String, limit: Int = 1_500) -> URL? {
+        let unreserved = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
+        func encoded(_ text: String) -> String { text.addingPercentEncoding(withAllowedCharacters: unreserved) ?? "" }
+        let cut = body.count > limit ? String(body.prefix(limit)) + "…" : body
+        let text = cut.replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\n", with: "\r\n")
+        return URL(string: "mailto:\(supportEmail)?subject=\(encoded(subject))&body=\(encoded(text))")
+    }
 }
