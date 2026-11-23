@@ -1,0 +1,8 @@
+{
+  "indexes": [],
+  "fieldOverrides": [
+    { "collectionGroup": "chat", "fieldPath": "expireAt", "ttl": true, "indexes": [] },
+    { "collectionGroup": "meal", "fieldPath": "expireAt", "ttl": true, "indexes": [] },
+    { "collectionGroup": "goalPhoto", "fieldPath": "expireAt", "ttl": true, "indexes": [] }
+  ]
+}
