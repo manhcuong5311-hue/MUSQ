@@ -8,7 +8,7 @@ subtitle, black device with an orange glow):
 2. Meal scan, Cal AI style (a phở photo over the AI's read meal), MUSQ Pro
 3. Ask MUSQ, the AI coach, Premium or Pro
 4. Meals + the calorie and macro plan
-5. A lift in 3D with key tips (Back Squat; Barbell Bench Press for the iPhone VI shot, where two squat tips overlap)
+5. A lift in 3D with key tips (Back Squat; Dumbbell Romanian Deadlift for the iPhone VI shot, where squat and bench tips overlap at 402 pt)
 6. Progress › Strength (estimated 1RM, records)
 
 Output sizes: iPhone 1290x2796 (6.9"), iPad 2064x2752 (13", portrait).
@@ -35,9 +35,16 @@ The finished set from 2026-11-23 is on the owner's Desktop in
   then launch with `-mealscan.preview phoBowl -mealscan.photo pho.jpg`. The
   2026-11-23 photo is Pexels 29305882 ("Delicious Vietnamese Pho Bo with Fresh
   Herbs", free Pexels license). It is not in the repo.
+- Coach chat: `-coach.open` opens the chat a second after launch (DEBUG),
+  so a simulator the session can't tap still gets the shot. To hide the
+  "Connect Apple Health" card on a sim without Health access, set
+  `today.healthInvite.dismissed` true in the app's preferences plist.
 - `shoot.sh SIM en|vi OUT.png WAIT [launch args]` relaunches with Pro (no
   ads) in that language and saves a screenshot. Set the clock first:
-  `xcrun simctl status_bar SIM override --time 9:41 ...`, and clear it after.
+  `xcrun simctl status_bar SIM override --time 9:41 --batteryState discharging
+  --batteryLevel 100` (iPhone; the 2026-11-23 iPad set used `charged`), and
+  clear it after. The screens say "Good evening" after 17:00, so a full
+  re-shoot is better done with the clock near the real time.
 - Save the raw shots as `raw/iphone_<lang>_<n>.png` and
   `raw/ipad_<lang>_<n>.png` (gitignored).
 

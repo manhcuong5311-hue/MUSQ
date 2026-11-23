@@ -172,6 +172,16 @@ struct TodayView: View {
                 .environment(store)
                 .environment(purchases)
         }
+        #if DEBUG
+        // `-coach.open` (2026-11-23): the coach chat opens a second after
+        // launch, so App Store shots can be taken with no tap (a simulator
+        // the session can't drive). Premium or Pro only, as the bar is.
+        .task {
+            guard ProcessInfo.processInfo.arguments.contains("-coach.open"), purchases.isPremium else { return }
+            try? await Task.sleep(for: .seconds(1))
+            if chat == nil { chat = ChatRequest(question: nil) }
+        }
+        #endif
         .sheet(isPresented: $showsBalance, onDismiss: runAfterBalance) {
             // Worked out again here, so the sheet follows what changes under it.
             BalanceSheet(balance: currentBalance(now: Date()),
