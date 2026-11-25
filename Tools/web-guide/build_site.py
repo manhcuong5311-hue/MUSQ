@@ -256,6 +256,10 @@ def header():
 </div></header>'''
 
 
+# Cloudflare Web Analytics: cookie-free page view counts (dashboard in the owner's
+# Cloudflare account). Also pasted into support/, privacy.html and terms.html.
+ANALYTICS = '<!-- Cloudflare Web Analytics --><script type=\'module\' src=\'https://static.cloudflareinsights.com/beacon.min.js\' data-cf-beacon=\'{"token": "762767673e1244c3a251162c6a4b8764"}\'></script><!-- End Cloudflare Web Analytics -->'
+
 # MUSQ's social accounts: footer icons, and sameAs in the home page's Organization data.
 SOCIAL = [
     ('YouTube', 'https://www.youtube.com/@musq-3dgymapp',
@@ -281,6 +285,7 @@ def footer():
   <nav aria-label="Footer"><a href="{HUB}">3D exercise guide</a><a href="{LIBRARY}">All exercises</a><a href="/support/">Support</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav>
   <p>© 2026 MUSQ by Cuong Sam Manh. 3D models, animations and form content are the property of MUSQ and may not be reused or redistributed.</p>
 </div></footer>
+{ANALYTICS}
 </body>
 </html>
 '''
