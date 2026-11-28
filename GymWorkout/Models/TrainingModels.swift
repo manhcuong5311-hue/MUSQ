@@ -411,8 +411,15 @@ enum FitnessGoal: String, Codable, CaseIterable, Identifiable {
 /// The onboarding answers. Experience lives on the store next to it, since
 /// recovery reads it on its own.
 /// How the week's sessions divide the body.
+///
+/// Full Body, Bro split and Custom came with the schedule editor
+/// (2026-11-27). Builds before it only know the first three and would set
+/// the whole workouts file aside on an unknown value, so `UserProfile.split`
+/// only ever stores `legacy`; the real choice lives in
+/// `UserProfile.schedule`, a key those builds skip.
 enum TrainingSplit: String, Codable, CaseIterable, Identifiable {
     case upperLower, frontBack, pushPullLegs
+    case fullBody, bro, custom
 
     var id: String { rawValue }
 
@@ -421,7 +428,108 @@ enum TrainingSplit: String, Codable, CaseIterable, Identifiable {
         case .upperLower: return String(localized: "Upper / Lower", comment: "Training split")
         case .frontBack: return String(localized: "Front / Back", comment: "Training split")
         case .pushPullLegs: return String(localized: "Push / Pull / Legs", comment: "Training split")
+        case .fullBody: return String(localized: "Full Body", comment: "Training split: the whole body every session")
+        case .bro: return String(localized: "Bro split", comment: "Training split: chest, back, legs, shoulders, arms on their own days")
+        case .custom: return String(localized: "Custom", comment: "Training split the user builds")
         }
+    }
+
+    /// Known to builds before the schedule editor.
+    var isLegacy: Bool { self == .upperLower || self == .frontBack || self == .pushPullLegs }
+
+    /// The nearest split older builds know, the only kind written to
+    /// `UserProfile.split`: full body trains front and back each session,
+    /// a bro or custom week reads closest to push / pull / legs.
+    var legacy: TrainingSplit {
+        switch self {
+        case .upperLower, .frontBack, .pushPullLegs: return self
+        case .fullBody: return .frontBack
+        case .bro, .custom: return .pushPullLegs
+        }
+    }
+}
+
+// MARK: - Schedule
+
+/// One day the user built for a Custom split: a name and its groups.
+struct ScheduleDay: Codable, Hashable, Identifiable {
+    var id = UUID()
+    var name: String
+    var groups: [MuscleGroup]
+}
+
+/// A date picked by hand in the By-date schedule: a rest day, or a day's
+/// groups. The groups are a copy, so a later change of split doesn't
+/// rewrite a date already planned.
+struct DatedPlan: Codable, Hashable {
+    var isRest: Bool
+    var name: String? = nil
+    var groups: [MuscleGroup] = []
+
+    static let rest = DatedPlan(isRest: true)
+}
+
+/// How the user's training week runs (2026-11-27). Weekly: training
+/// weekdays, every other day a rest day, the split's days laid on them in
+/// turn. By date: the same week, with single dates set by hand on top.
+/// Profiles saved before it have none; `ProgramAdvisor.schedule(for:)`
+/// reads their split and weekdays as a weekly schedule.
+struct TrainingSchedule: Codable, Hashable {
+    enum Mode: String, Codable, CaseIterable, Identifiable {
+        case weekly, byDate
+        var id: String { rawValue }
+    }
+
+    var mode: Mode = .weekly
+    var split: TrainingSplit = .pushPullLegs
+    /// Training days, as `Calendar` weekday numbers (1 = Sunday); the rest
+    /// of the week is rest. Empty in a By-date schedule with no weekly days.
+    var weekdays: [Int] = []
+    /// A Custom split's days, in rotation order.
+    var customDays: [ScheduleDay] = []
+    /// Dates set by hand, keyed by `key(for:)`. Only read in By-date mode.
+    var dated: [String: DatedPlan] = [:]
+    /// The week the rotation counts from, so it runs on across weeks when
+    /// the days don't divide the week evenly. Nil reads as a fixed Monday.
+    var anchor: Date? = nil
+
+    init(mode: Mode = .weekly, split: TrainingSplit = .pushPullLegs, weekdays: [Int] = [],
+         customDays: [ScheduleDay] = [], dated: [String: DatedPlan] = [:], anchor: Date? = nil) {
+        self.mode = mode
+        self.split = split
+        self.weekdays = weekdays
+        self.customDays = customDays
+        self.dated = dated
+        self.anchor = anchor
+    }
+
+    private enum CodingKeys: String, CodingKey { case mode, split, weekdays, customDays, dated, anchor }
+
+    /// Every field optional, and a value a later build adds (a new split,
+    /// a new muscle group) falls back rather than failing the profile.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        mode = (try? c.decodeIfPresent(Mode.self, forKey: .mode)) ?? .weekly
+        split = (try? c.decodeIfPresent(TrainingSplit.self, forKey: .split)) ?? .pushPullLegs
+        weekdays = ((try? c.decodeIfPresent([Int].self, forKey: .weekdays)) ?? []).filter { (1...7).contains($0) }
+        customDays = (try? c.decodeIfPresent([ScheduleDay].self, forKey: .customDays)) ?? []
+        dated = (try? c.decodeIfPresent([String: DatedPlan].self, forKey: .dated)) ?? [:]
+        anchor = try? c.decodeIfPresent(Date.self, forKey: .anchor)
+    }
+
+    /// "2026-11-27", in the calendar's own time zone.
+    static func key(for date: Date, calendar: Calendar = .current) -> String {
+        let parts = calendar.dateComponents([.year, .month, .day], from: date)
+        return String(format: "%04d-%02d-%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0)
+    }
+
+    /// Drops hand-set dates more than `days` before `now`, so the list
+    /// doesn't grow forever.
+    mutating func pruneDated(before now: Date = Date(), keepingDays days: Int = 30, calendar: Calendar = .current) {
+        guard let cutoff = calendar.date(byAdding: .day, value: -days, to: calendar.startOfDay(for: now)) else { return }
+        let cutoffKey = Self.key(for: cutoff, calendar: calendar)
+        // The keys sort as dates.
+        dated = dated.filter { $0.key >= cutoffKey }
     }
 }
 
@@ -449,6 +557,27 @@ struct UserProfile: Codable, Hashable {
     var weekdays: [Int]? = nil
     var health: HealthAnswers? = nil
     var measurements: BodyMeasurements? = nil
+    /// The schedule editor's week (2026-11-27). Nil in profiles saved
+    /// before it, and until the schedule is first saved.
+    var schedule: TrainingSchedule? = nil
+
+    /// Saves a schedule and keeps the fields others read in step with it:
+    /// `weekdays` (Today's training days), `daysPerWeek`, and `split` as the
+    /// nearest split older builds know (see `TrainingSplit.legacy`). A
+    /// By-date schedule with no weekly days leaves `weekdays` nil, which
+    /// Today reads as any day being a training day.
+    mutating func apply(_ schedule: TrainingSchedule) {
+        var schedule = schedule
+        schedule.pruneDated()
+        self.schedule = schedule
+        split = schedule.split.legacy
+        if schedule.weekdays.isEmpty {
+            weekdays = nil
+        } else {
+            weekdays = schedule.weekdays.sorted()
+            daysPerWeek = schedule.weekdays.count
+        }
+    }
 
     /// Age this year, from the birth year.
     func age(at date: Date = Date(), calendar: Calendar = .current) -> Int? {

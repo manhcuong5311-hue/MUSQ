@@ -32,8 +32,43 @@ struct ExerciseLibraryView: View {
 
     @Environment(\.dsLayout) private var layout
 
+    /// The user's gear; lifts needing something else are dimmed to the
+    /// bottom or hidden (see `EquipmentCatalog`).
+    @State private var gear = EquipmentStore.shared
+    @State private var showGearSetup = false
+
+    /// Everything the list shows, gear-ready lifts first. Each part keeps
+    /// the library's own order.
     private var visible: [Exercise] {
-        SampleData.exercises.filter { inScope($0) && fits($0, level) && matchesQuery($0) }
+        let parts = visibleParts
+        return parts.ready + parts.missing
+    }
+
+    /// The listed lifts split by gear: `missing` is empty when hiding.
+    private var visibleParts: (ready: [Exercise], missing: [Exercise]) {
+        var ready: [Exercise] = []
+        var missing: [Exercise] = []
+        for exercise in SampleData.exercises where inScope(exercise) && fits(exercise, level) && matchesQuery(exercise) {
+            if gear.canDo(exercise) {
+                ready.append(exercise)
+            } else if gear.mode == .dim {
+                missing.append(exercise)
+            }
+        }
+        return (ready, missing)
+    }
+
+    /// Lifts the filters match that the gear rules out, for the hide count.
+    private var hiddenCount: Int {
+        guard gear.mode == .hide else { return 0 }
+        return SampleData.exercises.filter {
+            inScope($0) && fits($0, level) && matchesQuery($0) && !gear.canDo($0)
+        }.count
+    }
+
+    /// Dimmed lifts are still listed, so they count; hidden ones don't.
+    private func listed(_ exercise: Exercise) -> Bool {
+        gear.mode == .dim || gear.canDo(exercise)
     }
 
     // Each filter on its own, so a count can leave one out: a chip counts
@@ -62,15 +97,15 @@ struct ExerciseLibraryView: View {
     }
 
     private func count(in group: MuscleGroupName) -> Int {
-        SampleData.exercises.filter { inGroup($0, group) && fits($0, level) && matchesQuery($0) }.count
+        SampleData.exercises.filter { inGroup($0, group) && fits($0, level) && matchesQuery($0) && listed($0) }.count
     }
 
     private var savedCount: Int {
-        SampleData.exercises.filter { store.isSaved($0.name) && fits($0, level) && matchesQuery($0) }.count
+        SampleData.exercises.filter { store.isSaved($0.name) && fits($0, level) && matchesQuery($0) && listed($0) }.count
     }
 
     private func count(at level: Difficulty?) -> Int {
-        SampleData.exercises.filter { inScope($0) && fits($0, level) && matchesQuery($0) }.count
+        SampleData.exercises.filter { inScope($0) && fits($0, level) && matchesQuery($0) && listed($0) }.count
     }
 
     var body: some View {
@@ -117,6 +152,18 @@ struct ExerciseLibraryView: View {
             .toolbar(.hidden, for: .navigationBar)
         }
         .tint(DS.silver)
+        .sheet(isPresented: $showGearSetup) {
+            EquipmentSetupView()
+        }
+        .onAppear {
+            // The first open of the tab asks what gear the user has.
+            if !gear.hasChosen { showGearSetup = true }
+        }
+        .onChange(of: showGearSetup) { _, shown in
+            // Swiped away the first time: keep every lift (full gym) and
+            // don't ask again — My equipment is in the filter menu.
+            if !shown && !gear.hasChosen { gear.hasChosen = true }
+        }
     }
 
     // MARK: - Search
@@ -163,6 +210,25 @@ struct ExerciseLibraryView: View {
                 levelOption(nil)
                 ForEach(Difficulty.allCases, id: \.self) { levelOption($0) }
             }
+            Section("Equipment") {
+                Button {
+                    showGearSetup = true
+                } label: {
+                    Label(String(localized: "My equipment"), systemImage: "dumbbell")
+                    Text(gearSummary)
+                }
+                ForEach(EquipmentStore.Mode.allCases) { option in
+                    Button {
+                        withAnimation(.easeOut(duration: 0.18)) { gear.mode = option }
+                    } label: {
+                        if gear.mode == option {
+                            Label(option.title, systemImage: "checkmark")
+                        } else {
+                            Text(option.title)
+                        }
+                    }
+                }
+            }
         } label: {
             Image(systemName: "line.3.horizontal.decrease")
                 .font(.system(size: 14, weight: .semibold))
@@ -200,6 +266,9 @@ struct ExerciseLibraryView: View {
         HStack {
             MetaLine(text: resultText, em: 0.08)
             Spacer()
+            if gear.mode == .hide && !gear.hasEverything {
+                gearButton()
+            }
             if let level {
                 clearLevelButton(level)
             }
@@ -208,8 +277,89 @@ struct ExerciseLibraryView: View {
         .padding(.horizontal, DS.Metric.gutter)
     }
 
+    /// "12 SHOWN · 4 DIMMED" when gear dims some, "12 EXERCISES · 4 HIDDEN"
+    /// when it hides them, else the plain count.
     private var resultText: String {
-        visible.count == 1 ? String(localized: "1 EXERCISE") : String(localized: "\(visible.count) EXERCISES")
+        let parts = visibleParts
+        let shown = parts.ready.count
+        if !parts.missing.isEmpty {
+            return String(localized: "\(shown) SHOWN · \(parts.missing.count) DIMMED",
+                          comment: "Exercise library count: lifts the user's gear allows, and lifts dimmed for missing gear")
+        }
+        let hidden = hiddenCount
+        let base = shown == 1 ? String(localized: "1 EXERCISE") : String(localized: "\(shown) EXERCISES")
+        if hidden > 0 {
+            return base + " · " + String(localized: "\(hidden) HIDDEN",
+                                         comment: "Exercise library: lifts hidden because the user lacks the equipment")
+        }
+        return base
+    }
+
+    /// The filter menu's line under My equipment.
+    private var gearSummary: String {
+        if let preset = gear.matchingPreset { return preset.title }
+        return String(localized: "\(gear.owned.count) items")
+    }
+
+    /// A small capsule that opens My equipment, beside the count when gear
+    /// is dimming or hiding lifts.
+    private func gearButton(size: CGFloat = 9) -> some View {
+        Button {
+            showGearSetup = true
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: "dumbbell")
+                    .font(.system(size: size, weight: .bold))
+                Text("MY GEAR")
+                    .font(.mono(size, .semibold))
+                    .trackingEm(0.09, size: size)
+            }
+            .foregroundStyle(DS.silver.opacity(0.75))
+            .padding(.horizontal, 9)
+            .padding(.vertical, 6)
+            .background(Capsule().fill(DS.silver.opacity(0.08)))
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .dsHover(.highlight)
+        .accessibilityLabel("My equipment")
+    }
+
+    /// "No smith machine" — what keeps a dimmed lift out of reach.
+    private func missingPill(_ exercise: Exercise) -> some View {
+        let missing = gear.missing(for: exercise)
+        let first = missing.first?.title ?? ""
+        let text = missing.count > 1
+            ? String(localized: "No \(first) +\(missing.count - 1)",
+                     comment: "Dimmed exercise: the first missing equipment and how many more")
+            : String(localized: "No \(first)", comment: "Dimmed exercise: the equipment the user doesn't have")
+        return Text(text.uppercased())
+            .font(.mono(8.5, .semibold))
+            .trackingEm(0.06, size: 8.5)
+            .foregroundStyle(DS.silver.opacity(0.8))
+            .lineLimit(1)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 4)
+            .background(Capsule().fill(DS.glass(0.85)))
+            .overlay(Capsule().strokeBorder(DS.silver.opacity(0.12), lineWidth: 1))
+            .accessibilityHidden(true)
+    }
+
+    private func missingHint(_ exercise: Exercise) -> String {
+        let names = gear.missing(for: exercise).map(\.title).joined(separator: ", ")
+        return String(localized: "Needs \(names)", comment: "VoiceOver: equipment a dimmed exercise needs")
+    }
+
+    /// The divider above the dimmed lifts.
+    private var missingHeader: some View {
+        HStack(spacing: 8) {
+            SectionEyebrow(text: "NEEDS EQUIPMENT YOU DON'T HAVE")
+            Spacer(minLength: 8)
+            gearButton()
+        }
+        .padding(.top, 18)
+        .padding(.bottom, 4)
+        .accessibilityAddTraits(.isHeader)
     }
 
     /// `size` is the label's mono size: 9 beside the phone's result line,
@@ -271,17 +421,18 @@ struct ExerciseLibraryView: View {
 
     private var list: some View {
         ScrollView(showsIndicators: false) {
+            let parts = visibleParts
             LazyVStack(spacing: 10) {
-                ForEach(visible) { exercise in
-                    Button {
-                        path.append(exercise)
-                    } label: {
-                        ExerciseRow(exercise: exercise, isSaved: store.isSaved(exercise.name),
-                                    caution: store.safety.tag(for: exercise.name))
-                    }
-                    .buttonStyle(.plain)
+                ForEach(parts.ready) { exercise in
+                    row(exercise, dimmed: false)
                 }
-                if visible.isEmpty {
+                if !parts.missing.isEmpty {
+                    missingHeader
+                    ForEach(parts.missing) { exercise in
+                        row(exercise, dimmed: true)
+                    }
+                }
+                if parts.ready.isEmpty && parts.missing.isEmpty {
                     Text(savedOnly && query.isEmpty
                          ? "Tap the heart on any exercise to save it here."
                          : "No exercises match.")
@@ -294,6 +445,24 @@ struct ExerciseLibraryView: View {
             .padding(.horizontal, DS.Metric.gutter)
             .padding(.bottom, 8)
         }
+    }
+
+    /// A phone row; a dimmed one still opens, so the lift can be studied.
+    private func row(_ exercise: Exercise, dimmed: Bool) -> some View {
+        Button {
+            path.append(exercise)
+        } label: {
+            ExerciseRow(exercise: exercise, isSaved: store.isSaved(exercise.name),
+                        caution: store.safety.tag(for: exercise.name))
+                .opacity(dimmed ? 0.4 : 1)
+                .overlay(alignment: .bottomTrailing) {
+                    if dimmed {
+                        missingPill(exercise).padding(.bottom, 14)
+                    }
+                }
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(dimmed ? missingHint(exercise) : "")
     }
 
     // MARK: - Regular (iPad)
@@ -353,6 +522,9 @@ struct ExerciseLibraryView: View {
                     if !layout.isWide, let level {
                         clearLevelButton(level, size: 10)
                             .transition(.opacity)
+                    }
+                    if !layout.isWide && gear.mode == .hide && !gear.hasEverything {
+                        gearButton(size: 10)
                     }
                 }
                 .frame(minHeight: 22, alignment: .leading)
@@ -501,6 +673,27 @@ struct ExerciseLibraryView: View {
                     level = option
                 }
             }
+
+            railEyebrow("EQUIPMENT")
+                .padding(.top, 18)
+
+            railRow(String(localized: "My equipment"), detail: gearSummary, isOn: false) {
+                Image(systemName: "dumbbell")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(DS.silver.opacity(0.55))
+            } action: {
+                showGearSetup = true
+            }
+
+            ForEach(EquipmentStore.Mode.allCases) { option in
+                railRow(option.title, detail: "", isOn: gear.mode == option) {
+                    Image(systemName: option == .dim ? "circle.lefthalf.filled" : "eye.slash")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(DS.silver.opacity(gear.mode == option ? 1 : 0.55))
+                } action: {
+                    gear.mode = option
+                }
+            }
         }
         .padding(10)
     }
@@ -520,6 +713,19 @@ struct ExerciseLibraryView: View {
         @ViewBuilder glyph: () -> Glyph,
         action: @escaping () -> Void
     ) -> some View {
+        railRow(title, detail: "\(count)",
+                accessibility: count == 1 ? String(localized: "\(title), 1 exercise")
+                                          : String(localized: "\(title), \(count) exercises"),
+                isOn: isOn, glyph: glyph, action: action)
+    }
+
+    /// The same row with any short text on the trailing side (the equipment
+    /// rows show the preset name, or nothing).
+    private func railRow<Glyph: View>(
+        _ title: String, detail: String, accessibility: String? = nil, isOn: Bool,
+        @ViewBuilder glyph: () -> Glyph,
+        action: @escaping () -> Void
+    ) -> some View {
         Button {
             withAnimation(.easeOut(duration: 0.18)) { action() }
         } label: {
@@ -531,10 +737,11 @@ struct ExerciseLibraryView: View {
                     .foregroundStyle(isOn ? DS.silver : DS.silver.opacity(0.6))
                     .lineLimit(1)
                 Spacer(minLength: 8)
-                Text("\(count)")
+                Text(detail)
                     .font(.mono(10.5, .semibold))
                     .trackingEm(0.04, size: 10.5)
                     .foregroundStyle(DS.silver.opacity(isOn ? 0.6 : 0.35))
+                    .lineLimit(1)
             }
             .padding(.horizontal, 12)
             .frame(height: 44)
@@ -548,14 +755,14 @@ struct ExerciseLibraryView: View {
         }
         .buttonStyle(.plain)
         .dsHover(.highlight, radius: 12)
-        .accessibilityLabel(count == 1 ? "\(title), 1 exercise" : "\(title), \(count) exercises")
+        .accessibilityLabel(accessibility ?? (detail.isEmpty ? title : "\(title), \(detail)"))
         .accessibilityAddTraits(isOn ? .isSelected : [])
     }
 
     // MARK: Grid
 
     private var grid: some View {
-        let items = visible
+        let parts = visibleParts
         let spacing: CGFloat = 16
         let inset = gridInsets
         let measured = gridWidth > 0 ? gridWidth : fallbackGridWidth
@@ -570,13 +777,22 @@ struct ExerciseLibraryView: View {
 
         return ScrollView(showsIndicators: false) {
             Group {
-                if items.isEmpty {
+                if parts.ready.isEmpty && parts.missing.isEmpty {
                     emptyState
                 } else {
                     LazyVGrid(columns: DS.flexibleColumns(columns, spacing: spacing),
                               alignment: .leading, spacing: 24) {
-                        ForEach(items) { exercise in
+                        ForEach(parts.ready) { exercise in
                             card(exercise)
+                        }
+                        if !parts.missing.isEmpty {
+                            Section {
+                                ForEach(parts.missing) { exercise in
+                                    card(exercise, dimmed: true)
+                                }
+                            } header: {
+                                missingHeader
+                            }
                         }
                     }
                     .frame(maxWidth: widest, alignment: .leading)
@@ -604,14 +820,21 @@ struct ExerciseLibraryView: View {
         return max(0, layout.containerWidth - rail)
     }
 
-    private func card(_ exercise: Exercise) -> some View {
+    private func card(_ exercise: Exercise, dimmed: Bool = false) -> some View {
         let isSaved = store.isSaved(exercise.name)
         return Button {
             path.append(exercise)
         } label: {
             ExerciseCard(exercise: exercise, isSaved: isSaved, caution: store.safety.tag(for: exercise.name))
+                .opacity(dimmed ? 0.4 : 1)
+                .overlay(alignment: .topLeading) {
+                    if dimmed {
+                        missingPill(exercise).padding(10)
+                    }
+                }
         }
         .buttonStyle(CardPressStyle())
+        .accessibilityHint(dimmed ? missingHint(exercise) : "")
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 20, style: .continuous))
         .contextMenu {
             Button {

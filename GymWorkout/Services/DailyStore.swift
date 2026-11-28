@@ -43,6 +43,8 @@ final class DailyStore {
     private(set) var sleepEstimates: [SleepEstimate] = []
     /// Walks the user added themselves.
     private(set) var stepEntries: [StepsEntry] = []
+    /// Nights the user logged by hand (hours slept), one a day.
+    private(set) var sleepLogs: [SleepLog] = []
     /// Weeks left out of Balance (sick, travel, deload), by the day key of
     /// the week's first day.
     private(set) var pausedWeeks: Set<String> = []
@@ -441,6 +443,54 @@ final class DailyStore {
         return sleepEstimates.last { $0.day == key }
     }
 
+    // MARK: - Sleep logged by hand
+
+    /// The longest night a log takes, in minutes.
+    static let sleepLogRange = 30...(16 * 60)
+
+    /// Logs the night the user woke from on `day` (logging again replaces
+    /// it). Balance's estimate for that night follows, so its Sleep pillar
+    /// reads the same night.
+    func logSleep(minutes: Int, on day: Date = Date()) {
+        let minutes = min(max(minutes, Self.sleepLogRange.lowerBound), Self.sleepLogRange.upperBound)
+        let key = DayKey.make(day, calendar: calendar)
+        sleepLogs.removeAll { $0.day == key }
+        sleepLogs.append(SleepLog(day: key, minutes: minutes))
+        sleepLogs.sort { $0.day < $1.day }
+        sleepEstimates.removeAll { $0.day == key }
+        sleepEstimates.append(SleepEstimate(day: key, band: SleepEstimate.Band(minutes: minutes)))
+        sleepEstimates.sort { $0.day < $1.day }
+        save()
+    }
+
+    /// Removes the night's log, and Balance's estimate with it only when it
+    /// is still the one the log set (one chosen in Balance afterwards stays).
+    func clearSleepLog(on day: Date) {
+        let key = DayKey.make(day, calendar: calendar)
+        let logged = sleepLogs.last { $0.day == key }
+        sleepLogs.removeAll { $0.day == key }
+        if let logged {
+            let band = SleepEstimate.Band(minutes: logged.minutes)
+            sleepEstimates.removeAll { $0.day == key && $0.band == band }
+        }
+        save()
+    }
+
+    func sleepLog(on day: Date) -> SleepLog? {
+        let key = DayKey.make(day, calendar: calendar)
+        return sleepLogs.last { $0.day == key }
+    }
+
+    // MARK: - Journey
+
+    /// The first day anything was logged here (water, a weigh-in, a meal, a
+    /// walk, a night), for where Today's journey line starts.
+    var firstLogDay: Date? {
+        let dates = [water.first?.date, weights.first?.date, meals.first?.date, stepEntries.first?.date,
+                     sleepLogs.first.flatMap { DayKey.date($0.day, calendar: calendar) }].compactMap { $0 }
+        return dates.min().map { calendar.startOfDay(for: $0) }
+    }
+
     // MARK: - Steps added by hand
 
     func addSteps(_ steps: Int, minutes: Int? = nil, at date: Date = Date()) {
@@ -513,6 +563,8 @@ final class DailyStore {
         var waterPresets: [Int]?
         var checkInReminder: CheckInReminder?
         var bedtimeReminder: BedtimeReminder?
+        /// Nights logged by hand (2026-11-27); absent in older files.
+        var sleepLogs: [SleepLog]?
     }
 
     static var defaultFileURL: URL {
@@ -551,6 +603,11 @@ final class DailyStore {
         if let presets = snapshot.waterPresets, !presets.isEmpty { waterPresets = presets }
         checkInReminder = snapshot.checkInReminder ?? CheckInReminder()
         bedtimeReminder = snapshot.bedtimeReminder ?? BedtimeReminder()
+        sleepLogs = (snapshot.sleepLogs ?? []).map { item in
+            var item = item
+            item.day = DayKey.normalized(item.day, calendar: calendar)
+            return item
+        }.sorted { $0.day < $1.day }
         isLoading = false
     }
 
@@ -559,7 +616,8 @@ final class DailyStore {
                                 waterReminder: waterReminder, weighInReminder: weighInReminder,
                                 checkIns: checkIns, sleepEstimates: sleepEstimates, stepEntries: stepEntries,
                                 pausedWeeks: pausedWeeks.sorted(), waterPresets: waterPresets,
-                                checkInReminder: checkInReminder, bedtimeReminder: bedtimeReminder)
+                                checkInReminder: checkInReminder, bedtimeReminder: bedtimeReminder,
+                                sleepLogs: sleepLogs)
         do {
             try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(),
                                                     withIntermediateDirectories: true)

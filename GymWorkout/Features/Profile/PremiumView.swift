@@ -252,7 +252,8 @@ struct PremiumView: View {
         // this headline is for when Pro isn't on sale.
         case .coach:
             return (String(localized: "Ask MUSQ about your training"),
-                    String(localized: "Premium adds the Ask MUSQ coach for your training questions, up to \(Purchases.Tier.premium.ai?.chatPerDay ?? 0) a day, plus the common mistakes, more presets and no ads."))
+                    String(localized: "Ask MUSQ is free for \(Purchases.AILimits.freeChatPerDay) questions a day. Premium gives you up to \(Purchases.Tier.premium.chatPerDay) a day, plus the common mistakes, more presets and no ads.",
+                           comment: "Premium sheet, opened from Ask MUSQ: free questions a day, then Premium's"))
         case .mealScan:
             return (String(localized: "Log a meal with a photo"),
                     String(localized: "Meal scans come with MUSQ Pro, which isn't on sale right now. Premium adds the coach, the common mistakes, more presets and no ads."))
@@ -282,7 +283,8 @@ struct PremiumView: View {
         // isn't on sale: then Premium's own allowance goes here (App Store
         // 3.1.2: say how much a plan includes).
         if AIService.isLive, let ai = Purchases.Tier.premium.ai {
-            rows.insert(.init(symbol: "sparkles", title: "Ask MUSQ: \(ai.chatPerDay) questions a day", free: false), at: 4)
+            // Free members ask a few a day too; the row names Premium's.
+            rows.insert(.init(symbol: "sparkles", title: "Ask MUSQ: \(ai.chatPerDay) questions a day (\(Purchases.AILimits.freeChatPerDay) free)", free: false), at: 4)
             if GoalPhotoCard.canCreate(for: profile), let photos = ai.goalPhotosPerYear {
                 rows.insert(.init(symbol: "figure.strengthtraining.traditional", title: "Goal photos: \(photos) a year", free: false), at: 5)
             }
@@ -545,6 +547,7 @@ struct PremiumView: View {
     /// The headline for what was tapped, with each tier's allowances from
     /// `Purchases.Tier.ai` (which mirrors the server).
     private var tierHeadline: (title: String, message: String) {
+        let freeChats = Purchases.AILimits.freeChatPerDay
         let premiumChats = Purchases.Tier.premium.ai?.chatPerDay ?? 0
         let premiumPhotos = Purchases.Tier.premium.ai?.goalPhotosPerYear ?? 0
         let pro = Purchases.Tier.pro.ai
@@ -581,9 +584,10 @@ struct PremiumView: View {
         case .coach:
             return (String(localized: "Ask MUSQ about your training"),
                     photos
-                    ? String(localized: "Premium includes the Ask MUSQ coach, \(premiumChats) questions a day. Pro gives you \(proChats) a day, plus meal scans and \(proPhotos) goal photos a year.",
-                             comment: "Paywall, opened from Ask MUSQ: Premium's questions a day, Pro's questions a day, then Pro's goal photos a year")
-                    : String(localized: "Premium includes the Ask MUSQ coach, \(premiumChats) questions a day. Pro gives you \(proChats) a day, plus meal scans."))
+                    ? String(localized: "Free has \(freeChats) questions a day. Premium gives you \(premiumChats) a day, Pro \(proChats), plus meal scans and \(proPhotos) goal photos a year.",
+                             comment: "Paywall, opened from Ask MUSQ: free questions a day, Premium's, Pro's, then Pro's goal photos a year")
+                    : String(localized: "Free has \(freeChats) questions a day. Premium gives you \(premiumChats) a day, Pro \(proChats), plus meal scans.",
+                             comment: "Paywall, opened from Ask MUSQ: free questions a day, Premium's, then Pro's"))
         case .mealScan:
             return (String(localized: "Log a meal with a photo"),
                     String(localized: "Meal scans are part of Pro: snap a meal and MUSQ logs its foods, calories and macros for you to check, up to \(proScans) a day."))
@@ -599,7 +603,7 @@ struct PremiumView: View {
                              comment: "Paywall, opened from the goal photo without a plan: Premium's goal photos a year, then Pro's"))
         case .onboarding, .profile:
             return (String(localized: "Train with Premium or Pro"),
-                    String(localized: "Everything in MUSQ stays free to train with. Premium adds the common mistakes, more presets, no ads and the Ask MUSQ coach. Pro adds meal scans and more of the AI."))
+                    String(localized: "Everything in MUSQ stays free to train with, with a few Ask MUSQ questions a day. Premium adds the common mistakes, more presets, no ads and more questions. Pro adds meal scans and more of the AI."))
         }
     }
 
@@ -618,7 +622,7 @@ struct PremiumView: View {
             .init(symbol: "square.stack.3d.up", title: "Preset 2 and 3 for every group", free: .none, premium: .check, pro: .check),
             .init(symbol: "nosign", title: "No ads", free: .none, premium: .check, pro: .check),
             .init(symbol: "sparkles", title: "Ask MUSQ coach", detail: "Your training questions",
-                  free: .none, premium: .perDay(premium?.chatPerDay), pro: .perDay(pro?.chatPerDay)),
+                  free: .perDay(Purchases.AILimits.freeChatPerDay), premium: .perDay(premium?.chatPerDay), pro: .perDay(pro?.chatPerDay)),
             .init(symbol: "camera.viewfinder", title: "Meal scans", detail: "Calories from a photo",
                   free: .none, premium: .perDay(premium?.mealScansPerDay), pro: .perDay(pro?.mealScansPerDay)),
         ]

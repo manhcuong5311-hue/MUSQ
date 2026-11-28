@@ -57,6 +57,17 @@ final class RestTimer {
         finishedAt = nil
     }
 
+    /// Starts the rest that follows a set just marked done, as long as the
+    /// exercise's own rest (or the Settings one) isn't off. Only for a set
+    /// done today: a past day's log is just a record.
+    func startIfDone(exerciseID: UUID, setID: UUID, store: WorkoutStore) {
+        guard let day = store.day(ofExercise: exerciseID), Calendar.current.isDateInToday(day),
+              let exercise = store.exercise(id: exerciseID),
+              exercise.sets.first(where: { $0.id == setID })?.isCompleted == true,
+              let seconds = store.restSeconds(after: exercise) else { return }
+        start(seconds: seconds)
+    }
+
     // MARK: - Ending
 
     private func schedule() {

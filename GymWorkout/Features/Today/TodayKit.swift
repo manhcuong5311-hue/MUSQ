@@ -14,89 +14,6 @@
 import Charts
 import SwiftUI
 
-// MARK: - Which layout
-
-/// How the Today tab is laid out, picked in Settings (2026-11-21: the owner
-/// let each user choose). `-today.layout rings|dial|coach|classic` on the
-/// command line overrides it, for screenshots.
-enum TodayDesign: String, CaseIterable, Identifiable {
-    /// The first Today page: rings, then a card per habit. Kept only for
-    /// side-by-side comparisons; Settings doesn't offer it.
-    case classic
-    /// A: today's rings, then a card shaped for each job.
-    case rings
-    /// B: one dial of the day's goals on a dark stage.
-    case dial
-    /// C: a coach's line, then today's session on the body.
-    case coach
-
-    static let storageKey = "today.layout"
-    /// What Settings offers, in the order the owner first saw them.
-    static let choices: [TodayDesign] = [.rings, .dial, .coach]
-
-    var id: String { rawValue }
-
-    var title: String {
-        switch self {
-        case .classic: return String(localized: "Classic", comment: "Today layout option")
-        case .rings: return String(localized: "Rings", comment: "Today layout option")
-        case .dial: return String(localized: "Dial", comment: "Today layout option")
-        case .coach: return String(localized: "Coach", comment: "Today layout option")
-        }
-    }
-
-    var detail: String {
-        switch self {
-        case .classic: return String(localized: "Rings, then a card for each habit.")
-        case .rings: return String(localized: "Three rings for water, your workout and the weigh-in, then a card for each job.")
-        case .dial: return String(localized: "One dial counts the day's goals and says what to do next.")
-        case .coach: return String(localized: "A short line from your coach, then today's session drawn on the body.")
-        }
-    }
-}
-
-/// A small picture of a Today layout, for its Settings tile.
-struct TodayDesignGlyph: View {
-    var design: TodayDesign
-
-    var body: some View {
-        switch design {
-        case .rings, .classic:
-            ZStack {
-                Ring(progress: 0.7, color: TodayTone.water, lineWidth: 4).frame(width: 34, height: 34)
-                Ring(progress: 0.45, color: TodayTone.workout, lineWidth: 4).frame(width: 23, height: 23)
-                Ring(progress: 1, color: TodayTone.pink, lineWidth: 4).frame(width: 12, height: 12)
-            }
-            .frame(width: 40, height: 40)
-        case .dial:
-            ZStack {
-                ForEach(0..<3, id: \.self) { index in
-                    let start = (Double(index) * 120 + 10) / 360
-                    Circle()
-                        .trim(from: start, to: start + 100.0 / 360)
-                        .stroke(DS.silver.opacity(index == 1 ? 0.25 : 0.9), style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                        .rotationEffect(.degrees(-90))
-                }
-                Text(verbatim: "2")
-                    .font(.ui(13, .bold))
-                    .foregroundStyle(DS.silver)
-            }
-            .frame(width: 34, height: 34)
-            .frame(width: 40, height: 40)
-        case .coach:
-            HStack(spacing: 3) {
-                Text(verbatim: "Aa")
-                    .font(.system(size: 15, weight: .semibold, design: .serif))
-                    .foregroundStyle(DS.silver)
-                BodyMapCanvas(side: .front, fills: Dictionary(uniqueKeysWithValues:
-                    [MuscleGroup.chest, .shoulders, .quads].flatMap(\.bodyRegions).map { ($0, DS.activation) }))
-                    .frame(width: 40 * BodyMapCanvas.aspect, height: 40)
-            }
-            .frame(height: 40)
-        }
-    }
-}
-
 // MARK: - Colours
 
 /// One identity colour per habit, used on rings, glyphs and lines; values
@@ -129,7 +46,8 @@ struct TodayActions {
     /// Plans the suggested groups on today (Train's Add to Today for each)
     /// and opens Train.
     var startDay: ([MuscleGroup]) -> Void
-    /// Opens the coach chat for Premium, the Premium sheet otherwise.
+    /// Opens the coach chat, for every tier (2026-11-27: Free gets a few
+    /// questions a day; the chat itself says when they're used up).
     var askCoach: () -> Void
     /// Opens Progress on Overview, scrolled to the steps and sleep trends.
     var openProgress: () -> Void
@@ -144,6 +62,14 @@ struct TodayActions {
     /// Opens the goal (2026-11-23): the Goal page, or the goal photo setup
     /// when there is none yet.
     var openGoal: () -> Void = {}
+    /// The Food page (2026-11-27): the day's energy bar, macros and meals.
+    var openFood: () -> Void = {}
+    /// Hours slept last night, logged by hand (the dock's Sleep).
+    var logSleep: () -> Void = {}
+    /// The quick log with its mic already on (the dock's mic).
+    var voiceLog: () -> Void = {}
+    /// The full "Your day" panel, as a sheet (the dock's last button).
+    var openYourDay: () -> Void = {}
 
     /// What a tap on the steps row or tile does: with every step today
     /// added by hand, the walk log (Progress would show only Apple Health,

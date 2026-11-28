@@ -18,15 +18,27 @@ enum ProgramAdvisor {
     /// Weekly schedules onboarding offers.
     static let daysPerWeekOptions = [2, 3, 4, 5, 6]
 
-    /// The split that suits a number of sessions a week. Two or four days
-    /// split upper from lower body, so four days train everything twice.
-    /// Three days alternate front and back, and every session still works
-    /// both the upper and the lower body. Five or six days have room for push,
-    /// pull and legs, and six trains everything twice.
-    static func recommendedSplit(daysPerWeek: Int) -> TrainingSplit {
+    /// The split that suits a number of sessions a week.
+    ///
+    /// - Two days: full body (2026-11-27; was upper / lower). Each session
+    ///   covers everything, so every muscle still trains twice a week, where
+    ///   upper / lower reached each one only once.
+    /// - Three days: full body for a beginner, whose sessions are short and
+    ///   whose muscles recover quickly from the lighter load; otherwise front
+    ///   / back, where every session still works both the upper and the
+    ///   lower body but each muscle gets more sets on its day. Unknown
+    ///   experience keeps front / back, what three days always suggested.
+    /// - Four days split upper from lower body, so everything trains twice.
+    /// - Five or six days have room for push, pull and legs; six trains
+    ///   everything twice.
+    ///
+    /// The bro split and Custom are never suggested: one muscle a week is
+    /// too little for most goals, and Custom is the user's own.
+    static func recommendedSplit(daysPerWeek: Int, experience: TrainingExperience? = nil) -> TrainingSplit {
         switch daysPerWeek {
-        case 3: return .frontBack
-        case ...4: return .upperLower
+        case ...2: return .fullBody
+        case 3: return experience == .beginner ? .fullBody : .frontBack
+        case 4: return .upperLower
         default: return .pushPullLegs
         }
     }
@@ -34,12 +46,15 @@ enum ProgramAdvisor {
     /// Why the recommended split fits, finishing "… suits N days a week
     /// best: …". No numbers: the split's card shows how often each muscle
     /// comes round, which depends on the lower-body focus.
-    static func recommendationReason(daysPerWeek: Int) -> String {
+    static func recommendationReason(daysPerWeek: Int, experience: TrainingExperience? = nil) -> String {
         switch daysPerWeek {
+        case ...2: return String(localized: "every session trains the whole body, so each muscle still comes round twice a week.",
+                                 comment: "Finishes “<split> suits N days a week best: …”")
+        case 3 where experience == .beginner:
+            return String(localized: "short sessions that train the whole body, three times a week.",
+                          comment: "Finishes “<split> suits N days a week best: …”")
         case 3: return String(localized: "every session trains both the upper and the lower body, so no muscle waits a whole week.",
                               comment: "Finishes “<split> suits N days a week best: …”")
-        case ...2: return String(localized: "each session covers half the body, so two days reach every muscle.",
-                                 comment: "Finishes “<split> suits N days a week best: …”")
         case 4: return String(localized: "the upper and lower body take turns training and resting.",
                               comment: "Finishes “<split> suits N days a week best: …”")
         default: return String(localized: "shorter, focused sessions, and each muscle rests while the others work.",
@@ -51,6 +66,9 @@ enum ProgramAdvisor {
     /// what they had: push, pull and legs, or the lower-body rotation for
     /// women.
     static func split(for profile: UserProfile?) -> TrainingSplit {
+        // The schedule holds the real choice; `split` only the nearest one
+        // older builds know.
+        if let split = profile?.schedule?.split { return split }
         if let split = profile?.split { return split }
         return isLowerFocused(profile) ? .upperLower : .pushPullLegs
     }
@@ -79,6 +97,12 @@ enum ProgramAdvisor {
         static var legs: String { String(localized: "Legs", comment: "Split day: the legs") }
         static var legsA: String { String(localized: "Legs A", comment: "Split day: the first of two leg days") }
         static var legsB: String { String(localized: "Legs B", comment: "Split day: the second of two leg days") }
+        static var fullA: String { String(localized: "Full Body A", comment: "Split day: the first of two full-body days") }
+        static var fullB: String { String(localized: "Full Body B", comment: "Split day: the second of two full-body days") }
+        static var chest: String { String(localized: "splitDay.chest", defaultValue: "Chest", comment: "Split day: chest") }
+        static var backDay: String { String(localized: "splitDay.backDay", defaultValue: "Back", comment: "Split day of the bro split: the back muscles") }
+        static var shoulders: String { String(localized: "splitDay.shoulders", defaultValue: "Shoulders", comment: "Split day: shoulders") }
+        static var arms: String { String(localized: "Arms", comment: "Split day: biceps and triceps") }
     }
 
     /// A split's days in order. A lower-body focus puts the lower groups
@@ -108,14 +132,55 @@ enum ProgramAdvisor {
                     SplitDay(name: DayName.push, groups: [.chest, .shoulders, .triceps]),
                     SplitDay(name: DayName.legsB, groups: [.quads, .glutes, .abs]),
                     SplitDay(name: DayName.pull, groups: [.back, .biceps])]
+        // Two alternating full-body days, so the big groups come every
+        // session and the smaller ones every other: few groups a day keeps a
+        // session short enough for two or three days a week.
+        case (.fullBody, false):
+            return [SplitDay(name: DayName.fullA, groups: [.chest, .back, .quads, .shoulders, .abs]),
+                    SplitDay(name: DayName.fullB, groups: [.back, .chest, .hamstrings, .glutes, .biceps, .triceps])]
+        case (.fullBody, true):
+            return [SplitDay(name: DayName.fullA, groups: [.glutes, .quads, .back, .chest, .abs]),
+                    SplitDay(name: DayName.fullB, groups: [.hamstrings, .glutes, .back, .shoulders, .triceps])]
+        // One muscle area a day; a lower-body focus starts the week on legs.
+        case (.bro, false):
+            return [SplitDay(name: DayName.chest, groups: [.chest]),
+                    SplitDay(name: DayName.backDay, groups: [.back]),
+                    SplitDay(name: DayName.legs, groups: [.quads, .hamstrings, .glutes, .calves]),
+                    SplitDay(name: DayName.shoulders, groups: [.shoulders, .abs]),
+                    SplitDay(name: DayName.arms, groups: [.biceps, .triceps, .forearms])]
+        case (.bro, true):
+            return [SplitDay(name: DayName.legs, groups: [.glutes, .quads, .hamstrings, .calves]),
+                    SplitDay(name: DayName.chest, groups: [.chest]),
+                    SplitDay(name: DayName.backDay, groups: [.back]),
+                    SplitDay(name: DayName.shoulders, groups: [.shoulders, .abs]),
+                    SplitDay(name: DayName.arms, groups: [.biceps, .triceps, .forearms])]
+        // The user's own days live on the schedule (see `days(for:)`).
+        case (.custom, _):
+            return []
         }
+    }
+
+    /// A split's days, a Custom one's from `customDays` (those with groups;
+    /// push / pull / legs while none has any, so the planner always has a
+    /// rotation).
+    static func days(of split: TrainingSplit, lowerFocus: Bool, customDays: [ScheduleDay]) -> [SplitDay] {
+        guard split == .custom else { return days(of: split, lowerFocus: lowerFocus) }
+        let own = customDays.filter { !$0.groups.isEmpty }.map { day in
+            SplitDay(name: day.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                        ? String(localized: "Day \((customDays.firstIndex(of: day) ?? 0) + 1)",
+                                 comment: "A custom split day with no name: Day 2")
+                        : day.name,
+                     groups: day.groups)
+        }
+        return own.isEmpty ? days(of: .pushPullLegs, lowerFocus: lowerFocus) : own
     }
 
     /// Push / pull / legs — the planner's default.
     static let standardRotation: [[MuscleGroup]] = days(of: .pushPullLegs, lowerFocus: false).map(\.groups)
 
     static func days(for profile: UserProfile?) -> [SplitDay] {
-        days(of: split(for: profile), lowerFocus: isLowerFocused(profile))
+        days(of: split(for: profile), lowerFocus: isLowerFocused(profile),
+             customDays: profile?.schedule?.customDays ?? [])
     }
 
     static func rotation(for profile: UserProfile?) -> [[MuscleGroup]] {
@@ -127,7 +192,12 @@ enum ProgramAdvisor {
     /// train the group. The planner follows recovery rather than a calendar,
     /// so this is what the schedule allows, not a promise.
     static func timesPerWeek(_ split: TrainingSplit, lowerFocus: Bool, daysPerWeek: Int) -> ClosedRange<Double> {
-        let days = days(of: split, lowerFocus: lowerFocus)
+        timesPerWeek(days: days(of: split, lowerFocus: lowerFocus), daysPerWeek: daysPerWeek)
+    }
+
+    /// The same for any list of days, a Custom split's included.
+    static func timesPerWeek(days: [SplitDay], daysPerWeek: Int) -> ClosedRange<Double> {
+        guard !days.isEmpty else { return 0...0 }
         let perRotation = Dictionary(days.flatMap(\.groups).map { ($0, 1) }, uniquingKeysWith: +)
         let counts = perRotation.values.map { Double($0) * Double(daysPerWeek) / Double(days.count) }
         return (counts.min() ?? 0)...(counts.max() ?? 0)
@@ -202,6 +272,85 @@ enum ProgramAdvisor {
             defer { next += 1 }
             return (weekday, days[next % days.count])
         }
+    }
+
+    // MARK: - Schedule
+
+    /// What a day of the schedule holds.
+    enum DayPlan: Hashable {
+        /// A training day: the split's day that falls on it, or the one set
+        /// by hand.
+        case train(SplitDay)
+        /// A rest day the user picked: a weekday off, or a date set to rest.
+        case rest
+        /// Nothing set: Train suggests by recovery, as it always did.
+        case open
+    }
+
+    /// The schedule the user saved (in the schedule editor or onboarding).
+    /// A profile without one has no fixed schedule: every day is open and
+    /// Train suggests by recovery, so a missed day never breaks the plan.
+    /// Its answers only seed the editor (`editableSchedule`).
+    static func schedule(for profile: UserProfile?) -> TrainingSchedule? {
+        profile?.schedule
+    }
+
+    /// A schedule to open the editor on: the profile's, else one made from
+    /// its answers, else the suggestion for three days a week.
+    static func editableSchedule(for profile: UserProfile?, experience: TrainingExperience? = nil) -> TrainingSchedule {
+        if let schedule = schedule(for: profile) { return schedule }
+        let days = profile?.daysPerWeek ?? 3
+        return TrainingSchedule(mode: .weekly,
+                                split: profile?.split ?? recommendedSplit(daysPerWeek: days, experience: experience),
+                                weekdays: suggestedWeekdays(daysPerWeek: days))
+    }
+
+    static func plan(on date: Date, profile: UserProfile?, calendar: Calendar = .current) -> DayPlan {
+        guard let schedule = schedule(for: profile) else { return .open }
+        return plan(on: date, schedule: schedule, days: days(for: profile), calendar: calendar)
+    }
+
+    /// A date set by hand wins (By-date mode only); otherwise a weekday off
+    /// is rest, and a training weekday gets the rotation's next day.
+    /// `days` are the split's days; groups without a preset are left out,
+    /// and a day left with none is skipped.
+    static func plan(on date: Date, schedule: TrainingSchedule, days: [SplitDay],
+                     calendar: Calendar = .current) -> DayPlan {
+        if schedule.mode == .byDate, let set = schedule.dated[TrainingSchedule.key(for: date, calendar: calendar)] {
+            if set.isRest { return .rest }
+            if !set.groups.isEmpty { return .train(SplitDay(name: set.name ?? "", groups: set.groups)) }
+        }
+        let weekdays = Set(schedule.weekdays)
+        guard !weekdays.isEmpty else { return .open }
+        guard weekdays.contains(calendar.component(.weekday, from: date)) else { return .rest }
+        let trainable = Set(PresetProvider.trainableGroups)
+        let rotation = days.map { SplitDay(name: $0.name, groups: $0.groups.filter(trainable.contains)) }
+            .filter { !$0.groups.isEmpty }
+        guard !rotation.isEmpty,
+              let index = rotationIndex(of: date, weekdays: weekdays, anchor: schedule.anchor, calendar: calendar)
+        else { return .open }
+        return .train(rotation[((index % rotation.count) + rotation.count) % rotation.count])
+    }
+
+    /// Monday 5 January 2026, the rotation's start when a schedule has no
+    /// anchor of its own.
+    private static let referenceAnchor = Date(timeIntervalSince1970: 1_767_571_200)
+
+    /// How many training days come before `date`, counted from the start of
+    /// the anchor's week. Within a week the order matches `week(weekdays:)`,
+    /// what onboarding showed, and when the split's days divide the week's
+    /// training days evenly every week reads the same.
+    private static func rotationIndex(of date: Date, weekdays: Set<Int>, anchor: Date?,
+                                      calendar: Calendar) -> Int? {
+        guard let weekStart = calendar.dateInterval(of: .weekOfYear, for: date)?.start,
+              let anchorStart = calendar.dateInterval(of: .weekOfYear, for: anchor ?? referenceAnchor)?.start
+        else { return nil }
+        let daysApart = calendar.dateComponents([.day], from: anchorStart, to: weekStart).day ?? 0
+        let weeks = Int((Double(daysApart) / 7).rounded())
+        let order = (0..<7).map { (calendar.firstWeekday - 1 + $0) % 7 + 1 }
+        let weekday = calendar.component(.weekday, from: date)
+        let before = order.prefix { $0 != weekday }.filter(weekdays.contains).count
+        return weeks * weekdays.count + before
     }
 
     // MARK: - Walking

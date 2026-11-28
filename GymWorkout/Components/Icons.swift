@@ -68,8 +68,7 @@ struct TabGlyph: View {
     var body: some View {
         Group {
             if let symbol {
-                Image(systemName: symbol)
-                    .font(.system(size: (size * 0.82).rounded(), weight: .medium))
+                StyledSymbol(name: symbol, size: (size * 0.82).rounded(), weight: .medium)
                     .foregroundStyle(color)
             } else {
                 RoundedRectangle(cornerRadius: 7 * size / 22, style: .continuous)

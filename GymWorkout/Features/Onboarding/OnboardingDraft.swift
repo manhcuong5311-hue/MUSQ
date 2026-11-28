@@ -41,6 +41,11 @@ final class OnboardingDraft {
     var daysPerWeek: Int?
     var weekdays: Set<Int> = []
     var split: TrainingSplit?
+    /// A Custom split's days (2026-11-27), edited in `ScheduleEditorView`.
+    var customDays: [ScheduleDay] = []
+    /// The schedule of the profile being edited, so re-running onboarding
+    /// keeps its By-date picks and its rotation's start.
+    var savedSchedule: TrainingSchedule?
 
     var joints: Set<JointIssue> = []
     var jointsNone = false
@@ -166,19 +171,52 @@ final class OnboardingDraft {
     /// The profile the answers make; nil until the required ones are in.
     var profile: UserProfile? {
         guard let sex, let goal = effectiveGoal else { return nil }
+        // `split` only takes a split older builds know; the schedule below
+        // holds the real one (see `TrainingSplit.legacy`).
         var profile = UserProfile(sex: sex, goal: goal, heightCm: heightCm, weightKg: weightKg,
-                                  daysPerWeek: daysPerWeek, split: split, name: name)
+                                  daysPerWeek: daysPerWeek, split: split?.legacy, name: name)
         profile.birthYear = birthYear
         profile.activity = activity
         profile.targetWeightKg = currentTarget
         profile.pace = currentPace
         if let days = daysPerWeek {
-            profile.weekdays = weekdays.count == days ? weekdays.sorted()
-                                                      : ProgramAdvisor.suggestedWeekdays(daysPerWeek: days)
+            if weekdays.isEmpty, keepsDatesOnly {
+                // A By-date plan of single dates stays that way.
+                profile.weekdays = []
+            } else {
+                profile.weekdays = weekdays.count == days ? weekdays.sorted()
+                                                          : ProgramAdvisor.suggestedWeekdays(daysPerWeek: days)
+            }
         }
         profile.health = health
         profile.measurements = measurements
+        if let split { profile.apply(schedule(split: split, weekdays: profile.weekdays ?? [])) }
         return profile
+    }
+
+    /// The saved schedule has no training weekdays (By-date single dates, or
+    /// the flexible plan): editing the profile keeps it that way instead of
+    /// adding suggested weekdays.
+    private var keepsDatesOnly: Bool {
+        guard let savedSchedule else { return false }
+        return savedSchedule.weekdays.isEmpty
+    }
+
+    /// The answers as a weekly schedule, on top of the saved one. A changed
+    /// rotation counts from this week, so this week reads as the plan page
+    /// shows it.
+    private func schedule(split: TrainingSplit, weekdays: [Int]) -> TrainingSchedule {
+        var schedule = savedSchedule ?? TrainingSchedule()
+        let changed = savedSchedule == nil || schedule.split != split
+            || Set(schedule.weekdays) != Set(weekdays) || schedule.customDays != customDays
+        schedule.split = split
+        schedule.weekdays = weekdays
+        schedule.customDays = customDays
+        if changed || schedule.anchor == nil {
+            let calendar = Calendar.current
+            schedule.anchor = calendar.dateInterval(of: .weekOfYear, for: Date())?.start ?? calendar.startOfDay(for: Date())
+        }
+        return schedule
     }
 
     /// With `measured`, as Today works it out; the pace page's numbers
@@ -202,7 +240,8 @@ final class OnboardingDraft {
         guard daysPerWeek != days else { return }
         daysPerWeek = days
         weekdays = Set(ProgramAdvisor.suggestedWeekdays(daysPerWeek: days))
-        split = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
+        // Custom stays Custom: the user built those days themselves.
+        if split != .custom { split = ProgramAdvisor.recommendedSplit(daysPerWeek: days, experience: experience) }
     }
 
     func toggle(_ joint: JointIssue) {
@@ -232,9 +271,12 @@ final class OnboardingDraft {
         // Nil for profiles from before these questions, which then have to
         // be answered.
         daysPerWeek = profile.daysPerWeek
-        split = profile.split
+        split = profile.schedule?.split ?? profile.split
+        savedSchedule = profile.schedule
+        customDays = profile.schedule?.customDays ?? []
         if let days = profile.daysPerWeek {
-            weekdays = Set(profile.weekdays ?? ProgramAdvisor.suggestedWeekdays(daysPerWeek: days))
+            // A By-date schedule with no weekly days has none to fill in.
+            weekdays = Set(profile.weekdays ?? (keepsDatesOnly ? [] : ProgramAdvisor.suggestedWeekdays(daysPerWeek: days)))
         }
         name = profile.name
         if let year = profile.birthYear { birthYear = year }

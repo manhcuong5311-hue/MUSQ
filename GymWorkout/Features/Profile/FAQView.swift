@@ -289,6 +289,11 @@ struct FAQView: View {
                     .font(.ui(layout.value(12, 13), .semibold))
                     .foregroundStyle(DS.silver.opacity(0.55))
                     .dsHover()
+                // Solar icons are CC BY 4.0: the credit has to ship with them.
+                Link("Icons: Solar by 480 Design (CC BY 4.0)",
+                     destination: URL(string: "https://github.com/480-Design/Solar-Icon-Set")!)
+                    .font(.ui(layout.value(11, 12)))
+                    .foregroundStyle(DS.silver.opacity(0.4))
             }
             .padding(layout.value(14, 18))
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -335,8 +340,10 @@ struct FAQView: View {
     private var aiTiers: String {
         guard let premium = Purchases.Tier.premium.ai, let pro = Purchases.Tier.pro.ai,
               let premiumPhotos = premium.goalPhotosPerYear, let proPhotos = pro.goalPhotosPerYear else { return freeAndPremium }
-        return String(localized: "Every exercise, its 3D model, setup and key tips, the workout log, history, recovery and Preset 1 are free, and so is your first goal photo (for adults). MUSQ Premium adds the common mistakes drawn over the lifter, Preset 2 and 3 for every muscle group and no ads, plus Ask MUSQ, the AI coach (up to \(premium.chatPerDay) questions a day), and \(premiumPhotos) goal photos a year. MUSQ Pro has everything in Premium, with up to \(pro.chatPerDay) questions a day, meal scans that log a meal's calories from a photo (up to \(pro.mealScansPerDay) a day) and \(proPhotos) goal photos a year.",
-                      comment: "Help & FAQ, what's free: Premium's questions a day and goal photos a year, then Pro's questions a day, meal scans a day and goal photos a year")
+        // Free's chat questions: `AILimits.freeChatPerDay` (2026-11-27). Every
+        // goal photo can be made again twice free (`GoalPhotoRedo.perPhoto`).
+        return String(localized: "Every exercise, its 3D model, setup and key tips, the workout log, history, recovery and Preset 1 are free, and so are \(Purchases.AILimits.freeChatPerDay) questions a day to Ask MUSQ, the AI coach, and your first goal photo (for adults). MUSQ Premium adds the common mistakes drawn over the lifter, Preset 2 and 3 for every muscle group and no ads, plus up to \(premium.chatPerDay) questions a day and \(premiumPhotos) goal photos a year. MUSQ Pro has everything in Premium, with up to \(pro.chatPerDay) questions a day, meal scans that log a meal's calories from a photo (up to \(pro.mealScansPerDay) a day) and \(proPhotos) goal photos a year. If you don't like a goal photo, you can make it again \(GoalPhotoRedo.perPhoto) times without using another one.",
+                      comment: "Help & FAQ, what's free: free questions a day, Premium's questions a day and goal photos a year, then Pro's questions a day, meal scans a day and goal photos a year, then the free redos of a goal photo")
     }
 
     /// Apple Health (phase 2, 2026-11-22): what's read, how it moves the

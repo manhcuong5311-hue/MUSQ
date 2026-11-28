@@ -143,7 +143,7 @@ enum CoachChat {
     static let consentKey = "ai.consent.v1"
     /// Whether the health answers (joints, conditions) go with the context.
     static let includeHealthKey = "ai.chat.includeHealth"
-    // The daily limit depends on the tier: `Purchases.Tier.ai`.
+    // The daily limit depends on the tier, free included: `Purchases.Tier.chatPerDay`.
     /// What the server reads of the history.
     static let historyLimit = 20
     static let messageLimit = 2_000
@@ -204,7 +204,9 @@ struct CoachChatContext: Codable, Hashable {
         goal = profile?.goal.rawValue
         sex = profile?.sex.rawValue
         experience = store.experience.rawValue
-        split = profile?.split?.rawValue
+        // The real choice (Full Body, bro split, custom), not the nearest
+        // one older builds know.
+        split = profile.map { ProgramAdvisor.split(for: $0).rawValue }
         age = profile?.age(at: now)
         daysPerWeek = profile?.weekdays?.count ?? profile?.daysPerWeek
         heightCm = profile?.heightCm

@@ -15,61 +15,283 @@
 
 import SwiftUI
 
+/// Today, the one layout since 2026-11-27 (the owner kept a single new one):
+/// the hello and the coach's verdict, the journey line toward the goal (a
+/// tap on a day lists what's left), Ask MUSQ for every tier, the notes, and
+/// then the day's content folded into compact cards that open on a tap —
+/// food (to the Food page), the goal, the plan, the weight and Balance. The
+/// quick logs ride in the dock above the tab bar (`TodayDock`); scheduling
+/// lives in Train.
 struct TodayCoachLayout: View {
     var metrics: TodayMetrics
     var plan: NutritionPlan?
     var actions: TodayActions
     /// Train · Eat · Sleep over 7 days; nil while its card is off Today.
     var balance: Balance? = nil
+    var journey: Journey
 
+    @Environment(WorkoutStore.self) private var store
+    @Environment(DailyStore.self) private var daily
     @AppStorage(TodayNotices.healthInviteKey) private var healthInviteDismissed = false
     @AppStorage(TodayNotices.goalInviteKey) private var goalInviteDismissed = false
+    /// The water-reminders offer closed for good (the Your day sheet still
+    /// has the reminders).
+    @AppStorage("today.reminderOffer.dismissed") private var reminderOfferDismissed = false
 
     var body: some View {
-        let hasNotices = metrics.needsPlan || !metrics.clearanceReasons.isEmpty
+        let hasNotices = metrics.needsPlan || !metrics.clearanceReasons.isEmpty || metrics.targetReached
             || TodayNotices.showsHealthInvite(metrics, dismissed: healthInviteDismissed)
             || TodayNotices.showsGoalInvite(metrics, dismissed: goalInviteDismissed)
         VStack(alignment: .leading, spacing: 0) {
+            CoachHeader(metrics: metrics)
+            JourneyLine(journey: journey, metrics: metrics, actions: actions)
+                .padding(.top, 14)
             if CoachChat.isAvailable {
                 AskCoachBar(action: actions.askCoach)
-                    .padding(.bottom, 18)
+                    .padding(.top, 12)
             }
-            CoachHeader(metrics: metrics)
             if hasNotices {
                 VStack(spacing: 12) {
-                    TodayNotices(metrics: metrics, actions: actions, showsTargetReached: false)
+                    TodayNotices(metrics: metrics, actions: actions, showsTargetReached: true)
                 }
                 .padding(.top, 16)
             }
-            SessionPoster(metrics: metrics, style: metrics.state.isQuiet ? .compact : .full,
-                          isPrimary: !metrics.state.isQuiet && !metrics.needsPlan, actions: actions)
-                .padding(.top, 16)
-            if let goal = metrics.goal, let photo = metrics.goalPhoto {
-                GoalTodayCard(progress: goal, photo: photo, onOpen: actions.openGoal)
-                    .padding(.top, 16)
+            // Once water reminders are set, this offer goes (owner).
+            if !metrics.waterReminderOn && !metrics.limitsFluids && !reminderOfferDismissed {
+                reminderOffer
+                    .padding(.top, 12)
             }
-            DayPanel(metrics: metrics, actions: actions)
-                .padding(.top, 28)
-            if let balance {
-                BalanceCard(balance: balance, onAction: actions.balanceAction, onOpen: actions.openBalance)
-                    .padding(.top, 16)
+            VStack(spacing: 10) {
+                TodayFoodCard(metrics: metrics, action: actions.openFood)
+                if let goal = metrics.goal, let photo = metrics.goalPhoto {
+                    GoalTodayCard(progress: goal, photo: photo, onOpen: actions.openGoal)
+                }
+                if let plan {
+                    TodayFoldCard(key: "today.fold.plan", symbol: "flame.fill", tint: JourneyPalette.meals,
+                                  title: String(localized: "Your plan", comment: "Today section"),
+                                  value: String(localized: "\(Int(plan.calories).formatted()) kcal",
+                                                comment: "The day's calorie target: 2,020 kcal")) {
+                        PlanOpenSection(metrics: metrics, plan: plan, actions: actions, showsHead: false)
+                    }
+                }
+                TodayFoldCard(key: "today.fold.weight", symbol: "scalemass.fill", tint: TodayTone.violet,
+                              title: String(localized: "Weight", comment: "Today section"),
+                              value: weightValue) {
+                    WeightOpenSection(plan: plan, tone: TodayTone.violet, coachLine: true, actions: actions, showsHead: false)
+                }
+                if let balance {
+                    BalanceCard(balance: balance, onAction: actions.balanceAction, onOpen: actions.openBalance)
+                }
             }
-            // For everyone: a meal added by hand is free (the scan is Pro's).
-            TodayMealsBlock(metrics: metrics, actions: actions)
-                .padding(.top, 28)
-            if let plan {
-                Hairline(opacity: 0.08)
-                    .padding(.top, 36)
-                PlanOpenSection(metrics: metrics, plan: plan, actions: actions)
-                    .padding(.top, 28)
-            }
-            Hairline(opacity: 0.08)
-                .padding(.top, 36)
-            WeightOpenSection(plan: plan, tone: TodayTone.violet, coachLine: true, actions: actions)
-                .padding(.top, 28)
+            .padding(.top, 16)
             TodayFootnote()
-                .padding(.top, 28)
+                .padding(.top, 20)
         }
+    }
+
+    /// "74.2 kg": the 7-day average, else the last weigh-in.
+    private var weightValue: String? {
+        guard let latest = daily.latestWeight else { return nil }
+        return store.unit.bodyWeight(metrics.trend ?? latest.kg)
+    }
+
+    /// One small row while water reminders are off: a tap sets them up.
+    private var reminderOffer: some View {
+        HStack(spacing: 12) {
+            Button(action: actions.reminders) {
+                HStack(spacing: 12) {
+                    Image(systemName: "bell.badge.fill")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(TodayTone.water)
+                        .frame(width: 36, height: 36)
+                        .background(Circle().fill(TodayTone.water.opacity(0.14)))
+                    Text("Remind me to drink water", comment: "Today: a row that sets up water reminders")
+                        .font(.ui(15, .semibold))
+                        .foregroundStyle(DS.silver)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 6)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(DS.silver.opacity(0.4))
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            Button {
+                withAnimation(.easeOut(duration: 0.2)) { reminderOfferDismissed = true }
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundStyle(DS.silver.opacity(0.5))
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Don't show again", comment: "Closes a Today note for good"))
+        }
+        .padding(.leading, 12)
+        .padding(.vertical, 4)
+        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surface))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(DS.silver.opacity(0.08), lineWidth: 1))
+    }
+}
+
+// MARK: - Compact cards
+
+/// Food at a glance: what's eaten against the plan on a thin energy bar; a
+/// tap opens the Food page.
+struct TodayFoodCard: View {
+    var metrics: TodayMetrics
+    var action: () -> Void
+
+    @Environment(DailyStore.self) private var daily
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        let eaten = daily.eaten(on: metrics.now)
+        let meals = daily.meals(on: metrics.now).count
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 12) {
+                    StyledSymbol(name: "fork.knife", size: 15, weight: .bold)
+                        .foregroundStyle(.white)
+                        .frame(width: 36, height: 36)
+                        .background(Circle().fill(FoodPalette.energyGradient))
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("Food", comment: "Today: the food card, opens the Food page")
+                            .font(.ui(16, .semibold))
+                            .foregroundStyle(DS.silver)
+                        Text(meals == 0 ? String(localized: "No meals yet", comment: "Food card: nothing logged today")
+                             : meals == 1 ? String(localized: "1 meal", comment: "Food card: meals logged today")
+                             : String(localized: "\(meals) meals", comment: "Food card: meals logged today"))
+                            .font(.ui(12.5, .medium))
+                            .foregroundStyle(DS.silver.opacity(0.6))
+                    }
+                    Spacer(minLength: 8)
+                    BigValue(value: eaten.kcal.formatted(),
+                             unit: metrics.calories.map { "/ \($0.formatted()) kcal" } ?? String(localized: "kcal"),
+                             size: 20)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(DS.silver.opacity(0.4))
+                }
+                if let target = metrics.calories {
+                    FoodEnergyBar(value: Double(eaten.kcal) / Double(max(target, 1)), height: 8)
+                }
+            }
+            .padding(14)
+            .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(DS.surface)
+                .shadow(color: .black.opacity(scheme == .dark ? 0 : 0.05), radius: 12, y: 4))
+            .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .strokeBorder(DS.silver.opacity(scheme == .dark ? 0.08 : 0.04), lineWidth: 1))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityHint(String(localized: "Opens your food: energy, macros and meals", comment: "VoiceOver hint on Today's food card"))
+    }
+}
+
+/// A card that shows one line — its glyph, name and number — and opens on
+/// a tap to the details under it. Open or closed is remembered.
+struct TodayFoldCard<Content: View>: View {
+    var symbol: String
+    var tint: Color
+    var title: String
+    var value: String?
+    @ViewBuilder var content: () -> Content
+
+    @AppStorage private var open: Bool
+    @Environment(\.colorScheme) private var scheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    init(key: String, symbol: String, tint: Color, title: String, value: String?,
+         @ViewBuilder content: @escaping () -> Content) {
+        _open = AppStorage(wrappedValue: false, key)
+        self.symbol = symbol
+        self.tint = tint
+        self.title = title
+        self.value = value
+        self.content = content
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(reduceMotion ? nil : .snappy) { open.toggle() }
+            } label: {
+                HStack(spacing: 12) {
+                    StyledSymbol(name: symbol, size: 15, weight: .bold)
+                        .foregroundStyle(tint)
+                        .frame(width: 36, height: 36)
+                        .background(Circle().fill(tint.opacity(0.15)))
+                    Text(title)
+                        .font(.ui(16, .semibold))
+                        .foregroundStyle(DS.silver)
+                    Spacer(minLength: 8)
+                    if let value {
+                        Text(value)
+                            .font(.ui(16, .bold))
+                            .monospacedDigit()
+                            .foregroundStyle(DS.silver)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                    }
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(DS.silver.opacity(0.4))
+                        .rotationEffect(.degrees(open ? 180 : 0))
+                }
+                .padding(14)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityValue(open ? String(localized: "Expanded", comment: "A folded Today card that is open")
+                                     : String(localized: "Collapsed", comment: "A folded Today card that is closed"))
+            .accessibilityHint(String(localized: "Shows or hides the details", comment: "VoiceOver hint on a folded Today card"))
+            if open {
+                content()
+                    .padding(.horizontal, 14)
+                    .padding(.bottom, 14)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(DS.surface)
+            .shadow(color: .black.opacity(scheme == .dark ? 0 : 0.05), radius: 12, y: 4))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous)
+            .strokeBorder(DS.silver.opacity(scheme == .dark ? 0.08 : 0.04), lineWidth: 1))
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+}
+
+/// The full "Your day" panel in a sheet, from the dock: water, weigh-in,
+/// workout, steps and sleep, and the reminders.
+struct TodayYourDaySheet: View {
+    var metrics: TodayMetrics
+    var actions: TodayActions
+
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                DayPanel(metrics: metrics, actions: actions)
+                    .padding(.horizontal, DS.Metric.gutter)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: 640)
+                    .frame(maxWidth: .infinity)
+            }
+            .background(DS.ink.ignoresSafeArea())
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(String(localized: "Done")) { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
+        .presentationBackground(DS.ink)
     }
 }
 
@@ -245,7 +467,7 @@ private struct CoachHeader: View {
                               size: 11)
             }
             Text(line.verdict)
-                .font(serif ? .system(size: 32, weight: .semibold, design: .serif) : .ui(30, .bold))
+                .font(serif ? .system(size: 27, weight: .semibold, design: .serif) : .ui(26, .bold))
                 .tracking(-0.6)
                 .lineSpacing(2)
                 .foregroundStyle(DS.silver)
@@ -253,11 +475,11 @@ private struct CoachHeader: View {
                 .padding(.top, 6)
                 .accessibilityAddTraits(.isHeader)
             Text(line.why)
-                .font(.ui(15))
-                .lineSpacing(3)
-                .foregroundStyle(DS.silver.opacity(0.68))
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 8)
+                .font(.ui(14))
+                .lineSpacing(2)
+                .foregroundStyle(DS.silver.opacity(0.62))
+                .lineLimit(2)
+                .padding(.top, 6)
         }
     }
 }
@@ -268,7 +490,7 @@ private struct CoachHeader: View {
 /// its ring and its one-tap chips, then steps and last night's sleep from
 /// Apple Health (shown, not counted: the tally stays water, weigh-in and
 /// workout), and the water target and reminders folded into one row.
-private struct DayPanel: View {
+struct DayPanel: View {
     var metrics: TodayMetrics
     var actions: TodayActions
 
@@ -290,8 +512,7 @@ private struct DayPanel: View {
                     .accessibilityAddTraits(.isHeader)
                 Spacer(minLength: 8)
                 tally
-                // Water, a walk without the phone, or a meal: typed or spoken.
-                TodayQuickLogMenu(action: actions.quickLog)
+                // The quick log's mic lives in Today's dock now (2026-11-27).
             }
             VStack(spacing: 0) {
                 waterRow
@@ -306,6 +527,9 @@ private struct DayPanel: View {
                 if metrics.showsSleep {
                     divider
                     sleepRow
+                } else {
+                    divider
+                    manualSleepRow
                 }
                 if metrics.healthEmpty && !healthEmptyDismissed {
                     divider
@@ -546,6 +770,31 @@ private struct DayPanel: View {
         .accessibilityHint(TodayHealthText.opensProgress)
     }
 
+    /// Without Apple Health's sleep: the night logged by hand from the dock,
+    /// or a chip to log it.
+    private var manualSleepRow: some View {
+        let minutes = metrics.manualSleepMinutes
+        return row(ring: RingGlyph(progress: Double(minutes ?? 0) / Double(max(metrics.sleepGoalMinutes, 1)),
+                                   color: SleepLogSheet.tint, symbol: "bed.double.fill",
+                                   done: (minutes ?? 0) >= metrics.sleepGoalMinutes - TodayMetrics.sleepBandMinutes,
+                                   dashed: minutes == nil),
+                   title: String(localized: "Last night", comment: "Today row: last night's sleep"), isNext: false,
+                   open: actions.logSleep, openHint: String(localized: "Logs last night's sleep", comment: "VoiceOver hint on the sleep row")) {
+            if let minutes {
+                BigValue(value: HealthFormat.sleep(minutes: minutes),
+                         unit: "/ \(HealthFormat.sleep(minutes: metrics.sleepGoalMinutes))", size: 20)
+            } else {
+                Text("Not logged", comment: "Sleep row: no night logged by hand")
+                    .font(.ui(14, .medium))
+                    .foregroundStyle(DS.silver.opacity(0.65))
+            }
+        } trailing: {
+            QuickChip(title: minutes == nil ? String(localized: "Log", comment: "Sleep row chip: logs last night")
+                                            : String(localized: "Edit", comment: "Sleep row chip: changes last night's log"),
+                      action: actions.logSleep)
+        }
+    }
+
     /// Connected, but Health sent nothing: where to look, and the way there.
     /// Built like the other rows, but top-aligned with a close button at the
     /// top right, as the notes have: it puts the row away for good.
@@ -687,6 +936,9 @@ struct PlanOpenSection: View {
     var plan: NutritionPlan
     var actions: TodayActions
     var macroColors: (Color, Color, Color) = (DS.activation, DS.activationSoft, DS.silver.opacity(0.35))
+    /// False inside Today's folded card, which carries the title (and the
+    /// notes carry a reached target).
+    var showsHead = true
 
     @Environment(WorkoutStore.self) private var store
 
@@ -694,9 +946,11 @@ struct PlanOpenSection: View {
         let protein = Int(plan.protein), fat = Int(plan.fat), carbs = Int(plan.carbs)
         let shares = TodayMacroBar.shares(protein: protein, fat: fat, carbs: carbs)
         VStack(alignment: .leading, spacing: 0) {
-            TodaySectionHead(title: String(localized: "Your plan", comment: "Today section"),
-                             link: String(localized: "How it's calculated"), action: actions.showPlan)
-            if metrics.targetReached {
+            if showsHead {
+                TodaySectionHead(title: String(localized: "Your plan", comment: "Today section"),
+                                 link: String(localized: "How it's calculated"), action: actions.showPlan)
+            }
+            if showsHead && metrics.targetReached {
                 reachedNote
                     .padding(.top, 8)
                     .padding(.bottom, 16)
@@ -742,6 +996,10 @@ struct PlanOpenSection: View {
                 column(String(localized: "Carbs", comment: "Macro"), carbs, shares[2], macroColors.2)
             }
             .padding(.top, 14)
+            if !showsHead {
+                QuickChip(title: String(localized: "How it's calculated"), action: actions.showPlan)
+                    .padding(.top, 10)
+            }
         }
     }
 
@@ -787,6 +1045,8 @@ struct WeightOpenSection: View {
     /// C adds a serif line about the direction.
     var coachLine: Bool
     var actions: TodayActions
+    /// False inside Today's folded card, which carries the title.
+    var showsHead = true
 
     @Environment(WorkoutStore.self) private var store
     @Environment(DailyStore.self) private var daily
@@ -795,9 +1055,11 @@ struct WeightOpenSection: View {
         let unit = store.unit
         let now = Date()
         VStack(alignment: .leading, spacing: 0) {
-            TodaySectionHead(title: String(localized: "Weight", comment: "Today section"),
-                             link: daily.weights.isEmpty ? nil : String(localized: "History"),
-                             action: actions.weightHistory)
+            if showsHead {
+                TodaySectionHead(title: String(localized: "Weight", comment: "Today section"),
+                                 link: daily.weights.isEmpty ? nil : String(localized: "History"),
+                                 action: actions.weightHistory)
+            }
             if let latest = daily.latestWeight {
                 let average = daily.trendWeight(at: now)
                 TodayEyebrow(text: average != nil ? String(localized: "7-day average") : String(localized: "Last weigh-in"),
@@ -847,8 +1109,13 @@ struct WeightOpenSection: View {
                         .foregroundStyle(DS.silver.opacity(0.65))
                         .padding(.top, 10)
                 }
-                QuickChip(title: String(localized: "Log weight"), action: actions.logWeight)
-                    .padding(.top, 8)
+                HStack(spacing: 8) {
+                    QuickChip(title: String(localized: "Log weight"), action: actions.logWeight)
+                    if !showsHead {
+                        QuickChip(title: String(localized: "History"), action: actions.weightHistory)
+                    }
+                }
+                .padding(.top, 8)
             } else {
                 Text("Your trend starts with a weigh-in.")
                     .font(.system(size: 17, weight: .medium, design: .serif))

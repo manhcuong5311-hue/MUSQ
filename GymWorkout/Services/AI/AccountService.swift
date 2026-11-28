@@ -72,8 +72,13 @@ final class AccountService {
                 self.member = user.map { Member(uid: $0.uid, email: $0.email) }
                 if user != nil && !wasSignedIn {
                     Task { await AIService.shared.syncEntitlements() }
+                    // Friends (2026-11-28) loads its profile and friends.
+                    Task { await FriendsService.shared.refresh() }
                 }
-                if user == nil { AIService.shared.signedOut() }
+                if user == nil {
+                    AIService.shared.signedOut()
+                    if wasSignedIn { FriendsService.shared.signedOut() }
+                }
             }
         }
     }

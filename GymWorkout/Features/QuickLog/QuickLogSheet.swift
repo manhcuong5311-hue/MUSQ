@@ -43,15 +43,19 @@ import UIKit
 /// The quick log, opening on `kind`.
 struct QuickLogSheet: View {
     @State private var kind: QuickLogKind
+    /// Today's dock mic (2026-11-27): the mic comes on as the sheet opens,
+    /// where the in-app mic works; a tap on it stops, as always.
+    private let listensOnOpen: Bool
     /// The presenting window's tier: the sheet's own is resolved inside.
     @Environment(\.dsLayout) private var layout
 
-    init(kind: QuickLogKind) {
+    init(kind: QuickLogKind, listensOnOpen: Bool = false) {
         _kind = State(initialValue: kind)
+        self.listensOnOpen = listensOnOpen
     }
 
     var body: some View {
-        QuickLogContent(kind: $kind)
+        QuickLogContent(kind: $kind, listensOnOpen: listensOnOpen)
             .dsLayoutRoot()
             .background(DS.ink.ignoresSafeArea())
             // Outside the layout root: sized by the window it opens over.
@@ -67,6 +71,7 @@ struct QuickLogSheet: View {
 
 private struct QuickLogContent: View {
     @Binding var kind: QuickLogKind
+    var listensOnOpen = false
 
     @Environment(DailyStore.self) private var daily
     @Environment(WorkoutStore.self) private var store
@@ -258,6 +263,12 @@ private struct QuickLogContent: View {
         .onDisappear {
             wantsListening = false
             Task { await voice.stop() }
+        }
+        // The dock's mic: listening once the sheet is up (a tap stops it).
+        .task {
+            guard listensOnOpen, showsMic else { return }
+            do { try await Task.sleep(for: .milliseconds(450)) } catch { return }
+            if !isListening { startListening() }
         }
         #if DEBUG
         .onAppear(perform: applyLaunchPreview)
@@ -1843,6 +1854,7 @@ private struct QuickLogContent: View {
 
     private func deleteMeal(_ id: UUID) {
         withAnimation { daily.deleteMeal(id: id) }
+        MealPhotoStore.delete(for: id)
         if lastAdd?.target == .meal(id) { lastAdd = nil }
     }
 

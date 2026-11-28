@@ -26,7 +26,6 @@ struct ProfileView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.dsLayout) private var layout
     @AppStorage(ModelLook.storageKey) private var modelLook: ModelLook = .charcoal
-    @AppStorage(TodayDesign.storageKey) private var todayDesign: TodayDesign = .coach
     @State private var editsProfile = false
     /// The name as it's typed; saved when the field is left.
     @State private var nameDraft = ""
@@ -406,9 +405,9 @@ struct ProfileView: View {
                     healthSetting
                 }
                 Hairline(opacity: 0.06)
-                todayLayoutSetting
-                Hairline(opacity: 0.06)
                 balanceSetting
+                Hairline(opacity: 0.06)
+                notificationSetting
                 Hairline(opacity: 0.06)
                 modelColorSetting
             }
@@ -454,6 +453,19 @@ struct ProfileView: View {
         .padding(.horizontal, -cardPadding)
     }
 
+    /// Notifications (2026-11-27): the nudges, one switch per kind.
+    private var notificationSetting: some View {
+        NavigationLink {
+            NotificationSettingsView()
+        } label: {
+            pushRowLabel(String(localized: "Notifications"),
+                         detail: String(localized: "Nudges, on your phone", comment: "Profile: what the Notifications row holds"))
+        }
+        .buttonStyle(.plain)
+        .dsHover(.highlight, radius: 12)
+        .padding(.horizontal, -cardPadding)
+    }
+
     /// A row that pushes a settings screen: its name, where it stands, and a
     /// chevron. Spans the card, so the whole row hovers and takes the tap.
     private func pushRowLabel(_ title: String, detail: String) -> some View {
@@ -475,56 +487,6 @@ struct ProfileView: View {
         .padding(.horizontal, cardPadding)
         .padding(.vertical, layout.value(13, 16))
         .contentShape(Rectangle())
-    }
-
-    // MARK: - Today layout
-
-    /// The Today tab's layouts side by side; a tap picks one (2026-11-21:
-    /// the owner let each user choose).
-    private var todayLayoutSetting: some View {
-        VStack(alignment: .leading, spacing: layout.value(12, 14)) {
-            VStack(alignment: .leading, spacing: 3) {
-                Text("Today layout")
-                    .font(.ui(layout.value(14.5, 16), .semibold))
-                    .foregroundStyle(DS.silver)
-                Text(todayDesign.detail)
-                    .font(.ui(layout.value(12, 13.5)))
-                    .cssLineHeight(layout.value(12, 13.5), 1.4)
-                    .foregroundStyle(DS.silver.opacity(0.5))
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            HStack(spacing: 6) {
-                ForEach(TodayDesign.choices) { design in
-                    let selected = todayDesign == design
-                    Button {
-                        withAnimation(.easeOut(duration: 0.2)) { todayDesign = design }
-                    } label: {
-                        VStack(spacing: 7) {
-                            TodayDesignGlyph(design: design)
-                                .frame(height: 40)
-                            Text(design.title)
-                                .font(.ui(layout.value(11, 12), .semibold))
-                                .foregroundStyle(DS.silver.opacity(selected ? 1 : 0.55))
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.8)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 10)
-                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(DS.silver.opacity(selected ? 0.07 : 0)))
-                        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .strokeBorder(DS.silver.opacity(selected ? 0.5 : 0.10), lineWidth: selected ? 1.5 : 1))
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .dsHover()
-                    .accessibilityLabel(design.title)
-                    .accessibilityHint(design.detail)
-                    .accessibilityAddTraits(selected ? .isSelected : [])
-                }
-            }
-        }
-        .padding(.vertical, layout.value(13, 16))
     }
 
     // MARK: - Model color

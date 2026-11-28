@@ -469,6 +469,30 @@ struct SleepEstimate: Codable, Hashable, Identifiable {
     var band: Band
 }
 
+/// Hours slept, logged by hand from Today's dock (2026-11-27): the night
+/// the user woke from on `day`, in minutes. Kept in MUSQ's own log, never
+/// written to Apple Health; Apple Health's own night, when there is one,
+/// comes first wherever sleep is shown.
+struct SleepLog: Codable, Hashable, Identifiable {
+    var id = UUID()
+    /// The day the user woke up, as a `DayKey` ("2026-11-27").
+    var day: String
+    var minutes: Int
+}
+
+extension SleepEstimate.Band {
+    /// The band an exact night falls in, so Balance reads a logged night
+    /// the way it reads an estimate.
+    init(minutes: Int) {
+        switch minutes {
+        case ..<360: self = .under6
+        case ..<420: self = .sixToSeven
+        case ..<480: self = .sevenToEight
+        default: self = .overEight
+        }
+    }
+}
+
 /// Steps the user added themselves — a walk without the phone or a Watch —
 /// typed or spoken. Kept in MUSQ's own log, never written to Apple Health.
 struct StepsEntry: Codable, Hashable, Identifiable {

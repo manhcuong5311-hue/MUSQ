@@ -41,6 +41,11 @@ final class WorkoutStore {
     /// for Preset 1 (the one list earlier builds saved), "chest#2" and
     /// "chest#3" for the others.
     private(set) var customPresets: [String: [PresetItem]] = [:]
+    /// Rest after each set of an exercise, by exercise name, where the user
+    /// picked one on the set list (2026-11-27): `ExerciseRest` raw values.
+    /// Exercises without one follow `rest`. Kept as plain numbers so a
+    /// choice a later build adds never makes the file unreadable.
+    private(set) var restOverrides: [String: Int] = [:]
 
     @ObservationIgnored private var isLoading = false
     @ObservationIgnored private let fileURL: URL
@@ -478,6 +483,30 @@ final class WorkoutStore {
         PresetItem(exerciseName: exercise.exerciseName, sets: exercise.sets.count, reps: exercise.repRange)
     }
 
+    // MARK: - Rest per exercise
+
+    /// The rest picked for this exercise, or nil when it follows the
+    /// Settings rest.
+    func restChoice(forExerciseNamed name: String) -> ExerciseRest? {
+        restOverrides[name].flatMap(ExerciseRest.init(rawValue:))
+    }
+
+    /// Picks the exercise's own rest; nil goes back to the Settings rest.
+    func setRestChoice(_ choice: ExerciseRest?, forExerciseNamed name: String) {
+        guard restOverrides[name] != choice?.rawValue else { return }
+        restOverrides[name] = choice?.rawValue
+        save()
+    }
+
+    /// Seconds of rest after a set of `exercise`: its own choice, else the
+    /// Settings rest. Nil when the rest is off.
+    func restSeconds(after exercise: WorkoutExercise) -> Int? {
+        if let choice = restChoice(forExerciseNamed: exercise.exerciseName) {
+            return choice.seconds(after: exercise)
+        }
+        return rest.seconds(after: exercise)
+    }
+
     // MARK: - Saved exercises
 
     func isSaved(_ name: String) -> Bool { saved.contains(name) }
@@ -605,6 +634,8 @@ final class WorkoutStore {
         /// builds before the plan onboarding don't know Recomp and would set
         /// the whole file aside.
         var recompGoal: Bool?
+        /// Nil in files saved before rest could be picked per exercise.
+        var restOverrides: [String: Int]?
     }
 
     static var defaultFileURL: URL {
@@ -630,6 +661,7 @@ final class WorkoutStore {
         if snapshot.recompGoal == true { profile?.goal = .recomp }
         saved = Set(snapshot.saved ?? [])
         customPresets = snapshot.customPresets ?? [:]
+        restOverrides = snapshot.restOverrides ?? [:]
         isLoading = false
     }
 
@@ -652,7 +684,8 @@ final class WorkoutStore {
         if recomp { stored?.goal = .getFit }
         let snapshot = Snapshot(experience: experience, unit: unit, rest: rest, profile: stored,
                                 saved: saved.sorted(), customPresets: customPresets, sessions: sessions,
-                                recompGoal: recomp ? true : nil)
+                                recompGoal: recomp ? true : nil,
+                                restOverrides: restOverrides.isEmpty ? nil : restOverrides)
         do {
             try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(),
                                                     withIntermediateDirectories: true)

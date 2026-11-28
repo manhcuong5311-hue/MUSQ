@@ -23,6 +23,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 // MARK: - Editor
 
@@ -70,9 +71,7 @@ struct MealItemsEditor: View {
         VStack(alignment: .leading, spacing: 14) {
             switch style {
             case .card:
-                rows
-                    .padding(.horizontal, 14)
-                    .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surface))
+                cards
             case .plain:
                 rows
             }
@@ -107,6 +106,29 @@ struct MealItemsEditor: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+        }
+    }
+
+    /// The card style (2026-11-27, owner's reference): "Ingredients" with
+    /// "+ Add" on its right, then each food as a card of its own.
+    private var cards: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            MealIngredientsHeader {
+                searchRequest.wrappedValue = MealFoodSearchRequest()
+            }
+            ForEach(foods) { food in
+                MealIngredientCard(food: binding(for: food), locale: locale) {
+                    withAnimation { foods.removeAll { $0.id == food.id } }
+                }
+                .transition(.opacity.combined(with: .move(edge: .leading)))
+            }
+            if foods.isEmpty {
+                Text("No foods yet. Tap Add to put one in.", comment: "Meal scan and editor: a meal with no foods left")
+                    .font(.ui(14))
+                    .foregroundStyle(DS.silver.opacity(0.6))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.vertical, 6)
+            }
         }
     }
 
@@ -394,6 +416,254 @@ private struct MealItemRow: View {
             .accessibilityHint(String(localized: "Type an exact amount", comment: "VoiceOver hint on a food's grams in a meal scan"))
             .accessibilitySortPriority(2)
         }
+    }
+}
+
+/// A food as a card of its own (the card style, 2026-11-27): its round
+/// picture, a dot in the colour of its main macro, its name and energy, and
+/// on the right a box with its grams. A tap on the box types the grams of a
+/// food by amount; anything else opens the card's details: the slider or
+/// stepper, what's hidden in it, typing the calories of a food typed in by
+/// hand, and Remove (also in its context menu). VoiceOver finds the food as
+/// one adjustable element, so the details needn't be open.
+private struct MealIngredientCard: View {
+    @Binding var food: MealReviewFood
+    var locale: String
+    var onDelete: () -> Void
+
+    private enum Typed {
+        case grams, kcal
+    }
+
+    @State private var isOpen = false
+    @State private var isTyping = false
+    @State private var typed = Typed.grams
+    @State private var typedText = ""
+
+    var body: some View {
+        let logged = food.logged
+        let caption = MealReviewFood.hiddenCaption(food.hidden)
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .center, spacing: 12) {
+                Button {
+                    withAnimation(.snappy) { isOpen.toggle() }
+                } label: {
+                    HStack(alignment: .center, spacing: 12) {
+                        MealFoodThumb(food: food)
+                        VStack(alignment: .leading, spacing: 3) {
+                            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                                if let dot = MealFoodLook.dominantColor(logged) {
+                                    Circle().fill(dot).frame(width: 8, height: 8)
+                                        .alignmentGuide(.firstTextBaseline) { $0[.bottom] - 1 }
+                                }
+                                Text(food.name)
+                                    .font(.ui(17, .semibold))
+                                    .foregroundStyle(DS.silver)
+                                    .multilineTextAlignment(.leading)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            Text(energyLine(logged))
+                                .font(.ui(15))
+                                .monospacedDigit()
+                                .foregroundStyle(DS.silver.opacity(0.6))
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        Spacer(minLength: 4)
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                // One adjustable element: "Boiled egg, 2 eggs, 100 grams, 155 kcal".
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(food.name)
+                .accessibilityValue(spokenValue(logged, caption: caption))
+                .accessibilityHint(String(localized: "Swipe up or down to change the amount",
+                                          comment: "VoiceOver hint on a food card in the meal scan and editor"))
+                .accessibilityAdjustableAction { direction in
+                    let up = direction == .increment
+                    switch food.control {
+                    case .amount: food.nudgeGrams(up: up)
+                    case .count, .multiplier: food.stepCount(up: up)
+                    }
+                }
+                .accessibilityAction(named: String(localized: "Remove \(food.name)",
+                                                   comment: "VoiceOver: the button that takes a food out of the meal; the food's name")) {
+                    onDelete()
+                }
+                .accessibilitySortPriority(3)
+                amountBox(logged)
+            }
+            if isOpen { details(logged, caption: caption) }
+        }
+        .padding(12)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(DS.silver.opacity(0.045)))
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(DS.silver.opacity(0.08), lineWidth: 1))
+        .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .contextMenu {
+            Button(String(localized: "Remove", comment: "Meal scan and editor: takes a food out of the meal"),
+                   systemImage: "trash", role: .destructive, action: onDelete)
+        }
+        .accessibilityElement(children: .contain)
+        .alert(alertTitle, isPresented: $isTyping) {
+            TextField(typed == .grams ? Int(food.grams.rounded()).formatted() : food.logged.kcal.formatted(),
+                      text: $typedText)
+                .keyboardType(.numberPad)
+            Button(String(localized: "Cancel"), role: .cancel) {}
+            Button(String(localized: "Done")) {
+                switch typed {
+                case .grams: food.setGrams(typed: typedText)
+                case .kcal: food.setKcal(typed: typedText)
+                }
+            }
+        } message: {
+            switch typed {
+            case .grams: Text("From 1 to 3,000 g.", comment: "Meal scan: the grams a food can be typed as")
+            case .kcal: Text("From 0 to 10,000 kcal.", comment: "Meal editor: the calories a food typed in by hand can be typed as")
+            }
+        }
+    }
+
+    private var alertTitle: String {
+        typed == .kcal
+            ? String(localized: "Calories of \(food.name)", comment: "Meal editor: a food's calories, typed; the food's name")
+            : String(localized: "Grams of \(food.name)", comment: "Meal scan: a food's exact grams, typed; the food's name")
+    }
+
+    private func startTyping(_ kind: Typed) {
+        typedText = ""
+        typed = kind
+        isTyping = true
+    }
+
+    /// "1 bowl · 459 kcal", or "459 kcal" with no words for the amount.
+    private func energyLine(_ logged: MealEntry.Item) -> String {
+        guard let words = food.amountWords(locale: locale), !words.isEmpty else {
+            return String(localized: "\(logged.kcal) kcal", comment: "A food's energy: 459 kcal")
+        }
+        return String(localized: "\(words) · \(logged.kcal) kcal", comment: "A food by amount: 1 bowl · 459 kcal")
+    }
+
+    /// The box on the right: the grams ("150 g"), which a tap types for a
+    /// food by amount; a counted food with no weight shows its count, a
+    /// multiple "×1½", and a tap opens the stepper.
+    private func amountBox(_ logged: MealEntry.Item) -> some View {
+        Button {
+            if food.control == .amount {
+                startTyping(.grams)
+            } else {
+                withAnimation(.snappy) { isOpen.toggle() }
+            }
+        } label: {
+            Group {
+                if logged.grams > 0 {
+                    Text("\(logged.grams.formatted()) g",
+                         comment: "A food's grams on the small button beside its slider, a tap types them: 674 g")
+                } else if food.control == .multiplier {
+                    Text(verbatim: "×" + FoodAmount.count(food.count))
+                } else {
+                    Text(verbatim: FoodAmount.count(food.count))
+                }
+            }
+            .font(.ui(15, .semibold))
+            .monospacedDigit()
+            .foregroundStyle(DS.silver)
+            .lineLimit(1)
+            .fixedSize()
+            .padding(.horizontal, 12)
+            .frame(minWidth: 72, minHeight: 40)
+            .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(DS.surface))
+            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(DS.silver.opacity(0.2), lineWidth: 1))
+            .padding(.vertical, 2)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .dsHover(.highlight, radius: 12)
+        .accessibilityLabel(food.control == .amount
+                            ? String(localized: "Grams of \(food.name)", comment: "Meal scan: a food's exact grams, typed; the food's name")
+                            : food.name)
+        .accessibilityHint(food.control == .amount
+                           ? String(localized: "Type an exact amount", comment: "VoiceOver hint on a food's grams in a meal scan")
+                           : String(localized: "Shows the amount controls", comment: "VoiceOver hint on a food card's amount box that opens its stepper"))
+        .accessibilitySortPriority(2)
+    }
+
+    /// The slider or the stepper, what's hidden in it, the calories of a
+    /// food typed in by hand, and Remove. VoiceOver adjusts the card itself.
+    @ViewBuilder
+    private func details(_ logged: MealEntry.Item, caption: String?) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            switch food.control {
+            case .amount:
+                Slider(value: Binding(get: { food.grams }, set: { food.setGrams(fromSlider: $0) }), in: food.gramBounds)
+                    .tint(DS.silver)
+                    .accessibilityHidden(true)
+            case .count, .multiplier:
+                HStack(spacing: 10) {
+                    Text(food.amountWords(locale: locale) ?? FoodAmount.count(food.count))
+                        .font(.ui(15, .semibold))
+                        .monospacedDigit()
+                        .foregroundStyle(DS.silver.opacity(0.85))
+                    Spacer(minLength: 8)
+                    Stepper(onIncrement: food.nextCount(up: true) == nil ? nil : { food.stepCount(up: true) },
+                            onDecrement: food.nextCount(up: false) == nil ? nil : { food.stepCount(up: false) }) {
+                        Text(verbatim: FoodAmount.count(food.count))
+                    }
+                    .labelsHidden()
+                    .fixedSize()
+                }
+                .accessibilityHidden(true)
+            }
+            if let caption {
+                Text(caption)
+                    .font(.ui(12.5))
+                    .monospacedDigit()
+                    .foregroundStyle(DS.silver.opacity(0.55))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityHidden(true)
+            }
+            HStack(spacing: 16) {
+                if food.isManual {
+                    Button {
+                        startTyping(.kcal)
+                    } label: {
+                        Label(String(localized: "Calories", comment: "Meal editor: types the calories of a food typed in by hand"),
+                              systemImage: "pencil")
+                            .font(.ui(14, .semibold))
+                            .foregroundStyle(DS.silver.opacity(0.8))
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Calories of \(food.name)", comment: "Meal editor: a food's calories, typed; the food's name"))
+                    .accessibilityValue(String(localized: "\(logged.kcal) kcal", comment: "A food's energy: 459 kcal"))
+                }
+                Spacer(minLength: 0)
+                Button(role: .destructive, action: onDelete) {
+                    Label(String(localized: "Remove", comment: "Meal scan and editor: takes a food out of the meal"),
+                          systemImage: "trash")
+                        .font(.ui(14, .semibold))
+                        .foregroundStyle(DS.silver.opacity(0.65))
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(String(localized: "Remove \(food.name)",
+                                           comment: "VoiceOver: the button that takes a food out of the meal; the food's name"))
+            }
+        }
+        .padding(.leading, 58)
+        .transition(.opacity)
+    }
+
+    /// What VoiceOver reads as the food's value (as `MealItemRow` says it).
+    private func spokenValue(_ logged: MealEntry.Item, caption: String?) -> String {
+        var parts: [String] = []
+        if let words = food.amountWords(locale: locale, spoken: true) { parts.append(words) }
+        if logged.grams > 0 { parts.append(String(localized: "\(logged.grams) grams", comment: "VoiceOver: a food's grams")) }
+        parts.append(String(localized: "\(logged.kcal) kcal", comment: "A food's energy: 459 kcal"))
+        if let caption { parts.append(caption) }
+        return parts.joined(separator: ", ")
     }
 }
 
@@ -1426,6 +1696,8 @@ struct MealEditSheet: View {
     @State private var openedFoods: [MealReviewFood]
     @State private var search: MealFoodSearchRequest?
     @State private var confirmsDelete = false
+    /// The small picture kept of a scanned meal (`MealPhotoStore`), if any.
+    @State private var photo: UIImage?
 
     init(meal: MealEntry) {
         self.meal = meal
@@ -1435,71 +1707,53 @@ struct MealEditSheet: View {
         _date = State(initialValue: meal.date)
         _foods = State(initialValue: foods)
         _openedFoods = State(initialValue: foods)
+        _photo = State(initialValue: MealPhotoStore.photo(for: meal.id))
     }
 
     /// The member's language, for the food table's names and words.
     private var locale: String { AIService.appLocale }
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
-                    TextField(String(localized: "Meal name", comment: "A meal's name: the placeholder of its name field"), text: $title)
-                        .font(.ui(22, .bold))
-                        .foregroundStyle(DS.silver)
-                        .submitLabel(.done)
-                    origin
-                    timeRow
-                    MealItemsEditor(foods: $foods, locale: locale, search: $search)
-                    if meal.source == .photo, keepsScannedFoods, let note = meal.aiNote, !note.isEmpty {
-                        Text(note)
-                            .font(.ui(13))
-                            .foregroundStyle(DS.silver.opacity(0.6))
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    if foods.isEmpty {
-                        Text("Every food is removed: saving now deletes this meal.",
-                             comment: "Meal editor: all the foods were taken out")
-                            .font(.ui(13))
-                            .foregroundStyle(DS.silver.opacity(0.7))
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    WideButton(title: foods.isEmpty ? String(localized: "Delete meal") : String(localized: "Save"),
-                               prominent: true, fontSize: 16, verticalPadding: 14, cornerRadius: 14) { save() }
-                    if !foods.isEmpty {
-                        Button {
-                            confirmsDelete = true
-                        } label: {
-                            Label(String(localized: "Delete meal"), systemImage: "trash")
-                                .font(.ui(14, .semibold))
-                                .foregroundStyle(DS.silver.opacity(0.65))
-                                .frame(maxWidth: .infinity, minHeight: 44)
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .padding(.horizontal, DS.Metric.gutter)
-                .padding(.bottom, 24)
+        MealPhotoSheetLayout(photo: photo, closeLabel: String(localized: "Cancel"), onClose: { dismiss() }) {
+            MealResultHeader(title: $title, foods: foods, date: $date, latest: max(Date(), meal.date),
+                             confidence: confidence, showsTypedBadge: meal.source == .manual)
+            if !Calendar.current.isDate(date, inSameDayAs: meal.date) {
+                Text(String(localized: "Moves to \(date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))) when saved.",
+                            comment: "Meal editor: the meal's day was changed; the new day: Moves to Sat, 21 Nov when saved."))
+                    .font(.ui(12.5))
+                    .foregroundStyle(DS.silver.opacity(0.65))
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            .scrollDismissesKeyboard(.interactively)
-            .background(DS.ink.ignoresSafeArea())
-            .navigationTitle(String(localized: "Edit meal", comment: "Title: a logged meal, to change or delete"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized: "Cancel")) { dismiss() }
-                }
+            MealItemsEditor(foods: $foods, locale: locale, showsTotals: false, search: $search)
+            if meal.source == .photo, keepsScannedFoods, let note = meal.aiNote, !note.isEmpty {
+                Text(note)
+                    .font(.ui(13))
+                    .foregroundStyle(DS.silver.opacity(0.6))
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            .confirmationDialog(String(localized: "Delete this meal?", comment: "Meal editor: confirms deleting the meal"),
-                                isPresented: $confirmsDelete, titleVisibility: .visible) {
-                Button(String(localized: "Delete meal"), role: .destructive) { delete() }
-                Button(String(localized: "Cancel"), role: .cancel) {}
-            } message: {
-                Text("It comes off the day's calories and macros.", comment: "Meal editor: what deleting a meal does")
+            if foods.isEmpty {
+                Text("Every food is removed: saving now deletes this meal.",
+                     comment: "Meal editor: all the foods were taken out")
+                    .font(.ui(13))
+                    .foregroundStyle(DS.silver.opacity(0.7))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        } bottom: {
+            HStack(spacing: 12) {
+                if !foods.isEmpty {
+                    MealRoundButton(symbol: "trash", label: String(localized: "Delete meal")) { confirmsDelete = true }
+                }
+                MealPillButton(title: foods.isEmpty ? String(localized: "Delete meal") : String(localized: "Save")) { save() }
             }
         }
-        // A swipe down doesn't drop changes: Cancel does.
+        .confirmationDialog(String(localized: "Delete this meal?", comment: "Meal editor: confirms deleting the meal"),
+                            isPresented: $confirmsDelete, titleVisibility: .visible) {
+            Button(String(localized: "Delete meal"), role: .destructive) { delete() }
+            Button(String(localized: "Cancel"), role: .cancel) {}
+        } message: {
+            Text("It comes off the day's calories and macros.", comment: "Meal editor: what deleting a meal does")
+        }
+        // A swipe down doesn't drop changes: the close button does.
         .interactiveDismissDisabled(hasChanges)
         .dsLayoutRoot()
         .dsSheetSizing(.form)
@@ -1514,52 +1768,12 @@ struct MealEditSheet: View {
         foods.contains { $0.basis == "estimate" || $0.aiGrams != nil || $0.aiKcal != nil }
     }
 
-    /// Where the meal came from: the scan's confidence, or "Typed".
-    @ViewBuilder
-    private var origin: some View {
-        switch meal.source {
-        case .photo:
-            if let confidence = meal.confidence, keepsScannedFoods {
-                HStack(spacing: 6) {
-                    Image(systemName: "sparkles")
-                    Text(MealScanSheet.confidenceText(confidence))
-                }
-                .font(.ui(12.5, .semibold))
-                .foregroundStyle(DS.silver.opacity(0.65))
-            }
-        case .manual:
-            MealSourceBadge(source: .manual)
-        }
-    }
-
-    /// When it was eaten: a day and a time, up to now. Another day says so:
-    /// saved, the meal leaves this day's list for that one.
-    private var timeRow: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 10) {
-                Text("Eaten", comment: "Meal editor: when the meal was eaten, before a date and time")
-                    .font(.ui(15, .semibold))
-                    .foregroundStyle(DS.silver)
-                    .accessibilityHidden(true)
-                Spacer(minLength: 8)
-                DatePicker(String(localized: "Eaten", comment: "Meal editor: when the meal was eaten, before a date and time"),
-                           selection: $date, in: ...max(Date(), meal.date), displayedComponents: [.date, .hourAndMinute])
-                    .datePickerStyle(.compact)
-                    .labelsHidden()
-                    .tint(DS.silver)
-            }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
-            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(DS.surface))
-            if !Calendar.current.isDate(date, inSameDayAs: meal.date) {
-                Text(String(localized: "Moves to \(date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))) when saved.",
-                            comment: "Meal editor: the meal's day was changed; the new day: Moves to Sat, 21 Nov when saved."))
-                    .font(.ui(12.5))
-                    .foregroundStyle(DS.silver.opacity(0.65))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 4)
-            }
-        }
+    /// How sure the scan was, while a food it read is still in the meal:
+    /// the level it logged, or what the foods give for a meal logged
+    /// without one.
+    private var confidence: MealConfidence? {
+        guard meal.source == .photo, keepsScannedFoods else { return nil }
+        return MealConfidence.resolve(meal.confidence, foods: foods)
     }
 
     /// What would be saved differs from the meal: its foods as they'd be
@@ -1592,6 +1806,7 @@ struct MealEditSheet: View {
 
     private func delete() {
         withAnimation { daily.deleteMeal(id: meal.id) }
+        MealPhotoStore.delete(for: meal.id)
         dismiss()
     }
 

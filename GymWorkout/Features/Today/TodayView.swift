@@ -60,8 +60,14 @@ struct TodayView: View {
     /// new-member invite.
     @State private var goalLauncher = GoalLauncher()
     @Environment(\.accessibilityVoiceOverEnabled) private var voiceOver
-    /// The layout the user picked in Settings (see `TodayDesign`).
-    @AppStorage(TodayDesign.storageKey) private var design: TodayDesign = .coach
+    /// The dock's "Your day" sheet (2026-11-27), and what to open once it
+    /// has closed (a sheet can't open while another is still up).
+    @State private var showsYourDay = false
+    @State private var afterYourDay: (() -> Void)?
+    /// Last night's sleep, logged by hand from the dock.
+    @State private var showsSleepLog = false
+    /// The Food page, pushed from the food card.
+    @State private var showsFood = false
     /// Bumped at midnight and whenever the app comes back, so the tab moves
     /// to the new day even if nothing else changed.
     @State private var clock = 0
@@ -86,26 +92,17 @@ struct TodayView: View {
         // Balance (2026-11-22): worked out on each render, on the device, and
         // only while its card is on Today (Settings › Balance).
         let balance = BalanceSettings.shared.showsOnToday ? currentBalance(now: now) : nil
+        // One layout since 2026-11-27 (the owner kept a single new one).
+        let journey = Journey(store: store, daily: daily, health: health, metrics: metrics, plan: plan)
         NavigationStack {
             ZStack {
                 DS.ink.ignoresSafeArea()
                 ScrollView(showsIndicators: false) {
-                    Group {
-                        switch design {
-                        case .classic:
-                            currentPage(metrics, now: now)
-                        case .rings:
-                            TodaySummaryLayout(metrics: metrics, plan: plan, actions: actions, balance: balance)
-                        case .dial:
-                            TodayDialLayout(metrics: metrics, plan: plan, actions: actions, balance: balance)
-                        case .coach:
-                            TodayCoachLayout(metrics: metrics, plan: plan, actions: actions, balance: balance)
-                        }
-                    }
-                    .dsReadable(720)
-                    .dsGutter()
-                    .padding(.top, design == .classic ? layout.value(22, 28) : layout.value(12, 20))
-                    .padding(.bottom, 24)
+                    TodayCoachLayout(metrics: metrics, plan: plan, actions: actions, balance: balance, journey: journey)
+                        .dsReadable(720)
+                        .dsGutter()
+                        .padding(.top, layout.value(12, 20))
+                        .padding(.bottom, 24)
                 }
                 // Water's Undo, for a few seconds after any glass, whichever
                 // layout (or Balance's button) added it; just above the tab
@@ -126,11 +123,26 @@ struct TodayView: View {
                 }
                 .padding(.bottom, 12)
             }
+            // The quick-log dock rides just above the tab bar (and its rest
+            // timer and ad), where the thumb is; the toasts sit above both.
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                TabBarView(selection: $tab)
+                VStack(spacing: 0) {
+                    // The ad goes above the dock, not between the dock and
+                    // the tab bar: two rows of buttons on either side of it
+                    // would invite taps that miss (AdMob's placement rule).
+                    AdBanner()
+                        .padding(.bottom, 10)
+                    TodayDock(metrics: metrics, actions: actions)
+                    TabBarView(selection: $tab, showsAd: false)
+                }
             }
             .statusBarScrim()
             .toolbar(.hidden, for: .navigationBar)
+            .navigationDestination(isPresented: $showsFood) {
+                FoodView(metrics: TodayMetrics(store: store, daily: daily, plan: plan, now: Date(), health: health),
+                         plan: plan,
+                         onAsk: CoachChat.isAvailable ? { chat = ChatRequest(question: $0) } : nil)
+            }
         }
         .tint(DS.silver)
         // "Set training days" on the Goal page opens the same profile editor.
@@ -172,12 +184,18 @@ struct TodayView: View {
                 .environment(store)
                 .environment(purchases)
         }
+        // Pictures of meals deleted from the quick log or trimmed from the
+        // log, now that the meals list lives on the Food page.
+        .task {
+            let logged = Set(daily.meals.map(\.id))
+            await Task.detached(priority: .background) { MealPhotoStore.prune(keeping: logged) }.value
+        }
         #if DEBUG
         // `-coach.open` (2026-11-23): the coach chat opens a second after
         // launch, so App Store shots can be taken with no tap (a simulator
         // the session can't drive). Premium or Pro only, as the bar is.
         .task {
-            guard ProcessInfo.processInfo.arguments.contains("-coach.open"), purchases.isPremium else { return }
+            guard ProcessInfo.processInfo.arguments.contains("-coach.open") else { return }
             try? await Task.sleep(for: .seconds(1))
             if chat == nil { chat = ChatRequest(question: nil) }
         }
@@ -204,10 +222,22 @@ struct TodayView: View {
                 .environment(daily)
         }
         .sheet(item: $quickLogRequest) { request in
-            QuickLogSheet(kind: request.kind)
+            QuickLogSheet(kind: request.kind, listensOnOpen: request.listens)
                 .environment(daily)
                 .environment(store)
                 .environment(health)
+        }
+        .sheet(isPresented: $showsYourDay, onDismiss: runAfterYourDay) {
+            TodayYourDaySheet(metrics: TodayMetrics(store: store, daily: daily, plan: plan, now: Date(), health: health),
+                              actions: yourDayActions)
+                .environment(store)
+                .environment(daily)
+                .environment(health)
+                .environment(purchases)
+        }
+        .sheet(isPresented: $showsSleepLog) {
+            SleepLogSheet()
+                .environment(daily)
         }
         .sheet(isPresented: $showsReminders) {
             RemindersSheet(recommended: DailyStore.waterTarget(for: store.profile))
@@ -276,6 +306,8 @@ struct TodayView: View {
     /// in a row still opens.
     private struct QuickLogRequest: Identifiable {
         let kind: QuickLogKind
+        /// The dock's mic: the quick log opens listening.
+        var listens = false
         let id = UUID()
     }
 
@@ -312,9 +344,10 @@ struct TodayView: View {
                          for group in groups { store.addToToday(group) }
                          tab = .train
                      },
-                     askCoach: {
-                         if purchases.isPremium { chat = ChatRequest(question: nil) } else { paywall.show(.coach) }
-                     },
+                     // Every tier opens the chat (2026-11-27): Free gets a few
+                     // questions a day, and the chat says when they're used
+                     // up. The bar never opens the paywall.
+                     askCoach: { chat = ChatRequest(question: nil) },
                      openProgress: {
                          progressSection = .overview
                          progressFocus?.target = .health
@@ -326,7 +359,49 @@ struct TodayView: View {
                          balanceSheetUp = true
                          showsBalance = true
                      },
-                     openGoal: { goalLauncher.open(profile: store.profile, purchases: purchases, paywall: paywall) })
+                     openGoal: { goalLauncher.open(profile: store.profile, purchases: purchases, paywall: paywall) },
+                     openFood: { showsFood = true },
+                     logSleep: { showsSleepLog = true },
+                     voiceLog: { quickLogRequest = QuickLogRequest(kind: .food, listens: true) },
+                     openYourDay: { showsYourDay = true })
+    }
+
+    /// The Your day sheet's actions: what opens another sheet, a cover or
+    /// another tab waits for it to close; water and the reminder switches
+    /// happen with it still up, so it shows the new numbers.
+    private var yourDayActions: TodayActions {
+        let now = actions
+        var sheet = now
+        let later: (@escaping () -> Void) -> () -> Void = { next in
+            { afterYourDay = next; showsYourDay = false }
+        }
+        sheet.logWeight = later(now.logWeight)
+        sheet.weightHistory = later(now.weightHistory)
+        sheet.waterSettings = later(now.waterSettings)
+        sheet.weighInTime = later(now.weighInTime)
+        sheet.reminders = later(now.reminders)
+        sheet.showPlan = later(now.showPlan)
+        sheet.editProfile = later(now.editProfile)
+        sheet.openTrain = later(now.openTrain)
+        sheet.startDay = { groups in afterYourDay = { now.startDay(groups) }; showsYourDay = false }
+        sheet.askCoach = later(now.askCoach)
+        sheet.openProgress = later(now.openProgress)
+        sheet.quickLog = { kind in afterYourDay = { now.quickLog(kind) }; showsYourDay = false }
+        sheet.balanceAction = { action in afterYourDay = { now.balanceAction(action) }; showsYourDay = false }
+        sheet.openBalance = later(now.openBalance)
+        sheet.openGoal = later(now.openGoal)
+        sheet.openFood = later(now.openFood)
+        sheet.logSleep = later(now.logSleep)
+        sheet.voiceLog = later(now.voiceLog)
+        sheet.openYourDay = {}
+        return sheet
+    }
+
+    /// The Your day sheet has closed: what it left to do.
+    private func runAfterYourDay() {
+        guard let next = afterYourDay else { return }
+        afterYourDay = nil
+        next()
     }
 
     // MARK: - Balance
@@ -438,12 +513,8 @@ struct TodayView: View {
             perform(action)
         case .ask(let question):
             // In the chat's field: the user reads it there and taps Send;
-            // nothing goes before.
-            if purchases.isPremium {
-                chat = ChatRequest(question: question)
-            } else {
-                paywall.show(.coach)
-            }
+            // nothing goes before. Every tier (2026-11-27).
+            chat = ChatRequest(question: question)
         case .deniedNote:
             showsDeniedNote = true
         }
@@ -994,6 +1065,9 @@ struct TodayMetrics {
     /// sleep stays off the page rather than reading "no data" every day.
     var hasSleep: Bool
     var sleepGoalMinutes: Int
+    /// Last night as logged by hand from the dock (MUSQ's own log), shown
+    /// where Apple Health has no sleep.
+    var manualSleepMinutes: Int?
     /// The last seven nights by the day you woke, oldest first, last night last.
     var sleepWeek: [HealthDay]
     /// Today's active energy. Display only: the plan already counts daily
@@ -1081,8 +1155,9 @@ struct TodayMetrics {
         if let first = setTimes.first, let last = setTimes.last {
             sessionWindow = DateInterval(start: first.addingTimeInterval(-120), end: last)
         }
-        let weekday = calendar.component(.weekday, from: now)
-        isTrainingDay = store.profile?.weekdays?.contains(weekday) ?? true
+        // The schedule decides (a date set by hand in By-date mode too);
+        // with nothing set every day may be a training day, as before.
+        isTrainingDay = ProgramAdvisor.plan(on: now, profile: store.profile, calendar: calendar) != .rest
 
         // The suggestion, named the way Train names it: the split day that
         // shares the most groups.
@@ -1142,7 +1217,6 @@ struct TodayMetrics {
 
         // This week, in the locale's order.
         let trained = store.trainedDays
-        let scheduled = Set(store.profile?.weekdays ?? [])
         let start = calendar.dateInterval(of: .weekOfYear, for: now)?.start ?? calendar.startOfDay(for: now)
         let today = calendar.startOfDay(for: now)
         week = (0..<7).compactMap { offset in
@@ -1150,7 +1224,10 @@ struct TodayMetrics {
             let day = calendar.component(.weekday, from: date)
             return WeekDay(date: date, letter: calendar.veryShortStandaloneWeekdaySymbols[day - 1],
                            trained: trained.contains { calendar.isDate($0, inSameDayAs: date) },
-                           scheduled: scheduled.contains(day),
+                           scheduled: {
+                               if case .train = ProgramAdvisor.plan(on: date, profile: store.profile, calendar: calendar) { return true }
+                               return false
+                           }(),
                            isToday: calendar.isDate(date, inSameDayAs: today),
                            isPast: date < today)
         }
@@ -1166,6 +1243,7 @@ struct TodayMetrics {
         // Steps added by hand count with Health's, and show without it.
         let manual = daily.manualSteps(on: now)
         manualStepsToday = manual
+        manualSleepMinutes = daily.sleepLog(on: now)?.minutes
         if let appleHealth, appleHealth.access == .asked {
             var steps: [Date: Int] = [:]
             for day in appleHealth.allDailySteps { steps[calendar.startOfDay(for: day.day)] = Int(day.value.rounded()) }

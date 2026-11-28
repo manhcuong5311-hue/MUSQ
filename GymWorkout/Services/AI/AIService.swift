@@ -2,8 +2,9 @@
 //  AIService.swift
 //  GymWorkout
 //
-//  The app's side of MUSQ's AI features (2026-11-21), all Premium: the Ask
-//  MUSQ coach, photo meal logging and the goal photo. Every call goes to
+//  The app's side of MUSQ's AI features (2026-11-21): the Ask MUSQ coach
+//  (5 questions a day free since 2026-11-27, more on Premium and Pro),
+//  photo meal logging (Pro) and the goal photo (one free, more on a plan). Every call goes to
 //  MUSQ's own Firebase functions (project musq-app, Singapore), which hold
 //  the OpenAI key, check Premium from signed App Store transactions and
 //  count usage. Nothing here talks to OpenAI directly, and each feature
@@ -109,10 +110,21 @@ struct GoalPhotoResult {
     var upload: Data
     /// What's left: this year on a plan, or of the one free photo.
     var remaining: Int
+    /// This photo's free redos (same photo, same look, no allowance used);
+    /// nil when the server gave none (an older server, or it couldn't save
+    /// the budget).
+    var redo: GoalPhotoRedoBudget?
     /// "year" (Premium, Pro) or "once" (the free photo).
     var period: String
     /// "free", "premium" or "pro", as the server counted it.
     var tier: String?
+}
+
+/// A goal photo's free redos (functions/src/redo.ts): the id to send as
+/// `redoOf`, and the tries left.
+nonisolated struct GoalPhotoRedoBudget: Codable, Hashable, Sendable {
+    var id: String
+    var left: Int
 }
 
 // MARK: - Meal scan
@@ -274,6 +286,9 @@ final class AIService {
     /// limit seen by a member who holds Pro means the server hasn't caught
     /// up with the upgrade yet.
     private(set) var limitAfterFailure: [String: ServerLimit] = [:]
+    /// The tries a failed goal photo redo still has, as the server said
+    /// (`details.redoLeft`); nil when the failure wasn't a redo's.
+    private(set) var goalPhotoRedoLeftAfterFailure: Int?
     /// Goal photos the member's plan has left this year, as the server last
     /// said (sync, a goal photo, or its limit); nil when unknown, without a
     /// plan, or said in an earlier year (a new year's allowance must never be
@@ -340,9 +355,15 @@ final class AIService {
     func chat(messages: [AIChatMessage], context: AIChatContext?, locale: String) async throws -> AIChatReply {
         remainingAfterFailure["aiChat"] = nil
         guard Consent.chat.isGiven else { throw AIServiceError.consentNeeded }
+        // Free members get a few questions a day too (since 2026-11-27). A
+        // plan this device holds goes along, so a server that hasn't recorded
+        // it refuses (premium-required) instead of counting the question on
+        // the free allowance, and `premiumCall` syncs and asks again.
+        let holdsPlan = await Self.holdsPlan()
         return try await premiumCall("aiChat",
                                      ChatRequest(messages: Array(messages.suffix(20)), context: context,
-                                             locale: locale, timeZone: TimeZone.current.identifier),
+                                                 locale: locale, timeZone: TimeZone.current.identifier,
+                                                 holdsPlan: holdsPlan),
                                      as: AIChatReply.self, timeout: 100)
     }
 
@@ -368,18 +389,31 @@ final class AIService {
     /// members without a plan too: the server gives each account one free
     /// goal photo. `confirmsOwnPhoto` is the member's answer for this photo;
     /// the server refuses without it.
+    ///
+    /// A redo (`redo`: the last result's budget and its `upload`) sends the
+    /// very same upload and look again and uses one of that photo's free
+    /// tries instead of the allowance; the server refuses it
+    /// (`AIServiceError.server(AIService.redoUnavailable)`) when the tries are
+    /// used, expired, or the photo or look differ.
     func goalPhoto(_ photo: UIImage, look: GoalLook, birthYear: Int,
-                   confirmsOwnPhoto: Bool) async throws -> GoalPhotoResult {
+                   confirmsOwnPhoto: Bool,
+                   redo: (budget: GoalPhotoRedoBudget, upload: Data)? = nil) async throws -> GoalPhotoResult {
         remainingAfterFailure["goalPhoto"] = nil
+        goalPhotoRedoLeftAfterFailure = nil
         guard Consent.goalPhoto.isGiven else { throw AIServiceError.consentNeeded }
-        guard let upload = await Task.detached(priority: .userInitiated, operation: { Self.goalUpload(photo) }).value else {
-            throw AIServiceError.server("photo")
+        let made: Data?
+        if let redo {
+            made = redo.upload
+        } else {
+            made = await Task.detached(priority: .userInitiated, operation: { Self.goalUpload(photo) }).value
         }
+        guard let upload = made else { throw AIServiceError.server("photo") }
         let holdsPlan = await Self.holdsPlan()
         let request = GoalPhotoRequest(image: upload.base64EncodedString(), sex: look.sex.rawValue,
                                        muscle: look.muscle.rawValue, fat: look.fat.rawValue,
                                        birthYear: Self.gregorianYear(birthYear), confirmsOwnPhoto: confirmsOwnPhoto,
-                                       timeZone: TimeZone.current.identifier, holdsPlan: holdsPlan)
+                                       timeZone: TimeZone.current.identifier, holdsPlan: holdsPlan,
+                                       redoOf: redo?.budget.id)
         let response = try await goalPhotoCall(request, holdsPlan: holdsPlan)
         guard let data = Data(base64Encoded: response.image), UIImage(data: data) != nil else {
             throw AIServiceError.unavailable
@@ -387,8 +421,13 @@ final class AIService {
         let remaining = response.remaining ?? response.remainingThisMonth ?? 0
         let period = response.period ?? "year"
         if period == "once" { freeGoalPhotoUsed = remaining == 0 } else { setGoalPhotosLeft(remaining) }
-        return GoalPhotoResult(jpeg: data, upload: upload, remaining: remaining, period: period, tier: response.tier)
+        return GoalPhotoResult(jpeg: data, upload: upload, remaining: remaining, redo: response.redo, period: period,
+                               tier: response.tier)
     }
+
+    /// The server's answer to a redo it can't make (Reason.redo in
+    /// functions/src/reasons.ts), as `AIServiceError.server`.
+    nonisolated static let redoUnavailable = "redo-unavailable"
 
     /// A goal photo call. The server counts a member it holds no plan for as
     /// free, so a plan this device has that the server hasn't recorded yet
@@ -546,6 +585,7 @@ final class AIService {
         } catch {
             let details = Self.details(of: error)
             remainingAfterFailure[name] = (details["remaining"] as? NSNumber)?.intValue
+            if name == "goalPhoto" { goalPhotoRedoLeftAfterFailure = (details["redoLeft"] as? NSNumber)?.intValue }
             let mapped = Self.map(error)
             if mapped == .limitReached {
                 let limit = ServerLimit(tier: details["tier"] as? String, period: details["period"] as? String)
@@ -586,7 +626,9 @@ final class AIService {
         // Only the server's own limit; a bare 429 (every instance busy)
         // is a moment's wait, not the day's allowance.
         case .resourceExhausted: return message == "limit-reached" ? .limitReached : .unavailable
-        case .failedPrecondition: return message == "age-required" ? .adultsOnly : .photoNotAllowed
+        case .failedPrecondition:
+            if message == redoUnavailable { return .server(redoUnavailable) }
+            return message == "age-required" ? .adultsOnly : .photoNotAllowed
         case .unavailable: return message == "feature-off" ? .featureOff : .unavailable
         case .deadlineExceeded, .internal, .unknown, .cancelled: return .unavailable
         default: return .server(message)
@@ -655,6 +697,8 @@ private nonisolated struct ChatRequest: Encodable, Sendable {
     var context: AIChatContext?
     var locale: String
     var timeZone: String
+    /// The App Store gives this device a plan (see `chat`).
+    var holdsPlan: Bool
 }
 
 private nonisolated struct MealRequest: Encodable, Sendable {
@@ -676,6 +720,9 @@ private nonisolated struct GoalPhotoRequest: Encodable, Sendable {
     var timeZone: String
     /// The App Store gives this device a plan (see goalPhotoCall).
     var holdsPlan: Bool
+    /// The budget id of the goal photo this one redoes; nil for a new one
+    /// (encoded as absent).
+    var redoOf: String?
 }
 
 private nonisolated struct GoalPhotoResponse: Decodable, Sendable {
@@ -687,6 +734,8 @@ private nonisolated struct GoalPhotoResponse: Decodable, Sendable {
     var period: String?
     /// "free", "premium" or "pro".
     var tier: String?
+    /// This photo's free redos; absent from an older server.
+    var redo: GoalPhotoRedoBudget?
 }
 
 private nonisolated struct EntitlementRequest: Encodable, Sendable {

@@ -12,6 +12,12 @@
 //  pane (the calendar as a grid and the workout in progress, at phone width)
 //  beside the muscle groups. The phone keeps its own tree untouched.
 //
+//  The user's schedule (2026-11-27, `ScheduleEditorView`, the calendar
+//  button top right) decides what's recommended: a planned day suggests its
+//  own groups, recovering ones flagged on their cards; a rest day shows a
+//  calm rest card with Train anyway; a day with nothing set falls back to
+//  the recovery-based planner, as before.
+//
 
 import StoreKit
 import SwiftUI
@@ -37,6 +43,10 @@ struct TrainView: View {
     /// iPad wide: the Today pane's content height, so the pane hugs a short
     /// day instead of standing a near-empty card the window's full height.
     @State private var todayContentHeight: CGFloat?
+    /// The schedule editor, open on a date when it came from the calendar.
+    @State private var scheduleRequest: ScheduleRequest?
+    /// Rest days the user chose to train anyway, this launch.
+    @State private var trainAnywayDays: Set<Date> = []
     private let cardColors = CardColorPrefs()
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 2)
@@ -64,7 +74,8 @@ struct TrainView: View {
                     ScrollView(showsIndicators: false) {
                         VStack(alignment: .leading, spacing: 0) {
                             header
-                            CalendarStrip(selection: $selectedDay, markedDays: store.trainedDays)
+                            CalendarStrip(selection: $selectedDay, markedDays: store.trainedDays,
+                                          plan: calendarMark, onPlanDay: planDayAction)
                                 .padding(.top, 16)
                             dayHeading
                                 .padding(.top, 22)
@@ -102,6 +113,14 @@ struct TrainView: View {
                 )
             }
         }
+        .sheet(item: $scheduleRequest) { request in
+            ScheduleEditorView(initial: ProgramAdvisor.editableSchedule(for: store.profile, experience: store.experience),
+                               lowerFocus: ProgramAdvisor.isLowerFocused(store.profile),
+                               experience: store.experience,
+                               focusDate: request.date) { schedule in
+                store.profile?.apply(schedule)
+            }
+        }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { followNewDay() }
         }
@@ -129,21 +148,156 @@ struct TrainView: View {
     /// A hello by name, then a line about the day picked below (see
     /// `GreetingHeader`). The tab bar already says this is Train.
     private var header: some View {
-        GreetingHeader(greeting: greeting())
-            .padding(.horizontal, DS.Metric.gutter)
+        HStack(alignment: .center, spacing: 12) {
+            GreetingHeader(greeting: greeting())
+            scheduleButton
+        }
+        .padding(.horizontal, DS.Metric.gutter)
+    }
+
+    // MARK: - Schedule
+
+    /// Which editor to open: on a date, from the calendar, or as it was.
+    private struct ScheduleRequest: Identifiable {
+        let id = UUID()
+        var date: Date?
+    }
+
+    /// The calendar button, top right. Only with a profile to save into.
+    @ViewBuilder
+    private var scheduleButton: some View {
+        if store.profile != nil {
+            Button {
+                scheduleRequest = ScheduleRequest(date: nil)
+            } label: {
+                Image(systemName: "calendar")
+                    .font(.system(size: layout.isRegular ? 19 : 17, weight: .semibold))
+                    .foregroundStyle(DS.silver)
+                    .frame(width: 44, height: 44)
+                    .background(Circle().fill(DS.silver.opacity(0.07)))
+                    .overlay(Circle().strokeBorder(DS.silver.opacity(0.1), lineWidth: 1))
+                    .contentShape(Circle())
+            }
+            .buttonStyle(.plain)
+            .dsHover(.highlight, radius: 22)
+            .accessibilityLabel(String(localized: "Schedule"))
+            .accessibilityHint(String(localized: "Pick training days, rest days and the split"))
+        }
+    }
+
+    /// Opens the editor on a day: from a calendar chip's long press, or the
+    /// selected day's plan line.
+    private var planDayAction: ((Date) -> Void)? {
+        guard store.profile != nil else { return nil }
+        return { day in scheduleRequest = ScheduleRequest(date: day) }
+    }
+
+    /// "Plan" beside the heading of today or a day ahead: opens the editor
+    /// on that date, to set it to rest or to another day.
+    @ViewBuilder
+    private var planDayButton: some View {
+        if !isPast, let action = planDayAction {
+            Button {
+                action(calendar.startOfDay(for: selectedDay))
+            } label: {
+                Label("Plan", systemImage: "calendar.badge.plus")
+                    .font(.ui(13, .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.75))
+                    .padding(.horizontal, 12)
+                    .frame(minHeight: 36)
+                    .background(Capsule().fill(DS.silver.opacity(0.07)))
+                    .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Plan this day"))
+        }
+    }
+
+    /// The schedule's plan for a calendar day.
+    private func calendarMark(_ day: Date) -> CalendarDayMark {
+        CalendarDayMark(ProgramAdvisor.plan(on: day, profile: store.profile, calendar: calendar))
+    }
+
+    /// What the schedule holds for the selected day. A past day is a log, and
+    /// a rest day turns open once the user trains anyway or has already
+    /// planned something on it.
+    private var dayPlan: ProgramAdvisor.DayPlan {
+        guard !isPast else { return .open }
+        let plan = ProgramAdvisor.plan(on: selectedDay, profile: store.profile, calendar: calendar)
+        if plan == .rest {
+            let day = calendar.startOfDay(for: selectedDay)
+            let planned = !(store.session(on: selectedDay)?.exercises.isEmpty ?? true)
+            if planned || trainAnywayDays.contains(day) { return .open }
+        }
+        return plan
+    }
+
+    /// What the recommendation suggests: the scheduled day's groups, none on
+    /// a rest day, else the recovery planner's pick.
+    private func suggestedGroups(planned: [MuscleGroup], records: [MuscleGroup: MuscleTrainingRecord]) -> [MuscleGroup] {
+        let planner = TrainingPlanner(records: records, now: referenceTime,
+                                      rotation: ProgramAdvisor.rotation(for: store.profile))
+        switch dayPlan {
+        case .train(let day): return planner.recommended(scheduled: day.groups, planned: planned)
+        case .rest: return []
+        case .open: return planner.recommended(planned: planned).filter { !planned.contains($0) }
+        }
+    }
+
+    private var isRestDay: Bool { dayPlan == .rest }
+
+    /// A rest day the user picked: a moon, two words, and the way out.
+    private func restCard(large: Bool = false) -> some View {
+        VStack(alignment: .leading, spacing: large ? 16 : 14) {
+            HStack(spacing: 14) {
+                Image(systemName: "moon.zzz.fill")
+                    .font(.system(size: large ? 26 : 22, weight: .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.8))
+                    .frame(width: large ? 52 : 46, height: large ? 52 : 46)
+                    .background(Circle().fill(DS.silver.opacity(0.06)))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Rest day")
+                        .font(.ui(large ? 22 : 19, .semibold))
+                        .foregroundStyle(DS.silver)
+                    Text("Muscles grow while you rest.")
+                        .font(.ui(large ? 14 : 13))
+                        .foregroundStyle(DS.silver.opacity(0.55))
+                }
+                Spacer(minLength: 0)
+            }
+            .accessibilityElement(children: .combine)
+            WideButton(title: "Train anyway", prominent: false, fontSize: large ? 15 : 14.5, verticalPadding: 15) {
+                withAnimation(.easeOut(duration: 0.2)) {
+                    _ = trainAnywayDays.insert(calendar.startOfDay(for: selectedDay))
+                }
+            }
+        }
+        .padding(large ? 20 : 16)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(DS.surfaceAlt))
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous)
+            .strokeBorder(DS.silver.opacity(0.08), lineWidth: 1))
     }
 
     /// - Parameter roomy: an iPad header, wide enough for a longer name.
     private func greeting(roomy: Bool = false) -> Greeting {
         let planned = store.session(on: selectedDay)?.groups ?? []
         // What the planner would suggest for that day, to name in a question;
-        // a past day is a log, so it suggests nothing.
-        let suggested = isPast ? [] : TrainingPlanner(records: store.recoveryRecords(at: referenceTime),
-                                                      now: referenceTime,
-                                                      rotation: ProgramAdvisor.rotation(for: store.profile))
-            .recommended(planned: planned)
+        // a past day is a log, so it suggests nothing. A scheduled day names
+        // itself; a rest day names nothing.
+        let next: String?
+        switch dayPlan {
+        case .train(let day): next = day.name.isEmpty ? nil : day.name
+        case .rest: next = nil
+        case .open:
+            let suggested = isPast ? [] : TrainingPlanner(records: store.recoveryRecords(at: referenceTime),
+                                                          now: referenceTime,
+                                                          rotation: ProgramAdvisor.rotation(for: store.profile))
+                .recommended(planned: planned)
+            next = splitDay(for: suggested)?.name
+        }
         return Greeting(name: store.profile?.name, sessions: store.sessions,
-                        selected: selectedDay, next: splitDay(for: suggested)?.name, roomy: roomy)
+                        selected: selectedDay, next: next, roomy: roomy)
     }
 
     /// The split's day a suggestion comes from: the one sharing most groups.
@@ -168,10 +322,14 @@ struct TrainView: View {
     private var dayHeading: some View {
         VStack(alignment: .leading, spacing: 4) {
             SectionEyebrow(text: dayEyebrow)
-            Text(dayTitle)
-                .font(.ui(20, .semibold))
-                .tracking(-0.4)
-                .foregroundStyle(DS.silver)
+            HStack(alignment: .firstTextBaseline) {
+                Text(dayTitle)
+                    .font(.ui(20, .semibold))
+                    .tracking(-0.4)
+                    .foregroundStyle(DS.silver)
+                Spacer(minLength: 8)
+                planDayButton
+            }
             if showsLegend {
                 rhythmLegend
                     .padding(.top, 8)
@@ -246,9 +404,7 @@ struct TrainView: View {
 
         let trained = cardColors.mode == .off ? []
             : store.trainedThisRound(at: referenceTime, reset: cardColors.reset)
-        let recommended = TrainingPlanner(records: records, now: referenceTime,
-                                          rotation: ProgramAdvisor.rotation(for: store.profile))
-            .recommended(planned: planned).filter { !planned.contains($0) }
+        let recommended = suggestedGroups(planned: planned, records: records)
         let recent = trainable
             .filter { !recommended.contains($0) && (records[$0].map { $0.status != .ready } ?? false) }
             .sorted { (records[$0]?.lastTrainedAt ?? .distantPast) > (records[$1]?.lastTrainedAt ?? .distantPast) }
@@ -265,7 +421,9 @@ struct TrainView: View {
 
     /// Names the split's day: the one the suggestion comes from.
     private func recommendedTitle(_ recommended: [MuscleGroup]) -> String {
-        let day = splitDay(for: recommended)?.name.uppercased()
+        var scheduled: String?
+        if case .train(let day) = dayPlan, !day.name.isEmpty { scheduled = day.name }
+        let day = (scheduled ?? splitDay(for: recommended)?.name)?.uppercased()
         if isToday {
             return day.map { String(localized: "RECOMMENDED TODAY · \($0)",
                                     comment: "Section title, then the split's day it comes from: “RECOMMENDED TODAY · PUSH”") }
@@ -293,7 +451,11 @@ struct TrainView: View {
         if isPast {
             groupSection(String(localized: "LOG A WORKOUT"), groups: groups.trainable, records: groups.records, trained: [])
         } else {
-            if !groups.recommended.isEmpty {
+            if isRestDay {
+                restCard()
+                    .padding(.horizontal, DS.Metric.gutter)
+                    .padding(.top, 20)
+            } else if !groups.recommended.isEmpty {
                 groupSection(recommendedTitle(groups.recommended),
                              groups: groups.recommended, records: groups.records, trained: groups.trained)
             } else if planned.isEmpty {
@@ -600,9 +762,13 @@ struct TrainView: View {
         let width = max(0, min(layout.containerWidth, DS.Layout.contentMaxWidth) - 2 * layout.gutter)
         return ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
-                GreetingHeader(greeting: greeting(roomy: true), fontSize: 36)
-                    .padding(.horizontal, layout.gutter)
-                CalendarStrip(selection: $selectedDay, markedDays: store.trainedDays)
+                HStack(alignment: .center, spacing: 16) {
+                    GreetingHeader(greeting: greeting(roomy: true), fontSize: 36)
+                    scheduleButton
+                }
+                .padding(.horizontal, layout.gutter)
+                CalendarStrip(selection: $selectedDay, markedDays: store.trainedDays,
+                              plan: calendarMark, onPlanDay: planDayAction)
                     .padding(.top, 20)
                 dayHeadingRow
                     .padding(.top, 28)
@@ -680,6 +846,7 @@ struct TrainView: View {
                 SectionEyebrow(text: today.formatted(.dateTime.weekday(.wide).day().month(.wide)).uppercased())
                     .lineLimit(1)
                     .fixedSize()
+                scheduleButton
             }
             .padding(.horizontal, layout.gutter)
             .padding(.top, 22)
@@ -711,7 +878,8 @@ struct TrainView: View {
         let session = store.session(on: selectedDay)
         return ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
-                CalendarGrid(selection: $selectedDay, markedDays: store.trainedDays)
+                CalendarGrid(selection: $selectedDay, markedDays: store.trainedDays,
+                             plan: calendarMark, onPlanDay: planDayAction)
                 Hairline()
                     .padding(.vertical, 20)
                 if let session, !session.exercises.isEmpty {
@@ -771,7 +939,10 @@ struct TrainView: View {
             gridSection(String(localized: "LOG A WORKOUT"), groups: groups.trainable, records: groups.records,
                         trained: [], width: width)
         } else {
-            if !groups.recommended.isEmpty {
+            if isRestDay {
+                restCard(large: true)
+                    .frame(maxWidth: 520, alignment: .leading)
+            } else if !groups.recommended.isEmpty {
                 heroSection(recommendedTitle(groups.recommended), groups: groups.recommended,
                             records: groups.records, trained: groups.trained, width: width)
             } else if planned.isEmpty {
@@ -842,7 +1013,8 @@ struct TrainView: View {
     /// day under a pushed screen, a sheet or an open popover.
     @ViewBuilder
     private var dayShortcuts: some View {
-        if DS.isPad, router.path.isEmpty, infoGroup == nil, popoverGroup == nil, paywall.reason == nil {
+        if DS.isPad, router.path.isEmpty, infoGroup == nil, popoverGroup == nil, scheduleRequest == nil,
+           paywall.reason == nil {
             ZStack {
                 Button("Previous Day") { moveSelection(by: -1) }
                     .keyboardShortcut(.leftArrow, modifiers: [])

@@ -30,6 +30,9 @@ struct RootView: View {
     @State private var purchases: Purchases
     @State private var ads: Ads
     @State private var paywall = Paywall()
+    /// The tab bar's big Scan/Log button (2026-11-27): presented from here,
+    /// so it opens the same on every tab.
+    @State private var primaryAction = TabPrimaryAction()
     /// Steps, sleep and active energy from Apple Health (phase 2), read again
     /// whenever the app opens or the day changes.
     @State private var health: AppleHealth
@@ -75,6 +78,10 @@ struct RootView: View {
         let daily = DailyStore()
         daily.profileWaterTarget = DailyStore.waterTarget(for: store.profile)
         _daily = State(initialValue: daily)
+        // Nudges plan from the live stores rather than the saved files.
+        NudgeScheduler.shared.attach(store: store, daily: daily)
+        // Friends posts its activity summaries from the same live stores.
+        FriendsActivity.shared.attach(store: store, daily: daily)
         // Walks added by hand count with Health's steps.
         health.manualSteps = { daily.manualStepsByDay }
         _health = State(initialValue: health)
@@ -98,6 +105,17 @@ struct RootView: View {
         GoalStore.shared.refresh(profile: store.profile, experience: store.experience, trainedDays: store.trainedDays)
         Task {
             await GoalReminder.relay(profile: store.profile, experience: store.experience, trainedDays: store.trainedDays)
+        }
+    }
+
+    /// Switches to the tab a tapped notification points at.
+    private func followNudge() {
+        guard store.profile != nil, let route = NudgeRouter.shared.consume() else { return }
+        switch route {
+        case .today, .food: tab = .today
+        case .train: tab = .train
+        case .progress: tab = .muscles
+        case .friends: tab = .friends
         }
     }
 
@@ -125,6 +143,7 @@ struct RootView: View {
 
     var body: some View {
         @Bindable var paywall = paywall
+        @Bindable var primaryAction = primaryAction
         Group {
             if !DS.isPad {
                 ZStack {
@@ -154,6 +173,13 @@ struct RootView: View {
         .environment(purchases)
         .environment(ads)
         .environment(paywall)
+        .environment(primaryAction)
+        .environment(FriendsService.shared)
+        .environment(FriendsInbox.shared)
+        // A friend's nudge fetched on any other tab shows as a banner on top;
+        // the Friends tab shows its own.
+        .overlay(alignment: .top) { friendNudgeBanner }
+        .animation(.spring(duration: 0.35), value: FriendsInbox.shared.banner?.id)
         // The sheet sits outside the `.environment` calls above, so it
         // doesn't inherit them; it gets the window's layout too, so it sizes
         // itself for the window it opens over (always compact on iPhone).
@@ -162,6 +188,27 @@ struct RootView: View {
                 .environment(purchases)
                 .environment(\.dsLayout, layout)
                 .environment(\.dsChrome, chrome)
+        }
+        // The tab bar's big button: the meal scan (with its sign-in and
+        // consent first), or the typed or spoken food log. Outside the
+        // `.environment` calls too, so it gets them here.
+        .sheet(item: $primaryAction.request, onDismiss: { primaryAction.resume(purchases) }) { request in
+            Group {
+                switch request {
+                case .scan: MealScanSheet()
+                case .log: QuickLogSheet(kind: .food)
+                case .signIn: AISignInPrompt { primaryAction.resumesScan = true }
+                case .consent: AIConsentSheet(feature: .meal) { primaryAction.resumesScan = true }
+                }
+            }
+            .environment(store)
+            .environment(daily)
+            .environment(health)
+            .environment(purchases)
+            .environment(ads)
+            .environment(paywall)
+            .environment(\.dsLayout, layout)
+            .environment(\.dsChrome, chrome)
         }
         // Asked on every launch and every return to the app, not only when
         // ads start: a lapsed subscription has to be noticed even by someone
@@ -181,9 +228,23 @@ struct RootView: View {
                     await health.syncAccess()
                     await health.refresh()
                 }
+                // Friends: nudges waiting on the server, the board, the feed,
+                // and this member's new activity posted.
+                if AccountService.shared.isSignedIn {
+                    Task { await FriendsService.shared.refresh() }
+                }
+            } else if phase == .background {
+                FriendsActivity.shared.postSoon()
             }
         }
         .onChange(of: daily.stepEntries) { _, _ in health.manualStepsChanged() }
+        .onChange(of: tab == .friends && FriendsInbox.shared.banner != nil) { _, onFriendsWithBanner in
+            if onFriendsWithBanner { FriendsInbox.shared.clearDelivered() }
+        }
+        // A tapped notification picks the tab; one tapped before launch
+        // is waiting when the view first appears.
+        .onChange(of: NudgeRouter.shared.pending) { _, _ in followNudge() }
+        .task { followNudge() }
         // The goal's estimate and its Sunday check-in follow a session logged
         // on any tab, a new weight, a body-fat % entered, a schedule change, or
         // the goal made or deleted (reviews: check-in not re-laid, GOAL-9).
@@ -213,6 +274,35 @@ struct RootView: View {
         }
     }
 
+    /// The friend nudge banner over the other tabs: a tap opens Friends,
+    /// it goes by itself after a few seconds. On Friends itself the queue
+    /// is cleared, since that tab shows the nudge in place.
+    @ViewBuilder
+    private var friendNudgeBanner: some View {
+        let inbox = FriendsInbox.shared
+        if store.profile != nil, tab != .friends, let nudge = inbox.banner {
+            NudgeBanner(nudge: nudge, onNudgeBack: nil, nudgedBack: false,
+                        onDismiss: { inbox.dismissBanner() })
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    inbox.clearDelivered()
+                    tab = .friends
+                }
+                .accessibilityAction(named: Text("Open Friends")) {
+                    inbox.clearDelivered()
+                    tab = .friends
+                }
+                .padding(.horizontal, DS.Metric.gutter)
+            .padding(.top, 6)
+            .frame(maxWidth: 560)
+            .id(nudge.id)
+            .task(id: nudge.id) {
+                try? await Task.sleep(for: .seconds(5))
+                if inbox.banner?.id == nudge.id { inbox.dismissBanner() }
+            }
+        }
+    }
+
     @ViewBuilder
     private var tabSwitch: some View {
         switch tab {
@@ -224,6 +314,8 @@ struct RootView: View {
             ExerciseLibraryView(tab: $tab)
         case .muscles:
             MuscleProgressView(tab: $tab)
+        case .friends:
+            FriendsView(tab: $tab)
         case .profile:
             ProfileView(tab: $tab)
         }

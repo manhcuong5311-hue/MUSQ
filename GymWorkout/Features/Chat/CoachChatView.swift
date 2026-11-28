@@ -2,11 +2,15 @@
 //  CoachChatView.swift
 //  GymWorkout
 //
-//  The "Ask MUSQ" chat, Premium: questions about training (technique,
+//  The "Ask MUSQ" chat: questions about training (technique,
 //  programming, recovery, eating for training) answered with the user's
 //  plan and recent workouts in mind. The bar that opens it sits at the top
-//  of the Today tab. Asks once, naming OpenAI, before anything leaves the
-//  phone; health answers only go when the user turns them on.
+//  of the Today tab. Open to everyone since 2026-11-27 (owner: "Free 5 lần
+//  ask Ai 1 ngày"): 5 questions a day free, 10 on Premium, 30 on Pro
+//  (`Purchases.Tier.chatPerDay`). Sign in with Apple first, then the
+//  consent, which names OpenAI, before anything leaves the phone (the
+//  `AIGate` order, without its paywall step); health answers only go when
+//  the user turns them on.
 //
 //  Balance's "Ask MUSQ" (2026-11-22) opens it with a written question
 //  (`initialQuestion`): it waits in the field, with a note that it holds
@@ -18,12 +22,10 @@ import SwiftUI
 // MARK: - The Today bar
 
 /// The coach's entry at the top of Today: a field-like bar, outlined so it
-/// never competes with the page's one filled button. Free users see a lock
-/// and get the Premium sheet.
+/// never competes with the page's one filled button. Opens the chat for
+/// everyone: free members have a few questions a day.
 struct AskCoachBar: View {
     var action: () -> Void
-
-    @Environment(Purchases.self) private var purchases
 
     var body: some View {
         Button(action: action) {
@@ -37,24 +39,9 @@ struct AskCoachBar: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.85)
                 Spacer(minLength: 8)
-                if purchases.isPremium {
-                    Image(systemName: "arrow.up.circle")
-                        .font(.system(size: 17, weight: .regular))
-                        .foregroundStyle(DS.silver.opacity(0.5))
-                } else {
-                    HStack(spacing: 4) {
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 9, weight: .bold))
-                        Text("Premium", comment: "Tag on a Premium feature")
-                            .font(.mono(9.5, .semibold))
-                            .trackingEm(0.08, size: 9.5)
-                            .textCase(.uppercase)
-                    }
-                    .foregroundStyle(DS.silver.opacity(0.7))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .overlay(Capsule().strokeBorder(DS.silver.opacity(0.25), lineWidth: 1))
-                }
+                Image(systemName: "arrow.up.circle")
+                    .font(.system(size: 17, weight: .regular))
+                    .foregroundStyle(DS.silver.opacity(0.5))
             }
             .padding(.horizontal, 16)
             .frame(height: 48)
@@ -64,8 +51,7 @@ struct AskCoachBar: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(String(localized: "Ask MUSQ about your training"))
-        .accessibilityHint(purchases.isPremium ? String(localized: "Opens the coach chat")
-                                               : String(localized: "A Premium feature. Opens MUSQ Premium."))
+        .accessibilityHint(String(localized: "Opens the coach chat"))
     }
 }
 
@@ -192,9 +178,11 @@ struct CoachChatView: View {
                 Text(DS.isPad ? String(localized: "The conversation is only on this iPad, so it can't be brought back.")
                               : String(localized: "The conversation is only on this iPhone, so it can't be brought back."))
             }
-            .sheet(isPresented: $showsSignIn) {
-                // Signed in: ask the question that was waiting.
-                AISignInPrompt(onSignedIn: { retry() })
+            // Signed in: carry on with the question that was waiting (to the
+            // consent next, if it isn't given yet). Run once the sign-in sheet
+            // has gone, so the consent sheet can come up.
+            .sheet(isPresented: $showsSignIn, onDismiss: afterSignIn) {
+                AISignInPrompt()
             }
             // Over the chat, not from Today's paywall: a sheet can't open
             // from below one that's already showing.
@@ -256,9 +244,32 @@ struct CoachChatView: View {
                 }
             }
             .padding(.top, 6)
+            if !purchases.isPremium {
+                freeLine
+            }
         }
         .padding(.top, 8)
         .padding(.bottom, 12)
+    }
+
+    /// Without a plan, under the suggestions of an empty chat: how many
+    /// questions a day are free, and a way to more. Small; once the chat
+    /// runs, the footnote counts what's left.
+    private var freeLine: some View {
+        HStack(spacing: 10) {
+            Text("\(Purchases.AILimits.freeChatPerDay) free questions a day",
+                 comment: "Ask MUSQ, members without a plan: 5 free questions a day")
+                .font(.ui(12.5, .semibold))
+                .foregroundStyle(DS.silver.opacity(0.55))
+            Spacer(minLength: 8)
+            Button(String(localized: "More with Premium", comment: "Ask MUSQ: small link that opens the Premium paywall")) {
+                showsUpgrade = true
+            }
+            .font(.ui(12.5, .semibold))
+            .foregroundStyle(DS.silver.opacity(0.75))
+            .frame(minHeight: 44)
+        }
+        .padding(.top, 2)
     }
 
     private var suggestions: [String] {
@@ -360,7 +371,8 @@ struct CoachChatView: View {
         // row, so the question can be asked again.
         if let problem = chat.problem, problem != .limitReached || chat.isOutOfQuestions {
             return (text(for: problem), Self.canRetry(problem) && chat.hasUnanswered && !chat.isOutOfQuestions,
-                    problem == .notSignedIn, problem == .limitReached && offersPro)
+                    problem == .notSignedIn,
+                    (problem == .limitReached && (offersPro || offersPremium)) || (problem == .notPremium && offersPremium))
         }
         if chat.hasUnanswered {
             return (String(localized: "No answer to this one yet."), !chat.isOutOfQuestions, false, false)
@@ -372,6 +384,10 @@ struct CoachChatView: View {
     /// Pro is on sale with the AI.
     private var offersPro: Bool { purchases.tier == .premium && AIService.isLive && purchases.sellsPro }
 
+    /// Members without a plan are offered Premium (and Pro, on the same
+    /// paywall) at their daily limit.
+    private var offersPremium: Bool { purchases.tier == .free && AIService.isLive }
+
     private func problemRow(_ text: String, canRetry: Bool, signIn: Bool = false, upgrade: Bool = false) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(text)
@@ -381,7 +397,8 @@ struct CoachChatView: View {
             if signIn {
                 QuickChip(title: String(localized: "Sign in"), symbol: "person.crop.circle") { showsSignIn = true }
             } else if upgrade {
-                QuickChip(title: String(localized: "Get Pro"), symbol: "sparkles") { showsUpgrade = true }
+                QuickChip(title: offersPremium ? String(localized: "See Premium") : String(localized: "Get Pro"),
+                          symbol: "sparkles") { showsUpgrade = true }
             } else if canRetry {
                 QuickChip(title: String(localized: "Try again"), symbol: "arrow.clockwise") { retry() }
             }
@@ -394,13 +411,24 @@ struct CoachChatView: View {
     private func text(for problem: CoachChatError) -> String {
         switch problem {
         case .notSignedIn: return String(localized: "Sign in to ask the coach.")
-        // The chat only opens with Premium on this device, so this is mostly
-        // the server not knowing yet (bought a moment ago, or its check of the
+        // Free members chat too, so this is a plan on this device that the
+        // server hasn't recorded yet (bought a moment ago, or its check of the
         // purchase failed): say so and let them ask again, like the meal scan.
-        case .notPremium: return String(localized: "The coach is part of MUSQ Premium. If you've just bought it, try again in a moment.")
+        // Without a plan, it's the owner closing the free questions on the
+        // server (config/ai chatDailyLimitFree 0).
+        case .notPremium:
+            if !purchases.isPremium {
+                return String(localized: "Free questions are paused for now. Premium gives you \(Purchases.Tier.premium.chatPerDay) a day.",
+                              comment: "Ask MUSQ: the server closed the free questions; the number is Premium's questions a day")
+            }
+            return String(localized: "Your plan is on, but MUSQ's server hasn't caught up yet. Try again in a moment.")
         case .consentNeeded: return String(localized: "MUSQ needs your OK before it sends anything to OpenAI.")
         case .limitReached:
-            let limit = purchases.tier.ai?.chatPerDay ?? 0
+            let limit = purchases.tier.chatPerDay
+            if offersPremium {
+                return String(localized: "That's today's \(limit) questions. Premium gives you \(Purchases.Tier.premium.chatPerDay) a day, Pro \(Purchases.Tier.pro.chatPerDay).",
+                              comment: "The coach's daily limit without a plan: That's today's 5 questions. Premium gives you 10 a day, Pro 30.")
+            }
             if offersPro, let pro = Purchases.Tier.pro.ai?.chatPerDay {
                 return String(localized: "That's today's \(limit) questions. Pro gives you \(pro) a day, or ask again tomorrow.",
                               comment: "The coach's daily limit on Premium: That's today's 10 questions. Pro gives you 30 a day…")
@@ -504,6 +532,13 @@ struct CoachChatView: View {
         let question = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !question.isEmpty, question.utf16.count <= CoachChat.messageLimit,
               !chat.sending, !chat.isOutOfQuestions else { return }
+        // MUSQ's server counts the questions per account: sign in first
+        // (free members too), then the consent.
+        guard AccountService.shared.isSignedIn else {
+            pending = question
+            showsSignIn = true
+            return
+        }
         // Nothing leaves the phone before the user has said yes, naming OpenAI.
         guard consented else {
             pending = question
@@ -536,6 +571,22 @@ struct CoachChatView: View {
         Task {
             try? await Task.sleep(for: .milliseconds(450))
             typing = true
+        }
+    }
+
+    /// The sign-in sheet has gone: signed in, the waiting question goes on
+    /// (to the consent, if needed), or an unanswered one is asked again;
+    /// "Not now" drops the waiting question.
+    private func afterSignIn() {
+        guard AccountService.shared.isSignedIn else {
+            pending = nil
+            return
+        }
+        if let question = pending {
+            pending = nil
+            send(question)
+        } else {
+            retry()
         }
     }
 

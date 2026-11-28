@@ -6,7 +6,9 @@
 //  profile's split (upper / lower, front / back or push / pull / legs; see
 //  `ProgramAdvisor`). The planner suggests whichever day of it is most
 //  recovered, breaking ties by what was trained longest ago. It only
-//  suggests — any group can be trained at any time.
+//  suggests — any group can be trained at any time. A day the user's
+//  schedule names (2026-11-27) is suggested as it stands instead; see
+//  `recommended(scheduled:planned:)`.
 //
 
 import Foundation
@@ -38,6 +40,17 @@ struct TrainingPlanner {
         // Earliest day in the rotation wins a tie, so a new user starts on push.
         for day in days.dropFirst() where score(day) > score(best) { best = day }
         return best.filter { records[$0]?.status != .recovering }
+    }
+
+    /// A scheduled day's groups (see `ProgramAdvisor.plan(on:profile:)`),
+    /// less those already planned. Unlike `recommended(planned:)`, groups
+    /// still recovering stay in: the user chose this day for them, and their
+    /// cards already say they're recovering, so the choice to train or swap
+    /// stays the user's.
+    func recommended(scheduled day: [MuscleGroup], planned: [MuscleGroup] = []) -> [MuscleGroup] {
+        let trainable = Set(PresetProvider.trainableGroups)
+        var seen: Set<MuscleGroup> = []
+        return day.filter { trainable.contains($0) && !planned.contains($0) && seen.insert($0).inserted }
     }
 
     /// Readiness first (ready 1, partly or almost ready 0.5, recovering 0,

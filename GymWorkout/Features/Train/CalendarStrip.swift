@@ -8,13 +8,53 @@
 //  days out as a month-style grid instead (`CalendarGrid`), which doubles as
 //  a glance at three weeks of training.
 //
+//  Since the schedule editor (2026-11-27) today and the days ahead also
+//  show the plan: the day's name in small caps, or a moon on a rest day. A
+//  logged dot wins over the plan. Long-press a day from today on (or use
+//  its accessibility action) to plan it in the editor.
+//
 
 import SwiftUI
+
+/// What the schedule holds for a day, as the calendar shows it.
+enum CalendarDayMark: Hashable {
+    case none
+    case rest
+    /// The day's name, e.g. "Push".
+    case train(String)
+
+    /// A name short enough for a chip: as it is up to nine letters, else
+    /// the initials of its words ("Full Body A" → "FBA").
+    var shortName: String? {
+        guard case .train(let name) = self else { return nil }
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else { return nil }
+        if trimmed.count <= 9 { return trimmed.uppercased() }
+        let words = trimmed.split(whereSeparator: \.isWhitespace)
+        let initials = words.compactMap(\.first).map(String.init).joined()
+        return (words.count > 1 ? initials : String(trimmed.prefix(5))).uppercased()
+    }
+
+    /// Read after the date by VoiceOver.
+    var accessibilityText: String? {
+        switch self {
+        case .none: return nil
+        case .rest: return String(localized: "Rest day")
+        case .train(let name):
+            return name.isEmpty ? String(localized: "Training day")
+                : String(localized: "Plan: \(name)", comment: "The day's planned split day: Plan: Push")
+        }
+    }
+}
 
 struct CalendarStrip: View {
     @Binding var selection: Date
     /// Start-of-day dates that get the completion dot.
     var markedDays: Set<Date>
+    /// The schedule's plan for a day; only asked for today and later.
+    var plan: (Date) -> CalendarDayMark = { _ in .none }
+    /// Opens the schedule editor on a day, from today on. Nil hides it.
+    var onPlanDay: ((Date) -> Void)? = nil
 
     /// The days either side of today that can be picked, in both the strip
     /// and the grid.
@@ -33,11 +73,14 @@ struct CalendarStrip: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: layout.isRegular ? 8 : 7) {
                     ForEach(days, id: \.self) { day in
+                        let upcoming = day >= Calendar.current.startOfDay(for: Date())
                         DayChip(
                             day: day,
                             isSelected: Calendar.current.isDate(day, inSameDayAs: selection),
                             isToday: Calendar.current.isDateInToday(day),
-                            isMarked: markedDays.contains(day)
+                            isMarked: markedDays.contains(day),
+                            mark: upcoming ? plan(day) : .none,
+                            onPlan: upcoming ? onPlanDay.map { open -> () -> Void in { open(day) } } : nil
                         ) {
                             withAnimation(.easeOut(duration: 0.18)) { selection = day }
                         }
@@ -87,6 +130,8 @@ private struct PadKeepsSelectionInView: ViewModifier {
 struct CalendarGrid: View {
     @Binding var selection: Date
     var markedDays: Set<Date>
+    var plan: (Date) -> CalendarDayMark = { _ in .none }
+    var onPlanDay: ((Date) -> Void)? = nil
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 6), count: 7)
 
@@ -115,6 +160,8 @@ struct CalendarGrid: View {
                             isSelected: cell.date == selected,
                             isToday: cell.date == today,
                             isMarked: markedDays.contains(cell.date),
+                            mark: cell.date >= today ? plan(cell.date) : .none,
+                            onPlan: cell.date >= today ? onPlanDay.map { open -> () -> Void in { open(cell.date) } } : nil,
                             kind: .cell(dimmed: !calendar.isDate(cell.date, equalTo: selected, toGranularity: .month))
                         ) {
                             withAnimation(.easeOut(duration: 0.18)) { selection = cell.date }
@@ -212,6 +259,9 @@ private struct DayChip: View {
     var isSelected: Bool
     var isToday: Bool
     var isMarked: Bool
+    var mark: CalendarDayMark = .none
+    /// Opens the schedule editor on this day; nil for a past day.
+    var onPlan: (() -> Void)? = nil
     var kind: Kind = .strip
     var action: () -> Void
 
@@ -226,9 +276,11 @@ private struct DayChip: View {
         }
         .buttonStyle(.plain)
         .dsHover(.highlight, radius: 13)
+        .modifier(PlanDayMenu(onPlan: onPlan))
         .accessibilityLabel(day.formatted(date: .complete, time: .omitted))
         .accessibilityValue([isToday ? String(localized: "Today") : nil,
-                             isMarked ? String(localized: "Workout logged") : nil]
+                             isMarked ? String(localized: "Workout logged") : nil,
+                             mark.accessibilityText]
             .compactMap { $0 }.joined(separator: ", "))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
@@ -242,7 +294,7 @@ private struct DayChip: View {
                 .trackingEm(0.08, size: weekday)
                 .foregroundStyle(isSelected ? DS.ink.opacity(0.7) : DS.silver.opacity(isToday ? 0.8 : 0.4))
             number(size: layout.isRegular ? 19 : 17)
-            dot
+            markRow(nameSize: layout.isRegular ? 8 : 7)
         }
         .frame(width: layout.isRegular ? 52 : 44)
         .padding(.vertical, layout.isRegular ? 10 : 9)
@@ -253,7 +305,7 @@ private struct DayChip: View {
     private func cell(dimmed: Bool) -> some View {
         VStack(spacing: 5) {
             number(size: 17)
-            dot
+            markRow(nameSize: 7)
         }
         // Another month's day reads as such until it's picked.
         .opacity(dimmed && !isSelected ? 0.45 : 1)
@@ -268,6 +320,32 @@ private struct DayChip: View {
         Text(day.formatted(.dateTime.day()))
             .font(.ui(size, isToday || isSelected ? .semibold : .regular))
             .foregroundStyle(isSelected ? DS.ink : DS.silver.opacity(isToday ? 1 : 0.75))
+    }
+
+    /// The logged dot, else the plan: a moon on a rest day, the day's name
+    /// on a training day. One height whatever it holds, so chips line up.
+    private func markRow(nameSize: CGFloat) -> some View {
+        let tint = isSelected ? DS.ink.opacity(0.65) : DS.silver.opacity(0.5)
+        return ZStack {
+            if isMarked {
+                dot
+            } else if mark == .rest {
+                Image(systemName: "moon.fill")
+                    .font(.system(size: nameSize + 1.5, weight: .semibold))
+                    .foregroundStyle(tint)
+            } else if let name = mark.shortName {
+                Text(name)
+                    .font(.mono(nameSize, .semibold))
+                    .foregroundStyle(tint)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                    .padding(.horizontal, 2)
+            } else {
+                dot
+            }
+        }
+        .frame(height: 9)
+        .frame(maxWidth: .infinity)
     }
 
     private var dot: some View {
@@ -286,5 +364,25 @@ private struct DayChip: View {
         RoundedRectangle(cornerRadius: 13, style: .continuous)
             .strokeBorder(isToday && !isSelected ? DS.silver.opacity(0.45) : DS.silver.opacity(0.07),
                           lineWidth: 1)
+    }
+}
+
+/// A day from today on can be planned from its chip: a long press opens a
+/// menu with one item, also offered to VoiceOver as an action.
+private struct PlanDayMenu: ViewModifier {
+    var onPlan: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        if let onPlan {
+            content
+                .contextMenu {
+                    Button(action: onPlan) {
+                        Label("Plan this day", systemImage: "calendar.badge.plus")
+                    }
+                }
+                .accessibilityAction(named: Text("Plan this day"), onPlan)
+        } else {
+            content
+        }
     }
 }

@@ -62,6 +62,11 @@ enum AIGate {
 /// to logging one by words (free, on the device) and to a scan (Pro's).
 struct TodayMealsSection: View {
     var metrics: TodayMetrics
+    /// Which ways in show under the meals.
+    enum Chips { case all, scanOnly, none }
+    /// `.scanOnly` on the Food page, whose big "Add food" button already
+    /// logs a meal by words: the scan (Pro's, or its paywall) stays in reach.
+    var chips: Chips = .all
 
     @Environment(DailyStore.self) private var daily
     @Environment(Purchases.self) private var purchases
@@ -130,6 +135,7 @@ struct TodayMealsSection: View {
                         .contextMenu {
                             Button(String(localized: "Delete meal"), systemImage: "trash", role: .destructive) {
                                 withAnimation { daily.deleteMeal(id: meal.id) }
+                                MealPhotoStore.delete(for: meal.id)
                             }
                         }
                         if meal.id != meals.last?.id { Hairline(opacity: 0.07) }
@@ -144,11 +150,16 @@ struct TodayMealsSection: View {
                     }
                 }
                 // Logging by words is free for everyone; the scan is Pro's.
-                ViewThatFits(in: .horizontal) {
-                    HStack(spacing: 8) { mealChips }
-                    VStack(alignment: .leading, spacing: 0) { mealChips }
+                if chips == .all {
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 8) { mealChips }
+                        VStack(alignment: .leading, spacing: 0) { mealChips }
+                    }
+                    .padding(.bottom, 8)
+                } else if chips == .scanOnly, AIService.isLive {
+                    scanChip
+                        .padding(.bottom, 8)
                 }
-                .padding(.bottom, 8)
             }
             .padding(.horizontal, 16)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -182,6 +193,10 @@ struct TodayMealsSection: View {
         .task {
             await Task.detached(priority: .userInitiated) { _ = FoodTable.shared.version }.value
             await Task.detached(priority: .utility) { FoodPhraseParser.prepare() }.value
+            // Pictures of meals deleted elsewhere (the quick log) or no
+            // longer in the log.
+            let logged = Set(daily.meals.map(\.id))
+            await Task.detached(priority: .background) { MealPhotoStore.prune(keeping: logged) }.value
         }
         #if DEBUG
         .onGeometryChange(for: CGFloat.self) { $0.frame(in: .global).minY } action: { previewTop = $0 }
@@ -263,7 +278,16 @@ private struct MealRow: View {
     var meal: MealEntry
 
     var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 10) {
+        HStack(alignment: .center, spacing: 10) {
+            // The scanned meal's small picture, when one was kept.
+            if let thumb = MealPhotoStore.photo(for: meal.id) {
+                Image(uiImage: thumb)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 44, height: 44)
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .accessibilityHidden(true)
+            }
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 6) {
                     Text(meal.title.isEmpty ? String(localized: "Meal") : meal.title)
@@ -403,52 +427,31 @@ struct MealScanSheet: View {
     /// The member's language, for the food table's names and words.
     private var locale: String { AIService.appLocale }
 
+    /// "Fix with AI": back on the photo step with the note open, to say
+    /// what's off and read the meal again; the result stays until then.
+    @State private var fixing = false
+    /// The photo the result on screen was read from, to go back to it.
+    @State private var reviewedPhoto: UIImage?
+    /// When the meal was eaten: when its result came, unless changed.
+    @State private var eatenAt = Date()
+    /// The limit shown from what the server said earlier today
+    /// (`MealScanQuota`), before any photo.
+    @State private var limitFromMemory = false
+    @FocusState private var noteFocused: Bool
+
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    if let photo {
-                        // A minimum width too, so a wide photo is cropped to
-                        // the column instead of widening the sheet.
-                        Image(uiImage: photo)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(minWidth: 0, maxWidth: .infinity)
-                            .frame(height: 220)
-                            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-                            .overlay {
-                                if phase == .reading {
-                                    RoundedRectangle(cornerRadius: 18, style: .continuous).fill(.black.opacity(0.45))
-                                    VStack(spacing: 10) {
-                                        ProgressView().tint(.white)
-                                        Text("Reading your meal…")
-                                            .font(.ui(15, .semibold))
-                                            .foregroundStyle(.white)
-                                    }
-                                }
-                            }
-                            .accessibilityLabel(String(localized: "Meal photo", comment: "VoiceOver: the photo of the meal being scanned"))
-                    }
-                    switch phase {
-                    case .choose: chooser
-                    case .reading: EmptyView()
-                    case .review: review
-                    case .notFood: notFood
-                    case .limit: limit
-                    case .failed(let message, let canRetry): failure(message, canRetry: canRetry)
-                    }
-                }
-                .padding(.horizontal, DS.Metric.gutter)
-                .padding(.bottom, 24)
+        MealPhotoSheetLayout(photo: photo, isReading: phase == .reading, showsEmptySlot: true,
+                             closeLabel: String(localized: "Cancel"), onClose: { dismiss() }) {
+            switch phase {
+            case .choose: chooser
+            case .reading: reading
+            case .review: review
+            case .notFood: notFood
+            case .limit: limit
+            case .failed(let message, _): failure(message)
             }
-            .background(DS.ink.ignoresSafeArea())
-            .navigationTitle(String(localized: "Scan a meal", comment: "Today: a short chip that opens the meal scan (Pro); also the scan sheet's title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized: "Cancel")) { dismiss() }
-                }
-            }
+        } bottom: {
+            bottomBar
         }
         .onChange(of: pickerItem) { _, item in load(item) }
         // The server keeps 200 characters of a note; the field keeps no more,
@@ -475,9 +478,12 @@ struct MealScanSheet: View {
         }
         // Read off the main thread before the review needs it.
         .task { await Task.detached(priority: .utility) { _ = FoodTable.shared.version }.value }
-        #if DEBUG
-        .onAppear(perform: applyPreview)
-        #endif
+        .onAppear {
+            #if DEBUG
+            applyPreview()
+            #endif
+            applyRememberedQuota()
+        }
         .fullScreenCover(isPresented: $showsCamera) {
             CameraPicker { image in photo = image; loadFailed = false }
                 .ignoresSafeArea()
@@ -492,9 +498,25 @@ struct MealScanSheet: View {
 
     // MARK: Phases
 
+    private var canRead: Bool { photo != nil && loadID == nil && pendingRead == nil }
+
+    /// The photo step: what to photograph, or, with a photo in, the note
+    /// and cooking words; "What's off?" when fixing a result.
     private var chooser: some View {
         VStack(alignment: .leading, spacing: 14) {
-            if photo == nil {
+            Text(fixing
+                 ? String(localized: "What's off?", comment: "Meal scan: heading when the member asks the AI to fix a result")
+                 : String(localized: "Scan a meal", comment: "Today: a short chip that opens the meal scan (Pro); also the scan sheet's title"))
+                .font(.ui(26, .bold))
+                .foregroundStyle(DS.silver)
+                .accessibilityAddTraits(.isHeader)
+            if fixing {
+                Text("Say what to fix, like “2 eggs, not 3”. Reading it again uses one scan.",
+                     comment: "Meal scan: Fix with AI, under What's off?")
+                    .font(.ui(14.5))
+                    .foregroundStyle(DS.silver.opacity(0.7))
+                    .fixedSize(horizontal: false, vertical: true)
+            } else if photo == nil {
                 Text("Photograph the whole plate from above, in good light. Everything on it counts, sauces included.")
                     .font(.ui(14.5))
                     .foregroundStyle(DS.silver.opacity(0.7))
@@ -513,39 +535,15 @@ struct MealScanSheet: View {
                     .foregroundStyle(DS.silver.opacity(0.75))
                     .fixedSize(horizontal: false, vertical: true)
             }
-            HStack(spacing: 10) {
-                if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    WideButton(title: String(localized: "Take photo", comment: "Button that opens the camera; half the screen's width, beside Choose photo"),
-                               prominent: photo == nil, fontSize: 15, verticalPadding: 13) {
-                        // The camera never opens over a live mic: what was
-                        // heard goes in the note first.
-                        Task {
-                            await stopListeningNow()
-                            showsCamera = true
-                        }
-                    }
-                }
-                PhotosPicker(selection: $pickerItem, matching: .images) {
-                    Text(photo == nil
-                         ? String(localized: "Choose photo", comment: "Button that picks a photo from the library; half the screen's width, beside Take photo")
-                         : String(localized: "Another photo",
-                                  comment: "Button that picks a different photo from the library once one is in; half the screen's width, beside Take photo"))
-                        .font(.ui(15, .semibold))
-                        .foregroundStyle(DS.silver)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 13)
-                        .background(RoundedRectangle(cornerRadius: 13, style: .continuous).fill(DS.silver.opacity(0.07)))
-                }
-                .buttonStyle(.plain)
-            }
             if photo != nil {
                 HStack(alignment: .top, spacing: 10) {
                     TextField(String(localized: "Add a note (optional), e.g. “fried in butter”"), text: $note, axis: .vertical)
                         .font(.ui(15))
                         .lineLimit(1...3)
+                        .focused($noteFocused)
                         .padding(12)
                         .frame(minHeight: showsMic ? 44 : nil)
-                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(DS.surface))
+                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(DS.silver.opacity(0.06)))
                     if showsMic {
                         let canTap = finishing == nil && pendingRead == nil && (isListening || noteHasRoom)
                         MealNoteMicButton(state: voice.state, action: toggleListening)
@@ -555,49 +553,171 @@ struct MealScanSheet: View {
                 }
                 noteVoiceStatus
                 cookingChips
-                let canRead = loadID == nil && pendingRead == nil
-                WideButton(title: String(localized: "Read this meal", comment: "Meal scan: sends the photo and the note for the AI to read the foods"),
-                           prominent: true, fontSize: 16, verticalPadding: 14, cornerRadius: 14) { read() }
-                    .disabled(!canRead)
-                    .opacity(canRead ? 1 : 0.5)
+            }
+            remainingLine
+            if fixing, !foods.isEmpty {
+                Button {
+                    backToResult()
+                } label: {
+                    Label(String(localized: "Back to result", comment: "Meal scan: leaves Fix with AI without reading again"),
+                          systemImage: "arrow.uturn.backward")
+                        .font(.ui(14.5, .semibold))
+                        .foregroundStyle(DS.silver.opacity(0.8))
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
             }
         }
     }
 
-    private var review: some View {
+    /// While the photo is read: the heading and the shapes of the foods to
+    /// come (the photo above shimmers).
+    private var reading: some View {
         VStack(alignment: .leading, spacing: 14) {
-            TextField(String(localized: "Meal name", comment: "A meal's name: the placeholder of its name field"), text: $title)
-                .font(.ui(22, .bold))
+            Text("Reading your meal…")
+                .font(.ui(26, .bold))
                 .foregroundStyle(DS.silver)
-            HStack(spacing: 6) {
-                Image(systemName: "sparkles")
-                Text(confidenceText)
+                .accessibilityAddTraits(.isHeader)
+            ForEach(0..<3, id: \.self) { index in
+                HStack(spacing: 12) {
+                    Circle().fill(DS.silver.opacity(0.08)).frame(width: 46, height: 46)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Capsule().fill(DS.silver.opacity(0.1)).frame(width: index == 1 ? 110 : 150, height: 14)
+                        Capsule().fill(DS.silver.opacity(0.07)).frame(width: 80, height: 12)
+                    }
+                    Spacer(minLength: 0)
+                    RoundedRectangle(cornerRadius: 12, style: .continuous).fill(DS.silver.opacity(0.07))
+                        .frame(width: 72, height: 40)
+                }
+                .padding(12)
+                .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(DS.silver.opacity(0.035)))
             }
-            .font(.ui(12.5, .semibold))
-            .foregroundStyle(DS.silver.opacity(0.65))
-            // The foods, Add food (from the table only) and the totals.
-            MealItemsEditor(foods: $foods, locale: locale, allowsManualFoods: false, search: $addFood)
-            if !aiNote.isEmpty {
-                Text(aiNote)
+            .accessibilityHidden(true)
+        }
+    }
+
+    /// The read meal (owner's reference, 2026-11-27): name and energy,
+    /// macros, time and confidence, then the foods as cards; Log meal and
+    /// Fix with AI are pinned at the bottom.
+    private var review: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            MealResultHeader(title: $title, foods: foods, date: $eatenAt, latest: max(Date(), eatenAt),
+                             confidence: MealConfidence.resolve(confidence, foods: foods))
+            // The foods, "+ Add" (from the table only) on their header.
+            MealItemsEditor(foods: $foods, locale: locale, allowsManualFoods: false, showsTotals: false, search: $addFood)
+            VStack(alignment: .leading, spacing: 8) {
+                if !aiNote.isEmpty {
+                    Label {
+                        Text(aiNote).fixedSize(horizontal: false, vertical: true)
+                    } icon: {
+                        Image(systemName: "sparkles").accessibilityHidden(true)
+                    }
                     .font(.ui(13))
-                    .foregroundStyle(DS.silver.opacity(0.6))
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            Text("Estimates from a photo can be off by 20% or more. Adjust the portions to match what you ate.")
-                .font(.ui(12.5))
-                .foregroundStyle(DS.silver.opacity(0.55))
-                .fixedSize(horizontal: false, vertical: true)
-            WideButton(title: String(localized: "Log meal", comment: "Button that saves the meal to today's log"),
-                       prominent: true, fontSize: 16, verticalPadding: 14, cornerRadius: 14) {
-                log()
-            }
-            .disabled(foods.isEmpty)
-            .opacity(foods.isEmpty ? 0.5 : 1)
-            if let remaining {
-                Text(remaining == 1 ? String(localized: "1 scan left today") : String(localized: "\(remaining) scans left today"))
+                    .foregroundStyle(DS.silver.opacity(0.65))
+                }
+                Text("Estimates from a photo can be off by 20% or more. Adjust the portions to match what you ate.")
                     .font(.ui(12.5))
                     .foregroundStyle(DS.silver.opacity(0.5))
-                    .frame(maxWidth: .infinity)
+                    .fixedSize(horizontal: false, vertical: true)
+                remainingLine
+            }
+        }
+    }
+
+    /// "18 scans left today", when the server has said.
+    @ViewBuilder
+    private var remainingLine: some View {
+        if let remaining {
+            Text(remaining == 1 ? String(localized: "1 scan left today") : String(localized: "\(remaining) scans left today"))
+                .font(.ui(12.5))
+                .monospacedDigit()
+                .foregroundStyle(DS.silver.opacity(0.5))
+        }
+    }
+
+    /// The main action of each step, big and at the bottom, with a round
+    /// button beside it for the other way in.
+    @ViewBuilder
+    private var bottomBar: some View {
+        switch phase {
+        case .choose:
+            HStack(spacing: 12) {
+                let hasCamera = UIImagePickerController.isSourceTypeAvailable(.camera)
+                if photo != nil {
+                    if hasCamera {
+                        Button {
+                            // The camera never opens over a live mic: what
+                            // was heard goes in the note first.
+                            Task {
+                                await stopListeningNow()
+                                showsCamera = true
+                            }
+                        } label: {
+                            MealRoundLabel(symbol: "camera")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(String(localized: "Take photo", comment: "Button that opens the camera; half the screen's width, beside Choose photo"))
+                    }
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        MealRoundLabel(symbol: "photo.on.rectangle")
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Another photo",
+                                               comment: "Button that picks a different photo from the library once one is in; half the screen's width, beside Take photo"))
+                    MealPillButton(title: String(localized: "Read this meal", comment: "Meal scan: sends the photo and the note for the AI to read the foods"),
+                                   symbol: "sparkles", enabled: canRead) { read() }
+                } else if hasCamera {
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        MealRoundLabel(symbol: "photo.on.rectangle")
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Choose photo", comment: "Button that picks a photo from the library; half the screen's width, beside Take photo"))
+                    MealPillButton(title: String(localized: "Take photo", comment: "Button that opens the camera; half the screen's width, beside Choose photo"),
+                                   symbol: "camera.fill") {
+                        Task {
+                            await stopListeningNow()
+                            showsCamera = true
+                        }
+                    }
+                } else {
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        MealPillLabel(title: String(localized: "Choose photo", comment: "Button that picks a photo from the library; half the screen's width, beside Take photo"),
+                                      symbol: "photo.on.rectangle")
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        case .reading:
+            EmptyView()
+        case .review:
+            HStack(spacing: 12) {
+                // Out of scans, a fix couldn't be read.
+                MealRoundButton(symbol: "wand.and.sparkles",
+                                label: String(localized: "Fix with AI", comment: "Meal scan result: tell the AI what's off and read the meal again"),
+                                enabled: remaining != 0) { startFix() }
+                MealPillButton(title: String(localized: "Log meal", comment: "Button that saves the meal to today's log"),
+                               enabled: !foods.isEmpty) { log() }
+            }
+        case .notFood:
+            MealPillButton(title: String(localized: "Try another photo"), symbol: "camera.fill") {
+                photo = nil
+                loadFailed = false
+                phase = .choose
+            }
+        case .limit:
+            if serverBehindPro {
+                MealPillButton(title: String(localized: "Try again")) { phase = .choose }
+            } else if !purchases.isPro {
+                MealPillButton(title: String(localized: "See Pro", comment: "Button that opens MUSQ Pro's paywall")) { showsPro = true }
+            } else {
+                MealPillButton(title: String(localized: "Done")) { dismiss() }
+            }
+        case .failed(_, let canRetry):
+            if canRetry {
+                MealPillButton(title: String(localized: "Try again")) { phase = .choose }
+            } else {
+                MealPillButton(title: String(localized: "Done")) { dismiss() }
             }
         }
     }
@@ -612,6 +732,10 @@ struct MealScanSheet: View {
     /// reads more meals a day.
     private var limit: some View {
         VStack(alignment: .leading, spacing: 12) {
+            Text("That's today's scans", comment: "Meal scan: heading when today's meal scans are used up")
+                .font(.ui(26, .bold))
+                .foregroundStyle(DS.silver)
+                .accessibilityAddTraits(.isHeader)
             Text(serverBehindPro
                  ? String(localized: "Pro is on, but MUSQ's server hasn't caught up yet. Try again in a moment.")
                  : purchases.isPro
@@ -622,30 +746,34 @@ struct MealScanSheet: View {
                 .font(.ui(15))
                 .foregroundStyle(DS.silver.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
-            if serverBehindPro {
-                WideButton(title: String(localized: "Try again"), prominent: true, fontSize: 15, verticalPadding: 13) {
+            // Shown from earlier today's answer: the server may know better
+            // (an upgrade, a new allowance), so a scan can still be tried.
+            if limitFromMemory, purchases.isPro, !serverBehindPro {
+                Button {
+                    limitFromMemory = false
                     phase = .choose
+                } label: {
+                    Text("Try a scan anyway", comment: "Meal scan: the limit was shown from earlier today; tries the server again")
+                        .font(.ui(14.5, .semibold))
+                        .foregroundStyle(DS.silver.opacity(0.8))
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
                 }
-            } else if !purchases.isPro {
-                WideButton(title: String(localized: "See Pro", comment: "Button that opens MUSQ Pro's paywall"),
-                           prominent: true, fontSize: 15, verticalPadding: 13) {
-                    showsPro = true
-                }
+                .buttonStyle(.plain)
             }
         }
     }
 
-    private func failure(_ message: String, canRetry: Bool) -> some View {
+    private func failure(_ message: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 26, weight: .semibold))
+                .foregroundStyle(DS.silver.opacity(0.7))
+                .accessibilityHidden(true)
             Text(message)
-                .font(.ui(15))
-                .foregroundStyle(DS.silver.opacity(0.8))
+                .font(.ui(16))
+                .foregroundStyle(DS.silver.opacity(0.85))
                 .fixedSize(horizontal: false, vertical: true)
-            if canRetry {
-                WideButton(title: String(localized: "Try again"), prominent: true, fontSize: 15, verticalPadding: 13) {
-                    phase = .choose
-                }
-            }
         }
     }
 
@@ -654,20 +782,45 @@ struct MealScanSheet: View {
     private var notFood: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("No food found in that photo. Try one that shows the whole plate.")
-                .font(.ui(15))
-                .foregroundStyle(DS.silver.opacity(0.8))
+                .font(.ui(17, .semibold))
+                .foregroundStyle(DS.silver.opacity(0.9))
                 .fixedSize(horizontal: false, vertical: true)
-            if let remaining {
-                Text(remaining == 1 ? String(localized: "1 scan left today") : String(localized: "\(remaining) scans left today"))
-                    .font(.ui(12.5))
-                    .foregroundStyle(DS.silver.opacity(0.5))
-            }
-            WideButton(title: String(localized: "Try another photo"), prominent: true, fontSize: 15, verticalPadding: 13) {
-                photo = nil
-                loadFailed = false
-                phase = .choose
-            }
+            remainingLine
         }
+    }
+
+    // MARK: Fix with AI
+
+    /// Back on the photo step with the note open: what's off goes in the
+    /// note, and Read this meal reads it again (one more scan).
+    private func startFix() {
+        fixing = true
+        phase = .choose
+        Task {
+            // Once the note field is on screen.
+            try? await Task.sleep(for: .milliseconds(350))
+            noteFocused = true
+        }
+    }
+
+    /// The result as it was, from its own photo.
+    private func backToResult() {
+        noteFocused = false
+        Task {
+            await stopListeningNow()
+            if let reviewedPhoto { photo = reviewedPhoto }
+            fixing = false
+            phase = .review
+        }
+    }
+
+    /// Opened on a day whose scans the server already said are used up:
+    /// the limit straight away, before a photo is taken for nothing.
+    private func applyRememberedQuota() {
+        if remaining == nil { remaining = MealScanQuota.remainingToday }
+        guard phase == .choose, photo == nil, foods.isEmpty, MealScanQuota.exhaustedToday else { return }
+        limitFromMemory = true
+        phase = .limit
     }
 
     // MARK: Actions
@@ -713,8 +866,25 @@ struct MealScanSheet: View {
                 let scan = try await AIService.shared.scanMeal(photo, note: note.isEmpty ? nil : note)
                 show(scan)
             } catch let error as AIServiceError {
+                if let left = AIService.shared.remainingAfterFailure["scanMeal"] {
+                    remaining = left
+                    MealScanQuota.record(remaining: left)
+                }
                 if error == .notSignedIn { phase = .choose; showsSignIn = true; return }
-                if error == .limitReached { phase = .limit; return }
+                if error == .limitReached {
+                    MealScanQuota.record(remaining: 0)
+                    remaining = 0
+                    // Out of scans while fixing a result: the result stays,
+                    // to log as it is or change by hand.
+                    if fixing, !foods.isEmpty {
+                        if let reviewedPhoto { self.photo = reviewedPhoto }
+                        fixing = false
+                        phase = .review
+                    } else {
+                        phase = .limit
+                    }
+                    return
+                }
                 phase = .failed(Self.message(for: error), canRetry: Self.canRetry(error))
             } catch {
                 phase = .failed(Self.message(for: .unavailable), canRetry: true)
@@ -725,10 +895,16 @@ struct MealScanSheet: View {
     /// The read meal, ready to check; or no food in it.
     private func show(_ scan: MealScan) {
         remaining = scan.remainingToday
+        MealScanQuota.record(remaining: scan.remainingToday)
         guard scan.isFood, !scan.items.isEmpty else {
             phase = .notFood
             return
         }
+        // The first result's time is when the meal was eaten, unless the
+        // member changes it; a fix keeps the time set.
+        if reviewedPhoto == nil { eatenAt = Date() }
+        reviewedPhoto = photo
+        fixing = false
         title = scan.title
         foods = scan.items.map { MealReviewFood(scanned: $0, table: .shared, tableVersion: scan.tableVersion, locale: locale) }
         confidence = scan.confidence
@@ -903,8 +1079,6 @@ struct MealScanSheet: View {
         }
     }
 
-    private var confidenceText: String { Self.confidenceText(confidence) }
-
     /// "AI estimate · medium confidence", for the scan's "high", "medium"
     /// or "low"; the meal editor says the same of a scanned meal.
     static func confidenceText(_ confidence: String) -> String {
@@ -926,9 +1100,13 @@ struct MealScanSheet: View {
     private func log() {
         let memberNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
         let readNote = aiNote.trimmingCharacters(in: .whitespacesAndNewlines)
-        daily.addMeal(MealEntry(date: Date(), title: title.trimmingCharacters(in: .whitespacesAndNewlines),
-                                items: foods.map(\.logged), confidence: confidence,
-                                aiNote: readNote.isEmpty ? nil : readNote, memberNote: memberNote.isEmpty ? nil : memberNote))
+        let meal = MealEntry(date: min(eatenAt, Date()), title: title.trimmingCharacters(in: .whitespacesAndNewlines),
+                             items: foods.map(\.logged), confidence: confidence,
+                             aiNote: readNote.isEmpty ? nil : readNote, memberNote: memberNote.isEmpty ? nil : memberNote)
+        daily.addMeal(meal)
+        // A small picture of it, on this device only, for the meal's row
+        // and editor.
+        if let kept = reviewedPhoto ?? photo { MealPhotoStore.save(kept, for: meal.id) }
         dismiss()
     }
 

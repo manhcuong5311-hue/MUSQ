@@ -97,6 +97,18 @@ struct USDZViewport: View {
     /// The skin colour, sheen and rims (Settings' "Model color"). A change
     /// restyles the model on stage at once.
     var look: ModelLook = .charcoal
+    /// False pauses the clip where it is (2026-11-27: while the user logs
+    /// sets, to save battery); nil follows `modelPlaybackActive` from the
+    /// environment. Playback also pauses, and the model stops drawing, while
+    /// the viewport is off screen or the app is in the background.
+    var isActive: Bool? = nil
+
+    @Environment(\.modelPlaybackActive) private var playbackAllowed
+    @Environment(\.scenePhase) private var scenePhase
+    /// Between `onAppear` and `onDisappear`.
+    @State private var onScreen = false
+    /// The looping clips' controllers, paused and resumed together.
+    @State private var playback = Playback()
 
     @State private var pivot = Entity()
     @State private var yaw: Double = 0
@@ -140,6 +152,50 @@ struct USDZViewport: View {
     var body: some View {
         GeometryReader { geo in
             viewport(width: geo.size.width)
+        }
+        .onAppear { onScreen = true }
+        .onDisappear { onScreen = false }
+        .onChange(of: PlaybackState(play: shouldPlay, draw: shouldDraw), initial: true) { _, state in
+            playback.setPaused(!state.play)
+            // Nothing to draw off screen or in the background. Only once the
+            // model is framed: framing measures the posed bounds, which a
+            // disabled pivot doesn't have.
+            if status == .ready { pivot.isEnabled = state.draw }
+        }
+        .onChange(of: status) { _, status in
+            if status == .ready { pivot.isEnabled = shouldDraw }
+        }
+    }
+
+    /// Visible, in the foreground app.
+    private var shouldDraw: Bool { onScreen && scenePhase != .background }
+    /// Drawing, active, and not paused by the host.
+    private var shouldPlay: Bool { shouldDraw && scenePhase == .active && (isActive ?? playbackAllowed) }
+
+    private struct PlaybackState: Equatable {
+        var play: Bool
+        var draw: Bool
+    }
+
+    /// The models' looping clips. A class, so the scene's async loading
+    /// registers a clip with whatever pause state holds by then.
+    private final class Playback {
+        private var controllers: [AnimationPlaybackController] = []
+        private(set) var paused = false
+
+        func add(_ controller: AnimationPlaybackController) {
+            controllers.removeAll { !$0.isValid }
+            controllers.append(controller)
+            if paused { controller.pause() }
+        }
+
+        func setPaused(_ paused: Bool) {
+            guard paused != self.paused else { return }
+            self.paused = paused
+            controllers.removeAll { !$0.isValid }
+            for controller in controllers {
+                if paused { controller.pause() } else { controller.resume() }
+            }
         }
     }
 
@@ -330,6 +386,8 @@ struct USDZViewport: View {
                 if let still {
                     controller.time = still
                     controller.pause()
+                } else {
+                    playback.add(controller)
                 }
             }
             for child in entity.children { walk(child) }
@@ -635,4 +693,10 @@ struct USDZViewport: View {
         content.add(Self.directional(intensity: 900, from: [1.8, 0.4, 1.2]))
         addRims(to: content)
     }
+}
+
+extension EnvironmentValues {
+    /// False pauses the live models below: a screen sets it while the user
+    /// logs sets, or while its model is scrolled out of view.
+    @Entry var modelPlaybackActive: Bool = true
 }

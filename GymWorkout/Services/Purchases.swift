@@ -34,8 +34,9 @@ final class Purchases {
 
         static func < (lhs: Tier, rhs: Tier) -> Bool { lhs.rawValue < rhs.rawValue }
 
-        /// The AI allowance at this tier; nil for free, which has no AI
-        /// beyond its one goal photo (`AILimits.freeGoalPhotos`).
+        /// The AI allowance at this tier; nil for free, whose AI is its one
+        /// goal photo (`AILimits.freeGoalPhotos`) and a few coach questions
+        /// a day (`AILimits.freeChatPerDay`; see `chatPerDay`).
         /// The server enforces it (per-tier limits in
         /// functions/src/config.ts); these mirror its defaults for the
         /// paywall, the FAQ and the chat, so change both together.
@@ -52,6 +53,10 @@ final class Purchases {
             case .pro: return AILimits(chatPerDay: 30, mealScansPerDay: 20, goalPhotos: .perYear(5))
             }
         }
+
+        /// Ask MUSQ questions a day at this tier, free included (owner
+        /// 2026-11-27: "Free 5 lần ask Ai 1 ngày"): 5, 10 or 30.
+        var chatPerDay: Int { ai?.chatPerDay ?? AILimits.freeChatPerDay }
     }
 
     nonisolated struct AILimits: Equatable, Sendable {
@@ -76,6 +81,10 @@ final class Purchases {
         /// One goal photo for a member without a plan, ever, per account:
         /// the server's goalPhotoOnceLimitFree.
         static let freeGoalPhotos = 1
+
+        /// Ask MUSQ questions a day for a signed-in member without a plan:
+        /// the server's chatDailyLimitFree (functions/src/config.ts).
+        static let freeChatPerDay = 5
     }
 
     /// Plain constants and pure lookups, usable from any isolation.

@@ -373,6 +373,14 @@ struct GoalPhotoCard: View {
     }
 }
 
+/// A goal photo's free redos (owner 2026-11-27): the same photo and look
+/// made again, without using a goal photo of the allowance, on every plan.
+/// The server keeps the count (functions/src/redo.ts REDOS_PER_PHOTO).
+enum GoalPhotoRedo {
+    /// Free redos of each goal photo: the server's REDOS_PER_PHOTO.
+    static let perPhoto = 2
+}
+
 /// The allowances, as the paywall states them (Purchases.Tier.ai).
 enum GoalPhotoAllowance {
     static var premium: Int { Purchases.Tier.premium.ai?.goalPhotosPerYear ?? 2 }
@@ -438,6 +446,12 @@ struct GoalPhotoSheet: View {
     /// The plan when the paywall opened: only a plan bought there carries on,
     /// so closing it never opens it again (review GP-1).
     @State private var tierAtPaywall: Purchases.Tier?
+    /// The result's free redos: its budget, the exact upload and the look it
+    /// was made with (a redo sends both again). Nil when none are left or
+    /// the server gave none.
+    @State private var redo: (budget: GoalPhotoRedoBudget, upload: Data, look: GoalLook)?
+    /// A redo that failed, said under the result it left in place.
+    @State private var redoProblem: String?
 
     var body: some View {
         NavigationStack {
@@ -712,6 +726,19 @@ struct GoalPhotoSheet: View {
                     .foregroundStyle(DS.silver.opacity(0.75))
                     .fixedSize(horizontal: false, vertical: true)
             }
+            if let redoProblem {
+                Text(redoProblem)
+                    .font(.ui(12.5, .semibold))
+                    .foregroundStyle(DS.silver.opacity(0.75))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            if let left = redo?.budget.left, left > 0 {
+                // Not happy with it: the same photo and look again, free.
+                WideButton(title: left == 1 ? String(localized: "Try again (1 left)", comment: "Goal photo result: makes the photo again for free; one free try left")
+                                            : String(localized: "Try again (\(left) left)", comment: "Goal photo result: makes the photo again for free; the number is the free tries left"),
+                           prominent: false, fontSize: 15, verticalPadding: 13) { generate(isRedo: true) }
+                    .accessibilityHint(String(localized: "Makes this goal photo again with the same photo and look. It doesn't use a goal photo."))
+            }
             WideButton(title: String(localized: "See my goal"), prominent: true, fontSize: 16, verticalPadding: 14,
                        cornerRadius: 14) {
                 onOpenGoal()
@@ -943,15 +970,22 @@ struct GoalPhotoSheet: View {
         }
         setPhoto(nil)
         savedToPhotos = false
+        redo = nil
+        redoProblem = nil
         phase = .choose
     }
 
-    private func generate() {
-        guard let photo, let look, ready, let birthYear = profile.birthYear else { return }
+    /// Makes the goal photo: a new one from the photo and look picked, or
+    /// (`isRedo`) the result's photo and look again on one of its free tries.
+    private func generate(isRedo: Bool = false) {
+        let redoing = isRedo ? redo : nil
+        if isRedo && redoing == nil { return }
+        guard let photo, let look = redoing?.look ?? self.look, isRedo || ready, let birthYear = profile.birthYear else { return }
         guard AccountService.shared.isSignedIn else {
             showsSignIn = true
             return
         }
+        redoProblem = nil
         phase = .working
         // Leaving the app mid-edit mustn't lose a photo the server has already
         // counted: ask for time to finish in the background (review).
@@ -959,8 +993,9 @@ struct GoalPhotoSheet: View {
         Task {
             defer { if background != .invalid { UIApplication.shared.endBackgroundTask(background) } }
             do {
-                let edited = try await AIService.shared.goalPhoto(photo, look: look, birthYear: birthYear,
-                                                                  confirmsOwnPhoto: confirmsOwnPhoto)
+                let edited = try await AIService.shared.goalPhoto(
+                    photo, look: look, birthYear: birthYear, confirmsOwnPhoto: confirmsOwnPhoto,
+                    redo: redoing.map { (budget: $0.budget, upload: $0.upload) })
                 let upload = edited.upload, served = edited.jpeg
                 let composed = await Task.detached(priority: .userInitiated) {
                     GoalPhotoComposer.compose(upload: upload, edited: served)
@@ -976,10 +1011,25 @@ struct GoalPhotoSheet: View {
                 faceRestored = composed.restored
                 remaining = edited.remaining
                 remainingPeriod = edited.period
+                redo = edited.redo.map { (budget: $0, upload: edited.upload, look: look) }
                 showsBefore = false
                 savedToPhotos = false
                 phase = .result
                 await refreshCheckIns()
+            } catch let error as AIServiceError where redoing != nil {
+                // A failed redo leaves the result as it was, with what's left of
+                // its tries; used or expired ones fall back to New photo.
+                if error == .server(AIService.redoUnavailable) {
+                    redo = nil
+                    redoProblem = String(localized: "This photo's free tries are used. A new photo uses your allowance.")
+                } else {
+                    if let left = AIService.shared.goalPhotoRedoLeftAfterFailure, var current = redo {
+                        current.budget.left = left
+                        redo = current
+                    }
+                    redoProblem = Self.message(for: error)
+                }
+                phase = .result
             } catch let error as AIServiceError {
                 if error == .notSignedIn { phase = .choose; showsSignIn = true; return }
                 // No allowance left, or none for this account at all (the server
@@ -987,7 +1037,12 @@ struct GoalPhotoSheet: View {
                 if error == .limitReached || error == .notPremium { phase = .limit; return }
                 phase = .failed(Self.message(for: error), canRetry: Self.canRetry(error))
             } catch {
-                phase = .failed(Self.message(for: .unavailable), canRetry: true)
+                if redoing != nil {
+                    redoProblem = Self.message(for: .unavailable)
+                    phase = .result
+                } else {
+                    phase = .failed(Self.message(for: .unavailable), canRetry: true)
+                }
             }
         }
     }
@@ -1023,6 +1078,8 @@ struct GoalPhotoSheet: View {
         if phase == .result {
             setPhoto(nil)
             savedToPhotos = false
+            redo = nil
+            redoProblem = nil
         }
         phase = .choose
     }

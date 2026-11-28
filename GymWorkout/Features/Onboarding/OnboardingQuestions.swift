@@ -14,6 +14,8 @@ struct OnboardingQuestion: View {
     @Bindable var draft: OnboardingDraft
 
     @Environment(\.dsLayout) private var layout
+    /// Custom's days, open over the split page.
+    @State private var showsCustomDays = false
 
     var body: some View {
         switch step {
@@ -227,11 +229,11 @@ struct OnboardingQuestion: View {
             title: String(localized: "How many days a week can you train?"),
             caption: draft.experience == .beginner
                 ? String(localized: "Three or four days are plenty to start: each muscle still trains about twice a week.")
-                : String(localized: "Sets how your week is split. Train suggests the most recovered day each time, so a missed day never breaks the plan.",
+                : String(localized: "Sets how your week is split. Change it any time from the calendar in Train.",
                          comment: "Train is the tab")
         ) {
             ForEach(ProgramAdvisor.daysPerWeekOptions, id: \.self) { days in
-                let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
+                let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days, experience: draft.experience)
                 OptionCard(symbol: "calendar",
                            title: String(localized: "\(days) days a week", comment: "Training days a week, 2 to 6"),
                            detail: String(localized: "\(suggested.title) · every muscle \(frequency(suggested, days)).",
@@ -249,16 +251,16 @@ struct OnboardingQuestion: View {
         let order = (0..<7).map { (calendar.firstWeekday - 1 + $0) % 7 + 1 }
         let symbols = calendar.shortWeekdaySymbols
         let picked = draft.weekdays.count
-        let split = draft.split ?? ProgramAdvisor.recommendedSplit(daysPerWeek: days)
-        let rotation = ProgramAdvisor.days(of: split, lowerFocus: draft.sex == .female)
+        let split = draft.split ?? ProgramAdvisor.recommendedSplit(daysPerWeek: days, experience: draft.experience)
+        let rotation = ProgramAdvisor.days(of: split, lowerFocus: draft.sex == .female, customDays: draft.customDays)
             .map { ProgramAdvisor.SplitDay(name: $0.name, groups: $0.groups.filter(PresetProvider.trainableGroups.contains)) }
             .filter { !$0.groups.isEmpty }
         let week = ProgramAdvisor.week(weekdays: Array(draft.weekdays), days: rotation)
         return OnboardingQuestionPage(
             eyebrow: String(localized: "SCHEDULE", comment: "Training days a week"),
             title: String(localized: "Which days suit you?"),
-            caption: String(localized: "Pick \(days) days. Spacing them out gives each muscle time to recover; Train still suggests the most recovered day whenever you come in.",
-                            comment: "The days to pick, 2 to 6. Train is the tab")
+            caption: String(localized: "Pick \(days) days. Spacing them out gives each muscle time to recover; the rest are rest days.",
+                            comment: "The days to pick, 2 to 6")
         ) {
             HStack(spacing: layout.value(6, 10)) {
                 ForEach(order, id: \.self) { weekday in
@@ -314,23 +316,57 @@ struct OnboardingQuestion: View {
 
     private var splitPage: some View {
         let days = draft.daysPerWeek ?? 3
-        let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days)
+        let suggested = ProgramAdvisor.recommendedSplit(daysPerWeek: days, experience: draft.experience)
         return OnboardingQuestionPage(
             eyebrow: String(localized: "SPLIT", comment: "The training split: how the week's sessions divide the body"),
             title: String(localized: "How do you want to split your week?"),
-            caption: String(localized: "\(suggested.title) suits \(days) days a week best: \(ProgramAdvisor.recommendationReason(daysPerWeek: days))",
+            caption: String(localized: "\(suggested.title) suits \(days) days a week best: \(ProgramAdvisor.recommendationReason(daysPerWeek: days, experience: draft.experience))",
                             comment: "The split (Front / Back), the days a week, then why it fits")
         ) {
-            ForEach(TrainingSplit.allCases) { option in
+            ForEach(ScheduleEditorView.splitOrder) { option in
                 OptionCard(symbol: Self.symbol(option), title: option.title,
-                           detail: String(localized: "\(Self.summary(option)) Every muscle \(frequency(option, days)).",
-                                          comment: "The split's days in a sentence, then how often each muscle comes round: about 2× a week"),
+                           detail: splitDetail(option, days: days),
                            badge: option == suggested ? String(localized: "BEST FIT", comment: "Tag on the split that suits the days a week best") : nil,
                            isSelected: draft.split == option) {
-                    withAnimation(.easeOut(duration: 0.15)) { draft.split = option }
+                    withAnimation(.easeOut(duration: 0.15)) { pickSplit(option, days: days) }
+                }
+            }
+            // Custom's days, edited in the schedule's own sheet.
+            if draft.split == .custom {
+                WideButton(title: "Edit my days", prominent: true, fontSize: 15, verticalPadding: 16) {
+                    showsCustomDays = true
                 }
             }
         }
+        .sheet(isPresented: $showsCustomDays) {
+            ScheduleEditorView(initial: TrainingSchedule(split: .custom, weekdays: draft.weekdays.sorted(),
+                                                         customDays: draft.customDays),
+                               lowerFocus: draft.sex == .female, experience: draft.experience,
+                               scope: .customDays) { schedule in
+                draft.customDays = schedule.customDays
+            }
+        }
+    }
+
+    /// The split's days in a sentence and how often each muscle comes
+    /// round; Custom's own day names once it has some.
+    private func splitDetail(_ option: TrainingSplit, days: Int) -> String {
+        if option == .custom {
+            let own = draft.customDays.filter { !$0.groups.isEmpty }
+            return own.isEmpty ? Self.summary(option) : own.map(\.name).joined(separator: " · ")
+        }
+        return String(localized: "\(Self.summary(option)) Every muscle \(frequency(option, days)).",
+                      comment: "The split's days in a sentence, then how often each muscle comes round: about 2× a week")
+    }
+
+    /// Custom opens on the days of the split it replaces, ready to edit.
+    private func pickSplit(_ option: TrainingSplit, days: Int) {
+        if option == .custom, draft.customDays.isEmpty {
+            let base = draft.split.flatMap { $0 == .custom ? nil : $0 }
+                ?? ProgramAdvisor.recommendedSplit(daysPerWeek: days, experience: draft.experience)
+            draft.customDays = ScheduleEditorView.seedDays(from: base, lowerFocus: draft.sex == .female)
+        }
+        draft.split = option
     }
 
     static func symbol(_ split: TrainingSplit) -> String {
@@ -338,6 +374,9 @@ struct OnboardingQuestion: View {
         case .upperLower: return "arrow.up.arrow.down"
         case .frontBack: return "arrow.left.arrow.right"
         case .pushPullLegs: return "arrow.triangle.2.circlepath"
+        case .fullBody: return "figure.strengthtraining.traditional"
+        case .bro: return "square.grid.3x2"
+        case .custom: return "square.and.pencil"
         }
     }
 
@@ -346,11 +385,16 @@ struct OnboardingQuestion: View {
         case .upperLower: return String(localized: "Upper body one day, lower body the next.")
         case .frontBack: return String(localized: "Chest, shoulders, quads and biceps one day; back, hamstrings, glutes and triceps the next.")
         case .pushPullLegs: return String(localized: "Chest, shoulders and triceps; then back and biceps; then legs.")
+        case .fullBody: return String(localized: "The whole body every session.")
+        case .bro: return String(localized: "Chest, back, legs, shoulders, arms: one a day.")
+        case .custom: return String(localized: "Your own days and muscles.")
         }
     }
 
     private func frequency(_ split: TrainingSplit, _ days: Int) -> String {
-        ProgramAdvisor.frequencyText(ProgramAdvisor.timesPerWeek(split, lowerFocus: draft.sex == .female, daysPerWeek: days))
+        ProgramAdvisor.frequencyText(ProgramAdvisor.timesPerWeek(
+            days: ProgramAdvisor.days(of: split, lowerFocus: draft.sex == .female, customDays: draft.customDays),
+            daysPerWeek: days))
     }
 
     // MARK: - Goal

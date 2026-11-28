@@ -631,7 +631,7 @@ struct OnboardingResult: View {
         let level = ProgramAdvisor.suggestedLevel(for: profile, experience: experience)
         let safety = ExerciseSafety(profile: profile)
         let frequency = ProgramAdvisor.frequencyText(
-            ProgramAdvisor.timesPerWeek(split, lowerFocus: ProgramAdvisor.isLowerFocused(profile), daysPerWeek: days))
+            ProgramAdvisor.timesPerWeek(days: ProgramAdvisor.days(for: profile), daysPerWeek: days))
         return OnboardingResultPage(
             eyebrow: String(localized: "YOUR PLAN · WEEK"),
             title: String(localized: "Your training week")
@@ -641,7 +641,7 @@ struct OnboardingResult: View {
             ResultCard(symbol: OnboardingQuestion.symbol(split),
                        title: String(localized: "\(split.title), \(days) days a week",
                                      comment: "Plan summary: the split, e.g. Front / Back, 3 days a week"),
-                       detail: String(localized: "Every muscle \(frequency). Train suggests the most recovered day, so a missed day never breaks the plan.",
+                       detail: String(localized: "Every muscle \(frequency). Change days, rest days or the split any time from the calendar in Train.",
                                       comment: "How often each muscle comes round: about 2× a week. Train is the tab")) {
                 VStack(alignment: .leading, spacing: layout.value(7, 9)) {
                     ForEach(Array(rotation.enumerated()), id: \.offset) { _, day in

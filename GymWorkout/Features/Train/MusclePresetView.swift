@@ -16,8 +16,14 @@
 //  preset and deleting one can all be undone from the toast.
 //
 //  On iPad the list is one centred column, and from 900pt a master/detail:
-//  the list on the left, the chosen exercise's sets (or the group at a
-//  glance) on the right, without pushing anything.
+//  the list on the left, the chosen exercise (or the group at a glance) on
+//  the right, without pushing anything.
+//
+//  Since 2026-11-27 sets are logged right on the list ("lazy thumb"): the
+//  current exercise opens its sets under its row (`SetLogger`), the others
+//  fold to one line, each has a rest chip, and a big "Done Set" bar sits at
+//  the bottom while the workout is on. Tapping an exercise is for watching
+//  it (3D and how-to) only. Save as Preset, Reorder and Remove live in ⋯.
 //
 
 import SwiftUI
@@ -33,6 +39,7 @@ struct MusclePresetView: View {
     @Environment(Purchases.self) private var purchases
     @Environment(Paywall.self) private var paywall
     @Environment(Ads.self) private var ads
+    @Environment(RestTimer.self) private var restTimer
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dsLayout) private var layout
     /// Set by a host that already shows the rest timer.
@@ -62,6 +69,23 @@ struct MusclePresetView: View {
     /// The row whose target is being edited in a popover (iPad).
     @State private var targetPopover: WorkoutExercise?
     @Environment(\.accessibilityVoiceOverEnabled) private var voiceOver
+    /// Which exercise shows its sets under its row.
+    @State private var expansion: Expansion = .auto
+    /// The set whose weight is being typed.
+    @FocusState private var focusedSet: UUID?
+    /// A row to bring into view, after moving on to the next exercise.
+    @State private var scrollTarget: UUID?
+    /// Sets were logged since the exercise in the split's pane was opened:
+    /// its model pauses, to save battery.
+    @State private var loggedSinceOpen = false
+
+    enum Expansion: Equatable {
+        /// The first exercise with a set still to do.
+        case auto
+        case open(UUID)
+        /// The user folded them all.
+        case collapsed
+    }
 
     /// A short note over the list, with an undo when it follows a change.
     struct Toast: Identifiable, Equatable {
@@ -173,9 +197,25 @@ struct MusclePresetView: View {
         }
         .toolbar(.hidden, for: .navigationBar)
         .navigationBarBackButtonHidden()
+        .toolbar {
+            // Once, here: the decimal pad has no return key, and a keyboard
+            // toolbar declared per row would repeat per row.
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") { focusedSet = nil }
+                    .font(.ui(15, .semibold))
+            }
+        }
         .restTimerInset()
         // The split shows the rest under its detail pane instead.
         .environment(\.restTimerInsetSuppressed, hostShowsRest || layout.isWide)
+        // Under the rest, at the very bottom where the thumb is. The split
+        // puts it under the list pane.
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if !layout.isWide { bottomBar }
+        }
+        .onChange(of: setsDone) { old, new in if new != old { loggedSinceOpen = true } }
+        .onChange(of: focusedSet) { _, new in if new != nil { loggedSinceOpen = true } }
         .dsBackShortcuts(backShortcut)
         .onAppear(perform: load)
         .sheet(item: $picker) { mode in
@@ -256,6 +296,17 @@ struct MusclePresetView: View {
     // MARK: - List
 
     private var list: some View {
+        ScrollViewReader { proxy in
+            listContent
+                .onChange(of: scrollTarget) { _, id in
+                    guard let id else { return }
+                    withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo(id, anchor: .top) }
+                    scrollTarget = nil
+                }
+        }
+    }
+
+    private var listContent: some View {
         List {
             intro
                 .modifier(PlainRow(top: 4, bottom: 14, inset: rowInset))
@@ -265,7 +316,7 @@ struct MusclePresetView: View {
 
             ForEach(rows) { exercise in
                 row(exercise)
-                    .modifier(PlainRow(top: 5, bottom: 5, inset: rowInset))
+                    .modifier(PlainRow(top: 5, bottom: 7, inset: rowInset))
                     // Logged sets go only through ⋯ Remove, which asks first.
                     .deleteDisabled(!exercise.completedSets.isEmpty)
             }
@@ -273,10 +324,7 @@ struct MusclePresetView: View {
             .onMove(perform: move)
 
             addButton
-                .modifier(PlainRow(top: 10, bottom: 6, inset: rowInset))
-
-            footer
-                .modifier(PlainRow(top: 14, bottom: 30, inset: rowInset))
+                .modifier(PlainRow(top: 10, bottom: 30, inset: rowInset))
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
@@ -334,18 +382,21 @@ struct MusclePresetView: View {
 
             Spacer(minLength: 0)
 
-            if rows.count > 1 {
-                Button(editMode.isEditing ? "Done" : "Reorder") {
-                    withAnimation { editMode = editMode.isEditing ? .inactive : .active }
+            if editMode.isEditing {
+                Button("Done") {
+                    withAnimation { editMode = .inactive }
                 }
                 .font(.ui(regular ? 14 : 13, .semibold))
                 .foregroundStyle(DS.silver)
                 .buttonStyle(.plain)
-                .padding(.horizontal, regular ? 12 : 0)
-                .padding(.vertical, regular ? 8 : 0)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .frame(minHeight: 44)
                 .dsHover(.highlight)
                 // The hover pad overhangs, so the word keeps the rows' edge.
-                .padding(.trailing, regular ? -12 : 0)
+                .padding(.trailing, -12)
+            } else if hasMoreMenu {
+                moreMenu
             }
         }
         // Regular lines the back button up with the rows' leading edge.
@@ -377,6 +428,11 @@ struct MusclePresetView: View {
                     }
                 }
             }
+            // The screen's one rest timer, in the list pane where sets are
+            // logged: just above the Done Set bar, under the thumb.
+            .restTimerInset()
+            .environment(\.restTimerInsetSuppressed, hostShowsRest)
+            .safeAreaInset(edge: .bottom, spacing: 0) { bottomBar }
             .frame(width: listWidth)
             .environment(\.dsLayout, layout.with(containerWidth: listWidth))
 
@@ -388,10 +444,6 @@ struct MusclePresetView: View {
             detail
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .environment(\.dsLayout, layout.with(containerWidth: detailWidth))
-                // The screen's one rest timer, under the pane the sets are
-                // logged in.
-                .restTimerInset()
-                .environment(\.restTimerInsetSuppressed, hostShowsRest)
         }
     }
 
@@ -402,6 +454,8 @@ struct MusclePresetView: View {
                                presentation: .embedded(onClose: closeDetail,
                                                        onCompleted: { advance(from: id) }))
                 .restTimerInsetSuppressed()
+                // Paused once sets are being logged beside it.
+                .environment(\.modelPlaybackActive, !loggedSinceOpen)
                 // Rebuilt per exercise (a swap keeps the row's id), so the
                 // 3D model is loaded once for each and not on every edit.
                 .id("\(id)|\(item.exerciseName)")
@@ -482,7 +536,7 @@ struct MusclePresetView: View {
                             .frame(width: 240 * share)
                     }
                     .padding(.vertical, 2)
-                Text("Choose an exercise to log its sets.")
+                Text("Log sets on the list. Choose an exercise to watch how it's done.")
                     .font(.ui(12.5))
                     .foregroundStyle(DS.silver.opacity(0.4))
             }
@@ -493,7 +547,7 @@ struct MusclePresetView: View {
                     withAnimation { ensurePlanned() }
                 }
                 .dsCTA(360)
-                Text("Or choose an exercise to start logging sets.")
+                Text("Or choose an exercise to watch how it's done.")
                     .font(.ui(12.5))
                     .foregroundStyle(DS.silver.opacity(0.4))
             }
@@ -534,9 +588,12 @@ struct MusclePresetView: View {
                 )
             }
 
-            Text(levelCaption)
-                .font(.ui(regular ? 13.5 : 12.5))
-                .foregroundStyle(DS.silver.opacity(0.5))
+            // Less to read once the workout is on.
+            if !isPlanned {
+                Text(levelCaption)
+                    .font(.ui(regular ? 13.5 : 12.5))
+                    .foregroundStyle(DS.silver.opacity(0.5))
+            }
         }
     }
 
@@ -633,6 +690,74 @@ struct MusclePresetView: View {
     // MARK: - Rows
 
     private func row(_ exercise: WorkoutExercise) -> some View {
+        let expanded = expandedID == exercise.id && !editMode.isEditing
+        return VStack(alignment: .leading, spacing: 4) {
+            rowHeader(exercise)
+            if !editMode.isEditing {
+                logging(exercise, expanded: expanded)
+            }
+        }
+        .padding(.bottom, expanded ? 8 : 0)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(DS.silver.opacity(expanded ? 0.025 : 0))
+                .padding(.horizontal, -6)
+        )
+    }
+
+    /// The fold under a row: one line ("2 of 3 sets", the rest) and, for
+    /// the open exercise, its sets.
+    @ViewBuilder
+    private func logging(_ exercise: WorkoutExercise, expanded: Bool) -> some View {
+        let done = exercise.completedSets.count
+        let total = exercise.sets.count
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 8) {
+                Button {
+                    toggleExpanded(exercise.id)
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: expanded ? "chevron.up" : "chevron.down")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundStyle(DS.silver.opacity(0.5))
+                            .frame(width: 18)
+                        if done > 0 && done == total {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(DS.silver.opacity(0.7))
+                        }
+                        Text(done == 0 && !expanded ? String(localized: "Log sets", comment: "Opens an exercise's sets on the list")
+                             : String(localized: "\(done) of \(total) sets", comment: "Sets done of the exercise's sets"))
+                            .font(.ui(14, .semibold))
+                            .monospacedDigit()
+                            .foregroundStyle(DS.silver.opacity(expanded ? 0.85 : 0.65))
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.leading, 6)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.borderless)
+                .accessibilityLabel(String(localized: "\(exercise.exerciseName) sets, \(done) of \(total) done",
+                                           comment: "VoiceOver: an exercise, then sets done of its sets"))
+                .accessibilityValue(expanded ? String(localized: "Expanded") : String(localized: "Collapsed"))
+
+                // Rest only follows sets done today.
+                if isToday {
+                    RestChip(exercise: exercise)
+                }
+            }
+
+            if expanded {
+                SetLogger(item: exercise, day: day, focus: $focusedSet,
+                          prepare: ensurePlanned,
+                          onFinished: { moveOn(from: exercise.id) })
+                    .transition(.opacity)
+            }
+        }
+    }
+
+    private func rowHeader(_ exercise: WorkoutExercise) -> some View {
         let regular = layout.isRegular
         return HStack(spacing: 8) {
             Button {
@@ -651,6 +776,7 @@ struct MusclePresetView: View {
             }
             .buttonStyle(.borderless)
             .disabled(editMode.isEditing)
+            .accessibilityHint("Shows it in 3D, with how to do it.")
 
             if canSwap(exercise) {
                 Button {
@@ -744,82 +870,32 @@ struct MusclePresetView: View {
         .buttonStyle(.borderless)
     }
 
-    @ViewBuilder
-    private var footer: some View {
-        VStack(spacing: 22) {
-            dayFooter
-            mineFooter
-        }
-    }
-
-    /// The footer's alignment: centred on the phone, on the column's
-    /// leading edge on iPad, under the leading-aligned controls above.
-    private var footerAlignment: HorizontalAlignment { layout.isRegular ? .leading : .center }
-
-    @ViewBuilder
-    private var dayFooter: some View {
-        let regular = layout.isRegular
-        if isPlanned {
-            VStack(alignment: footerAlignment, spacing: 12) {
-                Text("\(setsDone) of \(setsTotal) sets done")
-                    .font(.ui(regular ? 14 : 13, .semibold))
-                    .foregroundStyle(DS.silver.opacity(0.6))
-                Button("Remove \(group.title) from this workout") { confirmsRemoval = true }
-                    .font(.ui(regular ? 13.5 : 12.5))
-                    .foregroundStyle(DS.silver.opacity(0.45))
-                    .buttonStyle(.borderless)
-                    .applying(DS.isPad) { $0.modifier(groupRemovalDialog) }
-            }
-            .frame(maxWidth: .infinity, alignment: Alignment(horizontal: footerAlignment, vertical: .center))
-        } else if !rows.isEmpty {
-            // An empty list (no built-in preset) has nothing to add yet;
-            // Add Exercise plans the group with its first pick.
-            VStack(alignment: footerAlignment, spacing: 8) {
-                WideButton(title: addToDayTitle, prominent: true) {
-                    withAnimation { ensurePlanned() }
-                }
-                .dsCTA(DS.Layout.ctaMaxWidth, alignment: .leading)
-                Text(layout.isWide ? "Or choose an exercise to start logging sets."
-                     : "Or tap an exercise to start logging sets.")
-                    .font(.ui(regular ? 12.5 : 11.5))
-                    .foregroundStyle(DS.silver.opacity(0.4))
-            }
-        }
-    }
-
     private var setsDone: Int { planned.reduce(0) { $0 + $1.completedSets.count } }
     private var setsTotal: Int { planned.reduce(0) { $0 + $1.sets.count } }
 
-    /// Says which preset the list is saved as, or offers to save it as
-    /// Preset 1, 2 or 3. Saving only shows while a slot is free, on a saved
-    /// preset, or once the list has been changed from what its level gives,
-    /// so just looking at Basic or Advanced never offers to write over a
-    /// full set of presets. Without Premium an empty Preset 2 or 3 still
-    /// counts as free: the menu lists it locked, and tapping it opens the
-    /// paywall.
-    @ViewBuilder
-    private var mineFooter: some View {
-        if !rows.isEmpty {
-            if let saved = store.matchingPreset(rows, for: group) {
-                HStack(spacing: 6) {
-                    Image(systemName: "bookmark.fill")
-                        .font(.system(size: layout.isRegular ? 11 : 10, weight: .semibold))
-                    Text("Saved as \(saved.name)")
-                    Text("·")
-                    Button { deletingPreset = saved } label: {
-                        Text("Delete")
-                            .padding(.vertical, 8)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.borderless)
-                    .foregroundStyle(DS.silver.opacity(0.7))
-                    .accessibilityLabel("Delete \(saved.name)")
-                    .applying(DS.isPad) { $0.modifier(presetDeletionDialog) }
+    /// Save as Preset, Reorder, deleting the saved preset and removing the
+    /// group, out of the way under ⋯. Saving only shows while a slot is
+    /// free, on a saved preset, or once the list has been changed from what
+    /// its level gives, so just looking at Basic or Advanced never offers to
+    /// write over a full set of presets. Without Premium an empty Preset 2
+    /// or 3 still counts as free: the menu lists it locked, and tapping it
+    /// opens the paywall.
+    private var moreMenu: some View {
+        let regular = layout.isRegular
+        let saved = rows.isEmpty ? nil : store.matchingPreset(rows, for: group)
+        return Menu {
+            if rows.count > 1 {
+                Button("Reorder", systemImage: "arrow.up.arrow.down") {
+                    withAnimation { editMode = .active }
                 }
-                .font(.ui(layout.isRegular ? 13 : 12))
-                .foregroundStyle(DS.silver.opacity(0.45))
-                .frame(maxWidth: .infinity, alignment: Alignment(horizontal: footerAlignment, vertical: .center))
-            } else if store.savedLevels(for: group).count < PresetLevel.saved.count || level.isSaved || isEdited {
+            }
+            if let saved {
+                Section(String(localized: "Saved as \(saved.name)")) {
+                    Button("Delete \(saved.name)", systemImage: "trash", role: .destructive) {
+                        deletingPreset = saved
+                    }
+                }
+            } else if canSaveAsPreset {
                 Menu {
                     Section("Save this list as") {
                         ForEach(saveSlots, id: \.self) { slot in
@@ -842,22 +918,128 @@ struct MusclePresetView: View {
                     }
                 } label: {
                     Label(level.isSaved && !isLocked(level) ? "Update \(level.name)" : "Save as Preset", systemImage: "bookmark")
-                        .font(.ui(layout.isRegular ? 13.5 : 12.5, .semibold))
-                        .foregroundStyle(DS.silver.opacity(0.75))
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 12)
-                        .contentShape(Rectangle())
-                        .dsHover(.highlight, radius: 10)
                 }
-                .buttonStyle(.borderless)
-                // Leading-aligned on iPad, the label (not its hit pad) on the edge.
-                .padding(.leading, layout.isRegular ? -12 : 0)
-                .frame(maxWidth: .infinity, alignment: Alignment(horizontal: footerAlignment, vertical: .center))
-                .accessibilityHint(purchases.isPremium
-                                   ? "Saves this list as Preset 1, 2 or 3, in the menu next to \(group.title) on Train."
-                                   : "Saves this list as Preset 1, in the menu next to \(group.title) on Train. Preset 2 and 3 come with Premium.")
+            }
+            if isPlanned {
+                Button("Remove \(group.title) from this workout", systemImage: "minus.circle", role: .destructive) {
+                    confirmsRemoval = true
+                }
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.system(size: regular ? 15 : 14, weight: .semibold))
+                .foregroundStyle(DS.silver)
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+                .dsHover(.highlight, radius: 12)
+        }
+        .buttonStyle(.borderless)
+        .padding(.trailing, -10)
+        .accessibilityLabel("More for \(group.title)")
+        .accessibilityHint(purchases.isPremium
+                           ? "Reorder, save this list as Preset 1, 2 or 3, or remove \(group.title) from the workout."
+                           : "Reorder, save this list as Preset 1, or remove \(group.title) from the workout. Preset 2 and 3 come with Premium.")
+        // iPad points each confirmation at ⋯, where it was asked for.
+        .applying(DS.isPad) { menu in
+            menu
+                .modifier(groupRemovalDialog)
+                .background(Color.clear.modifier(presetDeletionDialog))
+        }
+    }
+
+    private var canSaveAsPreset: Bool {
+        !rows.isEmpty && (store.savedLevels(for: group).count < PresetLevel.saved.count || level.isSaved || isEdited)
+    }
+
+    private var hasMoreMenu: Bool {
+        rows.count > 1 || isPlanned || (!rows.isEmpty && (store.matchingPreset(rows, for: group) != nil || canSaveAsPreset))
+    }
+
+    // MARK: - Bottom bar
+
+    /// Pinned under the list in the thumb's reach: "Done Set" while the
+    /// workout is on, or adding the list to the day before it starts.
+    @ViewBuilder
+    private var bottomBar: some View {
+        if editMode.isEditing {
+            EmptyView()
+        } else if isPlanned {
+            if store.canLog(on: day) && setsTotal > 0 {
+                let target = doneSetTarget
+                SetLoggingBar(
+                    title: target == nil ? String(localized: "All sets done") : String(localized: "Done Set", comment: "Button: marks the next set done"),
+                    caption: target.map {
+                        String(localized: "\($0.exercise.exerciseName) · Set \($0.number)",
+                               comment: "Under the Done Set button: an exercise name, then the set's number")
+                    },
+                    done: setsDone, total: setsTotal, enabled: target != nil,
+                    action: doneNextSet)
+            }
+        } else if !rows.isEmpty {
+            SetLoggingBar(title: addToDayTitle, symbol: "plus") {
+                withAnimation { ensurePlanned() }
             }
         }
+    }
+
+    /// The set "Done Set" marks: the open exercise's next one, else the
+    /// first set still to do from the top.
+    private var doneSetTarget: (exercise: WorkoutExercise, number: Int, set: WorkoutSet)? {
+        let list = planned
+        let open = expandedID.flatMap { id in list.first { $0.id == id } }
+        // A finished exercise (all sets, or ended early) has nothing to mark.
+        for exercise in (open.map { [$0] } ?? []) + list where !exercise.isCompleted {
+            if let next = SetLogging.nextOpenSet(of: exercise) {
+                return (exercise, next.number, next.set)
+            }
+        }
+        return nil
+    }
+
+    private func doneNextSet() {
+        guard let target = doneSetTarget else { return }
+        focusedSet = nil
+        withAnimation(.easeOut(duration: 0.15)) {
+            expansion = .open(target.exercise.id)
+            store.toggleSet(exerciseID: target.exercise.id, setID: target.set.id)
+        }
+        if SetLogging.afterToggle(exerciseID: target.exercise.id, setID: target.set.id,
+                                  store: store, restTimer: restTimer) {
+            moveOn(from: target.exercise.id)
+        }
+    }
+
+    // MARK: - Expanding
+
+    /// The exercise whose sets show under its row.
+    private var expandedID: UUID? {
+        switch expansion {
+        case .open(let id) where rows.contains(where: { $0.id == id }):
+            return id
+        case .collapsed:
+            return nil
+        default:
+            return rows.first { !$0.isCompleted && $0.sets.contains { !$0.isCompleted } }?.id
+        }
+    }
+
+    private func toggleExpanded(_ id: UUID) {
+        focusedSet = nil
+        withAnimation(.easeOut(duration: 0.2)) {
+            expansion = expandedID == id ? .collapsed : .open(id)
+        }
+    }
+
+    /// Every set of an exercise is done: its sets fold and the next
+    /// exercise not finished yet (after it, then from the top) opens.
+    private func moveOn(from id: UUID) {
+        let list = rows
+        let start = (list.firstIndex { $0.id == id } ?? -1) + 1
+        let next = (Array(list[start...]) + Array(list[..<start])).first { $0.id != id && !$0.isCompleted }
+        withAnimation(.easeOut(duration: 0.25)) {
+            expansion = next.map { .open($0.id) } ?? .collapsed
+        }
+        scrollTarget = next?.id
     }
 
     /// The save menu's slots, the preset on screen first unless it's locked,
@@ -1113,7 +1295,15 @@ struct MusclePresetView: View {
     }
 
     private func open(_ exercise: WorkoutExercise) {
-        ensurePlanned()
+        // Watching a lift isn't a plan to train: before the list is on the
+        // day, a tap shows the lift's 3D trainer only and writes nothing.
+        guard isPlanned else {
+            router.push(.trainer(exerciseName: exercise.exerciseName))
+            return
+        }
+        // Back from watching it, its sets are the ones open.
+        expansion = .open(exercise.id)
+        loggedSinceOpen = false
         guard layout.isWide else {
             router.push(.exercise(exercise.id))
             return

@@ -3,7 +3,8 @@
 //  GymWorkout
 //
 //  The running rest, floated over the bottom of whatever screen is open: the
-//  time left, ±15 s, and Skip. Draws nothing when no rest is running. In
+//  time left, ±15 s, and Skip, each a full 44pt target for a thumb between
+//  sets (2026-11-27). On the set list it sits just above the Done Set bar. Draws nothing when no rest is running. In
 //  regular width it is a centred pill at most 480pt wide, so a rest on a
 //  1000pt column doesn't become a toolbar.
 //
@@ -53,11 +54,11 @@ struct RestTimerBar: View {
                     Button("Skip") {
                         timer.skip()
                     }
-                    .font(.ui(13, .semibold))
+                    .font(.ui(14, .semibold))
                     .foregroundStyle(DS.ink)
-                    .padding(.horizontal, 14)
+                    .padding(.horizontal, 18)
                     .padding(.vertical, 8)
-                    .frame(minHeight: layout.isRegular ? 40 : nil)
+                    .frame(minHeight: 44)
                     .background(Capsule().fill(DS.silver))
                     .buttonStyle(.plain)
                     .dsHover(.highlight)
@@ -91,7 +92,7 @@ struct RestTimerBar: View {
         .foregroundStyle(DS.silver)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
-        .frame(minHeight: layout.isRegular ? 40 : nil)
+        .frame(minHeight: 44)
         .background(Capsule().fill(DS.silver.opacity(0.08)))
         .buttonStyle(.plain)
         .dsHover(.highlight)
