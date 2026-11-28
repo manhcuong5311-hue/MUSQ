@@ -388,16 +388,16 @@ struct TabPrimaryButton: View {
         } label: {
             VStack(spacing: 3) {
                 StyledSymbol(name: mode.symbol, size: 22, weight: .bold)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(DS.ink)
                     .symbolEffect(.bounce, value: taps)
                     .frame(width: 54, height: 54)
-                    .background(Circle().fill(
-                        LinearGradient(colors: [DS.activationSoft, DS.activation], startPoint: .top, endPoint: .bottom)))
-                    .overlay(Circle().strokeBorder(.white.opacity(0.22), lineWidth: 1))
-                    .shadow(color: DS.activation.opacity(0.45), radius: 10, y: 4)
+                    // Black (the app's primary ink), like its other main
+                    // buttons, for a calmer, premium look (owner 2026-11-28).
+                    .background(Circle().fill(DS.silver))
+                    .shadow(color: .black.opacity(0.25), radius: 8, y: 3)
                 Text(mode.title)
                     .font(.ui(10.5, .bold))
-                    .foregroundStyle(DS.activation)
+                    .foregroundStyle(DS.silver)
                     .lineLimit(1)
                     .fixedSize()
             }

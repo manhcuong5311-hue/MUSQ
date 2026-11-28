@@ -47,8 +47,12 @@ struct RootView: View {
     @SceneStorage("sidebar.expanded") private var prefersExpanded: Bool?
 
     init() {
-        let store = WorkoutStore()
-        let restTimer = RestTimer()
+        // The live stores are made once, outside the view tree (AppStores),
+        // so a Live Activity button that wakes the app without a scene can
+        // reach them too.
+        let stores = AppStores.shared
+        let store = stores.store
+        let restTimer = stores.restTimer
         let purchases = Purchases()
         let ads = Ads(purchases: purchases)
         // Read at the moment an ad is offered, so the workout just completed
@@ -66,25 +70,8 @@ struct RootView: View {
             }
         }
         _store = State(initialValue: store)
-        // Steps inside logged sessions are left out of the plan's activity.
-        let health = AppleHealth()
-        health.sessionWindows = {
-            store.sessions.compactMap { session in
-                let times = session.exercises.flatMap(\.completedSets).compactMap(\.completedAt)
-                guard let first = times.min(), let last = times.max() else { return nil }
-                return DateInterval(start: first.addingTimeInterval(-120), end: last)
-            }
-        }
-        let daily = DailyStore()
-        daily.profileWaterTarget = DailyStore.waterTarget(for: store.profile)
-        _daily = State(initialValue: daily)
-        // Nudges plan from the live stores rather than the saved files.
-        NudgeScheduler.shared.attach(store: store, daily: daily)
-        // Friends posts its activity summaries from the same live stores.
-        FriendsActivity.shared.attach(store: store, daily: daily)
-        // Walks added by hand count with Health's steps.
-        health.manualSteps = { daily.manualStepsByDay }
-        _health = State(initialValue: health)
+        _daily = State(initialValue: stores.daily)
+        _health = State(initialValue: stores.health)
         _restTimer = State(initialValue: restTimer)
         _purchases = State(initialValue: purchases)
         _ads = State(initialValue: ads)
@@ -105,6 +92,22 @@ struct RootView: View {
         GoalStore.shared.refresh(profile: store.profile, experience: store.experience, trainedDays: store.trainedDays)
         Task {
             await GoalReminder.relay(profile: store.profile, experience: store.experience, trainedDays: store.trainedDays)
+        }
+    }
+
+    /// Follows a musq:// link (a widget or Live Activity tap, "Log meal").
+    private func followLink() {
+        guard store.profile != nil, let url = DeepLinkRouter.shared.consume(),
+              let destination = DeepLinkRouter.destination(of: url) else { return }
+        switch destination {
+        case .today, .quickLogWater:
+            tab = .today
+        case .train:
+            tab = .train
+        case .quickLogFood:
+            // The tab bar's typed or spoken food log, over whatever is open,
+            // unless another sheet of the root's is up.
+            if primaryAction.request == nil && paywall.reason == nil { primaryAction.request = .log }
         }
     }
 
@@ -221,6 +224,9 @@ struct RootView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 Task { await purchases.refreshEntitlements() }
+                // Live Activities and widgets: queued taps, then brought up
+                // to date (Today starts here when it's switched on).
+                LiveActivityManager.shared.appBecameActive()
                 // Water reminders run a day ahead: lay the next ones.
                 daily.refreshRemindersSoon()
                 relayGoal()
@@ -245,11 +251,17 @@ struct RootView: View {
         // is waiting when the view first appears.
         .onChange(of: NudgeRouter.shared.pending) { _, _ in followNudge() }
         .task { followNudge() }
+        // A musq:// link, likewise; one that launched the app waits for the
+        // first appearance.
+        .onChange(of: DeepLinkRouter.shared.pending) { _, _ in followLink() }
+        .task { followLink() }
         // The goal's estimate and its Sunday check-in follow a session logged
         // on any tab, a new weight, a body-fat % entered, a schedule change, or
         // the goal made or deleted (reviews: check-in not re-laid, GOAL-9).
         .onChange(of: goalInputs) { _, _ in relayGoal() }
         .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+            // Today's activity and the widgets move to the new day.
+            LiveActivityManager.shared.requestSync()
             Task { await health.refresh() }
         }
         #if DEBUG

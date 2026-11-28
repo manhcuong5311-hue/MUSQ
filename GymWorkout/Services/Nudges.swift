@@ -8,9 +8,10 @@
 //  logs (workouts, meals, water, weigh-ins). Nothing leaves the phone;
 //  friends/social pushes are a later round.
 //
-//  - Training time: on the profile's training days, about the user's usual
-//    start (the median first-set time of recent sessions, 18:00 without
-//    enough of them), unless that day already has sets.
+//  - Training time: on scheduled training days (ProgramAdvisor.plan; rest
+//    days never; the profile's weekdays without a schedule), 15 min before
+//    the user's usual start (the median first-set time of recent sessions,
+//    18:00 without enough of them), unless that day already has sets.
 //  - Behind: 21:00 today, what is still open (water short of the target,
 //    dinner not logged, the planned workout), or protein short of the plan.
 //  - Proud: the morning after a record set; and a streak milestone of days
@@ -302,9 +303,24 @@ enum NudgePlanner {
         return starts[starts.count / 2]
     }
 
+    /// Training reminder (2026-11-28, Dynamic Island round): schedule-aware.
+    /// A saved schedule decides — a training day gets "Push day in 15 min 💪",
+    /// a rest day never gets one; without a schedule the profile's training
+    /// weekdays decide, as before. Fires at the usual start − 15 min.
+    // TODO: push-to-start the workout Live Activity from this reminder needs
+    // APNs (ActivityKit push-to-start token + a server) — out of scope; for
+    // now the activity starts in the app when the first set is marked done.
     static func training(_ inputs: NudgeInputs, day: Date, calendar: Calendar) -> PlannedNudge? {
-        guard let weekdays = inputs.profile?.weekdays, weekdays.contains(calendar.component(.weekday, from: day))
-        else { return nil }
+        var scheduledDay: ProgramAdvisor.SplitDay?
+        switch ProgramAdvisor.plan(on: day, profile: inputs.profile, calendar: calendar) {
+        case .rest:
+            return nil
+        case .train(let splitDay):
+            scheduledDay = splitDay
+        case .open:
+            guard let weekdays = inputs.profile?.weekdays, weekdays.contains(calendar.component(.weekday, from: day))
+            else { return nil }
+        }
         let session = inputs.sessions.first { calendar.isDate($0.day, inSameDayAs: day) }
         if session?.hasCompletedSets == true { return nil }
         // A quarter of an hour ahead, on a five-minute mark.
@@ -315,7 +331,14 @@ enum NudgePlanner {
         }
         let title: String
         let body: String
-        if let group = session?.groups.first {
+        if let scheduledDay, !scheduledDay.name.isEmpty {
+            let name = scheduledDay.name.hasPrefix("Legs") ? "Leg\(scheduledDay.name.dropFirst(4))" : scheduledDay.name
+            title = String(localized: "\(name) day in 15 min 💪",
+                           comment: "Nudge title 15 minutes before the usual workout time on a scheduled training day; a split day, e.g. Push day in 15 min")
+            body = session?.exercises.isEmpty == false
+                ? String(localized: "Your plan is set. Tap to start.", comment: "Nudge body on a training day")
+                : String(localized: "Your workout is one tap away 💪", comment: "Nudge body on a training day without a plan yet")
+        } else if let group = session?.groups.first {
             let records = RecoveryCalculator(settings: RecoverySettings(experience: inputs.experience))
                 .records(from: inputs.sessions, now: fire)
             let recovered = records[group].map { $0.tiredParts.isEmpty } ?? true

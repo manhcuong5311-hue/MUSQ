@@ -26,7 +26,8 @@ struct TodayDock: View {
         HStack(alignment: .top, spacing: 0) {
             DockButton(symbol: "drop.fill", title: String(localized: "+\(glass) ml", comment: "Adds a glass of water: +250 ml"),
                        tint: TodayTone.water,
-                       progress: metrics.waterCounts ? metrics.waterProgress : nil) {
+                       progress: metrics.waterCounts ? metrics.waterProgress : nil,
+                       done: metrics.waterCounts && metrics.waterReached) {
                 glasses += 1
                 actions.addWater(glass)
             } onHold: {
@@ -39,27 +40,29 @@ struct TodayDock: View {
 
             DockButton(symbol: "figure.walk", title: String(localized: "Walk", comment: "Dock: log a walk"),
                        tint: JourneyPalette.walk,
-                       progress: metrics.showsSteps ? metrics.stepsProgress : nil) {
+                       progress: metrics.showsSteps ? metrics.stepsProgress : nil,
+                       done: metrics.showsSteps && metrics.stepsProgress >= 1) {
                 actions.quickLog(.steps)
             }
             .accessibilityLabel(String(localized: "Log a walk", comment: "Dock walk button"))
 
             DockButton(symbol: "bed.double.fill", title: String(localized: "Sleep", comment: "Dock: log last night's sleep"),
                        tint: SleepLogSheet.tint,
-                       progress: sleepProgress) {
+                       progress: sleepProgress,
+                       done: sleepProgress != nil) {
                 actions.logSleep()
             }
             .accessibilityLabel(String(localized: "Log last night's sleep", comment: "Dock sleep button"))
 
             DockButton(symbol: "mic.fill", title: String(localized: "Say it", comment: "Dock: the quick log's mic"),
-                       tint: Self.mic, filled: true) {
+                       tint: Self.mic) {
                 actions.voiceLog()
             }
             .accessibilityLabel(String(localized: "Log water, a walk or a meal"))
             .accessibilityHint(String(localized: "Type it or say it"))
 
             DockButton(symbol: "checklist", title: String(localized: "Your day", comment: "Today: the day's habits"),
-                       tint: DS.silver, badge: tally) {
+                       tint: DS.silver, badge: tally, done: allDone) {
                 actions.openYourDay()
             }
             .accessibilityLabel(String(localized: "Your day", comment: "Today: the day's habits"))
@@ -89,6 +92,13 @@ struct TodayDock: View {
         return min(1, Double(minutes) / Double(max(metrics.sleepGoalMinutes, 1)))
     }
 
+    /// Everything that counts today is done.
+    private var allDone: Bool {
+        guard let tally else { return false }
+        let parts = tally.split(separator: "/")
+        return parts.count == 2 && parts[0] == parts[1]
+    }
+
     /// "2/3": what counts today and how much of it is done.
     private var tally: String? {
         var items: [Bool] = []
@@ -109,6 +119,9 @@ private struct DockButton: View {
     var progress: Double? = nil
     var filled = false
     var badge: String? = nil
+    /// Logged for today: the button fades back with a check, so the eye
+    /// goes to what's left (owner, 2026-11-28). Still tappable.
+    var done = false
     var action: () -> Void
     var onHold: (() -> Void)? = nil
 
@@ -140,11 +153,22 @@ private struct DockButton: View {
                         .offset(x: 6, y: -4)
                 }
             }
+            .overlay(alignment: .bottomTrailing) {
+                if done {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 16, weight: .bold))
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.white, tint)
+                        .background(Circle().fill(DS.ink).padding(1))
+                        .offset(x: 3, y: 3)
+                }
+            }
+            .opacity(done ? 0.45 : 1)
             .scaleEffect(pressed ? 0.92 : 1)
             Text(title)
                 .font(.ui(11, .semibold))
                 .monospacedDigit()
-                .foregroundStyle(DS.silver.opacity(0.75))
+                .foregroundStyle(DS.silver.opacity(done ? 0.4 : 0.75))
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
         }

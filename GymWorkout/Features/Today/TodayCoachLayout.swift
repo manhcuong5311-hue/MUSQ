@@ -61,6 +61,8 @@ struct TodayCoachLayout: View {
                 reminderOffer
                     .padding(.top, 12)
             }
+            // Dynamic Island / Lock Screen: offered once (2026-11-28).
+            TodayLiveActivityCard()
             VStack(spacing: 10) {
                 TodayFoodCard(metrics: metrics, action: actions.openFood)
                 if let goal = metrics.goal, let photo = metrics.goalPhoto {

@@ -26,7 +26,14 @@ struct ProfileView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.dsLayout) private var layout
     @AppStorage(ModelLook.storageKey) private var modelLook: ModelLook = .charcoal
+    /// Today on the Lock Screen and in the Dynamic Island (2026-11-28, off by default).
+    @AppStorage(LiveActivitySettings.todayKey) private var todayActivityOn = false
+    /// The island, Lock Screen and widget look, kept in the App Group for
+    /// the widget extension; read again when Preferences opens.
+    @State private var islandStyle: IslandStyle = .current
     @State private var editsProfile = false
+    /// The personal preferences sheet (2026-11-28, owner: keep Settings short).
+    @State private var showsPreferences = false
     /// The name as it's typed; saved when the field is left.
     @State private var nameDraft = ""
     @FocusState private var editsName: Bool
@@ -59,8 +66,6 @@ struct ProfileView: View {
                                 .padding(.top, purchases.isPremium ? 18 : 28)
                             settings
                                 .padding(.top, 28)
-                            cardColorSettings
-                                .padding(.top, 28)
                             if AIService.isLive {
                                 AccountSection()
                                     .padding(.top, 28)
@@ -83,6 +88,7 @@ struct ProfileView: View {
             .toolbar(.hidden, for: .navigationBar)
         }
         .tint(DS.silver)
+        .sheet(isPresented: $showsPreferences) { preferencesSheet }
         // A full-screen cover on iPhone; a page sheet on iPad that a stray
         // swipe can't close with the answers half changed.
         .dsCover(isPresented: $editsProfile) {
@@ -119,8 +125,6 @@ struct ProfileView: View {
                     .dsColumn(0)
                 settings
                     .dsColumn(0)
-                cardColorSettings
-                    .dsColumn(1)
                 if AIService.isLive {
                     AccountSection()
                         .dsColumn(1)
@@ -366,9 +370,79 @@ struct ProfileView: View {
     // MARK: - Settings
 
     private var settings: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionEyebrow(text: String(localized: "SETTINGS"))
+            VStack(spacing: 0) {
+                preferencesRow
+                // Nothing at all where there's no Health (some iPads).
+                if health.access != .unavailable {
+                    Hairline(opacity: 0.06)
+                    healthSetting
+                }
+                Hairline(opacity: 0.06)
+                balanceSetting
+                Hairline(opacity: 0.06)
+                notificationSetting
+            }
+            .padding(.horizontal, cardPadding)
+            .background(card)
+        }
+    }
+
+    // MARK: - Preferences sheet
+
+    /// "Units, rest timer, model color…": the settings that only shape how
+    /// MUSQ looks and behaves for this user, one row that opens them.
+    private var preferencesRow: some View {
+        Button { showsPreferences = true } label: {
+            pushRowLabel(String(localized: "Preferences", comment: "Profile: opens the personal preferences sheet"),
+                         detail: "\(store.unit.symbol) · \(store.rest.title) · \(modelLook.title)")
+        }
+        .buttonStyle(.plain)
+        .dsHover(.highlight, radius: 12)
+        .padding(.horizontal, -cardPadding)
+        .accessibilityHint(String(localized: "Units, training experience, rest timer, language, model color and Train card colors",
+                                  comment: "VoiceOver hint on Profile › Preferences"))
+    }
+
+    private var preferencesSheet: some View {
+        NavigationStack {
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 28) {
+                    generalPreferences
+                    islandPreferences
+                    VStack(alignment: .leading, spacing: 10) {
+                        SectionEyebrow(text: String(localized: "MODEL", comment: "Preferences: the 3D model's look"))
+                        modelColorSetting
+                            .padding(.horizontal, cardPadding)
+                            .background(card)
+                    }
+                    cardColorSettings
+                }
+                .padding(.horizontal, DS.Metric.gutter)
+                .padding(.top, 8)
+                .padding(.bottom, 32)
+                .frame(maxWidth: 640)
+                .frame(maxWidth: .infinity)
+            }
+            .background(DS.ink.ignoresSafeArea())
+            .navigationTitle(String(localized: "Preferences", comment: "Profile: opens the personal preferences sheet"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(String(localized: "Done")) { showsPreferences = false }
+                        .fontWeight(.semibold)
+                }
+            }
+        }
+        .tint(DS.silver)
+        .presentationDragIndicator(.visible)
+    }
+
+    private var generalPreferences: some View {
         @Bindable var store = store
         return VStack(alignment: .leading, spacing: 10) {
-            SectionEyebrow(text: String(localized: "SETTINGS"))
+            SectionEyebrow(text: String(localized: "GENERAL", comment: "Preferences: units, experience, rest, language"))
             VStack(spacing: 0) {
                 // MUSQ follows the iPhone's language (2026-11-02); iOS keeps a
                 // per-app Language choice on the app's page in Settings, which
@@ -399,21 +473,90 @@ struct ProfileView: View {
                            : "Starts when a set is marked done.") {
                     menu(selection: $store.rest, options: RestSetting.allCases, title: \.title)
                 }
-                // Nothing at all where there's no Health (some iPads).
-                if health.access != .unavailable {
-                    Hairline(opacity: 0.06)
-                    healthSetting
-                }
-                Hairline(opacity: 0.06)
-                balanceSetting
-                Hairline(opacity: 0.06)
-                notificationSetting
-                Hairline(opacity: 0.06)
-                modelColorSetting
             }
             .padding(.horizontal, cardPadding)
             .background(card)
         }
+    }
+
+    // MARK: - Lock Screen & Dynamic Island
+
+    /// The Today Live Activity switch (iPhone) and the look of the island,
+    /// Lock Screen and widgets: three labelled options side by side.
+    private var islandPreferences: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionEyebrow(text: String(localized: "LOCK SCREEN & WIDGETS",
+                                        comment: "Preferences: Live Activities, Dynamic Island and widgets"))
+            VStack(spacing: 0) {
+                if LiveActivitySettings.isSupportedDevice {
+                    settingRow(String(localized: "Today on Lock Screen & Dynamic Island",
+                                      comment: "Preferences: switch for the Today Live Activity"),
+                               detail: LiveActivitySettings.areActivitiesEnabled
+                               ? String(localized: "Water, calories and your next workout, with +250 ml and Log meal buttons. A running workout always shows instead.",
+                                        comment: "Preferences: what the Today Live Activity shows")
+                               : String(localized: "Live Activities are off for MUSQ. Turn them on in Settings › MUSQ.",
+                                        comment: "Preferences: Live Activities are turned off in iOS Settings")) {
+                        Toggle("", isOn: $todayActivityOn)
+                            .labelsHidden()
+                            .tint(DS.activation)
+                    }
+                    Hairline(opacity: 0.06)
+                }
+                VStack(alignment: .leading, spacing: layout.value(12, 14)) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Style", comment: "Preferences: the look of the Dynamic Island, Lock Screen and widgets")
+                            .font(.ui(layout.value(14.5, 16), .semibold))
+                            .foregroundStyle(DS.silver)
+                        Text(islandStyle.detail)
+                            .font(.ui(layout.value(12, 13.5)))
+                            .cssLineHeight(layout.value(12, 13.5), 1.4)
+                            .foregroundStyle(DS.silver.opacity(0.5))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    HStack(spacing: 8) {
+                        ForEach(IslandStyle.allCases, id: \.self) { islandSwatch($0) }
+                    }
+                }
+                .padding(.vertical, layout.value(13, 16))
+            }
+            .padding(.horizontal, cardPadding)
+            .background(card)
+        }
+        .onAppear { islandStyle = .current }
+        .onChange(of: todayActivityOn) { _, on in
+            if on { UserDefaults.standard.set(true, forKey: LiveActivitySettings.suggestionDismissedKey) }
+            LiveActivityManager.shared.todaySettingChanged()
+        }
+    }
+
+    private func islandSwatch(_ style: IslandStyle) -> some View {
+        let selected = islandStyle == style
+        return Button {
+            withAnimation(.easeOut(duration: 0.2)) { islandStyle = style }
+            IslandStyle.current = style
+            LiveActivityManager.shared.styleChanged()
+        } label: {
+            VStack(spacing: 8) {
+                IslandStylePreview(style: style)
+                    .frame(height: 58)
+                Text(style.title)
+                    .font(.ui(layout.value(11.5, 12.5), .semibold))
+                    .foregroundStyle(DS.silver.opacity(selected ? 1 : 0.55))
+                    .lineLimit(1)
+            }
+            .padding(6)
+            .padding(.bottom, 2)
+            .background(RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(DS.silver.opacity(selected ? 0.07 : 0)))
+            .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(DS.silver.opacity(selected ? 0.9 : 0.1), lineWidth: selected ? 1.5 : 1))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .dsHover()
+        .accessibilityLabel(style.title)
+        .accessibilityHint(style.detail)
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 
     // MARK: - Apple Health
@@ -824,4 +967,109 @@ struct ProfileView: View {
         .environment(Paywall())
         .environment(AppleHealth())
         .dsPreview(.pad13Landscape1110)
+}
+
+// MARK: - Island style previews
+
+extension IslandStyle {
+    /// One line under the picker on what the look is.
+    var detail: String {
+        switch self {
+        case .bold: String(localized: "Black with a vivid orange ring and big numbers.",
+                           comment: "Island style Bold, described")
+        case .glass: String(localized: "Frosted glass with a colour per metric: blue water, orange calories.",
+                            comment: "Island style Glass, described")
+        case .minimal: String(localized: "Monochrome, thin rings, just the type.",
+                              comment: "Island style Minimal, described")
+        }
+    }
+}
+
+/// A small drawing of the Dynamic Island's expanded rest view in a style,
+/// so the three can be compared side by side (the real ones are drawn by
+/// MUSQWidgets).
+private struct IslandStylePreview: View {
+    var style: IslandStyle
+
+    private static let orange = Color(red: 1, green: 0.42, blue: 0.1)
+    private static let water = Color(red: 0.29, green: 0.62, blue: 1)
+
+    var body: some View {
+        ZStack {
+            background
+            HStack(spacing: 8) {
+                ring
+                    .frame(width: 30, height: 30)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(verbatim: "1:24")
+                        .font(.system(size: style == .minimal ? 15 : 17, weight: style == .minimal ? .medium : .bold))
+                        .fontDesign(.rounded)
+                        .monospacedDigit()
+                        .foregroundStyle(style == .glass ? Color.primary : .white)
+                    Text(verbatim: "4/9")
+                        .font(.system(size: 10, weight: .semibold))
+                        .fontDesign(.rounded)
+                        .monospacedDigit()
+                        .foregroundStyle(accent.opacity(style == .minimal ? 0.6 : 1))
+                }
+            }
+            .padding(.horizontal, 6)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityHidden(true)
+    }
+
+    private var accent: Color {
+        switch style {
+        case .bold: Self.orange
+        case .glass: Self.orange
+        case .minimal: .white
+        }
+    }
+
+    @ViewBuilder
+    private var background: some View {
+        switch style {
+        case .bold, .minimal:
+            Color.black
+        case .glass:
+            ZStack {
+                LinearGradient(colors: [Self.water.opacity(0.55), Self.orange.opacity(0.45)],
+                               startPoint: .topLeading, endPoint: .bottomTrailing)
+                Rectangle().fill(.ultraThinMaterial)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var ring: some View {
+        switch style {
+        case .bold:
+            ZStack {
+                Circle().stroke(Self.orange.opacity(0.25), lineWidth: 4.5)
+                Circle().trim(from: 0, to: 0.62)
+                    .stroke(Self.orange, style: StrokeStyle(lineWidth: 4.5, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+            }
+        case .glass:
+            ZStack {
+                Circle().stroke(Self.water.opacity(0.25), lineWidth: 3.5)
+                Circle().trim(from: 0, to: 0.6)
+                    .stroke(Self.water, style: StrokeStyle(lineWidth: 3.5, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                Circle().stroke(Self.orange.opacity(0.25), lineWidth: 3.5).padding(5.5)
+                Circle().trim(from: 0, to: 0.45)
+                    .stroke(Self.orange, style: StrokeStyle(lineWidth: 3.5, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                    .padding(5.5)
+            }
+        case .minimal:
+            ZStack {
+                Circle().stroke(Color.white.opacity(0.18), lineWidth: 1.5)
+                Circle().trim(from: 0, to: 0.62)
+                    .stroke(Color.white, style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+            }
+        }
+    }
 }

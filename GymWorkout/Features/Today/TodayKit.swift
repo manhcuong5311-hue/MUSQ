@@ -684,6 +684,11 @@ struct SessionPoster: View {
     /// A suggestion is planned on today, then Train opens; otherwise Train
     /// opens on what's there.
     private func action() {
+        // "Start …" is the Start action: the workout Live Activity comes up
+        // now instead of waiting for the first set (Continue/See don't).
+        if metrics.state == .recommended || metrics.state == .planned {
+            LiveActivityManager.shared.beginWorkout()
+        }
         if metrics.state == .recommended {
             actions.startDay(metrics.posterGroups)
         } else {
