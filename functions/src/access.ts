@@ -5,9 +5,10 @@
  * `testers/{uid}` (Pro, or Premium when the doc says `tier: "premium"`).
  * The plan sets the allowances. Usage limits count per purchase, not per
  * account, so one purchase signed in on many accounts still shares one
- * allowance. The goal photo alone also opens to a signed-in member without
- * a plan, or whose plan lapsed: one goal photo ever per Apple ID (owner,
- * 2026-11-23). Chat and meal scans stay paid-only.
+ * allowance. The goal photo also opens to a signed-in member without a
+ * plan, or whose plan lapsed: one goal photo ever per Apple ID (owner,
+ * 2026-11-23), and so does the chat: 5 questions a day per Apple ID (owner,
+ * 2026-11-27). Meal scans stay paid-only.
  */
 import { createHash } from "node:crypto";
 import { getFirestore } from "firebase-admin/firestore";
@@ -19,7 +20,8 @@ import { Reason } from "./reasons.js";
 export { Reason };
 
 /** Who's calling. `requireMember` gives paid members only (P = Tier);
- *  `requireGoalPhotoMember` may also give a free account (P = Plan). */
+ *  `requireGoalPhotoMember` and `requireChatMember` may also give a free
+ *  account (P = Plan). */
 export interface Member<P extends Plan = Tier> {
   uid: string;
   /** What usage is counted against: the purchase, the tester, or (a free
@@ -77,13 +79,26 @@ export function freeUsageKey(appleSub: string): string {
  *  counted on the uid for testing. Undefined when free goal photos are off
  *  (goalPhotoOnceLimitFree 0) or the account can't have one. */
 export function freePlan(uid: string, config: AIConfig, appleSub: string | undefined, emulator: boolean): { tier: "free"; usageKey: string } | undefined {
-  if (config.goalPhotoOnceLimitFree <= 0) return undefined;
+  return freeAccount(uid, config.goalPhotoOnceLimitFree, appleSub, emulator);
+}
+
+/** The free chat of a member without a plan: `chatDailyLimitFree`
+ *  questions a day, counted per Apple ID like the free goal photo (so
+ *  deleting and re-creating the account doesn't reset the day), and only
+ *  with Sign in with Apple, except in the emulator. Undefined when free
+ *  chat is off (chatDailyLimitFree 0) or the account can't have it. */
+export function freeChatPlan(uid: string, config: AIConfig, appleSub: string | undefined, emulator: boolean): { tier: "free"; usageKey: string } | undefined {
+  return freeAccount(uid, config.chatDailyLimitFree, appleSub, emulator);
+}
+
+function freeAccount(uid: string, limit: number, appleSub: string | undefined, emulator: boolean): { tier: "free"; usageKey: string } | undefined {
+  if (limit <= 0) return undefined;
   if (appleSub) return { tier: "free", usageKey: freeUsageKey(appleSub) };
   return emulator ? { tier: "free", usageKey: `uid_${uid}` } : undefined;
 }
 
-/** What a goal photo counts against: the paid plan on record, else the free
- *  photo. But when the app says this device holds a plan (`holdsPlan`) and
+/** What a goal photo (or a chat question) counts against: the paid plan on
+ *  record, else the free allowance. But when the app says this device holds a plan (`holdsPlan`) and
  *  the record shows none, it's a stale record (renewals never reach the
  *  server), not a free member: undefined, so the caller is refused with
  *  premium-required and the app syncs and retries instead of spending the
@@ -133,6 +148,24 @@ export async function requireGoalPhotoMember(request: CallableRequest<unknown>):
   const { uid, config, plan, appleSub } = await lookUp(request, "goalPhoto");
   const holdsPlan = (request.data as { holdsPlan?: unknown } | null | undefined)?.holdsPlan === true;
   const found = goalPhotoPlan(plan, holdsPlan, freePlan(uid, config, appleSub, inEmulator()));
+  if (!found) throw new HttpsError("permission-denied", Reason.premium);
+  return { uid, ...found, limits: limitsFor(config, found.tier), config };
+}
+
+/** The chat's caller: a paid member as `requireMember` finds them, or else
+ *  the free daily questions (`freeChatPlan`) when the request says the
+ *  device holds no plan (`holdsPlan: false`). Otherwise a missing record is a
+ *  stale one, refused with premium-required so the app syncs and retries
+ *  on the plan's allowance instead of the free one (`goalPhotoPlan`).
+ *  Sign-in, App Check and the chat's switch are checked as for every AI
+ *  call; consent is asked on the phone before anything is sent. */
+export async function requireChatMember(request: CallableRequest<unknown>): Promise<Member<Plan>> {
+  const { uid, config, plan, appleSub } = await lookUp(request, "chat");
+  // Only a request that says `holdsPlan: false` may use the free questions.
+  // Builds before 2026-11-27 (1.4) never send the field: for them a missing
+  // record is a stale paid one, refused as before so the app syncs.
+  const saysFree = (request.data as { holdsPlan?: unknown } | null | undefined)?.holdsPlan === false;
+  const found = goalPhotoPlan(plan, !saysFree, freeChatPlan(uid, config, appleSub, inEmulator()));
   if (!found) throw new HttpsError("permission-denied", Reason.premium);
   return { uid, ...found, limits: limitsFor(config, found.tier), config };
 }

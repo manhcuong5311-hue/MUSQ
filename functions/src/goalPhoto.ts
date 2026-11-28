@@ -9,17 +9,20 @@
  * anything else. The result goes back to the phone only; nothing is stored
  * here. Each edit costs about $0.06 (config.ts), so Premium makes 2 a year,
  * Pro 5 a year, and a member without a plan one ever per Apple ID
- * (access.ts requireGoalPhotoMember, which also reads `holdsPlan`).
+ * (access.ts requireGoalPhotoMember, which also reads `holdsPlan`). Each
+ * goal photo can be made again twice with the same photo and look without
+ * using the allowance (`redoOf`, see redo.ts).
  */
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { logger } from "firebase-functions/v2";
 import { toFile } from "openai";
 import { REGION, mockOpenAI } from "./config.js";
 import { Reason, requireGoalPhotoMember } from "./access.js";
-import { ONCE, giveBack, localYear, period, periodLabel, take } from "./quota.js";
+import { ONCE, giveBack, localYear, period, periodLabel, remaining as remainingOf, take } from "./quota.js";
 import { image, imageSize, mimeType, number } from "./input.js";
 import { OPENAI_API_KEY, callOptions, isSafetyRefusal, openai, safetyId } from "./openai.js";
-import { failure, settle } from "./settle.js";
+import { failure, mayHaveBilled, settle } from "./settle.js";
+import { giveBackRedo, openRedo, readRedoOf, redoInput, takeRedo, type Redo } from "./redo.js";
 
 /** The levels the member picks from, and the body fat (percent, low to
  *  high) each fat level aims for, per sex. The app keeps its own copy of
@@ -196,21 +199,35 @@ export const goalPhoto = onCall(
     const birthYear = number(data.birthYear, 1900, 2100);
     if (!isAdult(birthYear, localYear(data.timeZone))) throw new HttpsError("failed-precondition", Reason.age);
     const photo = image(data.image, 8 * 1024 * 1024);
-    const prompt = goalPrompt(readLook(data));
+    const look = readLook(data);
+    const prompt = goalPrompt(look);
     const pixels = imageSize(photo);
     const size = pixels ? editSize(pixels.width, pixels.height) : "auto";
     // Paid plans renew each year in the member's time zone; a free
     // account's one goal photo never does.
     const periodKey = member.limits.goalPhotoPeriod === "once" ? ONCE : period("year", data.timeZone);
-    const remaining = await take(member.usageKey, "goalPhoto", periodKey, member.limits.goalPhoto, member.tier);
+    // A redo of the last goal photo (same photo, same look) uses one of its
+    // free tries instead of the allowance; anything else takes a unit.
+    const redoOf = readRedoOf(data.redoOf);
+    const input = redoInput(photo, look);
+    let redo: Redo | undefined;
+    let remaining: number;
+    if (redoOf) {
+      redo = { id: redoOf, left: await takeRedo(member.usageKey, redoOf, input) };
+      remaining = await remainingOf(member.usageKey, "goalPhoto", periodKey, member.limits.goalPhoto);
+    } else {
+      remaining = await take(member.usageKey, "goalPhoto", periodKey, member.limits.goalPhoto, member.tier);
+    }
     // `remainingThisMonth` repeats `remaining` for app builds from before
     // the yearly allowance (one release).
     const left = { remaining, period: periodLabel(periodKey), tier: member.tier, remainingThisMonth: remaining };
+    /** The answer for a made photo: a new goal photo opens its redos. */
+    const made = async (b64: string) => ({ image: b64, ...left, redo: redo ?? await openRedo(member.usageKey, input) ?? null });
 
     let editing = false;
     let answered = false;
     try {
-      if (mockOpenAI()) return { image: photo.toString("base64"), ...left };
+      if (mockOpenAI()) return await made(photo.toString("base64"));
       // OpenAI's free moderation model screens the photo first: nothing
       // sexual, violent or about self-harm goes on to be edited.
       const screen = await openai().moderations.create({
@@ -241,11 +258,21 @@ export const goalPhoto = onCall(
         ...(/^gpt-image-2\.[56]/.test(model) ? { complexity: member.config.imageComplexity } : {}),
       }, callOptions(200_000, response?.signal));
       answered = true;
-      logger.info("goalPhoto usage", { uid: member.uid, tier: member.tier, model, size, usage: result.usage });
+      logger.info("goalPhoto usage", { uid: member.uid, tier: member.tier, model, size, redo: !!redo, usage: result.usage });
       const b64 = result.data?.[0]?.b64_json;
       if (!b64) throw new Error("no image returned");
-      return { image: b64, ...left };
+      return await made(b64);
     } catch (error) {
+      // A redo gives its try back, not a unit of the allowance it never took.
+      if (redo) {
+        const billed = editing && mayHaveBilled(error, answered);
+        const back = await giveBackRedo(member.usageKey, redo.id, billed);
+        const redoLeft = redo.left + (back ? 1 : 0);
+        if (billed) logger.warn("goalPhoto: possibly billed redo failed", { uid: member.uid, back, answered, error: String(error) });
+        if (isSafetyRefusal(error)) throw withRedo(failure(new HttpsError("failed-precondition", Reason.notAllowed), remaining), redoLeft);
+        if (!(error instanceof HttpsError)) logger.error("goalPhoto redo failed", { uid: member.uid, error: String(error) });
+        throw withRedo(failure(error, remaining), redoLeft);
+      }
       // Before the edit only the free moderation screen ran.
       const gaveBack = editing
         ? await settle(member, "goalPhoto", periodKey, error, answered)
@@ -257,3 +284,9 @@ export const goalPhoto = onCall(
     }
   },
 );
+
+/** A failed redo's error with the tries it has left (`details.redoLeft`). */
+function withRedo(error: HttpsError, redoLeft: number): HttpsError {
+  const details = error.details && typeof error.details === "object" ? error.details : {};
+  return new HttpsError(error.code, error.message, { ...details, redoLeft });
+}

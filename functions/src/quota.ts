@@ -92,6 +92,17 @@ export async function take(usageKey: string, feature: Feature, periodKey: string
   });
 }
 
+/** What's left of an allowance without taking any (a goal photo redo
+ *  reports it). Best effort: the limit itself when it can't be read. */
+export async function remaining(usageKey: string, feature: Feature, periodKey: string, limit: number): Promise<number> {
+  try {
+    const used = Number((await counter(usageKey, feature, periodKey).get()).get("count") ?? 0);
+    return Math.max(0, limit - used);
+  } catch {
+    return limit;
+  }
+}
+
 /** Gives back a unit taken by `take` when OpenAI billed nothing for the
  *  failed call. Best effort; returns whether it did. */
 export async function giveBack(usageKey: string, feature: Feature, periodKey: string): Promise<boolean> {

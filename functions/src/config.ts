@@ -17,9 +17,10 @@ export const APP_APPLE_ID = 6816021196;
  *  keeps Premium for good after it's taken off sale) and Pro above it, with
  *  higher AI allowances. */
 export type Tier = "premium" | "pro";
-/** Who a goal photo is counted for: a paid plan, or "free", a signed-in
- *  account without one, which gets one goal photo ever (owner,
- *  2026-11-23). Chat and meal scans stay paid-only. */
+/** Who a call is counted for: a paid plan, or "free", a signed-in account
+ *  without one, which gets one goal photo ever (owner, 2026-11-23) and a
+ *  few Ask MUSQ questions a day (owner, 2026-11-27: "Free 5 lần ask Ai 1
+ *  ngày"). Meal scans stay paid-only. */
 export type Plan = Tier | "free";
 
 /** Which plan each App Store product gives (see the app's Purchases). */
@@ -53,6 +54,11 @@ export interface AIConfig {
   /** Allowances per plan; 0 switches a feature off for that plan. The
    *  app's paywall states the defaults (Purchases.Tier.ai): change both.
    *  Paid goal photos renew each calendar year in the member's time zone. */
+  /** Ask MUSQ questions a day for a signed-in account without a paid plan
+   *  (Sign in with Apple; counted per Apple ID, see access.ts freeChatPlan).
+   *  0 closes the chat to free accounts again (premium-required, as before
+   *  2026-11-27). */
+  chatDailyLimitFree: number;
   chatDailyLimitPremium: number;
   chatDailyLimitPro: number;
   mealDailyLimitPremium: number;
@@ -90,7 +96,8 @@ export interface AIConfig {
 // hits the cache ≈ $0.003-0.005; one that misses it ≈ $0.021 more. After a
 // deploy, check usage.input_tokens_details.cached_tokens in the "scanMeal
 // usage" log: from the second scan on it should be about the prefix size.
-// Under $0.004 a chat answer. A goal photo at high quality (the owner's
+// Under $0.004 a chat answer, so a free account's 5 a day cost at most about
+// $0.02 a day. A goal photo at high quality (the owner's
 // test, a 1040x1536 edit): ~1,500 input image tokens ($8/M) and ~200 text
 // ($5/M) in, ~1,380-1,630 image tokens ($30/M) out ≈ $0.055-0.062; it was
 // ~$0.047 at medium.
@@ -104,7 +111,9 @@ export const DEFAULTS: AIConfig = {
   mealReasoning: "low",
   // Owner, 2026-11-22: Premium has no meal scans. 2026-11-23: goal photos
   // 2 a year on Premium and 5 a year on Pro, and one ever for a free
-  // account, so the AI costs stay inside each price.
+  // account, so the AI costs stay inside each price. 2026-11-27: 5 chat
+  // questions a day without a plan.
+  chatDailyLimitFree: 5,
   chatDailyLimitPremium: 10,
   chatDailyLimitPro: 30,
   mealDailyLimitPremium: 0,
@@ -205,8 +214,8 @@ export interface Limits {
   goalPhotoPeriod: "year" | "once";
 }
 
-/** A plan's allowances. A free account never reaches chat or meal scans
- *  (access.ts refuses it), so those are 0. */
+/** A plan's allowances. A free account never reaches meal scans (access.ts
+ *  refuses it), so that is 0. */
 export function limitsFor(config: AIConfig, plan: Plan): Limits {
   switch (plan) {
     case "pro":
@@ -214,7 +223,7 @@ export function limitsFor(config: AIConfig, plan: Plan): Limits {
     case "premium":
       return { chat: config.chatDailyLimitPremium, meal: config.mealDailyLimitPremium, goalPhoto: config.goalPhotoYearlyLimitPremium, goalPhotoPeriod: "year" };
     case "free":
-      return { chat: 0, meal: 0, goalPhoto: config.goalPhotoOnceLimitFree, goalPhotoPeriod: "once" };
+      return { chat: config.chatDailyLimitFree, meal: 0, goalPhoto: config.goalPhotoOnceLimitFree, goalPhotoPeriod: "once" };
   }
 }
 

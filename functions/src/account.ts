@@ -9,9 +9,13 @@
  * personal data and stay with the purchase: daily, monthly and yearly ones
  * delete themselves within weeks of their period (Firestore TTL, see
  * quota.ts). The free goal photo's counter (`usage/apple_…`, see access.ts
- * freeUsageKey) stays too: it holds only a salted hash of the Apple user id
+ * freeUsageKey; the free chat's daily counters sit beside it and expire like
+ * the others) stays too: it holds only a salted hash of the Apple user id
  * and a count, no uid and nothing that names the member, and it keeps a
- * deleted and re-created account from getting another free photo. Photos
+ * deleted and re-created account from getting another free photo. MUSQ
+ * Friends data goes too (friendsAccount.ts: profile, code, friendships both
+ * sides, requests, feed events, reactions, nudges, blocks; reports keep no
+ * link to them). Photos
  * and chats are never stored on the server; Cloud Logging keeps request
  * logs (with the uid) for 30 days.
  */
@@ -21,6 +25,7 @@ import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { logger } from "firebase-functions/v2";
 import { REGION } from "./config.js";
 import { Reason } from "./access.js";
+import { deleteFriendsData } from "./friendsAccount.js";
 
 /** The Firestore records deleteAccount removes: the Premium record and
  *  everything counted on the account's uid. Never the Apple ID's free goal
@@ -29,7 +34,7 @@ export function accountRecords(uid: string): { entitlement: string; usage: strin
   return { entitlement: `entitlements/${uid}`, usage: `usage/uid_${uid}` };
 }
 
-export const deleteAccount = onCall({ region: REGION, timeoutSeconds: 30, memory: "256MiB", maxInstances: 10 }, async (request) => {
+export const deleteAccount = onCall({ region: REGION, timeoutSeconds: 60, memory: "256MiB", maxInstances: 10 }, async (request) => {
   if (!request.auth) throw new HttpsError("unauthenticated", Reason.signIn);
   const uid = request.auth.uid;
   const revocation = (request.data as { appleRevocation?: unknown } | undefined)?.appleRevocation;
@@ -41,6 +46,7 @@ export const deleteAccount = onCall({ region: REGION, timeoutSeconds: 30, memory
   const records = accountRecords(uid);
   await db.doc(records.entitlement).delete();
   await db.recursiveDelete(db.doc(records.usage));
+  await deleteFriendsData(db, uid);
   try {
     await getAuth().deleteUser(uid);
   } catch (error) {

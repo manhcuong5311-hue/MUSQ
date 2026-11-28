@@ -1,14 +1,15 @@
 /**
- * aiChat: "Ask MUSQ", the Premium training coach on the Today tab. Training
+ * aiChat: "Ask MUSQ", the training coach on the Today tab. Training
  * questions only; general health guidance with "see a doctor"; never drug
  * or steroid dosing (App Store 1.4.3). Plain text with **bold** and "- "
- * lists, which the app's bubble renders. 10 questions a day on Premium and
- * 30 on Pro by default (config.ts).
+ * lists, which the app's bubble renders. 5 questions a day without a plan
+ * (signed in with Apple, owner 2026-11-27), 10 on Premium and 30 on Pro by
+ * default (config.ts; the app's Purchases.Tier says the same).
  */
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { logger } from "firebase-functions/v2";
 import { REGION, mockOpenAI } from "./config.js";
-import { requireMember } from "./access.js";
+import { requireChatMember } from "./access.js";
 import { period, take } from "./quota.js";
 import { chatContext, chatMessages, locale as readLocale, type Locale } from "./input.js";
 import { OPENAI_API_KEY, callOptions, isReasoningModel, openai, safetyId } from "./openai.js";
@@ -66,12 +67,14 @@ const MOCK_REPLY = "**Good question.** For steady progress:\n- Add a rep or a li
 export const aiChat = onCall(
   { region: REGION, secrets: [OPENAI_API_KEY], timeoutSeconds: 90, memory: "512MiB", maxInstances: 20, concurrency: 40 },
   async (request, response) => {
-    const member = await requireMember(request, "chat");
+    const member = await requireChatMember(request);
     const data = (request.data ?? {}) as Record<string, unknown>;
     const messages = chatMessages(data.messages);
     const context = chatContext(data.context);
     const language = readLocale(data.locale);
-    const day = period("day", data.timeZone);
+    // The free plan counts its questions per UTC day: a zone the phone sends
+    // could otherwise be switched to count one day two or three times.
+    const day = period("day", member.tier === "free" ? undefined : data.timeZone);
     const remainingToday = await take(member.usageKey, "chat", day, member.limits.chat, member.tier);
 
     let answered = false;

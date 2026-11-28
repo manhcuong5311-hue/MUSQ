@@ -23,9 +23,10 @@ import { Reason } from "./reasons.js";
 export const REFUND_CAP: Record<Feature, number> = { chat: 3, meal: 3, goalPhoto: 2 };
 
 /** A free account's one goal photo is given back once in all, so a failure
- *  provoked on purpose can't make it free again and again. */
+ *  provoked on purpose can't make it free again and again. Free chat
+ *  questions renew daily and keep the daily cap. */
 export function refundCap(feature: Feature, tier: Plan): number {
-  return tier === "free" ? 1 : REFUND_CAP[feature];
+  return tier === "free" && feature === "goalPhoto" ? 1 : REFUND_CAP[feature];
 }
 
 /** Whether the connection to OpenAI itself timed out, so the request never

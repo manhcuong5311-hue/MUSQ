@@ -9,7 +9,8 @@ import { chatContext, chatMessages, image, imageSize } from "../input.js";
 import { GOAL_LEVELS, editSize, goalPrompt, isAdult, legacyLook, readLook, type Look, type Sex } from "../goalPhoto.js";
 import { chatInstructions, trimCutOff } from "../chat.js";
 import { DEFAULTS, limitsFor, parseConfig } from "../config.js";
-import { appleSubject, freePlan, freeUsageKey, goalPhotoPlan, paidPlan } from "../access.js";
+import { appleSubject, freeChatPlan, freePlan, freeUsageKey, goalPhotoPlan, paidPlan } from "../access.js";
+import { REDOS_PER_PHOTO, canRedo, readRedoOf, redoInput } from "../redo.js";
 import { accountRecords } from "../account.js";
 import { pick } from "../entitlements.js";
 import { failure, mayHaveBilled, refundCap } from "../settle.js";
@@ -151,10 +152,12 @@ test("config/ai: console strings count, unreadable fields keep their defaults", 
   assert.deepEqual(parseConfig({ mealTable: "off" }).ignored, ["mealTable"]);
 });
 
-test("each plan has its own allowances: Premium 10 chats and 2 goal photos a year, Pro 30/20 a day and 5 a year, free one goal photo ever", () => {
+test("each plan has its own allowances: free 5 chats a day and one goal photo ever, Premium 10 chats and 2 goal photos a year, Pro 30/20 a day and 5 a year", () => {
   assert.deepEqual(limitsFor(DEFAULTS, "premium"), { chat: 10, meal: 0, goalPhoto: 2, goalPhotoPeriod: "year" });
   assert.deepEqual(limitsFor(DEFAULTS, "pro"), { chat: 30, meal: 20, goalPhoto: 5, goalPhotoPeriod: "year" });
-  assert.deepEqual(limitsFor(DEFAULTS, "free"), { chat: 0, meal: 0, goalPhoto: 1, goalPhotoPeriod: "once" });
+  assert.deepEqual(limitsFor(DEFAULTS, "free"), { chat: 5, meal: 0, goalPhoto: 1, goalPhotoPeriod: "once" });
+  assert.equal(limitsFor(parseConfig({ chatDailyLimitFree: "0" }).value, "free").chat, 0);
+  assert.equal(limitsFor(parseConfig({ chatDailyLimitFree: "3" }).value, "free").chat, 3);
   assert.equal(limitsFor(parseConfig({ goalPhotoYearlyLimitPremium: "0" }).value, "premium").goalPhoto, 0);
   assert.equal(limitsFor(parseConfig({ goalPhotoYearlyLimitPro: "7" }).value, "pro").goalPhoto, 7);
   assert.equal(limitsFor(parseConfig({ goalPhotoOnceLimitFree: 0 }).value, "free").goalPhoto, 0);
@@ -168,7 +171,7 @@ test("each plan has its own allowances: Premium 10 chats and 2 goal photos a yea
 const APPLE_SUB = "001234.0a1b2c3d4e5f60718293a4b5c6d7e8f9.0123";
 const APPLE_KEY = "apple_d8f6cac8a016f80154430de983a3a51c";
 
-test("the goal photo opens to an account without a plan, once; chat and meal scans stay paid", () => {
+test("the goal photo opens to an account without a plan, once; meal scans stay paid", () => {
   const now = Date.UTC(2026, 10, 23);
   const later = { toMillis: () => now + 60_000 };
   const earlier = { toMillis: () => now - 60_000 };
@@ -178,7 +181,7 @@ test("the goal photo opens to an account without a plan, once; chat and meal sca
   assert.deepEqual(paidPlan("u1", undefined, { active: true, tier: "pro", originalTransactionId: "t1", expiresAt: later }, now), { tier: "pro", usageKey: "tx_t1" });
   assert.deepEqual(paidPlan("u1", undefined, { active: true, productId: "com.SamCorp.GymWorkout.removeads.lifetime", originalTransactionId: "t2", expiresAt: null }, now), { tier: "premium", usageKey: "tx_t2" });
   // No plan, a lapsed one or a refunded one is no paid plan: requireMember
-  // refuses chat and meal scans (premium-required)...
+  // refuses meal scans (premium-required)...
   assert.equal(paidPlan("u1", undefined, undefined, now), undefined);
   assert.equal(paidPlan("u1", undefined, { active: true, tier: "pro", originalTransactionId: "t1", expiresAt: earlier }, now), undefined);
   assert.equal(paidPlan("u1", undefined, { active: false, revoked: true, tier: "premium", originalTransactionId: "t2" }, now), undefined);
@@ -235,8 +238,50 @@ test("a device that holds a plan the record doesn't show is refused, not given t
   assert.equal(goalPhotoPlan(undefined, false, undefined), undefined);
 });
 
+test("free chat: 5 questions a day per Apple ID, refused without one or when switched off", () => {
+  assert.deepEqual(freeChatPlan("u1", DEFAULTS, APPLE_SUB, false), { tier: "free", usageKey: APPLE_KEY });
+  assert.equal(freeChatPlan("old-uid", DEFAULTS, APPLE_SUB, false)?.usageKey, freeChatPlan("new-uid", DEFAULTS, APPLE_SUB, false)?.usageKey);
+  assert.equal(freeChatPlan("u1", DEFAULTS, undefined, false), undefined);
+  assert.deepEqual(freeChatPlan("u1", DEFAULTS, undefined, true), { tier: "free", usageKey: "uid_u1" });
+  assert.equal(freeChatPlan("u1", parseConfig({ chatDailyLimitFree: 0 }).value, APPLE_SUB, false), undefined);
+  // Free chat and the free goal photo are switched apart.
+  assert.ok(freeChatPlan("u1", parseConfig({ goalPhotoOnceLimitFree: 0 }).value, APPLE_SUB, false));
+  // A device holding a plan the record doesn't show: refused, so the app
+  // syncs instead of counting the question on the free 5.
+  const free = freeChatPlan("u1", DEFAULTS, APPLE_SUB, false);
+  assert.equal(goalPhotoPlan(undefined, true, free), undefined);
+  assert.deepEqual(goalPhotoPlan(undefined, false, free), free);
+});
+
+test("a goal photo redo needs the same photo, the same look and a try left", () => {
+  assert.equal(REDOS_PER_PHOTO, 2);
+  const photo = Buffer.from("photo-bytes");
+  const look = { sex: "male", muscle: "toned", fat: "fit" };
+  const input = redoInput(photo, look);
+  assert.equal(input, redoInput(Buffer.from("photo-bytes"), { ...look }));
+  assert.notEqual(input, redoInput(Buffer.from("other-bytes"), look));
+  assert.notEqual(input, redoInput(photo, { ...look, fat: "lean" }));
+  const id = "0f1e2d3c-4b5a-4987-a6b5-c4d3e2f1a0b9";
+  assert.equal(readRedoOf(id), id);
+  assert.equal(readRedoOf(id.toUpperCase()), id);
+  assert.equal(readRedoOf("nope"), undefined);
+  assert.equal(readRedoOf(42), undefined);
+  assert.equal(readRedoOf(undefined), undefined);
+  const now = Date.UTC(2026, 10, 27);
+  const later = { toMillis: () => now + 60_000 };
+  const earlier = { toMillis: () => now - 60_000 };
+  assert.equal(canRedo({ id, input, left: 2, expireAt: later }, id, input, now), true);
+  assert.equal(canRedo({ id, input, left: 1, expireAt: later }, id, input, now), true);
+  assert.equal(canRedo({ id, input, left: 0, expireAt: later }, id, input, now), false);
+  assert.equal(canRedo({ id, input, left: 2, expireAt: earlier }, id, input, now), false);
+  assert.equal(canRedo({ id: "other", input, left: 2, expireAt: later }, id, input, now), false);
+  assert.equal(canRedo({ id, input: "other", left: 2, expireAt: later }, id, input, now), false);
+  assert.equal(canRedo(undefined, id, input, now), false);
+});
+
 test("a free goal photo is given back once at most; paid ones twice a year", () => {
   assert.equal(refundCap("goalPhoto", "free"), 1);
+  assert.equal(refundCap("chat", "free"), 3);
   assert.equal(refundCap("goalPhoto", "premium"), 2);
   assert.equal(refundCap("goalPhoto", "pro"), 2);
   assert.equal(refundCap("chat", "pro"), 3);
