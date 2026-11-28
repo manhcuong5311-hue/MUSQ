@@ -27,6 +27,20 @@ export function callOptions(timeoutMs: number, signal: AbortSignal | undefined) 
   return { timeout: timeoutMs, maxRetries: 0, ...(signal ? { signal } : {}) };
 }
 
+/** OpenAI's free moderation model (omni-moderation-latest) over texts and
+ *  an optional JPEG, in one request: true when anything is flagged. Throws
+ *  when OpenAI can't be reached (callers refuse then: nothing unscreened is
+ *  shown to anyone). */
+export async function moderationFlagged(texts: string[], jpeg?: Buffer, signal?: AbortSignal): Promise<boolean> {
+  const input = [
+    ...texts.filter((t) => t.trim()).map((text) => ({ type: "text" as const, text })),
+    ...(jpeg ? [{ type: "image_url" as const, image_url: { url: `data:image/jpeg;base64,${jpeg.toString("base64")}` } }] : []),
+  ];
+  if (input.length === 0) return false;
+  const screen = await openai().moderations.create({ model: "omni-moderation-latest", input }, callOptions(15_000, signal));
+  return screen.results.some((r) => r.flagged);
+}
+
 /** A stable, anonymous id for a member, for OpenAI's abuse monitoring. */
 export function safetyId(uid: string): string {
   return createHash("sha256").update(`musq:${uid}`).digest("hex").slice(0, 32);

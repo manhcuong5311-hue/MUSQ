@@ -1,0 +1,22 @@
+rules_version = '2';
+
+// MUSQ Friends photo check-ins (functions/src/friendsPhotos.ts). Only the
+// Cloud Functions write (Admin SDK, which skips these rules). A signed-in
+// member may read friendPhotos/{postId}.jpg only while their own Firestore
+// inbox holds that post, so unfriending, a block, a report or a delete
+// takes access away at once. Never hand out download URLs (getDownloadURL
+// mints a token that skips these rules): the app reads with getData or the
+// REST endpoint with its ID token. Everything else is refused.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    match /friendPhotos/{file} {
+      allow get: if request.auth != null
+        && file.matches('^[0-9a-f]{32}[.]jpg$')
+        && firestore.exists(/databases/(default)/documents/friendInbox/$(request.auth.uid)/posts/$(file.split('[.]')[0]));
+    }
+  }
+}

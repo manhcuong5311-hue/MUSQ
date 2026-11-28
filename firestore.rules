@@ -1,11 +1,23 @@
 rules_version = '2';
 
-// Only the Cloud Functions (Admin SDK) read or write Firestore: the app never
-// talks to it directly, so every client request is refused.
+// The Cloud Functions (Admin SDK) write everything and read almost
+// everything. The app may only READ its own MUSQ Friends photo inbox
+// (friendsPhotos.ts): the server fans out a copy of each post and comment
+// to every reader under friendInbox/{reader uid}, so a member reading only
+// paths keyed by their own uid sees exactly what they're allowed to. No
+// client writes anywhere; everything else is refused.
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
       allow read, write: if false;
+    }
+
+    match /friendInbox/{uid}/posts/{postId} {
+      allow get, list: if request.auth != null && request.auth.uid == uid;
+
+      match /comments/{commentId} {
+        allow get, list: if request.auth != null && request.auth.uid == uid;
+      }
     }
   }
 }

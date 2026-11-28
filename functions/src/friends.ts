@@ -28,6 +28,8 @@
  *   declined request (or an unfriend) that keeps `from` from asking `to`
  *   again for a while; their new request is quietly not delivered
  * - friendBlocks/{blockId}: by, uid, createdAt
+ * - photo check-ins: friendPhotos, friendPhotoComments, photoCounters and
+ *   the app-readable friendInbox/{uid}/posts (see friendsPhotos.ts)
  * - friendReports/{reportId}: reporter, subject, reason, subjectName,
  *   subjectEmoji, createdAt, status "new" (for the owner, in the console;
  *   each new one also logs "friends report" at warning level, for a
@@ -39,6 +41,7 @@ import { HttpsError, onCall, type CallableRequest } from "firebase-functions/v2/
 import { REGION, aiConfig, inEmulator } from "./config.js";
 import { appleSubject } from "./access.js";
 import { Reason } from "./reasons.js";
+import { INLINE_CLEANUP_MS, cleanupJob, cleanupRef, commentAuthor, firebaseStore, settleCleanup } from "./friendsPhotos.js";
 import {
   DEFAULT_SHARE, EVENTS_PER_DAY, EVENT_SHARE, MAX_FRIENDS, MAX_OUTGOING, REACTIONS, afterCursor, blockId, boardWeek,
   decodeCursor, encodeCursor, eventId, feedOrder, newCode, nudgeCheck, pairId, readAvatar, readCode, readDisplayName,
@@ -390,16 +393,28 @@ export async function remove(db: Firestore, uid: string, data: unknown, now = Da
   // Unfriending or declining keeps them from asking again at once (I can
   // still ask them, which lifts it).
   if (kind !== "outgoing") batch.set(...decline(db, other, uid, now));
+  // Photo check-ins: each stops reading the other's posts. The job is
+  // committed with the unfriend, so what this call can't finish in time is
+  // finished by friendsPhotoSweep (friendsPhotos.ts).
+  const job = cleanupJob("unlink", uid, other, now);
+  const jobRef = cleanupRef(db, "unlink", uid, other);
+  if (kind === "friend") batch.set(jobRef, job);
   await batch.commit();
+  if (kind === "friend") await settleCleanup(db, jobRef, job, firebaseStore(), Date.now() + INLINE_CLEANUP_MS);
   return {};
 }
 
-/** Block a friend or someone with a request either way: unfriends, drops
- *  requests both ways and their undelivered nudges, and from then on each
- *  finds the other's code "not found". */
+/** Block a friend or someone with a request either way (`friendId`), or
+ *  the author of a comment the member can see on a photo post ({postId,
+ *  commentId}: a friend of the poster who isn't theirs): unfriends, drops
+ *  requests both ways and their undelivered nudges, hides posts and
+ *  comments both ways, and from then on each finds the other's code "not
+ *  found". */
 export async function block(db: Firestore, uid: string, data: unknown, now = Date.now()) {
-  const id = readId(obj(data).friendId, "friendId");
-  const { other } = await resolveOther(db, uid, id);
+  const d = obj(data);
+  const other = d.friendId === undefined && d.commentId !== undefined
+    ? await commentAuthor(db, uid, d)
+    : (await resolveOther(db, uid, readId(d.friendId, "friendId"))).other;
   const nudges = await db.collection(COL.nudges).where("from", "==", other).where("to", "==", uid).get();
   const batch = db.batch();
   batch.set(db.doc(`${COL.blocks}/${blockId(uid, other)}`), { by: uid, uid: other, createdAt: Timestamp.fromMillis(now) });
@@ -407,7 +422,13 @@ export async function block(db: Firestore, uid: string, data: unknown, now = Dat
   batch.delete(db.doc(`${COL.requests}/${requestId(uid, other)}`));
   batch.delete(db.doc(`${COL.requests}/${requestId(other, uid)}`));
   for (const doc of nudges.docs) batch.delete(doc.ref);
+  // Photo check-ins: posts and comments hidden both ways; the job commits
+  // with the block, so friendsPhotoSweep finishes what this call can't.
+  const job = cleanupJob("block", uid, other, now);
+  const jobRef = cleanupRef(db, "block", uid, other);
+  batch.set(jobRef, job);
   await batch.commit();
+  await settleCleanup(db, jobRef, job, firebaseStore(), Date.now() + INLINE_CLEANUP_MS);
   return {};
 }
 

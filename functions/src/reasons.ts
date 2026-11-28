@@ -30,4 +30,16 @@ export const Reason = {
   /** 30 friend-code lookups today, found or not (resource-exhausted): codes
    *  can't be guessed by trying them all. */
   friendTries: "friends-tries-limit",
+  // Photo check-ins (friendsPhotos.ts).
+  /** The photo didn't pass moderation (failed-precondition). */
+  friendPhotoRejected: "friends-photo-not-allowed",
+  /** A caption or comment with a link, contact details, a banned word, or
+   *  that didn't pass moderation (failed-precondition). */
+  friendTextRejected: "friends-text-not-allowed",
+  /** 10 photos posted today (resource-exhausted). */
+  photoLimit: "friends-photo-limit",
+  /** 100 comments today (resource-exhausted). */
+  commentLimit: "friends-comment-limit",
+  /** 300 reaction changes today (resource-exhausted). */
+  reactionLimit: "friends-reaction-limit",
 } as const;

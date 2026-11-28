@@ -4,18 +4,117 @@
       "collectionGroup": "friendEvents",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "uid", "order": "ASCENDING" },
-        { "fieldPath": "createdAt", "order": "DESCENDING" }
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "friendPhotos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "recipients",
+          "arrayConfig": "CONTAINS"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "friendPhotoComments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "recipients",
+          "arrayConfig": "CONTAINS"
+        }
       ]
     }
   ],
   "fieldOverrides": [
-    { "collectionGroup": "chat", "fieldPath": "expireAt", "ttl": true, "indexes": [] },
-    { "collectionGroup": "meal", "fieldPath": "expireAt", "ttl": true, "indexes": [] },
-    { "collectionGroup": "goalPhoto", "fieldPath": "expireAt", "ttl": true, "indexes": [] },
-    { "collectionGroup": "friendEvents", "fieldPath": "expireAt", "ttl": true, "indexes": [] },
-    { "collectionGroup": "friendRequests", "fieldPath": "expireAt", "ttl": true, "indexes": [] },
-    { "collectionGroup": "nudges", "fieldPath": "expireAt", "ttl": true, "indexes": [] },
-    { "collectionGroup": "nudgeCounters", "fieldPath": "expireAt", "ttl": true, "indexes": [] }
+    {
+      "collectionGroup": "chat",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "meal",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "goalPhoto",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "friendEvents",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "friendRequests",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "nudges",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "nudgeCounters",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "friendPhotos",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "friendPhotoComments",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "photoCounters",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "posts",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "comments",
+      "fieldPath": "expireAt",
+      "ttl": true,
+      "indexes": []
+    }
   ]
 }

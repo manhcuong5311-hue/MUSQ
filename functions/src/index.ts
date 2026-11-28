@@ -5,7 +5,8 @@
  * Premium or Pro, or a free account's 5 chat questions a day and one goal
  * photo). appStoreNotifications is Apple's (signed) refund feed. The
  * OpenAI key is a Secret Manager secret, never in the app. friends*.ts is
- * MUSQ Friends (codes, requests, a summarized feed, nudges, reactions).
+ * MUSQ Friends (codes, requests, a summarized feed, nudges, reactions, photo
+ * check-ins with comments).
  */
 import { initializeApp } from "firebase-admin/app";
 import { setGlobalOptions } from "firebase-functions/v2";
@@ -24,3 +25,7 @@ export {
   friendsProfileSet, friendsSync, friendsRequest, friendsRespond, friendsRemove, friendsBlock,
   friendsReport, friendsMute, friendsPost, friendsFeed, friendsReact, friendsNudge,
 } from "./friends.js";
+export {
+  friendsPhotoPost, friendsPhotoDelete, friendsPhotoReact, friendsCommentAdd, friendsCommentDelete, friendsPhotoReport,
+  friendsPhotoSweep,
+} from "./friendsPhotos.js";

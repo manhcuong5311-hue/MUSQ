@@ -15,9 +15,11 @@
  * deleted and re-created account from getting another free photo. MUSQ
  * Friends data goes too (friendsAccount.ts: profile, code, friendships both
  * sides, requests, feed events, reactions, nudges, blocks; reports keep no
- * link to them). Photos
- * and chats are never stored on the server; Cloud Logging keeps request
- * logs (with the uid) for 30 days.
+ * link to them; photo check-ins: their posts, photo files, comments,
+ * reactions and inbox, finished by friendsPhotoSweep within minutes when
+ * there are too many for this call). Meal and goal photos and chats are
+ * never stored on the server; Cloud Logging keeps request logs (with the
+ * uid) for 30 days.
  */
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
@@ -46,7 +48,9 @@ export const deleteAccount = onCall({ region: REGION, timeoutSeconds: 60, memory
   const records = accountRecords(uid);
   await db.doc(records.entitlement).delete();
   await db.recursiveDelete(db.doc(records.usage));
-  await deleteFriendsData(db, uid);
+  // Photo check-ins get 35 s of the 60; the rest is finished by
+  // friendsPhotoSweep (friendsAccount.ts), so the Auth account always goes.
+  await deleteFriendsData(db, uid, undefined, Date.now() + 35_000);
   try {
     await getAuth().deleteUser(uid);
   } catch (error) {
