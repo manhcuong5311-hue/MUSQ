@@ -418,18 +418,23 @@ nonisolated struct FriendsNudgeRequest: Encodable, Sendable {
 // MARK: - Time
 
 nonisolated enum FriendsTime {
-    /// An ISO 8601 time from the server, with or without fractions.
+    // Made once: feeds sort by these times on every update, and making a
+    // formatter is far dearer than using one. ISO8601DateFormatter is
+    // thread-safe (iOS 7+).
+    nonisolated(unsafe) private static let fractional: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+    nonisolated(unsafe) private static let plain = ISO8601DateFormatter()
+
+    /// An ISO 8601 time from the server, with or without fractions (the
+    /// server's have them, so those are tried first).
     static func date(_ text: String) -> Date? {
-        let plain = ISO8601DateFormatter()
-        if let date = plain.date(from: text) { return date }
-        let fractional = ISO8601DateFormatter()
-        fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return fractional.date(from: text)
+        fractional.date(from: text) ?? plain.date(from: text)
     }
 
     static func string(_ date: Date) -> String {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return formatter.string(from: date)
+        fractional.string(from: date)
     }
 }

@@ -134,6 +134,17 @@
         }
       }
     },
+    "%@ · %lld min" : {
+      "comment" : "Friends photo tag: today's muscle groups, then minutes",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %lld phút"
+          }
+        }
+      }
+    },
     "%@ · %lld min · %lld kcal above rest · Apple Health" : {
       "comment" : "A finished workout with a workout in Apple Health (its length and energy); the first value is a count of sets: 18 sets · 48 min · 210 kcal above rest · Apple Health",
       "localizations" : {
@@ -2097,6 +2108,17 @@
         }
       }
     },
+    "%lld comments" : {
+      "comment" : "VoiceOver, comments on a friend's photo",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld bình luận"
+          }
+        }
+      }
+    },
     "%lld days" : {
       "comment" : "Journey: days in a row with everything done",
       "localizations" : {
@@ -3299,6 +3321,16 @@
         }
       }
     },
+    "%lld/%lld" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld/%lld"
+          }
+        }
+      }
+    },
     "%lld/%lld DONE" : {
       "localizations" : {
         "vi" : {
@@ -3458,6 +3490,26 @@
         }
       }
     },
+    "🏋️" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🏋️"
+          }
+        }
+      }
+    },
+    "🏋️ %@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🏋️ %@"
+          }
+        }
+      }
+    },
     "👋" : {
       "localizations" : {
         "vi" : {
@@ -3474,6 +3526,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "📭"
+          }
+        }
+      }
+    },
+    "📸" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📸"
           }
         }
       }
@@ -3518,12 +3580,32 @@
         }
       }
     },
+    "🫥" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🫥"
+          }
+        }
+      }
+    },
     "😕" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "😕"
+          }
+        }
+      }
+    },
+    "🚩" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🚩"
           }
         }
       }
@@ -3548,6 +3630,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Từ 0,6 trở lên: nguy cơ sức khỏe cao. Giảm vòng eo quan trọng hơn con số trên cân."
+          }
+        }
+      }
+    },
+    "1 comment" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 bình luận"
           }
         }
       }
@@ -5064,6 +5156,16 @@
         }
       }
     },
+    "Add a comment" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm bình luận"
+          }
+        }
+      }
+    },
     "Add a food by hand" : {
       "comment" : "Food search: type in a food the table hasn't got",
       "localizations" : {
@@ -5103,6 +5205,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thêm bài tập để lên kế hoạch tập %@."
+          }
+        }
+      }
+    },
+    "Add another food" : {
+      "comment" : "Meal editor: big dashed button under the foods; adds one more",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm món khác"
           }
         }
       }
@@ -6920,6 +7033,17 @@
         }
       }
     },
+    "Be the first to comment." : {
+      "comment" : "Empty comments on a friend's photo",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hãy là người bình luận đầu tiên."
+          }
+        }
+      }
+    },
     "Bedtime spread" : {
       "comment" : "Balance part",
       "localizations" : {
@@ -7133,6 +7257,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chặn"
+          }
+        }
+      }
+    },
+    "Block %@" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chặn %@"
           }
         }
       }
@@ -7465,6 +7599,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Có sẵn"
+          }
+        }
+      }
+    },
+    "Bullying or harassment" : {
+      "comment" : "Friends photo report reason",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bắt nạt hoặc quấy rối"
           }
         }
       }
@@ -7973,6 +8118,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chọn bài khác"
+          }
+        }
+      }
+    },
+    "Choose another photo" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chọn ảnh khác"
+          }
+        }
+      }
+    },
+    "Choose from library" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chọn từ thư viện"
           }
         }
       }
@@ -8793,6 +8958,16 @@
         }
       }
     },
+    "Delete comment" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xoá bình luận"
+          }
+        }
+      }
+    },
     "Delete day" : {
       "localizations" : {
         "vi" : {
@@ -8838,6 +9013,16 @@
         }
       }
     },
+    "Delete photo" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xoá ảnh"
+          }
+        }
+      }
+    },
     "Delete Preset for %@?" : {
       "localizations" : {
         "vi" : {
@@ -8865,6 +9050,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xoá bữa ăn này?"
+          }
+        }
+      }
+    },
+    "Delete this photo?" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xoá ảnh này?"
           }
         }
       }
@@ -11777,6 +11972,16 @@
         }
       }
     },
+    "Gym photos only your friends see" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh check-in chỉ bạn bè thấy"
+          }
+        }
+      }
+    },
     "Hack squat" : {
       "localizations" : {
         "vi" : {
@@ -12134,6 +12339,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đang ẩn"
+          }
+        }
+      }
+    },
+    "Hidden after reports. Only you can see it." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã ẩn do bị báo cáo. Chỉ bạn thấy ảnh này."
+          }
+        }
+      }
+    },
+    "Hidden after reports. Your friends can't see it while MUSQ reviews it. You can still delete it." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã ẩn do bị báo cáo. Bạn bè không thấy ảnh trong lúc MUSQ xem xét. Bạn vẫn có thể xoá ảnh."
           }
         }
       }
@@ -12874,6 +13099,17 @@
         }
       }
     },
+    "Inappropriate" : {
+      "comment" : "Friends photo report reason",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không phù hợp"
+          }
+        }
+      }
+    },
     "Incl. %@ added · Apple Health" : {
       "comment" : "Steps caption: today's steps include some the user added by hand, Incl. 2,000 added · Apple Health",
       "localizations" : {
@@ -13019,6 +13255,16 @@
         }
       }
     },
+    "It was deleted, it expired, or it's no longer shared with you." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh đã bị xoá, đã hết hạn hoặc không còn được chia sẻ với bạn."
+          }
+        }
+      }
+    },
     "It's been %lld days. Ease in with %@." : {
       "comment" : "Coach after a break: It's been 6 days. Ease in with Push day.",
       "localizations" : {
@@ -13042,6 +13288,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã %lld ngày rồi. Nhớ bạn lắm!"
+          }
+        }
+      }
+    },
+    "It's removed for your friends too, with its comments." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh cũng bị xoá khỏi máy bạn bè, cùng các bình luận."
           }
         }
       }
@@ -15333,6 +15589,16 @@
         }
       }
     },
+    "More" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm"
+          }
+        }
+      }
+    },
     "More foods" : {
       "comment" : "Quick log food: opens the food search with the words typed",
       "localizations" : {
@@ -15931,6 +16197,16 @@
         }
       }
     },
+    "MUSQ reviews every report within 24 hours." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MUSQ xem xét mọi báo cáo trong vòng 24 giờ."
+          }
+        }
+      }
+    },
     "MUSQ reviews every report within 24 hours. Their request is declined and they're blocked." : {
       "localizations" : {
         "vi" : {
@@ -16221,6 +16497,17 @@
         }
       }
     },
+    "New photo from %@" : {
+      "comment" : "VoiceOver, a story not seen yet",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh mới của %@"
+          }
+        }
+      }
+    },
     "New PR! %@ %@ 🏆" : {
       "comment" : "Nudge title: exercise name (English), then the record weight, reps or time",
       "localizations" : {
@@ -16301,6 +16588,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tháng sau"
+          }
+        }
+      }
+    },
+    "Next photo" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh tiếp theo"
           }
         }
       }
@@ -16556,6 +16853,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không có viền màu trên tab Tập."
+          }
+        }
+      }
+    },
+    "No comments yet." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chưa có bình luận."
           }
         }
       }
@@ -18282,6 +18589,17 @@
         }
       }
     },
+    "Only friends can do that." : {
+      "comment" : "Friends photo error",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chỉ bạn bè mới làm được việc này."
+          }
+        }
+      }
+    },
     "Only Friends needs an account. The rest of MUSQ works without one." : {
       "localizations" : {
         "vi" : {
@@ -18298,6 +18616,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chỉ những hiệp bạn đánh dấu đã xong. Các hiệp đã lên kế hoạch nhưng chưa hoàn thành sẽ không bao giờ được tính vào phục hồi, kỷ lục hay lịch sử."
+          }
+        }
+      }
+    },
+    "Only your friends see it. Removed after 30 days." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chỉ bạn bè thấy. Tự xoá sau 30 ngày."
           }
         }
       }
@@ -18516,6 +18844,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mở ứng dụng Sức khỏe, nơi thay đổi quyền truy cập của MUSQ"
+          }
+        }
+      }
+    },
+    "Opens the photo and its comments" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mở ảnh và bình luận"
           }
         }
       }
@@ -19014,6 +19352,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pescatello et al., Med Sci Sports Exerc 2019; tuyên bố khoa học của AHA 2023; Edwards et al., Br J Sports Med 2023."
+          }
+        }
+      }
+    },
+    "Photo" : {
+      "comment" : "Friends photo accessibility label",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh"
+          }
+        }
+      }
+    },
+    "Photo from %@" : {
+      "comment" : "VoiceOver, a friend's photo",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh của %@"
           }
         }
       }
@@ -19728,6 +20088,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tháng trước"
+          }
+        }
+      }
+    },
+    "Previous photo" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh trước"
           }
         }
       }
@@ -20905,6 +21275,16 @@
         }
       }
     },
+    "Remove workout tag" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bỏ thẻ buổi tập"
+          }
+        }
+      }
+    },
     "Removed %@" : {
       "localizations" : {
         "vi" : {
@@ -21037,12 +21417,42 @@
         }
       }
     },
+    "Report comment" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Báo cáo bình luận"
+          }
+        }
+      }
+    },
+    "Report photo" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Báo cáo ảnh"
+          }
+        }
+      }
+    },
     "Report this answer" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Báo cáo câu trả lời này"
+          }
+        }
+      }
+    },
+    "Report this comment?" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Báo cáo bình luận này?"
           }
         }
       }
@@ -21055,6 +21465,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Báo cáo hình ảnh này"
+          }
+        }
+      }
+    },
+    "Report this photo?" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Báo cáo ảnh này?"
           }
         }
       }
@@ -21287,6 +21707,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kết quả: %@"
+          }
+        }
+      }
+    },
+    "Retake" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chụp lại"
           }
         }
       }
@@ -21641,6 +22071,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nói hoặc gõ những gì bạn đã ăn: MUSQ tìm từng món và tính calo cùng macro của món đó. Bữa ăn đã ghi được tính vào điểm Cân bằng."
+          }
+        }
+      }
+    },
+    "Say something (optional)" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viết gì đó (không bắt buộc)"
           }
         }
       }
@@ -22545,12 +22985,62 @@
         }
       }
     },
+    "Share a gym photo. Your friends' photos and workouts show up here." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đăng ảnh check-in. Ảnh và buổi tập của bạn bè sẽ hiện ở đây."
+          }
+        }
+      }
+    },
+    "Share a photo" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đăng ảnh"
+          }
+        }
+      }
+    },
     "Share my invite" : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chia sẻ lời mời"
+          }
+        }
+      }
+    },
+    "Share with friends" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đăng cho bạn bè"
+          }
+        }
+      }
+    },
+    "Shared with your friends 📸" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã đăng cho bạn bè 📸"
+          }
+        }
+      }
+    },
+    "Sharing…" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang đăng…"
           }
         }
       }
@@ -23360,7 +23850,7 @@
       }
     },
     "Something else" : {
-      "comment" : "Friends report reason",
+      "comment" : "Friends photo report reason\nFriends report reason",
       "localizations" : {
         "vi" : {
           "stringUnit" : {
@@ -23464,7 +23954,7 @@
       }
     },
     "Spam" : {
-      "comment" : "Friends report reason",
+      "comment" : "Friends photo report reason\nFriends report reason",
       "localizations" : {
         "vi" : {
           "stringUnit" : {
@@ -25084,6 +25574,27 @@
         }
       }
     },
+    "Thanks for reporting" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cảm ơn bạn đã báo cáo"
+          }
+        }
+      }
+    },
+    "That can't be posted. Try other words." : {
+      "comment" : "Friends photo error: caption or comment refused",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể đăng nội dung này. Hãy thử từ khác."
+          }
+        }
+      }
+    },
     "That one paid off." : {
       "localizations" : {
         "vi" : {
@@ -25138,12 +25649,45 @@
         }
       }
     },
+    "That's %lld photos today. More tomorrow." : {
+      "comment" : "Friends photo error: daily photo cap",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay đã đăng %lld ảnh. Ngày mai hãy đăng tiếp."
+          }
+        }
+      }
+    },
+    "That's a lot of reactions today. Try again tomorrow." : {
+      "comment" : "Friends photo error: daily reaction cap",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay đã thả nhiều cảm xúc rồi. Hãy thử lại vào ngày mai."
+          }
+        }
+      }
+    },
     "That's a wrap for today." : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hôm nay vậy là xong."
+          }
+        }
+      }
+    },
+    "That's all the comments for today." : {
+      "comment" : "Friends photo error: daily comment cap",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay đã hết lượt bình luận."
           }
         }
       }
@@ -25316,6 +25860,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã hết lượt quét hôm nay"
+          }
+        }
+      }
+    },
+    "That's too long." : {
+      "comment" : "Friends photo error: caption or comment too long",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nội dung quá dài."
           }
         }
       }
@@ -25908,12 +26463,66 @@
         }
       }
     },
+    "This photo can't be read." : {
+      "comment" : "Friends photo error",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không đọc được ảnh này."
+          }
+        }
+      }
+    },
+    "This photo can't be shared." : {
+      "comment" : "Friends photo error: moderation",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không thể đăng ảnh này."
+          }
+        }
+      }
+    },
+    "This photo is gone" : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh này không còn nữa"
+          }
+        }
+      }
+    },
+    "This photo is too big." : {
+      "comment" : "Friends photo error",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ảnh này quá lớn."
+          }
+        }
+      }
+    },
     "This photo's free tries are used. A new photo uses your allowance." : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ảnh này đã hết lượt thử lại miễn phí. Ảnh mới sẽ tính vào số lượt của bạn."
+          }
+        }
+      }
+    },
+    "This post is gone." : {
+      "comment" : "Friends photo error: deleted or expired",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bài đăng này không còn nữa."
           }
         }
       }
@@ -29355,7 +29964,7 @@
       }
     },
     "Workout" : {
-      "comment" : "Journey: an action's name\nToday card title\nToday ring\nToday row",
+      "comment" : "Friends photo tag without muscle groups\nJourney: an action's name\nToday card title\nToday ring\nToday row",
       "localizations" : {
         "vi" : {
           "stringUnit" : {
@@ -29505,6 +30114,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đau cổ tay hoặc khuỷu tay"
+          }
+        }
+      }
+    },
+    "Write something first." : {
+      "comment" : "Friends photo error: empty comment",
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hãy viết gì đó trước."
           }
         }
       }
@@ -29972,12 +30592,32 @@
         }
       }
     },
+    "You won't see each other's photos or comments, and they can't send you requests. They aren't told." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hai bên sẽ không thấy ảnh hay bình luận của nhau, và người này không thể gửi lời mời cho bạn. Họ không được thông báo."
+          }
+        }
+      }
+    },
     "You won't see nudges from %@." : {
       "localizations" : {
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn sẽ không thấy lời nhắc từ %@."
+          }
+        }
+      }
+    },
+    "You won't see this photo any more. MUSQ reviews every report within 24 hours." : {
+      "localizations" : {
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn sẽ không thấy ảnh này nữa. MUSQ xem xét mọi báo cáo trong vòng 24 giờ."
           }
         }
       }
@@ -30742,7 +31382,7 @@
       }
     },
     "Your photo" : {
-      "comment" : "The name of the photo that was taken by the user.",
+      "comment" : "VoiceOver, my story in the stories row",
       "isCommentAutoGenerated" : true,
       "localizations" : {
         "vi" : {

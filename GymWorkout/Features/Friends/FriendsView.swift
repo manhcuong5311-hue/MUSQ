@@ -16,6 +16,7 @@ struct FriendsView: View {
     @Binding var tab: AppTab
 
     private var service: FriendsService { .shared }
+    private var photos: FriendsPhotoService { .shared }
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.colorScheme) private var scheme
 
@@ -35,6 +36,9 @@ struct FriendsView: View {
     @State private var isSigningIn = false
     @State private var respondingTo: String?
     @State private var reportingRequest: FriendRequest?
+    @State private var photoSource: FriendsPhotoSource?
+    @State private var viewer: FriendsPhotoViewerRequest?
+    @State private var photoDetail: FriendsPhotoDetailRequest?
 
     var body: some View {
         NavigationStack {
@@ -63,6 +67,24 @@ struct FriendsView: View {
                 nudged = NudgedToday.ids()
                 Task { await service.refresh() }
             }
+            syncPhotoListening()
+        }
+        // Photos, reactions and comments arrive live while the tab is up.
+        .onAppear { syncPhotoListening() }
+        // A full-screen cover (story viewer, camera) also fires onDisappear
+        // here while the tab is still up: keep the feed live then. Leaving
+        // the tab (or the app going to the background, above) stops it.
+        .onDisappear { if tab != .friends { photos.stopListening() } }
+        .onChange(of: tab) { _, new in if new != .friends { photos.stopListening() } }
+        .onChange(of: service.me != nil) { _, _ in syncPhotoListening() }
+        .friendsPhotoCapture(source: $photoSource) {
+            toast = String(localized: "Shared with your friends 📸")
+        }
+        .fullScreenCover(item: $viewer) { r in
+            FriendsPhotoViewer(stories: r.stories, start: r.start)
+        }
+        .sheet(item: $photoDetail) { r in
+            FriendsPhotoDetail(initial: r.post)
         }
         .task(id: toast) {
             guard toast != nil else { return }
@@ -145,13 +167,9 @@ struct FriendsView: View {
             .bottomBarPadding()
         case .ready, .loading, .failed:
             if service.me != nil {
-                Button {
-                    showAdd = true
-                } label: {
-                    Label(String(localized: "Add friend"), systemImage: "person.badge.plus")
-                }
-                .buttonStyle(FriendsPrimaryButtonStyle())
-                .bottomBarPadding()
+                FriendsPhotoBottomButtons(onCamera: { photoSource = .camera },
+                                          onLibrary: { photoSource = .library })
+                    .bottomBarPadding()
             }
         case .needsProfile:
             EmptyView()
@@ -188,6 +206,7 @@ struct FriendsView: View {
 
                 VStack(spacing: 10) {
                     heroRow("dumbbell.fill", .orange, "Friends' workouts, water and PRs")
+                    heroRow("camera.fill", .purple, "Gym photos only your friends see")
                     heroRow("hand.wave.fill", .pink, "One-tap nudges: \"Time to train!\"")
                     heroRow("chart.bar.fill", .blue, "A weekly board: who trained most")
                     heroRow("flame.fill", .red, "Streaks you keep alive together")
@@ -295,11 +314,16 @@ struct FriendsView: View {
 
                 switch segment {
                 case .feed:
-                    FriendsFeed()
+                    FriendsPhotoFeed(myEmoji: service.me?.emoji ?? "🙂",
+                                     onPost: { photoSource = .camera },
+                                     onOpenStory: { list, i in viewer = FriendsPhotoViewerRequest(stories: list, start: i) },
+                                     onOpenPost: { photoDetail = FriendsPhotoDetailRequest(post: $0) },
+                                     onToast: { toast = $0 })
                 case .week:
                     FriendsBoard(nudged: nudged,
                                  onNudge: { f, kind in sendNudge(f, kind) },
-                                 onOpen: { f in detail = FriendRef(id: f.id) })
+                                 onOpen: { f in detail = FriendRef(id: f.id) },
+                                 onStory: { openStory($0) })
                 }
 
             }
@@ -333,6 +357,14 @@ struct FriendsView: View {
             if let code = service.me?.code {
                 codeChip(code)
             }
+            Button { showAdd = true } label: {
+                StyledSymbol(name: "person.badge.plus", size: 17)
+                    .foregroundStyle(DS.silver)
+                    .frame(width: 46, height: 46)
+                    .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(DS.surface))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Add friend"))
         }
         .padding(.top, 12)
     }
@@ -520,6 +552,23 @@ struct FriendsView: View {
                 say(friendsMessage(error))
             }
         }
+    }
+
+    /// Listens for photos only while signed in with a profile and the app
+    /// is in front; stops otherwise.
+    private func syncPhotoListening() {
+        if service.me != nil && scenePhase == .active {
+            photos.startListening()
+        } else {
+            photos.stopListening()
+        }
+    }
+
+    /// Opens the viewer on one person's photo, then walks the stories row.
+    private func openStory(_ story: FriendPhotoStory) {
+        let list = FriendsPhotoRing.ordered()
+        let i = list.firstIndex { $0.authorId == story.authorId && $0.isMine == story.isMine } ?? 0
+        viewer = FriendsPhotoViewerRequest(stories: list.isEmpty ? [story] : list, start: i)
     }
 
     private func markNudged(_ f: Friend) {

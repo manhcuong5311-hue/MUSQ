@@ -511,6 +511,40 @@ enum MealFoodLook {
         return FoodTable.shared.entry(id: ref)?.category
     }
 
+    /// The food's own emoji when its name says what it is (a banana is 🍌,
+    /// not the fruit category's 🍎), else its category's. English and
+    /// Vietnamese words, matched as whole words in the lowercased name.
+    static func emoji(for food: MealReviewFood) -> String {
+        // A food from the table has its own emoji (FoodEmoji, all 1,075).
+        if let id = food.entry?.id ?? food.ref, let own = FoodEmoji.byID[id] { return own }
+        let name = " " + food.name.lowercased()
+            .replacingOccurrences(of: ",", with: " ").replacingOccurrences(of: "(", with: " ") + " "
+        for (words, emoji) in byName where words.contains(where: { name.contains(" \($0) ") }) {
+            return emoji
+        }
+        return emoji(for: category(of: food))
+    }
+
+    private static let byName: [([String], String)] = [
+        (["banana", "bananas", "chuối"], "🍌"), (["apple", "apples", "táo"], "🍎"),
+        (["orange", "oranges", "cam"], "🍊"), (["mango", "xoài"], "🥭"),
+        (["watermelon", "dưa hấu"], "🍉"), (["grapes", "grape", "nho"], "🍇"),
+        (["pineapple", "dứa", "thơm"], "🍍"), (["strawberry", "strawberries", "dâu"], "🍓"),
+        (["avocado", "bơ sáp"], "🥑"), (["coconut", "dừa"], "🥥"),
+        (["egg", "eggs", "trứng"], "🥚"), (["chicken", "gà"], "🍗"),
+        (["beef", "bò", "steak"], "🥩"), (["pork", "heo", "lợn"], "🥓"),
+        (["shrimp", "prawn", "prawns", "tôm"], "🍤"), (["fish", "salmon", "tuna", "cá"], "🐟"),
+        (["rice", "cơm", "gạo"], "🍚"), (["bread", "toast", "bánh mì"], "🍞"),
+        (["milk", "sữa"], "🥛"), (["coffee", "cà phê"], "☕️"), (["tea", "trà"], "🍵"),
+        (["sweet potato", "khoai lang"], "🍠"), (["potato", "potatoes", "khoai tây"], "🥔"),
+        (["corn", "ngô", "bắp"], "🌽"), (["broccoli", "súp lơ", "bông cải"], "🥦"),
+        (["cucumber", "dưa leo", "dưa chuột"], "🥒"), (["tomato", "tomatoes", "cà chua"], "🍅"),
+        (["carrot", "carrots", "cà rốt"], "🥕"), (["tofu", "đậu phụ", "đậu hũ"], "🧈"),
+        (["oats", "oatmeal", "yến mạch"], "🥣"), (["yogurt", "yoghurt", "sữa chua"], "🥛"),
+        (["cheese", "phô mai"], "🧀"), (["peanut", "peanuts", "lạc", "đậu phộng"], "🥜"),
+        (["pho", "phở", "bún", "noodles", "mì"], "🍜"), (["pizza"], "🍕"), (["burger", "hamburger"], "🍔"),
+    ]
+
     static func emoji(for category: String?) -> String {
         switch category {
         case "rice dish": return "🍚"
@@ -568,7 +602,7 @@ struct MealFoodThumb: View {
 
     var body: some View {
         let tint = MealFoodLook.dominantColor(food.logged) ?? DS.silver.opacity(0.4)
-        Text(verbatim: MealFoodLook.emoji(for: MealFoodLook.category(of: food)))
+        Text(verbatim: MealFoodLook.emoji(for: food))
             .font(.system(size: size * 0.48))
             .frame(width: size, height: size)
             .background(Circle().fill(tint.opacity(0.16)))

@@ -128,6 +128,22 @@ struct MealItemsEditor: View {
                     .foregroundStyle(DS.silver.opacity(0.6))
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.vertical, 6)
+            } else {
+                // A big target under the last food, so a meal of many foods
+                // never sends the thumb back up to the header's Add.
+                Button {
+                    searchRequest.wrappedValue = MealFoodSearchRequest()
+                } label: {
+                    Label(String(localized: "Add another food", comment: "Meal editor: big dashed button under the foods; adds one more"),
+                          systemImage: "plus")
+                        .font(.ui(16, .semibold))
+                        .foregroundStyle(DS.silver)
+                        .frame(maxWidth: .infinity, minHeight: 54)
+                        .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .strokeBorder(DS.silver.opacity(0.3), style: StrokeStyle(lineWidth: 1.5, dash: [6, 5])))
+                        .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                }
+                .buttonStyle(.plain)
             }
         }
     }
@@ -1469,7 +1485,9 @@ struct MealFoodResultLabel: View {
         let kcal = Int(entry.values(grams: entry.size.g.rounded()).kcal.rounded())
         let amount = String(localized: "\(size) · \(grams) g · \(kcal) kcal", comment: "A scanned food: 1 bowl · 200 g · 260 kcal")
         let detail = entry.cuisineName(locale).map { "\($0) · \(amount)" } ?? amount
-        HStack(alignment: .center, spacing: 10) {
+        HStack(alignment: .center, spacing: 12) {
+            // The food's own emoji (FoodEmoji), so a list reads at a glance.
+            MealFoodThumb(food: MealReviewFood(entry: entry, locale: locale), size: 44)
             VStack(alignment: .leading, spacing: 3) {
                 Text(name)
                     .font(.ui(15, .semibold))

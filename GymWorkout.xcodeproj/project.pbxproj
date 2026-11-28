@@ -12,6 +12,7 @@
 		0DF1A02230F1000100A1B2C3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0DF1A01230F1000100A1B2C3 /* FirebaseAuth */; };
 		0DF1A02330F1000100A1B2C3 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 0DF1A01330F1000100A1B2C3 /* FirebaseFunctions */; };
 		0DF1A02430F1000100A1B2C3 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 0DF1A01430F1000100A1B2C3 /* FirebaseAppCheck */; };
+		0DF1A02530F1000100A1B2C3 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0DF1A01530F1000100A1B2C3 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 				0DF1A02230F1000100A1B2C3 /* FirebaseAuth in Frameworks */,
 				0DF1A02330F1000100A1B2C3 /* FirebaseFunctions in Frameworks */,
 				0DF1A02430F1000100A1B2C3 /* FirebaseAppCheck in Frameworks */,
+				0DF1A02530F1000100A1B2C3 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +98,7 @@
 				0DF1A01230F1000100A1B2C3 /* FirebaseAuth */,
 				0DF1A01330F1000100A1B2C3 /* FirebaseFunctions */,
 				0DF1A01430F1000100A1B2C3 /* FirebaseAppCheck */,
+				0DF1A01530F1000100A1B2C3 /* FirebaseFirestore */,
 			);
 			productName = GymWorkout;
 			productReference = 0DE6167130565CF100D60C46 /* GymWorkout.app */;
@@ -296,7 +299,7 @@
 				INFOPLIST_FILE = GymWorkout/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MUSQ;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSCameraUsageDescription = "MUSQ uses the camera when you photograph a meal to log it, or take a photo of yourself for your goal photo.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "MUSQ uses the camera when you photograph a meal to log it, take a photo of yourself for your goal photo, or snap a photo to share with your friends.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "MUSQ reads your steps, walking distance, active energy, sleep and workouts from Apple Health to show your day and fit your calorie plan to how much you move. It stays on this device and is never sent to advertisers; your sleep goes to the AI coach (through MUSQ's server to OpenAI) only if you include it in a question.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds only: adds sample steps and sleep to the Simulator's Health data for testing.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MUSQ listens only while the mic is on, to log water, a walk or a meal by voice. The words are recognised on your device and the audio is never saved or sent.";
@@ -339,7 +342,7 @@
 				INFOPLIST_FILE = GymWorkout/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MUSQ;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSCameraUsageDescription = "MUSQ uses the camera when you photograph a meal to log it, or take a photo of yourself for your goal photo.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "MUSQ uses the camera when you photograph a meal to log it, take a photo of yourself for your goal photo, or snap a photo to share with your friends.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "MUSQ reads your steps, walking distance, active energy, sleep and workouts from Apple Health to show your day and fit your calorie plan to how much you move. It stays on this device and is never sent to advertisers; your sleep goes to the AI coach (through MUSQ's server to OpenAI) only if you include it in a question.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "MUSQ only reads from Apple Health (steps, sleep, active energy and workouts) and never saves anything to it.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MUSQ listens only while the mic is on, to log water, a walk or a meal by voice. The words are recognised on your device and the audio is never saved or sent.";
@@ -435,6 +438,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0DF1A00130F1000100A1B2C3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAppCheck;
+		};
+		0DF1A01530F1000100A1B2C3 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0DF1A00130F1000100A1B2C3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

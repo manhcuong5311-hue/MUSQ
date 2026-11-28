@@ -12,6 +12,8 @@ struct FriendsBoard: View {
     var nudged: Set<String>
     var onNudge: (Friend, FriendNudgeKind) -> Void
     var onOpen: (Friend) -> Void
+    /// Opens the viewer on a friend's (or my) photo of the last 24 h.
+    var onStory: ((FriendPhotoStory) -> Void)? = nil
 
     private var service: FriendsService { .shared }
 
@@ -20,12 +22,16 @@ struct FriendsBoard: View {
             ForEach(Array(service.board.enumerated()), id: \.element.id) { index, row in
                 if row.isMe {
                     FriendRow(rank: index + 1, emoji: row.emoji, name: String(localized: "You"),
-                              week: row.week, isMe: true)
+                              week: row.week, isMe: true,
+                              story: FriendsPhotoRing.story(friendId: nil, isMe: true),
+                              onStory: onStory)
                 } else if let f = service.friend(row.id) {
                     FriendRow(rank: index + 1, emoji: f.emoji, name: f.displayName, week: f.week, isMe: false,
                               nudgedToday: nudged.contains(f.id),
                               onNudge: { kind in onNudge(f, kind) },
-                              onOpen: { onOpen(f) })
+                              onOpen: { onOpen(f) },
+                              story: FriendsPhotoRing.story(friendId: f.id, isMe: false),
+                              onStory: onStory)
                 }
             }
             Text("Week runs Monday to Sunday.")
@@ -45,20 +51,23 @@ struct FriendRow: View {
     var nudgedToday = false
     var onNudge: ((FriendNudgeKind) -> Void)? = nil
     var onOpen: (() -> Void)? = nil
+    /// A photo from the last 24 h: the avatar gets its ring and opens it.
+    var story: FriendPhotoStory? = nil
+    var onStory: ((FriendPhotoStory) -> Void)? = nil
 
     static let kinds = FriendNudgeKind.allCases
 
     var body: some View {
         HStack(spacing: 12) {
+            Text(rank <= 3 ? ["🥇", "🥈", "🥉"][rank - 1] : "\(rank)")
+                .font(rank <= 3 ? .system(size: 20) : .ui(15, .bold))
+                .foregroundStyle(DS.silver.opacity(0.5))
+                .frame(width: 28)
+            avatar
             Button {
                 onOpen?()
             } label: {
                 HStack(spacing: 12) {
-                    Text(rank <= 3 ? ["🥇", "🥈", "🥉"][rank - 1] : "\(rank)")
-                        .font(rank <= 3 ? .system(size: 20) : .ui(15, .bold))
-                        .foregroundStyle(DS.silver.opacity(0.5))
-                        .frame(width: 28)
-                    FriendAvatar(emoji: emoji, size: 44, highlighted: isMe)
                     VStack(alignment: .leading, spacing: 3) {
                         Text(name)
                             .font(.ui(16, .semibold))
@@ -96,6 +105,20 @@ struct FriendRow: View {
             .fill(isMe ? DS.activation.opacity(0.08) : DS.surface))
         .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous)
             .strokeBorder(isMe ? DS.activation.opacity(0.35) : .clear, lineWidth: 1.5))
+    }
+
+    /// The avatar, ringed and tappable while there's a fresh photo.
+    @ViewBuilder private var avatar: some View {
+        if let story, let onStory {
+            Button { onStory(story) } label: {
+                FriendPhotoStoryAvatar(emoji: emoji, size: 44, story: story, highlighted: isMe)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(isMe ? String(localized: "Your photo", comment: "VoiceOver, my story in the stories row")
+                                : String(localized: "Photo from \(name)", comment: "VoiceOver, a friend's photo"))
+        } else {
+            FriendAvatar(emoji: emoji, size: 44, highlighted: isMe)
+        }
     }
 
     /// Tap = "Time to train!"; hold = the four templates.

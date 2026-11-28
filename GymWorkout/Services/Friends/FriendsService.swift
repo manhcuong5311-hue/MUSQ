@@ -224,6 +224,9 @@ final class FriendsService {
         state = .signedOut
         FriendsActivity.shared.forget()
         FriendsInbox.shared.clearDelivered()
+        // Friends' photos (memory and Caches/friend-photos) go with the
+        // account, whether or not the tab was opened in this launch.
+        if !usesSampleData { FriendsPhotoService.shared.clear() }
     }
 
     // MARK: Profile
@@ -340,6 +343,7 @@ final class FriendsService {
             _ = try await call("friendsRemove", FriendsIdRequest(friendId: friend.id), as: FriendsEmpty.self)
         }
         dropLocally(friend.id)
+        FriendsPhotoService.shared.forget(authorId: friend.id)
     }
 
     /// Removes them, hides them and refuses their future requests.
@@ -348,6 +352,21 @@ final class FriendsService {
             _ = try await call("friendsBlock", FriendsIdRequest(friendId: friend.id), as: FriendsEmpty.self)
         }
         dropLocally(friend.id)
+        FriendsPhotoService.shared.forget(authorId: friend.id)
+    }
+
+    /// Blocks the author of a comment on a photo post: a friend, or a friend
+    /// of the poster the member isn't friends with (whose `authorId` is an
+    /// opaque id only the server can resolve, from the comment).
+    func block(commentAuthor comment: FriendPhotoComment, on post: FriendPhotoPost) async throws {
+        guard !comment.isMine else { return }
+        if !usesSampleData {
+            _ = try await call("friendsBlock", FriendsCommentBlockRequest(postId: post.id, commentId: comment.id),
+                               as: FriendsEmpty.self)
+        }
+        // A friend's author id is their friend id; anyone else's matches nothing here.
+        dropLocally(comment.authorId)
+        FriendsPhotoService.shared.forget(authorId: comment.authorId)
     }
 
     /// Blocks a person who sent a request, without accepting it.

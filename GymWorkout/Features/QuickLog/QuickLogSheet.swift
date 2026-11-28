@@ -1495,7 +1495,9 @@ private struct QuickLogContent: View {
                 }
                 .frame(minHeight: 44)
                 Hairline(opacity: 0.07)
-                MealItemsEditor(foods: $mealFoods, locale: foodLocale, style: .plain)
+                // Cards, as the scan's review (owner 2026-11-28: the plain
+                // rows' Add food was hard to see, foods ran together).
+                MealItemsEditor(foods: $mealFoods, locale: foodLocale, style: .card)
                 Hairline(opacity: 0.07)
                 HStack(spacing: 10) {
                     Text("Eaten", comment: "Meal editor: when the meal was eaten, before a date and time")

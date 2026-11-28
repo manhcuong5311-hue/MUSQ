@@ -38,13 +38,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "MUSQ uses the camera when you photograph a meal to log it, or take a photo of yourself for your goal photo."
+            "value" : "MUSQ uses the camera when you photograph a meal to log it, take a photo of yourself for your goal photo, or snap a photo to share with your friends."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MUSQ dùng camera khi bạn chụp ảnh bữa ăn để ghi lại, hoặc chụp ảnh chính bạn để làm ảnh mục tiêu."
+            "value" : "MUSQ dùng camera khi bạn chụp ảnh bữa ăn để ghi lại, chụp ảnh chính bạn để làm ảnh mục tiêu, hoặc chụp ảnh check-in để đăng cho bạn bè."
           }
         }
       }
